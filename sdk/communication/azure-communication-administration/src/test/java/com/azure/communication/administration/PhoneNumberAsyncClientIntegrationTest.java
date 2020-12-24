@@ -199,10 +199,10 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         locationOptions.add(query);
 
         StepVerifier.create(
-            this.getClient(httpClient, "getAllAreaCodesWithResponse_listPhoneGroups")
+            this.getClient(httpClient, "getAllAreaCodesWithResponse_listPlanGroups")
             .listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
                 .flatMap(phonePlanGroups -> {
-                    return this.getClient(httpClient, "getAllAreaCodesWithResponse_listPhonePlans").listPhonePlans(COUNTRY_CODE, phonePlanGroups.getPhonePlanGroupId(), LOCALE).next()
+                    return this.getClient(httpClient, "getAllAreaCodesWithResponse_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroups.getPhonePlanGroupId(), LOCALE).next()
                     .flatMap(phonePlans -> {
                         return this.getClient(httpClient, "getAllAreaCodesWithResponse").getAllAreaCodesWithResponse(LocationType.SELECTION.toString(), COUNTRY_CODE, phonePlans.getPhonePlanId(), locationOptions, Context.NONE);
                     });
@@ -224,7 +224,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                     return this.getClient(httpClient, "reservationTests_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
                     .flatMap((PhonePlan phonePlan) -> {
                         // Create Reservation
-                        return beginCreateReservation(httpClient, phonePlan).last()
+                        return beginCreateReservation(httpClient, phonePlan, "reservationTests_beginCreateReservation").last()
                         .flatMap((AsyncPollResponse<PhoneNumberReservation, PhoneNumberReservation> createdRes) -> {
                             assertEquals(createdRes.getValue().getPhoneNumbers().size(), 1);
                             assertNotNull(createdRes.getValue().getReservationId());
@@ -246,22 +246,22 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     public void beginCreateReservationGetReservationByIdCancelReservationWithResponse(HttpClient httpClient) {
         StepVerifier.create(
             // Setting up for phone number reservation creation
-            this.getClient(httpClient, "reservationResponseTests_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+            this.getClient(httpClient, "reservationWithResponseTests_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
                 .flatMap((PhonePlanGroup phonePlanGroup) -> {
-                    return this.getClient(httpClient, "reservationResponseTests_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
+                    return this.getClient(httpClient, "reservationWithResponseTests_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
                     .flatMap((PhonePlan phonePlan) -> {
                         // Create Reservation
-                        return beginCreateReservation(httpClient, phonePlan).last()
+                        return beginCreateReservation(httpClient, phonePlan, "reservationWithResponseTests_beginCreateReservation").last()
                         .flatMap((AsyncPollResponse<PhoneNumberReservation, PhoneNumberReservation> createdRes) -> {
                             assertEquals(createdRes.getValue().getPhoneNumbers().size(), 1);
                             assertNotNull(createdRes.getValue().getReservationId());
                             // Get Reservation by id with response
-                            return this.getClient(httpClient, "reservationResponseTests_getResponseById").getReservationByIdWithResponse(createdRes.getValue().getReservationId())
+                            return this.getClient(httpClient, "reservationWithResponseTests_getResponseById").getReservationByIdWithResponse(createdRes.getValue().getReservationId())
                             .flatMap((Response<PhoneNumberReservation> reservationResponse) -> {
                                 assertEquals(200, reservationResponse.getStatusCode());
                                 assertEquals(createdRes.getValue().getReservationId(), reservationResponse.getValue().getReservationId());
                                 // Cancel Reservation with response
-                                return this.getClient(httpClient, "reservationResponseTests_cancelReservation").cancelReservationWithResponse(reservationResponse.getValue().getReservationId());
+                                return this.getClient(httpClient, "reservationWithResponseTests_cancelReservation").cancelReservationWithResponse(reservationResponse.getValue().getReservationId());
                             });
                         });
                     });
@@ -285,15 +285,15 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
                     return this.getClient(httpClient, "purchaseReleaseNumberTests_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
                     .flatMap((PhonePlan phonePlan) -> {
                         // Create Reservation
-                        return beginCreateReservation(httpClient, phonePlan).last()
+                        return beginCreateReservation(httpClient, phonePlan, "purchaseReleaseNumberTests_beginCreateReservation").last()
                         .flatMap((AsyncPollResponse<PhoneNumberReservation, PhoneNumberReservation> createdRes) -> {
                             assertEquals(createdRes.getValue().getPhoneNumbers().size(), 1);
                             String purchasedNumber = createdRes.getValue().getPhoneNumbers().get(0);
                             // Purchase Reservation
-                            return beginPurchaseReservation(httpClient, createdRes.getValue().getReservationId()).last()
+                            return beginPurchaseReservation(httpClient, createdRes.getValue().getReservationId(), "purchaseReleaseNumberTests_beginPurchaseReservation").last()
                             .flatMap((AsyncPollResponse<Void, Void> response) -> {
                                 assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED.toString(), response.getStatus().toString());
-                                return beginReleasePhoneNumbers(httpClient, purchasedNumber).last();
+                                return beginReleasePhoneNumbers(httpClient, purchasedNumber, "purchaseReleaseNumberTests_beginReleasePhoneNumbers").last();
                             });
                         });
                     });
@@ -366,13 +366,13 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         updateMap.put(new PhoneNumberIdentifier(PHONE_NUMBER), update);
 
         StepVerifier.create(
-            this.getClient(httpClient, "capabilitiesWithResponseTest_updateCapabilities").updateCapabilitiesWithResponse(updateMap)
+            this.getClient(httpClient, "capabilitiesWithResponseTests_updateCapabilities").updateCapabilitiesWithResponse(updateMap)
                 .flatMap((Response<UpdateNumberCapabilitiesResponse> updateResponse) -> {
                     assertEquals(200, updateResponse.getStatusCode());
                     // Get capabilities update
                     String capabilitiesUpdateId = updateResponse.getValue().getCapabilitiesUpdateId();
                     assertNotNull(capabilitiesUpdateId);
-                    return this.getClient(httpClient, "capabilitiesWithResponseTest_getCapabilitiesUpdate").getCapabilitiesUpdateWithResponse(capabilitiesUpdateId);
+                    return this.getClient(httpClient, "capabilitiesWithResponseTests_getCapabilitiesUpdate").getCapabilitiesUpdateWithResponse(capabilitiesUpdateId);
                 }))
                 .assertNext((Response<UpdatePhoneNumberCapabilitiesResponse> retrievedUpdateResponse) -> {
                     assertEquals(200, retrievedUpdateResponse.getStatusCode());
@@ -392,12 +392,12 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         updateMap.put(new PhoneNumberIdentifier(PHONE_NUMBER), update);
 
         StepVerifier.create(
-            this.getClient(httpClient, "capabilitiesTest_updateCapabilities").updateCapabilities(updateMap)
+            this.getClient(httpClient, "capabilitiesTests_updateCapabilities").updateCapabilities(updateMap)
                 .flatMap((UpdateNumberCapabilitiesResponse updateResponse) -> {
                     // Get capabilities update
                     String capabilitiesUpdateId = updateResponse.getCapabilitiesUpdateId();
                     assertNotNull(capabilitiesUpdateId);
-                    return this.getClient(httpClient, "capabilitiesTest_getCapabilitiesUpdate").getCapabilitiesUpdate(capabilitiesUpdateId);
+                    return this.getClient(httpClient, "capabilitiesTests_getCapabilitiesUpdate").getCapabilitiesUpdate(capabilitiesUpdateId);
                 }))
                 .assertNext((UpdatePhoneNumberCapabilitiesResponse retrievedUpdateResponse) -> {
                     assertNotNull(retrievedUpdateResponse.getCapabilitiesUpdateId());
@@ -599,15 +599,15 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     }
 
 
-    private PollerFlux<PhoneNumberRelease, PhoneNumberRelease> beginReleasePhoneNumbers(HttpClient httpClient, String phoneNumber) {
+    private PollerFlux<PhoneNumberRelease, PhoneNumberRelease> beginReleasePhoneNumbers(HttpClient httpClient, String phoneNumber, String testName) {
         PhoneNumberIdentifier releasedPhoneNumber = new PhoneNumberIdentifier(phoneNumber);
         List<PhoneNumberIdentifier> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(releasedPhoneNumber);
         Duration pollInterval = Duration.ofSeconds(1);
-        return this.getClient(httpClient, "beginReleasePhoneNumbers").beginReleasePhoneNumbers(phoneNumbers, pollInterval);
+        return this.getClient(httpClient, testName).beginReleasePhoneNumbers(phoneNumbers, pollInterval);
     }
 
-    private PollerFlux<PhoneNumberReservation, PhoneNumberReservation> beginCreateReservation(HttpClient httpClient, PhonePlan phonePlan) {
+    private PollerFlux<PhoneNumberReservation, PhoneNumberReservation> beginCreateReservation(HttpClient httpClient, PhonePlan phonePlan, String testName) {
         List<String> phonePlanIds = new ArrayList<>();
         phonePlanIds.add(phonePlan.getPhonePlanId());
 
@@ -620,12 +620,12 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
             .setQuantity(1);
 
         Duration duration = Duration.ofSeconds(1);
-        return this.getClient(httpClient, "beginCreateReservation").beginCreateReservation(createReservationOptions, duration);
+        return this.getClient(httpClient, testName).beginCreateReservation(createReservationOptions, duration);
     }
 
-    private  PollerFlux<Void, Void> beginPurchaseReservation(HttpClient httpClient, String reservationId) {
+    private  PollerFlux<Void, Void> beginPurchaseReservation(HttpClient httpClient, String reservationId, String testName) {
         Duration pollInterval = Duration.ofSeconds(1);
-        return this.getClient(httpClient, "beginPurchaseReservation")
+        return this.getClient(httpClient, testName)
             .beginPurchaseReservation(reservationId, pollInterval);
     }
 
