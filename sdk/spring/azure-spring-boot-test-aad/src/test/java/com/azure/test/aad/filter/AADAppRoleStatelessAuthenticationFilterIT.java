@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.approle;
+package com.azure.test.aad.filter;
 
 import com.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter;
+import com.azure.test.aad.AADTestUtils;
 import com.azure.test.utils.AppRunner;
-import com.azure.test.oauth.OAuthResponse;
-import com.azure.test.oauth.OAuthUtils;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,8 +29,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 
-import static com.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
-import static com.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
+import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
+import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -42,7 +41,8 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
 
     @Test
     public void testAADAppRoleStatelessAuthenticationFilter() {
-        final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(System.getenv(AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE),
+        final OAuthResponse authResponse =
+            AADTestUtils.executeOAuth2ROPCFlow(System.getenv(AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE),
             System.getenv(AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE));
         assertNotNull(authResponse);
 

@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.login;
+package com.azure.test.aad.selenium;
 
-import com.azure.test.oauth.SeleniumTestUtils;
 import com.azure.test.utils.AppRunner;
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,7 +34,7 @@ public class AADLoginIT {
             endPoints.add("api/home");
             endPoints.add("api/group1");
             endPoints.add("api/status403");
-            Map<String, String> result = SeleniumTestUtils.get(app , endPoints);
+            Map<String, String> result = SeleniumTestUtils.get(app, endPoints);
             Assert.assertEquals("home", result.get("api/home"));
             Assert.assertEquals("group1", result.get("api/group1"));
             Assert.assertNotEquals("error", result.get("api/status403"));

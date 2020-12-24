@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.groups;
+package com.azure.test.aad.filter;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.azure.spring.autoconfigure.aad.UserPrincipal;
-import com.azure.test.oauth.OAuthResponse;
-import com.azure.test.oauth.OAuthUtils;
+import com.azure.test.aad.AADTestUtils;
 import com.azure.test.utils.AppRunner;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,8 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_ID;
-import static com.azure.test.oauth.OAuthUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
+import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -42,7 +41,7 @@ public class AADGroupsCountIT {
     public void testGroupsCount() {
         final String clientId = System.getenv(AAD_SINGLE_TENANT_CLIENT_ID);
         final String clientSecret = System.getenv(AAD_SINGLE_TENANT_CLIENT_SECRET);
-        final OAuthResponse authResponse = OAuthUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
+        final OAuthResponse authResponse = AADTestUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
         assertNotNull(authResponse);
         String idToken = authResponse.getIdToken();
         try (AppRunner app = new AppRunner(DumbApp.class)) {
