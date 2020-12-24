@@ -9,6 +9,7 @@ import com.azure.perf.test.core.PerfStressTest;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.concurrent.Executors;
@@ -16,12 +17,18 @@ import java.util.concurrent.ScheduledExecutorService;
 
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
 
-    protected final EventHubClient eventHubClient;
+    private final String eventHubName;
+    private final String connectionString;
+    private final String poolSize;
+    protected EventHubClient eventHubClient;
+    private ScheduledExecutorService executor;
+
 
     public ServiceTest(TOptions options) throws IOException, EventHubException {
         super(options);
-        String connectionString = System.getenv("EVENTHUBS_CONNECTION_STRING");
-        String eventHubName = System.getenv("EVENTHUB_NAME");
+        connectionString = System.getenv("EVENTHUBS_CONNECTION_STRING");
+        eventHubName = System.getenv("EVENTHUB_NAME");
+        poolSize = System.getenv("EVENTHUB_POOL_SIZE");
 
         if (CoreUtils.isNullOrEmpty(connectionString)) {
             throw new IllegalStateException("Environment variable EVENTHUBS_CONNECTION_STRING must be set");
@@ -31,10 +38,30 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
             System.out.println("Environment variable EVENTHUB_NAME must be set");
             System.exit(1);
         }
+//        executor = Executors
+//            .newScheduledThreadPool(poolSize != null ? Integer.valueOf(poolSize) : 4);
+//        eventHubClient = EventHubClient.createSync(
+//            new ConnectionStringBuilder(connectionString).setEventHubName(eventHubName).toString(), executor);
 
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
+    }
 
-        eventHubClient = EventHubClient.createSync(
-            new ConnectionStringBuilder(connectionString).setEventHubName(eventHubName).toString(), executor);
+    @Override
+    public Mono<Void> setupAsync() {
+        return Mono.fromCallable(() -> {
+            executor = Executors
+                .newScheduledThreadPool(poolSize != null ? Integer.valueOf(poolSize) : 4);
+            eventHubClient = EventHubClient.createSync(
+                new ConnectionStringBuilder(connectionString).setEventHubName(eventHubName).toString(), executor);
+            return 1;
+        }).then();
+    }
+
+    @Override
+    public Mono<Void> cleanupAsync() {
+        return Mono.fromCallable(() -> {
+            eventHubClient.close();
+            executor.shutdownNow();
+            return 1;
+        }).then();
     }
 }

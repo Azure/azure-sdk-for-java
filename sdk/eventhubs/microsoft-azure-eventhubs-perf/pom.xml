@@ -19,7 +19,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-eventhubs</artifactId>
-      <version>2.3.2</version>
+      <version>2.3.2</version> <!-- {x-version-update;com.microsoft.azure:azure-eventhubs;current} -->
     </dependency>
 
     <dependency>
@@ -31,7 +31,7 @@
     <dependency>
       <groupId>commons-cli</groupId>
       <artifactId>commons-cli</artifactId>
-      <version>1.4</version>
+      <version>1.4</version> <!-- {x-version-update;commons-cli:commons-cli;current} -->
     </dependency>
   </dependencies>
 
@@ -69,6 +69,22 @@
         <configuration>
           <source>8</source>
           <target>8</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>com.microsoft.azure:azure-eventhubs:[2.3.2]</include> <!-- {x-include-update;com.microsoft.azure:azure-eventhubs;external_dependency} -->
+                <include>commons-cli:commons-cli:[1.4]</include> <!-- {x-include-update;commons-cli:commons-cli;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
         </configuration>
       </plugin>
     </plugins>

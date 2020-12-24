@@ -17,18 +17,19 @@ import java.nio.charset.StandardCharsets;
  * Runs the Send Events Batch Performance Test for EventHubs.
  */
 public class SendEventBatchPartitionTest extends ServiceTest<EventHubsPerfStressOptions> {
-    private final EventDataBatch eventDataBatch;
-    protected final PartitionSender partitionSender;
+    private final BatchOptions batchOptions;
+    private EventDataBatch eventDataBatch;
+    private PartitionSender partitionSender;
 
     /**
+     * Instantiates the instance of the Send Event Batch Partition test.
      *
-     * @param options
-     * @throws Exception
+     * @param options the options bag to use for performance testing.
+     * @throws Exception when an error occurs when creating event batch.
      */
     public SendEventBatchPartitionTest(EventHubsPerfStressOptions options) throws Exception {
         super(options);
-
-        partitionSender = eventHubClient.createPartitionSender(String.valueOf(options.getPartitionId())).get();
+        batchOptions = new BatchOptions();
         BatchOptions batchOptions = new BatchOptions();
 
         if (options.getBatchSize() != null) {
@@ -39,14 +40,25 @@ public class SendEventBatchPartitionTest extends ServiceTest<EventHubsPerfStress
             batchOptions.partitionKey = options.getPartitionKey();
         }
 
-        eventDataBatch = partitionSender.createBatch(batchOptions);
+    }
 
-        for (int i = 0; i < options.getEvents(); i++) {
-            if (!eventDataBatch.tryAdd(EventData.create("Static Event".getBytes(StandardCharsets.UTF_8)))) {
-                throw new Exception(String.format("Batch can only fit %d number of messages with batch size of %d ",
-                    options.getCount(), options.getSize()));
-            }
-        }
+    @Override
+    public Mono<Void> setupAsync() {
+        return super.setupAsync()
+            .then(Mono.fromCallable(() -> {
+                partitionSender = eventHubClient.createPartitionSender(String.valueOf(options.getPartitionId())).get();
+                eventDataBatch = partitionSender.createBatch(batchOptions);
+                EventData eventData =  EventData.create("Static Event".getBytes(StandardCharsets.UTF_8));
+
+                for (int i = 0; i < options.getEvents(); i++) {
+                    if (!eventDataBatch.tryAdd(eventData)) {
+                        throw new Exception(String.format("Batch can only fit %d number of messages with batch "
+                                + "size of %d ", options.getCount(), options.getSize()));
+                    }
+                }
+                return 1;
+            }))
+            .then();
     }
 
     // Perform the API call to be tested here
@@ -58,5 +70,13 @@ public class SendEventBatchPartitionTest extends ServiceTest<EventHubsPerfStress
     @Override
     public Mono<Void> runAsync() {
         return Mono.fromFuture(partitionSender.send(eventDataBatch));
+    }
+
+    @Override
+    public Mono<Void> cleanupAsync() {
+        return Mono.fromCallable(() -> {
+            partitionSender.close();
+            return 1;
+        }).then(super.cleanupAsync());
     }
 }

@@ -14,7 +14,9 @@ import reactor.core.publisher.Mono;
  * Runs the Send Events Batch Performance Test for EventHubs.
  */
 public class SendEventBatchTest extends ServiceTest<EventHubsPerfStressOptions> {
-    private final EventDataBatch eventDataBatch;
+    private final CreateBatchOptions createBatchOptions;
+    private EventDataBatch eventDataBatch;
+    private EventDataBatch eventDataBatchAsync;
 
     /**
      * Runs the Send Events in Batch peformance test.
@@ -24,15 +26,48 @@ public class SendEventBatchTest extends ServiceTest<EventHubsPerfStressOptions> 
      */
     public SendEventBatchTest(EventHubsPerfStressOptions options) throws IllegalStateException {
         super(options);
-        CreateBatchOptions createBatchOptions = getBatchOptions(options);
-        if (createBatchOptions != null) {
-            eventDataBatch = eventHubProducerClient.createBatch(createBatchOptions);
-        } else {
-            eventDataBatch = eventHubProducerClient.createBatch();
-        }
+        createBatchOptions = getBatchOptions(options);
+//        if (createBatchOptions != null) {
+//            eventDataBatch = eventHubProducerClient.createBatch(createBatchOptions);
+//        } else {
+//            eventDataBatch = eventHubProducerClient.createBatch();
+//        }
+//
+//        EventData eventData = new EventData("static event");
+//        for (int i = 0; i < options.getEvents(); i++) {
+//            if (!eventDataBatch.tryAdd(eventData)) {
+//                throw new IllegalStateException(String.format(
+//                    "Batch can only fit %d number of messages with batch size of %d ",
+//                    options.getCount(), options.getSize()));
+//            }
+//        }
+    }
 
+    @Override
+    public Mono<Void> setupAsync() {
+        return super.setupAsync()
+            .then(Mono.fromCallable(() -> {
+                if (createBatchOptions != null) {
+                    eventDataBatch = eventHubProducerClient.createBatch(createBatchOptions);
+                } else {
+                    eventDataBatch = eventHubProducerClient.createBatch();
+                }
+                addEventsToBatch(eventDataBatch);
+                return 1;
+            })).then(Mono.defer(() -> createBatchOptions != null
+                ? eventHubProducerAsyncClient.createBatch(createBatchOptions)
+                : eventHubProducerAsyncClient.createBatch()
+            )).map(eventBatch -> {
+                addEventsToBatch(eventBatch);
+                eventDataBatchAsync = eventBatch;
+                return Mono.empty();
+            }).then();
+    }
+
+    private void addEventsToBatch(EventDataBatch eventDataBatch) {
+        EventData eventData = new EventData("static event");
         for (int i = 0; i < options.getEvents(); i++) {
-            if (!eventDataBatch.tryAdd(new EventData("static event"))) {
+            if (!eventDataBatch.tryAdd(eventData)) {
                 throw new IllegalStateException(String.format(
                     "Batch can only fit %d number of messages with batch size of %d ",
                     options.getCount(), options.getSize()));
@@ -71,6 +106,6 @@ public class SendEventBatchTest extends ServiceTest<EventHubsPerfStressOptions> 
 
     @Override
     public Mono<Void> runAsync() {
-        return eventHubProducerAsyncClient.send(eventDataBatch);
+        return eventHubProducerAsyncClient.send(eventDataBatchAsync);
     }
 }

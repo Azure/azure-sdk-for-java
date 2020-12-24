@@ -9,15 +9,18 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
+import reactor.core.publisher.Mono;
 
 /**
  * Represents the EventHubs Service Test.
  * @param <TOptions> the options bag to use for running performance tests.
  */
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-
-    protected final EventHubProducerAsyncClient eventHubProducerAsyncClient;
-    protected final EventHubProducerClient eventHubProducerClient;
+    protected final String connectionString;
+    protected final String eventHubName;
+    protected EventHubClientBuilder eventHubClientBuilder;
+    protected EventHubProducerAsyncClient eventHubProducerAsyncClient;
+    protected EventHubProducerClient eventHubProducerClient;
 
     /**
      * Instantiates instance of the Service Test.
@@ -26,8 +29,8 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
      */
     public ServiceTest(TOptions options) throws IllegalStateException {
         super(options);
-        String connectionString = System.getenv("EVENTHUBS_CONNECTION_STRING");
-        String eventHubName = System.getenv("EVENTHUB_NAME");
+        connectionString = System.getenv("EVENTHUBS_CONNECTION_STRING");
+        eventHubName = System.getenv("EVENTHUB_NAME");
 
         if (CoreUtils.isNullOrEmpty(connectionString)) {
             throw new IllegalStateException("Environment variable EVENTHUBS_CONNECTION_STRING must be set");
@@ -36,12 +39,25 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         if (CoreUtils.isNullOrEmpty(eventHubName)) {
             throw new IllegalStateException("Environment variable EVENTHUB_NAME must be set");
         }
+    }
 
-        // Setup the service client
-        EventHubClientBuilder builder = new EventHubClientBuilder()
-            .connectionString(connectionString, eventHubName);
+    @Override
+    public Mono<Void> setupAsync() {
+        return Mono.fromCallable(() -> {
+            // Setup the service client
+            eventHubClientBuilder = new EventHubClientBuilder().connectionString(connectionString, eventHubName);
+            eventHubProducerAsyncClient = eventHubClientBuilder.buildAsyncProducerClient();
+            eventHubProducerClient = eventHubClientBuilder.buildProducerClient();
+            return 1;
+        }).then();
+    }
 
-        eventHubProducerAsyncClient = builder.buildAsyncProducerClient();
-        eventHubProducerClient = builder.buildProducerClient();
+    @Override
+    public Mono<Void> cleanupAsync() {
+        return Mono.fromCallable(() -> {
+            eventHubProducerAsyncClient.close();
+            eventHubProducerClient.close();
+            return 1;
+        }).then();
     }
 }
