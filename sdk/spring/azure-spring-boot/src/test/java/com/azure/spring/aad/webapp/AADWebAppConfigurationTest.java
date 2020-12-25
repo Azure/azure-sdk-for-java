@@ -42,7 +42,7 @@ public class AADWebAppConfigurationTest {
     public void clientRequiresPermissionRegistered() {
         PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
+                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
             )
             .run(context -> {
                 ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -61,8 +61,8 @@ public class AADWebAppConfigurationTest {
     public void clientRequiresMultiPermissions() {
         PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
-                "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
+                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
+                "azure.activedirectory.authorization-clients.arm.scopes = https://management.core.windows.net/user_impersonation"
             )
             .run(context -> {
                 ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -84,7 +84,7 @@ public class AADWebAppConfigurationTest {
     public void clientRequiresPermissionInDefaultClient() {
         PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
+                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
             )
             .run(context -> {
                 ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -98,7 +98,7 @@ public class AADWebAppConfigurationTest {
     public void aadAwareClientRepository() {
         PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization.graph.scopes = Calendars.Read"
+                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
             )
             .run(context -> {
                 AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -125,7 +125,7 @@ public class AADWebAppConfigurationTest {
     public void defaultClientWithAuthzScope() {
         PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization.azure.scopes = Calendars.Read"
+                "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read"
             )
             .run(context -> {
                 AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -157,9 +157,9 @@ public class AADWebAppConfigurationTest {
     public void clientRequiresOnDemandPermissions() {
         PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
-                "azure.activedirectory.authorization.graph.on-demand = true",
-                "azure.activedirectory.authorization.arm.scopes = https://management.core.windows.net/user_impersonation"
+                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
+                "azure.activedirectory.authorization-clients.graph.on-demand = true",
+                "azure.activedirectory.authorization-clients.arm.scopes = https://management.core.windows.net/user_impersonation"
             )
             .run(context -> {
                 AADWebAppClientRegistrationRepository repo = context.getBean(AADWebAppClientRegistrationRepository.class);
