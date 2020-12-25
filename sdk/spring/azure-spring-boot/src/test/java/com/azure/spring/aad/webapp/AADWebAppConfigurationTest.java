@@ -28,11 +28,11 @@ public class AADWebAppConfigurationTest {
                 assertEquals("fake-client-id", azure.getClientId());
                 assertEquals("fake-client-secret", azure.getClientSecret());
 
-                AADEndpoints endpoints = new AADEndpoints();
-                assertEquals(endpoints.authorizationEndpoint("fake-tenant-id"),
+                AADEndpoints endpoints = new AADEndpoints("https://login.microsoftonline.com/", "fake-tenant-id");
+                assertEquals(endpoints.authorizationEndpoint(),
                     azure.getProviderDetails().getAuthorizationUri());
-                assertEquals(endpoints.tokenEndpoint("fake-tenant-id"), azure.getProviderDetails().getTokenUri());
-                assertEquals(endpoints.jwkSetEndpoint("fake-tenant-id"), azure.getProviderDetails().getJwkSetUri());
+                assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
+                assertEquals(endpoints.jwkSetEndpoint(), azure.getProviderDetails().getJwkSetUri());
                 assertEquals("{baseUrl}/login/oauth2/code/{registrationId}", azure.getRedirectUriTemplate());
                 assertDefaultScopes(azure, "openid", "profile", "https://graph.microsoft.com/User.Read");
             });
@@ -145,11 +145,11 @@ public class AADWebAppConfigurationTest {
             .run(context -> {
                 AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-                AADEndpoints endpoints = new AADEndpoints("http://localhost/");
-                assertEquals(endpoints.authorizationEndpoint("fake-tenant-id"),
+                AADEndpoints endpoints = new AADEndpoints("http://localhost/", "fake-tenant-id");
+                assertEquals(endpoints.authorizationEndpoint(),
                     azure.getProviderDetails().getAuthorizationUri());
-                assertEquals(endpoints.tokenEndpoint("fake-tenant-id"), azure.getProviderDetails().getTokenUri());
-                assertEquals(endpoints.jwkSetEndpoint("fake-tenant-id"), azure.getProviderDetails().getJwkSetUri());
+                assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
+                assertEquals(endpoints.jwkSetEndpoint(), azure.getProviderDetails().getJwkSetUri());
             });
     }
 

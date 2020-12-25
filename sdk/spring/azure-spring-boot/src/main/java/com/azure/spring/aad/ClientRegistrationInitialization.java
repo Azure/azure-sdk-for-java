@@ -103,10 +103,10 @@ public class ClientRegistrationInitialization {
         result.clientSecret(aadAuthenticationProperties.getClientSecret());
 
         AADEndpoints endpoints =
-            new AADEndpoints(aadAuthenticationProperties.getBaseUri());
-        result.authorizationUri(endpoints.authorizationEndpoint(aadAuthenticationProperties.getTenantId()));
-        result.tokenUri(endpoints.tokenEndpoint(aadAuthenticationProperties.getTenantId()));
-        result.jwkSetUri(endpoints.jwkSetEndpoint(aadAuthenticationProperties.getTenantId()));
+            new AADEndpoints(aadAuthenticationProperties.getBaseUri(), aadAuthenticationProperties.getTenantId());
+        result.authorizationUri(endpoints.authorizationEndpoint());
+        result.tokenUri(endpoints.tokenEndpoint());
+        result.jwkSetUri(endpoints.jwkSetEndpoint());
 
         return result;
     }

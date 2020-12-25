@@ -148,13 +148,13 @@ public class AADWebAppConfiguration {
         result.clientSecret(properties.getClientSecret());
 
         AADEndpoints endpoints =
-            new AADEndpoints(properties.getBaseUri());
-        result.authorizationUri(endpoints.authorizationEndpoint(properties.getTenantId()));
-        result.tokenUri(endpoints.tokenEndpoint(properties.getTenantId()));
-        result.jwkSetUri(endpoints.jwkSetEndpoint(properties.getTenantId()));
+            new AADEndpoints(properties.getBaseUri(), properties.getTenantId());
+        result.authorizationUri(endpoints.authorizationEndpoint());
+        result.tokenUri(endpoints.tokenEndpoint());
+        result.jwkSetUri(endpoints.jwkSetEndpoint());
 
         Map<String, Object> configurationMetadata = new LinkedHashMap<>();
-        String endSessionEndpoint = endpoints.endSessionEndpoint(properties.getTenantId());
+        String endSessionEndpoint = endpoints.endSessionEndpoint();
         configurationMetadata.put("end_session_endpoint", endSessionEndpoint);
         result.providerConfigurationMetadata(configurationMetadata);
 

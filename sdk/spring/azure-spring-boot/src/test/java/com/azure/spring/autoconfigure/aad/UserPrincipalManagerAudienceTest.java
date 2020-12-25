@@ -67,7 +67,7 @@ public class UserPrincipalManagerAudienceTest {
         aadAuthenticationProperties = new AADAuthenticationProperties();
         aadAuthenticationProperties.setClientId(FAKE_CLIENT_ID);
         aadAuthenticationProperties.setAppIdUri(FAKE_APPLICATION_URI);
-        when(AADEndpoints.jwkSetEndpoint(anyString())).thenReturn("file://dummy");
+        when(AADEndpoints.jwkSetEndpoint()).thenReturn("file://dummy");
     }
 
     @Test

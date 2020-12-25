@@ -66,15 +66,15 @@ public class UserPrincipalManager {
 
     /**
      * Create a new {@link UserPrincipalManager} based of the
-     * {@link AADEndpoints#jwkSetEndpoint(String)}
+     * {@link AADEndpoints#jwkSetEndpoint()}
      *
-     * @param AADEndpoints - used to retrieve the JWKS URL
+     * @param aadEndpoints - used to retrieve the JWKS URL
      * @param aadAuthenticationProperties - used to retrieve the environment.
      * @param resourceRetriever - configures the {@link RemoteJWKSet} call.
      * @param explicitAudienceCheck Whether explicitly check the audience.
      * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
-    public UserPrincipalManager(AADEndpoints AADEndpoints,
+    public UserPrincipalManager(AADEndpoints aadEndpoints,
                                 AADAuthenticationProperties aadAuthenticationProperties,
                                 ResourceRetriever resourceRetriever,
                                 boolean explicitAudienceCheck) {
@@ -88,7 +88,7 @@ public class UserPrincipalManager {
         }
         try {
             String jwkSetEndpoint =
-                AADEndpoints.jwkSetEndpoint(this.aadAuthenticationProperties.getTenantId());
+                aadEndpoints.jwkSetEndpoint();
             keySource = new RemoteJWKSet<>(new URL(jwkSetEndpoint), resourceRetriever);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);
@@ -98,10 +98,10 @@ public class UserPrincipalManager {
 
     /**
      * Create a new {@link UserPrincipalManager} based of the
-     * {@link AADEndpoints#jwkSetEndpoint(String)}
+     * {@link AADEndpoints#jwkSetEndpoint()}
      * ()}
      *
-     * @param AADEndpoints - used to retrieve the JWKS URL
+     * @param aadEndpoints - used to retrieve the JWKS URL
      * @param aadAuthenticationProperties - used to retrieve the environment.
      * @param resourceRetriever - configures the {@link RemoteJWKSet} call.
      * @param jwkSetCache - used to cache the JWK set for a finite time, default set to 5 minutes which matches
@@ -109,7 +109,7 @@ public class UserPrincipalManager {
      * @param explicitAudienceCheck Whether explicitly check the audience.
      * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
-    public UserPrincipalManager(AADEndpoints AADEndpoints,
+    public UserPrincipalManager(AADEndpoints aadEndpoints,
                                 AADAuthenticationProperties aadAuthenticationProperties,
                                 ResourceRetriever resourceRetriever,
                                 boolean explicitAudienceCheck,
@@ -123,8 +123,7 @@ public class UserPrincipalManager {
             this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }
         try {
-            String jwkSetEndpoint =
-                AADEndpoints.jwkSetEndpoint(this.aadAuthenticationProperties.getTenantId());
+            String jwkSetEndpoint = aadEndpoints.jwkSetEndpoint();
             keySource = new RemoteJWKSet<>(new URL(jwkSetEndpoint), resourceRetriever, jwkSetCache);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);

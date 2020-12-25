@@ -18,16 +18,14 @@ public class AADEndpoints {
     private static final String END_SESSION_ENDPOINT = "/oauth2/v2.0/logout";
 
     private final String baseUri;
+    private final String tenantId;
 
-    public AADEndpoints() {
-        this(IDENTITY_PLATFORM);
-    }
-
-    public AADEndpoints(String baseUri) {
+    public AADEndpoints(String baseUri, String tenantId) {
         if (StringUtils.isBlank(baseUri)) {
             baseUri = IDENTITY_PLATFORM;
         }
         this.baseUri = addSlash(baseUri);
+        this.tenantId = tenantId;
     }
 
     public String getBaseUri() {
@@ -38,19 +36,19 @@ public class AADEndpoints {
         return uri.endsWith("/") ? uri : uri + "/";
     }
 
-    public String authorizationEndpoint(String tenant) {
-        return baseUri + tenant + AUTHORIZATION_ENDPOINT;
+    public String authorizationEndpoint() {
+        return baseUri + tenantId + AUTHORIZATION_ENDPOINT;
     }
 
-    public String tokenEndpoint(String tenant) {
-        return baseUri + tenant + TOKEN_ENDPOINT;
+    public String tokenEndpoint() {
+        return baseUri + tenantId + TOKEN_ENDPOINT;
     }
 
-    public String jwkSetEndpoint(String tenant) {
-        return baseUri + tenant + JWK_SET_ENDPOINT;
+    public String jwkSetEndpoint() {
+        return baseUri + tenantId + JWK_SET_ENDPOINT;
     }
 
-    public String endSessionEndpoint(String tenant) {
-        return baseUri + tenant + END_SESSION_ENDPOINT;
+    public String endSessionEndpoint() {
+        return baseUri + tenantId + END_SESSION_ENDPOINT;
     }
 }
