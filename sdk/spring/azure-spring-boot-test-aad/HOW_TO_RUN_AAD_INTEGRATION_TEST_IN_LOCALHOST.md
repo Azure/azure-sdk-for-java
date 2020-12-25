@@ -50,7 +50,7 @@ Get `AAD_TENANT_ID_2`, `AAD_USER_NAME_2`, `AAD_USER_PASSWORD_2` with the same me
 
 ### `AAD_MULTI_TENANT_CLIENT_ID`, `AAD_MULTI_TENANT_CLIENT_SECRET`.
 
-1. Register an application. Refs: [Register an application with the Microsoft identity platform][Register an application with the Microsoft identity platform]
+1. Register an application in the new created tenant (`aadIntegrationTest1`). Refs: [Register an application with the Microsoft identity platform][Register an application with the Microsoft identity platform]
 ![create-aad-multitenant-client](images/create-aad-multitenant-client.png)
 
 2. Create secret for `aad-multitenant-client`. Refs: [Create a new application secret][Create a new application secret]
@@ -79,7 +79,7 @@ More steps needed for this client is to set App roles.
 1. Create 2 groups: group1 and group2. Add user1 in group1, and user2 in group2.
 Refs: [Create a basic group and add members using Azure Active Directory][Create a basic group and add members using Azure Active Directory]
 
-2. For user1, we need to create 111 groups: from group1 to group111. It's used in AADGroupsCountIT.
+2. (Optional. Skip this step if you don't run `AADGroupsCountIT`, or you can ignore the test failure of `AADGroupsCountIT`) Create 111 groups: from `group1` to `group111`. Add `user1` into these groups. It's used in `AADGroupsCountIT`.
 
 
 ## Export environment variables
