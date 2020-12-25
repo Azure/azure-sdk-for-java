@@ -31,6 +31,7 @@ import java.util.Arrays;
  */
 public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdapter {
 
+    private static final String DEFAULT_FAILURE_URL = "/login?error";
     @Autowired
     private AADWebAppClientRegistrationRepository repo;
     @Autowired
@@ -54,7 +55,7 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
                 .userInfoEndpoint()
                     .oidcUserService(oidcUserService)
                     .and()
-                .failureHandler(failureHandler())
+                .failureHandler(failureHandler()).failureUrl(DEFAULT_FAILURE_URL)
                 .and()
             .logout()
                 .logoutSuccessHandler(oidcLogoutSuccessHandler())

@@ -20,11 +20,10 @@ import java.util.Optional;
  * Redirect URL for handling OAuthentication failure
  */
 public class AzureOAuthenticationFailureHandler implements AuthenticationFailureHandler {
-    private static final String DEFAULT_FAILURE_URL = "/login?error";
     private final AuthenticationFailureHandler defaultHandler;
 
     public AzureOAuthenticationFailureHandler() {
-        this.defaultHandler = new SimpleUrlAuthenticationFailureHandler(DEFAULT_FAILURE_URL);
+        this.defaultHandler = new SimpleUrlAuthenticationFailureHandler();
     }
 
     @Override

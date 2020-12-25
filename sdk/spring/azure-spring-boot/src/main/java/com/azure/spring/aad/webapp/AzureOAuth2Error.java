@@ -64,13 +64,6 @@ public class AzureOAuth2Error extends OAuth2Error {
     @Override
     public String toString() {
 
-        return "AADAuthenticationException{"
-            + ", error_codes='" + errorCodes + '\''
-            + ", timestamp='" + timestamp + '\''
-            + ", trace_id='" + traceId + '\''
-            + ", correlation_id='" + correlationId + '\''
-            + ", suberror='" + subError + '\''
-            + ", claims='" + claims + '\''
-            + '}';
+        return super.toString();
     }
 }
