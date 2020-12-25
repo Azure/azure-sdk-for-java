@@ -158,7 +158,7 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
     /** @return the service principal management API entry point */
     public ServicePrincipals servicePrincipals() {
         if (servicePrincipals == null) {
-            servicePrincipals = new ServicePrincipalsImpl(graphRbacManagementClient.getServicePrincipals(), this);
+            servicePrincipals = new ServicePrincipalsImpl(this);
         }
         return servicePrincipals;
     }
@@ -166,7 +166,7 @@ public final class AuthorizationManager implements HasServiceClient<GraphRbacMan
     /** @return the application management API entry point */
     public ActiveDirectoryApplications applications() {
         if (applications == null) {
-            applications = new ActiveDirectoryApplicationsImpl(graphRbacManagementClient.getApplications(), this);
+            applications = new ActiveDirectoryApplicationsImpl(this);
         }
         return applications;
     }

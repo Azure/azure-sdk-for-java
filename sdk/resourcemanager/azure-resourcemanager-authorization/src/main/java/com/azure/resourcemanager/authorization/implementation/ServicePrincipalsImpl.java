@@ -19,12 +19,9 @@ import reactor.core.publisher.Mono;
 public class ServicePrincipalsImpl
     extends CreatableWrappersImpl<ServicePrincipal, ServicePrincipalImpl, ServicePrincipalInner>
     implements ServicePrincipals, HasManager<AuthorizationManager> {
-    private ServicePrincipalsClient innerCollection;
     private AuthorizationManager manager;
 
-    public ServicePrincipalsImpl(
-        final ServicePrincipalsClient client, final AuthorizationManager authorizationManager) {
-        this.innerCollection = client;
+    public ServicePrincipalsImpl(final AuthorizationManager authorizationManager) {
         this.manager = authorizationManager;
     }
 
@@ -56,7 +53,7 @@ public class ServicePrincipalsImpl
 
     @Override
     public Mono<ServicePrincipal> getByIdAsync(String id) {
-        return innerCollection
+        return inner()
             .getAsync(id)
             .flatMap(
                 servicePrincipalInner ->

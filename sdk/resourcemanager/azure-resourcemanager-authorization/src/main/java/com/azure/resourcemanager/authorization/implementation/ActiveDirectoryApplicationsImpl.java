@@ -21,12 +21,9 @@ import reactor.core.publisher.Mono;
 public class ActiveDirectoryApplicationsImpl
     extends CreatableResourcesImpl<ActiveDirectoryApplication, ActiveDirectoryApplicationImpl, ApplicationInner>
     implements ActiveDirectoryApplications, HasManager<AuthorizationManager> {
-    private ApplicationsClient innerCollection;
     private AuthorizationManager manager;
 
-    public ActiveDirectoryApplicationsImpl(
-        final ApplicationsClient client, final AuthorizationManager authorizationManager) {
-        this.innerCollection = client;
+    public ActiveDirectoryApplicationsImpl(final AuthorizationManager authorizationManager) {
         this.manager = authorizationManager;
     }
 
@@ -58,7 +55,7 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public Mono<ActiveDirectoryApplication> getByIdAsync(String id) {
-        return innerCollection
+        return inner()
             .getAsync(id)
             .flatMap(
                 applicationInner ->
@@ -112,7 +109,7 @@ public class ActiveDirectoryApplicationsImpl
     }
 
     public ApplicationsClient inner() {
-        return this.innerCollection;
+        return manager().serviceClient().getApplications();
     }
 
     @Override
