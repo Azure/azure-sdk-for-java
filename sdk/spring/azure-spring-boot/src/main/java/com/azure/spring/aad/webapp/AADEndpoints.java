@@ -8,7 +8,7 @@ import com.nimbusds.oauth2.sdk.util.StringUtils;
 /**
  * Used to get endpoints for Microsoft Identity authorization server.
  */
-public class AuthorizationServerEndpoints {
+public class AADEndpoints {
 
     private static final String IDENTITY_PLATFORM = "https://login.microsoftonline.com/";
 
@@ -19,11 +19,11 @@ public class AuthorizationServerEndpoints {
 
     private final String baseUri;
 
-    public AuthorizationServerEndpoints() {
+    public AADEndpoints() {
         this(IDENTITY_PLATFORM);
     }
 
-    public AuthorizationServerEndpoints(String baseUri) {
+    public AADEndpoints(String baseUri) {
         if (StringUtils.isBlank(baseUri)) {
             baseUri = IDENTITY_PLATFORM;
         }

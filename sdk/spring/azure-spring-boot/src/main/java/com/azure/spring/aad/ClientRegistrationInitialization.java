@@ -4,7 +4,7 @@
 package com.azure.spring.aad;
 
 import com.azure.spring.aad.webapp.AuthorizationProperties;
-import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
+import com.azure.spring.aad.webapp.AADEndpoints;
 import com.azure.spring.aad.webapp.AzureClientRegistration;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -102,8 +102,8 @@ public class ClientRegistrationInitialization {
         result.clientId(aadAuthenticationProperties.getClientId());
         result.clientSecret(aadAuthenticationProperties.getClientSecret());
 
-        AuthorizationServerEndpoints endpoints =
-            new AuthorizationServerEndpoints(aadAuthenticationProperties.getAuthorizationServerUri());
+        AADEndpoints endpoints =
+            new AADEndpoints(aadAuthenticationProperties.getAuthorizationServerUri());
         result.authorizationUri(endpoints.authorizationEndpoint(aadAuthenticationProperties.getTenantId()));
         result.tokenUri(endpoints.tokenEndpoint(aadAuthenticationProperties.getTenantId()));
         result.jwkSetUri(endpoints.jwkSetEndpoint(aadAuthenticationProperties.getTenantId()));

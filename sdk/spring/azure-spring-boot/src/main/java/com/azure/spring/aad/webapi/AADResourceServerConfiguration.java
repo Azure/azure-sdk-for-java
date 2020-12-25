@@ -3,7 +3,7 @@
 package com.azure.spring.aad.webapi;
 
 
-import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
+import com.azure.spring.aad.webapp.AADEndpoints;
 import com.azure.spring.aad.webapi.validator.AADJwtAudienceValidator;
 import com.azure.spring.aad.webapi.validator.AADJwtIssuerValidator;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
@@ -51,7 +51,7 @@ public class AADResourceServerConfiguration {
     @Bean
     @ConditionalOnMissingBean(JwtDecoder.class)
     public JwtDecoder jwtDecoder() {
-        AuthorizationServerEndpoints identityEndpoints = new AuthorizationServerEndpoints(
+        AADEndpoints identityEndpoints = new AADEndpoints(
             aadAuthenticationProperties.getAuthorizationServerUri());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
             .withJwkSetUri(identityEndpoints.jwkSetEndpoint(aadAuthenticationProperties.getTenantId())).build();

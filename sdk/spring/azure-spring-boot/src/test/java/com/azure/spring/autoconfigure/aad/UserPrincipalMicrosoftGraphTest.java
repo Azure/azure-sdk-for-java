@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
+import com.azure.spring.aad.webapp.AADEndpoints;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
@@ -49,7 +49,7 @@ public class UserPrincipalMicrosoftGraphTest {
     private String clientId;
     private String clientSecret;
     private AADAuthenticationProperties aadAuthenticationProperties;
-    private AuthorizationServerEndpoints authorizationServerEndpoints;
+    private AADEndpoints AADEndpoints;
     private String accessToken;
     private static String userGroupsJson;
 
@@ -73,7 +73,7 @@ public class UserPrincipalMicrosoftGraphTest {
         accessToken = MicrosoftGraphConstants.BEARER_TOKEN;
         aadAuthenticationProperties = new AADAuthenticationProperties();
         aadAuthenticationProperties.setGraphMembershipUri("http://localhost:9519/memberOf");
-        authorizationServerEndpoints = new AuthorizationServerEndpoints();
+        AADEndpoints = new AADEndpoints();
         clientId = "client";
         clientSecret = "pass";
     }
@@ -82,7 +82,7 @@ public class UserPrincipalMicrosoftGraphTest {
     public void getGroups() throws Exception {
         aadAuthenticationProperties.getUserGroup().setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
         AzureADGraphClient graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
-            authorizationServerEndpoints);
+            AADEndpoints);
 
         stubFor(get(urlEqualTo("/memberOf"))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
