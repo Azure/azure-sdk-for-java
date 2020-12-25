@@ -140,7 +140,7 @@ public class AADWebAppConfigurationTest {
     public void customizeUri() {
         PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization-server-uri = http://localhost/"
+                "azure.activedirectory.base-uri = http://localhost/"
             )
             .run(context -> {
                 AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);

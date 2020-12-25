@@ -31,7 +31,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
 
     private final WebApplicationContextRunner contextRunner = PropertiesUtils
         .getContextRunner().withPropertyValues(
-            "azure.activedirectory.authorization-server-uri = fake-uri",
+            "azure.activedirectory.base-uri = fake-uri",
             "azure.activedirectory.authorization.arm.scopes = Calendars.Read",
             "azure.activedirectory.authorization.arm.on-demand=true");
 
