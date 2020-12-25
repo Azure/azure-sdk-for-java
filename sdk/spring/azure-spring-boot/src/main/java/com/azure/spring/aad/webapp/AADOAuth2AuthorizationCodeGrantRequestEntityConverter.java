@@ -19,11 +19,12 @@ import java.util.UUID;
 /**
  * Used to set "scope" parameter when use "auth-code" to get "access_token".
  */
-public class AuthzCodeGrantRequestEntityConverter extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
+public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter
+    extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
 
     private final AzureClientRegistration azureClient;
 
-    public AuthzCodeGrantRequestEntityConverter(AzureClientRegistration client) {
+    public AADOAuth2AuthorizationCodeGrantRequestEntityConverter(AzureClientRegistration client) {
         azureClient = client;
     }
 

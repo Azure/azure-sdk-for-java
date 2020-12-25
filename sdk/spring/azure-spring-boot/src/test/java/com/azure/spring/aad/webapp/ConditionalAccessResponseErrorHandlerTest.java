@@ -15,8 +15,8 @@ import org.springframework.web.client.ResponseErrorHandler;
 import java.io.IOException;
 import java.util.Optional;
 
-public class AADConditionalAccessResponseErrorHandlerTest {
-    private ResponseErrorHandler azureHandler = new AADConditionalAccessResponseErrorHandler();
+public class ConditionalAccessResponseErrorHandlerTest {
+    private ResponseErrorHandler azureHandler = new ConditionalAccessResponseErrorHandler();
     private ClientHttpResponse clientHttpResponse = new MockClientHttpResponse(("{\n"
         + "    \"error\": \"fake_error\",\n"
         + "    \"error_description\": \" fake_error_description\",\n"
@@ -34,12 +34,12 @@ public class AADConditionalAccessResponseErrorHandlerTest {
 
     @Test
     public void azureResponseErrorHandleTest() throws IOException {
-        AzureOAuth2Error error = null;
+        AADOAuth2Error error = null;
         try {
             azureHandler.handleError(clientHttpResponse);
         } catch (OAuth2AuthorizationException exception) {
-            error = (AzureOAuth2Error) Optional.of(exception)
-                                               .map(OAuth2AuthorizationException::getError).orElse(null);
+            error = (AADOAuth2Error) Optional.of(exception)
+                                             .map(OAuth2AuthorizationException::getError).orElse(null);
         }
         Assert.assertNotNull(error);
     }

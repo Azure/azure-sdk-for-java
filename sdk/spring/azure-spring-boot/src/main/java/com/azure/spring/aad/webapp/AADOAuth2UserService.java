@@ -35,14 +35,14 @@ import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
  * This implementation will retrieve group info of user from Microsoft Graph.
  * Then map group to {@link GrantedAuthority}.
  */
-public class AzureActiveDirectoryOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
+public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
 
     private final OidcUserService oidcUserService;
     private final AADAuthenticationProperties properties;
     private final GraphClient graphClient;
     private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
 
-    public AzureActiveDirectoryOAuth2UserService(
+    public AADOAuth2UserService(
         AADAuthenticationProperties properties
     ) {
         this.properties = properties;

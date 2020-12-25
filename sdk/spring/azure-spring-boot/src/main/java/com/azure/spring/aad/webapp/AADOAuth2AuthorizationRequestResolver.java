@@ -18,10 +18,10 @@ import java.util.Optional;
 /**
  * To add conditional policy claims to authorization URL.
  */
-public class AzureOAuth2AuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
+public class AADOAuth2AuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
     private final OAuth2AuthorizationRequestResolver defaultResolver;
 
-    public AzureOAuth2AuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
+    public AADOAuth2AuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository) {
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(
             clientRegistrationRepository,
             OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI

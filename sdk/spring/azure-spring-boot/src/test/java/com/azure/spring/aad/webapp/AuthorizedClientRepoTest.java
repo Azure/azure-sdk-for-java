@@ -97,9 +97,9 @@ public class AuthorizedClientRepoTest {
         azure = clientRepo.findByRegistrationId("azure");
         graph = clientRepo.findByRegistrationId("graph");
 
-        authorizedRepo = new AzureAuthorizedClientRepository(
+        authorizedRepo = new AADOAuth2AuthorizedClientRepository(
             clientRepo,
-            new AADOAuth2AuthorizedClientRepository(),
+            new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
             OAuth2AuthorizationContext::getAuthorizedClient);
         request = new MockHttpServletRequest();
         response = new MockHttpServletResponse();
