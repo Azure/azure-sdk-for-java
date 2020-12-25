@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.filter;
+package com.azure.test.aad.filter.stateless;
 
 import com.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter;
 import com.azure.test.aad.AADTestUtils;
+import com.azure.test.aad.filter.OAuthResponse;
 import com.azure.test.utils.AppRunner;
 import org.junit.Test;
 import org.slf4j.Logger;

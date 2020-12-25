@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.selenium.accessTokenScopes;
+package com.azure.test.aad.selenium.access.token.scopes;
 
 import com.azure.test.aad.selenium.SeleniumTestUtils;
 import com.azure.test.utils.AppRunner;
