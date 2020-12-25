@@ -37,8 +37,7 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
 
     @Test
     public void testCreateUserPrincipal() {
-        AADJwtBearerTokenAuthenticationConverter converter
-            = new AADJwtBearerTokenAuthenticationConverter();
+        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
         AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
@@ -50,8 +49,7 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
 
     @Test
     public void testExtractDefaultScopeAuthorities() {
-        AADJwtBearerTokenAuthenticationConverter converter
-            = new AADJwtBearerTokenAuthenticationConverter();
+        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter();
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
         AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken
@@ -63,8 +61,7 @@ public class AADJwtBearerTokenAuthenticationConverterTest {
     @Test
     public void testExtractCustomScopeAuthorities() {
         when(jwt.containsClaim("roles")).thenReturn(true);
-        AADJwtBearerTokenAuthenticationConverter converter
-            = new AADJwtBearerTokenAuthenticationConverter("roles", "ROLE_");
+        AADJwtBearerTokenAuthenticationConverter converter = new AADJwtBearerTokenAuthenticationConverter("roles", "ROLE_");
         AbstractAuthenticationToken authenticationToken = converter.convert(jwt);
         assertThat(authenticationToken.getPrincipal()).isExactlyInstanceOf(AADOAuth2AuthenticatedPrincipal.class);
         AADOAuth2AuthenticatedPrincipal principal = (AADOAuth2AuthenticatedPrincipal) authenticationToken

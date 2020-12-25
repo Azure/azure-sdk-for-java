@@ -34,8 +34,10 @@ public class AADOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrinc
 
     private JWTClaimsSet jwtClaimsSet;
 
-    public AADOAuth2AuthenticatedPrincipal(Map<String, Object> headers, Map<String, Object> attributes,
-                                           Collection<GrantedAuthority> authorities, String tokenValue) {
+    public AADOAuth2AuthenticatedPrincipal(Map<String, Object> headers,
+                                           Map<String, Object> attributes,
+                                           Collection<GrantedAuthority> authorities,
+                                           String tokenValue) {
         Assert.notEmpty(attributes, "attributes cannot be empty");
         Assert.notEmpty(headers, "headers cannot be empty");
         this.headers = headers;
