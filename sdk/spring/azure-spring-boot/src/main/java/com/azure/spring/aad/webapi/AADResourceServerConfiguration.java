@@ -4,8 +4,8 @@ package com.azure.spring.aad.webapi;
 
 
 import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
-import com.azure.spring.aad.webapi.validator.AzureJwtAudienceValidator;
-import com.azure.spring.aad.webapi.validator.AzureJwtIssuerValidator;
+import com.azure.spring.aad.webapi.validator.AADJwtAudienceValidator;
+import com.azure.spring.aad.webapi.validator.AADJwtIssuerValidator;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,9 +70,9 @@ public class AADResourceServerConfiguration {
             validAudiences.add(aadAuthenticationProperties.getClientId());
         }
         if (!validAudiences.isEmpty()) {
-            validators.add(new AzureJwtAudienceValidator(validAudiences));
+            validators.add(new AADJwtAudienceValidator(validAudiences));
         }
-        validators.add(new AzureJwtIssuerValidator());
+        validators.add(new AADJwtIssuerValidator());
         validators.add(new JwtTimestampValidator());
         return validators;
     }

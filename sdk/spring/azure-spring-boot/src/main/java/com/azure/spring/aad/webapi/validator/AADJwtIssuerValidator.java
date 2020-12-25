@@ -12,19 +12,19 @@ import org.springframework.util.Assert;
 /**
  * Validates the "iss" claim in a {@link Jwt}, that is matches a configured value
  */
-public class AzureJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
+public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
     private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
     private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
     private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
-    private final AzureJwtClaimValidator<String> validator;
+    private final AADJwtClaimValidator<String> validator;
 
     /**
-     * Constructs a {@link AzureJwtIssuerValidator} using the provided parameters
+     * Constructs a {@link AADJwtIssuerValidator} using the provided parameters
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public AzureJwtIssuerValidator() {
-        this.validator = new AzureJwtClaimValidator(AADTokenClaim.ISS, validIssuer());
+    public AADJwtIssuerValidator() {
+        this.validator = new AADJwtClaimValidator(AADTokenClaim.ISS, validIssuer());
     }
 
     private Predicate<String> validIssuer() {
