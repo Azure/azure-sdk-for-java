@@ -24,7 +24,7 @@ Let's go through this document to get all these variables.
 
 The first tenant-id we need for AAD test.
 
-1. Create a new tenant named `aadIntegrationTest1`. Refs: [Create a new tenant in Azure Active Directory][Create a new tenant in Azure Active Directory].
+1. Create a new tenant named `aadIntegrationTest1`. Refs: [Create a new tenant in Azure Active Directory].
 
 2. After the tenant created successfully. Click `Tenant creation was successful. Click here to navigate to your new tanent: aadIntegrationTest1`.
 ![created-a-new-tenant](images/created-a-new-tenant.png)
@@ -34,7 +34,7 @@ The first tenant-id we need for AAD test.
 
 ### `AAD_USER_NAME_1`, `AAD_USER_PASSWORD_1`
 
-1. Create a new user named `user1`. Refs: [Add or delete users using Azure Active Directory][Add or delete users using Azure Active Directory].
+1. Create a new user named `user1`. Refs: [Add or delete users using Azure Active Directory].
 
 2. Copy the user name and initial password. In the following image, user name = `user1@aadIntegrationTest1.onmicrosoft.com`, initial password = `Xabo2448`.
 ![create-user1](images/create-user1.png)
@@ -50,10 +50,10 @@ Get `AAD_TENANT_ID_2`, `AAD_USER_NAME_2`, `AAD_USER_PASSWORD_2` with the same me
 
 ### `AAD_MULTI_TENANT_CLIENT_ID`, `AAD_MULTI_TENANT_CLIENT_SECRET`.
 
-1. Register an application in the new created tenant (`aadIntegrationTest1`). Refs: [Register an application with the Microsoft identity platform][Register an application with the Microsoft identity platform]
+1. Register an application in the new created tenant (`aadIntegrationTest1`). Refs: [Register an application with the Microsoft identity platform]
 ![create-aad-multitenant-client](images/create-aad-multitenant-client.png)
 
-2. Create secret for `aad-multitenant-client`. Refs: [Create a new application secret][Create a new application secret]
+2. Create secret for `aad-multitenant-client`. Refs: [Create a new application secret]
 
 3. Allow implicit flow
 ![allow-implicit-flow](images/allow-implicit-flow.png)
@@ -77,7 +77,7 @@ More steps needed for this client is to set App roles.
 
 ### Create groups
 1. Create 2 groups: group1 and group2. Add user1 in group1, and user2 in group2.
-Refs: [Create a basic group and add members using Azure Active Directory][Create a basic group and add members using Azure Active Directory]
+Refs: [Create a basic group and add members using Azure Active Directory]
 
 2. (Optional. Skip this step if you don't run `AADGroupsCountIT`, or you can ignore the test failure of `AADGroupsCountIT`) Create 111 groups: from `group1` to `group111`. Add `user1` into these groups. It's used in `AADGroupsCountIT`.
 
