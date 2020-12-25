@@ -10,7 +10,7 @@ import com.nimbusds.oauth2.sdk.util.StringUtils;
  */
 public class AADEndpoints {
 
-    private static final String IDENTITY_PLATFORM = "https://login.microsoftonline.com/";
+    private static final String DEFAULT_BASE_URI = "https://login.microsoftonline.com/";
 
     private static final String AUTHORIZATION_ENDPOINT = "/oauth2/v2.0/authorize";
     private static final String TOKEN_ENDPOINT = "/oauth2/v2.0/token";
@@ -22,7 +22,7 @@ public class AADEndpoints {
 
     public AADEndpoints(String baseUri, String tenantId) {
         if (StringUtils.isBlank(baseUri)) {
-            baseUri = IDENTITY_PLATFORM;
+            baseUri = DEFAULT_BASE_URI;
         }
         this.baseUri = addSlash(baseUri);
         this.tenantId = tenantId;

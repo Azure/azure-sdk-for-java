@@ -49,12 +49,12 @@ public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
-    private final AADAuthenticationProperties aadAuthenticationProperties;
-    private final AADEndpoints AADEndpoints;
+    private final AADAuthenticationProperties properties;
+    private final AADEndpoints aadEndpoints;
 
-    public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties aadAuthenticationProperties) {
-        this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.AADEndpoints = new AADEndpoints();
+    public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties properties) {
+        this.properties = properties;
+        this.aadEndpoints = new AADEndpoints(properties.getBaseUri(), properties.getTenantId());
     }
 
     /**
@@ -70,8 +70,8 @@ public class AADAuthenticationFilterAutoConfiguration {
     public AADAuthenticationFilter azureADJwtTokenFilter() {
         LOG.info("AzureADJwtTokenFilter Constructor.");
         return new AADAuthenticationFilter(
-            aadAuthenticationProperties,
-            AADEndpoints,
+            properties,
+            aadEndpoints,
             getJWTResourceRetriever(),
             getJWKSetCache()
         );
@@ -86,8 +86,8 @@ public class AADAuthenticationFilterAutoConfiguration {
         LOG.info("Creating AzureADStatelessAuthFilter bean.");
         return new AADAppRoleStatelessAuthenticationFilter(
             new UserPrincipalManager(
-                AADEndpoints,
-                aadAuthenticationProperties,
+                aadEndpoints,
+                properties,
                 resourceRetriever,
                 true
             )
@@ -98,23 +98,23 @@ public class AADAuthenticationFilterAutoConfiguration {
     @ConditionalOnMissingBean(ResourceRetriever.class)
     public ResourceRetriever getJWTResourceRetriever() {
         return new DefaultResourceRetriever(
-            aadAuthenticationProperties.getJwtConnectTimeout(),
-            aadAuthenticationProperties.getJwtReadTimeout(),
-            aadAuthenticationProperties.getJwtSizeLimit()
+            properties.getJwtConnectTimeout(),
+            properties.getJwtReadTimeout(),
+            properties.getJwtSizeLimit()
         );
     }
 
     @Bean
     @ConditionalOnMissingBean(JWKSetCache.class)
     public JWKSetCache getJWKSetCache() {
-        long lifespan = aadAuthenticationProperties.getJwkSetCacheLifespan();
-        long refreshTime = aadAuthenticationProperties.getJwkSetCacheRefreshTime();
+        long lifespan = properties.getJwkSetCacheLifespan();
+        long refreshTime = properties.getJwkSetCacheRefreshTime();
         return new DefaultJWKSetCache(lifespan, refreshTime, TimeUnit.MILLISECONDS);
     }
 
     @PostConstruct
     private void sendTelemetry() {
-        if (aadAuthenticationProperties.isAllowTelemetry()) {
+        if (properties.isAllowTelemetry()) {
             final Map<String, String> events = new HashMap<>();
             final TelemetrySender sender = new TelemetrySender();
             events.put(SERVICE_NAME, getClassPackageSimpleName(AADAuthenticationFilterAutoConfiguration.class));

@@ -27,7 +27,6 @@ import java.time.Instant;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,8 +39,8 @@ public class UserPrincipalManagerAudienceTest {
     private String jwkString;
     private ResourceRetriever resourceRetriever;
 
-    private AADEndpoints AADEndpoints;
-    private AADAuthenticationProperties aadAuthenticationProperties;
+    private AADEndpoints aadEndpoints;
+    private AADAuthenticationProperties properties;
     private UserPrincipalManager userPrincipalManager;
 
     @Before
@@ -63,11 +62,11 @@ public class UserPrincipalManagerAudienceTest {
 
         resourceRetriever = url -> new Resource(jwkString, "application/json");
 
-        AADEndpoints = mock(AADEndpoints.class);
-        aadAuthenticationProperties = new AADAuthenticationProperties();
-        aadAuthenticationProperties.setClientId(FAKE_CLIENT_ID);
-        aadAuthenticationProperties.setAppIdUri(FAKE_APPLICATION_URI);
-        when(AADEndpoints.jwkSetEndpoint()).thenReturn("file://dummy");
+        aadEndpoints = mock(AADEndpoints.class);
+        properties = new AADAuthenticationProperties();
+        properties.setClientId(FAKE_CLIENT_ID);
+        properties.setAppIdUri(FAKE_APPLICATION_URI);
+        when(aadEndpoints.jwkSetEndpoint()).thenReturn("file://dummy");
     }
 
     @Test
@@ -82,7 +81,7 @@ public class UserPrincipalManagerAudienceTest {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(AADEndpoints, aadAuthenticationProperties,
+        userPrincipalManager = new UserPrincipalManager(aadEndpoints, properties,
             resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .doesNotThrowAnyException();
@@ -100,7 +99,7 @@ public class UserPrincipalManagerAudienceTest {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(AADEndpoints, aadAuthenticationProperties,
+        userPrincipalManager = new UserPrincipalManager(aadEndpoints, properties,
             resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .doesNotThrowAnyException();
@@ -118,7 +117,7 @@ public class UserPrincipalManagerAudienceTest {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(AADEndpoints, aadAuthenticationProperties,
+        userPrincipalManager = new UserPrincipalManager(aadEndpoints, properties,
             resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .hasMessageContaining("Invalid token audience.");
@@ -138,7 +137,7 @@ public class UserPrincipalManagerAudienceTest {
         final String orderTwo = signedJWT.serialize();
         final String invalidToken = orderTwo.substring(0, orderTwo.length() - 5);
 
-        userPrincipalManager = new UserPrincipalManager(AADEndpoints, aadAuthenticationProperties,
+        userPrincipalManager = new UserPrincipalManager(aadEndpoints, properties,
             resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(invalidToken))
             .hasMessageContaining("JWT rejected: Invalid signature");

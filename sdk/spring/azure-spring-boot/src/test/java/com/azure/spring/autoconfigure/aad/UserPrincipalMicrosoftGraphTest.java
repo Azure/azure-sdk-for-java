@@ -48,8 +48,8 @@ public class UserPrincipalMicrosoftGraphTest {
 
     private String clientId;
     private String clientSecret;
-    private AADAuthenticationProperties aadAuthenticationProperties;
-    private AADEndpoints AADEndpoints;
+    private AADAuthenticationProperties properties;
+    private AADEndpoints aadEndpoints;
     private String accessToken;
     private static String userGroupsJson;
 
@@ -71,18 +71,18 @@ public class UserPrincipalMicrosoftGraphTest {
     @Before
     public void setup() {
         accessToken = MicrosoftGraphConstants.BEARER_TOKEN;
-        aadAuthenticationProperties = new AADAuthenticationProperties();
-        aadAuthenticationProperties.setGraphMembershipUri("http://localhost:9519/memberOf");
-        AADEndpoints = new AADEndpoints();
+        properties = new AADAuthenticationProperties();
+        properties.setGraphMembershipUri("http://localhost:9519/memberOf");
+        aadEndpoints = new AADEndpoints(properties.getBaseUri(), properties.getTenantId());
         clientId = "client";
         clientSecret = "pass";
     }
 
     @Test
     public void getGroups() throws Exception {
-        aadAuthenticationProperties.getUserGroup().setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
-        AzureADGraphClient graphClientMock = new AzureADGraphClient(clientId, clientSecret, aadAuthenticationProperties,
-            AADEndpoints);
+        properties.getUserGroup().setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
+        AzureADGraphClient graphClientMock = new AzureADGraphClient(clientId, clientSecret, properties,
+            aadEndpoints);
 
         stubFor(get(urlEqualTo("/memberOf"))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))

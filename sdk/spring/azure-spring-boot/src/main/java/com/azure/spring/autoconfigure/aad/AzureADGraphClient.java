@@ -52,17 +52,17 @@ public class AzureADGraphClient {
 
     private final String clientId;
     private final String clientSecret;
-    private final AADEndpoints AADEndpoints;
+    private final AADEndpoints aadEndpoints;
     private final AADAuthenticationProperties aadAuthenticationProperties;
 
     public AzureADGraphClient(String clientId,
                               String clientSecret,
         AADAuthenticationProperties aadAuthenticationProperties,
-                              AADEndpoints AADEndpoints) {
+                              AADEndpoints aadEndpoints) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.AADEndpoints = AADEndpoints;
+        this.aadEndpoints = aadEndpoints;
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
@@ -153,7 +153,7 @@ public class AzureADGraphClient {
         try {
             final ConfidentialClientApplication application = ConfidentialClientApplication
                 .builder(clientId, clientCredential)
-                .authority(AADEndpoints.getBaseUri() + tenantId + "/")
+                .authority(aadEndpoints.getBaseUri() + tenantId + "/")
                 .correlationId(getCorrelationId())
                 .build();
             final Set<String> scopes = new HashSet<>();

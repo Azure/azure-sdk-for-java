@@ -50,13 +50,13 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     private final AzureADGraphClient azureADGraphClient;
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
-                                   AADEndpoints AADEndpoints,
+                                   AADEndpoints aadEndpoints,
                                    ResourceRetriever resourceRetriever) {
         this(
             aadAuthenticationProperties,
-            AADEndpoints,
+            aadEndpoints,
             new UserPrincipalManager(
-                AADEndpoints,
+                aadEndpoints,
                 aadAuthenticationProperties,
                 resourceRetriever,
                 false
@@ -65,14 +65,14 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
-                                   AADEndpoints AADEndpoints,
+                                   AADEndpoints aadEndpoints,
                                    ResourceRetriever resourceRetriever,
                                    JWKSetCache jwkSetCache) {
         this(
             aadAuthenticationProperties,
-            AADEndpoints,
+            aadEndpoints,
             new UserPrincipalManager(
-                AADEndpoints,
+                aadEndpoints,
                 aadAuthenticationProperties,
                 resourceRetriever,
                 false,
@@ -82,14 +82,14 @@ public class AADAuthenticationFilter extends OncePerRequestFilter {
     }
 
     public AADAuthenticationFilter(AADAuthenticationProperties aadAuthenticationProperties,
-                                   AADEndpoints AADEndpoints,
+                                   AADEndpoints aadEndpoints,
                                    UserPrincipalManager userPrincipalManager) {
         this.userPrincipalManager = userPrincipalManager;
         this.azureADGraphClient = new AzureADGraphClient(
             aadAuthenticationProperties.getClientId(),
             aadAuthenticationProperties.getClientSecret(),
             aadAuthenticationProperties,
-            AADEndpoints
+            aadEndpoints
         );
     }
 
