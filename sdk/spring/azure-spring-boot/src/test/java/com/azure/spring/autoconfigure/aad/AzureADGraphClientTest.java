@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AADEndpoints;
+import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
 import com.google.common.collect.ImmutableSet;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class AzureADGraphClientTest {
     private AzureADGraphClient client;
 
     @Mock
-    private AADEndpoints aadEndpoints;
+    private AADAuthorizationServerEndpoints endpoints;
 
     @Before
     public void setup() {
@@ -33,7 +33,7 @@ public class AzureADGraphClientTest {
         activeDirectoryGroups.add("Test_Group");
         AADAuthenticationProperties aadAuthenticationProperties = new AADAuthenticationProperties();
         aadAuthenticationProperties.getUserGroup().setAllowedGroups(activeDirectoryGroups);
-        client = new AzureADGraphClient("client", "pass", aadAuthenticationProperties, aadEndpoints);
+        client = new AzureADGraphClient("client", "pass", aadAuthenticationProperties, endpoints);
     }
 
     @Test

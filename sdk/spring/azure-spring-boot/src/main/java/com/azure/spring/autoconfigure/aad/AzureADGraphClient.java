@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AADEndpoints;
+import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -52,17 +52,17 @@ public class AzureADGraphClient {
 
     private final String clientId;
     private final String clientSecret;
-    private final AADEndpoints aadEndpoints;
+    private final AADAuthorizationServerEndpoints endpoints;
     private final AADAuthenticationProperties aadAuthenticationProperties;
 
     public AzureADGraphClient(String clientId,
                               String clientSecret,
         AADAuthenticationProperties aadAuthenticationProperties,
-                              AADEndpoints aadEndpoints) {
+                              AADAuthorizationServerEndpoints endpoints) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.aadEndpoints = aadEndpoints;
+        this.endpoints = endpoints;
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
@@ -153,7 +153,7 @@ public class AzureADGraphClient {
         try {
             final ConfidentialClientApplication application = ConfidentialClientApplication
                 .builder(clientId, clientCredential)
-                .authority(aadEndpoints.getBaseUri() + tenantId + "/")
+                .authority(endpoints.getBaseUri() + tenantId + "/")
                 .correlationId(getCorrelationId())
                 .build();
             final Set<String> scopes = new HashSet<>();

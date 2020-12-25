@@ -147,8 +147,8 @@ public class AADWebAppConfiguration {
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
 
-        AADEndpoints endpoints =
-            new AADEndpoints(properties.getBaseUri(), properties.getTenantId());
+        AADAuthorizationServerEndpoints endpoints =
+            new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
         result.authorizationUri(endpoints.authorizationEndpoint());
         result.tokenUri(endpoints.tokenEndpoint());
         result.jwkSetUri(endpoints.jwkSetEndpoint());

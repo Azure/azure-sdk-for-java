@@ -28,7 +28,7 @@ public class AADWebAppConfigurationTest {
                 assertEquals("fake-client-id", azure.getClientId());
                 assertEquals("fake-client-secret", azure.getClientSecret());
 
-                AADEndpoints endpoints = new AADEndpoints("https://login.microsoftonline.com/", "fake-tenant-id");
+                AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints("https://login.microsoftonline.com/", "fake-tenant-id");
                 assertEquals(endpoints.authorizationEndpoint(),
                     azure.getProviderDetails().getAuthorizationUri());
                 assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
@@ -145,7 +145,7 @@ public class AADWebAppConfigurationTest {
             .run(context -> {
                 AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-                AADEndpoints endpoints = new AADEndpoints("http://localhost/", "fake-tenant-id");
+                AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints("http://localhost/", "fake-tenant-id");
                 assertEquals(endpoints.authorizationEndpoint(),
                     azure.getProviderDetails().getAuthorizationUri());
                 assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());

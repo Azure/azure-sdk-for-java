@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AADEndpoints;
+import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
 import com.azure.spring.telemetry.TelemetrySender;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
@@ -50,11 +50,11 @@ public class AADAuthenticationFilterAutoConfiguration {
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
     private final AADAuthenticationProperties properties;
-    private final AADEndpoints aadEndpoints;
+    private final AADAuthorizationServerEndpoints endpoints;
 
     public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties properties) {
         this.properties = properties;
-        this.aadEndpoints = new AADEndpoints(properties.getBaseUri(), properties.getTenantId());
+        this.endpoints = new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
     }
 
     /**
@@ -71,7 +71,7 @@ public class AADAuthenticationFilterAutoConfiguration {
         LOG.info("AzureADJwtTokenFilter Constructor.");
         return new AADAuthenticationFilter(
             properties,
-            aadEndpoints,
+            endpoints,
             getJWTResourceRetriever(),
             getJWKSetCache()
         );
@@ -86,7 +86,7 @@ public class AADAuthenticationFilterAutoConfiguration {
         LOG.info("Creating AzureADStatelessAuthFilter bean.");
         return new AADAppRoleStatelessAuthenticationFilter(
             new UserPrincipalManager(
-                aadEndpoints,
+                endpoints,
                 properties,
                 resourceRetriever,
                 true
