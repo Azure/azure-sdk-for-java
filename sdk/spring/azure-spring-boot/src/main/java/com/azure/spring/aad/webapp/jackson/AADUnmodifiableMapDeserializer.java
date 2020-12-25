@@ -16,11 +16,8 @@ import java.util.Map;
 
 /**
  * A {@code JsonDeserializer} for {@link Collections#unmodifiableMap(Map)}.
- *
- * @see Collections#unmodifiableMap(Map)
- * @see UnmodifiableMapMixin
  */
-final class UnmodifiableMapDeserializer extends JsonDeserializer<Map<?, ?>> {
+final class AADUnmodifiableMapDeserializer extends JsonDeserializer<Map<?, ?>> {
 
     @Override
     public Map<?, ?> deserialize(JsonParser parser, DeserializationContext context) throws IOException {
