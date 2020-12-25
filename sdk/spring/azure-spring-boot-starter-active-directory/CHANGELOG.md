@@ -5,15 +5,26 @@
 - Change group id from `com.microsoft.azure` to `com.azure.spring`.
 - Change artifact id from `azure-active-directory-spring-boot-starter` to `azure-spring-boot-starter-active-directory`.
 - Deprecate `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter`.
+- Deprecate following `azure-spring-boot-starter-active-directory` configuration properties:
+    ```
+    spring.security.oauth2.client.provider.azure.*
+    spring.security.oauth2.client.registration.azure.*
+    azure.activedirectory.environment
+    azure.activedirectory.user-group.key
+    azure.activedirectory.user-group.value
+    azure.activedirectory.user-group.object-id-key
+    ```
+- Stop support of Azure Active Directory Endpoints.
 
 ### New Features
-- Support consent multiple client-registration when login.
-- Support on-demand client-registration.
-- Support the use of `@RegisteredOAuth2AuthorizedClient` to get `OAuth2AuthorizedClient`.
-- Support to obtain the claim in access token, such as `scp`, `roles` etc, to carry out permission control.
-- Support on-behalf-of flow when the `azure-spring-boot-starter-active-directory` used in resource-server.
-- Provide some AAD specific token validation, such as audience validation, issuer validation.
-- Expose a flag in the `AzureOAuth2AuthenticatedPrincipal` to tell which account type is being used, work account or personal account.
+- Support consent of multiple client registrations during user login.
+- Support on-demand client registrations.
+- Support the use of `@RegisteredOAuth2AuthorizedClient` annotation to get `OAuth2AuthorizedClient`.
+- Support access control through users' membership information.
+- Support on-behalf-of flow in the resource server.
+- Provide AAD specific token validation of audience validation and issuer validation.
+- Expose a flag `isPersonalAccount` in `AzureOAuth2AuthenticatedPrincipal` to specify the account type in use: work account or personal account.
+- Enable loading transitive membership information from Microsoft Graph API.
 
 ## 2.3.5 (2020-09-14)
 ### Key Bug Fixes

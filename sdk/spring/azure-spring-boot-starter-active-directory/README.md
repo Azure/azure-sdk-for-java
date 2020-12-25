@@ -27,16 +27,21 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 [//]: # "{x-version-update-end}"
 
 ## Key concepts
-This package provides 2 ways to integrate with Spring Security and authenticate with Azure Active Directory.
+This package provides 2 ways to integrate with Spring Security and authenticate with Azure Active Directory, which are designed for scenarios of web application and resource server.
 
-The authorization flow is composed of 3 phrases:
+The authorization flow for web application includes:
+* Login with credentials by self-defined `azure` client registration and trigger **authorization code flow**. Application gets user's consent for all configured scopes except on-demand resources' scopes, and acquires an access token only for scopes of `openid, profile, offline_access, https://graph.microsoft.com/User.Read`.
+* When other resources are visited, associated clients will be loaded to trigger **refresh token flow** for authorization, and acquire an access token for configured scopes of that resource.
+* When on-demand resources are visited, associated clients will be loaded and trigger **authorization code flow** like the `azure` client.
+
+The authorization flow for resource server:
 * Login with credentials and validate id_token from Azure AD 
 * Get On-Behalf-Of token and membership info from Azure AD Graph API
 * Evaluate the permission based on membership info to grant or deny access
 
 ### Group membership
-The way to get group relationship depends on the graph api used, the default to get membership is the direct group of the user. 
-To get all transitive relationships, the following configuration is required:
+The way this starter uses to load get users' membership depends on the configured membership URI. By default, the starter uses `https://graph.microsoft.com/v1.0/me/memberOf` to get direct membership of current user. 
+To get all transitive membership, the following configuration is required:
 
 ```yaml
 azure:
@@ -54,18 +59,18 @@ This starter provides a convenient way to quickly access resource servers.
 #### On-demand authorization
 By default, the starter will launch the Oauth2 Authorization Code flow for a logging in user. During the authorization flow, `azure-spring-boot-starter-active-directory` adds all the configured scopes except **on-demand** ones into authorization code requests to ask for user's authorization consent. The authorization flow of `on-demand` resources will be launched at the first time the user wants to access them.
 
-#### Standalone web application usage
+#### Standalone web application
 Only as a Web application, no further access to other resources protected by Azure AD.
 ![Standalone Web Application](resource/aad-based-standalone-web-application.png)
 
-* Access restricted resources of web application, login with credentials using default scopes.
+* Access restricted resources of web application, login with credentials using default scopes of `openid, profile, offline_access, https://graph.microsoft.com/User.Read`.
 * Return secured data.
 
-#### Web application access resources usage
-Web application and resource server use scenarios, web application access the resources of resource server which is protected by Azure AD.
+#### Web application visit other resource servers
+Web application visits resource servers which are protected by Azure AD.
 ![Web Application Access Resources](resource/add-based-web-application-access-resources.png)
 
-* Login with credentials, the scope includes all other clients. 
+* Login with credentials, the scope includes default scopes and all configured scopes. 
 * Auto-acquire the access token of other clients based on the root refresh token.
 * Use each client's access token to request restricted resource.
 * Return secured data.
@@ -73,7 +78,7 @@ Web application and resource server use scenarios, web application access the re
 ### Resource Server
 Based on Azure AD as a Resource Server, it uses `BearerTokenAuthenticationFilter` authorize request. The current resource server also can access other resources, there's a similar method to the web application usage to obtain access to the client access token, the difference is the access token obtained based on the `MSAL On-Behalf-Of` process.
 
-#### Standalone resource server usage
+#### Standalone resource server
 Only as a Resource Server, no further access to other resources protected by Azure AD.
 ![Standalone resource server usage](resource/add-based-standalone-resource-server.png)
 
@@ -81,7 +86,7 @@ Only as a Resource Server, no further access to other resources protected by Azu
 * Validate access token.
 * Return secured data.
 
-#### Resource server access other resources usage
+#### Resource server access other resources
 Resource server accesses other resource servers which are protected by Azure AD.
 ![Resource Server Access Other Resources](resource/add-based-resource-server-access-other-resources.png)
 
