@@ -15,21 +15,21 @@ import org.springframework.util.Assert;
 /**
  * A {@link Converter} that takes a {@link Jwt} and converts it into a {@link BearerTokenAuthentication}.
  */
-public class AzureJwtBearerTokenAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
+public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
     private static final String DEFAULT_AUTHORITY_PREFIX = "SCOPE_";
 
     private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedConverter
         = new JwtGrantedAuthoritiesConverter();
 
-    public AzureJwtBearerTokenAuthenticationConverter() {
+    public AADJwtBearerTokenAuthenticationConverter() {
     }
 
-    public AzureJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
+    public AADJwtBearerTokenAuthenticationConverter(String authoritiesClaimName) {
         this(authoritiesClaimName, DEFAULT_AUTHORITY_PREFIX);
     }
 
-    public AzureJwtBearerTokenAuthenticationConverter(String authoritiesClaimName, String authorityPrefix) {
+    public AADJwtBearerTokenAuthenticationConverter(String authoritiesClaimName, String authorityPrefix) {
         Assert.notNull(authoritiesClaimName, "authoritiesClaimName cannot be null");
         Assert.notNull(authorityPrefix, "authorityPrefix cannot be null");
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
@@ -47,7 +47,7 @@ public class AzureJwtBearerTokenAuthenticationConverter implements Converter<Jwt
         OAuth2AccessToken accessToken = new OAuth2AccessToken(
             OAuth2AccessToken.TokenType.BEARER, jwt.getTokenValue(), jwt.getIssuedAt(), jwt.getExpiresAt());
         Collection<GrantedAuthority> authorities = extractAuthorities(jwt);
-        AzureOAuth2AuthenticatedPrincipal principal = new AzureOAuth2AuthenticatedPrincipal(
+        AADOAuth2AuthenticatedPrincipal principal = new AADOAuth2AuthenticatedPrincipal(
             jwt.getHeaders(), jwt.getClaims(), authorities, jwt.getTokenValue());
         return new BearerTokenAuthentication(principal, accessToken, authorities);
     }

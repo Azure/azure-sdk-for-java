@@ -38,7 +38,7 @@ import org.springframework.util.StringUtils;
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-public class AzureActiveDirectoryResourceServerConfiguration {
+public class AADResourceServerConfiguration {
 
     @Autowired
     private AADAuthenticationProperties aadAuthenticationProperties;
@@ -92,7 +92,7 @@ public class AzureActiveDirectoryResourceServerConfiguration {
             http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
                 .oauth2ResourceServer()
                 .jwt()
-                .jwtAuthenticationConverter(new AzureJwtBearerTokenAuthenticationConverter());
+                .jwtAuthenticationConverter(new AADJwtBearerTokenAuthenticationConverter());
         }
     }
 }
