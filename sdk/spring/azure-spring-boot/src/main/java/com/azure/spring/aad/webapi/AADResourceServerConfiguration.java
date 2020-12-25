@@ -4,8 +4,8 @@ package com.azure.spring.aad.webapi;
 
 
 import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
-import com.azure.spring.aad.webapi.validator.AzureJwtAudienceValidator;
-import com.azure.spring.aad.webapi.validator.AzureJwtIssuerValidator;
+import com.azure.spring.aad.webapi.validator.AADJwtAudienceValidator;
+import com.azure.spring.aad.webapi.validator.AADJwtIssuerValidator;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ import org.springframework.util.StringUtils;
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-public class AzureActiveDirectoryResourceServerConfiguration {
+public class AADResourceServerConfiguration {
 
     @Autowired
     private AADAuthenticationProperties aadAuthenticationProperties;
@@ -70,9 +70,9 @@ public class AzureActiveDirectoryResourceServerConfiguration {
             validAudiences.add(aadAuthenticationProperties.getClientId());
         }
         if (!validAudiences.isEmpty()) {
-            validators.add(new AzureJwtAudienceValidator(validAudiences));
+            validators.add(new AADJwtAudienceValidator(validAudiences));
         }
-        validators.add(new AzureJwtIssuerValidator());
+        validators.add(new AADJwtIssuerValidator());
         validators.add(new JwtTimestampValidator());
         return validators;
     }
@@ -92,7 +92,7 @@ public class AzureActiveDirectoryResourceServerConfiguration {
             http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
                 .oauth2ResourceServer()
                 .jwt()
-                .jwtAuthenticationConverter(new AzureJwtBearerTokenAuthenticationConverter());
+                .jwtAuthenticationConverter(new AADJwtBearerTokenAuthenticationConverter());
         }
     }
 }

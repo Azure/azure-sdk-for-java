@@ -9,7 +9,7 @@ import org.springframework.security.oauth2.core.OAuth2Error;
 /**
  * Custom error with the error code returned by aad
  */
-public class AzureOAuth2Error extends OAuth2Error {
+public class AADOAuth2Error extends OAuth2Error {
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
     private final String errorCodes;
@@ -24,8 +24,8 @@ public class AzureOAuth2Error extends OAuth2Error {
 
     private final String claims;
 
-    public AzureOAuth2Error(String error, String errorDescription, String errorCodes, String timestamp,
-                            String traceId, String correlationId, String errorUri, String subError, String claims) {
+    public AADOAuth2Error(String error, String errorDescription, String errorCodes, String timestamp,
+                          String traceId, String correlationId, String errorUri, String subError, String claims) {
         super(error, errorDescription, errorUri);
         this.errorCodes = errorCodes;
         this.timestamp = timestamp;

@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-public class AzureJwtAudienceValidatorTest {
+public class AADJwtAudienceValidatorTest {
 
     final AADAuthenticationProperties aadAuthenticationProperties = mock(AADAuthenticationProperties.class);
     final Jwt jwt = mock(Jwt.class);
@@ -29,8 +29,8 @@ public class AzureJwtAudienceValidatorTest {
         when(jwt.getClaim(AADTokenClaim.AUD)).thenReturn(claimAudience);
         claimAudience.add("fake-client-id");
         audiences.add(aadAuthenticationProperties.getClientId());
-        AzureJwtAudienceValidator azureJwtAudienceValidator = new AzureJwtAudienceValidator(audiences);
-        OAuth2TokenValidatorResult result = azureJwtAudienceValidator.validate(jwt);
+        AADJwtAudienceValidator validator = new AADJwtAudienceValidator(audiences);
+        OAuth2TokenValidatorResult result = validator.validate(jwt);
 
         assertThat(result).isNotNull();
         assertThat(result.getErrors()).isEmpty();
@@ -42,8 +42,8 @@ public class AzureJwtAudienceValidatorTest {
         when(jwt.getClaim(AADTokenClaim.AUD)).thenReturn(claimAudience);
         claimAudience.add("fake-app-id-uri");
         audiences.add(aadAuthenticationProperties.getClientId());
-        AzureJwtAudienceValidator azureJwtAudienceValidator = new AzureJwtAudienceValidator(audiences);
-        OAuth2TokenValidatorResult result = azureJwtAudienceValidator.validate(jwt);
+        AADJwtAudienceValidator validator = new AADJwtAudienceValidator(audiences);
+        OAuth2TokenValidatorResult result = validator.validate(jwt);
 
         assertThat(result).isNotNull();
         assertThat(result.getErrors()).isEmpty();
@@ -58,8 +58,8 @@ public class AzureJwtAudienceValidatorTest {
         claimAudience.add("fake-app-id-uri");
         audiences.add(aadAuthenticationProperties.getClientId());
         audiences.add(aadAuthenticationProperties.getAppIdUri());
-        AzureJwtAudienceValidator azureJwtAudienceValidator = new AzureJwtAudienceValidator(audiences);
-        OAuth2TokenValidatorResult result = azureJwtAudienceValidator.validate(jwt);
+        AADJwtAudienceValidator validator = new AADJwtAudienceValidator(audiences);
+        OAuth2TokenValidatorResult result = validator.validate(jwt);
 
         assertThat(result).isNotNull();
         assertThat(result.getErrors()).isEmpty();

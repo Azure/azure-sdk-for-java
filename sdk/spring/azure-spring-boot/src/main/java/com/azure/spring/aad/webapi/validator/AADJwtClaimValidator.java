@@ -20,19 +20,19 @@ import java.util.function.Predicate;
  * Spring Boot 2.2.x version. Once support version is more than 2.2.X, then we can use
  * "org.springframework.security.oauth2.jwt.JwtClaimValidator" instead.
  */
-public final class AzureJwtClaimValidator<T> implements OAuth2TokenValidator<Jwt> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureJwtClaimValidator.class);
+public final class AADJwtClaimValidator<T> implements OAuth2TokenValidator<Jwt> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADJwtClaimValidator.class);
     private final String claim;
     private final OAuth2Error error;
     private final Predicate<T> test;
 
     /**
-     * Constructs a {@link AzureJwtClaimValidator} using the provided parameters
+     * Constructs a {@link AADJwtClaimValidator} using the provided parameters
      *
      * @param claim - is the name of the claim in {@link Jwt} to validate.
      * @param test - is the predicate function for the claim to test against.
      */
-    public AzureJwtClaimValidator(String claim, Predicate<T> test) {
+    public AADJwtClaimValidator(String claim, Predicate<T> test) {
         Assert.notNull(claim, "claim can not be null");
         Assert.notNull(test, "test can not be null");
         this.claim = claim;

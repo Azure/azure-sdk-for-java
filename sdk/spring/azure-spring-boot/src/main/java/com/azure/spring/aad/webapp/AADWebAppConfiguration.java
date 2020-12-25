@@ -58,12 +58,12 @@ public class AADWebAppConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public OAuth2AuthorizedClientRepository authorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
-        return new AzureAuthorizedClientRepository(repo);
+        return new AADOAuth2AuthorizedClientRepository(repo);
     }
 
     @Bean
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AADAuthenticationProperties properties) {
-        return new AzureActiveDirectoryOAuth2UserService(properties);
+        return new AADOAuth2UserService(properties);
     }
 
     private AzureClientRegistration createDefaultClient() {
@@ -167,7 +167,7 @@ public class AADWebAppConfiguration {
     @Configuration
     @ConditionalOnBean(ObjectPostProcessor.class)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
-    public static class DefaultAzureOAuth2Configuration extends AzureOAuth2Configuration {
+    public static class DefaultAADWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {

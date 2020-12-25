@@ -29,7 +29,7 @@ import java.util.Arrays;
  * Abstract configuration class, used to make AzureClientRegistrationRepository
  * and AuthzCodeGrantRequestEntityConverter take effect.
  */
-public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdapter {
+public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private AADWebAppClientRegistrationRepository repo;
@@ -77,17 +77,18 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
         RestTemplate restTemplate = new RestTemplate(Arrays.asList(
             new FormHttpMessageConverter(), new OAuth2AccessTokenResponseHttpMessageConverter()));
-        restTemplate.setErrorHandler(new AADConditionalAccessResponseErrorHandler());
+        restTemplate.setErrorHandler(new ConditionalAccessResponseErrorHandler());
         result.setRestOperations(restTemplate);
-        result.setRequestEntityConverter(new AuthzCodeGrantRequestEntityConverter(repo.getAzureClient()));
+        result.setRequestEntityConverter(
+            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(repo.getAzureClient()));
         return result;
     }
 
     protected OAuth2AuthorizationRequestResolver requestResolver() {
-        return new AzureOAuth2AuthorizationRequestResolver(this.repo);
+        return new AADOAuth2AuthorizationRequestResolver(this.repo);
     }
 
     protected AuthenticationFailureHandler failureHandler() {
-        return new AzureOAuthenticationFailureHandler();
+        return new AADAuthenticationFailureHandler();
     }
 }

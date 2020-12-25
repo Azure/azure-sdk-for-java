@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
 import org.springframework.security.oauth2.jwt.Jwt;
 
-public class AzureJwtIssuerValidatorTest {
+public class AADJwtIssuerValidatorTest {
 
     final AADAuthenticationProperties aadAuthenticationProperties = mock(AADAuthenticationProperties.class);
     final Jwt jwt = mock(Jwt.class);
@@ -22,8 +22,8 @@ public class AzureJwtIssuerValidatorTest {
         when(aadAuthenticationProperties.getTenantId()).thenReturn("fake-tenant-id");
         when(jwt.getClaim(AADTokenClaim.ISS)).thenReturn("https://sts.windows.net/fake-tenant-id/v2.0");
 
-        AzureJwtIssuerValidator azureJwtIssuerValidator = new AzureJwtIssuerValidator();
-        OAuth2TokenValidatorResult result = azureJwtIssuerValidator.validate(jwt);
+        AADJwtIssuerValidator validator = new AADJwtIssuerValidator();
+        OAuth2TokenValidatorResult result = validator.validate(jwt);
         assertThat(result).isNotNull();
         assertThat(result.getErrors()).isEmpty();
     }
@@ -33,8 +33,8 @@ public class AzureJwtIssuerValidatorTest {
         when(aadAuthenticationProperties.getTenantId()).thenReturn("common");
         when(jwt.getClaim(AADTokenClaim.ISS)).thenReturn("https://sts.failure.net/fake-tenant-id/v2.0");
 
-        AzureJwtIssuerValidator azureJwtIssuerValidator = new AzureJwtIssuerValidator();
-        OAuth2TokenValidatorResult result = azureJwtIssuerValidator.validate(jwt);
+        AADJwtIssuerValidator validator = new AADJwtIssuerValidator();
+        OAuth2TokenValidatorResult result = validator.validate(jwt);
         assertThat(result).isNotNull();
         assertThat(result.getErrors()).isNotEmpty();
     }

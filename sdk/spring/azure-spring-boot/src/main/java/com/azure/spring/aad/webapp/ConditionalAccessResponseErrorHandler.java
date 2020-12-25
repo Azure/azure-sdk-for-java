@@ -22,13 +22,13 @@ import java.util.Map;
 /**
  * Handle conditional access.
  */
-public class AADConditionalAccessResponseErrorHandler implements ResponseErrorHandler {
+public class ConditionalAccessResponseErrorHandler implements ResponseErrorHandler {
 
     private final OAuth2ErrorHttpMessageConverter oauth2ErrorConverter = new OAuth2ErrorHttpMessageConverter();
 
     private final ResponseErrorHandler defaultErrorHandler = new DefaultResponseErrorHandler();
 
-    protected AADConditionalAccessResponseErrorHandler() {
+    protected ConditionalAccessResponseErrorHandler() {
         this.oauth2ErrorConverter.setErrorConverter(new AADOAuth2ErrorConverter());
     }
 
@@ -93,7 +93,7 @@ public class AADConditionalAccessResponseErrorHandler implements ResponseErrorHa
             String subError = parameters.get("suberror");
             String claims = parameters.get("claims");
 
-            return new AzureOAuth2Error(errorCode, description, errorCodes, timestamp, traceId, correlationId,
+            return new AADOAuth2Error(errorCode, description, errorCodes, timestamp, traceId, correlationId,
                 uri, subError, claims);
         }
     }

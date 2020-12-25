@@ -12,19 +12,19 @@ import org.springframework.util.Assert;
 /**
  * Validates the "aud" claim in a {@link Jwt}, that is matches a configured value
  */
-public class AzureJwtAudienceValidator implements OAuth2TokenValidator<Jwt> {
+public class AADJwtAudienceValidator implements OAuth2TokenValidator<Jwt> {
 
-    private final AzureJwtClaimValidator<List<String>> validator;
+    private final AADJwtClaimValidator<List<String>> validator;
 
     /**
-     * Constructs a {@link AzureJwtAudienceValidator} using the provided parameters
+     * Constructs a {@link AADJwtAudienceValidator} using the provided parameters
      *
      * @param audiences - The audience that each {@link Jwt} should have.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public AzureJwtAudienceValidator(List<String> audiences) {
+    public AADJwtAudienceValidator(List<String> audiences) {
         Assert.notNull(audiences, "audiences cannot be null");
-        this.validator = new AzureJwtClaimValidator(AADTokenClaim.AUD,
+        this.validator = new AADJwtClaimValidator(AADTokenClaim.AUD,
             aud -> audiences.containsAll((List<String>) aud));
     }
 
