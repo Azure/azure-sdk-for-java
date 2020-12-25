@@ -38,7 +38,7 @@ public class ClientRegistrationInitialization {
 
     private Set<String> allScopes() {
         Set<String> result = accessTokenScopes();
-        for (AuthorizationProperties authProperties : aadAuthenticationProperties.getAuthorization().values()) {
+        for (AuthorizationProperties authProperties : aadAuthenticationProperties.getAuthorizationClients().values()) {
             if (!authProperties.isOnDemand()) {
                 result.addAll(authProperties.getScopes());
             }
@@ -57,7 +57,7 @@ public class ClientRegistrationInitialization {
 
     private void addAzureConfiguredScopes(Set<String> result) {
         AuthorizationProperties azureProperties = aadAuthenticationProperties
-            .getAuthorization()
+            .getAuthorizationClients()
             .get(AZURE_CLIENT_REGISTRATION_ID);
         if (azureProperties != null) {
             result.addAll(azureProperties.getScopes());
@@ -69,7 +69,7 @@ public class ClientRegistrationInitialization {
         result.add("openid");
         result.add("profile");
 
-        if (!aadAuthenticationProperties.getAuthorization().isEmpty()) {
+        if (!aadAuthenticationProperties.getAuthorizationClients().isEmpty()) {
             result.add("offline_access");
         }
         return result;
@@ -77,12 +77,12 @@ public class ClientRegistrationInitialization {
 
     public List<ClientRegistration> createAuthzClients() {
         List<ClientRegistration> result = new ArrayList<>();
-        for (String name : aadAuthenticationProperties.getAuthorization().keySet()) {
+        for (String name : aadAuthenticationProperties.getAuthorizationClients().keySet()) {
             if (AZURE_CLIENT_REGISTRATION_ID.equals(name)) {
                 continue;
             }
 
-            AuthorizationProperties authz = aadAuthenticationProperties.getAuthorization().get(name);
+            AuthorizationProperties authz = aadAuthenticationProperties.getAuthorizationClients().get(name);
             result.add(createClientBuilder(name, authz));
         }
         return result;

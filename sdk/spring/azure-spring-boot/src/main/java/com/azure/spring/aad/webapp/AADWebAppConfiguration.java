@@ -76,7 +76,7 @@ public class AADWebAppConfiguration {
 
     private Set<String> allScopes() {
         Set<String> result = accessTokenScopes();
-        for (AuthorizationProperties authProperties : properties.getAuthorization().values()) {
+        for (AuthorizationProperties authProperties : properties.getAuthorizationClients().values()) {
             if (!authProperties.isOnDemand()) {
                 result.addAll(authProperties.getScopes());
             }
@@ -94,7 +94,7 @@ public class AADWebAppConfiguration {
     }
 
     private void addAzureConfiguredScopes(Set<String> result) {
-        AuthorizationProperties azureProperties = properties.getAuthorization().get(AZURE_CLIENT_REGISTRATION_ID);
+        AuthorizationProperties azureProperties = properties.getAuthorizationClients().get(AZURE_CLIENT_REGISTRATION_ID);
         if (azureProperties != null) {
             result.addAll(azureProperties.getScopes());
         }
@@ -105,7 +105,7 @@ public class AADWebAppConfiguration {
         result.add("openid");
         result.add("profile");
 
-        if (!properties.getAuthorization().isEmpty()) {
+        if (!properties.getAuthorizationClients().isEmpty()) {
             result.add("offline_access");
         }
         return result;
@@ -113,12 +113,12 @@ public class AADWebAppConfiguration {
 
     private List<ClientRegistration> createAuthzClients() {
         List<ClientRegistration> result = new ArrayList<>();
-        for (String name : properties.getAuthorization().keySet()) {
+        for (String name : properties.getAuthorizationClients().keySet()) {
             if (AZURE_CLIENT_REGISTRATION_ID.equals(name)) {
                 continue;
             }
 
-            AuthorizationProperties authz = properties.getAuthorization().get(name);
+            AuthorizationProperties authz = properties.getAuthorizationClients().get(name);
             result.add(createClientBuilder(name, authz));
         }
         return result;
