@@ -82,7 +82,7 @@ public class AADWebApiConfigurationTest {
     public void testExistGraphClient() {
         this.contextRunner
             .withUserConfiguration(AADWebApiConfiguration.class)
-            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.graph.scopes=User.read")
+            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization-clients.graph.scopes=User.read")
             .run(context -> {
                 AADWebApiClientRegistrationRepository azureRepo = context.getBean(AADWebApiClientRegistrationRepository
                     .class);
@@ -104,7 +104,7 @@ public class AADWebApiConfigurationTest {
     public void testExistAzureClient() {
         this.contextRunner
             .withUserConfiguration(AADWebApiConfiguration.class)
-            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization.azure.scopes=User.read")
+            .withPropertyValues(AAD_PROPERTY_PREFIX + "authorization-clients.azure.scopes=User.read")
             .run(context -> {
                 AADWebApiClientRegistrationRepository azureRepo = context.getBean(AADWebApiClientRegistrationRepository
                     .class);
