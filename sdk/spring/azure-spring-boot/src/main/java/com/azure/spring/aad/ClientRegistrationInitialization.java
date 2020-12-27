@@ -103,7 +103,8 @@ public class ClientRegistrationInitialization {
         result.clientSecret(aadAuthenticationProperties.getClientSecret());
 
         AADAuthorizationServerEndpoints endpoints =
-            new AADAuthorizationServerEndpoints(aadAuthenticationProperties.getBaseUri(), aadAuthenticationProperties.getTenantId());
+            new AADAuthorizationServerEndpoints(aadAuthenticationProperties.getBaseUri(),
+                aadAuthenticationProperties.getTenantId());
         result.authorizationUri(endpoints.authorizationEndpoint());
         result.tokenUri(endpoints.tokenEndpoint());
         result.jwkSetUri(endpoints.jwkSetEndpoint());
