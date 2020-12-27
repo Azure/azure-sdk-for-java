@@ -3,8 +3,8 @@
 
 package com.azure.spring.aad.webapi;
 
+import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
 import com.azure.spring.aad.webapp.AuthorizationProperties;
-import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -76,11 +76,11 @@ public class AADResourceServerOboConfiguration {
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
 
-        AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints(
-            properties.getAuthorizationServerUri());
-        result.authorizationUri(endpoints.authorizationEndpoint(properties.getTenantId()));
-        result.tokenUri(endpoints.tokenEndpoint(properties.getTenantId()));
-        result.jwkSetUri(endpoints.jwkSetEndpoint(properties.getTenantId()));
+        AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints(
+            properties.getBaseUri(), properties.getTenantId());
+        result.authorizationUri(endpoints.authorizationEndpoint());
+        result.tokenUri(endpoints.tokenEndpoint());
+        result.jwkSetUri(endpoints.jwkSetEndpoint());
 
         return result;
     }
