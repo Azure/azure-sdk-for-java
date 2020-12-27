@@ -19,7 +19,7 @@ public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
 
     private static final String DEFAULT_AUTHORITY_PREFIX = "SCOPE_";
 
-    private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedConverter
+    private Converter<Jwt, Collection<GrantedAuthority>> converter
         = new JwtGrantedAuthoritiesConverter();
 
     public AADJwtBearerTokenAuthenticationConverter() {
@@ -35,11 +35,11 @@ public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName(authoritiesClaimName);
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix(authorityPrefix);
-        this.jwtGrantedConverter = jwtGrantedAuthoritiesConverter;
+        this.converter = jwtGrantedAuthoritiesConverter;
     }
 
     protected Collection<GrantedAuthority> extractAuthorities(Jwt jwt) {
-        return this.jwtGrantedConverter.convert(jwt);
+        return this.converter.convert(jwt);
     }
 
     @Override
@@ -54,6 +54,6 @@ public class AADJwtBearerTokenAuthenticationConverter implements Converter<Jwt, 
 
     public void setJwtGrantedAuthoritiesConverter(
         Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter) {
-        this.jwtGrantedConverter = jwtGrantedAuthoritiesConverter;
+        this.converter = jwtGrantedAuthoritiesConverter;
     }
 }
