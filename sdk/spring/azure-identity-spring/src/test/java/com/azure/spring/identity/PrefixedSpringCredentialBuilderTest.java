@@ -26,6 +26,7 @@ public class PrefixedSpringCredentialBuilderTest extends SpringCredentialTestBas
     @Test
     public void testWithNoPrefixSet() {
         final PrefixedSpringCredentialBuilder builder = new PrefixedSpringCredentialBuilder();
+        builder.environment(buildEnvironment(new Properties()));
         assertThrows(IllegalArgumentException.class, builder::build);
     }
 

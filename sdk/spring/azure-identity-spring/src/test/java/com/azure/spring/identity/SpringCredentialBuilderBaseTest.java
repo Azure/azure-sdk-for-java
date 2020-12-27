@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SpringCredentialBuilderBaseTest extends SpringCredentialTestBase {
@@ -89,11 +90,16 @@ public class SpringCredentialBuilderBaseTest extends SpringCredentialTestBase {
         assertTrue(tokenCredential instanceof ManagedIdentityCredential);
     }
 
-    static class TestSpringCredentialBuilder extends SpringCredentialBuilderBase<TestSpringCredentialBuilder> {
+    @Test
+    public void testNoCredentialCreatedByDefaultWhenRequireClientId() {
+        final TokenCredential tokenCredential = new TestSpringCredentialBuilder()
+            .environment(buildEnvironment(new Properties()))
+            .populateTokenCredentialWithClientId("");
 
-        public String propertyValue(String prefix, String property) {
-            return super.getPropertyValue(prefix, property);
-        }
+        assertNull(tokenCredential);
+    }
+
+    static class TestSpringCredentialBuilder extends SpringCredentialBuilderBase<TestSpringCredentialBuilder> {
 
     }
 

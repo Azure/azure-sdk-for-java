@@ -5,6 +5,7 @@ package com.azure.spring.identity;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.core.env.Environment;
@@ -27,6 +28,14 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
     }
 
     protected TokenCredential populateTokenCredential(String prefix) {
+        return populateTokenCredential(prefix, true);
+    }
+
+    protected TokenCredential populateTokenCredentialWithClientId(String prefix) {
+        return populateTokenCredential(prefix, false);
+    }
+
+    private TokenCredential populateTokenCredential(String prefix, boolean createDefault) {
         String tenantId = getPropertyValue(prefix, "tenant-id");
         String clientId = getPropertyValue(prefix, "client-id");
         String clientSecret = getPropertyValue(prefix, "client-secret");
@@ -53,6 +62,14 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
             return new ManagedIdentityCredentialBuilder().clientId(clientId).build();
         }
 
+        if (createDefault) {
+            return defaultManagedIdentityCredential();
+        } else {
+            return null;
+        }
+    }
+
+    protected ManagedIdentityCredential defaultManagedIdentityCredential() {
         return new ManagedIdentityCredentialBuilder().build();
     }
 

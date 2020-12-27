@@ -30,6 +30,7 @@ public class DefaultSpringCredentialBuilder extends SpringCredentialBuilderBase<
         return this;
     }
 
+    // TODO (xiada) update the JavaDoc
     /**
      * Build a default Spring token credential, which will be a chained credential.
      * If an alternative prefix is specified in the builder, the chain of credential
@@ -48,16 +49,20 @@ public class DefaultSpringCredentialBuilder extends SpringCredentialBuilderBase<
         List<TokenCredential> tokenCredentials = new ArrayList<>();
 
         if (alternativePrefix != null) {
-            tokenCredentials.add(populateTokenCredential(alternativePrefix));
+            addToChain(tokenCredentials, populateTokenCredentialWithClientId(alternativePrefix));
         }
 
-        tokenCredentials.add(populateDefaultTokenCredential());
+        addToChain(tokenCredentials, populateTokenCredentialWithClientId(AZURE_CREDENTIAL_PREFIX));
+
+        addToChain(tokenCredentials, defaultManagedIdentityCredential());
 
         return new ChainedTokenCredentialBuilder().addAll(tokenCredentials).build();
     }
 
-    private TokenCredential populateDefaultTokenCredential() {
-        return populateTokenCredential(AZURE_CREDENTIAL_PREFIX);
+    private void addToChain(List<TokenCredential> chain, TokenCredential tokenCredential) {
+        if (tokenCredential != null) {
+            chain.add(tokenCredential);
+        }
     }
 
 }

@@ -4,6 +4,7 @@ package com.azure.spring.identity;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ChainedTokenCredential;
+import com.azure.identity.ManagedIdentityCredential;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +14,7 @@ import java.util.Properties;
 
 import static com.azure.spring.identity.DefaultSpringCredentialBuilder.AZURE_CREDENTIAL_PREFIX;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -31,8 +33,13 @@ public class DefaultSpringCredentialBuilderTest extends SpringCredentialTestBase
                                                        .build();
 
         assertTrue(tokenCredential instanceof ChainedTokenCredential);
+
         assertEquals(1, builder.prefixes.size());
         assertEquals(Lists.newArrayList(AZURE_CREDENTIAL_PREFIX), builder.prefixes);
+
+        assertEquals(2, builder.tokenCredentials.size());
+        assertNull(builder.tokenCredentials.get(0));
+        assertTrue(builder.tokenCredentials.get(1) instanceof ManagedIdentityCredential);
     }
 
     @Test
@@ -43,8 +50,14 @@ public class DefaultSpringCredentialBuilderTest extends SpringCredentialTestBase
                                                        .build();
 
         assertTrue(tokenCredential instanceof ChainedTokenCredential);
+
         assertEquals(2, builder.prefixes.size());
         assertEquals(Lists.newArrayList("abc.", AZURE_CREDENTIAL_PREFIX), builder.prefixes);
+
+        assertEquals(3, builder.tokenCredentials.size());
+        assertNull(builder.tokenCredentials.get(0));
+        assertNull(builder.tokenCredentials.get(1));
+        assertTrue(builder.tokenCredentials.get(2) instanceof ManagedIdentityCredential);
     }
 
     @Test
@@ -54,20 +67,29 @@ public class DefaultSpringCredentialBuilderTest extends SpringCredentialTestBase
                                                        .alternativePrefix("abc")
                                                        .build();
 
+        assertTrue(tokenCredential instanceof ChainedTokenCredential);
         assertEquals("abc.", builder.prefixes.get(0));
     }
-
 
     static class DefaultSpringCredentialBuilderExt extends DefaultSpringCredentialBuilder {
 
         List<String> prefixes = new ArrayList<>();
+        List<TokenCredential> tokenCredentials = new ArrayList<>();
 
         @Override
-        protected TokenCredential populateTokenCredential(String prefix) {
+        protected TokenCredential populateTokenCredentialWithClientId(String prefix) {
             this.prefixes.add(prefix);
-            return super.populateTokenCredential(prefix);
+            final TokenCredential tokenCredential = super.populateTokenCredentialWithClientId(prefix);
+            tokenCredentials.add(tokenCredential);
+            return tokenCredential;
         }
 
+        @Override
+        protected ManagedIdentityCredential defaultManagedIdentityCredential() {
+            final ManagedIdentityCredential tokenCredential = super.defaultManagedIdentityCredential();
+            tokenCredentials.add(tokenCredential);
+            return tokenCredential;
+        }
     }
 
 
