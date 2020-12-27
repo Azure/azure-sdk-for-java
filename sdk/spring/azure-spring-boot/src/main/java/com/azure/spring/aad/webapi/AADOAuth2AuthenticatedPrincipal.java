@@ -16,7 +16,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.util.Assert;
 
 /**
- * entity class of AzureOAuth2AuthenticatedPrincipal
+ * entity class of AADOAuth2AuthenticatedPrincipal
  */
 public class AADOAuth2AuthenticatedPrincipal implements OAuth2AuthenticatedPrincipal, Serializable {
 
