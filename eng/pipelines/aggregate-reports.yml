@@ -88,7 +88,7 @@ jobs:
 
     - pwsh: |
         Copy-Item target/staging $(Build.ArtifactStagingDirectory) -Recurse
-        Copy-Item target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
+#        Copy-Item target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
         Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
         Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
 
