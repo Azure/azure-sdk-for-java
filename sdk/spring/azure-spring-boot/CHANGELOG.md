@@ -32,8 +32,8 @@
     azure.activedirectory.jwk-set-cache-refresh-time
     # Logout redirect URI
     azure.activedirectory.post-logout-redirect-uri
-    # Authorization URI, default value is "https://login.microsoftonline.com/"
-    azure.activedirectory.authorization-server-uri
+    # base URI for authorization server, default value is "https://login.microsoftonline.com/"
+    azure.activedirectory.base-uri
     # Membership URI of Microsoft Graph API to get users' group information, default value is "https://graph.microsoft.com/v1.0/me/memberOf"
     azure.activedirectory.graph-membership-uri
     ```
