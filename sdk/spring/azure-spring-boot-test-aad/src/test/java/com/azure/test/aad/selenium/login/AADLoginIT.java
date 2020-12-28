@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
+import static com.azure.test.aad.AADTestUtils.AAD_USER_NAME_1;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class AADLoginIT {
@@ -49,15 +50,16 @@ public class AADLoginIT {
     @Test
     public void logoutTest() {
         AADLoginRunner.build(DumbApp.class).login().run((app, driver) -> {
+            final String username = System.getenv(AAD_USER_NAME_1);
             WebDriverWait wait = new WebDriverWait(driver, 10);
             driver.get(app.root() + "logout");
             wait.until(presenceOfElementLocated(By.cssSelector("button[type='submit']"))).click();
             Thread.sleep(10000);
-            String cssSelector = "div[data-test-id='" + AADLoginRunner.DEFAULT_USERNAME + "']";
+            String cssSelector = "div[data-test-id='" + username + "']";
             driver.findElement(By.cssSelector(cssSelector)).click();
             Thread.sleep(10000);
             String id = driver.findElement(By.cssSelector("div[tabindex='0']")).getAttribute("data-test-id");
-            Assert.assertEquals(AADLoginRunner.DEFAULT_USERNAME, id);
+            Assert.assertEquals(username, id);
         });
     }
 

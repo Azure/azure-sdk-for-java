@@ -24,9 +24,6 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElemen
 
 public class AADLoginRunner {
 
-    public static final String DEFAULT_USERNAME = System.getenv(AAD_USER_NAME_1);
-    private static final String DEFAULT_PASSWORD = System.getenv(AAD_USER_PASSWORD_1);
-
     static {
         final String directory = "src/test/resources/driver/";
         final String chromedriverLinux = "chromedriver_linux64";
@@ -72,6 +69,7 @@ public class AADLoginRunner {
     }
 
     public static AADLoginRunnerConfiguration build(Class<?> appClass) {
+        Objects.requireNonNull(appClass);
         return new AADLoginRunnerConfiguration(appClass);
     }
 
@@ -139,18 +137,20 @@ public class AADLoginRunner {
             return this;
         }
 
-        public AADLoginRunnerConfiguration extendsDefault(Consumer<AppRunner> configure) {
-            this.configure = defautlConfigure().andThen(configure);
+        public AADLoginRunnerConfiguration extendsConfigure(Consumer<AppRunner> configure) {
+            this.configure = this.configure.andThen(configure);
             return this;
         }
 
         public AADLoginRunner login(String username, String password) {
+            Objects.requireNonNull(username);
+            Objects.requireNonNull(password);
             this.configure.accept(this.app);
             return new AADLoginRunner(username, password, this.app, this.driver);
         }
 
         public AADLoginRunner login() {
-            return login(DEFAULT_USERNAME, DEFAULT_PASSWORD);
+            return login(System.getenv(AAD_USER_NAME_1), System.getenv(AAD_USER_PASSWORD_1));
         }
 
         private static Consumer<AppRunner> defautlConfigure() {

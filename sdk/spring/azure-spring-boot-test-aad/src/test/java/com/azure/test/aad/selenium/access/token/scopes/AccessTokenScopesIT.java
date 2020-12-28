@@ -22,13 +22,13 @@ public class AccessTokenScopesIT {
 
     @Test
     public void testAccessTokenScopes() {
-        AADLoginRunner.build(DumbApp.class).extendsDefault(app -> {
+        AADLoginRunner.build(DumbApp.class).extendsConfigure(app -> {
 
-            app.property("azure.activedirectory.authorization.office.scopes",
+            app.property("azure.activedirectory.authorization-clients.office.scopes",
                 "https://manage.office.com/ActivityFeed.Read , "
                     + "https://manage.office.com/ActivityFeed.ReadDlp , "
                     + "https://manage.office.com/ServiceHealth.Read");
-            app.property("azure.activedirectory.authorization.graph.scopes",
+            app.property("azure.activedirectory.authorization-clients.graph.scopes",
                 "https://graph.microsoft.com/User.Read , "
                     + "https://graph.microsoft.com/Directory.AccessAsUser.All");
 
