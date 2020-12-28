@@ -72,16 +72,12 @@ public class AADResourceServerOboConfiguration {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
         result.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN);
         result.redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}");
-
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
 
         AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints(
             properties.getBaseUri(), properties.getTenantId());
         result.authorizationUri(endpoints.authorizationEndpoint());
-        result.tokenUri(endpoints.tokenEndpoint());
-        result.jwkSetUri(endpoints.jwkSetEndpoint());
-
         return result;
     }
 
