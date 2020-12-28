@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public abstract class AADClientRegistrationRepository implements ClientRegistrationRepository {
 
+    public static final String AZURE_CLIENT_REGISTRATION_ID = "azure";
+
     protected final AzureClientRegistration azureClient;
     protected final List<ClientRegistration> otherClients;
     protected final Map<String, ClientRegistration> allClients;
@@ -52,12 +54,21 @@ public abstract class AADClientRegistrationRepository implements ClientRegistrat
 
     public boolean isClientNeedConsentWhenLogin(ClientRegistration client) {
         return otherClients.contains(client)
-            && properties.getAuthorization().get(client.getClientName()) != null
-            && !properties.getAuthorization().get(client.getClientName()).isOnDemand();
+            && properties.getAuthorizationClients().get(client.getClientName()) != null
+            && !properties.getAuthorizationClients().get(client.getClientName()).isOnDemand();
     }
 
     public boolean isClientNeedConsentWhenLogin(String id) {
         ClientRegistration client = findByRegistrationId(id);
         return client != null && isClientNeedConsentWhenLogin(client);
+    }
+
+    public static boolean isDefaultClient(ClientRegistration clientRegistration) {
+        return AZURE_CLIENT_REGISTRATION_ID.equals(
+            clientRegistration.getClientName());
+    }
+
+    public static boolean isDefaultClient(String clientId) {
+        return AZURE_CLIENT_REGISTRATION_ID.equals(clientId);
     }
 }

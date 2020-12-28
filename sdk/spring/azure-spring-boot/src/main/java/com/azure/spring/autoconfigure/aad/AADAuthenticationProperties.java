@@ -87,6 +87,8 @@ public class AADAuthenticationProperties {
      */
     private String tenantId = "common";
 
+    private String postLogoutRedirectUri;
+
     /**
      * If Telemetry events should be published to Azure AD.
      */
@@ -98,11 +100,11 @@ public class AADAuthenticationProperties {
      */
     private Boolean sessionStateless = false;
 
-    private String authorizationServerUri = "https://login.microsoftonline.com/";
+    private String baseUri = "https://login.microsoftonline.com/";
 
     private String graphMembershipUri = "https://graph.microsoft.com/v1.0/me/memberOf";
 
-    private Map<String, AuthorizationProperties> authorization = new HashMap<>();
+    private Map<String, AuthorizationProperties> authorizationClients = new HashMap<>();
 
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
@@ -149,7 +151,7 @@ public class AADAuthenticationProperties {
     @PostConstruct
     public void validateUserGroupProperties() {
         // current implementation is not required, this is only used for compatibility with the previous usage
-        if (authorization.size() > 0 || isResourceServer()) {
+        if (authorizationClients.size() > 0 || isResourceServer()) {
             return;
         }
 
@@ -268,6 +270,14 @@ public class AADAuthenticationProperties {
         this.tenantId = tenantId;
     }
 
+    public String getPostLogoutRedirectUri() {
+        return postLogoutRedirectUri;
+    }
+
+    public void setPostLogoutRedirectUri(String postLogoutRedirectUri) {
+        this.postLogoutRedirectUri = postLogoutRedirectUri;
+    }
+
     public boolean isAllowTelemetry() {
         return allowTelemetry;
     }
@@ -284,12 +294,12 @@ public class AADAuthenticationProperties {
         this.sessionStateless = sessionStateless;
     }
 
-    public String getAuthorizationServerUri() {
-        return authorizationServerUri;
+    public String getBaseUri() {
+        return baseUri;
     }
 
-    public void setAuthorizationServerUri(String authorizationServerUri) {
-        this.authorizationServerUri = authorizationServerUri;
+    public void setBaseUri(String baseUri) {
+        this.baseUri = baseUri;
     }
 
     public String getGraphMembershipUri() {
@@ -300,12 +310,12 @@ public class AADAuthenticationProperties {
         this.graphMembershipUri = graphMembershipUri;
     }
 
-    public Map<String, AuthorizationProperties> getAuthorization() {
-        return authorization;
+    public Map<String, AuthorizationProperties> getAuthorizationClients() {
+        return authorizationClients;
     }
 
-    public void setAuthorization(Map<String, AuthorizationProperties> authorization) {
-        this.authorization = authorization;
+    public void setAuthorizationClients(Map<String, AuthorizationProperties> authorizationClients) {
+        this.authorizationClients = authorizationClients;
     }
 
     public boolean isAllowedGroup(String group) {
