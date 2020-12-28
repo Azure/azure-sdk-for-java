@@ -31,7 +31,7 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
         return populateTokenCredential(prefix, true);
     }
 
-    protected TokenCredential populateTokenCredentialWithClientId(String prefix) {
+    protected TokenCredential populateTokenCredentialBasedOnClientId(String prefix) {
         return populateTokenCredential(prefix, false);
     }
 
@@ -62,11 +62,7 @@ public abstract class SpringCredentialBuilderBase<T extends SpringCredentialBuil
             return new ManagedIdentityCredentialBuilder().clientId(clientId).build();
         }
 
-        if (createDefault) {
-            return defaultManagedIdentityCredential();
-        } else {
-            return null;
-        }
+        return createDefault ? defaultManagedIdentityCredential() : null;
     }
 
     protected ManagedIdentityCredential defaultManagedIdentityCredential() {

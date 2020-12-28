@@ -77,9 +77,9 @@ public class DefaultSpringCredentialBuilderTest extends SpringCredentialTestBase
         List<TokenCredential> tokenCredentials = new ArrayList<>();
 
         @Override
-        protected TokenCredential populateTokenCredentialWithClientId(String prefix) {
+        protected TokenCredential populateTokenCredentialBasedOnClientId(String prefix) {
             this.prefixes.add(prefix);
-            final TokenCredential tokenCredential = super.populateTokenCredentialWithClientId(prefix);
+            final TokenCredential tokenCredential = super.populateTokenCredentialBasedOnClientId(prefix);
             tokenCredentials.add(tokenCredential);
             return tokenCredential;
         }

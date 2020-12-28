@@ -94,7 +94,7 @@ public class SpringCredentialBuilderBaseTest extends SpringCredentialTestBase {
     public void testNoCredentialCreatedByDefaultWhenRequireClientId() {
         final TokenCredential tokenCredential = new TestSpringCredentialBuilder()
             .environment(buildEnvironment(new Properties()))
-            .populateTokenCredentialWithClientId("");
+            .populateTokenCredentialBasedOnClientId("");
 
         assertNull(tokenCredential);
     }

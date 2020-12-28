@@ -30,13 +30,13 @@ public class DefaultSpringCredentialBuilder extends SpringCredentialBuilderBase<
         return this;
     }
 
-    // TODO (xiada) update the JavaDoc
     /**
      * Build a default Spring token credential, which will be a chained credential.
      * If an alternative prefix is specified in the builder, the chain of credential
-     * will have two credentials, one with the specified prefix and the other with the
-     * default spring credential prefix. Otherwise, the chain will consist the credential
-     * with the default prefix.
+     * will have three credentials, one with the specified prefix, one with the default
+     * spring credential prefix, and the default managed identity credential without client id
+     * set. Otherwise, the chain will consist the credential with the default prefix and the default
+     * managed identity credential.
      *
      * @return the default Spring token credential.
      * @throws IllegalArgumentException if no environment is set.
@@ -49,10 +49,10 @@ public class DefaultSpringCredentialBuilder extends SpringCredentialBuilderBase<
         List<TokenCredential> tokenCredentials = new ArrayList<>();
 
         if (alternativePrefix != null) {
-            addToChain(tokenCredentials, populateTokenCredentialWithClientId(alternativePrefix));
+            addToChain(tokenCredentials, populateTokenCredentialBasedOnClientId(alternativePrefix));
         }
 
-        addToChain(tokenCredentials, populateTokenCredentialWithClientId(AZURE_CREDENTIAL_PREFIX));
+        addToChain(tokenCredentials, populateTokenCredentialBasedOnClientId(AZURE_CREDENTIAL_PREFIX));
 
         addToChain(tokenCredentials, defaultManagedIdentityCredential());
 
