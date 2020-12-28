@@ -67,7 +67,7 @@ public class AuthorizedClientRepoTest {
     public void saveAndLoadAzureAuthzClient() {
         PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
+                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
                 "azure.activedirectory.base-uri = fake-uri")
             .run(context -> {
                 getBeans(context);
