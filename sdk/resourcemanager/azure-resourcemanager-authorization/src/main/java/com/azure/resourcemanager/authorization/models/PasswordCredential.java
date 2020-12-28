@@ -4,16 +4,17 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphPasswordCredentialInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+
 import java.io.OutputStream;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure AD credential. */
 @Fluent
-public interface PasswordCredential extends Credential, HasInnerModel<PasswordCredentialInner> {
+public interface PasswordCredential extends Credential, HasInnerModel<MicrosoftGraphPasswordCredentialInner> {
 
     /**************************************************************
      * Fluent interfaces to attach a credential

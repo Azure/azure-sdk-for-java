@@ -4,12 +4,13 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphServicePrincipalInner;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,7 +18,9 @@ import java.util.Set;
 /** An immutable client-side representation of an Azure AD service principal. */
 @Fluent
 public interface ServicePrincipal
-    extends ActiveDirectoryObject, HasInnerModel<ServicePrincipalInner>, Updatable<ServicePrincipal.Update> {
+    extends ActiveDirectoryObject,
+        HasInnerModel<MicrosoftGraphServicePrincipalInner>,
+        Updatable<ServicePrincipal.Update> {
     /** @return app id. */
     String applicationId();
 

@@ -5,8 +5,8 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphPasswordCredentialInner;
 import com.azure.resourcemanager.authorization.models.PasswordCredential;
-import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +19,7 @@ import java.util.Base64;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class PasswordCredentialImpl<T extends HasCredential<T>>
-    extends IndexableRefreshableWrapperImpl<PasswordCredential, PasswordCredentialInner>
+    extends IndexableRefreshableWrapperImpl<PasswordCredential, MicrosoftGraphPasswordCredentialInner>
     implements PasswordCredential, PasswordCredential.Definition<T>, PasswordCredential.UpdateDefinition<T> {
 
     private String name;
@@ -28,7 +28,7 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
     private String subscriptionId;
     private final ClientLogger logger = new ClientLogger(PasswordCredentialImpl.class);
 
-    PasswordCredentialImpl(PasswordCredentialInner passwordCredential) {
+    PasswordCredentialImpl(MicrosoftGraphPasswordCredentialInner passwordCredential) {
         super(passwordCredential);
         if (passwordCredential.customKeyIdentifier() != null && passwordCredential.customKeyIdentifier().length > 0) {
             this.name = new String(
@@ -36,16 +36,16 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
                     new String(passwordCredential.customKeyIdentifier(), StandardCharsets.UTF_8)),
                 StandardCharsets.UTF_8);
         } else {
-            this.name = passwordCredential.keyId();
+            this.name = passwordCredential.keyId().toString();
         }
     }
 
     PasswordCredentialImpl(String name, HasCredential<T> parent) {
         super(
-            new PasswordCredentialInner()
+            new MicrosoftGraphPasswordCredentialInner()
                 .withCustomKeyIdentifier(Base64.getEncoder().encode(name.getBytes(StandardCharsets.UTF_8)))
-                .withStartDate(OffsetDateTime.now())
-                .withEndDate(OffsetDateTime.now().plusYears(1)));
+                .withStartDateTime(OffsetDateTime.now())
+                .withEndDateTime(OffsetDateTime.now().plusYears(1)));
         this.name = name;
         this.parent = parent;
     }
@@ -56,23 +56,23 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
     }
 
     @Override
-    protected Mono<PasswordCredentialInner> getInnerAsync() {
+    protected Mono<MicrosoftGraphPasswordCredentialInner> getInnerAsync() {
         throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot refresh credentials."));
     }
 
     @Override
     public OffsetDateTime startDate() {
-        return innerModel().startDate();
+        return innerModel().startDateTime();
     }
 
     @Override
     public OffsetDateTime endDate() {
-        return innerModel().endDate();
+        return innerModel().endDateTime();
     }
 
     @Override
     public String value() {
-        return innerModel().value();
+        return innerModel().secretText();
     }
 
     @Override
@@ -82,14 +82,14 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
 
     @Override
     public PasswordCredentialImpl<T> withPasswordValue(String password) {
-        innerModel().withValue(password);
+        innerModel().withSecretText(password);
         return this;
     }
 
     @Override
     public PasswordCredentialImpl<T> withStartDate(OffsetDateTime startDate) {
         OffsetDateTime original = startDate();
-        innerModel().withStartDate(startDate);
+        innerModel().withStartDateTime(startDate);
         // Adjust end time
         withDuration(Duration.between(original, endDate()));
         return this;
@@ -97,7 +97,7 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
 
     @Override
     public PasswordCredentialImpl<T> withDuration(Duration duration) {
-        innerModel().withEndDate(startDate().plus(duration));
+        innerModel().withEndDateTime(startDate().plus(duration));
         return this;
     }
 
@@ -111,7 +111,7 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
         if (authFile == null) {
             return;
         }
-        AzureEnvironment environment = AzureEnvironment.AZURE;
+        AzureEnvironment environment = servicePrincipal.manager().environment();
 
         StringBuilder builder = new StringBuilder("{\n");
         builder
@@ -159,7 +159,7 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
 
     @Override
     public String id() {
-        return innerModel().keyId();
+        return innerModel().keyId().toString();
     }
 
     @Override
