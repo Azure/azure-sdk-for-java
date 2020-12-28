@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+azure:
+  activedirectory:
+    resource-server:
+      obo:
+        enabled: true
+    client-id: <Web-API-A-client-id>
+    client-secret: <Web-API-A-client-secret>
+    tenant-id: <Tenant-id-registered-by-application>
+    app-id-uri: <Web-API-A-app-id-url>
+    authorization:
+      graph:
+        scopes:
+          - User.read
+      custom:
+        scopes:
+          - <Web-API-B-app-id-url>/File.Read

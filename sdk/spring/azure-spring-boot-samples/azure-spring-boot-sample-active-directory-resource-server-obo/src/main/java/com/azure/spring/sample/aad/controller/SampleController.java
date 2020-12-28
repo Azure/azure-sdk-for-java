@@ -41,7 +41,7 @@ public class SampleController {
      * @return Response with graph data
      */
     @GetMapping("call-graph-only")
-    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.read')")
+    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.Read')")
     public String callGraphOnly() {
         Authentication principal = SecurityContextHolder.getContext().getAuthentication();
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
@@ -57,7 +57,7 @@ public class SampleController {
      * @return Response with graph data
      */
     @GetMapping("call-graph-only-with-annotation")
-    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.read')")
+    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.Read')")
     public String callGraphOnlyWithAnnotation(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
         return callMicrosoftGraphMeEndpoint(graph);
     }
@@ -68,7 +68,7 @@ public class SampleController {
      * @param custom authorized client for Custom
      * @return Response Graph and Custom data.
      */
-    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraphCustomResources.read')")
+    @PreAuthorize("hasAuthority('SCOPE_File.Read')")
     @GetMapping("call-graph-and-custom-resources")
     public String callGraphAndCustomResources(
         @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph,
@@ -107,6 +107,6 @@ public class SampleController {
             .bodyToMono(String.class)
             .block();
         LOGGER.info("Response from Custom(local): {}", body);
-        return "Custom(local) response " + (null != body ? "success." : "failed.");
+        return "Web API B response " + (null != body ? "success." : "failed.");
     }
 }
