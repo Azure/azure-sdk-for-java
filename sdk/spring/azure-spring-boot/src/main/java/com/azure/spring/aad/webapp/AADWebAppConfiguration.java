@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,7 +39,6 @@ import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
-@ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
 public class AADWebAppConfiguration {
 
     @Autowired
