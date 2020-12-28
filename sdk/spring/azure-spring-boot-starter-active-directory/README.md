@@ -26,8 +26,8 @@ To use this starter in an web application, please add following packages:
     <version>3.0.0-beta.1</version>
 </dependency>
 <dependency>
-  <groupId>org.springframework.security</groupId>
-  <artifactId>spring-security-oauth2-client</artifactId>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-oauth2-client</artifactId>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
@@ -45,16 +45,47 @@ The authorization flow for resource server:
 * Get On-Behalf-Of token and membership info from Azure AD Graph API
 * Evaluate the permission based on membership info to grant or deny access
 
-### Group membership
-The way this starter uses to load users' membership depends on the configured membership URI. By default, the starter uses `https://graph.microsoft.com/v1.0/me/memberOf` to get direct membership of current user. 
-To get all transitive membership, the following configuration is required:
-
-```yaml
-azure:
-  activedirectory:
-    graph-membership-uri: https://graph.microsoft.com/v1.0/me/transitiveMemberOf
-``` 
-
+### Configurable properties
+This starter provides following properties to be customized:
+* azure.activedirectory.client-id:   
+Registered application ID in Azure AD.
+* azure.activedirectory.client-secret:  
+API Access Key of the registered application.
+* azure.activedirectory.tenant-id:  
+Azure Tenant ID.
+* azure.activedirectory.user-group.allowed-groups:  
+Expected user groups that an authority will be granted to if found in the response from the MemeberOf Graph API Call.
+* azure.activedirectory.graph-membership-uri:   
+The way this starter uses to load users' membership depends on the configured membership URI. By default, the starter uses `https://graph.microsoft.com/v1.0/me/memberOf` to get direct membership of current user.  
+To get all transitive membership, you can configure it as `https://graph.microsoft.com/v1.0/me/transitiveMemberOf`.
+* azure.activedirectory.redirect-uri-template:  
+Used by the authorization server to return responses containing authorization credentials to the client via the resource owner user-agent.
+* azure.activedirectory.app-id-uri:     
+Used in the "aud" claim of an id token.
+* azure.activedirectory.jwt-connect-timeout:    
+Connection Timeout for the JWKSet Remote URL call.
+* azure.activedirectory.jwt-read-timeout:    
+Read Timeout for the JWKSet Remote URL call.
+* azure.activedirectory.jwt-size-limit:    
+Size limit in Bytes of the JWKSet Remote URL call.
+* azure.activedirectory.jwt-set-cache-lifespan:    
+The lifespan of the cached JWK set before it expires, default is 5 minutes.
+* azure.activedirectory.jwk-set-cache-refresh-time:   
+The refresh time of the cached JWK set before it expires, default is 5 minutes.
+* azure.activedirectory.post-logout-redirect-uri:    
+Redirect uri for posting log-out.
+* azure.activedirectory.allow-telemetry:    
+If Telemetry events should be published to Azure AD. The default value is true.
+* azure.activedirectory.session-stateless:    
+If true, the stateless auth filter `AADAppRoleStatelessAuthenticationFilter` will be activated. By default, is value is false, which activates `AADAuthenticationFilter`.
+* azure.activedirectory.base-uri:    
+Base uri for authorization server, the default value is `https://login.microsoftonline.com/`.
+* azure.activedirectory.authorization-clients:    
+Resource server name that the application is going to visit.
+* azure.activedirectory.authorization-clients.{client-name}.scopes:    
+API permissions of a resource server that the application is going to acquire.
+* azure.activedirectory.authorization-clients.{client-name}.scopes.on-demand:    
+If the authorization flow of current resource server will be executed on demand. The default value is false.
 ### Web application
 Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the groups or roles claim in the access token. 
 
@@ -234,7 +265,7 @@ To customize scope configurations of multiple resources, developers need to conf
 ```yaml
 azure:
   activedirectory:
-    authorization:
+    authorization-clients:
       graph:
         scopes: https://graph.microsoft.com/Analytics.Read, email
       {registration-id}:
@@ -246,7 +277,7 @@ To configure the authorization of certain resource as on-demand, developers need
 ```yaml
 azure:
   activedirectory:
-    authorization:
+    authorization-clients:
       {registration-id}:
         on-demand: true
         scopes: {scope1}, {scope2}
