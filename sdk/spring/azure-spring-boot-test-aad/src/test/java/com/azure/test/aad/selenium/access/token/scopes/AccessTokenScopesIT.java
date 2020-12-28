@@ -3,10 +3,8 @@
 
 package com.azure.test.aad.selenium.access.token.scopes;
 
-import com.azure.test.aad.selenium.AADLoginRunner;
-import org.junit.Assert;
+import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
@@ -15,53 +13,52 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
 public class AccessTokenScopesIT {
 
     @Test
-    public void testAccessTokenScopes() {
-        AADLoginRunner.build(DumbApp.class).extendsConfigure(app -> {
+    public void testAccessTokenScopes() throws InterruptedException {
+        Map<String, String> arguments = new HashMap<>();
+        arguments.put("azure.activedirectory.authorization-clients.office.scopes",
+            "https://manage.office.com/ActivityFeed.Read, "
+                + "https://manage.office.com/ActivityFeed.ReadDlp, "
+                + "https://manage.office.com/ServiceHealth.Read");
+        arguments.put("azure.activedirectory.authorization-clients.graph.scopes",
+            "https://graph.microsoft.com/User.Read, "
+                + "https://graph.microsoft.com/Directory.AccessAsUser.All");
+        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, arguments);
 
-            app.property("azure.activedirectory.authorization-clients.office.scopes",
-                "https://manage.office.com/ActivityFeed.Read , "
-                    + "https://manage.office.com/ActivityFeed.ReadDlp , "
-                    + "https://manage.office.com/ServiceHealth.Read");
-            app.property("azure.activedirectory.authorization-clients.graph.scopes",
-                "https://graph.microsoft.com/User.Read , "
-                    + "https://graph.microsoft.com/Directory.AccessAsUser.All");
+        aadSeleniumITHelper.httpGetAndAssertContains(
+            "accessTokenScopes/azure",
+            Arrays.asList(
+                "profile",
+                "https://graph.microsoft.com/Directory.AccessAsUser.All",
+                "https://graph.microsoft.com/User.Read"));
 
-        }).login().run((app, driver) -> {
+        aadSeleniumITHelper.httpGetAndAssertContains(
+            "accessTokenScopes/graph",
+            Arrays.asList(
+                "profile",
+                "https://graph.microsoft.com/Directory.AccessAsUser.All",
+                "https://graph.microsoft.com/User.Read"));
 
-            driver.get((app.root() + "accessTokenScopes/azure"));
-            Thread.sleep(1000);
-            String result = driver.findElement(By.tagName("body")).getText();
-            Assert.assertTrue(result.contains("profile"));
-            Assert.assertTrue(result.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
-            Assert.assertTrue(result.contains("https://graph.microsoft.com/User.Read"));
+        aadSeleniumITHelper.httpGetAndAssert(
+            "accessTokenScopes/office",
+            Arrays.asList(
+                "https://manage.office.com/ActivityFeed.Read",
+                "https://manage.office.com/ActivityFeed.ReadDlp",
+                "https://manage.office.com/ServiceHealth.Read"),
+            Collections.singletonList("profile"));
 
-            driver.get((app.root() + "accessTokenScopes/office"));
-            Thread.sleep(1000);
-            result = driver.findElement(By.tagName("body")).getText();
-            Assert.assertFalse(result.contains("profile"));
-            Assert.assertTrue(result.contains("https://manage.office.com/ActivityFeed.Read"));
-            Assert.assertTrue(result.contains("https://manage.office.com/ActivityFeed.ReadDlp"));
-            Assert.assertTrue(result.contains("https://manage.office.com/ServiceHealth.Read"));
-
-            driver.get((app.root() + "accessTokenScopes/graph"));
-            Thread.sleep(1000);
-            result = driver.findElement(By.tagName("body")).getText();
-            Assert.assertTrue(result.contains("profile"));
-            Assert.assertTrue(result.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
-            Assert.assertTrue(result.contains("https://graph.microsoft.com/User.Read"));
-
-            driver.get((app.root() + "accessTokenScopes/arm"));
-            Thread.sleep(1000);
-            result = driver.findElement(By.tagName("body")).getText();
-            Assert.assertNotEquals("error", result);
-
-        });
+        aadSeleniumITHelper.httpGetAndAssertNotContains(
+            "accessTokenScopes/arm",
+            Collections.singletonList("error"));
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
