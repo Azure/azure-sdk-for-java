@@ -39,12 +39,12 @@ jobs:
       # builds should be sufficient.
       condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
       displayName: 'Component Detection'
-        
+
     - task: Maven@3
       displayName: 'Generate Reports'
       inputs:
         mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:jacoco-test-coverage -am'
+        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Paggregatereports'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
