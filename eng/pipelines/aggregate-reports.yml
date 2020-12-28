@@ -17,10 +17,10 @@ jobs:
       vmImage: 'ubuntu-18.04'
     steps:
 
-    - template: ../common/pipelines/templates/steps/verify-links.yml
-      parameters:
-        Directory: ""
-        CheckLinkGuidance: $true
+#    - template: ../common/pipelines/templates/steps/verify-links.yml
+#      parameters:
+#        Directory: ""
+#        CheckLinkGuidance: $true
 
     - task: Maven@3
       displayName: 'Build All Libraries'
