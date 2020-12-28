@@ -13,6 +13,24 @@ This sample illustrates how to protect a Java web API by restricting access to i
 ### Environment checklist
 We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
+### Include the package
+```xml
+<dependencies>
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-boot-starter-active-directory</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-resource-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-jose</artifactId>
+    </dependency>
+  </dependencies>
+```
+
 ### Configure web api
 1. Search for and select your tenant in **Azure Active Directory**.
 2. Under **Manage** In the same tenant, select **App registrations** -> **New registration**.![Protal manage](docs/image-protal-manage.png "Protal manage")
