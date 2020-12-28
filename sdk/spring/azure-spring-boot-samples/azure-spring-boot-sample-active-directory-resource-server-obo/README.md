@@ -78,7 +78,7 @@ azure:
     authorization:
       graph:
         scopes:
-          - User.read
+          - https://graph.microsoft.com/User.Read
       custom:
         scopes:
           - <Web-API-B-app-id-url>/File.Read

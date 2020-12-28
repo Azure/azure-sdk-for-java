@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
+import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -27,7 +27,6 @@ import java.time.Instant;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,8 +39,8 @@ public class UserPrincipalManagerAudienceTest {
     private String jwkString;
     private ResourceRetriever resourceRetriever;
 
-    private AuthorizationServerEndpoints authorizationServerEndpoints;
-    private AADAuthenticationProperties aadAuthenticationProperties;
+    private AADAuthorizationServerEndpoints endpoints;
+    private AADAuthenticationProperties properties;
     private UserPrincipalManager userPrincipalManager;
 
     @Before
@@ -63,11 +62,11 @@ public class UserPrincipalManagerAudienceTest {
 
         resourceRetriever = url -> new Resource(jwkString, "application/json");
 
-        authorizationServerEndpoints = mock(AuthorizationServerEndpoints.class);
-        aadAuthenticationProperties = new AADAuthenticationProperties();
-        aadAuthenticationProperties.setClientId(FAKE_CLIENT_ID);
-        aadAuthenticationProperties.setAppIdUri(FAKE_APPLICATION_URI);
-        when(authorizationServerEndpoints.jwkSetEndpoint(anyString())).thenReturn("file://dummy");
+        endpoints = mock(AADAuthorizationServerEndpoints.class);
+        properties = new AADAuthenticationProperties();
+        properties.setClientId(FAKE_CLIENT_ID);
+        properties.setAppIdUri(FAKE_APPLICATION_URI);
+        when(endpoints.jwkSetEndpoint()).thenReturn("file://dummy");
     }
 
     @Test
@@ -82,7 +81,7 @@ public class UserPrincipalManagerAudienceTest {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(authorizationServerEndpoints, aadAuthenticationProperties,
+        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
             resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .doesNotThrowAnyException();
@@ -100,7 +99,7 @@ public class UserPrincipalManagerAudienceTest {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(authorizationServerEndpoints, aadAuthenticationProperties,
+        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
             resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .doesNotThrowAnyException();
@@ -118,7 +117,7 @@ public class UserPrincipalManagerAudienceTest {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(authorizationServerEndpoints, aadAuthenticationProperties,
+        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
             resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .hasMessageContaining("Invalid token audience.");
@@ -138,7 +137,7 @@ public class UserPrincipalManagerAudienceTest {
         final String orderTwo = signedJWT.serialize();
         final String invalidToken = orderTwo.substring(0, orderTwo.length() - 5);
 
-        userPrincipalManager = new UserPrincipalManager(authorizationServerEndpoints, aadAuthenticationProperties,
+        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
             resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(invalidToken))
             .hasMessageContaining("JWT rejected: Invalid signature");

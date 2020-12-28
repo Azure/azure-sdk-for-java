@@ -8,9 +8,9 @@ import com.nimbusds.oauth2.sdk.util.StringUtils;
 /**
  * Used to get endpoints for Microsoft Identity authorization server.
  */
-public class AuthorizationServerEndpoints {
+public class AADAuthorizationServerEndpoints {
 
-    private static final String IDENTITY_PLATFORM = "https://login.microsoftonline.com/";
+    private static final String DEFAULT_BASE_URI = "https://login.microsoftonline.com/";
 
     private static final String AUTHORIZATION_ENDPOINT = "/oauth2/v2.0/authorize";
     private static final String TOKEN_ENDPOINT = "/oauth2/v2.0/token";
@@ -18,16 +18,14 @@ public class AuthorizationServerEndpoints {
     private static final String END_SESSION_ENDPOINT = "/oauth2/v2.0/logout";
 
     private final String baseUri;
+    private final String tenantId;
 
-    public AuthorizationServerEndpoints() {
-        this(IDENTITY_PLATFORM);
-    }
-
-    public AuthorizationServerEndpoints(String baseUri) {
+    public AADAuthorizationServerEndpoints(String baseUri, String tenantId) {
         if (StringUtils.isBlank(baseUri)) {
-            baseUri = IDENTITY_PLATFORM;
+            baseUri = DEFAULT_BASE_URI;
         }
         this.baseUri = addSlash(baseUri);
+        this.tenantId = tenantId;
     }
 
     public String getBaseUri() {
@@ -38,19 +36,19 @@ public class AuthorizationServerEndpoints {
         return uri.endsWith("/") ? uri : uri + "/";
     }
 
-    public String authorizationEndpoint(String tenant) {
-        return baseUri + tenant + AUTHORIZATION_ENDPOINT;
+    public String authorizationEndpoint() {
+        return baseUri + tenantId + AUTHORIZATION_ENDPOINT;
     }
 
-    public String tokenEndpoint(String tenant) {
-        return baseUri + tenant + TOKEN_ENDPOINT;
+    public String tokenEndpoint() {
+        return baseUri + tenantId + TOKEN_ENDPOINT;
     }
 
-    public String jwkSetEndpoint(String tenant) {
-        return baseUri + tenant + JWK_SET_ENDPOINT;
+    public String jwkSetEndpoint() {
+        return baseUri + tenantId + JWK_SET_ENDPOINT;
     }
 
-    public String endSessionEndpoint(String tenant) {
-        return baseUri + tenant + END_SESSION_ENDPOINT;
+    public String endSessionEndpoint() {
+        return baseUri + tenantId + END_SESSION_ENDPOINT;
     }
 }
