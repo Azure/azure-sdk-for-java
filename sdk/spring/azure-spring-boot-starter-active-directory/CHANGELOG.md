@@ -23,7 +23,7 @@
 - Support access control through users' membership information.
 - Support on-behalf-of flow in the resource server.
 - Provide AAD specific token validation of audience validation and issuer validation.
-- Expose a flag `isPersonalAccount` in `AzureOAuth2AuthenticatedPrincipal` to specify the account type in use: work account or personal account.
+- Expose a flag `isPersonalAccount` in `AADOAuth2AuthenticatedPrincipal` to specify the account type in use: work account or personal account.
 - Enable loading transitive membership information from Microsoft Graph API.
 - Enable following `azure-spring-boot-starter-active-directory` configuration properties:
     ```yaml
