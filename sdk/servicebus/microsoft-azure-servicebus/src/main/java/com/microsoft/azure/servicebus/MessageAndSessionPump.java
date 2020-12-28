@@ -846,9 +846,9 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     	try	{
     		return receiver.receiveAsync(serverWaitTime);
     	} catch (Throwable t) {
-    		CompletableFuture<IMessage> excetionalFuture = new CompletableFuture<IMessage>();
-    		excetionalFuture.completeExceptionally(t);
-    		return excetionalFuture;
+    		CompletableFuture<IMessage> exceptionalFuture = new CompletableFuture<IMessage>();
+    		exceptionalFuture.completeExceptionally(t);
+    		return exceptionalFuture;
     	}
     }
     
@@ -856,9 +856,9 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     	try	{
     		return receiver.completeAsync(lockToken);
     	} catch (Throwable t) {
-    		CompletableFuture<Void> excetionalFuture = new CompletableFuture<Void>();
-    		excetionalFuture.completeExceptionally(t);
-    		return excetionalFuture;
+    		CompletableFuture<Void> exceptionalFuture = new CompletableFuture<Void>();
+    		exceptionalFuture.completeExceptionally(t);
+    		return exceptionalFuture;
     	}
     }
     
@@ -866,9 +866,9 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     	try	{
     		return receiver.abandonAsync(lockToken);
     	} catch (Throwable t) {
-    		CompletableFuture<Void> excetionalFuture = new CompletableFuture<Void>();
-    		excetionalFuture.completeExceptionally(t);
-    		return excetionalFuture;
+    		CompletableFuture<Void> exceptionalFuture = new CompletableFuture<Void>();
+    		exceptionalFuture.completeExceptionally(t);
+    		return exceptionalFuture;
     	}
     }
     
@@ -876,9 +876,9 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     	try	{
     		return receiver.renewMessageLockAsync(message);
     	} catch (Throwable t) {
-    		CompletableFuture<Instant> excetionalFuture = new CompletableFuture<Instant>();
-    		excetionalFuture.completeExceptionally(t);
-    		return excetionalFuture;
+    		CompletableFuture<Instant> exceptionalFuture = new CompletableFuture<Instant>();
+    		exceptionalFuture.completeExceptionally(t);
+    		return exceptionalFuture;
     	}
     }
     
@@ -886,9 +886,9 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     	try	{
     		return session.renewSessionLockAsync();
     	} catch (Throwable t) {
-    		CompletableFuture<Void> excetionalFuture = new CompletableFuture<Void>();
-    		excetionalFuture.completeExceptionally(t);
-    		return excetionalFuture;
+    		CompletableFuture<Void> exceptionalFuture = new CompletableFuture<Void>();
+    		exceptionalFuture.completeExceptionally(t);
+    		return exceptionalFuture;
     	}
     }
 
