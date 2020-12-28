@@ -4,7 +4,7 @@
 package com.azure.spring.aad.webapi;
 
 import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
-import com.azure.spring.aad.webapp.AuthorizationProperties;
+import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -60,7 +60,7 @@ public class AADResourceServerOboConfiguration {
     public List<ClientRegistration> createOboClients() {
         List<ClientRegistration> result = new ArrayList<>();
         for (String name : properties.getAuthorizationClients().keySet()) {
-            AuthorizationProperties authorizationProperties = properties.getAuthorizationClients().get(name);
+            AuthorizationClientProperties authorizationProperties = properties.getAuthorizationClients().get(name);
             ClientRegistration.Builder builder = createClientBuilder(name);
             builder.scope(authorizationProperties.getScopes());
             result.add(builder.build());
