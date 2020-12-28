@@ -94,7 +94,8 @@ public class AADWebAppConfiguration {
     }
 
     private void addAzureConfiguredScopes(Set<String> result) {
-        AuthorizationProperties azureProperties = properties.getAuthorizationClients().get(AZURE_CLIENT_REGISTRATION_ID);
+        AuthorizationProperties azureProperties =
+            properties.getAuthorizationClients().get(AZURE_CLIENT_REGISTRATION_ID);
         if (azureProperties != null) {
             result.addAll(azureProperties.getScopes());
         }
