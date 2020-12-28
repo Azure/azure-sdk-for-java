@@ -100,7 +100,7 @@ public class AADAuthenticationProperties {
      */
     private Boolean sessionStateless = false;
 
-    private String authorizationServerUri = "https://login.microsoftonline.com/";
+    private String baseUri = "https://login.microsoftonline.com/";
 
     private String graphMembershipUri = "https://graph.microsoft.com/v1.0/me/memberOf";
 
@@ -294,12 +294,12 @@ public class AADAuthenticationProperties {
         this.sessionStateless = sessionStateless;
     }
 
-    public String getAuthorizationServerUri() {
-        return authorizationServerUri;
+    public String getBaseUri() {
+        return baseUri;
     }
 
-    public void setAuthorizationServerUri(String authorizationServerUri) {
-        this.authorizationServerUri = authorizationServerUri;
+    public void setBaseUri(String baseUri) {
+        this.baseUri = baseUri;
     }
 
     public String getGraphMembershipUri() {
