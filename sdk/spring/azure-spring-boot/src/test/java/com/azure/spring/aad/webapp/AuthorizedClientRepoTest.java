@@ -68,7 +68,7 @@ public class AuthorizedClientRepoTest {
         PropertiesUtils.getContextRunner()
             .withPropertyValues(
                 "azure.activedirectory.authorization.graph.scopes = Calendars.Read",
-                "azure.activedirectory.authorization-server-uri = fake-uri")
+                "azure.activedirectory.base-uri = fake-uri")
             .run(context -> {
                 getBeans(context);
 
