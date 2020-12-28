@@ -94,7 +94,7 @@ azure:
     authorization:
       graph:
         scopes:
-          - User.read
+          - https://graph.microsoft.com/User.Read
       custom:
         scopes:
           - api://custom-client-id/File.read

@@ -58,12 +58,12 @@ public class AADWebAppConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public OAuth2AuthorizedClientRepository authorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
-        return new AzureAuthorizedClientRepository(repo);
+        return new AADOAuth2AuthorizedClientRepository(repo);
     }
 
     @Bean
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AADAuthenticationProperties properties) {
-        return new AzureActiveDirectoryOAuth2UserService(properties);
+        return new AADOAuth2UserService(properties);
     }
 
     private AzureClientRegistration createDefaultClient() {
@@ -147,14 +147,14 @@ public class AADWebAppConfiguration {
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
 
-        AuthorizationServerEndpoints endpoints =
-            new AuthorizationServerEndpoints(properties.getAuthorizationServerUri());
-        result.authorizationUri(endpoints.authorizationEndpoint(properties.getTenantId()));
-        result.tokenUri(endpoints.tokenEndpoint(properties.getTenantId()));
-        result.jwkSetUri(endpoints.jwkSetEndpoint(properties.getTenantId()));
+        AADAuthorizationServerEndpoints endpoints =
+            new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
+        result.authorizationUri(endpoints.authorizationEndpoint());
+        result.tokenUri(endpoints.tokenEndpoint());
+        result.jwkSetUri(endpoints.jwkSetEndpoint());
 
         Map<String, Object> configurationMetadata = new LinkedHashMap<>();
-        String endSessionEndpoint = endpoints.endSessionEndpoint(properties.getTenantId());
+        String endSessionEndpoint = endpoints.endSessionEndpoint();
         configurationMetadata.put("end_session_endpoint", endSessionEndpoint);
         result.providerConfigurationMetadata(configurationMetadata);
 
@@ -167,7 +167,7 @@ public class AADWebAppConfiguration {
     @Configuration
     @ConditionalOnBean(ObjectPostProcessor.class)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
-    public static class DefaultAzureOAuth2Configuration extends AzureOAuth2Configuration {
+    public static class DefaultAADWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {

@@ -3,6 +3,7 @@
 ## 3.0.0-beta.2 (Unreleased)
 ### Breaking Changes
 - Deprecate `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter`.
+- Support the setting of post logout redirect uri 
 
 ### New Features
 - Support consent multiple client-registration when login.

@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
+import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSObject;
@@ -66,15 +66,15 @@ public class UserPrincipalManager {
 
     /**
      * Create a new {@link UserPrincipalManager} based of the
-     * {@link AuthorizationServerEndpoints#jwkSetEndpoint(String)}
+     * {@link AADAuthorizationServerEndpoints#jwkSetEndpoint()}
      *
-     * @param authorizationServerEndpoints - used to retrieve the JWKS URL
+     * @param endpoints - used to retrieve the JWKS URL
      * @param aadAuthenticationProperties - used to retrieve the environment.
      * @param resourceRetriever - configures the {@link RemoteJWKSet} call.
      * @param explicitAudienceCheck Whether explicitly check the audience.
      * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
-    public UserPrincipalManager(AuthorizationServerEndpoints authorizationServerEndpoints,
+    public UserPrincipalManager(AADAuthorizationServerEndpoints endpoints,
                                 AADAuthenticationProperties aadAuthenticationProperties,
                                 ResourceRetriever resourceRetriever,
                                 boolean explicitAudienceCheck) {
@@ -88,7 +88,7 @@ public class UserPrincipalManager {
         }
         try {
             String jwkSetEndpoint =
-                authorizationServerEndpoints.jwkSetEndpoint(this.aadAuthenticationProperties.getTenantId());
+                endpoints.jwkSetEndpoint();
             keySource = new RemoteJWKSet<>(new URL(jwkSetEndpoint), resourceRetriever);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);
@@ -98,10 +98,10 @@ public class UserPrincipalManager {
 
     /**
      * Create a new {@link UserPrincipalManager} based of the
-     * {@link AuthorizationServerEndpoints#jwkSetEndpoint(String)}
+     * {@link AADAuthorizationServerEndpoints#jwkSetEndpoint()}
      * ()}
      *
-     * @param authorizationServerEndpoints - used to retrieve the JWKS URL
+     * @param endpoints - used to retrieve the JWKS URL
      * @param aadAuthenticationProperties - used to retrieve the environment.
      * @param resourceRetriever - configures the {@link RemoteJWKSet} call.
      * @param jwkSetCache - used to cache the JWK set for a finite time, default set to 5 minutes which matches
@@ -109,7 +109,7 @@ public class UserPrincipalManager {
      * @param explicitAudienceCheck Whether explicitly check the audience.
      * @throws IllegalArgumentException If AAD key discovery URI is malformed.
      */
-    public UserPrincipalManager(AuthorizationServerEndpoints authorizationServerEndpoints,
+    public UserPrincipalManager(AADAuthorizationServerEndpoints endpoints,
                                 AADAuthenticationProperties aadAuthenticationProperties,
                                 ResourceRetriever resourceRetriever,
                                 boolean explicitAudienceCheck,
@@ -123,8 +123,7 @@ public class UserPrincipalManager {
             this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }
         try {
-            String jwkSetEndpoint =
-                authorizationServerEndpoints.jwkSetEndpoint(this.aadAuthenticationProperties.getTenantId());
+            String jwkSetEndpoint = endpoints.jwkSetEndpoint();
             keySource = new RemoteJWKSet<>(new URL(jwkSetEndpoint), resourceRetriever, jwkSetCache);
         } catch (MalformedURLException e) {
             LOGGER.error("Failed to parse active directory key discovery uri.", e);
