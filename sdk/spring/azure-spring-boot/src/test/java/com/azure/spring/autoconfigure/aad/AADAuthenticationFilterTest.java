@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
+import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.proc.BadJOSEException;
 import org.junit.Ignore;
@@ -46,7 +46,7 @@ public class AADAuthenticationFilterTest {
         response = mock(HttpServletResponse.class);
         filter = new AADAuthenticationFilter(
             mock(AADAuthenticationProperties.class),
-            mock(AuthorizationServerEndpoints.class),
+            mock(AADAuthorizationServerEndpoints.class),
             userPrincipalManager
         );
     }

@@ -28,11 +28,11 @@ public class AADWebAppConfigurationTest {
                 assertEquals("fake-client-id", azure.getClientId());
                 assertEquals("fake-client-secret", azure.getClientSecret());
 
-                AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints();
-                assertEquals(endpoints.authorizationEndpoint("fake-tenant-id"),
+                AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints("https://login.microsoftonline.com/", "fake-tenant-id");
+                assertEquals(endpoints.authorizationEndpoint(),
                     azure.getProviderDetails().getAuthorizationUri());
-                assertEquals(endpoints.tokenEndpoint("fake-tenant-id"), azure.getProviderDetails().getTokenUri());
-                assertEquals(endpoints.jwkSetEndpoint("fake-tenant-id"), azure.getProviderDetails().getJwkSetUri());
+                assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
+                assertEquals(endpoints.jwkSetEndpoint(), azure.getProviderDetails().getJwkSetUri());
                 assertEquals("{baseUrl}/login/oauth2/code/{registrationId}", azure.getRedirectUriTemplate());
                 assertDefaultScopes(azure, "openid", "profile", "https://graph.microsoft.com/User.Read");
             });
@@ -140,16 +140,16 @@ public class AADWebAppConfigurationTest {
     public void customizeUri() {
         PropertiesUtils.getContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization-server-uri = http://localhost/"
+                "azure.activedirectory.base-uri = http://localhost/"
             )
             .run(context -> {
                 AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-                AuthorizationServerEndpoints endpoints = new AuthorizationServerEndpoints("http://localhost/");
-                assertEquals(endpoints.authorizationEndpoint("fake-tenant-id"),
+                AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints("http://localhost/", "fake-tenant-id");
+                assertEquals(endpoints.authorizationEndpoint(),
                     azure.getProviderDetails().getAuthorizationUri());
-                assertEquals(endpoints.tokenEndpoint("fake-tenant-id"), azure.getProviderDetails().getTokenUri());
-                assertEquals(endpoints.jwkSetEndpoint("fake-tenant-id"), azure.getProviderDetails().getJwkSetUri());
+                assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
+                assertEquals(endpoints.jwkSetEndpoint(), azure.getProviderDetails().getJwkSetUri());
             });
     }
 
