@@ -16,12 +16,18 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 * **Create a client secret key for the application**: Go to API ACCESS - Keys to create a secret key (`client-secret`).
 
 ### Include the package
+To use this starter in an web application, please add following packages:
+
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
     <version>3.0.0-beta.1</version>
+</dependency>
+<dependency>
+  <groupId>org.springframework.security</groupId>
+  <artifactId>spring-security-oauth2-client</artifactId>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
@@ -40,7 +46,7 @@ The authorization flow for resource server:
 * Evaluate the permission based on membership info to grant or deny access
 
 ### Group membership
-The way this starter uses to load get users' membership depends on the configured membership URI. By default, the starter uses `https://graph.microsoft.com/v1.0/me/memberOf` to get direct membership of current user. 
+The way this starter uses to load users' membership depends on the configured membership URI. By default, the starter uses `https://graph.microsoft.com/v1.0/me/memberOf` to get direct membership of current user. 
 To get all transitive membership, the following configuration is required:
 
 ```yaml

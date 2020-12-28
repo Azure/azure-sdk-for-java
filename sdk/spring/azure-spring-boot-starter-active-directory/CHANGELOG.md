@@ -25,7 +25,19 @@
 - Provide AAD specific token validation of audience validation and issuer validation.
 - Expose a flag `isPersonalAccount` in `AzureOAuth2AuthenticatedPrincipal` to specify the account type in use: work account or personal account.
 - Enable loading transitive membership information from Microsoft Graph API.
-
+- Enable following `azure-spring-boot-starter-active-directory` configuration properties:
+    ```yaml
+    # Redirect URI of authorization server
+    azure.activedirectory.redirectUriTemplate
+    # Refresh time of the cached JWK set before it expires, default value is 5 minutes.
+    azure.activedirectory.jwkSetCacheRefreshTime
+    # Logout redirect URI
+    azure.activedirectory.postLogoutRedirectUri
+    # Authorization URI, default value is "https://login.microsoftonline.com/"
+    azure.activedirectory.authorizationServerUri
+    # Membership URI of Microsoft Graph API to get users' group information, default value is "https://graph.microsoft.com/v1.0/me/memberOf"
+    azure.activedirectory.graphMembershipUri
+    ```
 ## 2.3.5 (2020-09-14)
 ### Key Bug Fixes
 - Get full list of groups the user belongs to from Graph API
