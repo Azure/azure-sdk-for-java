@@ -28,15 +28,15 @@
 - Enable following `azure-spring-boot-starter-active-directory` configuration properties:
     ```yaml
     # Redirect URI of authorization server
-    azure.activedirectory.redirectUriTemplate
+    azure.activedirectory.redirect-uri-template
     # Refresh time of the cached JWK set before it expires, default value is 5 minutes.
-    azure.activedirectory.jwkSetCacheRefreshTime
+    azure.activedirectory.jwk-set-cache-refresh-time
     # Logout redirect URI
-    azure.activedirectory.postLogoutRedirectUri
+    azure.activedirectory.post-logout-redirect-uri
     # Authorization URI, default value is "https://login.microsoftonline.com/"
-    azure.activedirectory.authorizationServerUri
+    azure.activedirectory.authorization-server-uri
     # Membership URI of Microsoft Graph API to get users' group information, default value is "https://graph.microsoft.com/v1.0/me/memberOf"
-    azure.activedirectory.graphMembershipUri
+    azure.activedirectory.graph-membership-uri
     ```
 ## 2.3.5 (2020-09-14)
 ### Key Bug Fixes
