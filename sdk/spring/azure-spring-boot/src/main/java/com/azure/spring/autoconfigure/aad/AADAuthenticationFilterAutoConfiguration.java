@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
+import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
 import com.azure.spring.telemetry.TelemetrySender;
 import com.nimbusds.jose.jwk.source.DefaultJWKSetCache;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
@@ -49,12 +49,12 @@ public class AADAuthenticationFilterAutoConfiguration {
     public static final String PROPERTY_PREFIX = "azure.activedirectory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
-    private final AADAuthenticationProperties aadAuthenticationProperties;
-    private final AuthorizationServerEndpoints authorizationServerEndpoints;
+    private final AADAuthenticationProperties properties;
+    private final AADAuthorizationServerEndpoints endpoints;
 
-    public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties aadAuthenticationProperties) {
-        this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.authorizationServerEndpoints = new AuthorizationServerEndpoints();
+    public AADAuthenticationFilterAutoConfiguration(AADAuthenticationProperties properties) {
+        this.properties = properties;
+        this.endpoints = new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
     }
 
     /**
@@ -70,8 +70,8 @@ public class AADAuthenticationFilterAutoConfiguration {
     public AADAuthenticationFilter azureADJwtTokenFilter() {
         LOG.info("AzureADJwtTokenFilter Constructor.");
         return new AADAuthenticationFilter(
-            aadAuthenticationProperties,
-            authorizationServerEndpoints,
+            properties,
+            endpoints,
             getJWTResourceRetriever(),
             getJWKSetCache()
         );
@@ -86,8 +86,8 @@ public class AADAuthenticationFilterAutoConfiguration {
         LOG.info("Creating AzureADStatelessAuthFilter bean.");
         return new AADAppRoleStatelessAuthenticationFilter(
             new UserPrincipalManager(
-                authorizationServerEndpoints,
-                aadAuthenticationProperties,
+                endpoints,
+                properties,
                 resourceRetriever,
                 true
             )
@@ -98,23 +98,23 @@ public class AADAuthenticationFilterAutoConfiguration {
     @ConditionalOnMissingBean(ResourceRetriever.class)
     public ResourceRetriever getJWTResourceRetriever() {
         return new DefaultResourceRetriever(
-            aadAuthenticationProperties.getJwtConnectTimeout(),
-            aadAuthenticationProperties.getJwtReadTimeout(),
-            aadAuthenticationProperties.getJwtSizeLimit()
+            properties.getJwtConnectTimeout(),
+            properties.getJwtReadTimeout(),
+            properties.getJwtSizeLimit()
         );
     }
 
     @Bean
     @ConditionalOnMissingBean(JWKSetCache.class)
     public JWKSetCache getJWKSetCache() {
-        long lifespan = aadAuthenticationProperties.getJwkSetCacheLifespan();
-        long refreshTime = aadAuthenticationProperties.getJwkSetCacheRefreshTime();
+        long lifespan = properties.getJwkSetCacheLifespan();
+        long refreshTime = properties.getJwkSetCacheRefreshTime();
         return new DefaultJWKSetCache(lifespan, refreshTime, TimeUnit.MILLISECONDS);
     }
 
     @PostConstruct
     private void sendTelemetry() {
-        if (aadAuthenticationProperties.isAllowTelemetry()) {
+        if (properties.isAllowTelemetry()) {
             final Map<String, String> events = new HashMap<>();
             final TelemetrySender sender = new TelemetrySender();
             events.put(SERVICE_NAME, getClassPackageSimpleName(AADAuthenticationFilterAutoConfiguration.class));
