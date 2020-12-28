@@ -4,6 +4,7 @@
 package com.azure.test.aad.selenium.login;
 
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +26,12 @@ public class AADLoginAndRoleIT {
     @Test
     public void roleTest() throws InterruptedException {
         AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-        aadSeleniumITHelper.httpGetAndAssertContains("api/home", Collections.singletonList("home"));
-        aadSeleniumITHelper.httpGetAndAssertContains("api/group1", Collections.singletonList("group1"));
-        aadSeleniumITHelper.httpGetAndAssertNotContains("api/status403", Collections.singletonList("error"));
+        String httpResponse = aadSeleniumITHelper.httpGet("api/home");
+        Assert.assertTrue(httpResponse.contains("home"));
+        httpResponse = aadSeleniumITHelper.httpGet("api/group1");
+        Assert.assertTrue(httpResponse.contains("group1"));
+        httpResponse = aadSeleniumITHelper.httpGet("api/status403");
+        Assert.assertFalse(httpResponse.contains("error"));
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)

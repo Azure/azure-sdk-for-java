@@ -12,9 +12,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -47,6 +45,7 @@ public class AADSeleniumITHelper {
         options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
         this.driver = new ChromeDriver(options);
 
+        this.app.start();
         login();
     }
 
@@ -102,26 +101,10 @@ public class AADSeleniumITHelper {
         Thread.sleep(10000);
     }
 
-    public void httpGetAndAssertContains(String endpoint,
-                                         List<String> containedValues) throws InterruptedException {
-        httpGetAndAssert(endpoint, containedValues, Collections.emptyList());
-    }
-
-    public void httpGetAndAssertNotContains(String endpoint,
-                                            List<String> containedValues) throws InterruptedException {
-        httpGetAndAssert(endpoint, Collections.emptyList(), containedValues);
-    }
-
-    public void httpGetAndAssert(String endpoint,
-                                 List<String> containedValues,
-                                 List<String> notContainedValues) throws InterruptedException {
+    public String httpGet(String endpoint) throws InterruptedException {
         driver.get((app.root() + endpoint));
         Thread.sleep(1000);
-        String actualValue = driver.findElement(By.tagName("body")).getText();
-        containedValues.forEach(
-            containedValue -> Assert.assertTrue(actualValue.contains(containedValue)));
-        notContainedValues.forEach(
-            notContainedValue -> Assert.assertFalse(actualValue.contains(notContainedValue)));
+        return driver.findElement(By.tagName("body")).getText();
     }
 
     public void logoutTest() throws InterruptedException {

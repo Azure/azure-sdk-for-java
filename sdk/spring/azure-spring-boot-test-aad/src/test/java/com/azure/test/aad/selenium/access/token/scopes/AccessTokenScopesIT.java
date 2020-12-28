@@ -4,6 +4,7 @@
 package com.azure.test.aad.selenium.access.token.scopes;
 
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -13,8 +14,6 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -34,31 +33,24 @@ public class AccessTokenScopesIT {
                 + "https://graph.microsoft.com/Directory.AccessAsUser.All");
         AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, arguments);
 
-        aadSeleniumITHelper.httpGetAndAssertContains(
-            "accessTokenScopes/azure",
-            Arrays.asList(
-                "profile",
-                "https://graph.microsoft.com/Directory.AccessAsUser.All",
-                "https://graph.microsoft.com/User.Read"));
+        String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
+        Assert.assertTrue(httpResponse.contains("profile"));
+        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
+        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
 
-        aadSeleniumITHelper.httpGetAndAssertContains(
-            "accessTokenScopes/graph",
-            Arrays.asList(
-                "profile",
-                "https://graph.microsoft.com/Directory.AccessAsUser.All",
-                "https://graph.microsoft.com/User.Read"));
+        httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/graph");
+        Assert.assertTrue(httpResponse.contains("profile"));
+        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
+        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
 
-        aadSeleniumITHelper.httpGetAndAssert(
-            "accessTokenScopes/office",
-            Arrays.asList(
-                "https://manage.office.com/ActivityFeed.Read",
-                "https://manage.office.com/ActivityFeed.ReadDlp",
-                "https://manage.office.com/ServiceHealth.Read"),
-            Collections.singletonList("profile"));
+        httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/office");
+        Assert.assertFalse(httpResponse.contains("profile"));
+        Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.Read"));
+        Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.ReadDlp"));
+        Assert.assertTrue(httpResponse.contains("https://manage.office.com/ServiceHealth.Read"));
 
-        aadSeleniumITHelper.httpGetAndAssertNotContains(
-            "accessTokenScopes/arm",
-            Collections.singletonList("error"));
+        httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/arm");
+        Assert.assertFalse(httpResponse.contains("error"));
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
