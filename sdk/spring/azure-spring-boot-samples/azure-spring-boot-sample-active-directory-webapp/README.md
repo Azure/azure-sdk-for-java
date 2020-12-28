@@ -31,7 +31,7 @@ In order to try the authorization action with this sample with minimum effort, [
 ```yaml
 azure:
    activedirectory:
-      authorization:
+      authorization-clients:
          arm:
             on-demand: true
             scopes: https://management.core.windows.net/user_impersonation
