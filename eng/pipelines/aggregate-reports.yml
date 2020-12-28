@@ -51,7 +51,7 @@ jobs:
       displayName: 'Generate Reports'
       inputs:
         mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Paggregatereports'
+        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Paggregatereports'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
@@ -70,25 +70,25 @@ jobs:
     - task: PublishCodeCoverageResults@1
       inputs:
         codeCoverageTool: JaCoCo
-        summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
-        reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
+        summaryFileLocation: target/site/test-coverage/jacoco.xml
+        reportDirectory: target/site/test-coverage/
         failIfCoverageEmpty: false
 
-#    # Publish code coverage to an artifact so it can be uploaded to the Maven site.
-#    # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
-#    - task: PublishPipelineArtifact@0
-#      displayName: 'Publish coverage artifact'
-#      inputs:
-#        artifactName: coverage
-#        targetPath: eng/jacoco-test-coverage/target/site/
+    # Publish code coverage to an artifact so it can be uploaded to the Maven site.
+    # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
+    - task: PublishPipelineArtifact@0
+      displayName: 'Publish coverage artifact'
+      inputs:
+        artifactName: coverage
+        targetPath: target/site/
 
     - pwsh: |
         $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1
       displayName: Generate Interdependency Report Data
 
     - pwsh: |
-        Copy-Item eng/jacoco-test-coverage/target/staging $(Build.ArtifactStagingDirectory) -Recurse
-        Copy-Item eng/jacoco-test-coverage/target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item target/staging $(Build.ArtifactStagingDirectory) -Recurse
+        Copy-Item target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
         Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
         Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
 
