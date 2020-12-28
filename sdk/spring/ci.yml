@@ -140,6 +140,8 @@ extends:
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory-resource-server
         groupId: com.azure.spring
+      - name: azure-spring-boot-sample-active-directory-resource-server-with-filter
+        groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-b2c-oidc
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-webapp

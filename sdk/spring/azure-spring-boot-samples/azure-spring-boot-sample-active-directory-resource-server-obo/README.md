@@ -1,12 +1,12 @@
 # OAuth 2.0 Sample for azure-spring-boot-sample-active-directory-resource-server-obo library for Java
 
 ## Key concepts
-[Resource server access other resources usage][resource-server-access-other-resources-usage] is an extension scenario of the *azure-spring-boot-sample-active-directory-spring-security-resource-server* sample. Similarly, this sample illustrates how to protect a Java web API by restricting access to its resources to authorized accounts, and the restricted resource will access other restricted resource, such as Graph API and Custom API.
+[Resource server access other resources usage][resource-server-access-other-resources-usage] is an extension scenario of the *azure-spring-boot-sample-active-directory-resource-server* sample. Similarly, this sample illustrates how to protect a Java web API by restricting access to its resources to authorized accounts, and the restricted resource will access other restricted resource, such as Graph API and Custom API.
 
 
 ## Getting started
 We will prepare two application to demonstrate the dependent calls of resources.
-Another sample [spring security resource server sample][azure-spring-boot-sample-active-directory-spring-security-resource-server] will be as Custom API resource.
+Another sample [spring security resource server sample][azure-spring-boot-sample-active-directory-resource-server] will be as Custom API resource.
 
 ### Environment checklist
 We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
@@ -42,21 +42,15 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
       <version>1.8.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>msal4j</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
-    </dependency>
-    <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-jose</artifactId>
-      <version>5.3.5.RELEASE</version> <!-- {x-version-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
     </dependency>
 </dependencies>
 ```
 
 ### Register your Web API
-You can follow *azure-spring-boot-sample-active-directory-spring-security-resource-server* sample to add `ResourceAccessGraph.read`, `ResourceAccessGraphCustomResources.read` scopes. 
-Convention current application id url is `api://sample-client-id`, ; the application id url of the sample *azure-spring-boot-sample-active-directory-spring-security-resource-server* is `custom-client-id`.  
+You can follow *azure-spring-boot-sample-active-directory-resource-server* sample to add `ResourceAccessGraph.read`, `ResourceAccessGraphCustomResources.read` scopes. 
+Convention current application id url is `api://sample-client-id`, ; the application id url of the sample *azure-spring-boot-sample-active-directory-resource-server* is `custom-client-id`.  
 After adding as shown below:
 
    ![API Permissions](resource/resource-server-obo-add-scope.png)
@@ -75,7 +69,7 @@ Sign in to the [Azure portal][azure-portal]. If you have access to multiple tena
 
 1. Select **Azure Active Directory** > **App registrations**, and then select your current sample application (not your web API).
 
-2. Select **API permissions** > **Add a permission** > **My APIs**, select *azure-spring-boot-sample-active-directory-spring-security-resource-server* application name.
+2. Select **API permissions** > **Add a permission** > **My APIs**, select *azure-spring-boot-sample-active-directory-resource-server* application name.
 
 3. **Delegated permissions** is selected by default， Select **File** > **File.Read** permission, select **Add permission** to complete the process.
 
@@ -100,7 +94,7 @@ azure:
     authorization:
       graph:
         scopes:
-          - User.read
+          - https://graph.microsoft.com/User.Read
       custom:
         scopes:
           - api://custom-client-id/File.read
@@ -160,3 +154,4 @@ Graph response success. Custom(local) response success.
 [azure-portal]: https://portal.azure.com/
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
 [resource-server-access-other-resources-usage]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-starter-active-directory#resource-server-access-other-resources-usage
+[azure-spring-boot-sample-active-directory-resource-server]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server

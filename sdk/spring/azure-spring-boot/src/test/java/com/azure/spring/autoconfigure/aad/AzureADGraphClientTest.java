@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
+import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
 import com.google.common.collect.ImmutableSet;
 import org.junit.Before;
 import org.junit.Test;
@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(MockitoJUnitRunner.class)
 public class AzureADGraphClientTest {
 
-    private AzureADGraphClient adGraphClient;
+    private AzureADGraphClient client;
 
     @Mock
-    private AuthorizationServerEndpoints authorizationServerEndpoints;
+    private AADAuthorizationServerEndpoints endpoints;
 
     @Before
     public void setup() {
@@ -33,14 +33,13 @@ public class AzureADGraphClientTest {
         activeDirectoryGroups.add("Test_Group");
         AADAuthenticationProperties aadAuthenticationProperties = new AADAuthenticationProperties();
         aadAuthenticationProperties.getUserGroup().setAllowedGroups(activeDirectoryGroups);
-        adGraphClient = new AzureADGraphClient("client", "pass", aadAuthenticationProperties,
-            authorizationServerEndpoints);
+        client = new AzureADGraphClient("client", "pass", aadAuthenticationProperties, endpoints);
     }
 
     @Test
     public void testConvertGroupToGrantedAuthorities() {
         final Set<String> groups = ImmutableSet.of("Test_Group");
-        final Set<SimpleGrantedAuthority> authorities = adGraphClient.toGrantedAuthoritySet(groups);
+        final Set<SimpleGrantedAuthority> authorities = client.toGrantedAuthoritySet(groups);
         assertThat(authorities)
             .hasSize(1)
             .extracting(GrantedAuthority::getAuthority)
@@ -50,7 +49,7 @@ public class AzureADGraphClientTest {
     @Test
     public void testConvertGroupToGrantedAuthoritiesUsingAllowedGroups() {
         final Set<String> groups = ImmutableSet.of("Test_Group", "Another_Group");
-        final Set<SimpleGrantedAuthority> authorities = adGraphClient.toGrantedAuthoritySet(groups);
+        final Set<SimpleGrantedAuthority> authorities = client.toGrantedAuthoritySet(groups);
         assertThat(authorities)
             .hasSize(1)
             .extracting(GrantedAuthority::getAuthority)

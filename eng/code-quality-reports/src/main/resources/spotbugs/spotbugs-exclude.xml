@@ -2253,6 +2253,12 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- Exclude NM_CLASS_NOT_EXCEPTION for all resource manager due to it is just naming -->
+  <Match>
+    <Class name="~com\.azure\.resourcemanager(\.[^.]+)*" />
+    <Bug pattern="NM_CLASS_NOT_EXCEPTION" />
+  </Match>
+
   <!-- Exclude for Resource Manager generated code -->
   <!-- NP_LOAD_OF_KNOWN_NULL_VALUE - Known issue in autorest of setting parameters when calling REST API -->
   <!-- SIC_INNER_SHOULD_BE_STATIC_ANON - Known issue in autorest of inner Enumeration for InputStream response -->

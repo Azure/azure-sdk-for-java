@@ -141,6 +141,7 @@ com.azure.spring:azure-spring-cloud-feature-management-web;1.2.8-beta.1;1.2.8-be
 com.azure.spring:azure-spring-cloud-feature-management;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-boot-test-aad;1.0.0;1.0.0
+com.azure.spring:azure-spring-boot-test-aad-obo;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-core;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-cosmosdb;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-keyvault;1.0.0;1.0.0
