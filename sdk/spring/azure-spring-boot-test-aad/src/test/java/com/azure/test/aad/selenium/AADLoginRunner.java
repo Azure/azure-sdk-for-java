@@ -1,7 +1,6 @@
 package com.azure.test.aad.selenium;
 
 import com.azure.test.utils.AppRunner;
-import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -9,8 +8,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,8 +26,6 @@ public class AADLoginRunner {
 
     public static final String DEFAULT_USERNAME = System.getenv(AAD_USER_NAME_1);
     private static final String DEFAULT_PASSWORD = System.getenv(AAD_USER_PASSWORD_1);
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADLoginRunner.class);
 
     static {
         final String directory = "src/test/resources/driver/";
@@ -68,14 +63,12 @@ public class AADLoginRunner {
     private final WebDriver driver;
     private final String password;
     private final String username;
-    private final WebDriverWait wait;
 
     private AADLoginRunner(String username, String password, AppRunner app, WebDriver driver) {
         this.username = username;
         this.password = password;
         this.app = app;
         this.driver = driver;
-        this.wait = new WebDriverWait(this.driver, 10);
     }
 
     public static AADLoginRunnerConfiguration build(Class<?> appClass) {
@@ -85,11 +78,20 @@ public class AADLoginRunner {
     public void run(BrowserCommandWithAppRunner command) {
         try {
             this.app.start();
-            command.login(login())
-                   .andThen((app, driver, wait) -> LOGGER.info("Test ===> {}.{}() has finished running.",
-                       Thread.currentThread().getStackTrace()[6].getClassName(),
-                       Thread.currentThread().getStackTrace()[6].getMethodName()))
-                   .run(this.app, this.driver, this.wait);
+            command.login((app, driver) -> {
+                WebDriverWait wait = new WebDriverWait(this.driver, 10);
+                driver.get(app.root() + "oauth2/authorization/azure");
+                wait.until(presenceOfElementLocated(By.name("loginfmt")))
+                    .sendKeys(this.username + Keys.ENTER);
+                Thread.sleep(10000);
+
+                driver.findElement(By.name("passwd"))
+                      .sendKeys(this.password + Keys.ENTER);
+                Thread.sleep(10000);
+
+                driver.findElement(By.cssSelector("input[type='submit']")).click();
+                Thread.sleep(10000);
+            }).run(this.app, this.driver);
         } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
@@ -102,42 +104,18 @@ public class AADLoginRunner {
         }
     }
 
-    private BrowserCommandWithAppRunner login() {
-        return (app, driver, wait) -> {
-            driver.get(app.root() + "oauth2/authorization/azure");
-            wait.until(presenceOfElementLocated(By.name("loginfmt")))
-                .sendKeys(this.username + Keys.ENTER);
-            Thread.sleep(10000);
-
-            driver.findElement(By.name("passwd"))
-                  .sendKeys(this.password + Keys.ENTER);
-            Thread.sleep(10000);
-
-            driver.findElement(By.cssSelector("input[type='submit']")).click();
-            Thread.sleep(10000);
-        };
-    }
-
     @FunctionalInterface
     public interface BrowserCommandWithAppRunner {
 
-        default BrowserCommandWithAppRunner andThen(BrowserCommandWithAppRunner after) {
-            Objects.requireNonNull(after);
-            return (AppRunner app, WebDriver driver, WebDriverWait wait) -> {
-                run(app, driver, wait);
-                after.run(app, driver, wait);
-            };
-        }
-
         default BrowserCommandWithAppRunner login(BrowserCommandWithAppRunner login) {
             Objects.requireNonNull(login);
-            return (AppRunner app, WebDriver driver, WebDriverWait wait) -> {
-                login.run(app, driver, wait);
-                run(app, driver, wait);
+            return (AppRunner app, WebDriver driver) -> {
+                login.run(app, driver);
+                run(app, driver);
             };
         }
 
-        void run(AppRunner app, WebDriver driver, WebDriverWait wait) throws Exception;
+        void run(AppRunner app, WebDriver driver) throws Exception;
     }
 
     public static class AADLoginRunnerConfiguration {
@@ -161,6 +139,11 @@ public class AADLoginRunner {
             return this;
         }
 
+        public AADLoginRunnerConfiguration extendsDefault(Consumer<AppRunner> configure) {
+            this.configure = defautlConfigure().andThen(configure);
+            return this;
+        }
+
         public AADLoginRunner login(String username, String password) {
             this.configure.accept(this.app);
             return new AADLoginRunner(username, password, this.app, this.driver);
@@ -178,30 +161,6 @@ public class AADLoginRunner {
                 app.property("azure.activedirectory.user-group.allowed-groups", "group1");
                 app.property("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
             };
-        }
-    }
-
-    public static class EasyTester {
-        private final AppRunner app;
-        private final WebDriver driver;
-
-        public EasyTester(AppRunner app, WebDriver driver) {
-            this.app = app;
-            this.driver = driver;
-        }
-
-        public void assertEquals(String uri, String expected) throws InterruptedException {
-            Assert.assertEquals(expected, get(uri));
-        }
-
-        public void assertNotEquals(String uri, String expected) throws InterruptedException {
-            Assert.assertNotEquals(expected, get(uri));
-        }
-
-        private String get(String uri) throws InterruptedException {
-            this.driver.get(this.app.root() + uri);
-            Thread.sleep(1000);
-            return this.driver.findElement(By.tagName("body")).getText();
         }
     }
 }

@@ -1,12 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.login;
+package com.azure.test.aad.selenium.login;
 
 import com.azure.test.aad.selenium.AADLoginRunner;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,17 +28,28 @@ public class AADLoginIT {
 
     @Test
     public void loginTest() {
-        AADLoginRunner.build(DumbApp.class).login().run((app, driver, wait) -> {
-            AADLoginRunner.EasyTester tester = new AADLoginRunner.EasyTester(app, driver);
-            tester.assertEquals("api/home", "home");
-            tester.assertEquals("api/group1", "group1");
-            tester.assertNotEquals("api/status403", "error");
+        AADLoginRunner.build(DumbApp.class).login().run((app, driver) -> {
+            driver.get((app.root() + "api/home"));
+            Thread.sleep(1000);
+            String result = driver.findElement(By.tagName("body")).getText();
+            Assert.assertEquals("home", result);
+
+            driver.get((app.root() + "api/group1"));
+            Thread.sleep(1000);
+            result = driver.findElement(By.tagName("body")).getText();
+            Assert.assertEquals("group1", result);
+
+            driver.get((app.root() + "api/status403"));
+            Thread.sleep(1000);
+            result = driver.findElement(By.tagName("body")).getText();
+            Assert.assertNotEquals("error", result);
         });
     }
 
     @Test
     public void logoutTest() {
-        AADLoginRunner.build(DumbApp.class).login().run((app, driver, wait) -> {
+        AADLoginRunner.build(DumbApp.class).login().run((app, driver) -> {
+            WebDriverWait wait = new WebDriverWait(driver, 10);
             driver.get(app.root() + "logout");
             wait.until(presenceOfElementLocated(By.cssSelector("button[type='submit']"))).click();
             Thread.sleep(10000);
