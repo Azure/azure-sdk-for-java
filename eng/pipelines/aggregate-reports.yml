@@ -74,13 +74,13 @@ jobs:
         reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
         failIfCoverageEmpty: false
 
-    # Publish code coverage to an artifact so it can be uploaded to the Maven site.
-    # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
-    - task: PublishPipelineArtifact@0
-      displayName: 'Publish coverage artifact'
-      inputs:
-        artifactName: coverage
-        targetPath: eng/jacoco-test-coverage/target/site/
+#    # Publish code coverage to an artifact so it can be uploaded to the Maven site.
+#    # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
+#    - task: PublishPipelineArtifact@0
+#      displayName: 'Publish coverage artifact'
+#      inputs:
+#        artifactName: coverage
+#        targetPath: eng/jacoco-test-coverage/target/site/
 
     - pwsh: |
         $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1
