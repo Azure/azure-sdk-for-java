@@ -48,8 +48,8 @@ public class AADResourceServerOboConfigurationTest {
     public void testOnlyGraphClient() {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
-            .withPropertyValues("azure.activedirectory.authorization.graph.scopes=https://graph.microsoft.com/User"
-                + ".Read")
+            .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes="
+                + "https://graph.microsoft.com/User.Read")
             .run(context -> {
                 final InMemoryClientRegistrationRepository oboRepo = context.getBean(
                     InMemoryClientRegistrationRepository.class);
@@ -70,10 +70,10 @@ public class AADResourceServerOboConfigurationTest {
     public void testExistCustomAndGraphClient() {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
-            .withPropertyValues("azure.activedirectory.authorization.graph.scopes=https://graph.microsoft.com/User"
-                + ".Read")
-            .withPropertyValues("azure.activedirectory.authorization.custom"
-                + ".scopes=api://52261059-e515-488e-84fd-a09a3f372814/File.Read")
+            .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes="
+                + "https://graph.microsoft.com/User.Read")
+            .withPropertyValues("azure.activedirectory.authorization-clients.custom.scopes="
+                + "api://52261059-e515-488e-84fd-a09a3f372814/File.Read")
             .run(context -> {
                 final InMemoryClientRegistrationRepository oboRepo = context.getBean(
                     InMemoryClientRegistrationRepository.class);
