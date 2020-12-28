@@ -21,14 +21,12 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
 
 ## Key concepts
 This package provides 2 ways to integrate with Spring Security and authenticate with Azure Active Directory.
-
 The authorization flow is composed of 3 phrases:
 * Login with credentials and validate id_token from Azure AD 
 * Get On-Behalf-Of token and membership info from Azure AD Graph API
@@ -45,12 +43,12 @@ azure:
 ``` 
 
 ### Web application
-Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the groups or roles claim in the access token. 
-
+Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the groups or roles claim in the access token.
 This starter provides a convenient way to quickly access resource servers.
 1. Resource servers should be registered as `ClientRegistration`.
 2. In Controller, `@RegisteredOAuth2AuthorizedClient` can be used to  get `OAuth2AuthorizedClient`. 
    `OAuth2AuthorizedClient` contains accessToken to access related client resource.
+   
 #### On-demand authorization
 By default, the starter will launch the Oauth2 Authorization Code flow for a logging in user. During the authorization flow, `azure-spring-boot-starter-active-directory` adds all the configured scopes except **on-demand** ones into authorization code requests to ask for user's authorization consent. The authorization flow of `on-demand` resources will be launched at the first time the user wants to access them.
 
@@ -91,13 +89,11 @@ Resource server accesses other resource servers which are protected by Azure AD.
 * Return secured data.
 
 ## Examples
-
 Refer to different samples for different authentication ways. 
 
 **Note**: `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter` will be deprecated. [Click here](https://github.com/Azure/azure-sdk-for-java/issues/17860) to replace it.
 
 ### Authenticate in webapp
-
 Please refer to [azure-spring-boot-sample-active-directory-webapp](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp/README.md) for authenticate in backend.
 
 ####  Configure application.yml:
@@ -127,7 +123,6 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 ```
 
 ### Authenticate in frontend
-
 Please refer to [azure-active-directory-spring-boot-sample-with-filter](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-with-filter/README.md) for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
 
 #### Configure application.yml:
@@ -153,7 +148,6 @@ public class AADAuthenticationFilterConfigSample extends WebSecurityConfigurerAd
 
 * Role-based Authorization with annotation `@PreAuthorize("hasRole('GROUP_NAME')")`
 * Role-based Authorization with method `isMemberOf()`
-
 
 ### Authenticate stateless APIs using AAD app roles
 This scenario fits best for stateless Spring backends exposing an API to SPAs ([OAuth 2.0 implicit grant flow](https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-implicit-grant-flow)) 
@@ -216,7 +210,6 @@ The roles you want to use within your application have to be [set up in the mani
 application registration](https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps).
 
 ### Configure scopes of multiple resources
-
 By default, `azure-spring-boot-starter-active-directory` configures scopes of `openid`, `profile` and `https://graph.microsoft.com/user.read` to implement OpenID Connect protocol and access of membership information of logging in users.
 
 To customize scope configurations of multiple resources, developers need to configure the registration id and scopes in the `application.yml` as needed. Here the {registration-id} is defined by developers themselves to generate correspondding `OAuth2AuthorizedClient` to acquire access tokens, and scope names should follow the specification of `resource-uri/permission`.
@@ -241,8 +234,8 @@ azure:
         scopes: {scope1}, {scope2}
 ``` 
 
-### Protect the Resource API through Resource Server
-Please refer to [azure-spring-boot-sample-active-directory-spring-oauth2-resource-server][resource-server] for access resource api.
+### Protect the resource APIs in webapi
+Please refer to [azure-spring-boot-sample-active-directory-resource-server] for access webapi.
 
 #### Include the package
 ```xml
@@ -263,7 +256,6 @@ Please refer to [azure-spring-boot-sample-active-directory-spring-oauth2-resourc
 ```
 
 #### Using `AADOAuth2ResourceServerSecurityConfig` to extends `WebSecurityConfigurerAdapter`:
-
 ```java
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -277,6 +269,98 @@ public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurer
             .jwtAuthenticationConverter(new AzureJwtBearerTokenAuthenticationConverter());
     }
 }
+```
+
+#### The default comes with an AAD Access Token validator:
+```java
+@Bean
+@ConditionalOnMissingBean(JwtDecoder.class)
+public JwtDecoder jwtDecoder() {
+     AADAuthorizationServerEndpoints identityEndpoints = new AADAuthorizationServerEndpoints(
+     aadAuthenticationProperties.getBaseUri(), aadAuthenticationProperties.getTenantId());
+     NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
+     .withJwkSetUri(identityEndpoints.jwkSetEndpoint()).build();
+     List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator();
+     nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
+     return nimbusJwtDecoder;
+}
+
+public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
+     List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
+     List<String> validAudiences = new ArrayList<>();
+     if (!StringUtils.isEmpty(aadAuthenticationProperties.getAppIdUri())) {
+        validAudiences.add(aadAuthenticationProperties.getAppIdUri());
+     }
+     if (!StringUtils.isEmpty(aadAuthenticationProperties.getClientId())) {
+        validAudiences.add(aadAuthenticationProperties.getClientId());
+     }
+     if (!validAudiences.isEmpty()) {
+        validators.add(new AADJwtAudienceValidator(validAudiences));
+     }
+     validators.add(new AADJwtIssuerValidator());
+     validators.add(new JwtTimestampValidator());
+     return validators;
+}
+```
+
+### OAuth 2.0 On-Behalf-Of flow
+Please refer [azure-spring-boot-sample-active-directory-resource-server-obo] to for access On-Behalf-Of flow.
+
+#### Include the package
+```xml
+  <dependencies>
+   <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-boot-starter-active-directory</artifactId>
+   </dependency>
+   <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-resource-server</artifactId>
+   </dependency>
+   <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-client</artifactId>
+   </dependency>
+   <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>msal4j</artifactId>
+   </dependency>
+   <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-jose</artifactId>
+   </dependency>
+</dependencies>
+```
+
+#### Configure application.yml:
+```yaml
+azure:
+   activedirectory:
+      resource-server:
+         obo:
+            enabled: true
+      client-id: <Web-API-A-client-id>
+      client-secret: <Web-API-A-client-secret>
+      tenant-id: <Tenant-id-registered-by-application>
+      app-id-uri: <Web-API-A-app-id-url>
+      authorization:
+         graph:
+            scopes:
+               - https://graph.microsoft.com/User.Read
+         custom:
+            scopes:
+               - <Web-API-B-app-id-url>/File.Read
+```
+
+#### Support the use of `@RegisteredOAuth2AuthorizedClient` to get `OAuth2AuthorizedClient`:
+```java
+ @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraphCustomResources.Read')")
+ @GetMapping("call-graph-and-custom-resources")
+ public String callGraphAndCustomResources(
+     @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph,
+     @RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
+     return callMicrosoftGraphMeEndpoint(graph) + " " + callCustomLocalFileEndpoint(custom);
+ }
 ```
 
 ## Troubleshooting
@@ -295,7 +379,6 @@ logging.level.org.hibernate=ERROR
 ```
 
 For more information about setting logging in spring, please refer to the [official doc](https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging).
- 
 
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
@@ -316,7 +399,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
 [azure_subscription]: https://azure.microsoft.com/free
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-
 [graph-api-list-member-of]: https://docs.microsoft.com/graph/api/user-list-memberof?view=graph-rest-1.0
 [graph-api-list-transitive-member-of]: https://docs.microsoft.com/graph/api/user-list-transitivememberof?view=graph-rest-1.0
-[resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md
+[azure-spring-boot-sample-active-directory-resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md
+[azure-spring-boot-sample-active-directory-resource-server-obo]: https://github.com/ZhuXiaoBing-cn/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
