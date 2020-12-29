@@ -23,6 +23,7 @@ To use this starter in an web application, please add following packages:
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
+    <version>3.0.0-beta.1</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.security</groupId>
@@ -86,6 +87,7 @@ Resource server name that the application is going to visit.
 API permissions of a resource server that the application is going to acquire.
 * azure.activedirectory.authorization-clients.{client-name}.scopes.on-demand:    
 If the authorization flow of current resource server will be executed on demand. The default value is false.
+  
 ### Web application
 Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the groups or roles claim in the access token.
 This starter provides a convenient way to quickly access resource servers.
@@ -166,88 +168,6 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 }
 ```
 
-### Authenticate in frontend
-Please refer to [azure-active-directory-spring-boot-sample-with-filter] for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
-
-#### Configure application.yml:
-```yaml
-azure:
-  activedirectory:
-    client-id: xxxxxx-your-client-id-xxxxxx
-    client-secret: xxxxxx-your-client-secret-xxxxxx
-    user-group:
-      allowed-groups: group1, group2
-```
-
-#### Autowire `AADAuthenticationFilter` in `WebSecurityConfig.java` file
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADAuthenticationFilterConfigSample.java#L18-L23 -->
-```java
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class AADAuthenticationFilterConfigSample extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private AADAuthenticationFilter aadAuthFilter;
-}
-```
-
-* Role-based Authorization with annotation `@PreAuthorize("hasRole('GROUP_NAME')")`
-* Role-based Authorization with method `isMemberOf()`
-
-### Authenticate stateless APIs using AAD app roles
-This scenario fits best for stateless Spring backends exposing an API to SPAs ([OAuth 2.0 implicit grant flow]) or service-to-service access using the [client credentials grant flow].
-The stateless processing can be activated with the `azure.activedirectory.session-stateless` property. The authorization is using the [AAD AppRole feature], so instead of using the `groups` claim the token has a `roles` claim which contains roles [configured in your manifest]. 
-
-#### Configure your `application.yml`:
-
-```yaml
-azure:
-  activedirectory:
-    session-stateless: true
-  client-id: xxxxxx-your-client-id-xxxxxx
-```
-
-#### Define your roles in your application registration manifest: 
-```json
-  "appRoles": [
-    {
-      "allowedMemberTypes": [
-        "User"
-      ],
-      "displayName": "My demo",
-      "id": "00000000-0000-0000-0000-000000000000",
-      "isEnabled": true,
-      "description": "My demo role.",
-      "value": "MY_ROLE"
-    }
-  ],
-```
-
-#### Autowire the auth filter and attach it to the filter chain:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADAppRoleStatelessAuthenticationFilterConfigSample.java#L22-L37 -->
-```java
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADAppRoleStatelessAuthenticationFilterConfigSample extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private AADAppRoleStatelessAuthenticationFilter appRoleAuthFilter;
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .addFilterBefore(appRoleAuthFilter, UsernamePasswordAuthenticationFilter.class);
-    }
-
-}
-```
-
-* Role-based Authorization with annotation `@PreAuthorize("hasRole('MY_ROLE')")`
-* Role-based Authorization with method `isMemberOf()`
-
-The roles you want to use within your application have to be [set up in the manifest of your application registration].
-
 ### Configure scopes of multiple resources
 By default, `azure-spring-boot-starter-active-directory` configures scopes of `openid`, `profile` and `https://graph.microsoft.com/user.read` to implement OpenID Connect protocol and access of membership information of logging in users.
 
@@ -255,26 +175,26 @@ To customize scope configurations of multiple resources, developers need to conf
 ```yaml
 azure:
   activedirectory:
-    authorization-clients:
+    authorization:
       graph:
         scopes: https://graph.microsoft.com/Analytics.Read, email
       {registration-id}:
         scopes: {scope1}, {scope2}
 ``` 
 
-### Configure on-demand resource authorization 
+### Configure on-demand resource authorization
 To configure the authorization of certain resource as on-demand, developers need to add following property in `application.yml`:
 ```yaml
 azure:
   activedirectory:
-    authorization-clients:
+    authorization:
       {registration-id}:
         on-demand: true
         scopes: {scope1}, {scope2}
-``` 
+```
 
-### Protect the resource APIs in webapi
-Please refer to [azure-spring-boot-sample-active-directory-resource-server] for access webapi.
+### Protect the resource APIs in resource server
+Please refer to [azure-spring-boot-sample-active-directory-resource-server] for access resource APIs.
 
 #### Include the package
 ```xml
@@ -307,38 +227,6 @@ public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurer
             .jwt()
             .jwtAuthenticationConverter(new AzureJwtBearerTokenAuthenticationConverter());
     }
-}
-```
-
-#### The default comes with an AAD Access Token validator:
-```java
-@Bean
-@ConditionalOnMissingBean(JwtDecoder.class)
-public JwtDecoder jwtDecoder() {
-     AADAuthorizationServerEndpoints identityEndpoints = new AADAuthorizationServerEndpoints(
-     aadAuthenticationProperties.getBaseUri(), aadAuthenticationProperties.getTenantId());
-     NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
-     .withJwkSetUri(identityEndpoints.jwkSetEndpoint()).build();
-     List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator();
-     nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
-     return nimbusJwtDecoder;
-}
-
-public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
-     List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
-     List<String> validAudiences = new ArrayList<>();
-     if (!StringUtils.isEmpty(aadAuthenticationProperties.getAppIdUri())) {
-        validAudiences.add(aadAuthenticationProperties.getAppIdUri());
-     }
-     if (!StringUtils.isEmpty(aadAuthenticationProperties.getClientId())) {
-        validAudiences.add(aadAuthenticationProperties.getClientId());
-     }
-     if (!validAudiences.isEmpty()) {
-        validators.add(new AADJwtAudienceValidator(validAudiences));
-     }
-     validators.add(new AADJwtIssuerValidator());
-     validators.add(new JwtTimestampValidator());
-     return validators;
 }
 ```
 
@@ -402,6 +290,87 @@ azure:
  }
 ```
 
+### Authenticate in frontend
+Please refer to [azure-active-directory-spring-boot-sample-with-filter] for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
+
+#### Configure application.yml:
+```yaml
+azure:
+  activedirectory:
+    client-id: xxxxxx-your-client-id-xxxxxx
+    client-secret: xxxxxx-your-client-secret-xxxxxx
+    user-group:
+      allowed-groups: group1, group2
+```
+
+#### Autowire `AADAuthenticationFilter` in `WebSecurityConfig.java` file
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADAuthenticationFilterConfigSample.java#L18-L23 -->
+```java
+@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+public class AADAuthenticationFilterConfigSample extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AADAuthenticationFilter aadAuthFilter;
+}
+```
+
+* Role-based Authorization with annotation `@PreAuthorize("hasRole('GROUP_NAME')")`
+* Role-based Authorization with method `isMemberOf()`
+
+### Authenticate stateless APIs using AAD app roles
+This scenario fits best for stateless Spring backends exposing an API to SPAs ([OAuth 2.0 implicit grant flow]) or service-to-service access using the [client credentials grant flow].
+The stateless processing can be activated with the `azure.activedirectory.session-stateless` property. The authorization is using the [AAD App Roles feature], so instead of using the `groups` claim the token has a `roles` claim which contains roles [configured in your manifest]. 
+
+#### Configure your `application.yml`:
+```yaml
+azure:
+  activedirectory:
+    session-stateless: true
+  client-id: xxxxxx-your-client-id-xxxxxx
+```
+
+#### Define your roles in your application registration manifest: 
+```json
+  "appRoles": [
+    {
+      "allowedMemberTypes": [
+        "User"
+      ],
+      "displayName": "My demo",
+      "id": "00000000-0000-0000-0000-000000000000",
+      "isEnabled": true,
+      "description": "My demo role.",
+      "value": "MY_ROLE"
+    }
+  ],
+```
+
+#### Autowire the auth filter and attach it to the filter chain:
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADAppRoleStatelessAuthenticationFilterConfigSample.java#L22-L37 -->
+```java
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class AADAppRoleStatelessAuthenticationFilterConfigSample extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private AADAppRoleStatelessAuthenticationFilter appRoleAuthFilter;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .addFilterBefore(appRoleAuthFilter, UsernamePasswordAuthenticationFilter.class);
+    }
+
+}
+```
+
+* Role-based Authorization with annotation `@PreAuthorize("hasRole('MY_ROLE')")`
+* Role-based Authorization with method `isMemberOf()`
+
+The roles you want to use within your application have to be [set up in the manifest of your application registration].
+
 ## Troubleshooting
 ### Enable client logging
 Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
@@ -422,10 +391,10 @@ For more information about setting logging in spring, please refer to the [offic
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
 ### More sample code
-- [Azure Active Directory for Resource Server with Filter(Deprecated)][azure-spring-boot-sample-active-directory-resource-server-with-filter]
 - [Azure Active Directory for Web App][azure-spring-boot-sample-active-directory-webapp]
 - [Azure Active Directory for Web API][azure-spring-boot-sample-active-directory-resource-server]
 - [Azure Active Directory for On-Behalf-Of flow][azure-spring-boot-sample-active-directory-resource-server-obo]
+- [Azure Active Directory for Resource Server with Filter(Deprecated)][azure-spring-boot-sample-active-directory-resource-server-with-filter]
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -438,7 +407,7 @@ Please follow [instructions here] to build from source or contribute.
 [azure-spring-boot-sample-active-directory-resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md
 [azure-spring-boot-sample-active-directory-resource-server-obo]: https://github.com/ZhuXiaoBing-cn/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
 [azure-spring-boot-sample-active-directory-resource-server-with-filter]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-with-filter
-[AAD AppRole feature]: https://docs.microsoft.com/azure/architecture/multitenant-identity/app-roles#roles-using-azure-ad-app-roles
+[AAD App Roles feature]: https://docs.microsoft.com/azure/architecture/multitenant-identity/app-roles#roles-using-azure-ad-app-roles
 [client credentials grant flow]: https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-client-creds-grant-flow
 [configured in your manifest]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps#examples
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory
