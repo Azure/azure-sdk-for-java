@@ -30,8 +30,8 @@ public class AADRoleIT {
         Assert.assertTrue(httpResponse.contains("home"));
         httpResponse = aadSeleniumITHelper.httpGet("api/group1");
         Assert.assertTrue(httpResponse.contains("group1"));
-        httpResponse = aadSeleniumITHelper.httpGet("api/status403");
-        Assert.assertNotEquals(httpResponse, "error");
+        httpResponse = aadSeleniumITHelper.httpGet("api/group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
+        Assert.assertNotEquals(httpResponse, "group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -52,9 +52,9 @@ public class AADRoleIT {
         }
 
         @PreAuthorize("hasRole('ROLE_fdsaliieammQiovlikIOWssIEURsafjFelasdfe')")
-        @GetMapping(value = "/api/status403")
-        public ResponseEntity<String> status403() {
-            return ResponseEntity.ok("error");
+        @GetMapping(value = "/api/group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe")
+        public ResponseEntity<String> nonExistGroup() {
+            return ResponseEntity.ok("group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
         }
     }
 }
