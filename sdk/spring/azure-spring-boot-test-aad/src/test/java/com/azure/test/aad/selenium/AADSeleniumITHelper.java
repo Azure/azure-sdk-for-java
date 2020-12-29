@@ -27,18 +27,17 @@ public class AADSeleniumITHelper {
 
     private final String username;
     private final String password;
-    private final Map<String, String> arguments;
     private final AppRunner app;
     private final WebDriver driver;
     private static final Map<String, String> DEFAULT_ARGUMENTS = new HashMap<>();
 
-    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> arguments) throws InterruptedException {
-        this.username = System.getenv(AAD_USER_NAME_1);
-        this.password = System.getenv(AAD_USER_PASSWORD_1);
-        this.arguments = new HashMap<>(DEFAULT_ARGUMENTS);
-        this.arguments.putAll(arguments);
-        this.app = new AppRunner(appClass);
-        arguments.forEach(app::property);
+    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) throws InterruptedException {
+        username = System.getenv(AAD_USER_NAME_1);
+        password = System.getenv(AAD_USER_PASSWORD_1);
+        Map<String, String> appProperties = new HashMap<>(DEFAULT_ARGUMENTS);
+        appProperties.putAll(properties);
+        app = new AppRunner(appClass);
+        appProperties.forEach(app::property);
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
@@ -89,14 +88,10 @@ public class AADSeleniumITHelper {
     private void login() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(this.driver, 10);
         driver.get(app.root() + "oauth2/authorization/azure");
-        wait.until(presenceOfElementLocated(By.name("loginfmt")))
-            .sendKeys(this.username + Keys.ENTER);
+        wait.until(presenceOfElementLocated(By.name("loginfmt"))).sendKeys(username + Keys.ENTER);
         Thread.sleep(10000);
-
-        driver.findElement(By.name("passwd"))
-              .sendKeys(this.password + Keys.ENTER);
+        driver.findElement(By.name("passwd")).sendKeys(password + Keys.ENTER);
         Thread.sleep(10000);
-
         driver.findElement(By.cssSelector("input[type='submit']")).click();
         Thread.sleep(10000);
     }
