@@ -301,7 +301,7 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions) -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$(Build.ArtifactStagingDirectory)/oomdump'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
@@ -309,6 +309,14 @@ jobs:
           goals: ${{ parameters.TestGoals }}
         # we want to run this when TestFromSource isn't true
         condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
+
+      - task: PublishBuildArtifacts@1
+        displayName: 'Retain build failure artifacts'
+        inputs:
+          pathToPublish: '$(Build.ArtifactStagingDirectory)/oomdump'
+          artifactName: 'oomdump'
+          publishLocation: 'Container'
+        condition: failed()
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
