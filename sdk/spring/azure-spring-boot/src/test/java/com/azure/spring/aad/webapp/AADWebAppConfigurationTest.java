@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import org.junit.Test;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -34,7 +35,7 @@ public class AADWebAppConfigurationTest {
                 assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
                 assertEquals(endpoints.jwkSetEndpoint(), azure.getProviderDetails().getJwkSetUri());
                 assertEquals("{baseUrl}/login/oauth2/code/{registrationId}", azure.getRedirectUriTemplate());
-                assertDefaultScopes(azure, "openid", "profile", "https://graph.microsoft.com/User.Read");
+                assertDefaultScopes(azure, "openid", "profile", "https://graph.microsoft.com/User.Read", "https://graph.microsoft.com/Directory.AccessAsUser.All");
             });
     }
 
@@ -52,7 +53,7 @@ public class AADWebAppConfigurationTest {
                 assertNotNull(azure);
                 assertNotNull(graph);
                 assertDefaultScopes(azure,
-                    "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read");
+                    "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "https://graph.microsoft.com/Directory.AccessAsUser.All", "Calendars.Read");
                 assertDefaultScopes(graph, "Calendars.Read");
             });
     }
@@ -75,6 +76,7 @@ public class AADWebAppConfigurationTest {
                     "offline_access",
                     "Calendars.Read",
                     "https://graph.microsoft.com/User.Read",
+                    "https://graph.microsoft.com/Directory.AccessAsUser.All",
                     "https://management.core.windows.net/user_impersonation");
                 assertDefaultScopes(graph, "Calendars.Read");
             });
@@ -90,7 +92,7 @@ public class AADWebAppConfigurationTest {
                 ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
                 assertDefaultScopes(azure,
-                    "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read");
+                    "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "https://graph.microsoft.com/Directory.AccessAsUser.All", "Calendars.Read");
             });
     }
 
@@ -106,7 +108,7 @@ public class AADWebAppConfigurationTest {
                 ClientRegistration graph = clientRepo.findByRegistrationId("graph");
                 assertDefaultScopes(
                     clientRepo.getAzureClient(),
-                    "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read"
+                    "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "https://graph.microsoft.com/Directory.AccessAsUser.All"
                 );
                 assertEquals(clientRepo.getAzureClient().getClient(), azure);
 
@@ -131,7 +133,7 @@ public class AADWebAppConfigurationTest {
                 AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 assertDefaultScopes(
                     clientRepo.getAzureClient(),
-                    "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "Calendars.Read"
+                    "openid", "profile", "offline_access", "https://graph.microsoft.com/User.Read", "https://graph.microsoft.com/Directory.AccessAsUser.All", "Calendars.Read"
                 );
             });
     }
@@ -173,6 +175,7 @@ public class AADWebAppConfigurationTest {
                     "openid",
                     "profile",
                     "https://graph.microsoft.com/User.Read",
+                    "https://graph.microsoft.com/Directory.AccessAsUser.All",
                     "offline_access",
                     "https://management.core.windows.net/user_impersonation");
 
