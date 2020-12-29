@@ -41,7 +41,7 @@ public class SampleController {
      * @return Response with graph data
      */
     @GetMapping("call-graph-only")
-    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.read')")
+    @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
     public String callGraphOnly() {
         Authentication principal = SecurityContextHolder.getContext().getAuthentication();
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
@@ -57,23 +57,21 @@ public class SampleController {
      * @return Response with graph data
      */
     @GetMapping("call-graph-only-with-annotation")
-    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.read')")
+    @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
     public String callGraphOnlyWithAnnotation(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
         return callMicrosoftGraphMeEndpoint(graph);
     }
 
     /**
-     * Call the graph and custom(local) resources, combine all the response and return.
-     * @param graph authorized client for Graph
+     * Call custom resources, combine all the response and return.
      * @param custom authorized client for Custom
      * @return Response Graph and Custom data.
      */
-    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraphCustomResources.read')")
-    @GetMapping("call-graph-and-custom-resources")
-    public String callGraphAndCustomResources(
-        @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph,
+    @GetMapping("call-custom-resources")
+    @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
+    public String callCustomResources(
         @RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
-        return callMicrosoftGraphMeEndpoint(graph) + " " + callCustomLocalFileEndpoint(custom);
+        return callCustomLocalFileEndpoint(custom);
     }
 
     /**
@@ -111,10 +109,10 @@ public class SampleController {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-            LOGGER.info("Response from Custom(local): {}", body);
-            return "Custom(local) response " + (null != body ? "success." : "failed.");
+            LOGGER.info("Response from Custom: {}", body);
+            return "Custom response " + (null != body ? "success." : "failed.");
         } else {
-            return "Custom(local) response failed.";
+            return "Custom response failed.";
         }
     }
 }
