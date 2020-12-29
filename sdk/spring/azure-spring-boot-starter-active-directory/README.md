@@ -66,7 +66,7 @@ This starter provides following properties to be customized:
 | **azure.activedirectory**.jwt-size-limit                         | Size limit in Bytes of the JWKSet Remote URL call.           |
 | **azure.activedirectory**.post-logout-redirect-uri               | Redirect uri for posting log-out.                            |
 | **azure.activedirectory**.redirect-uri-template                  | Used by the authorization server to return responses containing authorization credentials to the client via the resource owner user-agent. |
-| **azure.activedirectory**.session-stateless                      | If true, the stateless auth filter `AADAppRoleStatelessAuthenticationFilter` will be activated. By default, is value is false, which activates `AADAuthenticationFilter`. |
+| **azure.activedirectory**.session-stateless                      | If true, the stateless authentication filter `AADAppRoleStatelessAuthenticationFilter` will be activated. By default, the value is false, which activates `AADAuthenticationFilter`. Note, these two filters are deprecated now.|
 | **azure.activedirectory**.tenant-id                              | Azure Tenant ID.                                             |
 | **azure.activedirectory**.user-group.allowed-groups              | Expected user groups that an authority will be granted to if found in the response from the MemeberOf Graph API Call. |
 ### Web application
