@@ -86,10 +86,14 @@ public class AADWebAppConfiguration {
     private Set<String> accessTokenScopes() {
         Set<String> result = openidScopes();
         if (properties.allowedGroupsConfigured()) {
+            result.add("https://graph.microsoft.com/User.Read");
             result.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
         }
-        result.add("https://graph.microsoft.com/User.Read");
         addAzureConfiguredScopes(result);
+        boolean haveResourceServer = result.stream().anyMatch(scope -> scope.contains("http"));
+        if (!haveResourceServer) {
+            result.add("https://graph.microsoft.com/User.Read");
+        }
         return result;
     }
 
