@@ -3,13 +3,13 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,11 +25,15 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_REGISTRATION_ID;
 
@@ -40,7 +44,6 @@ import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnClass(ClientRegistrationRepository.class)
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
-@ConditionalOnProperty(prefix = "azure.activedirectory.user-group", value = "allowed-groups")
 public class AADWebAppConfiguration {
 
     @Autowired
@@ -68,15 +71,28 @@ public class AADWebAppConfiguration {
 
     private AzureClientRegistration createDefaultClient() {
         ClientRegistration.Builder builder = createClientBuilder(AZURE_CLIENT_REGISTRATION_ID);
-        builder.scope(allScopes());
+        Set<String> authorizationCodeScopes = authorizationCodeScopes();
+        builder.scope(authorizationCodeScopes);
         ClientRegistration client = builder.build();
-
-        return new AzureClientRegistration(client, accessTokenScopes());
+        Set<String> accessTokenScopes = accessTokenScopes();
+        if (resourceServerCount(accessTokenScopes) == 0 && resourceServerCount((authorizationCodeScopes)) > 1) {
+            // AAD server will return error if:
+            // 1. authorizationCodeScopes have more than one resource server.
+            // 2. accessTokenScopes have no resource server
+            accessTokenScopes.add("https://graph.microsoft.com/User.Read");
+        }
+        return new AzureClientRegistration(client, accessTokenScopes);
     }
 
-    private Set<String> allScopes() {
+    private int resourceServerCount(Set<String> scopes) {
+        return (int) scopes.stream()
+                           .filter(scope -> scope.startsWith("http"))
+                           .count();
+    }
+
+    private Set<String> authorizationCodeScopes() {
         Set<String> result = accessTokenScopes();
-        for (AuthorizationProperties authProperties : properties.getAuthorizationClients().values()) {
+        for (AuthorizationClientProperties authProperties : properties.getAuthorizationClients().values()) {
             if (!authProperties.isOnDemand()) {
                 result.addAll(authProperties.getScopes());
             }
@@ -85,20 +101,20 @@ public class AADWebAppConfiguration {
     }
 
     private Set<String> accessTokenScopes() {
-        Set<String> result = openidScopes();
+        Set<String> result = Optional.of(properties)
+                                     .map(AADAuthenticationProperties::getAuthorizationClients)
+                                     .map(clients -> clients.get(AZURE_CLIENT_REGISTRATION_ID))
+                                     .map(AuthorizationClientProperties::getScopes)
+                                     .map(Collection::stream)
+                                     .orElseGet(Stream::empty)
+                                     .collect(Collectors.toSet());
+        result.addAll(openidScopes());
         if (properties.allowedGroupsConfigured()) {
+            // The 2 scopes are need to get group name from graph.
             result.add("https://graph.microsoft.com/User.Read");
+            result.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
         }
-        addAzureConfiguredScopes(result);
         return result;
-    }
-
-    private void addAzureConfiguredScopes(Set<String> result) {
-        AuthorizationProperties azureProperties =
-            properties.getAuthorizationClients().get(AZURE_CLIENT_REGISTRATION_ID);
-        if (azureProperties != null) {
-            result.addAll(azureProperties.getScopes());
-        }
     }
 
     private Set<String> openidScopes() {
@@ -119,13 +135,13 @@ public class AADWebAppConfiguration {
                 continue;
             }
 
-            AuthorizationProperties authz = properties.getAuthorizationClients().get(name);
+            AuthorizationClientProperties authz = properties.getAuthorizationClients().get(name);
             result.add(createClientBuilder(name, authz));
         }
         return result;
     }
 
-    private ClientRegistration createClientBuilder(String id, AuthorizationProperties authz) {
+    private ClientRegistration createClientBuilder(String id, AuthorizationClientProperties authz) {
         ClientRegistration.Builder result = createClientBuilder(id);
         List<String> scopes = authz.getScopes();
         if (authz.isOnDemand()) {

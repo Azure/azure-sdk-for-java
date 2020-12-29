@@ -3,8 +3,8 @@
 
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
-import com.azure.spring.aad.webapp.AuthorizationProperties;
+import com.azure.spring.aad.AADAuthorizationServerEndpoints;
+import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -39,8 +39,8 @@ public class AADResourceServerOboConfiguration {
     private AADAuthenticationProperties properties;
 
     @Bean
-    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, InMemoryClientRegistrationRepository.class })
-    public ClientRegistrationRepository oboClientRegistrationRepository() {
+    @ConditionalOnMissingBean({ ClientRegistrationRepository.class })
+    public ClientRegistrationRepository clientRegistrationRepository() {
         return new InMemoryClientRegistrationRepository(createOboClients());
     }
 
@@ -52,15 +52,14 @@ public class AADResourceServerOboConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(
-        InMemoryClientRegistrationRepository repo) {
+    public OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository(ClientRegistrationRepository repo) {
         return new AADOAuth2OboAuthorizedClientRepository(repo);
     }
 
     public List<ClientRegistration> createOboClients() {
         List<ClientRegistration> result = new ArrayList<>();
         for (String name : properties.getAuthorizationClients().keySet()) {
-            AuthorizationProperties authorizationProperties = properties.getAuthorizationClients().get(name);
+            AuthorizationClientProperties authorizationProperties = properties.getAuthorizationClients().get(name);
             ClientRegistration.Builder builder = createClientBuilder(name);
             builder.scope(authorizationProperties.getScopes());
             result.add(builder.build());
@@ -72,16 +71,12 @@ public class AADResourceServerOboConfiguration {
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
         result.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN);
         result.redirectUriTemplate("{baseUrl}/login/oauth2/code/{registrationId}");
-
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
 
         AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints(
             properties.getBaseUri(), properties.getTenantId());
         result.authorizationUri(endpoints.authorizationEndpoint());
-        result.tokenUri(endpoints.tokenEndpoint());
-        result.jwkSetUri(endpoints.jwkSetEndpoint());
-
         return result;
     }
 

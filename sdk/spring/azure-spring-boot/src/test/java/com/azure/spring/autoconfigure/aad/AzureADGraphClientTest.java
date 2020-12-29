@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
+import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.google.common.collect.ImmutableSet;
 import org.junit.Before;
 import org.junit.Test;

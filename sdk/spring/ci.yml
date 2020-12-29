@@ -27,6 +27,9 @@ extends:
   parameters:
     ServiceDirectory: spring
     Artifacts:
+      - name: azure-identity-spring
+        groupId: com.azure.spring
+        safeName: azureidentityspring
       - name: azure-spring-data-gremlin
         groupId: com.azure.spring
         safeName: azurespringdatagremlin
