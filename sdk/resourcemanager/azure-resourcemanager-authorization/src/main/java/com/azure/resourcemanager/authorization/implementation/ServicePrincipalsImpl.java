@@ -63,8 +63,7 @@ public class ServicePrincipalsImpl
     public Mono<ServicePrincipal> getByNameAsync(final String name) {
         return listByFilterAsync(String.format("servicePrincipalNames/any(c:c eq '%s')", name))
             .singleOrEmpty()
-            .switchIfEmpty(
-                Mono.defer(() -> listByFilterAsync(String.format("displayName eq '%s'", name)).singleOrEmpty()));
+            .switchIfEmpty(listByFilterAsync(String.format("displayName eq '%s'", name)).singleOrEmpty());
     }
 
     @Override
