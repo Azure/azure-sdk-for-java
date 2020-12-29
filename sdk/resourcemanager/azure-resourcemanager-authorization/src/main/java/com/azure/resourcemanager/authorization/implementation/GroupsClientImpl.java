@@ -512,6 +512,18 @@ public final class GroupsClientImpl implements GroupsClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Delete("/groups/{group-id}/members/{directoryObject-id}/$ref")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
+        Mono<Response<Void>> deleteRefMember(
+            @HostParam("$host") String endpoint,
+            @PathParam("group-id") String groupId,
+            @PathParam("directoryObject-id") String directoryObjectId,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("/groups/{group-id}/membersWithLicenseErrors")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
@@ -6619,6 +6631,143 @@ public final class GroupsClientImpl implements GroupsClient {
     public Response<Map<String, Object>> createRefMembersWithResponse(
         String groupId, Map<String, Object> body, Context context) {
         return createRefMembersWithResponseAsync(groupId, body, context).block();
+    }
+
+    /**
+     * Delete ref of member from groups.
+     *
+     * @param groupId key: id of group.
+     * @param directoryObjectId key: directoryObject-id.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteRefMemberWithResponseAsync(
+        String groupId, String directoryObjectId, String ifMatch) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (groupId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
+        }
+        if (directoryObjectId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter directoryObjectId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteRefMember(
+                            this.client.getEndpoint(), groupId, directoryObjectId, ifMatch, accept, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Delete ref of member from groups.
+     *
+     * @param groupId key: id of group.
+     * @param directoryObjectId key: directoryObject-id.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteRefMemberWithResponseAsync(
+        String groupId, String directoryObjectId, String ifMatch, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (groupId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter groupId is required and cannot be null."));
+        }
+        if (directoryObjectId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter directoryObjectId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.deleteRefMember(this.client.getEndpoint(), groupId, directoryObjectId, ifMatch, accept, context);
+    }
+
+    /**
+     * Delete ref of member from groups.
+     *
+     * @param groupId key: id of group.
+     * @param directoryObjectId key: directoryObject-id.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteRefMemberAsync(String groupId, String directoryObjectId, String ifMatch) {
+        return deleteRefMemberWithResponseAsync(groupId, directoryObjectId, ifMatch)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Delete ref of member from groups.
+     *
+     * @param groupId key: id of group.
+     * @param directoryObjectId key: directoryObject-id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteRefMemberAsync(String groupId, String directoryObjectId) {
+        final String ifMatch = null;
+        return deleteRefMemberWithResponseAsync(groupId, directoryObjectId, ifMatch)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Delete ref of member from groups.
+     *
+     * @param groupId key: id of group.
+     * @param directoryObjectId key: directoryObject-id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteRefMember(String groupId, String directoryObjectId) {
+        final String ifMatch = null;
+        deleteRefMemberAsync(groupId, directoryObjectId, ifMatch).block();
+    }
+
+    /**
+     * Delete ref of member from groups.
+     *
+     * @param groupId key: id of group.
+     * @param directoryObjectId key: directoryObject-id.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteRefMemberWithResponse(
+        String groupId, String directoryObjectId, String ifMatch, Context context) {
+        return deleteRefMemberWithResponseAsync(groupId, directoryObjectId, ifMatch, context).block();
     }
 
     /**

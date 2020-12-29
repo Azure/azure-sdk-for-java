@@ -2205,6 +2205,80 @@ public interface GroupsClient {
         String groupId, Map<String, Object> body, Context context);
 
     /**
+     * Delete ref of member from groups.
+     *
+     * @param groupId key: id of group.
+     * @param directoryObjectId key: directoryObject-id.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteRefMemberWithResponseAsync(String groupId, String directoryObjectId, String ifMatch);
+
+    /**
+     * Delete ref of member from groups.
+     *
+     * @param groupId key: id of group.
+     * @param directoryObjectId key: directoryObject-id.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteRefMemberAsync(String groupId, String directoryObjectId, String ifMatch);
+
+    /**
+     * Delete ref of member from groups.
+     *
+     * @param groupId key: id of group.
+     * @param directoryObjectId key: directoryObject-id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteRefMemberAsync(String groupId, String directoryObjectId);
+
+    /**
+     * Delete ref of member from groups.
+     *
+     * @param groupId key: id of group.
+     * @param directoryObjectId key: directoryObject-id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteRefMember(String groupId, String directoryObjectId);
+
+    /**
+     * Delete ref of member from groups.
+     *
+     * @param groupId key: id of group.
+     * @param directoryObjectId key: directoryObject-id.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteRefMemberWithResponse(
+        String groupId, String directoryObjectId, String ifMatch, Context context);
+
+    /**
      * Get membersWithLicenseErrors from groups.
      *
      * @param groupId key: id of group.
