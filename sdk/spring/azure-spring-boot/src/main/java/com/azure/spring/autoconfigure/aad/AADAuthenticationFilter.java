@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AADAuthorizationServerEndpoints;
+import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.source.JWKSetCache;
