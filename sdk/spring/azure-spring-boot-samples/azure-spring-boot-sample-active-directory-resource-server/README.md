@@ -3,7 +3,7 @@
 ## Key concepts
 This sample illustrates how to protect a Java web API by restricting access to its resources to authorized accounts only.
 
-1. Obtain the access token the HTTP request header.
+1. Obtain the access token from the HTTP request header.
 2. Use `JwtDecoder` to parse the access token into `Jwt`.
 3. Verify `aud`, `iss`, `nbf`, `exp` claims in access token.
 4. Extract information from JWT and wrap them in `AADOAuth2AuthenticatedPrincipal` object.
