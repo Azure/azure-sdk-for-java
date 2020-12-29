@@ -18,9 +18,6 @@ public interface ActiveDirectoryUser
     /** @return user principal name */
     String userPrincipalName();
 
-    /** @return user signIn name */
-    String signInName();
-
     /** @return user mail */
     String mail();
 
