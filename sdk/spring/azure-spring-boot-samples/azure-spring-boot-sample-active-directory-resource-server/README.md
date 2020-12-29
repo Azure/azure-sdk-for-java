@@ -31,7 +31,7 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-oauth2-jose</artifactId>
     </dependency>
-  </dependencies>
+</dependencies>
 ```
 
 ### Configure Web API
@@ -39,9 +39,9 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
 2. Search for and select your tenant in **Azure Active Directory**.
 3. Under **Manage** In the same tenant, select **App registrations** -> **New registration**.![Protal manage](docs/image-protal-manage.png "Protal manage")
 4. The registered application name is filled into `webapi`, select **Accounts in this organizational directory only**, click the **register** button.![Register a web api](docs/image-register-a-web-api.png "Register a web api")
-5. Under **webapi** application, select **Certificates & secrets** -> **new client secret**, expires select **Never**, click the **add** button.(Remember to save the secrets here and use them later.)![Creat secrets](docs/image-creat-secrets-api.png "Creat secrets")
+5. Under **webapi** application, select **Certificates & secrets** -> **new client secret**, expires select **Never**, click the **add** button, remember to save the secrets here and use them later.![Creat secrets](docs/image-creat-secrets-api.png "Creat secrets")
 6. Under **webapi** application, select **Expose an API** -> **Add a scope**, Use the default Application ID URI, click **Save and continue** button.![Set application id url](docs/image-set-application-id-url.png "Set application id url")
-7. After step five,the page will refresh again. Then set the **Scope name** to `File.Read`.(This scope will be used in application.yml.)![Add a scope](docs/image-add-a-scope.png "Add a scope")
+7. After step five, the page will refresh again. Then set the **Scope name** to `File.Read`.![Add a scope](docs/image-add-a-scope.png "Add a scope")
 8. Finally, the api exposed in `webapi`.![Finally, the API exposed in webAPI](docs/image-expose-api.png "Finally, the API exposed in webAPI")
 
 See [Expose scoped permission to web api] for more information about web api.
