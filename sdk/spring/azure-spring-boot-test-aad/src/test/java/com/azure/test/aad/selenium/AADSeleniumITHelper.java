@@ -29,14 +29,14 @@ public class AADSeleniumITHelper {
     private final String password;
     private final AppRunner app;
     private final WebDriver driver;
-    private static final Map<String, String> DEFAULT_ARGUMENTS = new HashMap<>();
+    private static final Map<String, String> DEFAULT_PROPERTIES = new HashMap<>();
 
     static {
-        DEFAULT_ARGUMENTS.put("azure.activedirectory.tenant-id", System.getenv(AAD_TENANT_ID_1));
-        DEFAULT_ARGUMENTS.put("azure.activedirectory.client-id", System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
-        DEFAULT_ARGUMENTS.put("azure.activedirectory.client-secret", System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET));
-        DEFAULT_ARGUMENTS.put("azure.activedirectory.user-group.allowed-groups", "group1");
-        DEFAULT_ARGUMENTS.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
+        DEFAULT_PROPERTIES.put("azure.activedirectory.tenant-id", System.getenv(AAD_TENANT_ID_1));
+        DEFAULT_PROPERTIES.put("azure.activedirectory.client-id", System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
+        DEFAULT_PROPERTIES.put("azure.activedirectory.client-secret", System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET));
+        DEFAULT_PROPERTIES.put("azure.activedirectory.user-group.allowed-groups", "group1");
+        DEFAULT_PROPERTIES.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
 
         final String directory = "src/test/resources/driver/";
         final String chromedriverLinux = "chromedriver_linux64";
@@ -71,10 +71,9 @@ public class AADSeleniumITHelper {
     public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) throws InterruptedException {
         username = System.getenv(AAD_USER_NAME_1);
         password = System.getenv(AAD_USER_PASSWORD_1);
-        Map<String, String> appProperties = new HashMap<>(DEFAULT_ARGUMENTS);
-        appProperties.putAll(properties);
         app = new AppRunner(appClass);
-        appProperties.forEach(app::property);
+        DEFAULT_PROPERTIES.forEach(app::property);
+        properties.forEach(app::property);
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");

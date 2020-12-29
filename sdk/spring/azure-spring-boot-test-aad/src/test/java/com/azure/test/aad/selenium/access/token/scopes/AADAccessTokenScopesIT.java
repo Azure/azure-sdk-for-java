@@ -29,8 +29,7 @@ public class AADAccessTokenScopesIT {
                 + "https://manage.office.com/ActivityFeed.ReadDlp, "
                 + "https://manage.office.com/ServiceHealth.Read");
         arguments.put("azure.activedirectory.authorization-clients.graph.scopes",
-            "https://graph.microsoft.com/User.Read, "
-                + "https://graph.microsoft.com/Directory.AccessAsUser.All");
+            "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.AccessAsUser.All");
         AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, arguments);
 
         String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
