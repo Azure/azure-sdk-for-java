@@ -48,7 +48,7 @@ The authorization flow for resource server:
 ### Configurable properties
 This starter provides following properties to be customized:
 
-| param                                                        | note                                                         |
+| Properties                                                        | Description                                                         |
 | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | azure.activedirectory.allow-telemetry                        | If telemetry events should be published to Azure AD. The default value is true. |
 | azure.activedirectory.app-id-uri                             | Used in the "aud" claim of an id token.                      |
