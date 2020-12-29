@@ -24,11 +24,12 @@ public class AADAccessTokenScopesIT {
     @Test
     public void testAccessTokenScopes() throws InterruptedException {
         Map<String, String> arguments = new HashMap<>();
-        arguments.put("azure.activedirectory.authorization-clients.office.scopes",
-            "https://manage.office.com/ActivityFeed.Read, "
-                + "https://manage.office.com/ActivityFeed.ReadDlp, "
+        arguments.put(
+            "azure.activedirectory.authorization-clients.office.scopes",
+            "https://manage.office.com/ActivityFeed.Read, https://manage.office.com/ActivityFeed.ReadDlp, "
                 + "https://manage.office.com/ServiceHealth.Read");
-        arguments.put("azure.activedirectory.authorization-clients.graph.scopes",
+        arguments.put(
+            "azure.activedirectory.authorization-clients.graph.scopes",
             "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.AccessAsUser.All");
         AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, arguments);
 
