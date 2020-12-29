@@ -82,15 +82,19 @@ public class SampleController {
      * @return Response string data.
      */
     private String callMicrosoftGraphMeEndpoint(OAuth2AuthorizedClient graph) {
-        String body = webClient
-            .get()
-            .uri(GRAPH_ME_ENDPOINT)
-            .attributes(oauth2AuthorizedClient(graph))
-            .retrieve()
-            .bodyToMono(String.class)
-            .block();
-        LOGGER.info("Response from Graph: {}", body);
-        return "Graph response " + (null != body ? "success." : "failed.");
+        if (null != graph) {
+            String body = webClient
+                .get()
+                .uri(GRAPH_ME_ENDPOINT)
+                .attributes(oauth2AuthorizedClient(graph))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+            LOGGER.info("Response from Graph: {}", body);
+            return "Graph response " + (null != body ? "success." : "failed.");
+        } else {
+            return "Graph response failed.";
+        }
     }
 
     /**
@@ -99,14 +103,18 @@ public class SampleController {
      * @return Response string data.
      */
     private String callCustomLocalFileEndpoint(OAuth2AuthorizedClient custom) {
-        String body = webClient
-            .get()
-            .uri(CUSTOM_LOCAL_FILE_ENDPOINT)
-            .attributes(oauth2AuthorizedClient(custom))
-            .retrieve()
-            .bodyToMono(String.class)
-            .block();
-        LOGGER.info("Response from Custom(local): {}", body);
-        return "Custom(local) response " + (null != body ? "success." : "failed.");
+        if (null != custom) {
+            String body = webClient
+                .get()
+                .uri(CUSTOM_LOCAL_FILE_ENDPOINT)
+                .attributes(oauth2AuthorizedClient(custom))
+                .retrieve()
+                .bodyToMono(String.class)
+                .block();
+            LOGGER.info("Response from Custom(local): {}", body);
+            return "Custom(local) response " + (null != body ? "success." : "failed.");
+        } else {
+            return "Custom(local) response failed.";
+        }
     }
 }
