@@ -31,23 +31,6 @@ public class AADSeleniumITHelper {
     private final WebDriver driver;
     private static final Map<String, String> DEFAULT_ARGUMENTS = new HashMap<>();
 
-    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) throws InterruptedException {
-        username = System.getenv(AAD_USER_NAME_1);
-        password = System.getenv(AAD_USER_PASSWORD_1);
-        Map<String, String> appProperties = new HashMap<>(DEFAULT_ARGUMENTS);
-        appProperties.putAll(properties);
-        app = new AppRunner(appClass);
-        appProperties.forEach(app::property);
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
-        this.driver = new ChromeDriver(options);
-
-        this.app.start();
-        login();
-    }
-
     static {
         DEFAULT_ARGUMENTS.put("azure.activedirectory.tenant-id", System.getenv(AAD_TENANT_ID_1));
         DEFAULT_ARGUMENTS.put("azure.activedirectory.client-id", System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
@@ -83,6 +66,23 @@ public class AADSeleniumITHelper {
                 process.destroy();
             }
         }
+    }
+
+    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) throws InterruptedException {
+        username = System.getenv(AAD_USER_NAME_1);
+        password = System.getenv(AAD_USER_PASSWORD_1);
+        Map<String, String> appProperties = new HashMap<>(DEFAULT_ARGUMENTS);
+        appProperties.putAll(properties);
+        app = new AppRunner(appClass);
+        appProperties.forEach(app::property);
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
+        this.driver = new ChromeDriver(options);
+
+        this.app.start();
+        login();
     }
 
     private void login() throws InterruptedException {
