@@ -3,7 +3,7 @@ variables:
   WagonOptions: '-Dmaven.wagon.rto=300000 -Dmaven.wagon.http.retryHandler.count=3'
   DefaultOptions: '--batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions)'
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
-  MemoryOptions: '-Xmx3072m'
+  MemoryOptions: '-Xmx4096m'
   #Agent.Source.Git.ShallowFetchDepth: 1
   skipComponentGovernanceDetection: true
   AdditionalOptions: ''
