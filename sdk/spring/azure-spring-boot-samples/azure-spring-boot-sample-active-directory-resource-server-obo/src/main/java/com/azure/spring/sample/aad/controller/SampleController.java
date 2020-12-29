@@ -41,7 +41,7 @@ public class SampleController {
      * @return Response with graph data
      */
     @GetMapping("call-graph-only")
-    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.Read')")
+    @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
     public String callGraphOnly() {
         Authentication principal = SecurityContextHolder.getContext().getAuthentication();
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
@@ -57,7 +57,7 @@ public class SampleController {
      * @return Response with graph data
      */
     @GetMapping("call-graph-only-with-annotation")
-    @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraph.Read')")
+    @PreAuthorize("hasAuthority('SCOPE_Obo.GraphAndObo.File.Read')")
     public String callGraphOnlyWithAnnotation(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
         return callMicrosoftGraphMeEndpoint(graph);
     }
@@ -68,7 +68,7 @@ public class SampleController {
      * @param custom authorized client for Custom
      * @return Response Graph and Custom data.
      */
-    @PreAuthorize("hasAuthority('SCOPE_File.Read')")
+    @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
     @GetMapping("call-graph-and-custom-resources")
     public String callGraphAndCustomResources(
         @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph,
