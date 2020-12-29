@@ -9448,6 +9448,38 @@ paths:
         default:
           $ref: '#/components/responses/error'
       x-ms-docs-operation-type: operation
+  '/groups/{group-id}/members/{directoryObject-id}/$ref':
+    delete:
+      tags:
+        - groups.directoryObject
+      summary: Delete ref of member from groups
+      operationId: groups_DeleteRefMember
+      parameters:
+        - name: group-id
+          in: path
+          description: 'key: id of group'
+          required: true
+          schema:
+            type: string
+          x-ms-docs-key-type: group
+        - name: directoryObject-id
+          in: path
+          description: 'key: directoryObject-id'
+          required: true
+          schema:
+            type: string
+          x-ms-docs-key-type: directoryObject
+        - name: If-Match
+          in: header
+          description: ETag
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Success
+        default:
+          $ref: '#/components/responses/error'
+      x-ms-docs-operation-type: operation
   '/groups/{group-id}/membersWithLicenseErrors':
     get:
       tags:
