@@ -31,7 +31,7 @@ public class AADRoleIT {
         httpResponse = aadSeleniumITHelper.httpGet("api/group1");
         Assert.assertTrue(httpResponse.contains("group1"));
         httpResponse = aadSeleniumITHelper.httpGet("api/status403");
-        Assert.assertFalse(httpResponse.contains("error"));
+        Assert.assertNotEquals(httpResponse, "error");
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
