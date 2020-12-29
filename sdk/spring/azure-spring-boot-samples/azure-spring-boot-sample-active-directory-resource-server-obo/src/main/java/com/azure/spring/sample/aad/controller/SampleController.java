@@ -69,7 +69,7 @@ public class SampleController {
      */
     @GetMapping("call-custom-resources")
     @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
-    public String callGraphAndCustomResources(
+    public String callCustomResources(
         @RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
         return callCustomLocalFileEndpoint(custom);
     }
