@@ -22,6 +22,7 @@
 - Support the use of `@RegisteredOAuth2AuthorizedClient` annotation to get `OAuth2AuthorizedClient`.
 - Support access control through users' membership information.
 - Support on-behalf-of flow in the resource server.
+- Support more rules for token validation by default: issuer validation, audience validation, timestamp validation.
 - Provide AAD specific token validation of audience validation and issuer validation.
 - Expose a flag `isPersonalAccount` in `AADOAuth2AuthenticatedPrincipal` to specify the account type in use: work account or personal account.
 - Enable loading transitive membership information from Microsoft Graph API.
