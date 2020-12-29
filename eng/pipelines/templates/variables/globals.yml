@@ -3,6 +3,9 @@ variables:
   WagonOptions: '-Dmaven.wagon.rto=300000 -Dmaven.wagon.http.retryHandler.count=3'
   DefaultOptions: '--batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions)'
   LoggingOptions: '-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn'
+  # Interesting note on Xmx, and Xms, once this value is set to 32GB+ the JVM can no longer employ memory compression
+  # and will be force to maintain references as 64 bit pointers. The result of this is that around 48GB of memory will
+  # be required to maintain the same number of references as slightly less than 32GB of memory using compression.
   MemoryOptions: '-Xmx4096m'
   #Agent.Source.Git.ShallowFetchDepth: 1
   skipComponentGovernanceDetection: true
