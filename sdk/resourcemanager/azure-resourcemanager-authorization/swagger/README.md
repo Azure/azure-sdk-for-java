@@ -22,4 +22,5 @@ input-file:
 - https://github.com/microsoftgraph/msgraph-sdk-powershell/raw/543ce61/openApiDocs/v1.0/Applications.yml
 - https://github.com/microsoftgraph/msgraph-sdk-powershell/raw/543ce61/openApiDocs/v1.0/Groups.yml
 - https://github.com/microsoftgraph/msgraph-sdk-powershell/raw/543ce61/openApiDocs/v1.0/Users.yml
+- https://github.com/microsoftgraph/msgraph-sdk-powershell/raw/543ce61/openApiDocs/v1.0/Identity.DirectoryManagement.yml
 ```
