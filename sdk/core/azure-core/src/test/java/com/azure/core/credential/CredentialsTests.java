@@ -32,7 +32,7 @@ public class CredentialsTests {
             Assertions.assertEquals("Basic dXNlcjpwYXNz", headerValue);
             return next.process();
         };
-        //
+
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
             .policies((context, next) -> credentials.getToken(new TokenRequestContext().addScopes("scope./default"))
@@ -102,7 +102,7 @@ public class CredentialsTests {
             Assertions.assertEquals(expectedUrl, actualUrl);
             return next.process();
         };
-        //
+
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient())
             .policies(new AzureSasCredentialPolicy(credential), auditorPolicy)

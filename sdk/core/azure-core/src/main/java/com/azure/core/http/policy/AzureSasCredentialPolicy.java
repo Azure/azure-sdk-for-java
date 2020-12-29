@@ -6,7 +6,6 @@ package com.azure.core.http.policy;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
@@ -61,10 +60,5 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
         httpRequest.setUrl(url);
 
         return next.process();
-    }
-
-    @Override
-    public HttpPipelinePosition getPipelinePosition() {
-        return HttpPipelinePosition.PER_CALL;
     }
 }
