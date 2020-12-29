@@ -58,12 +58,6 @@ public class AADAccessTokenScopesIT {
     @RestController
     public static class DumbApp {
 
-        @GetMapping(value = "accessTokenScopes/arm")
-        public String arm(
-            @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient authorizedClient) {
-            return "error";
-        }
-
         @GetMapping(value = "accessTokenScopes/azure")
         public Set<String> azure(
             @RegisteredOAuth2AuthorizedClient("azure") OAuth2AuthorizedClient authorizedClient) {
@@ -89,6 +83,12 @@ public class AADAccessTokenScopesIT {
                            .map(OAuth2AuthorizedClient::getAccessToken)
                            .map(OAuth2AccessToken::getScopes)
                            .orElse(null);
+        }
+
+        @GetMapping(value = "accessTokenScopes/arm")
+        public String arm(
+            @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient authorizedClient) {
+            return "error";
         }
     }
 
