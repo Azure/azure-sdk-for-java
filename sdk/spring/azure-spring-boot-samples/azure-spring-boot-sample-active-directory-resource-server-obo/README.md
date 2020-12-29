@@ -91,7 +91,7 @@ azure:
     client-secret: [resource-server-application-client-secret]
     tenant-id: [tenant-id-registered-by-application]
     app-id-uri: api://sample-client-id
-    authorization:
+    authorization-clients:
       graph:
         scopes:
           - https://graph.microsoft.com/User.Read

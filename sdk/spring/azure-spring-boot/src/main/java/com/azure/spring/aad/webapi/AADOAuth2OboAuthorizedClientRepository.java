@@ -39,8 +39,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
 
     private final ClientRegistrationRepository repository;
 
-    public AADOAuth2OboAuthorizedClientRepository(
-        ClientRegistrationRepository repository) {
+    public AADOAuth2OboAuthorizedClientRepository(ClientRegistrationRepository repository) {
         this.repository = repository;
     }
 
