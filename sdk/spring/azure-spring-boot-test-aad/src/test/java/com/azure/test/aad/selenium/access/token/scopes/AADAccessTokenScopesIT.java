@@ -50,7 +50,7 @@ public class AADAccessTokenScopesIT {
         Assert.assertTrue(httpResponse.contains("https://manage.office.com/ServiceHealth.Read"));
 
         httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/arm");
-        Assert.assertFalse(httpResponse.contains("error"));
+        Assert.assertNotEquals(httpResponse, "error");
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
