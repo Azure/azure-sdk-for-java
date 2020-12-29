@@ -3,11 +3,11 @@
 ## Key concepts
 This sample illustrates how to protect a Java web API by restricting access to its resources to authorized accounts only.
 
-1. The bearer token is obtained from the request header.
-2. `JwtDecoder`  is used to parse the token into `Jwt`.
-3. Verify `aud`, `iss`, `nbf`, `exp` in access token.
-4. After successful verification, claims, headers etc in `Jwt` will be extracted, they will be wrapped in `AzureOAuth2AuthenticatedPrincipal` object.
-5. `AzureOAuth2AuthenticatedPrincipal` will eventually be set into SecurityContext.
+1. Obtain the access token the HTTP request header.
+2. Use `JwtDecoder` to parse the access token into `Jwt`.
+3. Verify `aud`, `iss`, `nbf`, `exp` claims in access token.
+4. Extract information from JWT and wrap them in `AADOAuth2AuthenticatedPrincipal` object.
+5. Save the `AADOAuth2AuthenticatedPrincipal` into SecurityContext.
 
 ## Getting started
 ### Environment checklist
