@@ -92,7 +92,7 @@ public class AADWebAppConfiguration {
 
     private Set<String> authorizationCodeScopes() {
         Set<String> result = accessTokenScopes();
-        for (AuthorizationProperties authProperties : properties.getAuthorizationClients().values()) {
+        for (AuthorizationClientProperties authProperties : properties.getAuthorizationClients().values()) {
             if (!authProperties.isOnDemand()) {
                 result.addAll(authProperties.getScopes());
             }
@@ -104,7 +104,7 @@ public class AADWebAppConfiguration {
         Set<String> result = Optional.of(properties)
                                      .map(AADAuthenticationProperties::getAuthorizationClients)
                                      .map(clients -> clients.get(AZURE_CLIENT_REGISTRATION_ID))
-                                     .map(AuthorizationProperties::getScopes)
+                                     .map(AuthorizationClientProperties::getScopes)
                                      .map(Collection::stream)
                                      .orElseGet(Stream::empty)
                                      .collect(Collectors.toSet());
@@ -135,13 +135,13 @@ public class AADWebAppConfiguration {
                 continue;
             }
 
-            AuthorizationProperties authz = properties.getAuthorizationClients().get(name);
+            AuthorizationClientProperties authz = properties.getAuthorizationClients().get(name);
             result.add(createClientBuilder(name, authz));
         }
         return result;
     }
 
-    private ClientRegistration createClientBuilder(String id, AuthorizationProperties authz) {
+    private ClientRegistration createClientBuilder(String id, AuthorizationClientProperties authz) {
         ClientRegistration.Builder result = createClientBuilder(id);
         List<String> scopes = authz.getScopes();
         if (authz.isOnDemand()) {
