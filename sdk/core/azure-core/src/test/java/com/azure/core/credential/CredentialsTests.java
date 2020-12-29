@@ -92,8 +92,6 @@ public class CredentialsTests {
             "?test_signature,https://localhost,https://localhost?test_signature",
             "test_signature,https://localhost?,https://localhost?test_signature",
             "?test_signature,https://localhost?,https://localhost?test_signature",
-            "test_signature,https://localhost?test_signature,https://localhost?test_signature",
-            "?test_signature,https://localhost?test_signature,https://localhost?test_signature",
             "test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature",
             "?test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature"})
     public void sasCredentialsTest(String signature, String url, String expectedUrl) throws Exception {
@@ -112,33 +110,6 @@ public class CredentialsTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(url));
         pipeline.send(request).block();
-    }
-
-    @ParameterizedTest
-    @CsvSource(
-        {   "test_signature,https://localhost,https://localhost?test_signature",
-            "?test_signature,https://localhost,https://localhost?test_signature",
-            "test_signature,https://localhost?test_signature,https://localhost?test_signature",
-            "?test_signature,https://localhost?test_signature,https://localhost?test_signature",
-            "test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature",
-            "?test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature"})
-    public void sasCredentialsWithRetryTest(String signature, String url, String expectedUrl) throws Exception {
-        AzureSasCredential credential = new AzureSasCredential(signature);
-
-        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
-            String actualUrl = context.getHttpRequest().getUrl().toString();
-            Assertions.assertEquals(expectedUrl, actualUrl);
-            return next.process();
-        };
-        //
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient())
-            .policies(new AzureSasCredentialPolicy(credential), auditorPolicy)
-            .build();
-
-        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL(url));
-        pipeline.send(request).block();
-        pipeline.send(request).block(); // retry
     }
 
     @Test

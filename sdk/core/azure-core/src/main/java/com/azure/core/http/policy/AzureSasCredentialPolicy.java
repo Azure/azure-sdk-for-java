@@ -55,7 +55,7 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
             } else {
                 url = url + "?" + signature;
             }
-        } else if (!query.contains(signature)) {
+        } else {
             url = url + "&" + signature;
         }
         httpRequest.setUrl(url);
