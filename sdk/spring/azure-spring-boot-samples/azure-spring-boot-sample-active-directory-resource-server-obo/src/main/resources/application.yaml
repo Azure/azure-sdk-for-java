@@ -7,7 +7,7 @@ azure:
     client-secret: [resource-server-application-client-secret]
     tenant-id: [teanant-id-registered-by-application]
     app-id-uri: [current-expose-application-id-url]
-    authorization:
+    authorization-clients:
       graph:
         scopes:
           - https://graph.microsoft.com/User.Read
