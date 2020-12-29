@@ -39,8 +39,8 @@ public class AADResourceServerOboConfiguration {
     private AADAuthenticationProperties properties;
 
     @Bean
-    @ConditionalOnMissingBean({ ClientRegistrationRepository.class, InMemoryClientRegistrationRepository.class })
-    public ClientRegistrationRepository oboClientRegistrationRepository() {
+    @ConditionalOnMissingBean({ ClientRegistrationRepository.class })
+    public ClientRegistrationRepository clientRegistrationRepository() {
         return new InMemoryClientRegistrationRepository(createOboClients());
     }
 

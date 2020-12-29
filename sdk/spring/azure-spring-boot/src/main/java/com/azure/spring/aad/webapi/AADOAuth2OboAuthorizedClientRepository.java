@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.server.resource.authentication.AbstractOAuth2TokenAuthenticationToken;
@@ -37,10 +37,10 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
 
     private static final String OBO_AUTHORIZEDCLIENT_PREFIX = "obo_authorizedclient_";
 
-    private final InMemoryClientRegistrationRepository repository;
+    private final ClientRegistrationRepository repository;
 
     public AADOAuth2OboAuthorizedClientRepository(
-        InMemoryClientRegistrationRepository repository) {
+        ClientRegistrationRepository repository) {
         this.repository = repository;
     }
 
