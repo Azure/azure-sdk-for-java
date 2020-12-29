@@ -4,7 +4,7 @@
 package com.azure.spring.sample.aad.security;
 
 
-import com.azure.spring.aad.webapi.AzureJwtBearerTokenAuthenticationConverter;
+import com.azure.spring.aad.webapi.AADJwtBearerTokenAuthenticationConverter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,6 +19,6 @@ public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurer
         http.authorizeRequests((requests) -> requests.anyRequest().authenticated())
             .oauth2ResourceServer()
             .jwt()
-            .jwtAuthenticationConverter(new AzureJwtBearerTokenAuthenticationConverter());
+            .jwtAuthenticationConverter(new AADJwtBearerTokenAuthenticationConverter());
     }
 }

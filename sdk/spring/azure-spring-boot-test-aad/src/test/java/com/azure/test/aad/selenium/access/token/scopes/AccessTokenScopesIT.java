@@ -24,8 +24,8 @@ public class AccessTokenScopesIT {
     public void testAccessTokenScopes() {
         try (AppRunner app = new AppRunner(DumbApp.class)) {
             SeleniumTestUtils.addProperty(app);
-            app.property("azure.activedirectory.authorization.office.scopes", "https://manage.office.com/ActivityFeed.Read , https://manage.office.com/ActivityFeed.ReadDlp , https://manage.office.com/ServiceHealth.Read");
-            app.property("azure.activedirectory.authorization.graph.scopes", "https://graph.microsoft.com/User.Read , https://graph.microsoft.com/Directory.AccessAsUser.All");
+            app.property("azure.activedirectory.authorization-clients.office.scopes", "https://manage.office.com/ActivityFeed.Read , https://manage.office.com/ActivityFeed.ReadDlp , https://manage.office.com/ServiceHealth.Read");
+            app.property("azure.activedirectory.authorization-clients.graph.scopes", "https://graph.microsoft.com/User.Read , https://graph.microsoft.com/Directory.AccessAsUser.All");
             List<String> endPoints = new ArrayList<>();
             endPoints.add("accessTokenScopes/azure");
             endPoints.add("accessTokenScopes/office");

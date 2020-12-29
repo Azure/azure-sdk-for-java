@@ -58,12 +58,12 @@ public class AADWebAppConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public OAuth2AuthorizedClientRepository authorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
-        return new AzureAuthorizedClientRepository(repo);
+        return new AADOAuth2AuthorizedClientRepository(repo);
     }
 
     @Bean
     public OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService(AADAuthenticationProperties properties) {
-        return new AzureActiveDirectoryOAuth2UserService(properties);
+        return new AADOAuth2UserService(properties);
     }
 
     private AzureClientRegistration createDefaultClient() {
@@ -76,7 +76,7 @@ public class AADWebAppConfiguration {
 
     private Set<String> allScopes() {
         Set<String> result = accessTokenScopes();
-        for (AuthorizationProperties authProperties : properties.getAuthorization().values()) {
+        for (AuthorizationProperties authProperties : properties.getAuthorizationClients().values()) {
             if (!authProperties.isOnDemand()) {
                 result.addAll(authProperties.getScopes());
             }
@@ -94,7 +94,8 @@ public class AADWebAppConfiguration {
     }
 
     private void addAzureConfiguredScopes(Set<String> result) {
-        AuthorizationProperties azureProperties = properties.getAuthorization().get(AZURE_CLIENT_REGISTRATION_ID);
+        AuthorizationProperties azureProperties =
+            properties.getAuthorizationClients().get(AZURE_CLIENT_REGISTRATION_ID);
         if (azureProperties != null) {
             result.addAll(azureProperties.getScopes());
         }
@@ -105,7 +106,7 @@ public class AADWebAppConfiguration {
         result.add("openid");
         result.add("profile");
 
-        if (!properties.getAuthorization().isEmpty()) {
+        if (!properties.getAuthorizationClients().isEmpty()) {
             result.add("offline_access");
         }
         return result;
@@ -113,12 +114,12 @@ public class AADWebAppConfiguration {
 
     private List<ClientRegistration> createAuthzClients() {
         List<ClientRegistration> result = new ArrayList<>();
-        for (String name : properties.getAuthorization().keySet()) {
+        for (String name : properties.getAuthorizationClients().keySet()) {
             if (AZURE_CLIENT_REGISTRATION_ID.equals(name)) {
                 continue;
             }
 
-            AuthorizationProperties authz = properties.getAuthorization().get(name);
+            AuthorizationProperties authz = properties.getAuthorizationClients().get(name);
             result.add(createClientBuilder(name, authz));
         }
         return result;
@@ -147,14 +148,14 @@ public class AADWebAppConfiguration {
         result.clientId(properties.getClientId());
         result.clientSecret(properties.getClientSecret());
 
-        AuthorizationServerEndpoints endpoints =
-            new AuthorizationServerEndpoints(properties.getAuthorizationServerUri());
-        result.authorizationUri(endpoints.authorizationEndpoint(properties.getTenantId()));
-        result.tokenUri(endpoints.tokenEndpoint(properties.getTenantId()));
-        result.jwkSetUri(endpoints.jwkSetEndpoint(properties.getTenantId()));
+        AADAuthorizationServerEndpoints endpoints =
+            new AADAuthorizationServerEndpoints(properties.getBaseUri(), properties.getTenantId());
+        result.authorizationUri(endpoints.authorizationEndpoint());
+        result.tokenUri(endpoints.tokenEndpoint());
+        result.jwkSetUri(endpoints.jwkSetEndpoint());
 
         Map<String, Object> configurationMetadata = new LinkedHashMap<>();
-        String endSessionEndpoint = endpoints.endSessionEndpoint(properties.getTenantId());
+        String endSessionEndpoint = endpoints.endSessionEndpoint();
         configurationMetadata.put("end_session_endpoint", endSessionEndpoint);
         result.providerConfigurationMetadata(configurationMetadata);
 
@@ -167,7 +168,7 @@ public class AADWebAppConfiguration {
     @Configuration
     @ConditionalOnBean(ObjectPostProcessor.class)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
-    public static class DefaultAzureOAuth2Configuration extends AzureOAuth2Configuration {
+    public static class DefaultAADWebSecurityConfigurerAdapter extends AADWebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
