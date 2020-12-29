@@ -281,12 +281,16 @@ azure:
 
 #### Support the use of `@RegisteredOAuth2AuthorizedClient` to get `OAuth2AuthorizedClient`:
 ```java
- @PreAuthorize("hasAuthority('SCOPE_ResourceAccessGraphCustomResources.Read')")
- @GetMapping("call-graph-and-custom-resources")
- public String callGraphAndCustomResources(
-     @RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph,
-     @RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
-     return callMicrosoftGraphMeEndpoint(graph) + " " + callCustomLocalFileEndpoint(custom);
+ @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
+ @GetMapping("call-graph")
+ public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
+     return callMicrosoftGraphMeEndpoint(graph);
+ }
+ 
+ @PreAuthorize("hasAuthority('SCOPE_Obo.Custom.Read')")
+ @GetMapping("call-custom")
+ public String callCustom(@RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
+     return callCustomEndpoint(custom);
  }
 ```
 
@@ -391,8 +395,8 @@ For more information about setting logging in spring, please refer to the [offic
 ## Next steps
 The following section provides sample projects illustrating how to use the starter in different cases.
 ### More sample code
-- [Azure Active Directory for Web App][azure-spring-boot-sample-active-directory-webapp]
-- [Azure Active Directory for Web API][azure-spring-boot-sample-active-directory-resource-server]
+- [Azure Active Directory for Web apps][azure-spring-boot-sample-active-directory-webapp]
+- [Azure Active Directory for Web APIs][azure-spring-boot-sample-active-directory-resource-server]
 - [Azure Active Directory for On-Behalf-Of flow][azure-spring-boot-sample-active-directory-resource-server-obo]
 - [Azure Active Directory for Resource Server with Filter(Deprecated)][azure-spring-boot-sample-active-directory-resource-server-with-filter]
 
