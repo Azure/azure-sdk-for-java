@@ -83,7 +83,7 @@ public class AADWebApiOboIT {
             app.property("azure.activedirectory.client-id", clientId);
             app.property("azure.activedirectory.client-secret", clientSecret);
             app.property("azure.activedirectory.app-id-uri", "api://" + clientId);
-            app.property("azure.activedirectory.authorization.graph.scopes", "https://graph.microsoft.com/User.Read");
+            app.property("azure.activedirectory.authorization-clients.graph.scopes", "https://graph.microsoft.com/User.Read");
             app.start();
             command.accept(app);
         }

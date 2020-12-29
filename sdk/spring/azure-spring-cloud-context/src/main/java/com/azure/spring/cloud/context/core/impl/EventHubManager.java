@@ -3,9 +3,10 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.eventhub.EventHub;
-import com.microsoft.azure.management.eventhub.EventHubNamespace;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.eventhubs.models.EventHub;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.util.Tuple;
 
@@ -14,8 +15,11 @@ import com.azure.spring.cloud.context.core.util.Tuple;
  */
 public class EventHubManager extends AzureManager<EventHub, Tuple<EventHubNamespace, String>> {
 
-    public EventHubManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+    private final AzureResourceManager azureResourceManager;
+
+    public EventHubManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
+        super(azureProperties);
+        this.azureResourceManager = azureResourceManager;
     }
 
     @Override
@@ -30,13 +34,24 @@ public class EventHubManager extends AzureManager<EventHub, Tuple<EventHubNamesp
 
     @Override
     public EventHub internalGet(Tuple<EventHubNamespace, String> namespaceAndName) {
-        return azure.eventHubs().getByName(azureProperties.getResourceGroup(), namespaceAndName.getFirst().name(),
-            namespaceAndName.getSecond());
+        try {
+            return azureResourceManager.eventHubs()
+                                       .getByName(resourceGroup, namespaceAndName.getFirst().name(),
+                                           namespaceAndName.getSecond());
+        } catch (ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return null;
+            } else {
+                throw e;
+            }
+        }
     }
 
     @Override
     public EventHub internalCreate(Tuple<EventHubNamespace, String> namespaceAndName) {
-        return azure.eventHubs().define(namespaceAndName.getSecond()).withExistingNamespace(namespaceAndName.getFirst())
-            .create();
+        return azureResourceManager.eventHubs()
+                                   .define(namespaceAndName.getSecond())
+                                   .withExistingNamespace(namespaceAndName.getFirst())
+                                   .create();
     }
 }

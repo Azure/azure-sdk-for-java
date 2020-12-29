@@ -59,8 +59,8 @@ public class AADResourceServerOboConfiguration {
 
     public List<ClientRegistration> createOboClients() {
         List<ClientRegistration> result = new ArrayList<>();
-        for (String name : properties.getAuthorization().keySet()) {
-            AuthorizationProperties authorizationProperties = properties.getAuthorization().get(name);
+        for (String name : properties.getAuthorizationClients().keySet()) {
+            AuthorizationProperties authorizationProperties = properties.getAuthorizationClients().get(name);
             ClientRegistration.Builder builder = createClientBuilder(name);
             builder.scope(authorizationProperties.getScopes());
             result.add(builder.build());
