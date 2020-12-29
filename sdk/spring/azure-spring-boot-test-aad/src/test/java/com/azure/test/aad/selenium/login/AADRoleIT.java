@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.Collections;
 
-public class AADLoginAndRoleIT {
+public class AADRoleIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADLoginAndRoleIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADRoleIT.class);
 
     @Test
     public void roleTest() throws InterruptedException {

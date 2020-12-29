@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public class AccessTokenScopesIT {
+public class AADAccessTokenScopesIT {
 
     @Test
     public void testAccessTokenScopes() throws InterruptedException {
