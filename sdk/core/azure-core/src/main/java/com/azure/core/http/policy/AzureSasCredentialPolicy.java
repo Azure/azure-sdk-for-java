@@ -6,6 +6,7 @@ package com.azure.core.http.policy;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
@@ -49,12 +50,21 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
         String query = httpRequest.getUrl().getQuery();
         String url = httpRequest.getUrl().toString();
         if (query == null || query.isEmpty()) {
-            url = url + "?" + signature;
+            if (url.endsWith("?")) {
+                url = url + signature;
+            } else {
+                url = url + "?" + signature;
+            }
         } else if (!query.contains(signature)) {
-            url = url +  "&" + signature;
+            url = url + "&" + signature;
         }
         httpRequest.setUrl(url);
 
         return next.process();
+    }
+
+    @Override
+    public HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.PER_CALL;
     }
 }

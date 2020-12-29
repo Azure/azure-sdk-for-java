@@ -90,6 +90,8 @@ public class CredentialsTests {
     @CsvSource(
         {   "test_signature,https://localhost,https://localhost?test_signature",
             "?test_signature,https://localhost,https://localhost?test_signature",
+            "test_signature,https://localhost?,https://localhost?test_signature",
+            "?test_signature,https://localhost?,https://localhost?test_signature",
             "test_signature,https://localhost?test_signature,https://localhost?test_signature",
             "?test_signature,https://localhost?test_signature,https://localhost?test_signature",
             "test_signature,https://localhost?foo=bar,https://localhost?foo=bar&test_signature",
