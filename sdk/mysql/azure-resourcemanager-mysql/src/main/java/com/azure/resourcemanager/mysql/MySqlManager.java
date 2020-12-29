@@ -265,7 +265,7 @@ public final class MySqlManager {
                     new UserAgentPolicy(
                         null,
                         "com.azure.resourcemanager.mysql",
-                        "1.0.0-beta.1",
+                        "1.0.0-beta.2",
                         Configuration.getGlobalConfiguration()));
             policies.add(new RequestIdPolicy());
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
