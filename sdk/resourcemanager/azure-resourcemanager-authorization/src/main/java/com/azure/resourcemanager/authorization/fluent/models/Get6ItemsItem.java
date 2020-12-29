@@ -607,6 +607,18 @@ public final class Get6ItemsItem extends ExpandableStringEnum<Get6ItemsItem> {
     /** Static value skills desc for Get6ItemsItem. */
     public static final Get6ItemsItem SKILLS_DESC = fromString("skills desc");
 
+    /** Static value addresses for Get6ItemsItem. */
+    public static final Get6ItemsItem ADDRESSES = fromString("addresses");
+
+    /** Static value addresses desc for Get6ItemsItem. */
+    public static final Get6ItemsItem ADDRESSES_DESC = fromString("addresses desc");
+
+    /** Static value phones for Get6ItemsItem. */
+    public static final Get6ItemsItem PHONES = fromString("phones");
+
+    /** Static value phones desc for Get6ItemsItem. */
+    public static final Get6ItemsItem PHONES_DESC = fromString("phones desc");
+
     /**
      * Creates or finds a Get6ItemsItem from its string representation.
      *

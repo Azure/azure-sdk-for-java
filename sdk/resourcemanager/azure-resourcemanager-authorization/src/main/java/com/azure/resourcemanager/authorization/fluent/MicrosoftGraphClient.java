@@ -812,4 +812,130 @@ public interface MicrosoftGraphClient {
      * @return the UsersTodoListsTasksClient object.
      */
     UsersTodoListsTasksClient getUsersTodoListsTasks();
+
+    /**
+     * Gets the ContactsOrgContactsClient object to access its operations.
+     *
+     * @return the ContactsOrgContactsClient object.
+     */
+    ContactsOrgContactsClient getContactsOrgContacts();
+
+    /**
+     * Gets the ContactsClient object to access its operations.
+     *
+     * @return the ContactsClient object.
+     */
+    ContactsClient getContacts();
+
+    /**
+     * Gets the ContractsContractsClient object to access its operations.
+     *
+     * @return the ContractsContractsClient object.
+     */
+    ContractsContractsClient getContractsContracts();
+
+    /**
+     * Gets the ContractsClient object to access its operations.
+     *
+     * @return the ContractsClient object.
+     */
+    ContractsClient getContracts();
+
+    /**
+     * Gets the DevicesDevicesClient object to access its operations.
+     *
+     * @return the DevicesDevicesClient object.
+     */
+    DevicesDevicesClient getDevicesDevices();
+
+    /**
+     * Gets the DevicesClient object to access its operations.
+     *
+     * @return the DevicesClient object.
+     */
+    DevicesClient getDevices();
+
+    /**
+     * Gets the DirectoryDirectoriesClient object to access its operations.
+     *
+     * @return the DirectoryDirectoriesClient object.
+     */
+    DirectoryDirectoriesClient getDirectoryDirectories();
+
+    /**
+     * Gets the DirectoriesClient object to access its operations.
+     *
+     * @return the DirectoriesClient object.
+     */
+    DirectoriesClient getDirectories();
+
+    /**
+     * Gets the DirectoryAdministrativeUnitsClient object to access its operations.
+     *
+     * @return the DirectoryAdministrativeUnitsClient object.
+     */
+    DirectoryAdministrativeUnitsClient getDirectoryAdministrativeUnits();
+
+    /**
+     * Gets the DirectoryRolesDirectoryRolesClient object to access its operations.
+     *
+     * @return the DirectoryRolesDirectoryRolesClient object.
+     */
+    DirectoryRolesDirectoryRolesClient getDirectoryRolesDirectoryRoles();
+
+    /**
+     * Gets the DirectoryRolesClient object to access its operations.
+     *
+     * @return the DirectoryRolesClient object.
+     */
+    DirectoryRolesClient getDirectoryRoles();
+
+    /**
+     * Gets the DirectoryRoleTemplatesDirectoryRoleTemplatesClient object to access its operations.
+     *
+     * @return the DirectoryRoleTemplatesDirectoryRoleTemplatesClient object.
+     */
+    DirectoryRoleTemplatesDirectoryRoleTemplatesClient getDirectoryRoleTemplatesDirectoryRoleTemplates();
+
+    /**
+     * Gets the DirectoryRoleTemplatesClient object to access its operations.
+     *
+     * @return the DirectoryRoleTemplatesClient object.
+     */
+    DirectoryRoleTemplatesClient getDirectoryRoleTemplates();
+
+    /**
+     * Gets the DomainsDomainsClient object to access its operations.
+     *
+     * @return the DomainsDomainsClient object.
+     */
+    DomainsDomainsClient getDomainsDomains();
+
+    /**
+     * Gets the DomainsClient object to access its operations.
+     *
+     * @return the DomainsClient object.
+     */
+    DomainsClient getDomains();
+
+    /**
+     * Gets the OrganizationOrganizationsClient object to access its operations.
+     *
+     * @return the OrganizationOrganizationsClient object.
+     */
+    OrganizationOrganizationsClient getOrganizationOrganizations();
+
+    /**
+     * Gets the OrganizationsClient object to access its operations.
+     *
+     * @return the OrganizationsClient object.
+     */
+    OrganizationsClient getOrganizations();
+
+    /**
+     * Gets the SubscribedSkusSubscribedSkusClient object to access its operations.
+     *
+     * @return the SubscribedSkusSubscribedSkusClient object.
+     */
+    SubscribedSkusSubscribedSkusClient getSubscribedSkusSubscribedSkus();
 }

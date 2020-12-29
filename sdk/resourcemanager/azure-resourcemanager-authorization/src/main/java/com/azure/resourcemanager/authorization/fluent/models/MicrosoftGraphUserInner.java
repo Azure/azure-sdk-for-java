@@ -607,7 +607,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * The scopedRoleMemberOf property.
      */
     @JsonProperty(value = "scopedRoleMemberOf")
-    private List<MicrosoftGraphScopedRoleMembership> scopedRoleMemberOf;
+    private List<MicrosoftGraphScopedRoleMembershipInner> scopedRoleMemberOf;
 
     /*
      * The transitiveMemberOf property.
@@ -2554,7 +2554,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the scopedRoleMemberOf value.
      */
-    public List<MicrosoftGraphScopedRoleMembership> scopedRoleMemberOf() {
+    public List<MicrosoftGraphScopedRoleMembershipInner> scopedRoleMemberOf() {
         return this.scopedRoleMemberOf;
     }
 
@@ -2564,7 +2564,8 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param scopedRoleMemberOf the scopedRoleMemberOf value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withScopedRoleMemberOf(List<MicrosoftGraphScopedRoleMembership> scopedRoleMemberOf) {
+    public MicrosoftGraphUserInner withScopedRoleMemberOf(
+        List<MicrosoftGraphScopedRoleMembershipInner> scopedRoleMemberOf) {
         this.scopedRoleMemberOf = scopedRoleMemberOf;
         return this;
     }

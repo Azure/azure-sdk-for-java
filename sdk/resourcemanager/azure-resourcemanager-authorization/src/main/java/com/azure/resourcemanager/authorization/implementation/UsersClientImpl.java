@@ -54,6 +54,7 @@ import com.azure.resourcemanager.authorization.fluent.models.CollectionOfLinksOf
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfLinksOfOAuth2PermissionGrant;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfOAuth2PermissionGrant;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfProfilePhoto;
+import com.azure.resourcemanager.authorization.fluent.models.CollectionOfScopedRoleMembership1;
 import com.azure.resourcemanager.authorization.fluent.models.Get1ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphAppRoleAssignmentInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDirectoryObjectInner;
@@ -62,6 +63,7 @@ import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphLicen
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphOAuth2PermissionGrantInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphOutlookUserInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphProfilePhotoInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphScopedRoleMembershipInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphTodoInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphUserSettingsInner;
 import com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException;
@@ -956,6 +958,72 @@ public final class UsersClientImpl implements UsersClient {
             @HeaderParam("Accept") String accept,
             Context context);
 
+        @Headers({"Content-Type: application/json"})
+        @Get("/users/{user-id}/scopedRoleMemberOf")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
+        Mono<Response<CollectionOfScopedRoleMembership1>> listScopedRoleMemberOf(
+            @HostParam("$host") String endpoint,
+            @PathParam("user-id") String userId,
+            @QueryParam("$top") Integer top,
+            @QueryParam("$skip") Integer skip,
+            @QueryParam("$search") String search,
+            @QueryParam("$filter") String filter,
+            @QueryParam("$count") Boolean count,
+            @QueryParam("$orderby") String orderby,
+            @QueryParam("$select") String select,
+            @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post("/users/{user-id}/scopedRoleMemberOf")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
+        Mono<Response<MicrosoftGraphScopedRoleMembershipInner>> createScopedRoleMemberOf(
+            @HostParam("$host") String endpoint,
+            @PathParam("user-id") String userId,
+            @BodyParam("application/json") MicrosoftGraphScopedRoleMembershipInner body,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("/users/{user-id}/scopedRoleMemberOf/{scopedRoleMembership-id}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
+        Mono<Response<MicrosoftGraphScopedRoleMembershipInner>> getScopedRoleMemberOf(
+            @HostParam("$host") String endpoint,
+            @PathParam("user-id") String userId,
+            @PathParam("scopedRoleMembership-id") String scopedRoleMembershipId,
+            @QueryParam("$select") String select,
+            @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Patch("/users/{user-id}/scopedRoleMemberOf/{scopedRoleMembership-id}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
+        Mono<Response<Void>> updateScopedRoleMemberOf(
+            @HostParam("$host") String endpoint,
+            @PathParam("user-id") String userId,
+            @PathParam("scopedRoleMembership-id") String scopedRoleMembershipId,
+            @BodyParam("application/json") MicrosoftGraphScopedRoleMembershipInner body,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Delete("/users/{user-id}/scopedRoleMemberOf/{scopedRoleMembership-id}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
+        Mono<Response<Void>> deleteScopedRoleMemberOf(
+            @HostParam("$host") String endpoint,
+            @PathParam("user-id") String userId,
+            @PathParam("scopedRoleMembership-id") String scopedRoleMembershipId,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -1094,6 +1162,13 @@ public final class UsersClientImpl implements UsersClient {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
         Mono<Response<CollectionOfLinksOfDirectoryObject5>> listRefTransitiveMemberOfNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
+        Mono<Response<CollectionOfScopedRoleMembership1>> listScopedRoleMemberOfNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -12307,6 +12382,890 @@ public final class UsersClientImpl implements UsersClient {
     }
 
     /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<MicrosoftGraphScopedRoleMembershipInner>> listScopedRoleMemberOfSinglePageAsync(
+        String userId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<UsersOrderby> orderby,
+        List<UsersSelect> select,
+        List<String> expand) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        String orderbyConverted =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
+        String selectConverted =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+        String expandConverted =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listScopedRoleMemberOf(
+                            this.client.getEndpoint(),
+                            userId,
+                            top,
+                            skip,
+                            search,
+                            filter,
+                            count,
+                            orderbyConverted,
+                            selectConverted,
+                            expandConverted,
+                            accept,
+                            context))
+            .<PagedResponse<MicrosoftGraphScopedRoleMembershipInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<MicrosoftGraphScopedRoleMembershipInner>> listScopedRoleMemberOfSinglePageAsync(
+        String userId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<UsersOrderby> orderby,
+        List<UsersSelect> select,
+        List<String> expand,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        String orderbyConverted =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
+        String selectConverted =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+        String expandConverted =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+        context = this.client.mergeContext(context);
+        return service
+            .listScopedRoleMemberOf(
+                this.client.getEndpoint(),
+                userId,
+                top,
+                skip,
+                search,
+                filter,
+                count,
+                orderbyConverted,
+                selectConverted,
+                expandConverted,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
+    }
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<MicrosoftGraphScopedRoleMembershipInner> listScopedRoleMemberOfAsync(
+        String userId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<UsersOrderby> orderby,
+        List<UsersSelect> select,
+        List<String> expand) {
+        return new PagedFlux<>(
+            () ->
+                listScopedRoleMemberOfSinglePageAsync(
+                    userId, top, skip, search, filter, count, orderby, select, expand),
+            nextLink -> listScopedRoleMemberOfNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<MicrosoftGraphScopedRoleMembershipInner> listScopedRoleMemberOfAsync(String userId) {
+        final Integer top = null;
+        final Integer skip = null;
+        final String search = null;
+        final String filter = null;
+        final Boolean count = null;
+        final List<UsersOrderby> orderby = null;
+        final List<UsersSelect> select = null;
+        final List<String> expand = null;
+        return new PagedFlux<>(
+            () ->
+                listScopedRoleMemberOfSinglePageAsync(
+                    userId, top, skip, search, filter, count, orderby, select, expand),
+            nextLink -> listScopedRoleMemberOfNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<MicrosoftGraphScopedRoleMembershipInner> listScopedRoleMemberOfAsync(
+        String userId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<UsersOrderby> orderby,
+        List<UsersSelect> select,
+        List<String> expand,
+        Context context) {
+        return new PagedFlux<>(
+            () ->
+                listScopedRoleMemberOfSinglePageAsync(
+                    userId, top, skip, search, filter, count, orderby, select, expand, context),
+            nextLink -> listScopedRoleMemberOfNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MicrosoftGraphScopedRoleMembershipInner> listScopedRoleMemberOf(String userId) {
+        final Integer top = null;
+        final Integer skip = null;
+        final String search = null;
+        final String filter = null;
+        final Boolean count = null;
+        final List<UsersOrderby> orderby = null;
+        final List<UsersSelect> select = null;
+        final List<String> expand = null;
+        return new PagedIterable<>(
+            listScopedRoleMemberOfAsync(userId, top, skip, search, filter, count, orderby, select, expand));
+    }
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<MicrosoftGraphScopedRoleMembershipInner> listScopedRoleMemberOf(
+        String userId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<UsersOrderby> orderby,
+        List<UsersSelect> select,
+        List<String> expand,
+        Context context) {
+        return new PagedIterable<>(
+            listScopedRoleMemberOfAsync(userId, top, skip, search, filter, count, orderby, select, expand, context));
+    }
+
+    /**
+     * Create new navigation property to scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMembership.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MicrosoftGraphScopedRoleMembershipInner>> createScopedRoleMemberOfWithResponseAsync(
+        String userId, MicrosoftGraphScopedRoleMembershipInner body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.createScopedRoleMemberOf(this.client.getEndpoint(), userId, body, accept, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Create new navigation property to scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param body New navigation property.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMembership.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MicrosoftGraphScopedRoleMembershipInner>> createScopedRoleMemberOfWithResponseAsync(
+        String userId, MicrosoftGraphScopedRoleMembershipInner body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.createScopedRoleMemberOf(this.client.getEndpoint(), userId, body, accept, context);
+    }
+
+    /**
+     * Create new navigation property to scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMembership.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MicrosoftGraphScopedRoleMembershipInner> createScopedRoleMemberOfAsync(
+        String userId, MicrosoftGraphScopedRoleMembershipInner body) {
+        return createScopedRoleMemberOfWithResponseAsync(userId, body)
+            .flatMap(
+                (Response<MicrosoftGraphScopedRoleMembershipInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Create new navigation property to scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMembership.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MicrosoftGraphScopedRoleMembershipInner createScopedRoleMemberOf(
+        String userId, MicrosoftGraphScopedRoleMembershipInner body) {
+        return createScopedRoleMemberOfAsync(userId, body).block();
+    }
+
+    /**
+     * Create new navigation property to scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param body New navigation property.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMembership.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MicrosoftGraphScopedRoleMembershipInner> createScopedRoleMemberOfWithResponse(
+        String userId, MicrosoftGraphScopedRoleMembershipInner body, Context context) {
+        return createScopedRoleMemberOfWithResponseAsync(userId, body, context).block();
+    }
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MicrosoftGraphScopedRoleMembershipInner>> getScopedRoleMemberOfWithResponseAsync(
+        String userId, String scopedRoleMembershipId, List<UsersSelect> select, List<String> expand) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        if (scopedRoleMembershipId == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter scopedRoleMembershipId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        String selectConverted =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+        String expandConverted =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getScopedRoleMemberOf(
+                            this.client.getEndpoint(),
+                            userId,
+                            scopedRoleMembershipId,
+                            selectConverted,
+                            expandConverted,
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<MicrosoftGraphScopedRoleMembershipInner>> getScopedRoleMemberOfWithResponseAsync(
+        String userId, String scopedRoleMembershipId, List<UsersSelect> select, List<String> expand, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        if (scopedRoleMembershipId == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter scopedRoleMembershipId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        String selectConverted =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
+        String expandConverted =
+            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
+        context = this.client.mergeContext(context);
+        return service
+            .getScopedRoleMemberOf(
+                this.client.getEndpoint(),
+                userId,
+                scopedRoleMembershipId,
+                selectConverted,
+                expandConverted,
+                accept,
+                context);
+    }
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MicrosoftGraphScopedRoleMembershipInner> getScopedRoleMemberOfAsync(
+        String userId, String scopedRoleMembershipId, List<UsersSelect> select, List<String> expand) {
+        return getScopedRoleMemberOfWithResponseAsync(userId, scopedRoleMembershipId, select, expand)
+            .flatMap(
+                (Response<MicrosoftGraphScopedRoleMembershipInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MicrosoftGraphScopedRoleMembershipInner> getScopedRoleMemberOfAsync(
+        String userId, String scopedRoleMembershipId) {
+        final List<UsersSelect> select = null;
+        final List<String> expand = null;
+        return getScopedRoleMemberOfWithResponseAsync(userId, scopedRoleMembershipId, select, expand)
+            .flatMap(
+                (Response<MicrosoftGraphScopedRoleMembershipInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MicrosoftGraphScopedRoleMembershipInner getScopedRoleMemberOf(String userId, String scopedRoleMembershipId) {
+        final List<UsersSelect> select = null;
+        final List<String> expand = null;
+        return getScopedRoleMemberOfAsync(userId, scopedRoleMembershipId, select, expand).block();
+    }
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MicrosoftGraphScopedRoleMembershipInner> getScopedRoleMemberOfWithResponse(
+        String userId, String scopedRoleMembershipId, List<UsersSelect> select, List<String> expand, Context context) {
+        return getScopedRoleMemberOfWithResponseAsync(userId, scopedRoleMembershipId, select, expand, context).block();
+    }
+
+    /**
+     * Update the navigation property scopedRoleMemberOf in users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> updateScopedRoleMemberOfWithResponseAsync(
+        String userId, String scopedRoleMembershipId, MicrosoftGraphScopedRoleMembershipInner body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        if (scopedRoleMembershipId == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter scopedRoleMembershipId is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateScopedRoleMemberOf(
+                            this.client.getEndpoint(), userId, scopedRoleMembershipId, body, accept, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Update the navigation property scopedRoleMemberOf in users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param body New navigation property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> updateScopedRoleMemberOfWithResponseAsync(
+        String userId, String scopedRoleMembershipId, MicrosoftGraphScopedRoleMembershipInner body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        if (scopedRoleMembershipId == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter scopedRoleMembershipId is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .updateScopedRoleMemberOf(this.client.getEndpoint(), userId, scopedRoleMembershipId, body, accept, context);
+    }
+
+    /**
+     * Update the navigation property scopedRoleMemberOf in users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateScopedRoleMemberOfAsync(
+        String userId, String scopedRoleMembershipId, MicrosoftGraphScopedRoleMembershipInner body) {
+        return updateScopedRoleMemberOfWithResponseAsync(userId, scopedRoleMembershipId, body)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Update the navigation property scopedRoleMemberOf in users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateScopedRoleMemberOf(
+        String userId, String scopedRoleMembershipId, MicrosoftGraphScopedRoleMembershipInner body) {
+        updateScopedRoleMemberOfAsync(userId, scopedRoleMembershipId, body).block();
+    }
+
+    /**
+     * Update the navigation property scopedRoleMemberOf in users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param body New navigation property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateScopedRoleMemberOfWithResponse(
+        String userId, String scopedRoleMembershipId, MicrosoftGraphScopedRoleMembershipInner body, Context context) {
+        return updateScopedRoleMemberOfWithResponseAsync(userId, scopedRoleMembershipId, body, context).block();
+    }
+
+    /**
+     * Delete navigation property scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteScopedRoleMemberOfWithResponseAsync(
+        String userId, String scopedRoleMembershipId, String ifMatch) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        if (scopedRoleMembershipId == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter scopedRoleMembershipId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .deleteScopedRoleMemberOf(
+                            this.client.getEndpoint(), userId, scopedRoleMembershipId, ifMatch, accept, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Delete navigation property scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> deleteScopedRoleMemberOfWithResponseAsync(
+        String userId, String scopedRoleMembershipId, String ifMatch, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (userId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter userId is required and cannot be null."));
+        }
+        if (scopedRoleMembershipId == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter scopedRoleMembershipId is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .deleteScopedRoleMemberOf(
+                this.client.getEndpoint(), userId, scopedRoleMembershipId, ifMatch, accept, context);
+    }
+
+    /**
+     * Delete navigation property scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteScopedRoleMemberOfAsync(String userId, String scopedRoleMembershipId, String ifMatch) {
+        return deleteScopedRoleMemberOfWithResponseAsync(userId, scopedRoleMembershipId, ifMatch)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Delete navigation property scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteScopedRoleMemberOfAsync(String userId, String scopedRoleMembershipId) {
+        final String ifMatch = null;
+        return deleteScopedRoleMemberOfWithResponseAsync(userId, scopedRoleMembershipId, ifMatch)
+            .flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Delete navigation property scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteScopedRoleMemberOf(String userId, String scopedRoleMembershipId) {
+        final String ifMatch = null;
+        deleteScopedRoleMemberOfAsync(userId, scopedRoleMembershipId, ifMatch).block();
+    }
+
+    /**
+     * Delete navigation property scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteScopedRoleMemberOfWithResponse(
+        String userId, String scopedRoleMembershipId, String ifMatch, Context context) {
+        return deleteScopedRoleMemberOfWithResponseAsync(userId, scopedRoleMembershipId, ifMatch, context).block();
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -13456,6 +14415,65 @@ public final class UsersClientImpl implements UsersClient {
         context = this.client.mergeContext(context);
         return service
             .listRefTransitiveMemberOfNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of scopedRoleMembership.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<MicrosoftGraphScopedRoleMembershipInner>> listScopedRoleMemberOfNextSinglePageAsync(
+        String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return FluxUtil
+            .withContext(context -> service.listScopedRoleMemberOfNext(nextLink, context))
+            .<PagedResponse<MicrosoftGraphScopedRoleMembershipInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws OdataErrorMainException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of scopedRoleMembership.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<MicrosoftGraphScopedRoleMembershipInner>> listScopedRoleMemberOfNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .listScopedRoleMemberOfNext(nextLink, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

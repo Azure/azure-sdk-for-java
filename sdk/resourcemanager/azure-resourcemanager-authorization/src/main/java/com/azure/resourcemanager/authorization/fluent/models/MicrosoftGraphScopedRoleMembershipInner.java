@@ -15,8 +15,8 @@ import java.util.Map;
 
 /** scopedRoleMembership. */
 @Fluent
-public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphScopedRoleMembership.class);
+public final class MicrosoftGraphScopedRoleMembershipInner extends MicrosoftGraphEntity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphScopedRoleMembershipInner.class);
 
     /*
      * Unique identifier for the administrative unit that the directory role is
@@ -57,9 +57,9 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
      * scoped to.
      *
      * @param administrativeUnitId the administrativeUnitId value to set.
-     * @return the MicrosoftGraphScopedRoleMembership object itself.
+     * @return the MicrosoftGraphScopedRoleMembershipInner object itself.
      */
-    public MicrosoftGraphScopedRoleMembership withAdministrativeUnitId(String administrativeUnitId) {
+    public MicrosoftGraphScopedRoleMembershipInner withAdministrativeUnitId(String administrativeUnitId) {
         this.administrativeUnitId = administrativeUnitId;
         return this;
     }
@@ -77,9 +77,9 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
      * Set the roleId property: Unique identifier for the directory role that the member is in.
      *
      * @param roleId the roleId value to set.
-     * @return the MicrosoftGraphScopedRoleMembership object itself.
+     * @return the MicrosoftGraphScopedRoleMembershipInner object itself.
      */
-    public MicrosoftGraphScopedRoleMembership withRoleId(String roleId) {
+    public MicrosoftGraphScopedRoleMembershipInner withRoleId(String roleId) {
         this.roleId = roleId;
         return this;
     }
@@ -97,9 +97,9 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
      * Set the roleMemberInfo property: identity.
      *
      * @param roleMemberInfo the roleMemberInfo value to set.
-     * @return the MicrosoftGraphScopedRoleMembership object itself.
+     * @return the MicrosoftGraphScopedRoleMembershipInner object itself.
      */
-    public MicrosoftGraphScopedRoleMembership withRoleMemberInfo(MicrosoftGraphIdentity roleMemberInfo) {
+    public MicrosoftGraphScopedRoleMembershipInner withRoleMemberInfo(MicrosoftGraphIdentity roleMemberInfo) {
         this.roleMemberInfo = roleMemberInfo;
         return this;
     }
@@ -118,9 +118,9 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
      * Set the additionalProperties property: scopedRoleMembership.
      *
      * @param additionalProperties the additionalProperties value to set.
-     * @return the MicrosoftGraphScopedRoleMembership object itself.
+     * @return the MicrosoftGraphScopedRoleMembershipInner object itself.
      */
-    public MicrosoftGraphScopedRoleMembership withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public MicrosoftGraphScopedRoleMembershipInner withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -135,7 +135,7 @@ public final class MicrosoftGraphScopedRoleMembership extends MicrosoftGraphEnti
 
     /** {@inheritDoc} */
     @Override
-    public MicrosoftGraphScopedRoleMembership withId(String id) {
+    public MicrosoftGraphScopedRoleMembershipInner withId(String id) {
         super.withId(id);
         return this;
     }

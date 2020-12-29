@@ -19,6 +19,7 @@ import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphLicen
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphOAuth2PermissionGrantInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphOutlookUserInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphProfilePhotoInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphScopedRoleMembershipInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphTodoInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphUserSettingsInner;
 import com.azure.resourcemanager.authorization.fluent.models.UsersExpand;
@@ -4584,4 +4585,373 @@ public interface UsersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Map<String, Object>> createRefTransitiveMemberOfWithResponse(
         String userId, Map<String, Object> body, Context context);
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphScopedRoleMembershipInner> listScopedRoleMemberOfAsync(
+        String userId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<UsersOrderby> orderby,
+        List<UsersSelect> select,
+        List<String> expand);
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphScopedRoleMembershipInner> listScopedRoleMemberOfAsync(String userId);
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphScopedRoleMembershipInner> listScopedRoleMemberOf(String userId);
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphScopedRoleMembershipInner> listScopedRoleMemberOf(
+        String userId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<UsersOrderby> orderby,
+        List<UsersSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Create new navigation property to scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMembership.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphScopedRoleMembershipInner>> createScopedRoleMemberOfWithResponseAsync(
+        String userId, MicrosoftGraphScopedRoleMembershipInner body);
+
+    /**
+     * Create new navigation property to scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMembership.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphScopedRoleMembershipInner> createScopedRoleMemberOfAsync(
+        String userId, MicrosoftGraphScopedRoleMembershipInner body);
+
+    /**
+     * Create new navigation property to scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMembership.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphScopedRoleMembershipInner createScopedRoleMemberOf(
+        String userId, MicrosoftGraphScopedRoleMembershipInner body);
+
+    /**
+     * Create new navigation property to scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param body New navigation property.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMembership.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphScopedRoleMembershipInner> createScopedRoleMemberOfWithResponse(
+        String userId, MicrosoftGraphScopedRoleMembershipInner body, Context context);
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphScopedRoleMembershipInner>> getScopedRoleMemberOfWithResponseAsync(
+        String userId, String scopedRoleMembershipId, List<UsersSelect> select, List<String> expand);
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphScopedRoleMembershipInner> getScopedRoleMemberOfAsync(
+        String userId, String scopedRoleMembershipId, List<UsersSelect> select, List<String> expand);
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphScopedRoleMembershipInner> getScopedRoleMemberOfAsync(
+        String userId, String scopedRoleMembershipId);
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphScopedRoleMembershipInner getScopedRoleMemberOf(String userId, String scopedRoleMembershipId);
+
+    /**
+     * Get scopedRoleMemberOf from users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return scopedRoleMemberOf from users.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphScopedRoleMembershipInner> getScopedRoleMemberOfWithResponse(
+        String userId, String scopedRoleMembershipId, List<UsersSelect> select, List<String> expand, Context context);
+
+    /**
+     * Update the navigation property scopedRoleMemberOf in users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> updateScopedRoleMemberOfWithResponseAsync(
+        String userId, String scopedRoleMembershipId, MicrosoftGraphScopedRoleMembershipInner body);
+
+    /**
+     * Update the navigation property scopedRoleMemberOf in users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> updateScopedRoleMemberOfAsync(
+        String userId, String scopedRoleMembershipId, MicrosoftGraphScopedRoleMembershipInner body);
+
+    /**
+     * Update the navigation property scopedRoleMemberOf in users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateScopedRoleMemberOf(
+        String userId, String scopedRoleMembershipId, MicrosoftGraphScopedRoleMembershipInner body);
+
+    /**
+     * Update the navigation property scopedRoleMemberOf in users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param body New navigation property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> updateScopedRoleMemberOfWithResponse(
+        String userId, String scopedRoleMembershipId, MicrosoftGraphScopedRoleMembershipInner body, Context context);
+
+    /**
+     * Delete navigation property scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteScopedRoleMemberOfWithResponseAsync(
+        String userId, String scopedRoleMembershipId, String ifMatch);
+
+    /**
+     * Delete navigation property scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteScopedRoleMemberOfAsync(String userId, String scopedRoleMembershipId, String ifMatch);
+
+    /**
+     * Delete navigation property scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteScopedRoleMemberOfAsync(String userId, String scopedRoleMembershipId);
+
+    /**
+     * Delete navigation property scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteScopedRoleMemberOf(String userId, String scopedRoleMembershipId);
+
+    /**
+     * Delete navigation property scopedRoleMemberOf for users.
+     *
+     * @param userId key: id of user.
+     * @param scopedRoleMembershipId key: id of scopedRoleMembership.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteScopedRoleMemberOfWithResponse(
+        String userId, String scopedRoleMembershipId, String ifMatch, Context context);
 }

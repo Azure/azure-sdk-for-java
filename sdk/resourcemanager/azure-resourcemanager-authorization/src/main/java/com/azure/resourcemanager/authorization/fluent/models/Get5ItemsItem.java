@@ -38,6 +38,36 @@ public final class Get5ItemsItem extends ExpandableStringEnum<Get5ItemsItem> {
     /** Static value * for Get5ItemsItem. */
     public static final Get5ItemsItem ASTERISK = fromString("*");
 
+    /** Static value deletedDateTime for Get5ItemsItem. */
+    public static final Get5ItemsItem DELETED_DATE_TIME = fromString("deletedDateTime");
+
+    /** Static value deletedDateTime desc for Get5ItemsItem. */
+    public static final Get5ItemsItem DELETED_DATE_TIME_DESC = fromString("deletedDateTime desc");
+
+    /** Static value contractType for Get5ItemsItem. */
+    public static final Get5ItemsItem CONTRACT_TYPE = fromString("contractType");
+
+    /** Static value contractType desc for Get5ItemsItem. */
+    public static final Get5ItemsItem CONTRACT_TYPE_DESC = fromString("contractType desc");
+
+    /** Static value customerId for Get5ItemsItem. */
+    public static final Get5ItemsItem CUSTOMER_ID = fromString("customerId");
+
+    /** Static value customerId desc for Get5ItemsItem. */
+    public static final Get5ItemsItem CUSTOMER_ID_DESC = fromString("customerId desc");
+
+    /** Static value defaultDomainName for Get5ItemsItem. */
+    public static final Get5ItemsItem DEFAULT_DOMAIN_NAME = fromString("defaultDomainName");
+
+    /** Static value defaultDomainName desc for Get5ItemsItem. */
+    public static final Get5ItemsItem DEFAULT_DOMAIN_NAME_DESC = fromString("defaultDomainName desc");
+
+    /** Static value displayName for Get5ItemsItem. */
+    public static final Get5ItemsItem DISPLAY_NAME = fromString("displayName");
+
+    /** Static value displayName desc for Get5ItemsItem. */
+    public static final Get5ItemsItem DISPLAY_NAME_DESC = fromString("displayName desc");
+
     /**
      * Creates or finds a Get5ItemsItem from its string representation.
      *

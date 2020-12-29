@@ -451,6 +451,12 @@ public final class Get2ItemsItem extends ExpandableStringEnum<Get2ItemsItem> {
     /** Static value todo for Get2ItemsItem. */
     public static final Get2ItemsItem TODO = fromString("todo");
 
+    /** Static value addresses for Get2ItemsItem. */
+    public static final Get2ItemsItem ADDRESSES = fromString("addresses");
+
+    /** Static value phones for Get2ItemsItem. */
+    public static final Get2ItemsItem PHONES = fromString("phones");
+
     /**
      * Creates or finds a Get2ItemsItem from its string representation.
      *
