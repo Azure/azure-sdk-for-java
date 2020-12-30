@@ -47,7 +47,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
             getBeans(context);
             MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
             assertEquals(
-                "openid profile offline_access https://graph.microsoft.com/User.Read",
+                "openid profile offline_access https://graph.microsoft.com/User.Read "
+                    + "https://graph.microsoft.com/Directory.AccessAsUser.All",
                 body.getFirst("scope")
             );
         });
