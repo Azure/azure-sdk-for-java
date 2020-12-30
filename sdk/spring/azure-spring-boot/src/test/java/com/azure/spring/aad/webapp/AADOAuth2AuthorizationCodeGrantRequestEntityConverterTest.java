@@ -43,13 +43,11 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
 
     @Test
     public void addScopeForDefaultClient() {
-        contextRunner.withPropertyValues("azure.activedirectory.user-group.allowed-groups = group1, group2")
-            .run(context -> {
+        contextRunner.run(context -> {
             getBeans(context);
             MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
             assertEquals(
-                "openid profile offline_access https://graph.microsoft.com/User.Read "
-                    + "https://graph.microsoft.com/Directory.AccessAsUser.All",
+                "openid profile offline_access",
                 body.getFirst("scope")
             );
         });
