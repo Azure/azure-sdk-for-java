@@ -19,7 +19,6 @@ import java.util.Set;
 /**
  * Good Logging Practice:
  * <ol>
- * <li>A non-static instance logger.</li>
  * <li>ClientLogger in public API should all named 'logger', public API classes are those classes that are declared
  *     as public and that do not exist in an implementation package or subpackage.</li>
  * <li>Should not use any external logger class, only use ClientLogger. No slf4j, log4j, or other logging imports are
@@ -34,7 +33,7 @@ public class GoodLoggingCheck extends AbstractCheck {
 
     private static final String LOGGER_NAME_ERROR =
         "ClientLogger instance naming: use ''%s'' instead of ''%s'' for consistency.";
-    private static final String STATIC_LOGGER_ERROR = "ClientLogger should not be static. Remove static modifier.";
+
     private static final String NOT_CLIENT_LOGGER_ERROR =
         "Do not use %s class. Use ''%s'' as a logging mechanism instead of ''%s''.";
 
@@ -174,14 +173,8 @@ public class GoodLoggingCheck extends AbstractCheck {
         }
         // Check if the Logger instance named as 'logger'.
         final DetailAST identAST = varToken.findFirstToken(TokenTypes.IDENT);
-        if (identAST != null && !identAST.getText().equals(LOGGER)) {
+        if (identAST != null && !identAST.getText().equalsIgnoreCase(LOGGER)) {
             log(varToken, String.format(LOGGER_NAME_ERROR, LOGGER, identAST.getText()));
-        }
-        // Check if the Logger is static instance, log as error if it is static instance logger.
-        if (TokenUtil.findFirstTokenByPredicate(varToken,
-            node -> node.getType() == TokenTypes.MODIFIERS
-                && node.branchContains(TokenTypes.LITERAL_STATIC)).isPresent()) {
-            log(varToken, STATIC_LOGGER_ERROR);
         }
     }
 }
