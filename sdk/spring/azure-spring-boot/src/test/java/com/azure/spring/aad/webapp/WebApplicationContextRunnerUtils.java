@@ -15,16 +15,13 @@ import java.util.Optional;
 public class WebApplicationContextRunnerUtils {
 
     public static WebApplicationContextRunner getContextRunnerWithRequiredProperties() {
-        return new WebApplicationContextRunner()
-            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withUserConfiguration(AADWebAppConfiguration.class)
-            .withPropertyValues(
+        return getContextRunner().withPropertyValues(
                 "azure.activedirectory.client-id = fake-client-id",
                 "azure.activedirectory.client-secret = fake-client-secret",
                 "azure.activedirectory.tenant-id = fake-tenant-id");
     }
 
-    public static WebApplicationContextRunner getContextRunnerWithoutRequiredProperties() {
+    public static WebApplicationContextRunner getContextRunner() {
         return new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withUserConfiguration(AADWebAppConfiguration.class);

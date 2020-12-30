@@ -18,16 +18,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.boot.test.context.assertj.ApplicationContextAssert.Scope.INCLUDE_ANCESTORS;
 
 public class AADWebAppConfigurationTest {
 
     @Test
     public void noConfigurationOnMissingRequiredProperties() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithoutRequiredProperties()
+        WebApplicationContextRunnerUtils.getContextRunner()
             .run(context -> {
-                assertThat(context).doesNotHaveBean("AADWebAppClientRegistrationRepository");
-                assertThat(context).doesNotHaveBean("OAuth2AuthorizedClientRepository");
-                assertThat(context).doesNotHaveBean("OAuth2UserService");
+                assertThat(context).doesNotHaveBean(AADWebAppClientRegistrationRepository.class, INCLUDE_ANCESTORS);
+                assertThat(context).doesNotHaveBean(OAuth2AuthorizedClientRepository.class, INCLUDE_ANCESTORS);
+                assertThat(context).doesNotHaveBean(OAuth2UserService.class, INCLUDE_ANCESTORS);
         });
     }
 
@@ -35,12 +36,9 @@ public class AADWebAppConfigurationTest {
     public void configurationOnRequiredProperties() {
         WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
             .run(context -> {
-                ClientRegistrationRepository clientRegistrationRepository = context.getBean(AADWebAppClientRegistrationRepository.class);
-                OAuth2AuthorizedClientRepository authorizedClientRepository = context.getBean(OAuth2AuthorizedClientRepository.class);
-                OAuth2UserService userService = context.getBean(OAuth2UserService.class);
-                assertNotNull(clientRegistrationRepository);
-                assertNotNull(authorizedClientRepository);
-                assertNotNull(userService);
+                assertThat(context).hasSingleBean(AADWebAppClientRegistrationRepository.class, INCLUDE_ANCESTORS);
+                assertThat(context).hasSingleBean(OAuth2AuthorizedClientRepository.class, INCLUDE_ANCESTORS);
+                assertThat(context).hasSingleBean(OAuth2UserService.class, INCLUDE_ANCESTORS);
             });
     }
 
