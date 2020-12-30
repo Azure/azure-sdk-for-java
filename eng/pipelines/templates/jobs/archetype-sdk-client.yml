@@ -322,7 +322,7 @@ jobs:
           pathToPublish: '$(Build.ArtifactStagingDirectory)/oomdump'
           artifactName: 'oomdump'
           publishLocation: 'Container'
-        condition: and(failed(), $(HasHeapDump))
+        condition: and(failed(), eq(variables['HasHeapDump'],'true'))
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
