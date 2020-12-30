@@ -26,7 +26,6 @@
         <!-- Azure Core -->
         <module>sdk/core/azure-core</module>
         <module>sdk/core/azure-core-amqp</module>
-        <module>sdk/core/azure-core-amqp</module>
         <module>sdk/core/azure-core-amqp-experimental</module>
         <module>sdk/core/azure-core-experimental</module>
         <module>sdk/core/azure-core-http-netty</module>
