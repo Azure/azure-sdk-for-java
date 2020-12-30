@@ -5,22 +5,34 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import org.junit.Test;
+import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AADWebAppConfigurationTest {
+    private final WebApplicationContextRunner contextRunner = PropertiesUtils.getContextRunner();
+
+    @Test
+    public void configurationInitialization() {
+        contextRunner.run(context -> {
+            assertThat(context).doesNotHaveBean("AADWebAppClientRegistrationRepository");
+            assertThat(context).doesNotHaveBean("OAuth2AuthorizedClientRepository");
+            assertThat(context).doesNotHaveBean("OAuth2UserService");
+        });
+    }
 
     @Test
     public void clientRegistered() {
-        PropertiesUtils.getContextRunner()
+        PropertiesUtils.addBasicPropertyValues(contextRunner)
             .run(context -> {
                 ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
@@ -41,7 +53,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresPermissionRegistered() {
-        PropertiesUtils.getContextRunner()
+        PropertiesUtils.addBasicPropertyValues(contextRunner)
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
             )
@@ -60,7 +72,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresMultiPermissions() {
-        PropertiesUtils.getContextRunner()
+        PropertiesUtils.addBasicPropertyValues(contextRunner)
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
                 "azure.activedirectory.authorization-clients.arm.scopes = https://management.core.windows.net/user_impersonation"
@@ -84,7 +96,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresPermissionInDefaultClient() {
-        PropertiesUtils.getContextRunner()
+        PropertiesUtils.addBasicPropertyValues(contextRunner)
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
             )
@@ -98,7 +110,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void aadAwareClientRepository() {
-        PropertiesUtils.getContextRunner()
+        PropertiesUtils.addBasicPropertyValues(contextRunner)
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
             )
@@ -125,7 +137,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void defaultClientWithAuthzScope() {
-        PropertiesUtils.getContextRunner()
+        PropertiesUtils.addBasicPropertyValues(contextRunner)
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read"
             )
@@ -140,7 +152,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void customizeUri() {
-        PropertiesUtils.getContextRunner()
+        PropertiesUtils.addBasicPropertyValues(contextRunner)
             .withPropertyValues(
                 "azure.activedirectory.base-uri = http://localhost/"
             )
@@ -157,7 +169,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresOnDemandPermissions() {
-        PropertiesUtils.getContextRunner()
+        PropertiesUtils.addBasicPropertyValues(contextRunner)
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
                 "azure.activedirectory.authorization-clients.graph.on-demand = true",
