@@ -5,9 +5,10 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import org.junit.Test;
-import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,20 +20,36 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AADWebAppConfigurationTest {
-    private final WebApplicationContextRunner contextRunner = PropertiesUtils.getContextRunner();
 
     @Test
-    public void configurationInitialization() {
-        contextRunner.run(context -> {
-            assertThat(context).doesNotHaveBean("AADWebAppClientRegistrationRepository");
-            assertThat(context).doesNotHaveBean("OAuth2AuthorizedClientRepository");
-            assertThat(context).doesNotHaveBean("OAuth2UserService");
+    public void noConfigurationOnMissingRequiredProperties() {
+        WebApplicationContextRunnerUtils.getContextRunnerWithoutRequiredProperties()
+            .run(context -> {
+                assertThat(context).doesNotHaveBean("AADWebAppClientRegistrationRepository");
+                assertThat(context).doesNotHaveBean("OAuth2AuthorizedClientRepository");
+                assertThat(context).doesNotHaveBean("OAuth2UserService");
         });
     }
 
     @Test
+    public void configurationOnRequiredProperties() {
+        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
+            .run(context -> {
+                ClientRegistrationRepository clientRegistrationRepository = context.getBean(AADWebAppClientRegistrationRepository.class);
+                OAuth2AuthorizedClientRepository authorizedClientRepository = context.getBean(OAuth2AuthorizedClientRepository.class);
+                OAuth2UserService userService = context.getBean(OAuth2UserService.class);
+                assertNotNull(clientRegistrationRepository);
+                assertNotNull(authorizedClientRepository);
+                assertNotNull(userService);
+            });
+    }
+
+    @Test
     public void clientRegistered() {
-        PropertiesUtils.addBasicPropertyValues(contextRunner)
+        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.user-group.allowed-groups = group1, group2"
+            )
             .run(context -> {
                 ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
@@ -53,9 +70,10 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresPermissionRegistered() {
-        PropertiesUtils.addBasicPropertyValues(contextRunner)
+        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
+                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2"
             )
             .run(context -> {
                 ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -72,10 +90,11 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresMultiPermissions() {
-        PropertiesUtils.addBasicPropertyValues(contextRunner)
+        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
-                "azure.activedirectory.authorization-clients.arm.scopes = https://management.core.windows.net/user_impersonation"
+                "azure.activedirectory.authorization-clients.arm.scopes = https://management.core.windows.net/user_impersonation",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2"
             )
             .run(context -> {
                 ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -96,9 +115,10 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresPermissionInDefaultClient() {
-        PropertiesUtils.addBasicPropertyValues(contextRunner)
+        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
+                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2"
             )
             .run(context -> {
                 ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -110,9 +130,10 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void aadAwareClientRepository() {
-        PropertiesUtils.addBasicPropertyValues(contextRunner)
+        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read"
+                "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2"
             )
             .run(context -> {
                 AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -137,9 +158,9 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void defaultClientWithAuthzScope() {
-        PropertiesUtils.addBasicPropertyValues(contextRunner)
-            .withPropertyValues(
-                "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read"
+        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties().withPropertyValues(
+                "azure.activedirectory.authorization-clients.azure.scopes = Calendars.Read",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2"
             )
             .run(context -> {
                 AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -152,7 +173,7 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void customizeUri() {
-        PropertiesUtils.addBasicPropertyValues(contextRunner)
+        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.base-uri = http://localhost/"
             )
@@ -169,11 +190,12 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void clientRequiresOnDemandPermissions() {
-        PropertiesUtils.addBasicPropertyValues(contextRunner)
+        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
                 "azure.activedirectory.authorization-clients.graph.on-demand = true",
-                "azure.activedirectory.authorization-clients.arm.scopes = https://management.core.windows.net/user_impersonation"
+                "azure.activedirectory.authorization-clients.arm.scopes = https://management.core.windows.net/user_impersonation",
+                "azure.activedirectory.user-group.allowed-groups = group1, group2"
             )
             .run(context -> {
                 AADWebAppClientRegistrationRepository repo = context.getBean(AADWebAppClientRegistrationRepository.class);

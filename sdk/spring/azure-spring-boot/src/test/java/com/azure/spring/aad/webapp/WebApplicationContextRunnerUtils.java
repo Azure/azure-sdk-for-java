@@ -12,20 +12,22 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
 
-public class PropertiesUtils {
+public class WebApplicationContextRunnerUtils {
 
-    public static WebApplicationContextRunner getContextRunner() {
+    public static WebApplicationContextRunner getContextRunnerWithRequiredProperties() {
+        return new WebApplicationContextRunner()
+            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+            .withUserConfiguration(AADWebAppConfiguration.class)
+            .withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id");
+    }
+
+    public static WebApplicationContextRunner getContextRunnerWithoutRequiredProperties() {
         return new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withUserConfiguration(AADWebAppConfiguration.class);
-    }
-
-    public static WebApplicationContextRunner addBasicPropertyValues(WebApplicationContextRunner contextRunner) {
-        return contextRunner.withPropertyValues(
-            "azure.activedirectory.client-id = fake-client-id",
-            "azure.activedirectory.client-secret = fake-client-secret",
-            "azure.activedirectory.tenant-id = fake-tenant-id",
-            "azure.activedirectory.user-group.allowed-groups = group1, group2");
     }
 
     @SuppressWarnings("unchecked")

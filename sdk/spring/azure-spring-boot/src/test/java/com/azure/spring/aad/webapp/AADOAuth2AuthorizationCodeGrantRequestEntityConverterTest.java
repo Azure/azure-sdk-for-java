@@ -29,8 +29,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     private ClientRegistration azure;
     private ClientRegistration arm;
 
-    private final WebApplicationContextRunner contextRunner = PropertiesUtils
-        .getContextRunner().withPropertyValues(
+    private final WebApplicationContextRunner contextRunner = WebApplicationContextRunnerUtils
+        .getContextRunnerWithRequiredProperties().withPropertyValues(
             "azure.activedirectory.base-uri = fake-uri",
             "azure.activedirectory.authorization-clients.arm.scopes = Calendars.Read",
             "azure.activedirectory.authorization-clients.arm.on-demand=true");
@@ -43,7 +43,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
 
     @Test
     public void addScopeForDefaultClient() {
-        contextRunner.run(context -> {
+        contextRunner.withPropertyValues("azure.activedirectory.user-group.allowed-groups = group1, group2")
+            .run(context -> {
             getBeans(context);
             MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
             assertEquals(
@@ -105,7 +106,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
         AADOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
             new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
-        return PropertiesUtils.toMultiValueMap(entity);
+        return WebApplicationContextRunnerUtils.toMultiValueMap(entity);
     }
 
     private OAuth2AuthorizationCodeGrantRequest createCodeGrantRequest(ClientRegistration client) {
