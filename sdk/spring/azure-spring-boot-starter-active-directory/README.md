@@ -32,6 +32,26 @@ To use this starter in an web application, please add following packages:
 ```
 [//]: # "{x-version-update-end}"
 
+To use this starter in a resource server, please add following packages:
+
+[//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
+```xml
+<dependency>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-boot-starter-active-directory</artifactId>
+    <version>3.0.0-beta.1</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-oauth2-client</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-oauth2-resource-server</artifactId>
+</dependency>
+```
+[//]: # "{x-version-update-end}"
+
 ## Key concepts
 This package provides 2 ways to integrate with Spring Security and authenticate with Azure Active Directory, which are designed for scenarios of web application and resource server.
 
