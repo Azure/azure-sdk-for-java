@@ -14,10 +14,6 @@
   <version>1.0.0</version>
   <packaging>jar</packaging>
 
-  <name>Azure Spring Boot Starter Sample - Azure AD Spring Security Integration</name>
-  <description>Azure AD Spring Security Integration Spring Boot Sample</description>
-  <url>https://github.com/Azure/azure-sdk-for-java</url>
-
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -25,8 +21,20 @@
       <version>3.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-active-directory;current} -->
     </dependency>
     <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-resource-server</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-jose</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
