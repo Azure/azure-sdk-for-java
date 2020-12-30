@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
@@ -20,7 +21,6 @@ import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
@@ -35,7 +35,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
@@ -50,7 +49,9 @@ import java.net.URI;
 import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -148,11 +149,30 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
-                                                                         Map<String, String> headers,
-                                                                         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
-                                                                         QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
-        return ModelBridgeInternal.createFeedResponseWithQueryMetrics(results, headers, queryMetricsMap, diagnosticsContext);
+    public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(
+        List<T> results,
+        Map<String, String> headers,
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+        QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext,
+        CosmosDiagnostics cosmosDiagnostics) {
+        FeedResponse<T> feedResponseWithQueryMetrics = ModelBridgeInternal
+                                                           .createFeedResponseWithQueryMetrics(results, headers,
+                                                                                               queryMetricsMap,
+                                                                                               diagnosticsContext);
+
+        ClientSideRequestStatistics requestStatistics;
+        if (cosmosDiagnostics != null) {
+            requestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
+            if (requestStatistics != null) {
+                BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
+                                                              Collections.singletonList(requestStatistics));
+            }
+            BridgeInternal.addClientSideDiagnosticsToFeed(feedResponseWithQueryMetrics.getCosmosDiagnostics(),
+                                                          cosmosDiagnostics.getFeedResponseDiagnostics()
+                                                              .getClientSideRequestStatisticsList());
+        }
+
+        return feedResponseWithQueryMetrics;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -161,8 +181,20 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics,
+                                                  ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
+        cosmosDiagnostics.setFeedResponseDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setQueryPlanDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
         cosmosDiagnostics.getFeedResponseDiagnostics().setDiagnosticsContext(diagnosticsContext);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void addClientSideDiagnosticsToFeed(CosmosDiagnostics cosmosDiagnostics,
+                         List<ClientSideRequestStatistics> requestStatistics) {
+        cosmosDiagnostics.getFeedResponseDiagnostics().addClientSideRequestStatistics(requestStatistics);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -471,6 +503,19 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setTimestamp(Resource resource, Instant date) {
         ModelBridgeInternal.setTimestamp(resource, date);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static List<ClientSideRequestStatistics> getClientSideRequestStatics(CosmosDiagnostics cosmosDiagnostics) {
+        //Used only during aggregations like Aggregate/Orderby/Groupby which may contain clientSideStats in
+        //feedResponseDiagnostics. So we need to add from both the places
+        List<ClientSideRequestStatistics> clientSideRequestStatisticsList = new ArrayList<>();
+        clientSideRequestStatisticsList
+            .addAll(cosmosDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatisticsList());
+        if (cosmosDiagnostics.clientSideRequestStatistics() != null) {
+            clientSideRequestStatisticsList.add(cosmosDiagnostics.clientSideRequestStatistics());
+        }
+        return clientSideRequestStatisticsList;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

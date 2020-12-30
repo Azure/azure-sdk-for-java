@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -321,6 +322,117 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT)
+    public void queryDiagnosticsDirectMode(String query, Boolean qmEnabled) {
+        CosmosClient testDirectClient = new CosmosClientBuilder()
+                                            .endpoint(TestConfigurations.HOST)
+                                            .key(TestConfigurations.MASTER_KEY)
+                                            .contentResponseOnWriteEnabled(true)
+                                            .directMode()
+                                            .buildClient();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        CosmosContainer cosmosContainer = testDirectClient.getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                                              .getContainer(cosmosAsyncContainer.getId());
+        List<String> itemIdList = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            if (i % 20 == 0) {
+                itemIdList.add(internalObjectNode.getId());
+            }
+        }
+        boolean qroupByFirstResponse = true;
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
+        Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer
+                                                                  .queryItems(query, options, InternalObjectNode.class)
+                                                                  .iterableByPage()
+                                                                  .iterator();
+        assertThat(iterator.hasNext()).isTrue();
+
+        while (iterator.hasNext()) {
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
+            assertThat(feedResponse.getResults().size()).isEqualTo(0);
+            if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
+                if (qmEnabled) {
+                    validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
+                    validateDirectModeQueryDiagnostics(queryDiagnostics);
+                    validateTransportRequestTimelineDirect(queryDiagnostics);
+                }
+                if (query.contains("group by")) {
+                    qroupByFirstResponse = false;
+                }
+            }
+        }
+    }
+
+    private void validateDirectModeQueryDiagnostics(String diagnostics) {
+        assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
+        assertThat(diagnostics).contains("supplementalResponseStatisticsList");
+        assertThat(diagnostics).contains("\"gatewayStatistics\":null");
+        assertThat(diagnostics).contains("addressResolutionStatistics");
+        assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+    }
+
+    private void validateGatewayModeQueryDiagnostics(String diagnostics) {
+        assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
+        assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
+        assertThat(diagnostics).contains("\"operationType\":\"Query\"");
+        //   assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
+        //   assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
+        assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
+        assertThat(diagnostics).contains("\"regionsContacted\"");
+    }
+
+    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT)
+    public void queryDiagnosticsGatewayMode(String query, Boolean qmEnabled) {
+        CosmosClient testDirectClient = new CosmosClientBuilder()
+                                            .endpoint(TestConfigurations.HOST)
+                                            .key(TestConfigurations.MASTER_KEY)
+                                            .contentResponseOnWriteEnabled(true)
+                                            .gatewayMode()
+                                            .buildClient();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+
+        CosmosContainer cosmosContainer = testDirectClient.getDatabase(cosmosAsyncContainer.getDatabase().getId())
+                                              .getContainer(cosmosAsyncContainer.getId());
+        List<String> itemIdList = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            CosmosItemResponse<InternalObjectNode> createResponse = cosmosContainer.createItem(internalObjectNode);
+            if (i % 20 == 0) {
+                itemIdList.add(internalObjectNode.getId());
+            }
+        }
+        boolean qroupByFirstResponse = true;
+//        if (qmEnabled != null) {
+//            options.setQueryMetricsEnabled(qmEnabled);
+//        }
+        Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer
+                                                                  .queryItems(query, options, InternalObjectNode.class)
+                                                                  .iterableByPage()
+                                                                  .iterator();
+        assertThat(iterator.hasNext()).isTrue();
+
+        while (iterator.hasNext()) {
+            FeedResponse<InternalObjectNode> feedResponse = iterator.next();
+            String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
+            assertThat(feedResponse.getResults().size()).isEqualTo(0);
+            if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
+                validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
+                if (qmEnabled) {
+                    validateGatewayModeQueryDiagnostics(queryDiagnostics);
+                }
+                if (query.contains("group by")) {
+                    qroupByFirstResponse = false;
+                }
+            }
+        }
+    }
+
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
     public void queryMetricsWithADifferentLocale() {
 
@@ -344,7 +456,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         String queryDiagnostics,
         Boolean qmEnabled,
         boolean expectQueryPlanDiagnostics) {
-        if (qmEnabled == null || qmEnabled == true) {
+        if (qmEnabled == null || qmEnabled) {
             assertThat(queryDiagnostics).contains("Retrieved Document Count");
             assertThat(queryDiagnostics).contains("Query Preparation Times");
             assertThat(queryDiagnostics).contains("Runtime Execution Times");

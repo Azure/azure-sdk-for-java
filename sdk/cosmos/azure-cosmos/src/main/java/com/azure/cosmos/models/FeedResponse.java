@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
+import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.query.QueryInfo;
 
@@ -35,12 +36,18 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     final boolean nochanges;
     private final ConcurrentMap<String, QueryMetrics> queryMetricsMap;
     private final static String defaultPartition = "0";
-    private final CosmosDiagnostics cosmosDiagnostics;
+    private CosmosDiagnostics cosmosDiagnostics;
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
+    }
+
+    FeedResponse(List<T> results, RxDocumentServiceResponse response) {
+        this(results, response.getResponseHeaders(), false, false, new ConcurrentHashMap<>());
+        this.cosmosDiagnostics =response.getCosmosDiagnostics();
+        BridgeInternal.setFeedResponseDiagnostics(this.cosmosDiagnostics, queryMetricsMap);
     }
 
     FeedResponse(List<T> results, Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
@@ -54,11 +61,12 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     // TODO: need to more sure the query metrics can round trip just from the headers.
     // We can then remove it as a parameter.
     private FeedResponse(
-        List<T> results,
-        Map<String, String> header,
-        boolean useEtagAsContinuation,
-        boolean nochanges,
-        ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
+                List<T> results,
+                Map<String, String> header,
+                boolean useEtagAsContinuation,
+                boolean nochanges,
+                ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
+
         this.results = results;
         this.header = header;
         this.usageHeaders = new HashMap<>();
@@ -66,7 +74,9 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this.useEtagAsContinuation = useEtagAsContinuation;
         this.nochanges = nochanges;
         this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
-        this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(queryMetricsMap);
+        if (this.cosmosDiagnostics == null) {
+            this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(queryMetricsMap);
+        }
     }
 
     /**

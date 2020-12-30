@@ -41,6 +41,7 @@ import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -487,15 +488,17 @@ public class CosmosAsyncContainer {
             return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
                 response.getResponseHeaders(),
                 ModelBridgeInternal.queryMetrics(response),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(response));
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
+                                                                     response.getCosmosDiagnostics());
 
         }
-        return BridgeInternal.createFeedResponseWithQueryMetrics(
+        FeedResponse<T> feedResponseWithQueryMetrics = BridgeInternal.createFeedResponseWithQueryMetrics(
             (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document,
-                classType))
-                     .collect(Collectors.toList())), response.getResponseHeaders(),
+                                                                                                             classType))
+                 .collect(Collectors.toList())), response.getResponseHeaders(),
             ModelBridgeInternal.queryMetrics(response),
-            ModelBridgeInternal.getQueryPlanDiagnosticsContext(response));
+            ModelBridgeInternal.getQueryPlanDiagnosticsContext(response), response.getCosmosDiagnostics());
+        return feedResponseWithQueryMetrics;
     }
 
     private <T> T transform(Object object, Class<T> classType) {
