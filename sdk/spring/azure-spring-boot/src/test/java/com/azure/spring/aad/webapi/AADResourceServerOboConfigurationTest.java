@@ -54,7 +54,7 @@ public class AADResourceServerOboConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> assertThat(context).doesNotHaveBean("AADOAuth2OboAuthorizedClientRepository"));
+            .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2OboAuthorizedClientRepository.class));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class AADResourceServerOboConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
-            .run(context -> assertThat(context).doesNotHaveBean("AADOAuth2OboAuthorizedClientRepository"));
+            .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2OboAuthorizedClientRepository.class));
     }
 
     @Test
