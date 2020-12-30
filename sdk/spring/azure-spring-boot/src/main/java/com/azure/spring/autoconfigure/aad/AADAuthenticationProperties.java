@@ -5,8 +5,6 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.util.ClassUtils;
@@ -27,7 +25,6 @@ import java.util.concurrent.TimeUnit;
 @ConfigurationProperties("azure.activedirectory")
 public class AADAuthenticationProperties {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
