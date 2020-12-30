@@ -5,42 +5,38 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphGroupInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphServicePrincipalInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphUserInner;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryObject;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
-import com.azure.resourcemanager.authorization.models.GroupCreateParameters;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
-import com.azure.resourcemanager.authorization.fluent.models.ADGroupInner;
-import com.azure.resourcemanager.authorization.fluent.models.ApplicationInner;
-import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalInner;
-import com.azure.resourcemanager.authorization.fluent.models.UserInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /** Implementation for Group and its parent interfaces. */
 class ActiveDirectoryGroupImpl
-    extends CreatableUpdatableImpl<ActiveDirectoryGroup, ADGroupInner, ActiveDirectoryGroupImpl>
+    extends CreatableUpdatableImpl<ActiveDirectoryGroup, MicrosoftGraphGroupInner, ActiveDirectoryGroupImpl>
     implements ActiveDirectoryGroup, ActiveDirectoryGroup.Definition, ActiveDirectoryGroup.Update {
 
     private final AuthorizationManager manager;
-    private GroupCreateParameters createParameters;
-    private Set<String> membersToAdd;
+    private Set<Map<String, Object>> membersToAdd;
     private Set<String> membersToRemove;
 
-    ActiveDirectoryGroupImpl(ADGroupInner innerModel, AuthorizationManager manager) {
+    ActiveDirectoryGroupImpl(MicrosoftGraphGroupInner innerModel, AuthorizationManager manager) {
         super(innerModel.displayName(), innerModel);
         this.manager = manager;
-        this.createParameters =
-            new GroupCreateParameters()
-                .withDisplayName(innerModel.displayName())
-                .withMailEnabled(false)
-                .withSecurityEnabled(true);
         membersToAdd = new HashSet<>();
         membersToRemove = new HashSet<>();
     }
@@ -62,29 +58,31 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public PagedFlux<ActiveDirectoryObject> listMembersAsync() {
-        return manager()
+        return PagedConverter.flatMapPage(manager()
             .serviceClient()
             .getGroups()
-            .getGroupMembersAsync(id())
-            .mapPage(
-                directoryObjectInner -> {
-                    if (directoryObjectInner instanceof UserInner) {
-                        return new ActiveDirectoryUserImpl((UserInner) directoryObjectInner, manager());
-                    } else if (directoryObjectInner instanceof ADGroupInner) {
-                        return new ActiveDirectoryGroupImpl((ADGroupInner) directoryObjectInner, manager());
-                    } else if (directoryObjectInner instanceof ServicePrincipalInner) {
-                        return new ServicePrincipalImpl((ServicePrincipalInner) directoryObjectInner, manager());
-                    } else if (directoryObjectInner instanceof ApplicationInner) {
-                        return new ActiveDirectoryApplicationImpl((ApplicationInner) directoryObjectInner, manager());
-                    } else {
-                        return null;
-                    }
-                });
+            .listMemberOfAsync(id()),
+            directoryObjectInner -> {
+                ActiveDirectoryObject result = null;
+                if (directoryObjectInner instanceof MicrosoftGraphUserInner) {
+                    result = new ActiveDirectoryUserImpl((MicrosoftGraphUserInner) directoryObjectInner, manager());
+                } else if (directoryObjectInner instanceof MicrosoftGraphGroupInner) {
+                    result = new ActiveDirectoryGroupImpl((MicrosoftGraphGroupInner) directoryObjectInner, manager());
+                } else if (directoryObjectInner instanceof MicrosoftGraphServicePrincipalInner) {
+                    result = new ServicePrincipalImpl(
+                        (MicrosoftGraphServicePrincipalInner) directoryObjectInner, manager());
+                } else if (directoryObjectInner instanceof MicrosoftGraphApplicationInner) {
+                    result = new ActiveDirectoryApplicationImpl(
+                        (MicrosoftGraphApplicationInner) directoryObjectInner, manager());
+                }
+                return Mono.justOrEmpty(result);
+            }
+        );
     }
 
     @Override
-    protected Mono<ADGroupInner> getInnerAsync() {
-        return manager().serviceClient().getGroups().getAsync(id());
+    protected Mono<MicrosoftGraphGroupInner> getInnerAsync() {
+        return manager().serviceClient().getGroupsGroups().getGroupAsync(id());
     }
 
     @Override
@@ -94,9 +92,10 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public Mono<ActiveDirectoryGroup> createResourceAsync() {
-        Mono<?> group = Mono.just(this);
+        Mono<ActiveDirectoryGroup> group = Mono.just(this);
         if (isInCreateMode()) {
-            group = manager().serviceClient().getGroups().createAsync(createParameters).map(innerToFluentMap(this));
+            group = manager().serviceClient().getGroupsGroups().createGroupAsync(innerModel())
+                .map(innerToFluentMap(this));
         }
         if (!membersToRemove.isEmpty()) {
             group =
@@ -105,9 +104,9 @@ class ActiveDirectoryGroupImpl
                         o ->
                             Flux
                                 .fromIterable(membersToRemove)
-                                .flatMap(s -> manager().serviceClient().getGroups().removeMemberAsync(id(), s))
+                                .flatMap(s -> manager().serviceClient().getGroups().deleteRefMemberAsync(id(), s))
                                 .singleOrEmpty()
-                                .thenReturn(Mono.just(this))
+                                .thenReturn(this)
                                 .doFinally(signalType -> membersToRemove.clear()));
         }
         if (!membersToAdd.isEmpty()) {
@@ -117,12 +116,12 @@ class ActiveDirectoryGroupImpl
                         o ->
                             Flux
                                 .fromIterable(membersToAdd)
-                                .flatMap(s -> manager().serviceClient().getGroups().addMemberAsync(id(), s))
+                                .flatMap(s -> manager().serviceClient().getGroups().createRefMemberOfAsync(id(), s))
                                 .singleOrEmpty()
-                                .thenReturn(Mono.just(this))
+                                .thenReturn(this)
                                 .doFinally(signalType -> membersToAdd.clear()));
         }
-        return group.map(o -> ActiveDirectoryGroupImpl.this);
+        return group;
     }
 
     @Override
@@ -133,18 +132,15 @@ class ActiveDirectoryGroupImpl
             // domainName = parts[1]; // no use
             mailNickname = parts[0];
         }
-        createParameters.withMailNickname(mailNickname);
+        innerModel().withMailNickname(mailNickname);
         return this;
     }
 
     @Override
     public ActiveDirectoryGroupImpl withMember(String objectId) {
-        membersToAdd
-            .add(
-                String.format(
-                    "%s%s/directoryObjects/%s",
-                    manager().serviceClient().getEndpoint(), manager().tenantId(),
-                    objectId));
+        membersToAdd.add(new HashMap<>() {{
+            put("id", objectId);
+        }});
         return this;
     }
 
@@ -186,7 +182,7 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public String id() {
-        return innerModel().objectId();
+        return innerModel().id();
     }
 
     @Override
