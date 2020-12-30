@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.2 (Unreleased)
+## 3.0.0 (2020-12-30)
 ### Breaking Changes
 - Deprecate `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter`.
 - Change artifact id from `azure-active-directory-spring-boot-starter` to `azure-spring-boot-starter-active-directory`.
