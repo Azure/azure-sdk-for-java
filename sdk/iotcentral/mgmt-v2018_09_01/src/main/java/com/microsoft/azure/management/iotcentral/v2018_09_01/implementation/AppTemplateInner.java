@@ -29,8 +29,8 @@ public class AppTemplateInner {
     /**
      * The name of the template.
      */
-    @JsonProperty(value = "appTemplateName", access = JsonProperty.Access.WRITE_ONLY)
-    private String appTemplateName;
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    private String name;
 
     /**
      * The title of the template.
@@ -71,10 +71,10 @@ public class AppTemplateInner {
     /**
      * Get the name of the template.
      *
-     * @return the appTemplateName value
+     * @return the name value
      */
-    public String appTemplateName() {
-        return this.appTemplateName;
+    public String name() {
+        return this.name;
     }
 
     /**
