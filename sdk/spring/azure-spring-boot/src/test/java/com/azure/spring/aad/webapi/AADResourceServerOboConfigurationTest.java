@@ -3,10 +3,12 @@
 
 package com.azure.spring.aad.webapi;
 
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
@@ -23,6 +25,17 @@ public class AADResourceServerOboConfigurationTest {
             "azure.activedirectory.tenant-id=fake-tenant-id",
             "azure.activedirectory.client-id=fake-client-id",
             "azure.activedirectory.client-secret=fake-client-secret");
+
+    @Test
+    public void testWithoutAnyPropertiesSet() {
+        new WebApplicationContextRunner()
+            .withUserConfiguration(AADResourceServerOboConfiguration.class)
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AADAuthenticationProperties.class);
+                assertThat(context).doesNotHaveBean(ClientRegistrationRepository.class);
+                assertThat(context).doesNotHaveBean(OAuth2AuthorizedClientRepository.class);
+            });
+    }
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {

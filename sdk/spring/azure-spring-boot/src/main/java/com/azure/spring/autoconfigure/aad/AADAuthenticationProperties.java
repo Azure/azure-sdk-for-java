@@ -20,14 +20,17 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.spring.autoconfigure.aad.AADAuthenticationProperties.AAD_PREFIX;
+
 /**
  * Configuration properties for Azure Active Directory Authentication.
  */
 @Validated
-@ConfigurationProperties("azure.activedirectory")
+@ConfigurationProperties(AAD_PREFIX)
 public class AADAuthenticationProperties {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
+    public static final String AAD_PREFIX = "azure.activedirectory";
+
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
