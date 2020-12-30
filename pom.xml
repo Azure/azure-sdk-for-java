@@ -401,13 +401,13 @@
                   <report>checkstyle</report>
                 </reports>
               </reportSet>
-              <reportSet>
-                <id>aggregate</id>
-                <inherited>false</inherited>
-                <reports>
-                  <report>checkstyle-aggregate</report>
-                </reports>
-              </reportSet>
+<!--              <reportSet>-->
+<!--                <id>aggregate</id>-->
+<!--                <inherited>false</inherited>-->
+<!--                <reports>-->
+<!--                  <report>checkstyle-aggregate</report>-->
+<!--                </reports>-->
+<!--              </reportSet>-->
             </reportSets>
           </plugin>
           <plugin>
