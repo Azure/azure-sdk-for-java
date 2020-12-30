@@ -310,13 +310,19 @@ jobs:
         # we want to run this when TestFromSource isn't true
         condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
 
+      - pwsh: |
+          $hasHeapDump = Test-Path -Path $(Build.ArtifactStagingDirectory)/oomdump
+          Write-Host "##vso[task.setvariable variable=HasHeapDump]$hasHeapDump"
+        displayName: "Check for heap dump"
+        condition: failed()
+
       - task: PublishBuildArtifacts@1
         displayName: 'Retain build failure artifacts'
         inputs:
           pathToPublish: '$(Build.ArtifactStagingDirectory)/oomdump'
           artifactName: 'oomdump'
           publishLocation: 'Container'
-        condition: failed()
+        condition: and(failed(), $(HasHeapDump))
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
