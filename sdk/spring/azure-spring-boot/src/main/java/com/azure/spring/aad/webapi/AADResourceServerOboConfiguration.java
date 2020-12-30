@@ -6,9 +6,10 @@ package com.azure.spring.aad.webapi;
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -36,8 +37,9 @@ import java.util.List;
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 @ConditionalOnClass({ BearerTokenAuthenticationToken.class, OAuth2LoginAuthenticationFilter.class })
 @ConditionalOnProperty(prefix = "azure.activedirectory", value = "client-id")
-@ConditionalOnExpression("!'${azure.activedirectory.authorization-clients}'.isEmpty()")
 public class AADResourceServerOboConfiguration {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADResourceServerOboConfiguration.class);
 
     @Autowired
     private AADAuthenticationProperties properties;
@@ -45,7 +47,12 @@ public class AADResourceServerOboConfiguration {
     @Bean
     @ConditionalOnMissingBean({ ClientRegistrationRepository.class })
     public ClientRegistrationRepository clientRegistrationRepository() {
-        return new InMemoryClientRegistrationRepository(createOboClients());
+        final List<ClientRegistration> oboClients = createOboClients();
+        if (oboClients.isEmpty()) {
+            LOGGER.warn("No client registrations are found for AAD Obo.");
+            return registrationId -> null;
+        }
+        return new InMemoryClientRegistrationRepository(oboClients);
     }
 
     /**

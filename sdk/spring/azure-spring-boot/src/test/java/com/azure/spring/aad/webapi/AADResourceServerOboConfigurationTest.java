@@ -42,7 +42,6 @@ public class AADResourceServerOboConfigurationTest {
         new WebApplicationContextRunner()
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withPropertyValues("azure.activedirectory.client-id=fake-client-id")
-            .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes=fake-scope")
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
                 assertThat(context).hasSingleBean(ClientRegistrationRepository.class);
@@ -55,9 +54,7 @@ public class AADResourceServerOboConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> {
-                assertThat(context).doesNotHaveBean("AADOAuth2OboAuthorizedClientRepository");
-            });
+            .run(context -> assertThat(context).doesNotHaveBean("AADOAuth2OboAuthorizedClientRepository"));
     }
 
     @Test
@@ -65,9 +62,7 @@ public class AADResourceServerOboConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
-            .run(context -> {
-                assertThat(context).doesNotHaveBean("AADOAuth2OboAuthorizedClientRepository");
-            });
+            .run(context -> assertThat(context).doesNotHaveBean("AADOAuth2OboAuthorizedClientRepository"));
     }
 
     @Test
