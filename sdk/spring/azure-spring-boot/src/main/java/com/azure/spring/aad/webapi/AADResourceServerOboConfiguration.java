@@ -8,6 +8,7 @@ import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -25,8 +26,6 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.azure.spring.autoconfigure.aad.AADAuthenticationProperties.AAD_PREFIX;
-
 /**
  * <p>
  * The configuration will not be activated if no {@link OAuth2LoginAuthenticationFilter} class provided.
@@ -36,7 +35,8 @@ import static com.azure.spring.autoconfigure.aad.AADAuthenticationProperties.AAD
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 @ConditionalOnClass({ BearerTokenAuthenticationToken.class, OAuth2LoginAuthenticationFilter.class })
-@ConditionalOnProperty(prefix = AAD_PREFIX, value = "client-id")
+@ConditionalOnProperty(prefix = "azure.activedirectory", value = "client-id")
+@ConditionalOnExpression("!'${azure.activedirectory.authorization-clients}'.isEmpty()")
 public class AADResourceServerOboConfiguration {
 
     @Autowired

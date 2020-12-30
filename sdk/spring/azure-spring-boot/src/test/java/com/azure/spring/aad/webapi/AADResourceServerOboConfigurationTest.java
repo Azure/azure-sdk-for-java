@@ -16,7 +16,6 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 
 import java.util.Set;
 
-import static com.azure.spring.autoconfigure.aad.AADAuthenticationProperties.AAD_PREFIX;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADResourceServerOboConfigurationTest {
@@ -42,8 +41,8 @@ public class AADResourceServerOboConfigurationTest {
     public void testWithRequiredPropertiesSet() {
         new WebApplicationContextRunner()
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
-            .withPropertyValues(AAD_PREFIX + ".client-id=fake-client-id")
-            .withPropertyValues(AAD_PREFIX + ".authorization-clients.graph.scopes=fake-scope")
+            .withPropertyValues("azure.activedirectory.client-id=fake-client-id")
+            .withPropertyValues("azure.activedirectory.authorization-clients.graph.scopes=fake-scope")
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
                 assertThat(context).hasSingleBean(ClientRegistrationRepository.class);

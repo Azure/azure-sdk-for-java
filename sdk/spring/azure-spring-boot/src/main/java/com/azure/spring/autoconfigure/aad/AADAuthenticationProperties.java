@@ -5,8 +5,6 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.util.ClassUtils;
@@ -20,16 +18,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.spring.autoconfigure.aad.AADAuthenticationProperties.AAD_PREFIX;
-
 /**
  * Configuration properties for Azure Active Directory Authentication.
  */
 @Validated
-@ConfigurationProperties(AAD_PREFIX)
+@ConfigurationProperties("azure.activedirectory")
 public class AADAuthenticationProperties {
-
-    public static final String AAD_PREFIX = "azure.activedirectory";
 
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
