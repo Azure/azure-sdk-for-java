@@ -209,7 +209,6 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
         private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
         private ConcurrentMap<String, QueryMetrics> emptyPageQueryMetricsMap = new ConcurrentHashMap<>();
-        private ConcurrentSkipListSet<CosmosDiagnostics> emptyPageCosmosDiagnostics = new ConcurrentSkipListSet();
         private CosmosDiagnostics cosmosDiagnostics;
 
         public EmptyPagesFilterTransformer(RequestChargeTracker tracker, CosmosQueryRequestOptions options) {
