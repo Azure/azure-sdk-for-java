@@ -9,12 +9,10 @@
     <version>2.4.1</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
   </parent>
   <modelVersion>4.0.0</modelVersion>
-
   <artifactId>azure-spring-cloud-sample-eventhubs-binder</artifactId>
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-eventhubs-binder;current} -->
   <name>Azure Spring Cloud Sample Event Hubs Binder</name>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -26,7 +24,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -36,6 +33,12 @@
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
       <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-stream-binder-eventhubs;current} -->
+    </dependency>
+    <!-- Storage library for provisioning checkpoint storage -->
+    <dependency>
+      <groupId>com.azure.spring</groupId>
+      <artifactId>azure-spring-cloud-storage</artifactId>
+      <version>2.0.0-beta.2</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-storage;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -73,18 +76,11 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-
   <build>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-      <!--  mvn azure-webapp:config -->
-      <plugin>
-        <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-webapp-maven-plugin</artifactId>
-        <version>1.10.0</version>
       </plugin>
 
       <!-- mvn azure-webapp:config -->
