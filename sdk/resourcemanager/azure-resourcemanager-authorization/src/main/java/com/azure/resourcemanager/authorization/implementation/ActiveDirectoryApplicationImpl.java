@@ -68,15 +68,19 @@ class ActiveDirectoryApplicationImpl
         cachedCertificateCredentials.clear();
         cachedPasswordCredentials.clear();
 
-        innerModel().keyCredentials().forEach(keyCredentialInner -> {
-            CertificateCredential certificateCredential = new CertificateCredentialImpl<>(keyCredentialInner);
-            cachedCertificateCredentials.put(certificateCredential.name(), certificateCredential);
-        });
+        if (innerModel().keyCredentials() != null) {
+            innerModel().keyCredentials().forEach(keyCredentialInner -> {
+                CertificateCredential certificateCredential = new CertificateCredentialImpl<>(keyCredentialInner);
+                cachedCertificateCredentials.put(certificateCredential.name(), certificateCredential);
+            });
+        }
 
-        innerModel().passwordCredentials().forEach(passwordCredentialInner -> {
-            PasswordCredential passwordCredential = new PasswordCredentialImpl<>(passwordCredentialInner);
-            cachedPasswordCredentials.put(passwordCredential.name(), passwordCredential);
-        });
+        if (innerModel().passwordCredentials() != null) {
+            innerModel().passwordCredentials().forEach(passwordCredentialInner -> {
+                PasswordCredential passwordCredential = new PasswordCredentialImpl<>(passwordCredentialInner);
+                cachedPasswordCredentials.put(passwordCredential.name(), passwordCredential);
+            });
+        }
     }
 
     @Override

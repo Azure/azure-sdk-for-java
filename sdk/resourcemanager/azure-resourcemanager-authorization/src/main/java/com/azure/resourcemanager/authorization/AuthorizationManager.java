@@ -45,7 +45,7 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
     private RoleAssignments roleAssignments;
     private RoleDefinitions roleDefinitions;
 
-    private static final String defaultGraphEndpointSuffix = "v1.0/";
+    private static final String defaultGraphEndpointSuffix = "v1.0";
 
     /**
      * Creates an instance of AuthorizationManager that exposes Authorization

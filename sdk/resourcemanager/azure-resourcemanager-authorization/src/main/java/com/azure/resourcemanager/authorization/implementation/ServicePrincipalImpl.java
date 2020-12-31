@@ -222,15 +222,19 @@ class ServicePrincipalImpl
         cachedCertificateCredentials.clear();
         cachedPasswordCredentials.clear();
 
-        innerModel().keyCredentials().forEach(keycredentialInner -> {
-            CertificateCredential certificateCredential = new CertificateCredentialImpl<>(keycredentialInner);
-            cachedCertificateCredentials.put(certificateCredential.name(), certificateCredential);
-        });
+        if (innerModel().keyCredentials() != null) {
+            innerModel().keyCredentials().forEach(keycredentialInner -> {
+                CertificateCredential certificateCredential = new CertificateCredentialImpl<>(keycredentialInner);
+                cachedCertificateCredentials.put(certificateCredential.name(), certificateCredential);
+            });
+        }
 
-        innerModel().passwordCredentials().forEach(passwordCredentialInner -> {
-            PasswordCredential passwordCredential = new PasswordCredentialImpl<>(passwordCredentialInner);
-            cachedPasswordCredentials.put(passwordCredential.name(), passwordCredential);
-        });
+        if (innerModel().passwordCredentials() != null) {
+            innerModel().passwordCredentials().forEach(passwordCredentialInner -> {
+                PasswordCredential passwordCredential = new PasswordCredentialImpl<>(passwordCredentialInner);
+                cachedPasswordCredentials.put(passwordCredential.name(), passwordCredential);
+            });
+        }
     }
 
     @Override

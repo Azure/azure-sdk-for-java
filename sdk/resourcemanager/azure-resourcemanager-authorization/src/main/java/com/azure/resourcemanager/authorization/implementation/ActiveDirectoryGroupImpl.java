@@ -4,8 +4,11 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDirectoryObjectInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphGroupInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphServicePrincipalInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphUserInner;
@@ -19,9 +22,10 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.HashMap;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,23 +65,48 @@ class ActiveDirectoryGroupImpl
         return PagedConverter.flatMapPage(manager()
             .serviceClient()
             .getGroups()
-            .listMemberOfAsync(id()),
-            directoryObjectInner -> {
-                ActiveDirectoryObject result = null;
-                if (directoryObjectInner instanceof MicrosoftGraphUserInner) {
-                    result = new ActiveDirectoryUserImpl((MicrosoftGraphUserInner) directoryObjectInner, manager());
-                } else if (directoryObjectInner instanceof MicrosoftGraphGroupInner) {
-                    result = new ActiveDirectoryGroupImpl((MicrosoftGraphGroupInner) directoryObjectInner, manager());
-                } else if (directoryObjectInner instanceof MicrosoftGraphServicePrincipalInner) {
-                    result = new ServicePrincipalImpl(
-                        (MicrosoftGraphServicePrincipalInner) directoryObjectInner, manager());
-                } else if (directoryObjectInner instanceof MicrosoftGraphApplicationInner) {
-                    result = new ActiveDirectoryApplicationImpl(
-                        (MicrosoftGraphApplicationInner) directoryObjectInner, manager());
-                }
-                return Mono.justOrEmpty(result);
-            }
+            .listMembersAsync(id()),
+            directoryObjectInner -> Mono.justOrEmpty(parseDirectoryObject(directoryObjectInner))
         );
+    }
+
+    private ActiveDirectoryObject parseDirectoryObject(MicrosoftGraphDirectoryObjectInner inner) {
+        if (inner.additionalProperties() != null) {
+            Object odataTypeObject = inner.additionalProperties().get("@odata.type");
+            if (odataTypeObject instanceof String) {
+                SerializerAdapter serializerAdapter =
+                    ((MicrosoftGraphClientImpl)manager().serviceClient()).getSerializerAdapter();
+                String odataType = ((String) odataTypeObject).toLowerCase(Locale.ROOT);
+                try {
+                    String jsonString = serializerAdapter.serialize(inner, SerializerEncoding.JSON);
+                    if (odataType.endsWith("#microsoft.graph.user")) {
+                        MicrosoftGraphUserInner userInner = serializerAdapter.deserialize(
+                            jsonString, MicrosoftGraphUserInner.class, SerializerEncoding.JSON);
+                        return new ActiveDirectoryUserImpl(userInner, manager());
+
+                    } else if (odataType.endsWith("#microsoft.graph.group")) {
+                        MicrosoftGraphGroupInner groupInner = serializerAdapter.deserialize(
+                            jsonString, MicrosoftGraphGroupInner.class, SerializerEncoding.JSON);
+                        return new ActiveDirectoryGroupImpl(groupInner, manager());
+
+                    } else if (odataType.endsWith("#microsoft.graph.servicePrincipal")) {
+                        MicrosoftGraphServicePrincipalInner servicePrincipalInner = serializerAdapter.deserialize(
+                            jsonString, MicrosoftGraphServicePrincipalInner.class, SerializerEncoding.JSON);
+                        return new ServicePrincipalImpl(servicePrincipalInner, manager());
+
+                    } else if (odataType.endsWith("#microsoft.graph.application")) {
+                        MicrosoftGraphApplicationInner applicationInner = serializerAdapter.deserialize(
+                            jsonString, MicrosoftGraphApplicationInner.class, SerializerEncoding.JSON);
+                        return new ActiveDirectoryApplicationImpl(applicationInner, manager());
+                    } else {
+                        return null;
+                    }
+                } catch (IOException e) {
+                    return null;
+                }
+            }
+        }
+        return null;
     }
 
     @Override
@@ -94,6 +123,12 @@ class ActiveDirectoryGroupImpl
     public Mono<ActiveDirectoryGroup> createResourceAsync() {
         Mono<ActiveDirectoryGroup> group = Mono.just(this);
         if (isInCreateMode()) {
+            if (innerModel().mailEnabled() == null) {
+                innerModel().withMailEnabled(false);
+            }
+            if (innerModel().securityEnabled() == null) {
+                innerModel().withSecurityEnabled(true);
+            }
             group = manager().serviceClient().getGroupsGroups().createGroupAsync(innerModel())
                 .map(innerToFluentMap(this));
         }
@@ -116,7 +151,7 @@ class ActiveDirectoryGroupImpl
                         o ->
                             Flux
                                 .fromIterable(membersToAdd)
-                                .flatMap(s -> manager().serviceClient().getGroups().createRefMemberOfAsync(id(), s))
+                                .flatMap(s -> manager().serviceClient().getGroups().createRefMembersAsync(id(), s))
                                 .singleOrEmpty()
                                 .thenReturn(this)
                                 .doFinally(signalType -> membersToAdd.clear()));
@@ -138,9 +173,11 @@ class ActiveDirectoryGroupImpl
 
     @Override
     public ActiveDirectoryGroupImpl withMember(String objectId) {
-        membersToAdd.add(new HashMap<>() {{
-            put("id", objectId);
-        }});
+        // https://docs.microsoft.com/en-us/graph/api/group-post-members
+        String membersKey = "@odata.id";
+        membersToAdd.add(Map.of(
+            membersKey, String.format("%s/directoryObjects/%s", manager().serviceClient().getEndpoint(), objectId))
+        );
         return this;
     }
 

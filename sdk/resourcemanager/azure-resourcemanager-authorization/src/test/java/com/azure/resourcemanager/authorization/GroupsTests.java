@@ -48,9 +48,9 @@ public class GroupsTests extends GraphRbacManagementTest {
                     .withMember(servicePrincipal.id())
                     .withMember(group1.id())
                     .create();
-
             Assertions.assertNotNull(group2);
             Assertions.assertNotNull(group2.id());
+
             List<ActiveDirectoryObject> members = group2.listMembers();
             Assertions.assertEquals(3, members.size());
             Iterator<ActiveDirectoryObject> iterator = members.iterator();
@@ -58,16 +58,27 @@ public class GroupsTests extends GraphRbacManagementTest {
             Assertions.assertNotNull(iterator.next().id());
             Assertions.assertNotNull(iterator.next().id());
         } finally {
-            if (servicePrincipal != null) {
-                authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
+            try {
+                if (servicePrincipal != null) {
+                    authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
+                }
+            } finally {
+                try {
+                    if (user != null) {
+                        authorizationManager.users().deleteById(user.id());
+                    }
+                } finally {
+                    try {
+                        if (group1 != null) {
+                            authorizationManager.groups().deleteById(group1.id());
+                        }
+                    } finally {
+                        if (group2 != null) {
+                            authorizationManager.groups().deleteById(group2.id());
+                        }
+                    }
+                }
             }
-            // cannot delete users or groups from service principal
-            //            if (user != null) {
-            //                graphRbacManager.users().deleteById(user.id());
-            //            }
-            //            if (group != null) {
-            //                graphRbacManager.groups().deleteById(group.id());
-            //            }
         }
     }
 }
