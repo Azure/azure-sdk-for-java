@@ -142,6 +142,7 @@ class ReactorConnectionTest {
 
     @AfterEach
     void teardown() {
+        connection.dispose();
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
         Mockito.framework().clearInlineMocks();
