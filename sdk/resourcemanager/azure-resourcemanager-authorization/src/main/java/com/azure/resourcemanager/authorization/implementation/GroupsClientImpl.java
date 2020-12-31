@@ -502,9 +502,9 @@ public final class GroupsClientImpl implements GroupsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post("/groups/{group-id}/members/$ref")
-        @ExpectedResponses({201})
+        @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<Map<String, Object>>> createRefMembers(
+        Mono<Response<Void>> createRefMembers(
             @HostParam("$host") String endpoint,
             @PathParam("group-id") String groupId,
             @BodyParam("application/json") Map<String, Object> body,
@@ -6524,11 +6524,10 @@ public final class GroupsClientImpl implements GroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Map<String, Object>>> createRefMembersWithResponseAsync(
-        String groupId, Map<String, Object> body) {
+    public Mono<Response<Void>> createRefMembersWithResponseAsync(String groupId, Map<String, Object> body) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -6556,10 +6555,10 @@ public final class GroupsClientImpl implements GroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Map<String, Object>>> createRefMembersWithResponseAsync(
+    private Mono<Response<Void>> createRefMembersWithResponseAsync(
         String groupId, Map<String, Object> body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -6586,19 +6585,11 @@ public final class GroupsClientImpl implements GroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, Object>> createRefMembersAsync(String groupId, Map<String, Object> body) {
-        return createRefMembersWithResponseAsync(groupId, body)
-            .flatMap(
-                (Response<Map<String, Object>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Mono<Void> createRefMembersAsync(String groupId, Map<String, Object> body) {
+        return createRefMembersWithResponseAsync(groupId, body).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -6609,11 +6600,10 @@ public final class GroupsClientImpl implements GroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> createRefMembers(String groupId, Map<String, Object> body) {
-        return createRefMembersAsync(groupId, body).block();
+    public void createRefMembers(String groupId, Map<String, Object> body) {
+        createRefMembersAsync(groupId, body).block();
     }
 
     /**
@@ -6625,11 +6615,10 @@ public final class GroupsClientImpl implements GroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Map<String, Object>> createRefMembersWithResponse(
-        String groupId, Map<String, Object> body, Context context) {
+    public Response<Void> createRefMembersWithResponse(String groupId, Map<String, Object> body, Context context) {
         return createRefMembersWithResponseAsync(groupId, body, context).block();
     }
 

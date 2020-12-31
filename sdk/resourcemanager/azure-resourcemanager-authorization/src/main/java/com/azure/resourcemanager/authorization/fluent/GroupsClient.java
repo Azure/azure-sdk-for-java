@@ -2155,10 +2155,10 @@ public interface GroupsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Map<String, Object>>> createRefMembersWithResponseAsync(String groupId, Map<String, Object> body);
+    Mono<Response<Void>> createRefMembersWithResponseAsync(String groupId, Map<String, Object> body);
 
     /**
      * Create new navigation property ref to members for groups.
@@ -2169,10 +2169,10 @@ public interface GroupsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Map<String, Object>> createRefMembersAsync(String groupId, Map<String, Object> body);
+    Mono<Void> createRefMembersAsync(String groupId, Map<String, Object> body);
 
     /**
      * Create new navigation property ref to members for groups.
@@ -2183,10 +2183,9 @@ public interface GroupsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Map<String, Object> createRefMembers(String groupId, Map<String, Object> body);
+    void createRefMembers(String groupId, Map<String, Object> body);
 
     /**
      * Create new navigation property ref to members for groups.
@@ -2198,11 +2197,10 @@ public interface GroupsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Map<String, Object>> createRefMembersWithResponse(
-        String groupId, Map<String, Object> body, Context context);
+    Response<Void> createRefMembersWithResponse(String groupId, Map<String, Object> body, Context context);
 
     /**
      * Delete ref of member from groups.
