@@ -81,7 +81,6 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
                     .define(appName)
                     .withNewApplication("http://" + appName + ".azurewebsites.net")
                     .definePasswordCredential("password")
-                        .withPasswordValue(password)
                         .attach()
                     .create();
 

@@ -33,7 +33,6 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                     .define(name)
                     .withNewApplication("http://easycreate.azure.com/" + name)
                     .definePasswordCredential("sppass")
-                    .withPasswordValue("StrongPass!12")
                     .attach()
                     .create();
             System
@@ -94,7 +93,6 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                     .define(name)
                     .withNewApplication("http://easycreate.azure.com/ansp/" + name)
                     .definePasswordCredential("sppass")
-                    .withPasswordValue("StrongPass!12")
                     .attach()
                     .defineCertificateCredential("spcert")
                     .withAsymmetricX509Certificate()

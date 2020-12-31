@@ -3,14 +3,14 @@
 
 package com.azure.resourcemanager.authorization;
 
-import java.time.Duration;
-
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 public class ApplicationsTests extends GraphRbacManagementTest {
     @Test
@@ -25,7 +25,6 @@ public class ApplicationsTests extends GraphRbacManagementTest {
                     .define(name)
                     .withSignOnUrl("http://easycreate.azure.com/" + name)
                     .definePasswordCredential("passwd")
-                    .withPasswordValue("P@ssw0rd")
                     .withDuration(Duration.ofDays(700))
                     .attach()
                     .defineCertificateCredential("cert")

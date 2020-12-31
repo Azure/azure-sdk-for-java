@@ -228,7 +228,7 @@ public interface ActiveDirectoryApplication
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential definition
              */
-            CertificateCredential.UpdateDefinitionStages.Blank<? extends Update>
+            CertificateCredential.DefinitionStages.Blank<? extends Update>
                 defineCertificateCredential(String name);
 
             /**
@@ -237,7 +237,7 @@ public interface ActiveDirectoryApplication
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential definition
              */
-            PasswordCredential.UpdateDefinitionStages.Blank<? extends Update> definePasswordCredential(String name);
+            PasswordCredential.DefinitionStages.Blank<? extends Update> definePasswordCredential(String name);
 
             /**
              * Removes a key.

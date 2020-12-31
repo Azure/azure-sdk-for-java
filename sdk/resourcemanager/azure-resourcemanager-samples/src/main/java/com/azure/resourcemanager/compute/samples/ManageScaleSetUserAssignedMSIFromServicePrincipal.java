@@ -88,7 +88,6 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
             servicePrincipal = authenticated.servicePrincipals().define(spName1)
                     .withNewApplication("http://lenala.azure.com/ansp/" + spName1)
                     .definePasswordCredential("sppass")
-                    .withPasswordValue("StrongPass!12")
                     .attach()
                     .withNewRole(BuiltInRole.CONTRIBUTOR, resourceGroupId(virtualMachineScaleSet1.id()))
                     .create();

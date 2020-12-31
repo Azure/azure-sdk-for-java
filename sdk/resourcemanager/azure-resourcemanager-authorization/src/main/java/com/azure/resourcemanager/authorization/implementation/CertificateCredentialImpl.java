@@ -21,7 +21,7 @@ import java.util.Base64;
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class CertificateCredentialImpl<T extends HasCredential<T>>
     extends IndexableRefreshableWrapperImpl<CertificateCredential, MicrosoftGraphKeyCredentialInner>
-    implements CertificateCredential, CertificateCredential.Definition<T>, CertificateCredential.UpdateDefinition<T> {
+    implements CertificateCredential, CertificateCredential.Definition<T> {
 
     private String name;
     private HasCredential<T> parent;

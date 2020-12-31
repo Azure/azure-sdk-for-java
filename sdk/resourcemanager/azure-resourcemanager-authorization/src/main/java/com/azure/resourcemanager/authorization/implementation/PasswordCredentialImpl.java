@@ -20,7 +20,7 @@ import java.util.Base64;
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class PasswordCredentialImpl<T extends HasCredential<T>>
     extends IndexableRefreshableWrapperImpl<PasswordCredential, MicrosoftGraphPasswordCredentialInner>
-    implements PasswordCredential, PasswordCredential.Definition<T>, PasswordCredential.UpdateDefinition<T> {
+    implements PasswordCredential, PasswordCredential.Definition<T> {
 
     private String name;
     private HasCredential<T> parent;
