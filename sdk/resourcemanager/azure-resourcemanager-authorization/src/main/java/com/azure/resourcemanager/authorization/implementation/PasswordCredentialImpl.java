@@ -15,7 +15,6 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.Base64;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class PasswordCredentialImpl<T extends HasCredential<T>>
@@ -30,11 +29,8 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
 
     PasswordCredentialImpl(MicrosoftGraphPasswordCredentialInner passwordCredential) {
         super(passwordCredential);
-        if (passwordCredential.customKeyIdentifier() != null && passwordCredential.customKeyIdentifier().length > 0) {
-            this.name = new String(
-                Base64.getMimeDecoder().decode(
-                    new String(passwordCredential.customKeyIdentifier(), StandardCharsets.UTF_8)),
-                StandardCharsets.UTF_8);
+        if (passwordCredential.displayName() != null) {
+            this.name = passwordCredential.displayName();
         } else {
             this.name = passwordCredential.keyId().toString();
         }
@@ -43,7 +39,7 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
     PasswordCredentialImpl(String name, HasCredential<T> parent) {
         super(
             new MicrosoftGraphPasswordCredentialInner()
-                .withCustomKeyIdentifier(Base64.getEncoder().encode(name.getBytes(StandardCharsets.UTF_8)))
+                .withDisplayName(name)
                 .withStartDateTime(OffsetDateTime.now())
                 .withEndDateTime(OffsetDateTime.now().plusYears(1)));
         this.name = name;

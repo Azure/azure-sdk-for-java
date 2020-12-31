@@ -32,9 +32,8 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
 
     CertificateCredentialImpl(MicrosoftGraphKeyCredentialInner keyCredential) {
         super(keyCredential);
-        if (keyCredential.customKeyIdentifier() != null && keyCredential.customKeyIdentifier().length > 0) {
-            this.name = new String(Base64.getMimeDecoder().decode(keyCredential.customKeyIdentifier()),
-                StandardCharsets.UTF_8);
+        if (keyCredential.displayName() != null) {
+            this.name = keyCredential.displayName();
         } else {
             this.name = keyCredential.keyId().toString();
         }
@@ -44,7 +43,7 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
         super(
             new MicrosoftGraphKeyCredentialInner()
                 .withUsage("Verify")
-                .withCustomKeyIdentifier(Base64.getEncoder().encode(name.getBytes(StandardCharsets.UTF_8)))
+                .withDisplayName(name)
                 .withStartDateTime(OffsetDateTime.now())
                 .withEndDateTime(OffsetDateTime.now().plusYears(1)));
         this.name = name;
