@@ -63,6 +63,7 @@ public class AADOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         }
 
         Set<String> groups = Optional.of(userRequest)
+                                     .filter(notUsed -> properties.allowedGroupsConfigured())
                                      .map(OAuth2UserRequest::getAccessToken)
                                      .map(AbstractOAuth2Token::getTokenValue)
                                      .map(graphClient::getGroupsFromGraph)

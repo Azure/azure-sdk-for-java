@@ -3,8 +3,13 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AuthorizationProperties;
+import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
+import org.springframework.util.ClassUtils;
+import org.springframework.validation.annotation.Validated;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,13 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.PostConstruct;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
-import org.springframework.util.ClassUtils;
-import org.springframework.validation.annotation.Validated;
 
 /**
  * Configuration properties for Azure Active Directory Authentication.
@@ -27,7 +25,6 @@ import org.springframework.validation.annotation.Validated;
 @ConfigurationProperties("azure.activedirectory")
 public class AADAuthenticationProperties {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
 
@@ -104,7 +101,7 @@ public class AADAuthenticationProperties {
 
     private String graphMembershipUri = "https://graph.microsoft.com/v1.0/me/memberOf";
 
-    private Map<String, AuthorizationProperties> authorizationClients = new HashMap<>();
+    private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
@@ -141,28 +138,6 @@ public class AADAuthenticationProperties {
                        .map(AADAuthenticationProperties.UserGroupProperties::getAllowedGroups)
                        .map(allowedGroups -> !allowedGroups.isEmpty())
                        .orElse(false);
-    }
-
-    /**
-     * Validates at least one of the user group properties are populated.
-     *
-     * @throws IllegalArgumentException If no allowed-groups is configured when stateful filter is enabled.
-     */
-    @PostConstruct
-    public void validateUserGroupProperties() {
-        // current implementation is not required, this is only used for compatibility with the previous usage
-        if (authorizationClients.size() > 0 || isResourceServer()) {
-            return;
-        }
-
-        if (this.sessionStateless) {
-            if (allowedGroupsConfigured()) {
-                LOGGER.warn("Group names are not supported if you set 'sessionSateless' to 'true'.");
-            }
-        } else if (!allowedGroupsConfigured()) {
-            throw new IllegalArgumentException("One of the User Group Properties must be populated. "
-                + "Please populate azure.activedirectory.user-group.allowed-groups");
-        }
     }
 
     public boolean isResourceServer() {
@@ -310,11 +285,11 @@ public class AADAuthenticationProperties {
         this.graphMembershipUri = graphMembershipUri;
     }
 
-    public Map<String, AuthorizationProperties> getAuthorizationClients() {
+    public Map<String, AuthorizationClientProperties> getAuthorizationClients() {
         return authorizationClients;
     }
 
-    public void setAuthorizationClients(Map<String, AuthorizationProperties> authorizationClients) {
+    public void setAuthorizationClients(Map<String, AuthorizationClientProperties> authorizationClients) {
         this.authorizationClients = authorizationClients;
     }
 

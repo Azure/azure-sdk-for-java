@@ -12,25 +12,26 @@ import org.springframework.util.MultiValueMap;
 
 import java.util.Optional;
 
-public class PropertiesUtils {
+public class WebApplicationContextRunnerUtils {
+
+    public static WebApplicationContextRunner getContextRunnerWithRequiredProperties() {
+        return getContextRunner().withPropertyValues(
+                "azure.activedirectory.client-id = fake-client-id",
+                "azure.activedirectory.client-secret = fake-client-secret",
+                "azure.activedirectory.tenant-id = fake-tenant-id");
+    }
 
     public static WebApplicationContextRunner getContextRunner() {
         return new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .withUserConfiguration(AADWebAppConfiguration.class)
-            .withPropertyValues(
-                "azure.activedirectory.client-id = fake-client-id",
-                "azure.activedirectory.client-secret = fake-client-secret",
-                "azure.activedirectory.tenant-id = fake-tenant-id",
-                "azure.activedirectory.user-group.allowed-groups = group1, group2");
+            .withUserConfiguration(AADWebAppConfiguration.class);
     }
-
 
     @SuppressWarnings("unchecked")
     public static MultiValueMap<String, String> toMultiValueMap(RequestEntity<?> entity) {
         return (MultiValueMap<String, String>) Optional.ofNullable(entity)
-            .map(HttpEntity::getBody)
-            .orElse(null);
+                                                       .map(HttpEntity::getBody)
+                                                       .orElse(null);
     }
 
 }
