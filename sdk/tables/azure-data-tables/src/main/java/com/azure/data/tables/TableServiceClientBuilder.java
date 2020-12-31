@@ -3,6 +3,7 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -16,7 +17,6 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -42,7 +42,7 @@ public class TableServiceClientBuilder {
     private TokenCredential tokenCredential;
     private HttpPipeline httpPipeline;
     private TablesSharedKeyCredential tablesSharedKeyCredential;
-    private SasTokenCredential sasTokenCredential;
+    private AzureSasCredential sasTokenCredential;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
 
     /**
@@ -161,8 +161,23 @@ public class TableServiceClientBuilder {
      * @throws NullPointerException if {@code sasToken} is {@code null}.
      */
     public TableServiceClientBuilder sasToken(String sasToken) {
-        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
+        this.sasTokenCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
+        this.tablesSharedKeyCredential = null;
+        this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the SAS token used to authorize requests sent to the service.
+     *
+     * @param sasToken The SAS token to use for authenticating requests.
+     * @return The updated {@code TableServiceClientBuilder}.
+     * @throws NullPointerException if {@code sasToken} is {@code null}.
+     */
+    public TableServiceClientBuilder sasToken(AzureSasCredential sasToken) {
+        this.sasTokenCredential = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
         this.tablesSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;

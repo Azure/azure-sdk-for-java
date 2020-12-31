@@ -3,6 +3,7 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -10,6 +11,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -23,8 +25,6 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.NullHttpClient;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
-import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -40,7 +40,7 @@ final class BuilderHelper {
     private static final String SDK_VERSION = "version";
 
     static HttpPipeline buildPipeline(TablesSharedKeyCredential tablesSharedKeyCredential,
-                                      TokenCredential tokenCredential, SasTokenCredential sasTokenCredential,
+                                      TokenCredential tokenCredential, AzureSasCredential sasTokenCredential,
                                       String endpoint, RequestRetryOptions retryOptions, HttpLogOptions logOptions,
                                       HttpClient httpClient, List<HttpPipelinePolicy> additionalPolicies,
                                       Configuration configuration, ClientLogger logger) {
@@ -70,7 +70,7 @@ final class BuilderHelper {
             }
             credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, getBearerTokenScope(endpointParts));
         } else if (sasTokenCredential != null) {
-            credentialPolicy = new SasTokenCredentialPolicy(sasTokenCredential);
+            credentialPolicy = new AzureSasCredentialPolicy(sasTokenCredential);
         } else {
             credentialPolicy = null;
         }

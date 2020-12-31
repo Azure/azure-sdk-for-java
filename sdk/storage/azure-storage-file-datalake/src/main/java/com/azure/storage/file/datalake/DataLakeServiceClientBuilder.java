@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -17,7 +18,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
@@ -53,7 +53,7 @@ public class DataLakeServiceClientBuilder {
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
-    private SasTokenCredential sasTokenCredential;
+    private AzureSasCredential sasTokenCredential;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -169,8 +169,24 @@ public class DataLakeServiceClientBuilder {
      */
     public DataLakeServiceClientBuilder sasToken(String sasToken) {
         blobServiceClientBuilder.sasToken(sasToken);
-        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
+        this.sasTokenCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null."));
+        this.storageSharedKeyCredential = null;
+        this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the SAS token used to authorize requests sent to the service.
+     *
+     * @param sasToken The SAS token to use for authenticating requests.
+     * @return the updated DataLakeServiceClientBuilder
+     * @throws NullPointerException If {@code sasToken} is {@code null}.
+     */
+    public DataLakeServiceClientBuilder sasToken(AzureSasCredential sasToken) {
+        blobServiceClientBuilder.sasToken(sasToken);
+        this.sasTokenCredential = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
