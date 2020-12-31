@@ -60,8 +60,11 @@ Get `AAD_TENANT_ID_2`, `AAD_USER_NAME_2`, `AAD_USER_PASSWORD_2` with the same me
 
 4. Add API permissions. Grant admin consent.
 ![add-api-permission](images/add-api-permission.png)
+
+5. Expose API: `ResourceAccessGraph.Read`, `TestScope1`, `TestScope2`.
+![expose-api](images/expose-api.png)
  
-5. Now we get value of `AAD_MULTI_TENANT_CLIENT_ID`, `AAD_MULTI_TENANT_CLIENT_SECRET`.
+6. Now we get value of `AAD_MULTI_TENANT_CLIENT_ID`, `AAD_MULTI_TENANT_CLIENT_SECRET`.
 
 ### `AAD_SINGLE_TENANT_CLIENT_ID`, `AAD_SINGLE_TENANT_CLIENT_SECRET`
 Get `AAD_SINGLE_TENANT_CLIENT_ID`, `AAD_SINGLE_TENANT_CLIENT_SECRET` with the same method.
