@@ -3,18 +3,12 @@
 
 package com.azure.test.aad.filter.stateful;
 
+import com.azure.spring.aad.util.AADWebApiITHelper;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
-import com.azure.test.aad.AADTestUtils;
-import com.azure.test.aad.filter.OAuthResponse;
-import com.azure.test.utils.AppRunner;
+import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,95 +21,65 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
-import static com.azure.test.aad.AADTestUtils.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.test.aad.AADTestUtils.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_ID;
-import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
+import static com.azure.spring.aad.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.spring.aad.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.aad.util.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.azure.spring.aad.util.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_SECRET;
+import static com.azure.spring.aad.util.EnvironmentVariables.SCOPE_GRAPH_READ;
+import static com.azure.spring.aad.util.EnvironmentVariables.toFullNameScope;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.springframework.http.HttpHeaders.COOKIE;
-import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 public class AADAuthenticationFilterIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationFilterIT.class);
-    private final RestTemplate restTemplate = new RestTemplate();
+    private AADWebApiITHelper singleTenantITHelper;
+    private AADWebApiITHelper multiTenantITHelper;
 
-    @Test
-    public void testAADAuthenticationFilterWithSingleTenantApp() {
-        final String clientId = System.getenv(AAD_SINGLE_TENANT_CLIENT_ID);
-        final String clientSecret = System.getenv(AAD_SINGLE_TENANT_CLIENT_SECRET);
+    @Before
+    public void init() {
+        singleTenantITHelper = getAADWebApiITHelper(AAD_SINGLE_TENANT_CLIENT_ID, AAD_SINGLE_TENANT_CLIENT_SECRET);
+        multiTenantITHelper = getAADWebApiITHelper(AAD_MULTI_TENANT_CLIENT_ID, AAD_MULTI_TENANT_CLIENT_SECRET);
+    }
 
-        final OAuthResponse authResponse = AADTestUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
-        assertNotNull(authResponse);
-
-        testAADAuthenticationFilter(clientId, clientSecret, authResponse.getIdToken());
+    private AADWebApiITHelper getAADWebApiITHelper(String clientId, String clientSecret) {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("azure.activedirectory.client-id", clientId);
+        properties.put("azure.activedirectory.client-secret", clientSecret);
+        properties.put("azure.activedirectory.user-group.allowed-groups", "group1,group2");
+        return new AADWebApiITHelper(
+            DumbApp.class,
+            properties,
+            clientId,
+            clientSecret,
+            Collections.singletonList(toFullNameScope(clientId, SCOPE_GRAPH_READ)));
     }
 
     @Test
-    public void testAADAuthenticationFilterWithMultiTenantApp() {
-        final String clientId = System.getenv(AAD_MULTI_TENANT_CLIENT_ID);
-        final String clientSecret = System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET);
-
-        final OAuthResponse authResponse = AADTestUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
-        assertNotNull(authResponse);
-
-        testAADAuthenticationFilter(clientId, clientSecret, authResponse.getIdToken());
+    public void testAllowedEndpointsForSingleTenant() {
+        assertEquals("home", singleTenantITHelper.httpGetByAccessToken("home"));
+        assertEquals("api/all", singleTenantITHelper.httpGetByAccessToken("api/all"));
+        assertEquals("api/group1", singleTenantITHelper.httpGetByAccessToken("api/group1"));
     }
 
+    @Test(expected = HttpClientErrorException.class)
+    public void testNotAllowedEndpointsForSingleTenant() {
+        singleTenantITHelper.httpGetByAccessToken("api/group2");
+    }
 
-    private void testAADAuthenticationFilter(String clientId, String clientSecret, String idToken) {
-        try (AppRunner app = new AppRunner(DumbApp.class)) {
+    @Test
+    public void testAllowedEndpointsForMultiTenant() {
+        assertEquals("home", multiTenantITHelper.httpGetByAccessToken("home"));
+        assertEquals("api/all", multiTenantITHelper.httpGetByAccessToken("api/all"));
+        assertEquals("api/group1", multiTenantITHelper.httpGetByAccessToken("api/group1"));
+    }
 
-            app.property("azure.activedirectory.client-id", clientId);
-            app.property("azure.activedirectory.client-secret", clientSecret);
-            app.property("azure.activedirectory.user-group.allowed-groups", "group1,group2");
-
-            app.start();
-
-            final ResponseEntity<String> response = restTemplate.exchange(app.root() + "home",
-                HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class, new HashMap<>());
-            assertEquals(HttpStatus.OK, response.getStatusCode());
-            assertEquals("home", response.getBody());
-
-            final HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", String.format("Bearer %s", idToken));
-            HttpEntity<Object> entity = new HttpEntity<>(headers);
-
-            final ResponseEntity<String> response2 = restTemplate.exchange(app.root() + "api/all",
-                HttpMethod.GET, entity, String.class, new HashMap<>());
-            assertEquals(HttpStatus.OK, response2.getStatusCode());
-            assertEquals("all", response2.getBody());
-
-            final List<String> cookies = response2.getHeaders().getOrDefault(SET_COOKIE, new ArrayList<>());
-            final Optional<String> sessionCookie = cookies.stream().filter(s -> s.startsWith("JSESSIONID=")).findAny();
-
-            if (sessionCookie.isPresent()) {
-                headers.add(COOKIE, sessionCookie.get());
-                entity = new HttpEntity<>(headers);
-            }
-
-            final ResponseEntity<String> response3 = restTemplate.exchange(app.root() + "api/group1",
-                HttpMethod.GET, entity, String.class, new HashMap<>());
-            assertEquals(HttpStatus.OK, response3.getStatusCode());
-            assertEquals("group1", response3.getBody());
-
-            try {
-                restTemplate.exchange(app.root() + "api/group2",
-                    HttpMethod.GET, entity, String.class, new HashMap<>());
-            } catch (Exception e) {
-                assertEquals(HttpClientErrorException.Forbidden.class, e.getClass());
-            }
-
-            LOGGER.info("--------------------->test over");
-        }
+    @Test(expected = HttpClientErrorException.class)
+    public void testNotAllowedEndpointsForMultiTenant() {
+        multiTenantITHelper.httpGetByAccessToken("api/group2");
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -129,8 +93,8 @@ public class AADAuthenticationFilterIT {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.authorizeRequests().antMatchers("/home").permitAll();
-            http.authorizeRequests().antMatchers("/api/**").authenticated();
+            http.authorizeRequests().antMatchers("home").permitAll();
+            http.authorizeRequests().antMatchers("api/**").authenticated();
 
             http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/").deleteCookies("JSESSIONID").invalidateHttpSession(true);
@@ -142,26 +106,26 @@ public class AADAuthenticationFilterIT {
             http.addFilterBefore(aadAuthFilter, UsernamePasswordAuthenticationFilter.class);
         }
 
-        @GetMapping(value = "/api/all")
+        @GetMapping(value = "home")
+        public ResponseEntity<String> getHome() {
+            return new ResponseEntity<>("home", HttpStatus.OK);
+        }
+
+        @GetMapping(value = "api/all")
         public ResponseEntity<String> getAll() {
-            return new ResponseEntity<>("all", HttpStatus.OK);
+            return new ResponseEntity<>("api/all", HttpStatus.OK);
         }
 
         @PreAuthorize("hasRole('ROLE_group1')")
-        @GetMapping(value = "/api/group1")
+        @GetMapping(value = "api/group1")
         public ResponseEntity<String> getRoleGroup1() {
-            return new ResponseEntity<>("group1", HttpStatus.OK);
+            return new ResponseEntity<>("api/group1", HttpStatus.OK);
         }
 
-        @PreAuthorize("hasRole('ROLE_group2')")
-        @GetMapping(value = "/api/group2")
+        @PreAuthorize("hasRole('ROLE_notExist')")
+        @GetMapping(value = "api/notExist")
         public ResponseEntity<String> getRoleGroup2() {
-            return new ResponseEntity<>("group2", HttpStatus.OK);
-        }
-
-        @GetMapping(value = "/home")
-        public ResponseEntity<String> getHome() {
-            return new ResponseEntity<>("home", HttpStatus.OK);
+            return new ResponseEntity<>("api/notExist", HttpStatus.OK);
         }
     }
 

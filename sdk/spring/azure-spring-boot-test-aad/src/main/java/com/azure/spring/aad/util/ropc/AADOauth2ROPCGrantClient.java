@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.util.ropc;
+package com.azure.spring.aad.util.ropc;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -12,13 +12,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Optional;
-
-import static com.azure.test.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.test.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.test.util.EnvironmentVariables.AAD_TENANT_ID_1;
-import static com.azure.test.util.EnvironmentVariables.AAD_USER_NAME_1;
-import static com.azure.test.util.EnvironmentVariables.AAD_USER_PASSWORD_1;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
 
 public class AADOauth2ROPCGrantClient {
@@ -30,29 +23,18 @@ public class AADOauth2ROPCGrantClient {
         HEADERS.setContentType(APPLICATION_FORM_URLENCODED);
     }
 
-    public static String getAccessTokenForTestAccount(String scope) {
-        return getAccessTokenByROPCGrant(
-            AAD_TENANT_ID_1,
-            AAD_MULTI_TENANT_CLIENT_ID,
-            AAD_MULTI_TENANT_CLIENT_SECRET,
-            AAD_USER_NAME_1,
-            AAD_USER_PASSWORD_1,
-            scope);
-    }
-
     //  Refs: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth-ropc
-    public static String getAccessTokenByROPCGrant(String tenantId,
-                                                   String clientId,
-                                                   String clientSecret,
-                                                   String username,
-                                                   String password,
-                                                   String scope) {
+    public static OAuth2ROPCResponse getOAuth2ROPCResponseByROPCGrant(String tenantId,
+                                                                      String clientId,
+                                                                      String clientSecret,
+                                                                      String username,
+                                                                      String password,
+                                                                      String scope) {
         Assert.hasText(tenantId, "tenantId can not be empty.");
         Assert.hasText(clientId, "clientId can not be empty.");
         Assert.hasText(clientSecret, "clientSecret can not be empty.");
         Assert.hasText(username, "username can not be empty.");
         Assert.hasText(password, "password can not be empty.");
-        Assert.hasText(scope, "scope can not be empty.");
 
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("grant_type", "password");
@@ -64,15 +46,11 @@ public class AADOauth2ROPCGrantClient {
 
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(body, HEADERS);
         String url = String.format("https://login.microsoftonline.com/%s/oauth2/v2.0/token", tenantId);
-        OAuth2ROPCResponse response = REST_TEMPLATE.postForObject(url, httpEntity, OAuth2ROPCResponse.class);
-
-        return Optional.ofNullable(response)
-                       .map(OAuth2ROPCResponse::getAccessToken)
-                       .orElse(null);
+        return REST_TEMPLATE.postForObject(url, httpEntity, OAuth2ROPCResponse.class);
     }
 
     @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-    public static class OAuth2ROPCResponse {
+    public static final class OAuth2ROPCResponse {
 
         private String tokenType;
         private String scope;

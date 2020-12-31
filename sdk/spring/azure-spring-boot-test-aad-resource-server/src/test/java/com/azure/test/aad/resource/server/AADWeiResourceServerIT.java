@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.resource.server;
 
-import com.azure.test.util.AADWebApiITHelper;
+import com.azure.spring.aad.util.AADWebApiITHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,9 +21,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.test.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.test.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.test.util.EnvironmentVariables.SCOPE_GRAPH_READ;
+import static com.azure.spring.aad.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.spring.aad.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.aad.util.EnvironmentVariables.MULTI_TENANT_SCOPE_GRAPH_READ;
 import static org.junit.Assert.assertEquals;
 
 public class AADWeiResourceServerIT {
@@ -39,17 +39,19 @@ public class AADWeiResourceServerIT {
         aadWebApiITHelper = new AADWebApiITHelper(
             DumbApp.class,
             properties,
-            Collections.singletonList(SCOPE_GRAPH_READ));
+            AAD_MULTI_TENANT_CLIENT_ID,
+            AAD_MULTI_TENANT_CLIENT_SECRET,
+            Collections.singletonList(MULTI_TENANT_SCOPE_GRAPH_READ));
     }
 
     @Test
     public void testHasScope() {
-        assertEquals(aadWebApiITHelper.httpGet("graph"), "graph");
+        assertEquals(aadWebApiITHelper.httpGetByAccessToken("graph"), "graph");
     }
 
     @Test(expected = HttpClientErrorException.class)
     public void testHasNoScope() {
-        aadWebApiITHelper.httpGet("testScope1");
+        aadWebApiITHelper.httpGetByAccessToken("notExist");
     }
 
     @EnableWebSecurity
@@ -72,10 +74,10 @@ public class AADWeiResourceServerIT {
             return "graph";
         }
 
-        @GetMapping("testScope1")
-        @PreAuthorize("hasAuthority('SCOPE_TestScope1')")
-        public String testScope1() {
-            return "testScope1";
+        @GetMapping("notExist")
+        @PreAuthorize("hasAuthority('SCOPE_NotExist')")
+        public String notExist() {
+            return "notExist";
         }
     }
 }

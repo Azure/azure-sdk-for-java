@@ -3,17 +3,13 @@
 
 package com.azure.test.aad.filter.group.count;
 
+import com.azure.spring.aad.util.AADWebApiITHelper;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.azure.spring.autoconfigure.aad.UserPrincipal;
-import com.azure.test.aad.AADTestUtils;
-import com.azure.test.aad.filter.OAuthResponse;
-import com.azure.test.utils.AppRunner;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,46 +19,39 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_ID;
-import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_SECRET;
+import static com.azure.spring.aad.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.spring.aad.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.aad.util.EnvironmentVariables.MULTI_TENANT_SCOPE_GRAPH_READ;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class AADGroupsCountIT {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private AADWebApiITHelper aadWebApiITHelper;
+
+    @Before
+    public void init() {
+        Map<String, String> properties = new HashMap<>();
+        properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
+        properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
+        properties.put("azure.activedirectory.user-group.allowed-groups", "group1,group2");
+        aadWebApiITHelper = new AADWebApiITHelper(
+            DumbApp.class,
+            properties,
+            AAD_MULTI_TENANT_CLIENT_ID,
+            AAD_MULTI_TENANT_CLIENT_SECRET,
+            Collections.singletonList(MULTI_TENANT_SCOPE_GRAPH_READ));
+    }
 
     @Test
     public void testGroupsCount() {
-        final String clientId = System.getenv(AAD_SINGLE_TENANT_CLIENT_ID);
-        final String clientSecret = System.getenv(AAD_SINGLE_TENANT_CLIENT_SECRET);
-        final OAuthResponse authResponse = AADTestUtils.executeOAuth2ROPCFlow(clientId, clientSecret);
-        assertNotNull(authResponse);
-        String idToken = authResponse.getIdToken();
-        try (AppRunner app = new AppRunner(DumbApp.class)) {
-            app.property("azure.activedirectory.client-id", clientId);
-            app.property("azure.activedirectory.client-secret", clientSecret);
-            app.property("azure.activedirectory.user-group.allowed-groups", "group1,group2");
-            app.start();
-            final HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", String.format("Bearer %s", idToken));
-            HttpEntity<Object> entity = new HttpEntity<>(headers);
-            final ResponseEntity<String> response = restTemplate.exchange(
-                app.root() + "api/groupsCount",
-                HttpMethod.GET,
-                entity,
-                String.class,
-                new HashMap<>()
-            );
-            assertEquals(HttpStatus.OK, response.getStatusCode());
-            assertEquals("111", response.getBody());
-        }
+        assertEquals("111", aadWebApiITHelper.httpGetByAccessToken("api/groupsCount"));
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)

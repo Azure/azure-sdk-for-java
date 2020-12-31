@@ -3,20 +3,12 @@
 
 package com.azure.test.aad.filter.stateless;
 
+import com.azure.spring.aad.util.AADWebApiITHelper;
 import com.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter;
-import com.azure.test.aad.AADTestUtils;
-import com.azure.test.aad.filter.OAuthResponse;
-import com.azure.test.utils.AppRunner;
+import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -26,64 +18,44 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
-import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
-import static com.azure.test.aad.AADTestUtils.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
+import static com.azure.spring.aad.util.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
+import static com.azure.spring.aad.util.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class AADAppRoleStatelessAuthenticationFilterIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADAppRoleStatelessAuthenticationFilterIT.class);
-    private final RestTemplate restTemplate = new RestTemplate();
+    private AADWebApiITHelper aadWebApiITHelper;
+
+    @Before
+    public void init() {
+        String clientId = AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
+        String clientSecret = AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
+        Map<String, String> properties = new HashMap<>();
+        properties.put("azure.activedirectory.client-id", clientId);
+        properties.put("azure.activedirectory.client-secret", clientSecret);
+        properties.put("azure.activedirectory.session-stateless", "true");
+        aadWebApiITHelper = new AADWebApiITHelper(
+            DumbApp.class,
+            properties,
+            clientId,
+            clientSecret,
+            Arrays.asList("user.read", "openid", "profile", "offline_access"));
+    }
 
     @Test
-    public void testAADAppRoleStatelessAuthenticationFilter() {
-        final OAuthResponse authResponse =
-            AADTestUtils.executeOAuth2ROPCFlow(System.getenv(AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE),
-            System.getenv(AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE));
-        assertNotNull(authResponse);
+    public void testAllowedEndpoints() {
+        assertEquals("public", aadWebApiITHelper.httpGetByIdToken("public"));
+        assertEquals("userRole", aadWebApiITHelper.httpGetByIdToken("userRole"));
+    }
 
-        try (AppRunner app = new AppRunner(DumbApp.class)) {
-
-            app.property("azure.activedirectory.client-id", System.getenv(AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE));
-            app.property("azure.activedirectory.session-stateless", "true");
-
-            app.start();
-
-            final ResponseEntity<String> response = restTemplate.exchange(app.root() + "public",
-                HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class, new HashMap<>());
-            assertEquals(HttpStatus.OK, response.getStatusCode());
-            assertEquals("public endpoint response", response.getBody());
-
-            try {
-                restTemplate.exchange(app.root() + "authorized",
-                    HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class, new HashMap<>());
-            } catch (Exception e) {
-                assertEquals(HttpClientErrorException.Forbidden.class, e.getClass());
-            }
-
-            final HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", String.format("Bearer %s", authResponse.getIdToken()));
-            final HttpEntity<Object> entity = new HttpEntity<>(headers);
-
-            final ResponseEntity<String> response2 = restTemplate.exchange(app.root() + "authorized",
-                HttpMethod.GET, entity, String.class, new HashMap<>());
-            assertEquals(HttpStatus.OK, response2.getStatusCode());
-            assertEquals("authorized endpoint response", response2.getBody());
-
-            try {
-                restTemplate.exchange(app.root() + "admin/demo",
-                    HttpMethod.GET, entity, String.class, new HashMap<>());
-            } catch (Exception e) {
-                assertEquals(HttpClientErrorException.Forbidden.class, e.getClass());
-            }
-
-            LOGGER.info("--------------------->test over");
-        }
+    @Test(expected = HttpClientErrorException.class)
+    public void testNotAllowedEndpoints() {
+        aadWebApiITHelper.httpGetByIdToken("adminRole");
     }
 
     @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -101,7 +73,7 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
             http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
 
             http.authorizeRequests()
-                .antMatchers("/admin/**").hasRole("Admin")
+                .antMatchers("/adminRole").hasRole("Admin")
                 .antMatchers("/", "/index.html", "/public").permitAll()
                 .anyRequest().authenticated();
 
@@ -110,18 +82,18 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
 
         @GetMapping("/public")
         public String publicMethod() {
-            return "public endpoint response";
+            return "public";
         }
 
-        @GetMapping("/authorized")
+        @GetMapping("/userRole")
         @PreAuthorize("hasRole('ROLE_User')")
         public String onlyAuthorizedUsers() {
-            return "authorized endpoint response";
+            return "userRole";
         }
 
-        @GetMapping("/admin/demo")
+        @GetMapping("/adminRole")
         public String onlyForAdmins() {
-            return "admin endpoint response";
+            return "adminRole";
         }
     }
 
