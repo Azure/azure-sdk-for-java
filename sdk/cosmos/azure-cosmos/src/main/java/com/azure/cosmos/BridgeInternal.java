@@ -510,10 +510,13 @@ public final class BridgeInternal {
         //Used only during aggregations like Aggregate/Orderby/Groupby which may contain clientSideStats in
         //feedResponseDiagnostics. So we need to add from both the places
         List<ClientSideRequestStatistics> clientSideRequestStatisticsList = new ArrayList<>();
-        clientSideRequestStatisticsList
-            .addAll(cosmosDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatisticsList());
-        if (cosmosDiagnostics.clientSideRequestStatistics() != null) {
-            clientSideRequestStatisticsList.add(cosmosDiagnostics.clientSideRequestStatistics());
+
+        if (cosmosDiagnostics != null) {
+            clientSideRequestStatisticsList
+                .addAll(cosmosDiagnostics.getFeedResponseDiagnostics().getClientSideRequestStatisticsList());
+            if (cosmosDiagnostics.clientSideRequestStatistics() != null) {
+                clientSideRequestStatisticsList.add(cosmosDiagnostics.clientSideRequestStatistics());
+            }
         }
         return clientSideRequestStatisticsList;
     }

@@ -47,7 +47,9 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     FeedResponse(List<T> results, RxDocumentServiceResponse response) {
         this(results, response.getResponseHeaders(), false, false, new ConcurrentHashMap<>());
         this.cosmosDiagnostics =response.getCosmosDiagnostics();
-        BridgeInternal.setFeedResponseDiagnostics(this.cosmosDiagnostics, queryMetricsMap);
+        if (this.cosmosDiagnostics != null) {
+            BridgeInternal.setFeedResponseDiagnostics(this.cosmosDiagnostics, queryMetricsMap);
+        }
     }
 
     FeedResponse(List<T> results, Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
