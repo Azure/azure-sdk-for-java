@@ -74,9 +74,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this.useEtagAsContinuation = useEtagAsContinuation;
         this.nochanges = nochanges;
         this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
-        if (this.cosmosDiagnostics == null) {
-            this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(queryMetricsMap);
-        }
+        this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(queryMetricsMap);
     }
 
     /**
