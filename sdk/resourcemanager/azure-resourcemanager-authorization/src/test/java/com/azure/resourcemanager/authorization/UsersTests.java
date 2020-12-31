@@ -45,6 +45,7 @@ public class UsersTests extends GraphRbacManagementTest {
 
         Assertions.assertNotNull(user);
         Assertions.assertNotNull(user.id());
+        Assertions.assertNotNull(authorizationManager.users().getById(user.id()));
     }
 
     @Test
@@ -61,5 +62,8 @@ public class UsersTests extends GraphRbacManagementTest {
         user = user.update().withUsageLocation(CountryIsoCode.AUSTRALIA).apply();
 
         Assertions.assertEquals(CountryIsoCode.AUSTRALIA, user.usageLocation());
+
+        ActiveDirectoryUser finalUser = user;
+        Assertions.assertTrue(authorizationManager.users().list().stream().anyMatch(x -> x.id().equals(finalUser.id())));
     }
 }
