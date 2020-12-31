@@ -4,15 +4,17 @@
 package com.azure.spring.keyvault;
 
 import com.azure.core.exception.HttpRequestException;
-import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import com.azure.core.util.paging.ContinuablePagedIterable;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -24,9 +26,6 @@ import java.util.TimerTask;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.lang.NonNull;
 
 /**
  * KeyVaultOperation wraps the operations to access Key Vault.
@@ -209,11 +208,11 @@ public class KeyVaultOperation {
     boolean isUp() {
         boolean result;
         try {
-            final Response<KeyVaultSecret> response = secretClient
-                .getSecretWithResponse("it-is-ok-to-be-empty", null, Context.NONE);
-            result = response.getStatusCode() < 500;
-        } catch (ResourceNotFoundException resourceNotFoundException) {
+            //noinspection ResultOfMethodCallIgnored
+            secretClient.listPropertiesOfSecrets();
             result = true;
+        } catch (HttpResponseException httpResponseException) {
+            result = httpResponseException.getResponse().getStatusCode() < 500;
         } catch (HttpRequestException httpRequestException) {
             LOG.error("An HTTP error occurred while checking key vault connectivity", httpRequestException);
             result = true;

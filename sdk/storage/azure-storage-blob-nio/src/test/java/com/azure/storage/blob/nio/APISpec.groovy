@@ -159,7 +159,7 @@ class APISpec extends Specification {
 
         interceptorManager.close()
     }
-    
+
     static Mono<ByteBuffer> collectBytesInBuffer(Flux<ByteBuffer> content) {
         return FluxUtil.collectBytesInByteBufferStream(content).map { bytes -> ByteBuffer.wrap(bytes) }
     }
@@ -372,13 +372,17 @@ class APISpec extends Specification {
         }
     }
 
-    Map<String, Object> initializeConfigMap() {
+    Map<String, Object> initializeConfigMap(HttpPipelinePolicy... policies) {
         def config = [:]
         config[AzureFileSystem.AZURE_STORAGE_HTTP_CLIENT] = getHttpClient()
-        if (testMode == TestMode.RECORD) {
-            config[AzureFileSystem.AZURE_STORAGE_HTTP_POLICIES] =
-                [interceptorManager.getRecordPolicy()] as HttpPipelinePolicy[]
+        def policyList = []
+        for (HttpPipelinePolicy policy : policies) {
+            policyList.push(policy)
         }
+        if (testMode == TestMode.RECORD) {
+            policyList.push(interceptorManager.getRecordPolicy())
+        }
+        config[AzureFileSystem.AZURE_STORAGE_HTTP_POLICIES] = policyList as HttpPipelinePolicy[]
         config[AzureFileSystem.AZURE_STORAGE_USE_HTTPS] = defaultEndpointTemplate.startsWith("https")
         return config as Map<String, Object>
     }

@@ -35,6 +35,7 @@ public class BlobContainerClientJavaDocCodeSnippets {
     private String proposedId = "proposedId";
     private int leaseDuration = (int) Duration.ofSeconds(30).getSeconds();
     private Duration timeout = Duration.ofSeconds(30);
+    private String accountName = "accountName";
     private UserDelegationKey userDelegationKey = JavaDocCodeSnippetsHelpers.getUserDelegationKey();
 
     /**
@@ -411,5 +412,32 @@ public class BlobContainerClientJavaDocCodeSnippets {
 
         client.generateUserDelegationSas(values, userDelegationKey);
         // END: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerClient#generateUserDelegationSas(BlobServiceSasSignatureValues, UserDelegationKey, String, Context)}
+     * and {@link BlobContainerClient#generateSas(BlobServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.generateSas#BlobServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        BlobContainerSasPermission permission = new BlobContainerSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        client.generateSas(values, new Context("key", "value"));
+        // END: com.azure.storage.blob.BlobContainerClient.generateSas#BlobServiceSasSignatureValues-Context
+
+        // BEGIN: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        BlobContainerSasPermission myPermission = new BlobContainerSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
+        // END: com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
     }
 }

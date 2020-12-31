@@ -3,7 +3,9 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
@@ -21,6 +23,8 @@ import static com.azure.storage.common.implementation.SasImplUtils.tryAppendQuer
  * RESERVED FOR INTERNAL USE.
  */
 public class AccountSasImplUtil {
+
+    private final ClientLogger logger = new ClientLogger(AccountSasImplUtil.class);
 
     private String version;
 
@@ -58,9 +62,10 @@ public class AccountSasImplUtil {
      * Generates a Sas signed with a {@link StorageSharedKeyCredential}
      *
      * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param context Additional context that is passed through the code when generating a SAS.
      * @return A String representing the Sas
      */
-    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
         StorageImplUtils.assertNotNull("services", this.services);
         StorageImplUtils.assertNotNull("resourceTypes", this.resourceTypes);
@@ -70,9 +75,11 @@ public class AccountSasImplUtil {
         if (CoreUtils.isNullOrEmpty(version)) {
             version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
         }
+        String stringToSign = stringToSign(storageSharedKeyCredentials);
+        StorageImplUtils.logStringToSign(logger, stringToSign, context);
 
         // Signature is generated on the un-url-encoded values.
-        String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(storageSharedKeyCredentials));
+        String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return encode(signature);
     }

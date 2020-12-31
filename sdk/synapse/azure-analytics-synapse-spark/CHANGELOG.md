@@ -1,3 +1,6 @@
+## 1.0.0-beta.2 (Unreleased)
+
+
 ## 1.0.0-beta.1 (2020-12-08)
 
 Version 1.0.0-beta.1 is a beta of our efforts in creating an Azure Synapse Spark client library that is developer-friendly, idiomatic to
