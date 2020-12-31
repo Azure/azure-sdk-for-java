@@ -29,18 +29,12 @@ public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
      */
     public AzureSasCredentialPolicy(AzureSasCredential credential) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
-
         this.credential = credential;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         HttpRequest httpRequest = context.getHttpRequest();
-        if ("http".equals(httpRequest.getUrl().getProtocol())) {
-            return Mono.error(new IllegalStateException(
-                "Shared access signature credentials require HTTPS to prevent leaking the shared access signature."));
-        }
-
         String signature = credential.getSignature();
         if (signature.startsWith("?")) {
             signature = signature.substring(1);
