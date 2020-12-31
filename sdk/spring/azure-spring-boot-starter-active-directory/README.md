@@ -23,7 +23,7 @@ To use this starter in an web application, please add following packages:
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.0.0-beta.1</version>
+    <version>3.0.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.security</groupId>
@@ -39,7 +39,7 @@ To use this starter in a resource server, please add following packages:
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.0.0-beta.1</version>
+    <version>3.0.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.security</groupId>
