@@ -58,7 +58,7 @@ public final class ManageServicePrincipalCredentials {
 
             ServicePrincipal servicePrincipal = azureResourceManager.accessManagement().servicePrincipals()
                     .define(spName)
-                    .withNewApplication(appUrl)
+                    .withNewApplication()
                     .definePasswordCredential(passwordName1)
                         .attach()
                     .definePasswordCredential(passwordName2)

@@ -31,7 +31,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 authorizationManager
                     .servicePrincipals()
                     .define(name)
-                    .withNewApplication("http://easycreate.azure.com/" + name)
+                    .withNewApplication()
                     .definePasswordCredential("sppass")
                     .attach()
                     .create();
@@ -91,7 +91,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 authorizationManager
                     .servicePrincipals()
                     .define(name)
-                    .withNewApplication("http://easycreate.azure.com/ansp/" + name)
+                    .withNewApplication()
                     .definePasswordCredential("sppass")
                     .attach()
                     .defineCertificateCredential("spcert")

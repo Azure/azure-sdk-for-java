@@ -156,7 +156,7 @@ class ActiveDirectoryApplicationImpl
             innerModel().withWeb(new MicrosoftGraphWebApplication());
         }
         innerModel().web().withHomePageUrl(signOnUrl);
-        return withReplyUrl(signOnUrl);
+        return this;
     }
 
     @Override

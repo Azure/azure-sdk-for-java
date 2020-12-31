@@ -79,10 +79,9 @@ public interface ServicePrincipal
             /**
              * Specifies a new application to create and use by the service principal.
              *
-             * @param signOnUrl the new application's sign on URL
              * @return the next stage of the service principal definition
              */
-            WithCreate withNewApplication(String signOnUrl);
+            WithCreate withNewApplication();
         }
 
         /** A service principal definition allowing credentials to be specified. */
@@ -152,7 +151,7 @@ public interface ServicePrincipal
              * @param name the descriptive name of the certificate credential
              * @return the first stage in certificate credential update
              */
-            CertificateCredential.UpdateDefinitionStages.Blank<? extends Update>
+            CertificateCredential.DefinitionStages.Blank<? extends Update>
                 defineCertificateCredential(String name);
 
             /**
@@ -161,7 +160,7 @@ public interface ServicePrincipal
              * @param name the descriptive name of the password credential
              * @return the first stage in password credential update
              */
-            PasswordCredential.UpdateDefinitionStages.Blank<? extends Update> definePasswordCredential(String name);
+            PasswordCredential.DefinitionStages.Blank<? extends Update> definePasswordCredential(String name);
 
             /**
              * Removes a credential.

@@ -36,7 +36,7 @@ public class GroupsTests extends GraphRbacManagementTest {
                     .withPassword("StrongPass!123")
                     .create();
             servicePrincipal =
-                authorizationManager.servicePrincipals().define(spName).withNewApplication("https://" + spName).create();
+                authorizationManager.servicePrincipals().define(spName).withNewApplication().create();
             group1 = authorizationManager.groups().define(group1Name).withEmailAlias(group1Name).create();
             ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             group2 =
