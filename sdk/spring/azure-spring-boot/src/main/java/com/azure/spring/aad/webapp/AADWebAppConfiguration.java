@@ -86,7 +86,7 @@ public class AADWebAppConfiguration {
         return new AzureClientRegistration(client, accessTokenScopes);
     }
 
-    private int resourceServerCount(Set<String> scopes) {
+    public static int resourceServerCount(Set<String> scopes) {
         return (int) scopes.stream()
                            .filter(scope -> scope.startsWith("http"))
                            .count();

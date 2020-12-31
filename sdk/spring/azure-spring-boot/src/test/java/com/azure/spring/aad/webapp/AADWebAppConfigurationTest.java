@@ -206,17 +206,41 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void groupConfiguration() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
-            .withPropertyValues(
-            "azure.activedirectory.user-group.allowed-groups = group1, group2"
-            )
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues("azure.activedirectory.user-group.allowed-groups = group1, group2")
             .run(context -> {
-                AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+                AADWebAppClientRegistrationRepository clientRepo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
                 assertDefaultScopes(
                     clientRepo.getAzureClient(),
                     "openid", "profile", "https://graph.microsoft.com/User.Read",
                     "https://graph.microsoft.com/Directory.AccessAsUser.All"
                 );
+            });
+    }
+
+    @Test
+    public void haveResourceServerScopeInAccessTokenWhenThereAreMultiResourceServerScopesInAuthCode() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.office.scopes ="
+                    + " https://manage.office.com/ActivityFeed.Read",
+                "azure.activedirectory.authorization-clients.arm.scopes = "
+                    + "https://management.core.windows.net/user_impersonation"
+            )
+            .run(context -> {
+                AADWebAppClientRegistrationRepository repo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                AzureClientRegistration azure = repo.getAzureClient();
+                assertNotNull(azure);
+                int resourceServerCountInAuthCode =
+                    AADWebAppConfiguration.resourceServerCount(azure.getClient().getScopes());
+                assertTrue(resourceServerCountInAuthCode > 1);
+                int resourceServerCountInAccessToken =
+                    AADWebAppConfiguration.resourceServerCount(azure.getAccessTokenScopes());
+                assertTrue(resourceServerCountInAccessToken != 0);
             });
     }
 
