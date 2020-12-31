@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
@@ -19,6 +20,7 @@ import org.springframework.security.oauth2.core.http.converter.OAuth2AccessToken
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
@@ -55,7 +57,9 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
                 .userInfoEndpoint()
                     .oidcUserService(oidcUserService)
                     .and()
-                .failureHandler(failureHandler()).failureUrl(DEFAULT_FAILURE_URL)
+                .failureHandler(failureHandler())
+                .and()
+            .apply(new AADHttpConfigurer())
                 .and()
             .logout()
                 .logoutSuccessHandler(oidcLogoutSuccessHandler())
@@ -90,5 +94,16 @@ public abstract class AzureOAuth2Configuration extends WebSecurityConfigurerAdap
 
     protected AuthenticationFailureHandler failureHandler() {
         return new AzureOAuthenticationFailureHandler();
+    }
+
+    /**
+     * Used to fix custom failureHandler with no error info.
+     */
+    private final static class AADHttpConfigurer extends AbstractHttpConfigurer<AADHttpConfigurer, HttpSecurity>{
+        @Override
+        public void init(HttpSecurity http) {
+            DefaultLoginPageGeneratingFilter sharedObject = http.getSharedObject(DefaultLoginPageGeneratingFilter.class);
+            sharedObject.setFailureUrl(DEFAULT_FAILURE_URL);
+        }
     }
 }

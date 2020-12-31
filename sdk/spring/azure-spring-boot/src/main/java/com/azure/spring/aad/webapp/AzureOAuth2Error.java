@@ -59,11 +59,4 @@ public class AzureOAuth2Error extends OAuth2Error {
     public final String getClaims() {
         return claims;
     }
-
-
-    @Override
-    public String toString() {
-
-        return super.toString();
-    }
 }
