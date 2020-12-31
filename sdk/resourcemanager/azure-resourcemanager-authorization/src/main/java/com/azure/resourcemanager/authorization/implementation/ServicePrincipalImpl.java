@@ -65,7 +65,7 @@ class ServicePrincipalImpl
         this.cachedPasswordCredentials = new HashMap<>();
         this.passwordCredentialsToCreate = new ArrayList<>();
         this.passwordCredentialsToDelete = new HashSet<>();
-        this.refreshCredentials();
+        this.refreshCredentials(innerObject);
     }
 
     @Override
@@ -96,7 +96,7 @@ class ServicePrincipalImpl
     @Override
     protected Mono<MicrosoftGraphServicePrincipalInner> getInnerAsync() {
         return manager.serviceClient().getServicePrincipalsServicePrincipals().getServicePrincipalAsync(id())
-            .doOnSuccess(inner -> this.refreshCredentials());
+            .doOnSuccess(this::refreshCredentials);
     }
 
     @Override
@@ -154,7 +154,7 @@ class ServicePrincipalImpl
                                 new ServicePrincipalsRemovePasswordRequestBody()
                                     .withKeyId(UUID.fromString(id))))
             )
-            .then(getInnerAsync().map(innerToFluentMap(this)))
+            .then(refreshAsync())
             .doOnSuccess(
                 servicePrincipal -> {
                     passwordCredentialsToDelete.clear();
@@ -218,19 +218,19 @@ class ServicePrincipalImpl
         return id() == null;
     }
 
-    void refreshCredentials() {
+    void refreshCredentials(MicrosoftGraphServicePrincipalInner inner) {
         cachedCertificateCredentials.clear();
         cachedPasswordCredentials.clear();
 
-        if (innerModel().keyCredentials() != null) {
-            innerModel().keyCredentials().forEach(keycredentialInner -> {
+        if (inner.keyCredentials() != null) {
+            inner.keyCredentials().forEach(keycredentialInner -> {
                 CertificateCredential certificateCredential = new CertificateCredentialImpl<>(keycredentialInner);
                 cachedCertificateCredentials.put(certificateCredential.name(), certificateCredential);
             });
         }
 
-        if (innerModel().passwordCredentials() != null) {
-            innerModel().passwordCredentials().forEach(passwordCredentialInner -> {
+        if (inner.passwordCredentials() != null) {
+            inner.passwordCredentials().forEach(passwordCredentialInner -> {
                 PasswordCredential passwordCredential = new PasswordCredentialImpl<>(passwordCredentialInner);
                 cachedPasswordCredentials.put(passwordCredential.name(), passwordCredential);
             });

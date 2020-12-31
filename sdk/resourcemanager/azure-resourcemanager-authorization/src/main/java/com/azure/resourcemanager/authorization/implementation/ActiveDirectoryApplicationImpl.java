@@ -40,7 +40,7 @@ class ActiveDirectoryApplicationImpl
         this.manager = manager;
         this.cachedPasswordCredentials = new HashMap<>();
         this.cachedCertificateCredentials = new HashMap<>();
-        refreshCredentials();
+        refreshCredentials(innerObject);
     }
 
     @Override
@@ -54,8 +54,8 @@ class ActiveDirectoryApplicationImpl
             .serviceClient()
             .getApplicationsApplications()
             .createApplicationAsync(innerModel())
-            .map(innerToFluentMap(this))
-            .doOnSuccess(inner -> refreshCredentials());
+            .doOnSuccess(this::refreshCredentials)
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -64,19 +64,19 @@ class ActiveDirectoryApplicationImpl
             .then(getInnerAsync().map(innerToFluentMap(this)));
     }
 
-    void refreshCredentials() {
+    void refreshCredentials(MicrosoftGraphApplicationInner inner) {
         cachedCertificateCredentials.clear();
         cachedPasswordCredentials.clear();
 
-        if (innerModel().keyCredentials() != null) {
-            innerModel().keyCredentials().forEach(keyCredentialInner -> {
+        if (inner.keyCredentials() != null) {
+            inner.keyCredentials().forEach(keyCredentialInner -> {
                 CertificateCredential certificateCredential = new CertificateCredentialImpl<>(keyCredentialInner);
                 cachedCertificateCredentials.put(certificateCredential.name(), certificateCredential);
             });
         }
 
-        if (innerModel().passwordCredentials() != null) {
-            innerModel().passwordCredentials().forEach(passwordCredentialInner -> {
+        if (inner.passwordCredentials() != null) {
+            inner.passwordCredentials().forEach(passwordCredentialInner -> {
                 PasswordCredential passwordCredential = new PasswordCredentialImpl<>(passwordCredentialInner);
                 cachedPasswordCredentials.put(passwordCredential.name(), passwordCredential);
             });
@@ -147,7 +147,7 @@ class ActiveDirectoryApplicationImpl
     @Override
     protected Mono<MicrosoftGraphApplicationInner> getInnerAsync() {
         return manager.serviceClient().getApplicationsApplications().getApplicationAsync(id())
-            .doOnSuccess(inner -> refreshCredentials());
+            .doOnSuccess(this::refreshCredentials);
     }
 
     @Override
