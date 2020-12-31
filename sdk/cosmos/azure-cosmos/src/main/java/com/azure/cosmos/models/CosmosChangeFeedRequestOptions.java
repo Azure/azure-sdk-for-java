@@ -15,6 +15,8 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
 public final class CosmosChangeFeedRequestOptions {
     private static final Integer DEFAULT_MAX_ITEM_COUNT = 1000;
@@ -100,7 +102,6 @@ public final class CosmosChangeFeedRequestOptions {
         return this.startFromInternal;
     }
 
-    // TODO fabianm remove or at least make internal
     void setRequestContinuation(String etag) {
         this.startFromInternal = ChangeFeedStartFromInternal.createFromETagAndFeedRange(
             etag,
@@ -115,9 +116,7 @@ public final class CosmosChangeFeedRequestOptions {
 
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
     public static CosmosChangeFeedRequestOptions createForProcessingFromBeginning(FeedRange feedRange) {
-        if (feedRange == null) {
-            throw new NullPointerException("feedRange");
-        }
+        checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
         return new CosmosChangeFeedRequestOptions(
             FeedRangeInternal.convert(feedRange),
@@ -127,7 +126,6 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
-
     public static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
         String continuation) {
 
