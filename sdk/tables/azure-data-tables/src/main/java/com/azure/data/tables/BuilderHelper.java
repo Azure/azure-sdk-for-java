@@ -70,7 +70,7 @@ final class BuilderHelper {
             }
             credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, getBearerTokenScope(endpointParts));
         } else if (sasTokenCredential != null) {
-            credentialPolicy = new AzureSasCredentialPolicy(sasTokenCredential);
+            credentialPolicy = new AzureSasCredentialPolicy(sasTokenCredential, false);
         } else {
             credentialPolicy = null;
         }

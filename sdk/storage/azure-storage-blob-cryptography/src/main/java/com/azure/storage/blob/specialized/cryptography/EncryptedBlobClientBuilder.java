@@ -223,7 +223,7 @@ public final class EncryptedBlobClientBuilder {
             BuilderHelper.httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE));
         } else if (sasTokenCredential != null) {
-            policies.add(new AzureSasCredentialPolicy(sasTokenCredential));
+            policies.add(new AzureSasCredentialPolicy(sasTokenCredential, false));
         }
 
         policies.addAll(perRetryPolicies);

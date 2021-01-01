@@ -101,7 +101,7 @@ public final class BuilderHelper {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE);
         } else if (sasTokenCredential != null) {
-            credentialPolicy =  new AzureSasCredentialPolicy(sasTokenCredential);
+            credentialPolicy =  new AzureSasCredentialPolicy(sasTokenCredential, false);
         } else {
             credentialPolicy =  null;
         }

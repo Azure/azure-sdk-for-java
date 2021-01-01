@@ -128,7 +128,7 @@ public class ShareFileClientBuilder {
             if (storageSharedKeyCredential != null) {
                 return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
             } else if (sasTokenCredential != null) {
-                return new AzureSasCredentialPolicy(sasTokenCredential);
+                return new AzureSasCredentialPolicy(sasTokenCredential, false);
             } else {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
