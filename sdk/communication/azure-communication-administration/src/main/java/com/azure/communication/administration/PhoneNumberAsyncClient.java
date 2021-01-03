@@ -1,10 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.communication.administration;
 
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.administration.implementation.PhoneNumbersImpl;
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.PhoneNumberSearchRequest;
-import com.azure.communication.common.PhoneNumber;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -14,9 +15,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 
 import java.time.Duration;
-import java.util.List;
-
-import static com.azure.core.util.FluxUtil.pagedFluxError;
 
 /**
  * Asynchronous client for Communication service phone number operations
@@ -38,10 +36,10 @@ public final class PhoneNumberAsyncClient {
 
     PagedFlux<AcquiredPhoneNumber> listPhoneNumbers(String locale, Context context) {
 
-            return null;
+        return null;
     }
 
-    public void updatePhoneNumber(){
+    public void updatePhoneNumber() {
 
     }
 
@@ -51,19 +49,19 @@ public final class PhoneNumberAsyncClient {
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<Void, Void> beginReleasePhoneNumber( Duration pollInterval) {
+    public PollerFlux<Void, Void> beginReleasePhoneNumber(Duration pollInterval) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<PhoneNumberSearchRequest, PhoneNumberSearchRequest> beginSearchAvailablePhoneNumbers(
-        Duration pollInterval){
+        Duration pollInterval) {
         return null;
     }
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<AcquiredPhoneNumber, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(
-        Duration pollInterval){
+        Duration pollInterval) {
         return null;
     }
 

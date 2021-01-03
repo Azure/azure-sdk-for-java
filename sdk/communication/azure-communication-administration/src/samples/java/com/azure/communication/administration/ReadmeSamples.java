@@ -108,26 +108,5 @@ public class ReadmeSamples {
         communicationIdentityClient.deleteUser(user);
     }
 
-    /**
-     * Sample code for creating a sync Phone Number Client.
-     *
-     * @return the Phone Number Client.
-     */
-    public PhoneNumberClient createPhoneNumberClient() {
-        // You can find your endpoint and access token from your resource in the Azure Portal
-        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        String accessKey = "SECRET";
-
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
-        PhoneNumberClient phoneNumberClient = new PhoneNumberClientBuilder()
-            .endpoint(endpoint)
-            .accessKey(accessKey)
-            .httpClient(httpClient)
-            .buildClient();
-
-        return phoneNumberClient;
-    }
 
 }

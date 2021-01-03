@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.communication.administration;
 
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImpl;
@@ -140,7 +142,6 @@ public class PhoneNumberClientBuilder {
         this.additionalPolicies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
         return this;
     }
-
 
 
     /**
