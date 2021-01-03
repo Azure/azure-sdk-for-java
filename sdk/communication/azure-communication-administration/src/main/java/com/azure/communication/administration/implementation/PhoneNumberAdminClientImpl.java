@@ -48,16 +48,16 @@ public final class PhoneNumberAdminClientImpl {
         return this.httpPipeline;
     }
 
-    /** The PhoneNumberAdministrationsImpl object to access its operations. */
-    private final PhoneNumberAdministrationsImpl phoneNumberAdministrations;
+    /** The PhoneNumbersImpl object to access its operations. */
+    private final PhoneNumbersImpl phoneNumbers;
 
     /**
-     * Gets the PhoneNumberAdministrationsImpl object to access its operations.
+     * Gets the PhoneNumbersImpl object to access its operations.
      *
-     * @return the PhoneNumberAdministrationsImpl object.
+     * @return the PhoneNumbersImpl object.
      */
-    public PhoneNumberAdministrationsImpl getPhoneNumberAdministrations() {
-        return this.phoneNumberAdministrations;
+    public PhoneNumbersImpl getPhoneNumbers() {
+        return this.phoneNumbers;
     }
 
     /** Initializes an instance of PhoneNumberAdminClient client. */
@@ -77,7 +77,7 @@ public final class PhoneNumberAdminClientImpl {
     PhoneNumberAdminClientImpl(HttpPipeline httpPipeline, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-07-20-preview1";
-        this.phoneNumberAdministrations = new PhoneNumberAdministrationsImpl(this);
+        this.apiVersion = "2020-11-01-preview3";
+        this.phoneNumbers = new PhoneNumbersImpl(this);
     }
 }

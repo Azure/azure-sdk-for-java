@@ -1,5 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 package com.azure.communication.administration;
 
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImpl;
@@ -7,17 +5,10 @@ import com.azure.communication.administration.implementation.PhoneNumberAdminCli
 import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.common.ConnectionString;
 import com.azure.communication.common.HmacAuthenticationPolicy;
-import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.*;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -27,11 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * Builder for creating clients of Communication Service phone number configuration
- */
-@ServiceClientBuilder(serviceClients = {PhoneNumberClient.class, PhoneNumberAsyncClient.class})
-public final class PhoneNumberClientBuilder {
+public class PhoneNumberClientBuilder {
+
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-communication-administration.properties");
     private static final String SDK_NAME = "name";
@@ -39,7 +27,7 @@ public final class PhoneNumberClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(PhoneNumberClientBuilder.class);
 
-    private PhoneNumberServiceVersion version;
+
     private String endpoint;
     private HttpPipeline pipeline;
     private HttpClient httpClient;
@@ -82,7 +70,7 @@ public final class PhoneNumberClientBuilder {
      * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
     public PhoneNumberClientBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = Objects.requireNonNull(httpClient, "'httpClient' cannot be null.");
+        this.httpClient = httpClient;
         return this;
     }
 
@@ -153,20 +141,7 @@ public final class PhoneNumberClientBuilder {
         return this;
     }
 
-    /**
-     * Sets the {@link PhoneNumberServiceVersion} that is used when making API requests.
-     * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
-     *
-     * @param version {@link PhoneNumberServiceVersion} of the service to be used when making requests.
-     * @return The updated {@link PhoneNumberClientBuilder} object.
-     */
-    public PhoneNumberClientBuilder serviceVersion(PhoneNumberServiceVersion version) {
-        this.version = version;
-        return this;
-    }
+
 
     /**
      * Create synchronous client applying CommunicationClientCredentialPolicy,
@@ -188,11 +163,6 @@ public final class PhoneNumberClientBuilder {
      */
     public PhoneNumberAsyncClient buildAsyncClient() {
         this.validateRequiredFields();
-
-        if (this.version != null) {
-            logger.info("Build client for service version" + this.version.getVersion());
-        }
-
         return this.createPhoneNumberAsyncClient(this.createPhoneNumberAdminClient());
     }
 
