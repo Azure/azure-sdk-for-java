@@ -25,10 +25,6 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-oauth2-client</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-resource-server</artifactId>
     </dependency>
 </dependencies>
