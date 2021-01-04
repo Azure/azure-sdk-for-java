@@ -52,9 +52,8 @@ public class GroupsTests extends GraphRbacManagementTest {
             Assertions.assertNotNull(group2.id());
 
             List<ActiveDirectoryObject> members = group2.listMembers();
-            Assertions.assertEquals(3, members.size());
+            Assertions.assertEquals(2, members.size()); // Group list will not show service principal anymore.
             Iterator<ActiveDirectoryObject> iterator = members.iterator();
-            Assertions.assertNotNull(iterator.next().id());
             Assertions.assertNotNull(iterator.next().id());
             Assertions.assertNotNull(iterator.next().id());
         } finally {

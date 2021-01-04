@@ -39,13 +39,14 @@ public class ApplicationsTests extends GraphRbacManagementTest {
             Assertions.assertEquals(name, application.name());
             Assertions.assertEquals(1, application.certificateCredentials().size());
             Assertions.assertEquals(1, application.passwordCredentials().size());
-            Assertions.assertEquals(1, application.replyUrls().size());
-            Assertions.assertEquals(1, application.identifierUris().size());
+            Assertions.assertEquals(0, application.replyUrls().size());
+            Assertions.assertEquals(0, application.identifierUris().size());
             Assertions.assertEquals("http://easycreate.azure.com/" + name, application.signOnUrl().toString());
 
-            application.update().withoutCredential("passwd").apply();
+            application.update().withoutCredential("passwd").withoutCredential("cert").apply();
             System.out.println(application.id() + " - " + application.applicationId());
             Assertions.assertEquals(0, application.passwordCredentials().size());
+            Assertions.assertEquals(0, application.certificateCredentials().size());
         } finally {
             if (application != null) {
                 authorizationManager.applications().deleteById(application.id());
