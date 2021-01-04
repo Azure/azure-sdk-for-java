@@ -5,10 +5,7 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphServicePrincipalInner;
-import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsAddKeyRequestBodyInner;
 import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsAddPasswordRequestBodyInner;
-import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsRemoveKeyRequestBody;
-import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsRemovePasswordRequestBody;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
@@ -28,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class ServicePrincipalImpl
@@ -50,8 +46,6 @@ class ServicePrincipalImpl
     String assignedSubscription;
     private List<CertificateCredentialImpl<?>> certificateCredentialsToCreate;
     private List<PasswordCredentialImpl<?>> passwordCredentialsToCreate;
-    private Set<String> certificateCredentialsToDelete;
-    private Set<String> passwordCredentialsToDelete;
 
     ServicePrincipalImpl(MicrosoftGraphServicePrincipalInner innerObject, AuthorizationManager manager) {
         super(innerObject.displayName(), innerObject);
@@ -61,10 +55,8 @@ class ServicePrincipalImpl
         this.rolesToDelete = new HashSet<>();
         this.cachedCertificateCredentials = new HashMap<>();
         this.certificateCredentialsToCreate = new ArrayList<>();
-        this.certificateCredentialsToDelete = new HashSet<>();
         this.cachedPasswordCredentials = new HashMap<>();
         this.passwordCredentialsToCreate = new ArrayList<>();
-        this.passwordCredentialsToDelete = new HashSet<>();
         this.refreshCredentials(innerObject);
     }
 
@@ -101,7 +93,7 @@ class ServicePrincipalImpl
 
     @Override
     public Mono<ServicePrincipal> createResourceAsync() {
-        Mono<ServicePrincipal> sp = Mono.just(this);
+        Mono<ServicePrincipal> sp;
         if (isInCreateMode()) {
             innerModel().withAccountEnabled(true);
             if (applicationCreatable != null) {
@@ -110,6 +102,12 @@ class ServicePrincipalImpl
             }
             sp = manager.serviceClient().getServicePrincipalsServicePrincipals()
                 .createServicePrincipalAsync(innerModel()).map(innerToFluentMap(this));
+        } else {
+            sp = manager().serviceClient().getServicePrincipalsServicePrincipals()
+                .updateServicePrincipalAsync(id(), new MicrosoftGraphServicePrincipalInner()
+                    .withKeyCredentials(innerModel().keyCredentials())
+                    .withPasswordCredentials(innerModel().passwordCredentials())
+                ).then(refreshAsync());
         }
         return sp
             .flatMap(
@@ -130,36 +128,33 @@ class ServicePrincipalImpl
     }
 
     private Mono<ServicePrincipal> submitCredentialsAsync(final ServicePrincipal sp) {
-        return Flux.merge(
-                    Flux.fromIterable(certificateCredentialsToCreate)
-                        .flatMap(certificateCredential ->
-                            manager().serviceClient().getServicePrincipals()
-                                .addKeyAsync(id(),
-                                    new ServicePrincipalsAddKeyRequestBodyInner()
-                                        .withKeyCredential(certificateCredential.innerModel()))),
-                    Flux.fromIterable(certificateCredentialsToDelete)
-                        .flatMap(id -> manager().serviceClient().getServicePrincipals()
-                            .removeKeyAsync(id(),
-                                new ServicePrincipalsRemoveKeyRequestBody()
-                                    .withKeyId(UUID.fromString(id)))),
+        return Flux.defer(() ->
+//                    Flux.fromIterable(certificateCredentialsToCreate)
+//                        .flatMap(certificateCredential ->
+//                            manager().serviceClient().getServicePrincipals()
+//                                .addKeyAsync(id(),
+//                                    new ServicePrincipalsAddKeyRequestBodyInner()
+//                                        .withKeyCredential(certificateCredential.innerModel()))),
+//                    Flux.fromIterable(certificateCredentialsToDelete)
+//                        .flatMap(id -> manager().serviceClient().getServicePrincipals()
+//                            .removeKeyAsync(id(),
+//                                new ServicePrincipalsRemoveKeyRequestBody()
+//                                    .withKeyId(UUID.fromString(id)))),
                     Flux.fromIterable(passwordCredentialsToCreate)
                         .flatMap(passwordCredential ->
                             manager().serviceClient().getServicePrincipals()
                                 .addPasswordAsync(id(),
                                     new ServicePrincipalsAddPasswordRequestBodyInner()
-                                        .withPasswordCredential(passwordCredential.innerModel()))),
-                    Flux.fromIterable(passwordCredentialsToDelete)
-                        .flatMap(id -> manager().serviceClient().getServicePrincipals()
-                            .removePasswordAsync(id(),
-                                new ServicePrincipalsRemovePasswordRequestBody()
-                                    .withKeyId(UUID.fromString(id))))
+                                        .withPasswordCredential(passwordCredential.innerModel()))
+                                .doOnNext(passwordCredential::setInner)
+                        )
+//                    Flux.fromIterable(passwordCredentialsToDelete)
+//                        .flatMap(id -> manager().serviceClient().getServicePrincipals()
+//                            .removePasswordAsync(id(),
+//                                new ServicePrincipalsRemovePasswordRequestBody()
+//                                    .withKeyId(UUID.fromString(id))))
             )
-            .then(refreshAsync())
-            .doOnSuccess(
-                servicePrincipal -> {
-                    passwordCredentialsToDelete.clear();
-                    certificateCredentialsToDelete.clear();
-                });
+            .then(refreshAsync());
     }
 
     private Mono<ServicePrincipal> submitRolesAsync(final ServicePrincipal servicePrincipal) {
@@ -255,9 +250,9 @@ class ServicePrincipalImpl
     @Override
     public ServicePrincipalImpl withoutCredential(String name) {
         if (cachedPasswordCredentials.containsKey(name)) {
-            passwordCredentialsToDelete.add(cachedPasswordCredentials.get(name).id());
+            innerModel().passwordCredentials().remove(cachedPasswordCredentials.get(name).innerModel());
         } else if (cachedCertificateCredentials.containsKey(name)) {
-            certificateCredentialsToDelete.add(cachedCertificateCredentials.get(name).id());
+            innerModel().keyCredentials().remove(cachedCertificateCredentials.get(name).innerModel());
         }
         return this;
     }
@@ -265,12 +260,15 @@ class ServicePrincipalImpl
     @Override
     public ServicePrincipalImpl withCertificateCredential(CertificateCredentialImpl<?> credential) {
         this.certificateCredentialsToCreate.add(credential);
+        if (innerModel().keyCredentials() == null) {
+            innerModel().withKeyCredentials(new ArrayList<>());
+        }
+        innerModel().keyCredentials().add(credential.innerModel());
         return this;
     }
 
     @Override
     public ServicePrincipalImpl withPasswordCredential(PasswordCredentialImpl<?> credential) {
-
         this.passwordCredentialsToCreate.add(credential);
         return this;
     }

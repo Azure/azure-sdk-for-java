@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.authorization.fluent.models.ApplicationsAddPasswordRequestBodyInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphWebApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
@@ -11,6 +12,7 @@ import com.azure.resourcemanager.authorization.models.ApplicationAccountType;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
 import com.azure.resourcemanager.authorization.models.PasswordCredential;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -18,6 +20,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,11 +38,16 @@ class ActiveDirectoryApplicationImpl
     private final Map<String, PasswordCredential> cachedPasswordCredentials;
     private final Map<String, CertificateCredential> cachedCertificateCredentials;
 
+    private final List<PasswordCredentialImpl<?>> passwordCredentialToCreate;
+    private final List<CertificateCredentialImpl<?>> certificateCredentialToCreate;
+
     ActiveDirectoryApplicationImpl(MicrosoftGraphApplicationInner innerObject, AuthorizationManager manager) {
         super(innerObject.displayName(), innerObject);
         this.manager = manager;
         this.cachedPasswordCredentials = new HashMap<>();
         this.cachedCertificateCredentials = new HashMap<>();
+        this.passwordCredentialToCreate = new ArrayList<>();
+        this.certificateCredentialToCreate = new ArrayList<>();
         refreshCredentials(innerObject);
     }
 
@@ -54,14 +62,14 @@ class ActiveDirectoryApplicationImpl
             .serviceClient()
             .getApplicationsApplications()
             .createApplicationAsync(innerModel())
-            .doOnSuccess(this::refreshCredentials)
-            .map(innerToFluentMap(this));
+            .map(innerToFluentMap(this))
+            .flatMap(app -> submitCredentialAsync().doOnComplete(this::exportToAuthFile).then(refreshAsync()));
     }
 
     @Override
     public Mono<ActiveDirectoryApplication> updateResourceAsync() {
         return manager.serviceClient().getApplicationsApplications().updateApplicationAsync(id(), innerModel())
-            .then(getInnerAsync().map(innerToFluentMap(this)));
+            .then(submitCredentialAsync().doOnComplete(this::exportToAuthFile).then(refreshAsync()));
     }
 
     void refreshCredentials(MicrosoftGraphApplicationInner inner) {
@@ -81,6 +89,24 @@ class ActiveDirectoryApplicationImpl
                 cachedPasswordCredentials.put(passwordCredential.name(), passwordCredential);
             });
         }
+    }
+
+    Flux<?> submitCredentialAsync() {
+        return Flux.defer(() ->
+                Flux.fromIterable(passwordCredentialToCreate)
+                .flatMap(passwordCredential -> manager().serviceClient().getApplications()
+                    .addPasswordAsync(id(), new ApplicationsAddPasswordRequestBodyInner()
+                        .withPasswordCredential(passwordCredential.innerModel()))
+                    .doOnNext(passwordCredential::setInner)
+                )
+            );
+    }
+
+    void exportToAuthFile() {
+        passwordCredentialToCreate.forEach(passwordCredential -> passwordCredential.exportAuthFile(this));
+        passwordCredentialToCreate.clear();
+        certificateCredentialToCreate.forEach(certificateCredential -> certificateCredential.exportAuthFile(this));
+        certificateCredentialToCreate.clear();
     }
 
     @Override
@@ -218,6 +244,7 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public ActiveDirectoryApplicationImpl withCertificateCredential(CertificateCredentialImpl<?> credential) {
+        this.certificateCredentialToCreate.add(credential);
         if (innerModel().keyCredentials() == null) {
             innerModel().withKeyCredentials(new ArrayList<>());
         }
@@ -227,10 +254,7 @@ class ActiveDirectoryApplicationImpl
 
     @Override
     public ActiveDirectoryApplicationImpl withPasswordCredential(PasswordCredentialImpl<?> credential) {
-        if (innerModel().passwordCredentials() == null) {
-            innerModel().withPasswordCredentials(new ArrayList<>());
-        }
-        innerModel().passwordCredentials().add(credential.innerModel());
+        this.passwordCredentialToCreate.add(credential);
         return this;
     }
 
