@@ -3,9 +3,6 @@
 ## 2.2.0-beta.1 (Unreleased)
 
 
-## 2.1.0-beta.1 (Unreleased)
-
-
 ## 2.0.0 (2020-12-30)
 ### Breaking Changes
 - Deprecated the `spring.cloud.azure.managed-identity.client-id` property,

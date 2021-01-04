@@ -3,9 +3,6 @@
 ## 3.2.0-beta.1 (Unreleased)
 
 
-## 3.1.0-beta.1 (Unreleased)
-
-
 ## 3.0.0 (2020-12-30)
 ### Breaking Changes
 - Deprecate `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter`.
