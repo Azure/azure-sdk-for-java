@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -68,7 +69,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface VpnServerConfigurationsAssociatedWithVirtualWansService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
                 + "/{virtualWANName}/vpnServerConfigurations")
@@ -80,6 +81,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualWANName") String virtualWanName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -114,7 +116,8 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -125,6 +128,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
                             resourceGroupName,
                             virtualWanName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -162,7 +166,8 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -171,6 +176,7 @@ public final class VpnServerConfigurationsAssociatedWithVirtualWansClientImpl
                 resourceGroupName,
                 virtualWanName,
                 apiVersion,
+                accept,
                 context);
     }
 

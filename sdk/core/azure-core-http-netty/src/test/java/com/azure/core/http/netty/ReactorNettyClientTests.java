@@ -126,7 +126,6 @@ public class ReactorNettyClientTests {
             // of throwing an error
             // Reactor netty 0.9.7.RELEASE again changed the behavior to return an error on second subscription.
             .verifyError(IllegalStateException.class);
-        // .verifyComplete();
     }
 
     @Test
@@ -273,11 +272,8 @@ public class ReactorNettyClientTests {
                         .map(bb -> new NumberedByteBuffer(n, bb))
                         .doOnComplete(() -> assertArrayEquals(expectedDigest, md.digest()));
                 }))
-            .sequential()
             .map(nbb -> (long) nbb.bb.remaining())
-            .reduce(Long::sum)
-            .subscribeOn(Schedulers.newBoundedElastic(30, 1024, "io"))
-            .publishOn(Schedulers.newBoundedElastic(30, 1024, "io"));
+            .reduce(Long::sum);
 
         StepVerifier.create(numBytesMono)
             .expectNext((long) numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length)

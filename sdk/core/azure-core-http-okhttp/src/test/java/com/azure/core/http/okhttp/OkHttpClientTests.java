@@ -82,7 +82,8 @@ public class OkHttpClientTests {
         response.getBodyAsByteArray().block();
         // Subscription:2
         StepVerifier.create(response.getBodyAsByteArray())
-            .expectNextCount(0) // TODO: Check with smaldini, what is the verifier operator equivalent to .awaitDone(20, TimeUnit.SECONDS)
+            .expectNextCount(
+                0) // TODO: Check with smaldini, what is the verifier operator equivalent to .awaitDone(20, TimeUnit.SECONDS)
             .verifyError(IllegalStateException.class);
 
     }
@@ -110,7 +111,8 @@ public class OkHttpClientTests {
             .expectNextCount(1)
             .thenRequest(3)
             .expectNextCount(3)
-            .thenRequest(Long.MAX_VALUE)// TODO: Check with smaldini, what is the verifier operator to ignore all next emissions
+            .thenRequest(
+                Long.MAX_VALUE)// TODO: Check with smaldini, what is the verifier operator to ignore all next emissions
             .expectNextCount(1507)
             .verifyComplete();
     }
@@ -194,7 +196,7 @@ public class OkHttpClientTests {
     public void testConcurrentRequests() throws NoSuchAlgorithmException {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = HttpClient.createDefault();
-        byte[] expectedDigest = digest(LONG_BODY);
+        byte[] expectedDigest = digest();
 
         Mono<Long> numBytesMono = Flux.range(1, numRequests)
             .parallel(10)
@@ -204,28 +206,16 @@ public class OkHttpClientTests {
                 return response.getBody()
                     .doOnNext(md::update)
                     .map(bb -> new NumberedByteBuffer(n, bb))
-//                          .doOnComplete(() -> System.out.println("completed " + n))
                     .doOnComplete(() -> Assertions.assertArrayEquals(expectedDigest,
                         md.digest(), "wrong digest!"));
             }))
-            .sequential()
-            // enable the doOnNext call to see request numbers and thread names
-            // .doOnNext(g -> System.out.println(g.n + " " +
-            // Thread.currentThread().getName()))
             .map(nbb -> (long) nbb.bb.limit())
-            .reduce(Long::sum)
-            .subscribeOn(Schedulers.newBoundedElastic(30, 1024, "io"))
-            .publishOn(Schedulers.newBoundedElastic(30, 1024, "io"));
+            .reduce(Long::sum);
 
         StepVerifier.create(numBytesMono)
-//              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)
-            .expectNext((long) (numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
-            .verifyComplete();
-//
-//        long numBytes = numBytesMono.block();
-//        t = System.currentTimeMillis() - t;
-//        System.out.println("totalBytesRead=" + numBytes / 1024 / 1024 + "MB in " + t / 1000.0 + "s");
-//        assertEquals(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length, numBytes);
+            .expectNext((long) numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length)
+            .expectComplete()
+            .verify(Duration.ofSeconds(60));
     }
 
     private static MessageDigest md5Digest() {
@@ -236,9 +226,9 @@ public class OkHttpClientTests {
         }
     }
 
-    private static byte[] digest(String s) throws NoSuchAlgorithmException {
+    private static byte[] digest() throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(s.getBytes(StandardCharsets.UTF_8));
+        md.update(OkHttpClientTests.LONG_BODY.getBytes(StandardCharsets.UTF_8));
         return md.digest();
     }
 
