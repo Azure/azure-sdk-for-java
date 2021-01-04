@@ -91,7 +91,7 @@ data: {
 
 ### Run with Maven
 ```shell
-cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-stateless
+cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless
 mvn spring-boot:run
 ```
 

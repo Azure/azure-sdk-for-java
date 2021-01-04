@@ -148,7 +148,7 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-resource-server-obo
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-resource-server-stateless
+      - name: azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-cosmos
         groupId: com.azure.spring
