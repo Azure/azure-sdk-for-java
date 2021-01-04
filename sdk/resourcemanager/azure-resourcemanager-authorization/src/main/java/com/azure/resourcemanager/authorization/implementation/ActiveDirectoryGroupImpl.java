@@ -176,7 +176,7 @@ class ActiveDirectoryGroupImpl
     public ActiveDirectoryGroupImpl withMember(String objectId) {
         // https://docs.microsoft.com/en-us/graph/api/group-post-members
         String membersKey = "@odata.id";
-        membersToAdd.add(new HashMap<>() {{
+        membersToAdd.add(new HashMap<String, Object>() {{
             put(membersKey, String.format("%s/directoryObjects/%s", manager().serviceClient().getEndpoint(), objectId));
         }});
         return this;
