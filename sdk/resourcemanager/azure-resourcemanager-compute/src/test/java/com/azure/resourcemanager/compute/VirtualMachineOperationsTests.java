@@ -57,7 +57,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private String rgName = "";
     private String rgName2 = "";
     private final Region region = Region.US_EAST;
-    private final Region regionProxPlacementGroup = Region.US_WEST_CENTRAL;
+    private final Region regionProxPlacementGroup = Region.US_WEST;
     private final Region regionProxPlacementGroup2 = Region.US_SOUTH_CENTRAL;
     private final String vmName = "javavm";
     private final String proxGroupName = "testproxgroup1";
@@ -705,7 +705,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withLun(3)
                 .storeAt(storageAccount.name(), "diskvhds", "datadisk2vhd.vhd")
                 .attach()
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2as_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
@@ -742,7 +742,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                 .withRootPassword(password())
                 .withUnmanagedDisks()
                 .withExistingUnmanagedDataDisk(storageAccount.name(), "diskvhds", "datadisk1vhd.vhd")
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2as_v4"))
                 .create();
         // Gets the vm
         //

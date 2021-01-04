@@ -10,9 +10,11 @@ import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.http.MockHttpResponse
+import com.azure.core.util.ClientOptions
 import com.azure.core.util.Configuration
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.DateTimeRfc1123
+import com.azure.core.util.Header
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.policy.RequestRetryOptions
@@ -22,6 +24,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import spock.lang.Specification
+import spock.lang.Unroll
 
 class BuildHelperTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
@@ -39,7 +42,7 @@ class BuildHelperTest extends Specification {
     def "Fresh date applied on retry"() {
         when:
         def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, BuilderHelper.defaultHttpLogOptions,
-            new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
+            new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -87,10 +90,90 @@ class BuildHelperTest extends Specification {
     /**
      * Tests that a user application id will be honored in the UA string when using the default pipeline builder.
      */
+    @Unroll
     def "Custom application id in UA string"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId("custom-id"),
-            new ApplicationIdUAStringTestClient(), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
+            new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
+
+        then:
+        StepVerifier.create(pipeline.send(request(endpoint)))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+
+        where:
+        logOptionsUA     | clientOptionsUA     || expectedUA
+        "log-options-id" | null                || "log-options-id"
+        null             | "client-options-id" || "client-options-id"
+        "log-options-id" | "client-options-id" || "client-options-id"   // Client options preferred over log options
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the service client builder's default pipeline.
+     */
+    @Unroll
+    def "Service client custom application id in UA string"() {
+        when:
+        def serviceClient = new QueueServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(credentials)
+            .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
+            .clientOptions(new ClientOptions().setApplicationId(clientOptionsUA))
+            .httpClient(new ApplicationIdUAStringTestClient(expectedUA))
+            .buildClient()
+
+        then:
+        StepVerifier.create(serviceClient.getHttpPipeline().send(request(serviceClient.getQueueServiceUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+
+        where:
+        logOptionsUA     | clientOptionsUA     || expectedUA
+        "log-options-id" | null                || "log-options-id"
+        null             | "client-options-id" || "client-options-id"
+        "log-options-id" | "client-options-id" || "client-options-id"   // Client options preferred over log options
+    }
+
+    /**
+     * Tests that a user application id will be honored in the UA string when using the queue client builder's default pipeline.
+     */
+    @Unroll
+    def "Queue client custom application id in UA string"() {
+        when:
+        def queueClient = new QueueClientBuilder()
+            .endpoint(endpoint)
+            .queueName("queue")
+            .credential(credentials)
+            .httpLogOptions(new HttpLogOptions().setApplicationId(logOptionsUA))
+            .clientOptions(new ClientOptions().setApplicationId(clientOptionsUA))
+            .httpClient(new ApplicationIdUAStringTestClient(expectedUA))
+            .buildClient()
+
+        then:
+        StepVerifier.create(queueClient.getHttpPipeline().send(request(queueClient.getQueueUrl())))
+            .assertNext({ it.getStatusCode() == 200 })
+            .verifyComplete()
+
+        where:
+        logOptionsUA     | clientOptionsUA     || expectedUA
+        "log-options-id" | null                || "log-options-id"
+        null             | "client-options-id" || "client-options-id"
+        "log-options-id" | "client-options-id" || "client-options-id"   // Client options preferred over log options
+    }
+
+    /**
+     * Tests that a custom headers will be honored when using the default pipeline builder.
+     */
+    def "Custom headers client options"() {
+        setup:
+        List<Header> headers = new ArrayList<>();
+        headers.add(new Header("custom", "header"))
+        headers.add(new Header("Authorization", "notthis"))
+        headers.add(new Header("User-Agent", "overwritten"))
+
+        when:
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), BuilderHelper.defaultHttpLogOptions, new ClientOptions().setHeaders(headers),
+            new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), Configuration.NONE, new ClientLogger(BuildHelperTest.class))
 
         then:
         StepVerifier.create(pipeline.send(request(endpoint)))
@@ -101,13 +184,19 @@ class BuildHelperTest extends Specification {
     /**
      * Tests that a user application id will be honored in the UA string when using the service client builder's default pipeline.
      */
-    def "Service client custom application id in UA string"() {
+    def "Service client custom headers client options"() {
+        setup:
+        List<Header> headers = new ArrayList<>();
+        headers.add(new Header("custom", "header"))
+        headers.add(new Header("Authorization", "notthis"))
+        headers.add(new Header("User-Agent", "overwritten"))
+
         when:
         def serviceClient = new QueueServiceClientBuilder()
             .endpoint(endpoint)
             .credential(credentials)
-            .httpClient(new ApplicationIdUAStringTestClient())
-            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .clientOptions(new ClientOptions().setHeaders(headers))
+            .httpClient(new ClientOptionsHeadersTestClient(headers))
             .buildClient()
 
         then:
@@ -119,14 +208,20 @@ class BuildHelperTest extends Specification {
     /**
      * Tests that a user application id will be honored in the UA string when using the queue client builder's default pipeline.
      */
-    def "Queue client custom application id in UA string"() {
+    def "Queue client custom headers client options"() {
+        setup:
+        List<Header> headers = new ArrayList<>();
+        headers.add(new Header("custom", "header"))
+        headers.add(new Header("Authorization", "notthis"))
+        headers.add(new Header("User-Agent", "overwritten"))
+
         when:
         def queueClient = new QueueClientBuilder()
             .endpoint(endpoint)
             .queueName("queue")
             .credential(credentials)
-            .httpClient(new ApplicationIdUAStringTestClient())
-            .httpLogOptions(new HttpLogOptions().setApplicationId("custom-id"))
+            .clientOptions(new ClientOptions().setHeaders(headers))
+            .httpClient(new ClientOptionsHeadersTestClient(headers))
             .buildClient()
 
         then:
@@ -168,12 +263,50 @@ class BuildHelperTest extends Specification {
     }
 
     private static final class ApplicationIdUAStringTestClient implements HttpClient {
+
+        private final String expectedUA;
+
+        ApplicationIdUAStringTestClient(String expectedUA) {
+            this.expectedUA = expectedUA;
+        }
+
         @Override
         Mono<HttpResponse> send(HttpRequest request) {
             if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue("User-Agent"))) {
                 throw new RuntimeException("Failed to set 'User-Agent' header.")
             }
-            assert request.getHeaders().getValue("User-Agent").startsWith("custom-id")
+            assert request.getHeaders().getValue("User-Agent").startsWith(expectedUA)
+            return Mono.just(new MockHttpResponse(request, 200))
+        }
+    }
+
+    private static final class ClientOptionsHeadersTestClient implements HttpClient {
+
+        private final Iterable<Header> headers;
+
+        ClientOptionsHeadersTestClient(Iterable<Header> headers) {
+            this.headers = headers;
+        }
+
+        @Override
+        Mono<HttpResponse> send(HttpRequest request) {
+
+            headers.forEach({ header ->
+                if (CoreUtils.isNullOrEmpty(request.getHeaders().getValue(header.getName()))) {
+                    throw new RuntimeException("Failed to set custom header " + header.getName())
+                }
+                // This is meant to not match.
+                if (header.getName() == "Authorization") {
+                    if (request.getHeaders().getValue(header.getName()) == header.getValue()) {
+                        throw new RuntimeException("Custom header " + header.getName() + " did not match expectation.")
+                    }
+                } else {
+                    if (request.getHeaders().getValue(header.getName()) != header.getValue()) {
+                        throw new RuntimeException("Custom header " + header.getName() + " did not match expectation.")
+                    }
+                }
+
+            })
             return Mono.just(new MockHttpResponse(request, 200))
         }
     }

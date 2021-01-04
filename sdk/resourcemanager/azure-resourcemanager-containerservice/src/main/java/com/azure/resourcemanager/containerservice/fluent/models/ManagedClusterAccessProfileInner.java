@@ -11,6 +11,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Managed cluster Access Profile. */
 @JsonFlatten
@@ -41,6 +42,20 @@ public class ManagedClusterAccessProfileInner extends Resource {
      */
     public ManagedClusterAccessProfileInner withKubeConfig(byte[] kubeConfig) {
         this.kubeConfig = CoreUtils.clone(kubeConfig);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAccessProfileInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAccessProfileInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

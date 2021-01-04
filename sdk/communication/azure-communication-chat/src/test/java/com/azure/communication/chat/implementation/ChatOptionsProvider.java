@@ -3,7 +3,7 @@
 package com.azure.communication.chat.implementation;
 
 import com.azure.communication.chat.models.*;
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 
 import java.util.*;
 
@@ -64,7 +64,7 @@ public class ChatOptionsProvider {
 
     private static ChatThreadMember generateThreadMember(String id, String displayName) {
         ChatThreadMember threadMember = new ChatThreadMember();
-        threadMember.setUser(new CommunicationUser(id));
+        threadMember.setUser(new CommunicationUserIdentifier(id));
         threadMember.setDisplayName(displayName);
 
         return threadMember;

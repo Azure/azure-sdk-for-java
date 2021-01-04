@@ -23,6 +23,8 @@ If you are an existing user of the older version of Azure management library for
 
 ### Include the package
 
+For your convenience, we have provided a multi-service package that includes some of the most highly used Azure services. We recommend using this package when you are dealing with mutiple services.
+
 [//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager;current})
 ```xml
 <dependency>
@@ -32,6 +34,50 @@ If you are an existing user of the older version of Azure management library for
 </dependency>
 ```
 [//]: # ({x-version-update-end})
+
+The services available via `azure-resourcemanager` are listed as below:
+
+<details>
+<summary> List of services </summary>
+
+- App Services
+- Authorization
+- CDN
+- Compute
+- Container Instance
+- Container Registry
+- Container Services (AKS)
+- Cosmos DB
+- DNS
+- Event Hubs
+- Insight (Monitor)
+- Key Vault
+- Managed Identity
+- Network
+- Private DNS
+- Redis
+- Resources
+- Service Bus
+- Spring Cloud
+- SQL
+- Storage
+- Traffic Manager
+- Search (preview)
+</details>
+
+In the case where you are interested in certain service above or the service not included in the multi-service package, you can choose to use the single-service package for each service. Those packages follow the same naming patterns and design principals. For example, the package for Media Services has the following artifact information.
+
+[//]: # ({x-version-update-start;com.azure.resourcemanager:azure-resourcemanager-mediaservices;dependency})
+```xml
+<dependency>
+  <groupId>com.azure.resourcemanager</groupId>
+  <artifactId>azure-resourcemanager-mediaservices</artifactId>
+  <version>1.0.0-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+See [Single-Service Packages][single_service_packages] for a complete list of single-services packages with the API versions they are consuming.
 
 ### Include the recommended packages
 
@@ -75,7 +121,7 @@ By default, Azure Active Directory token authentication depends on correct confi
 
 In addition, Azure subscription ID can be configured via environment variable `AZURE_SUBSCRIPTION_ID`.
 
-With above configuration, `azure` client can be authenticated by following code:
+With above configuration, the manager class can be authenticated by following code:
 
 <!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L62-L68 -->
 ```java
@@ -108,34 +154,6 @@ The key concepts of Azure Management Libraries includes:
 - Configurable client, e.g. configuring HTTP client, retries, logging, etc.
 - [API design][design]
 - [API design (preview)][design_preview]
-
-### Service features
-
-- App Services
-- Authorization
-- Compute
-- Container Services (AKS)
-- Cosmos DB
-- DNS
-- Insight (Monitor)
-- Key Vault
-- Managed Identity
-- Network
-- Resources
-- Storage
-
-Services in preview
-
-- CDN
-- Container Instance
-- Container Registry
-- Event Hubs
-- Private DNS
-- Redis
-- Service Bus
-- Spring Cloud
-- SQL
-- Traffic Manager
 
 ## Examples
 
@@ -347,7 +365,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 5. Create new Pull Request
 
 <!-- LINKS -->
-[docs]: https://azure.github.io/azure-sdk-for-java/mangement.html
+[docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity
@@ -355,6 +373,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_core_http_okhttp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-okhttp
 [azure_core]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[single_service_packages]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SINGLE_SERVICE_PACKAGES.md
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/AUTH.md
 [sample]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/SAMPLE.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resourcemanager/docs/DESIGN.md

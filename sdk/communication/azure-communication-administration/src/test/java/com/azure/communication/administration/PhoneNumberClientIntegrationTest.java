@@ -20,7 +20,7 @@ import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.administration.models.ReleaseStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -289,8 +289,8 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         NumberUpdateCapabilities update = new NumberUpdateCapabilities();
         update.setAdd(capabilitiesToAdd);
 
-        Map<PhoneNumber, NumberUpdateCapabilities> updateMap = new HashMap<>();
-        updateMap.put(new PhoneNumber(phoneNumber), update);
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> updateMap = new HashMap<>();
+        updateMap.put(new PhoneNumberIdentifier(phoneNumber), update);
 
         Response<UpdateNumberCapabilitiesResponse> updateResponse =
             this.getClient(httpClient).updateCapabilitiesWithResponse(updateMap, Context.NONE);
@@ -341,7 +341,7 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         beginPurchaseReservation(httpClient, reservationId).getFinalResult();
 
         // Configure number with response
-        PhoneNumber number = new PhoneNumber(purchasedPhoneNumber);
+        PhoneNumberIdentifier number = new PhoneNumberIdentifier(purchasedPhoneNumber);
         PstnConfiguration pstnConfiguration = new PstnConfiguration();
         pstnConfiguration.setApplicationId("ApplicationId");
         pstnConfiguration.setCallbackUrl("https://callbackurl");
@@ -372,6 +372,104 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
         assertNotNull(phoneNumberReleaseResponse.getValue());
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void configureNumberGetNumberConfigurationUnconfigureNumberWithResponse(HttpClient httpClient) {
+        // Configure number with response
+        PhoneNumberIdentifier number = new PhoneNumberIdentifier(PHONE_NUMBER);
+        PstnConfiguration pstnConfiguration = new PstnConfiguration();
+        pstnConfiguration.setApplicationId("ApplicationId");
+        pstnConfiguration.setCallbackUrl("https://callbackurl");
+        Response<Void> configResponse = this.getClient(httpClient).configureNumberWithResponse(number, pstnConfiguration, Context.NONE);
+
+        assertEquals(200, configResponse.getStatusCode());
+
+        // Get number configuration with response
+        Response<NumberConfigurationResponse> getResponse =
+            this.getClient(httpClient).getNumberConfigurationWithResponse(number, Context.NONE);
+
+        assertEquals(200, getResponse.getStatusCode());
+        assertNotNull(getResponse.getValue().getPstnConfiguration().getApplicationId());
+        assertNotNull(getResponse.getValue().getPstnConfiguration().getCallbackUrl());
+
+
+        // Unconfigure number with response
+        Response<Void> unconfigureResponse = this.getClient(httpClient).unconfigureNumberWithResponse(number, Context.NONE);
+        assertEquals(200, unconfigureResponse.getStatusCode());
+    }
+
+    
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void configureNumberGetNumberConfigurationUnconfigureNumber(HttpClient httpClient) {
+        // Configure number with response
+        PhoneNumberIdentifier number = new PhoneNumberIdentifier(PHONE_NUMBER);
+        PstnConfiguration pstnConfiguration = new PstnConfiguration();
+        pstnConfiguration.setApplicationId("ApplicationId");
+        pstnConfiguration.setCallbackUrl("https://callbackurl");
+        this.getClient(httpClient).configureNumber(number, pstnConfiguration);
+
+        // Get number configuration with response
+        NumberConfigurationResponse configResponse =
+            this.getClient(httpClient).getNumberConfiguration(number);
+
+        assertNotNull(configResponse.getPstnConfiguration().getApplicationId());
+        assertNotNull(configResponse.getPstnConfiguration().getCallbackUrl());
+
+        // Unconfigure number with response
+        this.getClient(httpClient).unconfigureNumber(number);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateCapabilitiesGetCapabilitiesUpdateWithResponse(HttpClient httpClient) {
+        // Update capabilities with response
+        List<Capability> capabilitiesToAdd = new ArrayList<>();
+        capabilitiesToAdd.add(Capability.INBOUND_CALLING);
+
+        NumberUpdateCapabilities update = new NumberUpdateCapabilities();
+        update.setAdd(capabilitiesToAdd);
+
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> updateMap = new HashMap<>();
+        updateMap.put(new PhoneNumberIdentifier(PHONE_NUMBER), update);
+
+        Response<UpdateNumberCapabilitiesResponse> updateResponse =
+            this.getClient(httpClient).updateCapabilitiesWithResponse(updateMap, Context.NONE);
+        String capabilitiesUpdateId = updateResponse.getValue().getCapabilitiesUpdateId();
+        assertEquals(200, updateResponse.getStatusCode());
+        assertNotNull(capabilitiesUpdateId);
+
+        // Get capabilities update
+        Response<UpdatePhoneNumberCapabilitiesResponse> getResponse =
+            this.getClient(httpClient).getCapabilitiesUpdateWithResponse(capabilitiesUpdateId, Context.NONE);
+        assertEquals(200, getResponse.getStatusCode());
+        assertEquals(capabilitiesUpdateId, getResponse.getValue().getCapabilitiesUpdateId());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateCapabilitiesGetCapabilitiesUpdate(HttpClient httpClient) {
+        // Update capabilities with response
+        List<Capability> capabilitiesToAdd = new ArrayList<>();
+        capabilitiesToAdd.add(Capability.INBOUND_CALLING);
+
+        NumberUpdateCapabilities update = new NumberUpdateCapabilities();
+        update.setAdd(capabilitiesToAdd);
+
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> updateMap = new HashMap<>();
+        updateMap.put(new PhoneNumberIdentifier(PHONE_NUMBER), update);
+
+        UpdateNumberCapabilitiesResponse updateResponse =
+            this.getClient(httpClient).updateCapabilities(updateMap);
+        String capabilitiesUpdateId = updateResponse.getCapabilitiesUpdateId();
+        assertNotNull(capabilitiesUpdateId);
+
+        // Get capabilities update
+        UpdatePhoneNumberCapabilitiesResponse getResponse =
+            this.getClient(httpClient).getCapabilitiesUpdate(capabilitiesUpdateId);
+        assertEquals(capabilitiesUpdateId, getResponse.getCapabilitiesUpdateId());
+    }
+
     private SyncPoller<PhoneNumberReservation, PhoneNumberReservation> beginCreateReservation(HttpClient httpClient, PhonePlan phonePlan) {
         List<String> phonePlanIds = new ArrayList<>();
         phonePlanIds.add(phonePlan.getPhonePlanId());
@@ -394,8 +492,8 @@ public class PhoneNumberClientIntegrationTest extends PhoneNumberIntegrationTest
     }
 
     private SyncPoller<PhoneNumberRelease, PhoneNumberRelease> beginReleasePhoneNumbers(HttpClient httpClient, String phoneNumber) {
-        PhoneNumber releasedPhoneNumber = new PhoneNumber(phoneNumber);
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
+        PhoneNumberIdentifier releasedPhoneNumber = new PhoneNumberIdentifier(phoneNumber);
+        List<PhoneNumberIdentifier> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(releasedPhoneNumber);
         Duration pollInterval = Duration.ofSeconds(1);
         return this.getClient(httpClient).beginReleasePhoneNumbers(phoneNumbers, pollInterval);

@@ -13,6 +13,7 @@ import com.azure.resourcemanager.compute.models.GalleryApplicationVersionPublish
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Specifies information about the gallery Application Version that you want to create or update. */
 @JsonFlatten
@@ -75,6 +76,20 @@ public class GalleryApplicationVersionInner extends Resource {
      */
     public ReplicationStatus replicationStatus() {
         return this.replicationStatus;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

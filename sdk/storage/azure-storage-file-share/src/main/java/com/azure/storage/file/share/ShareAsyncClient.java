@@ -303,9 +303,12 @@ public class ShareAsyncClient {
     Mono<Response<ShareInfo>> createWithResponse(ShareCreateOptions options, Context context) {
         context = context == null ? Context.NONE : context;
         options = options == null ? new ShareCreateOptions() : options;
+        String enabledProtocol = options.getProtocols() == null ? null : options.getProtocols().toString();
+        enabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
         return azureFileStorageClient.shares()
             .createWithRestResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
-                options.getAccessTier(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                options.getAccessTier(), enabledProtocol, options.getRootSquash(),
+                context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
 
@@ -637,7 +640,7 @@ public class ShareAsyncClient {
             ? new ShareRequestConditions() : options.getRequestConditions();
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.shares().setPropertiesWithRestResponseAsync(shareName, null,
-            options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(),
+            options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(),
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(this::mapToShareInfoResponse);
     }
@@ -1438,7 +1441,7 @@ public class ShareAsyncClient {
 
     /**
      * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -1447,11 +1450,29 @@ public class ShareAsyncClient {
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
+        return generateSas(shareServiceSasSignatureValues, Context.NONE);
+    }
+
+    /**
+     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context}
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
     private Response<ShareInfo> mapToShareInfoResponse(Response<?> response) {
@@ -1487,7 +1508,9 @@ public class ShareAsyncClient {
             .setLeaseStatus(headers.getLeaseStatus())
             .setAccessTier(headers.getAccessTier())
             .setAccessTierChangeTime(headers.getAccessTierChangeTime())
-            .setAccessTierTransitionState(headers.getAccessTierTransitionState());
+            .setAccessTierTransitionState(headers.getAccessTierTransitionState())
+            .setProtocols(ModelHelper.parseShareProtocols(headers.getEnabledProtocols()))
+            .setRootSquash(headers.getRootSquash());
 
         return new SimpleResponse<>(response, shareProperties);
     }
