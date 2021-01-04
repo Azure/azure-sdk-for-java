@@ -169,7 +169,7 @@
   "graphrbac": {
     "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager",
     "dir": "azure-resourcemanager-authorization",
-    "source": "azure-resourcemanager-authorization/swagger/README.md",
+    "source": "azure-resourcemanager-authorization/swagger/swagger.md",
     "package": "com.azure.resourcemanager.authorization",
     "args": "--tag=v1.0 --title=MicrosoftGraphClient --models-subpackage=fluent.models"
   },
