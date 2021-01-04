@@ -37,7 +37,7 @@ From your command line:
 ```command line
 git clone https://github.com/Azure/azure-sdk-for-java.git
 ```
-or download and extract the repository .zip file, and navigate to `azure-spring-boot-sample-active-directory-resource-server-with-filter` from the list of samples.
+or download and extract the repository .zip file, and navigate to `azure-spring-boot-sample-active-directory-resource-server-by-filter` from the list of samples.
 
 ---
 ### Step 2:  Register the sample with your Azure Active Directory tenant
@@ -140,7 +140,7 @@ msalProvider.init(
 
 * Run with Maven 
  ```
- cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-with-filter
+ cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-by-filter
  mvn spring-boot:run
  ```
 
