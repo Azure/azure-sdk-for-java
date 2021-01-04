@@ -8,6 +8,9 @@
 - Renamed `CommunicationUser` to `CommunicationUserIdentifier `
 - Renamed `CallingApplication` to `CallingApplicationIdentifier`
 
+### Added
+- Added `MicrosoftTeamsUserIdentifier`
+
 ## 1.0.0-beta.3 (2020-11-16)
 Updated `azure-communication-common` version
 

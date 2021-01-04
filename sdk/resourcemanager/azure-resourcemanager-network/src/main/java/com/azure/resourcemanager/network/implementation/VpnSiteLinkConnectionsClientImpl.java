@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -54,7 +55,7 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface VpnSiteLinkConnectionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
                 + "/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections/{linkConnectionName}")
@@ -68,6 +69,7 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
             @PathParam("connectionName") String connectionName,
             @PathParam("linkConnectionName") String linkConnectionName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -112,7 +114,8 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -125,6 +128,7 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
                             connectionName,
                             linkConnectionName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -175,7 +179,8 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
             return Mono
                 .error(new IllegalArgumentException("Parameter linkConnectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -186,6 +191,7 @@ public final class VpnSiteLinkConnectionsClientImpl implements VpnSiteLinkConnec
                 connectionName,
                 linkConnectionName,
                 apiVersion,
+                accept,
                 context);
     }
 

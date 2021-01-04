@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -72,7 +73,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface ExpressRouteCircuitAuthorizationsService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}")
@@ -85,9 +86,10 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             @PathParam("authorizationName") String authorizationName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}")
@@ -100,9 +102,10 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             @PathParam("authorizationName") String authorizationName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/expressRouteCircuits/{circuitName}/authorizations/{authorizationName}")
@@ -116,9 +119,10 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ExpressRouteCircuitAuthorizationInner authorizationParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/expressRouteCircuits/{circuitName}/authorizations")
@@ -130,14 +134,18 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
             @PathParam("circuitName") String circuitName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AuthorizationListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -177,7 +185,8 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -189,6 +198,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                             authorizationName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -231,7 +241,8 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -241,6 +252,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                 authorizationName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -429,7 +441,8 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -441,6 +454,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                             authorizationName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -483,7 +497,8 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -493,6 +508,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                 authorizationName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -604,7 +620,8 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -617,6 +634,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                             apiVersion,
                             this.client.getSubscriptionId(),
                             authorizationParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -671,7 +689,8 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         } else {
             authorizationParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -682,6 +701,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                 apiVersion,
                 this.client.getSubscriptionId(),
                 authorizationParameters,
+                accept,
                 context);
     }
 
@@ -926,7 +946,8 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -937,6 +958,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                             circuitName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<ExpressRouteCircuitAuthorizationInner>>map(
                 res ->
@@ -983,7 +1005,8 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -992,6 +1015,7 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
                 circuitName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1086,8 +1110,15 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ExpressRouteCircuitAuthorizationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1117,9 +1148,16 @@ public final class ExpressRouteCircuitAuthorizationsClientImpl implements Expres
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -58,7 +59,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface VpnLinkConnectionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
                 + "/{gatewayName}/vpnConnections/{connectionName}/vpnLinkConnections")
@@ -71,20 +72,24 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
             @PathParam("gatewayName") String gatewayName,
             @PathParam("connectionName") String connectionName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnSiteLinkConnectionsResult>> listByVpnConnectionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
      *
-     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,7 +122,8 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -129,6 +135,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
                             gatewayName,
                             connectionName,
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<VpnSiteLinkConnectionInner>>map(
                 res ->
@@ -145,7 +152,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
      *
-     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
@@ -179,7 +186,8 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByVpnConnection(
@@ -189,6 +197,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
                 gatewayName,
                 connectionName,
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -204,7 +213,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
      *
-     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -223,7 +232,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
      *
-     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
@@ -243,7 +252,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
      *
-     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -260,7 +269,7 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
     /**
      * Retrieves all vpn site link connections for a particular virtual wan vpn gateway vpn connection.
      *
-     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param resourceGroupName The resource group name of the vpn gateway.
      * @param gatewayName The name of the gateway.
      * @param connectionName The name of the vpn connection.
      * @param context The context to associate with this operation.
@@ -289,8 +298,16 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByVpnConnectionNext(nextLink, context))
+            .withContext(
+                context -> service.listByVpnConnectionNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<VpnSiteLinkConnectionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -319,9 +336,16 @@ public final class VpnLinkConnectionsClientImpl implements VpnLinkConnectionsCli
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByVpnConnectionNext(nextLink, context)
+            .listByVpnConnectionNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
