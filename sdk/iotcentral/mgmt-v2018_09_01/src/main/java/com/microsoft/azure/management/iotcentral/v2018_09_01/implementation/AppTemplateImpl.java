@@ -24,11 +24,6 @@ class AppTemplateImpl extends WrapperImpl<AppTemplateInner> implements AppTempla
     }
 
     @Override
-    public String appTemplateName() {
-        return this.inner().appTemplateName();
-    }
-
-    @Override
     public String description() {
         return this.inner().description();
     }
@@ -41,6 +36,11 @@ class AppTemplateImpl extends WrapperImpl<AppTemplateInner> implements AppTempla
     @Override
     public String manifestVersion() {
         return this.inner().manifestVersion();
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
     }
 
     @Override

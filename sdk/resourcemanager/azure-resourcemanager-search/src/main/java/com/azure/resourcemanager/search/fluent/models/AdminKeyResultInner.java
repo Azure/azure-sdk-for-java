@@ -15,19 +15,19 @@ public final class AdminKeyResultInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AdminKeyResultInner.class);
 
     /*
-     * The primary admin API key of the Search service.
+     * The primary admin API key of the search service.
      */
     @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /*
-     * The secondary admin API key of the Search service.
+     * The secondary admin API key of the search service.
      */
     @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
 
     /**
-     * Get the primaryKey property: The primary admin API key of the Search service.
+     * Get the primaryKey property: The primary admin API key of the search service.
      *
      * @return the primaryKey value.
      */
@@ -36,7 +36,7 @@ public final class AdminKeyResultInner {
     }
 
     /**
-     * Get the secondaryKey property: The secondary admin API key of the Search service.
+     * Get the secondaryKey property: The secondary admin API key of the search service.
      *
      * @return the secondaryKey value.
      */

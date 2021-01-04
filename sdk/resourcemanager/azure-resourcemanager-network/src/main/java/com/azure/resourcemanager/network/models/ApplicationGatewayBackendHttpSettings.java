@@ -445,6 +445,13 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayBackendHttpSettings withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

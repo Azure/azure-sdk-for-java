@@ -8,10 +8,6 @@
   <artifactId>azure-template-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-    <module>azure-sdk-template</module>
-  </modules>
-
   <profiles>
     <!-- DO NOT CHANGE THE ORDER IN WHICH THESE PROFILES ARE DEFINED -->
     <profile>

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -64,7 +65,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface PeerExpressRouteCircuitConnectionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/expressRouteCircuits/{circuitName}/peerings/{peeringName}/peerConnections/{connectionName}")
@@ -78,9 +79,10 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
             @PathParam("connectionName") String connectionName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/expressRouteCircuits/{circuitName}/peerings/{peeringName}/peerConnections")
@@ -93,14 +95,18 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
             @PathParam("peeringName") String peeringName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PeerExpressRouteCircuitConnectionListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -143,7 +149,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -156,6 +163,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
                             connectionName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -201,7 +209,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -212,6 +221,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
                 connectionName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -314,7 +324,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -326,6 +337,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
                             peeringName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<PeerExpressRouteCircuitConnectionInner>>map(
                 res ->
@@ -376,7 +388,8 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -386,6 +399,7 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
                 peeringName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -487,8 +501,15 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PeerExpressRouteCircuitConnectionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -518,9 +539,16 @@ public final class PeerExpressRouteCircuitConnectionsClientImpl implements PeerE
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

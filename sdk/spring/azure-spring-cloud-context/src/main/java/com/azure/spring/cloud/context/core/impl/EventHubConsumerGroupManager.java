@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.eventhub.EventHub;
-import com.microsoft.azure.management.eventhub.EventHubConsumerGroup;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.eventhubs.models.EventHub;
+import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 import com.azure.spring.cloud.context.core.util.Tuple;
 
@@ -14,8 +14,11 @@ import com.azure.spring.cloud.context.core.util.Tuple;
  */
 public class EventHubConsumerGroupManager extends AzureManager<EventHubConsumerGroup, Tuple<EventHub, String>> {
 
-    public EventHubConsumerGroupManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+    private final AzureResourceManager azureResourceManager;
+    
+    public EventHubConsumerGroupManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
+        super(azureProperties);
+        this.azureResourceManager = azureResourceManager;
     }
 
     @Override
@@ -30,13 +33,20 @@ public class EventHubConsumerGroupManager extends AzureManager<EventHubConsumerG
 
     @Override
     public EventHubConsumerGroup internalGet(Tuple<EventHub, String> eventHubAndGroup) {
-        return eventHubAndGroup.getFirst().listConsumerGroups().stream()
-            .filter(c -> c.name().equals(eventHubAndGroup.getSecond())).findAny().orElse(null);
+        return eventHubAndGroup.getFirst()
+                               .listConsumerGroups()
+                               .stream()
+                               .filter(c -> c.name().equals(eventHubAndGroup.getSecond()))
+                               .findAny()
+                               .orElse(null);
     }
 
     @Override
     public EventHubConsumerGroup internalCreate(Tuple<EventHub, String> eventHubAndGroup) {
-        return azure.eventHubs().consumerGroups().define(eventHubAndGroup.getSecond())
-            .withExistingEventHub(eventHubAndGroup.getFirst()).create();
+        return azureResourceManager.eventHubs()
+                                   .consumerGroups()
+                                   .define(eventHubAndGroup.getSecond())
+                                   .withExistingEventHub(eventHubAndGroup.getFirst())
+                                   .create();
     }
 }

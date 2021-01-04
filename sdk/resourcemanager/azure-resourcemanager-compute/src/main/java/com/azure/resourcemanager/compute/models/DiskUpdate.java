@@ -99,6 +99,26 @@ public class DiskUpdate {
     @JsonProperty(value = "properties.encryption")
     private Encryption encryption;
 
+    /*
+     * Policy for accessing the disk via network.
+     */
+    @JsonProperty(value = "properties.networkAccessPolicy")
+    private NetworkAccessPolicy networkAccessPolicy;
+
+    /*
+     * ARM id of the DiskAccess resource for using private endpoints on disks.
+     */
+    @JsonProperty(value = "properties.diskAccessId")
+    private String diskAccessId;
+
+    /*
+     * Performance tier of the disk (e.g, P4, S10) as described here:
+     * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does
+     * not apply to Ultra disks.
+     */
+    @JsonProperty(value = "properties.tier")
+    private String tier;
+
     /**
      * Get the tags property: Resource tags.
      *
@@ -338,6 +358,68 @@ public class DiskUpdate {
      */
     public DiskUpdate withEncryption(Encryption encryption) {
         this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the networkAccessPolicy property: Policy for accessing the disk via network.
+     *
+     * @return the networkAccessPolicy value.
+     */
+    public NetworkAccessPolicy networkAccessPolicy() {
+        return this.networkAccessPolicy;
+    }
+
+    /**
+     * Set the networkAccessPolicy property: Policy for accessing the disk via network.
+     *
+     * @param networkAccessPolicy the networkAccessPolicy value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withNetworkAccessPolicy(NetworkAccessPolicy networkAccessPolicy) {
+        this.networkAccessPolicy = networkAccessPolicy;
+        return this;
+    }
+
+    /**
+     * Get the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
+     *
+     * @return the diskAccessId value.
+     */
+    public String diskAccessId() {
+        return this.diskAccessId;
+    }
+
+    /**
+     * Set the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
+     *
+     * @param diskAccessId the diskAccessId value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withDiskAccessId(String diskAccessId) {
+        this.diskAccessId = diskAccessId;
+        return this;
+    }
+
+    /**
+     * Get the tier property: Performance tier of the disk (e.g, P4, S10) as described here:
+     * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does not apply to Ultra disks.
+     *
+     * @return the tier value.
+     */
+    public String tier() {
+        return this.tier;
+    }
+
+    /**
+     * Set the tier property: Performance tier of the disk (e.g, P4, S10) as described here:
+     * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does not apply to Ultra disks.
+     *
+     * @param tier the tier value to set.
+     * @return the DiskUpdate object itself.
+     */
+    public DiskUpdate withTier(String tier) {
+        this.tier = tier;
         return this;
     }
 

@@ -7,11 +7,48 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The publishing profile of a gallery Image Version. */
 @Immutable
 public final class GalleryImageVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionPublishingProfile.class);
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionPublishingProfile withTargetRegions(List<TargetRegion> targetRegions) {
+        super.withTargetRegions(targetRegions);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionPublishingProfile withReplicaCount(Integer replicaCount) {
+        super.withReplicaCount(replicaCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionPublishingProfile withExcludeFromLatest(Boolean excludeFromLatest) {
+        super.withExcludeFromLatest(excludeFromLatest);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionPublishingProfile withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
+        super.withEndOfLifeDate(endOfLifeDate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageVersionPublishingProfile withStorageAccountType(StorageAccountType storageAccountType) {
+        super.withStorageAccountType(storageAccountType);
+        return this;
+    }
 
     /**
      * Validates the instance.
