@@ -99,7 +99,9 @@ public class AADAuthenticationProperties {
 
     private String baseUri = "https://login.microsoftonline.com/";
 
-    private String graphMembershipUri = "https://graph.microsoft.com/v1.0/me/memberOf";
+    private String graphBaseUri = "https://graph.microsoft.com/";
+
+    private String graphMembershipUri = graphBaseUri + "v1.0/me/memberOf";
 
     private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
@@ -275,6 +277,14 @@ public class AADAuthenticationProperties {
 
     public void setBaseUri(String baseUri) {
         this.baseUri = baseUri;
+    }
+
+    public String getGraphBaseUri() {
+        return graphBaseUri;
+    }
+
+    public void setGraphBaseUri(String graphBaseUri) {
+        this.graphBaseUri = graphBaseUri;
     }
 
     public String getGraphMembershipUri() {

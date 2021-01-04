@@ -46,7 +46,7 @@ import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 public class AzureADGraphClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureADGraphClient.class);
-    private static final String MICROSOFT_GRAPH_SCOPE = "https://graph.microsoft.com/user.read";
+    private static final String MICROSOFT_GRAPH_SCOPE = "User.Read";
     // We use "aadfeed5" as suffix when client library is ADAL, upgrade to "aadfeed6" for MSAL
     private static final String REQUEST_ID_SUFFIX = "aadfeed6";
 
