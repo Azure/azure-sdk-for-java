@@ -19,6 +19,7 @@ import com.azure.resourcemanager.compute.models.ContainerServiceWindowsProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Container service. */
 @JsonFlatten
@@ -248,6 +249,20 @@ public class ContainerServiceInner extends Resource {
      */
     public ContainerServiceInner withDiagnosticsProfile(ContainerServiceDiagnosticsProfile diagnosticsProfile) {
         this.diagnosticsProfile = diagnosticsProfile;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerServiceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ContainerServiceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

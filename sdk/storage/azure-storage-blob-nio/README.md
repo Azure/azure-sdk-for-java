@@ -149,7 +149,7 @@ Please see the docs for `AzureFileSystemProvider` for a full explanation of init
 <!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L39-L43 -->
 ```java
 Map<String, Object> config = new HashMap<>();
-String[] stores = {"<your_container_name", "another_container_name"}; // Any iterable is acceptable
+String stores = "<your_container_name>,<another_container_name>"; // A comma separated list of container names
 config.put(AzureFileSystem.AZURE_STORAGE_ACCOUNT_KEY, "<your_account_key>");
 config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, stores);
 FileSystem myFs = FileSystems.newFileSystem(new URI("azb://?account=<your_account_name"), config);

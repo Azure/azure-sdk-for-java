@@ -9,16 +9,57 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
 /** A copy activity sink. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        defaultImpl = CopySink.class)
 @JsonTypeName("CopySink")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "DelimitedTextSink", value = DelimitedTextSink.class),
+    @JsonSubTypes.Type(name = "JsonSink", value = JsonSink.class),
+    @JsonSubTypes.Type(name = "OrcSink", value = OrcSink.class),
+    @JsonSubTypes.Type(name = "AzurePostgreSqlSink", value = AzurePostgreSqlSink.class),
+    @JsonSubTypes.Type(name = "AzureMySqlSink", value = AzureMySqlSink.class),
+    @JsonSubTypes.Type(name = "SapCloudForCustomerSink", value = SapCloudForCustomerSink.class),
+    @JsonSubTypes.Type(name = "AzureQueueSink", value = AzureQueueSink.class),
+    @JsonSubTypes.Type(name = "AzureTableSink", value = AzureTableSink.class),
+    @JsonSubTypes.Type(name = "AvroSink", value = AvroSink.class),
+    @JsonSubTypes.Type(name = "ParquetSink", value = ParquetSink.class),
+    @JsonSubTypes.Type(name = "BinarySink", value = BinarySink.class),
+    @JsonSubTypes.Type(name = "BlobSink", value = BlobSink.class),
+    @JsonSubTypes.Type(name = "FileSystemSink", value = FileSystemSink.class),
+    @JsonSubTypes.Type(name = "DocumentDbCollectionSink", value = DocumentDbCollectionSink.class),
+    @JsonSubTypes.Type(name = "CosmosDbSqlApiSink", value = CosmosDbSqlApiSink.class),
+    @JsonSubTypes.Type(name = "SqlSink", value = SqlSink.class),
+    @JsonSubTypes.Type(name = "SqlServerSink", value = SqlServerSink.class),
+    @JsonSubTypes.Type(name = "AzureSqlSink", value = AzureSqlSink.class),
+    @JsonSubTypes.Type(name = "SqlMISink", value = SqlMISink.class),
+    @JsonSubTypes.Type(name = "SqlDWSink", value = SqlDWSink.class),
+    @JsonSubTypes.Type(name = "OracleSink", value = OracleSink.class),
+    @JsonSubTypes.Type(name = "AzureDataLakeStoreSink", value = AzureDataLakeStoreSink.class),
+    @JsonSubTypes.Type(name = "AzureBlobFSSink", value = AzureBlobFSSink.class),
+    @JsonSubTypes.Type(name = "AzureSearchIndexSink", value = AzureSearchIndexSink.class),
+    @JsonSubTypes.Type(name = "OdbcSink", value = OdbcSink.class),
+    @JsonSubTypes.Type(name = "InformixSink", value = InformixSink.class),
+    @JsonSubTypes.Type(name = "MicrosoftAccessSink", value = MicrosoftAccessSink.class),
+    @JsonSubTypes.Type(name = "DynamicsSink", value = DynamicsSink.class),
+    @JsonSubTypes.Type(name = "DynamicsCrmSink", value = DynamicsCrmSink.class),
+    @JsonSubTypes.Type(name = "CommonDataServiceForAppsSink", value = CommonDataServiceForAppsSink.class),
+    @JsonSubTypes.Type(name = "AzureDataExplorerSink", value = AzureDataExplorerSink.class),
+    @JsonSubTypes.Type(name = "SalesforceSink", value = SalesforceSink.class),
+    @JsonSubTypes.Type(name = "SalesforceServiceCloudSink", value = SalesforceServiceCloudSink.class),
+    @JsonSubTypes.Type(name = "CosmosDbMongoDbApiSink", value = CosmosDbMongoDbApiSink.class)
+})
 @Fluent
-public final class CopySink {
+public class CopySink {
     /*
      * Write batch size. Type: integer (or Expression with resultType integer),
      * minimum: 0.

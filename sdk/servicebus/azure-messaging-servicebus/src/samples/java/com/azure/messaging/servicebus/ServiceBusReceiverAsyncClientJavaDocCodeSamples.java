@@ -143,11 +143,11 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
 
-        // acceptSession(String) completes successfully with a receiver when it acquires the next available session.
+        // acceptNextSession() completes successfully with a receiver when it acquires the next available session.
         // `Flux.usingWhen` is used so we dispose of the receiver resource after `receiveMessages()` completes.
         // `Mono.usingWhen` can also be used if the resource closure only returns a single item.
         Flux<ServiceBusReceivedMessage> sessionMessages = Flux.usingWhen(
-            sessionReceiver.acceptSession("<< my-session-id >>"),
+            sessionReceiver.acceptNextSession(),
             receiver -> receiver.receiveMessages(),
             receiver -> Mono.fromRunnable(() -> receiver.close()));
 

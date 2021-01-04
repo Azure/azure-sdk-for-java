@@ -194,6 +194,66 @@ public final class ArtifactsClientImpl {
         return this.notebooks;
     }
 
+    /** The WorkspacesImpl object to access its operations. */
+    private final WorkspacesImpl workspaces;
+
+    /**
+     * Gets the WorkspacesImpl object to access its operations.
+     *
+     * @return the WorkspacesImpl object.
+     */
+    public WorkspacesImpl getWorkspaces() {
+        return this.workspaces;
+    }
+
+    /** The SqlPoolsImpl object to access its operations. */
+    private final SqlPoolsImpl sqlPools;
+
+    /**
+     * Gets the SqlPoolsImpl object to access its operations.
+     *
+     * @return the SqlPoolsImpl object.
+     */
+    public SqlPoolsImpl getSqlPools() {
+        return this.sqlPools;
+    }
+
+    /** The BigDataPoolsImpl object to access its operations. */
+    private final BigDataPoolsImpl bigDataPools;
+
+    /**
+     * Gets the BigDataPoolsImpl object to access its operations.
+     *
+     * @return the BigDataPoolsImpl object.
+     */
+    public BigDataPoolsImpl getBigDataPools() {
+        return this.bigDataPools;
+    }
+
+    /** The IntegrationRuntimesImpl object to access its operations. */
+    private final IntegrationRuntimesImpl integrationRuntimes;
+
+    /**
+     * Gets the IntegrationRuntimesImpl object to access its operations.
+     *
+     * @return the IntegrationRuntimesImpl object.
+     */
+    public IntegrationRuntimesImpl getIntegrationRuntimes() {
+        return this.integrationRuntimes;
+    }
+
+    /** The WorkspaceGitRepoManagementsImpl object to access its operations. */
+    private final WorkspaceGitRepoManagementsImpl workspaceGitRepoManagements;
+
+    /**
+     * Gets the WorkspaceGitRepoManagementsImpl object to access its operations.
+     *
+     * @return the WorkspaceGitRepoManagementsImpl object.
+     */
+    public WorkspaceGitRepoManagementsImpl getWorkspaceGitRepoManagements() {
+        return this.workspaceGitRepoManagements;
+    }
+
     /**
      * Initializes an instance of ArtifactsClient client.
      *
@@ -241,5 +301,10 @@ public final class ArtifactsClientImpl {
         this.sqlScripts = new SqlScriptsImpl(this);
         this.sparkJobDefinitions = new SparkJobDefinitionsImpl(this);
         this.notebooks = new NotebooksImpl(this);
+        this.workspaces = new WorkspacesImpl(this);
+        this.sqlPools = new SqlPoolsImpl(this);
+        this.bigDataPools = new BigDataPoolsImpl(this);
+        this.integrationRuntimes = new IntegrationRuntimesImpl(this);
+        this.workspaceGitRepoManagements = new WorkspaceGitRepoManagementsImpl(this);
     }
 }

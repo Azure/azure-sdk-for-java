@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -65,7 +66,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface VirtualMachineExtensionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachines/{vmName}/extensions/{vmExtensionName}")
@@ -79,9 +80,10 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VirtualMachineExtensionInner extensionParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachines/{vmName}/extensions/{vmExtensionName}")
@@ -95,6 +97,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VirtualMachineExtensionUpdate extensionParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -112,7 +115,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachines/{vmName}/extensions/{vmExtensionName}")
@@ -126,9 +129,10 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             @QueryParam("$expand") String expand,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachines/{vmName}/extensions")
@@ -141,6 +145,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
             @QueryParam("$expand") String expand,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -191,7 +196,8 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -204,6 +210,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                             apiVersion,
                             this.client.getSubscriptionId(),
                             extensionParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -257,7 +264,8 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -268,6 +276,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                 apiVersion,
                 this.client.getSubscriptionId(),
                 extensionParameters,
+                accept,
                 context);
     }
 
@@ -519,7 +528,8 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -532,6 +542,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                             apiVersion,
                             this.client.getSubscriptionId(),
                             extensionParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -585,7 +596,8 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -596,6 +608,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                 apiVersion,
                 this.client.getSubscriptionId(),
                 extensionParameters,
+                accept,
                 context);
     }
 
@@ -836,7 +849,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -890,7 +903,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1087,7 +1100,8 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1100,6 +1114,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                             expand,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1143,7 +1158,8 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -1154,6 +1170,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                 expand,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1278,7 +1295,8 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1290,6 +1308,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                             expand,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1328,7 +1347,8 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1338,6 +1358,7 @@ public final class VirtualMachineExtensionsClientImpl implements VirtualMachineE
                 expand,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 

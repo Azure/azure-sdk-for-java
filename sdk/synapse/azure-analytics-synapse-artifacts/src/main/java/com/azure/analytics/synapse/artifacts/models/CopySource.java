@@ -9,16 +9,53 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.HashMap;
 import java.util.Map;
 
 /** A copy activity source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type",
+        defaultImpl = CopySource.class)
 @JsonTypeName("CopySource")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "AvroSource", value = AvroSource.class),
+    @JsonSubTypes.Type(name = "ParquetSource", value = ParquetSource.class),
+    @JsonSubTypes.Type(name = "DelimitedTextSource", value = DelimitedTextSource.class),
+    @JsonSubTypes.Type(name = "JsonSource", value = JsonSource.class),
+    @JsonSubTypes.Type(name = "OrcSource", value = OrcSource.class),
+    @JsonSubTypes.Type(name = "BinarySource", value = BinarySource.class),
+    @JsonSubTypes.Type(name = "TabularSource", value = TabularSource.class),
+    @JsonSubTypes.Type(name = "BlobSource", value = BlobSource.class),
+    @JsonSubTypes.Type(name = "DocumentDbCollectionSource", value = DocumentDbCollectionSource.class),
+    @JsonSubTypes.Type(name = "CosmosDbSqlApiSource", value = CosmosDbSqlApiSource.class),
+    @JsonSubTypes.Type(name = "DynamicsSource", value = DynamicsSource.class),
+    @JsonSubTypes.Type(name = "DynamicsCrmSource", value = DynamicsCrmSource.class),
+    @JsonSubTypes.Type(name = "CommonDataServiceForAppsSource", value = CommonDataServiceForAppsSource.class),
+    @JsonSubTypes.Type(name = "RelationalSource", value = RelationalSource.class),
+    @JsonSubTypes.Type(name = "MicrosoftAccessSource", value = MicrosoftAccessSource.class),
+    @JsonSubTypes.Type(name = "ODataSource", value = ODataSource.class),
+    @JsonSubTypes.Type(name = "SalesforceServiceCloudSource", value = SalesforceServiceCloudSource.class),
+    @JsonSubTypes.Type(name = "RestSource", value = RestSource.class),
+    @JsonSubTypes.Type(name = "FileSystemSource", value = FileSystemSource.class),
+    @JsonSubTypes.Type(name = "HdfsSource", value = HdfsSource.class),
+    @JsonSubTypes.Type(name = "AzureDataExplorerSource", value = AzureDataExplorerSource.class),
+    @JsonSubTypes.Type(name = "OracleSource", value = OracleSource.class),
+    @JsonSubTypes.Type(name = "WebSource", value = WebSource.class),
+    @JsonSubTypes.Type(name = "MongoDbSource", value = MongoDbSource.class),
+    @JsonSubTypes.Type(name = "MongoDbV2Source", value = MongoDbV2Source.class),
+    @JsonSubTypes.Type(name = "CosmosDbMongoDbApiSource", value = CosmosDbMongoDbApiSource.class),
+    @JsonSubTypes.Type(name = "Office365Source", value = Office365Source.class),
+    @JsonSubTypes.Type(name = "AzureDataLakeStoreSource", value = AzureDataLakeStoreSource.class),
+    @JsonSubTypes.Type(name = "AzureBlobFSSource", value = AzureBlobFSSource.class),
+    @JsonSubTypes.Type(name = "HttpSource", value = HttpSource.class)
+})
 @Fluent
-public final class CopySource {
+public class CopySource {
     /*
      * Source retry count. Type: integer (or Expression with resultType
      * integer).
