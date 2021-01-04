@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -84,7 +85,7 @@ public final class P2SVpnGatewaysClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface P2SVpnGatewaysService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/p2svpnGateways/{gatewayName}")
@@ -96,9 +97,10 @@ public final class P2SVpnGatewaysClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("gatewayName") String gatewayName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/p2svpnGateways/{gatewayName}")
@@ -111,24 +113,26 @@ public final class P2SVpnGatewaysClientImpl
             @PathParam("gatewayName") String gatewayName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") P2SVpnGatewayInner p2SVpnGatewayParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/p2svpnGateways/{gatewayName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<P2SVpnGatewayInner>> updateTags(
+        Mono<Response<Flux<ByteBuffer>>> updateTags(
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("gatewayName") String gatewayName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") TagsObject p2SVpnGatewayParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/p2svpnGateways/{gatewayName}")
@@ -140,9 +144,10 @@ public final class P2SVpnGatewaysClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("gatewayName") String gatewayName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/p2svpnGateways")
@@ -153,9 +158,10 @@ public final class P2SVpnGatewaysClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/p2svpnGateways")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -163,9 +169,25 @@ public final class P2SVpnGatewaysClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/p2svpnGateways/{gatewayName}/reset")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> reset(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("gatewayName") String gatewayName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/p2svpnGateways/{gatewayName}/generatevpnprofile")
@@ -178,9 +200,10 @@ public final class P2SVpnGatewaysClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") P2SVpnProfileParameters parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/p2svpnGateways/{gatewayName}/getP2sVpnConnectionHealth")
@@ -192,9 +215,10 @@ public final class P2SVpnGatewaysClientImpl
             @PathParam("gatewayName") String gatewayName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/p2svpnGateways/{gatewayName}/getP2sVpnConnectionHealthDetailed")
@@ -207,9 +231,10 @@ public final class P2SVpnGatewaysClientImpl
             @PathParam("gatewayName") String gatewayName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") P2SVpnConnectionHealthRequest request,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/p2svpnGateways/{p2sVpnGatewayName}/disconnectP2sVpnConnections")
@@ -222,21 +247,28 @@ public final class P2SVpnGatewaysClientImpl
             @PathParam("p2sVpnGatewayName") String p2SVpnGatewayName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") P2SVpnConnectionRequest request,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListP2SVpnGatewaysResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListP2SVpnGatewaysResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -271,7 +303,8 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -282,6 +315,7 @@ public final class P2SVpnGatewaysClientImpl
                             resourceGroupName,
                             gatewayName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -319,7 +353,8 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -328,6 +363,7 @@ public final class P2SVpnGatewaysClientImpl
                 resourceGroupName,
                 gatewayName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -426,7 +462,8 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -438,6 +475,7 @@ public final class P2SVpnGatewaysClientImpl
                             gatewayName,
                             apiVersion,
                             p2SVpnGatewayParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -483,7 +521,8 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             p2SVpnGatewayParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -493,6 +532,7 @@ public final class P2SVpnGatewaysClientImpl
                 gatewayName,
                 apiVersion,
                 p2SVpnGatewayParameters,
+                accept,
                 context);
     }
 
@@ -664,7 +704,7 @@ public final class P2SVpnGatewaysClientImpl
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<P2SVpnGatewayInner>> updateTagsWithResponseAsync(
+    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String gatewayName, Map<String, String> tags) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -685,7 +725,8 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         TagsObject p2SVpnGatewayParameters = new TagsObject();
         p2SVpnGatewayParameters.withTags(tags);
         return FluxUtil
@@ -699,6 +740,7 @@ public final class P2SVpnGatewaysClientImpl
                             gatewayName,
                             apiVersion,
                             p2SVpnGatewayParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -716,7 +758,7 @@ public final class P2SVpnGatewaysClientImpl
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<P2SVpnGatewayInner>> updateTagsWithResponseAsync(
+    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String gatewayName, Map<String, String> tags, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -737,7 +779,8 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         TagsObject p2SVpnGatewayParameters = new TagsObject();
         p2SVpnGatewayParameters.withTags(tags);
         context = this.client.mergeContext(context);
@@ -749,7 +792,88 @@ public final class P2SVpnGatewaysClientImpl
                 gatewayName,
                 apiVersion,
                 p2SVpnGatewayParameters,
+                accept,
                 context);
+    }
+
+    /**
+     * Updates virtual wan p2s vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTagsAsync(
+        String resourceGroupName, String gatewayName, Map<String, String> tags) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, gatewayName, tags);
+        return this
+            .client
+            .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, Context.NONE);
+    }
+
+    /**
+     * Updates virtual wan p2s vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param tags Resource tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTagsAsync(
+        String resourceGroupName, String gatewayName, Map<String, String> tags, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, gatewayName, tags, context);
+        return this
+            .client
+            .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, context);
+    }
+
+    /**
+     * Updates virtual wan p2s vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(
+        String resourceGroupName, String gatewayName, Map<String, String> tags) {
+        return beginUpdateTagsAsync(resourceGroupName, gatewayName, tags).getSyncPoller();
+    }
+
+    /**
+     * Updates virtual wan p2s vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param tags Resource tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(
+        String resourceGroupName, String gatewayName, Map<String, String> tags, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, gatewayName, tags, context).getSyncPoller();
     }
 
     /**
@@ -766,15 +890,9 @@ public final class P2SVpnGatewaysClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnGatewayInner> updateTagsAsync(
         String resourceGroupName, String gatewayName, Map<String, String> tags) {
-        return updateTagsWithResponseAsync(resourceGroupName, gatewayName, tags)
-            .flatMap(
-                (Response<P2SVpnGatewayInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateTagsAsync(resourceGroupName, gatewayName, tags)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -790,15 +908,45 @@ public final class P2SVpnGatewaysClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<P2SVpnGatewayInner> updateTagsAsync(String resourceGroupName, String gatewayName) {
         final Map<String, String> tags = null;
-        return updateTagsWithResponseAsync(resourceGroupName, gatewayName, tags)
-            .flatMap(
-                (Response<P2SVpnGatewayInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return beginUpdateTagsAsync(resourceGroupName, gatewayName, tags)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates virtual wan p2s vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param tags Resource tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<P2SVpnGatewayInner> updateTagsAsync(
+        String resourceGroupName, String gatewayName, Map<String, String> tags, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, gatewayName, tags, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates virtual wan p2s vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public P2SVpnGatewayInner updateTags(String resourceGroupName, String gatewayName, Map<String, String> tags) {
+        return updateTagsAsync(resourceGroupName, gatewayName, tags).block();
     }
 
     /**
@@ -830,9 +978,9 @@ public final class P2SVpnGatewaysClientImpl
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<P2SVpnGatewayInner> updateTagsWithResponse(
+    public P2SVpnGatewayInner updateTags(
         String resourceGroupName, String gatewayName, Map<String, String> tags, Context context) {
-        return updateTagsWithResponseAsync(resourceGroupName, gatewayName, tags, context).block();
+        return updateTagsAsync(resourceGroupName, gatewayName, tags, context).block();
     }
 
     /**
@@ -866,7 +1014,8 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -877,6 +1026,7 @@ public final class P2SVpnGatewaysClientImpl
                             resourceGroupName,
                             gatewayName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -914,7 +1064,8 @@ public final class P2SVpnGatewaysClientImpl
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -923,6 +1074,7 @@ public final class P2SVpnGatewaysClientImpl
                 resourceGroupName,
                 gatewayName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1086,7 +1238,8 @@ public final class P2SVpnGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1096,6 +1249,7 @@ public final class P2SVpnGatewaysClientImpl
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<P2SVpnGatewayInner>>map(
                 res ->
@@ -1138,11 +1292,17 @@ public final class P2SVpnGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
-                this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                apiVersion,
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1237,11 +1397,13 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context))
+                    service
+                        .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<P2SVpnGatewayInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1277,10 +1439,11 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1346,6 +1509,240 @@ public final class P2SVpnGatewaysClientImpl
     }
 
     /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(String resourceGroupName, String gatewayName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (gatewayName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .reset(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            gatewayName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(
+        String resourceGroupName, String gatewayName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (gatewayName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .reset(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                gatewayName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context);
+    }
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginResetAsync(
+        String resourceGroupName, String gatewayName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = resetWithResponseAsync(resourceGroupName, gatewayName);
+        return this
+            .client
+            .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, Context.NONE);
+    }
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginResetAsync(
+        String resourceGroupName, String gatewayName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = resetWithResponseAsync(resourceGroupName, gatewayName, context);
+        return this
+            .client
+            .<P2SVpnGatewayInner, P2SVpnGatewayInner>getLroResult(
+                mono, this.client.getHttpPipeline(), P2SVpnGatewayInner.class, P2SVpnGatewayInner.class, context);
+    }
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginReset(
+        String resourceGroupName, String gatewayName) {
+        return beginResetAsync(resourceGroupName, gatewayName).getSyncPoller();
+    }
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginReset(
+        String resourceGroupName, String gatewayName, Context context) {
+        return beginResetAsync(resourceGroupName, gatewayName, context).getSyncPoller();
+    }
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<P2SVpnGatewayInner> resetAsync(String resourceGroupName, String gatewayName) {
+        return beginResetAsync(resourceGroupName, gatewayName).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<P2SVpnGatewayInner> resetAsync(String resourceGroupName, String gatewayName, Context context) {
+        return beginResetAsync(resourceGroupName, gatewayName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public P2SVpnGatewayInner reset(String resourceGroupName, String gatewayName) {
+        return resetAsync(resourceGroupName, gatewayName).block();
+    }
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public P2SVpnGatewayInner reset(String resourceGroupName, String gatewayName, Context context) {
+        return resetAsync(resourceGroupName, gatewayName, context).block();
+    }
+
+    /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
@@ -1378,7 +1775,8 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         P2SVpnProfileParameters parameters = new P2SVpnProfileParameters();
         parameters.withAuthenticationMethod(authenticationMethod);
         return FluxUtil
@@ -1392,6 +1790,7 @@ public final class P2SVpnGatewaysClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1430,7 +1829,8 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         P2SVpnProfileParameters parameters = new P2SVpnProfileParameters();
         parameters.withAuthenticationMethod(authenticationMethod);
         context = this.client.mergeContext(context);
@@ -1442,6 +1842,7 @@ public final class P2SVpnGatewaysClientImpl
                 apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -1559,6 +1960,24 @@ public final class P2SVpnGatewaysClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VpnProfileResponseInner> generateVpnProfileAsync(String resourceGroupName, String gatewayName) {
+        final AuthenticationMethod authenticationMethod = null;
+        return beginGenerateVpnProfileAsync(resourceGroupName, gatewayName, authenticationMethod)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the P2SVpnGateway.
      * @param authenticationMethod VPN client authentication method.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1570,24 +1989,6 @@ public final class P2SVpnGatewaysClientImpl
     private Mono<VpnProfileResponseInner> generateVpnProfileAsync(
         String resourceGroupName, String gatewayName, AuthenticationMethod authenticationMethod, Context context) {
         return beginGenerateVpnProfileAsync(resourceGroupName, gatewayName, authenticationMethod, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param gatewayName The name of the P2SVpnGateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VpnProfileResponseInner> generateVpnProfileAsync(String resourceGroupName, String gatewayName) {
-        final AuthenticationMethod authenticationMethod = null;
-        return beginGenerateVpnProfileAsync(resourceGroupName, gatewayName, authenticationMethod)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1614,6 +2015,22 @@ public final class P2SVpnGatewaysClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public VpnProfileResponseInner generateVpnProfile(String resourceGroupName, String gatewayName) {
+        final AuthenticationMethod authenticationMethod = null;
+        return generateVpnProfileAsync(resourceGroupName, gatewayName, authenticationMethod).block();
+    }
+
+    /**
+     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the P2SVpnGateway.
      * @param authenticationMethod VPN client authentication method.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1625,22 +2042,6 @@ public final class P2SVpnGatewaysClientImpl
     public VpnProfileResponseInner generateVpnProfile(
         String resourceGroupName, String gatewayName, AuthenticationMethod authenticationMethod, Context context) {
         return generateVpnProfileAsync(resourceGroupName, gatewayName, authenticationMethod, context).block();
-    }
-
-    /**
-     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param gatewayName The name of the P2SVpnGateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public VpnProfileResponseInner generateVpnProfile(String resourceGroupName, String gatewayName) {
-        final AuthenticationMethod authenticationMethod = null;
-        return generateVpnProfileAsync(resourceGroupName, gatewayName, authenticationMethod).block();
     }
 
     /**
@@ -1675,7 +2076,8 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1686,6 +2088,7 @@ public final class P2SVpnGatewaysClientImpl
                             gatewayName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1723,7 +2126,8 @@ public final class P2SVpnGatewaysClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getP2SVpnConnectionHealth(
@@ -1732,6 +2136,7 @@ public final class P2SVpnGatewaysClientImpl
                 gatewayName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1919,7 +2324,8 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1931,6 +2337,7 @@ public final class P2SVpnGatewaysClientImpl
                             gatewayName,
                             apiVersion,
                             request,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1976,7 +2383,8 @@ public final class P2SVpnGatewaysClientImpl
         } else {
             request.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getP2SVpnConnectionHealthDetailed(
@@ -1986,6 +2394,7 @@ public final class P2SVpnGatewaysClientImpl
                 gatewayName,
                 apiVersion,
                 request,
+                accept,
                 context);
     }
 
@@ -2207,7 +2616,8 @@ public final class P2SVpnGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter p2SVpnGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         P2SVpnConnectionRequest request = new P2SVpnConnectionRequest();
         request.withVpnConnectionIds(vpnConnectionIds);
         return FluxUtil
@@ -2221,6 +2631,7 @@ public final class P2SVpnGatewaysClientImpl
                             p2SVpnGatewayName,
                             apiVersion,
                             request,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2260,7 +2671,8 @@ public final class P2SVpnGatewaysClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter p2SVpnGatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         P2SVpnConnectionRequest request = new P2SVpnConnectionRequest();
         request.withVpnConnectionIds(vpnConnectionIds);
         context = this.client.mergeContext(context);
@@ -2272,6 +2684,7 @@ public final class P2SVpnGatewaysClientImpl
                 p2SVpnGatewayName,
                 apiVersion,
                 request,
+                accept,
                 context);
     }
 
@@ -2381,6 +2794,24 @@ public final class P2SVpnGatewaysClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> disconnectP2SVpnConnectionsAsync(String resourceGroupName, String p2SVpnGatewayName) {
+        final List<String> vpnConnectionIds = null;
+        return beginDisconnectP2SVpnConnectionsAsync(resourceGroupName, p2SVpnGatewayName, vpnConnectionIds)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param vpnConnectionIds List of p2s vpn connection Ids.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2392,24 +2823,6 @@ public final class P2SVpnGatewaysClientImpl
     private Mono<Void> disconnectP2SVpnConnectionsAsync(
         String resourceGroupName, String p2SVpnGatewayName, List<String> vpnConnectionIds, Context context) {
         return beginDisconnectP2SVpnConnectionsAsync(resourceGroupName, p2SVpnGatewayName, vpnConnectionIds, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> disconnectP2SVpnConnectionsAsync(String resourceGroupName, String p2SVpnGatewayName) {
-        final List<String> vpnConnectionIds = null;
-        return beginDisconnectP2SVpnConnectionsAsync(resourceGroupName, p2SVpnGatewayName, vpnConnectionIds)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -2435,6 +2848,21 @@ public final class P2SVpnGatewaysClientImpl
      *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void disconnectP2SVpnConnections(String resourceGroupName, String p2SVpnGatewayName) {
+        final List<String> vpnConnectionIds = null;
+        disconnectP2SVpnConnectionsAsync(resourceGroupName, p2SVpnGatewayName, vpnConnectionIds).block();
+    }
+
+    /**
+     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param vpnConnectionIds List of p2s vpn connection Ids.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2445,21 +2873,6 @@ public final class P2SVpnGatewaysClientImpl
     public void disconnectP2SVpnConnections(
         String resourceGroupName, String p2SVpnGatewayName, List<String> vpnConnectionIds, Context context) {
         disconnectP2SVpnConnectionsAsync(resourceGroupName, p2SVpnGatewayName, vpnConnectionIds, context).block();
-    }
-
-    /**
-     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disconnectP2SVpnConnections(String resourceGroupName, String p2SVpnGatewayName) {
-        final List<String> vpnConnectionIds = null;
-        disconnectP2SVpnConnectionsAsync(resourceGroupName, p2SVpnGatewayName, vpnConnectionIds).block();
     }
 
     /**
@@ -2476,8 +2889,16 @@ public final class P2SVpnGatewaysClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<P2SVpnGatewayInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2506,9 +2927,16 @@ public final class P2SVpnGatewaysClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2534,8 +2962,15 @@ public final class P2SVpnGatewaysClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<P2SVpnGatewayInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2563,9 +2998,16 @@ public final class P2SVpnGatewaysClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

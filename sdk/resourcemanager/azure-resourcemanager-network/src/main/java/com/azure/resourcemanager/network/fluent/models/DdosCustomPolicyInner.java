@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** A DDoS custom policy in a resource group. */
 @JsonFlatten
@@ -136,6 +137,20 @@ public class DdosCustomPolicyInner extends Resource {
      */
     public DdosCustomPolicyInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DdosCustomPolicyInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DdosCustomPolicyInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
