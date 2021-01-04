@@ -38,8 +38,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             }
         };
 
-        // We are reading 'connectionString/queueName' from environment variable.
-        // You can configure them as it fits suitable for your application.
+        // Retrieve 'connectionString/queueName' from your configuration.
         String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
         String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 

@@ -40,8 +40,7 @@ public class ReceiveMessageAutoLockRenewal {
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
 
-        // We are reading 'connectionString/queueName' from environment variable. Your application could read it from
-        // some other source. The 'connectionString' format is shown below.
+        // The 'connectionString' format is shown below.
         // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // 3. "queueName" will be the name of the Service Bus queue instance you created

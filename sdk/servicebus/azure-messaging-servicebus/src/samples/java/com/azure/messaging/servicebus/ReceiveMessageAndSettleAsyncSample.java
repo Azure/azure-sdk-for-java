@@ -48,9 +48,7 @@ public class ReceiveMessageAndSettleAsyncSample {
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
         // 3. Copy the connection string for the "RootManageSharedAccessKey" policy.
-        //
-        // We are reading 'connectionString/queueName' from environment variable. Your application could read it from
-        // some other source. The 'connectionString' format is shown below.
+        // The 'connectionString' format is shown below.
         // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // 3. "<<queue-name>>" will be the name of the Service Bus queue instance you created
@@ -85,7 +83,7 @@ public class ReceiveMessageAndSettleAsyncSample {
             }).subscribe();
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
-        TimeUnit.SECONDS.sleep(20);
+        TimeUnit.SECONDS.sleep(30);
 
         // Disposing of the subscription will cancel the receive() operation.
         subscription.dispose();

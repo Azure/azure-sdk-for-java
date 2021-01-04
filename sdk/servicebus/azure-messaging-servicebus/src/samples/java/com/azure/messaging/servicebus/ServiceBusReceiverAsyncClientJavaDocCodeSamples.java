@@ -59,7 +59,6 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     public void instantiateWithDefaultCredential() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiateWithDefaultCredential
         // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
-
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .credential("<<fully-qualified-namespace>>",
                 new DefaultAzureCredentialBuilder().build())
