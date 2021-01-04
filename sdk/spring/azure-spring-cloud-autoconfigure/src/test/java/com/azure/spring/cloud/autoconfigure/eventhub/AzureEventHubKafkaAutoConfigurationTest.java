@@ -3,64 +3,75 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.eventhub.EventHubAuthorizationKey;
-import com.microsoft.azure.management.eventhub.EventHubNamespace;
-import com.microsoft.azure.management.eventhub.EventHubNamespaceAuthorizationRule;
-import com.azure.spring.cloud.context.core.api.ResourceManagerProvider;
-import com.microsoft.rest.RestException;
+import com.azure.core.http.rest.Page;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.util.IterableStream;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespaces;
+import com.azure.spring.cloud.context.core.config.AzureProperties;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaTemplate;
+import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class AzureEventHubKafkaAutoConfigurationTest {
+
+    private static final String EVENT_HUB_PROPERTY_PREFIX = "spring.cloud.azure.eventhub.";
+    private static final String AZURE_PROPERTY_PREFIX = "spring.cloud.azure.";
+
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureEventHubKafkaAutoConfiguration.class))
-        .withUserConfiguration(TestConfiguration.class);
+        .withConfiguration(AutoConfigurations.of(AzureEventHubKafkaAutoConfiguration.class));
 
     @Test
     public void testAzureEventHubDisabled() {
-        this.contextRunner.withPropertyValues("spring.cloud.azure.eventhub.enabled=false")
-            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
+        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
     }
 
     @Test
     public void testWithoutKafkaTemplate() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(KafkaTemplate.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void testAzureEventHubPropertiesNamespaceIllegal() {
-        this.contextRunner.withPropertyValues("spring.cloud.azure.eventhub.namespace=")
-            .withPropertyValues("spring.cloud.azure.eventhub.checkpoint-storage-account=")
-            .run(context -> context.getBean(AzureEventHubProperties.class));
+                          .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubProperties.class));
     }
 
     @Test(expected = IllegalStateException.class)
     public void testAzureEventHubPropertiesStorageAccountIllegal() {
-        this.contextRunner.withPropertyValues("spring.cloud.azure.eventhub.namespace=nsl")
-            .withPropertyValues("spring.cloud.azure.eventhub.checkpoint-storage-account=1")
-            .run(context -> context.getBean(AzureEventHubProperties.class));
+        this.contextRunner.withPropertyValues(
+            EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1",
+            EVENT_HUB_PROPERTY_PREFIX + "checkpoint-storage-account=1")
+                          .run(context -> context.getBean(AzureEventHubProperties.class));
+    }
+
+    @Test
+    public void testNamespaceProvided() {
+        this.contextRunner.withPropertyValues(
+            AZURE_PROPERTY_PREFIX + "resource-group=rg1",
+            EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1")
+                          .withUserConfiguration(TestConfigurationWithResourceManager.class)
+                          .run(context -> context.getBean(AzureEventHubProperties.class));
     }
 
     @Ignore("org.apache.kafka.common.serialization.StringSerializer required on classpath")
     @Test
     public void testAzureEventHubPropertiesConfigured() {
-        this.contextRunner.withPropertyValues("spring.cloud.azure.eventhub.namespace=ns1").run(context -> {
+        this.contextRunner.withPropertyValues(EVENT_HUB_PROPERTY_PREFIX + "namespace=ns1").run(context -> {
             assertThat(context).hasSingleBean(AzureEventHubProperties.class);
             assertThat(context.getBean(AzureEventHubProperties.class).getNamespace()).isEqualTo("ns1");
             assertThat(context).hasSingleBean(KafkaProperties.class);
@@ -69,29 +80,44 @@ public class AzureEventHubKafkaAutoConfigurationTest {
     }
 
     @Configuration
-    static class TestConfiguration {
+    @EnableConfigurationProperties(AzureProperties.class)
+    public static class TestConfigurationWithResourceManager {
 
         @Bean
-        ResourceManagerProvider resourceManagerProvider() {
+        public AzureResourceManager azureResourceManager() {
+            final AzureResourceManager mockResourceManager = mock(AzureResourceManager.class);
+            final EventHubNamespaces mockNamespaces = mock(EventHubNamespaces.class);
+            final EventHubNamespace mockNamespace = mock(EventHubNamespace.class);
+            final EventHubNamespaceAuthorizationRule mockRule = mock(EventHubNamespaceAuthorizationRule.class);
+            final EventHubAuthorizationKey mockAuthorizationKey = mock(EventHubAuthorizationKey.class);
 
-            ResourceManagerProvider resourceManagerProvider = mock(ResourceManagerProvider.class);
-            EventHubNamespace namespace = mock(EventHubNamespace.class);
-            EventHubAuthorizationKey key = mock(EventHubAuthorizationKey.class);
-            when(key.primaryConnectionString()).thenReturn("connectionString1");
-            EventHubNamespaceAuthorizationRule rule = mock(EventHubNamespaceAuthorizationRule.class);
-            when(rule.getKeys()).thenReturn(key);
-            PagedList<EventHubNamespaceAuthorizationRule> rules = new PagedList<EventHubNamespaceAuthorizationRule>() {
-                @Override
-                public Page<EventHubNamespaceAuthorizationRule> nextPage(String nextPageLink)
-                    throws RestException, IOException {
-                    return null;
-                }
-            };
-            rules.add(rule);
-            when(namespace.listAuthorizationRules()).thenReturn(rules);
-            when(namespace.serviceBusEndpoint()).thenReturn("localhost");
-            return resourceManagerProvider;
+            when(mockResourceManager.eventHubNamespaces()).thenReturn(mockNamespaces);
+            when(mockNamespaces.getByResourceGroup(anyString(), anyString())).thenReturn(mockNamespace);
+            when(mockNamespace.listAuthorizationRules()).thenReturn(buildPagedIterable(mockRule));
+            when(mockRule.getKeys()).thenReturn(mockAuthorizationKey);
+            when(mockAuthorizationKey.primaryConnectionString()).thenReturn("str1");
+            when(mockNamespace.serviceBusEndpoint()).thenReturn("https://localhost:8080/");
+
+            return mockResourceManager;
         }
 
     }
+
+    static <T> PagedIterable<T> buildPagedIterable(T element) {
+        return new PagedIterable<>(new PagedFlux<>(() -> Mono.just(
+            new PagedResponseBase<String, T>(null, 200, null, new Page<T>() {
+
+                @Override
+                public IterableStream<T> getElements() {
+                    return new IterableStream<>(singletonList(element));
+                }
+
+                @Override
+                public String getContinuationToken() {
+                    return null;
+                }
+            }, null))
+        ));
+    }
+
 }

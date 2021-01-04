@@ -15,7 +15,7 @@ public final class Sku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
 
     /*
-     * The SKU of the Search service. Valid values include: 'free': Shared
+     * The SKU of the search service. Valid values include: 'free': Shared
      * service. 'basic': Dedicated service with up to 3 replicas. 'standard':
      * Dedicated service with up to 12 partitions and 12 replicas. 'standard2':
      * Similar to standard, but with more capacity per search unit.
@@ -29,7 +29,7 @@ public final class Sku {
     private SkuName name;
 
     /**
-     * Get the name property: The SKU of the Search service. Valid values include: 'free': Shared service. 'basic':
+     * Get the name property: The SKU of the search service. Valid values include: 'free': Shared service. 'basic':
      * Dedicated service with up to 3 replicas. 'standard': Dedicated service with up to 12 partitions and 12 replicas.
      * 'standard2': Similar to standard, but with more capacity per search unit. 'standard3': The largest Standard
      * offering with up to 12 partitions and 12 replicas (or up to 3 partitions with more indexes if you also set the
@@ -43,7 +43,7 @@ public final class Sku {
     }
 
     /**
-     * Set the name property: The SKU of the Search service. Valid values include: 'free': Shared service. 'basic':
+     * Set the name property: The SKU of the search service. Valid values include: 'free': Shared service. 'basic':
      * Dedicated service with up to 3 replicas. 'standard': Dedicated service with up to 12 partitions and 12 replicas.
      * 'standard2': Similar to standard, but with more capacity per search unit. 'standard3': The largest Standard
      * offering with up to 12 partitions and 12 replicas (or up to 3 partitions with more indexes if you also set the

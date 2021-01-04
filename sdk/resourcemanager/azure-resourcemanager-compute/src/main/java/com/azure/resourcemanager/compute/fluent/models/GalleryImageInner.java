@@ -19,6 +19,7 @@ import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** Specifies information about the gallery Image Definition that you want to create or update. */
 @JsonFlatten
@@ -373,6 +374,20 @@ public class GalleryImageInner extends Resource {
      */
     public GalleryImagePropertiesProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

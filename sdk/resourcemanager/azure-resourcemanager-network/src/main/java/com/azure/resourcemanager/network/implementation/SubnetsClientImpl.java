@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -68,7 +69,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface SubnetsService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
@@ -81,9 +82,10 @@ public final class SubnetsClientImpl implements SubnetsClient {
             @PathParam("subnetName") String subnetName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
@@ -97,9 +99,10 @@ public final class SubnetsClientImpl implements SubnetsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
@@ -113,9 +116,10 @@ public final class SubnetsClientImpl implements SubnetsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") SubnetInner subnetParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/PrepareNetworkPolicies")
@@ -129,9 +133,10 @@ public final class SubnetsClientImpl implements SubnetsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/UnprepareNetworkPolicies")
@@ -145,9 +150,10 @@ public final class SubnetsClientImpl implements SubnetsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets")
@@ -159,14 +165,18 @@ public final class SubnetsClientImpl implements SubnetsClient {
             @PathParam("virtualNetworkName") String virtualNetworkName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SubnetListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -206,7 +216,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -218,6 +229,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                             subnetName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -260,7 +272,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -270,6 +283,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                 subnetName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -459,7 +473,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -472,6 +487,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             expand,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -515,7 +531,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -526,6 +543,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                 apiVersion,
                 this.client.getSubscriptionId(),
                 expand,
+                accept,
                 context);
     }
 
@@ -660,7 +678,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             subnetParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -673,6 +692,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             subnetParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -726,7 +746,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             subnetParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -737,6 +758,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                 apiVersion,
                 this.client.getSubscriptionId(),
                 subnetParameters,
+                accept,
                 context);
     }
 
@@ -972,7 +994,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             prepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -985,6 +1008,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             prepareNetworkPoliciesRequestParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1040,7 +1064,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
         } else {
             prepareNetworkPoliciesRequestParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .prepareNetworkPolicies(
@@ -1051,6 +1076,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                 apiVersion,
                 this.client.getSubscriptionId(),
                 prepareNetworkPoliciesRequestParameters,
+                accept,
                 context);
     }
 
@@ -1291,7 +1317,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters =
             new UnprepareNetworkPoliciesRequest();
         unprepareNetworkPoliciesRequestParameters.withServiceName(serviceName);
@@ -1307,6 +1334,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                             apiVersion,
                             this.client.getSubscriptionId(),
                             unprepareNetworkPoliciesRequestParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1350,7 +1378,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters =
             new UnprepareNetworkPoliciesRequest();
         unprepareNetworkPoliciesRequestParameters.withServiceName(serviceName);
@@ -1364,6 +1393,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                 apiVersion,
                 this.client.getSubscriptionId(),
                 unprepareNetworkPoliciesRequestParameters,
+                accept,
                 context);
     }
 
@@ -1480,6 +1510,26 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> unprepareNetworkPoliciesAsync(
+        String resourceGroupName, String virtualNetworkName, String subnetName) {
+        final String serviceName = null;
+        return beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName, serviceName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Unprepares a subnet by removing network intent policies.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
      * @param serviceName The name of the service for which subnet is being unprepared for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1492,26 +1542,6 @@ public final class SubnetsClientImpl implements SubnetsClient {
         String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName, Context context) {
         return beginUnprepareNetworkPoliciesAsync(
                 resourceGroupName, virtualNetworkName, subnetName, serviceName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> unprepareNetworkPoliciesAsync(
-        String resourceGroupName, String virtualNetworkName, String subnetName) {
-        final String serviceName = null;
-        return beginUnprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName, serviceName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1539,6 +1569,22 @@ public final class SubnetsClientImpl implements SubnetsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void unprepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName) {
+        final String serviceName = null;
+        unprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName, serviceName).block();
+    }
+
+    /**
+     * Unprepares a subnet by removing network intent policies.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
      * @param serviceName The name of the service for which subnet is being unprepared for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1549,22 +1595,6 @@ public final class SubnetsClientImpl implements SubnetsClient {
     public void unprepareNetworkPolicies(
         String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName, Context context) {
         unprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName, serviceName, context).block();
-    }
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void unprepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName) {
-        final String serviceName = null;
-        unprepareNetworkPoliciesAsync(resourceGroupName, virtualNetworkName, subnetName, serviceName).block();
     }
 
     /**
@@ -1599,7 +1629,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1610,6 +1641,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                             virtualNetworkName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<SubnetInner>>map(
                 res ->
@@ -1657,7 +1689,8 @@ public final class SubnetsClientImpl implements SubnetsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1666,6 +1699,7 @@ public final class SubnetsClientImpl implements SubnetsClient {
                 virtualNetworkName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1758,8 +1792,15 @@ public final class SubnetsClientImpl implements SubnetsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SubnetInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1787,9 +1828,16 @@ public final class SubnetsClientImpl implements SubnetsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

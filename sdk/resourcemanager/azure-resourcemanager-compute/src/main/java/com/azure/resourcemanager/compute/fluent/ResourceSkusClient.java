@@ -38,6 +38,16 @@ public interface ResourceSkusClient {
     /**
      * Gets the list of Microsoft.Compute SKUs available for your Subscription.
      *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of Microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ResourceSkuInner> list();
+
+    /**
+     * Gets the list of Microsoft.Compute SKUs available for your Subscription.
+     *
      * @param filter The filter to apply on the operation. Only **location** filter is supported currently.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,14 +57,4 @@ public interface ResourceSkusClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceSkuInner> list(String filter, Context context);
-
-    /**
-     * Gets the list of Microsoft.Compute SKUs available for your Subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ResourceSkuInner> list();
 }

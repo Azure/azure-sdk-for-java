@@ -74,6 +74,13 @@ public final class ManagedDiskParameters extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ManagedDiskParameters withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

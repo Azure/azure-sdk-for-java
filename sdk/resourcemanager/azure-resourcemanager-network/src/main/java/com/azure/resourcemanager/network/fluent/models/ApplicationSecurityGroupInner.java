@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** An application security group in a resource group. */
 @JsonFlatten
@@ -90,6 +91,20 @@ public class ApplicationSecurityGroupInner extends Resource {
      */
     public ApplicationSecurityGroupInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationSecurityGroupInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationSecurityGroupInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
