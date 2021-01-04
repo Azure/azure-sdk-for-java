@@ -84,7 +84,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createUserWithResponse(HttpClient httpClient) {
         // Arrange
-        asyncClient = setupAsyncClientUsingManagedIdentity(httpClient, "createUserWithResponse");
+        asyncClient = setupAsyncClient(httpClient, "createUserWithResponse");
 
         // Action & Assert
         Mono<Response<CommunicationUserIdentifier>> response = asyncClient.createUserWithResponse();
@@ -300,8 +300,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void issueTokenWithNullScope(HttpClient httpClient) {
         // Arrange
-        asyncClient = getCommunicationIdentityClient(httpClient)
-        .buildAsyncClient();
+        asyncClient = setupAsyncClient(httpClient, "issueTokenWithNullScope");
 
         // Action & Assert
         StepVerifier.create(asyncClient.issueToken(new CommunicationUserIdentifier("testUser"), null))

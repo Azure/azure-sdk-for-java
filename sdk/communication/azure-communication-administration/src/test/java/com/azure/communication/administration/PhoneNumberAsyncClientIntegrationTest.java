@@ -95,7 +95,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         StepVerifier.create(
             this.getClient(httpClient, "listPhonePlans_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
                 .flatMap((PhonePlanGroup phonePlanGroup) -> {
-                    return this.getClient(httpClient, "listPhonePlans_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next();
+                    return this.getClient(httpClient, "listPhonePlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next();
                 }))
             .assertNext((PhonePlan phonePlan) -> {
                 assertNotNull(phonePlan.getPhonePlanId());

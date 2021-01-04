@@ -74,8 +74,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         CommunicationUserToken response = communicationClient.issueToken(firstThreadMember, scopes);
 
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
-        addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName);
-        client = chatBuilder.buildAsyncClient();
+        client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildAsyncClient();
 
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(firstThreadMember.getId(),
                 secondThreadMember.getId());
