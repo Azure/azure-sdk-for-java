@@ -41,6 +41,13 @@ public final class ConnectionSharedKeyInner extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ConnectionSharedKeyInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

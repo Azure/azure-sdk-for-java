@@ -221,6 +221,13 @@ public class ApplicationGatewayFrontendIpConfiguration extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayFrontendIpConfiguration withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

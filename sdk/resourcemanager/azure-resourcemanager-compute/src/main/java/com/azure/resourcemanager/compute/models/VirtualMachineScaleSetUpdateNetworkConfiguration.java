@@ -207,6 +207,13 @@ public class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResourc
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetUpdateNetworkConfiguration withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

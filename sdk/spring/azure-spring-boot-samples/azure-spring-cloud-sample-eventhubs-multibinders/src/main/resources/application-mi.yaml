@@ -1,0 +1,57 @@
+spring:
+  cloud:
+    azure:
+      msi-enabled: true
+      client-id: [the-id-of-managed-identity]
+      resource-group: [resource-group]
+      subscription-id: [subscription-id]
+
+    #     Uncomment below configurations if you want to enable auto creating resources.
+    #      auto-create-resources: true
+    #      region: [region]
+    stream:
+      bindings:
+        input:
+          destination: [eventhub-1-name]
+          group: [consumer-group]
+        output:
+          destination: [the-same-eventhub-1-name-as-above]
+        input1:
+          binder: eventhub-2
+          destination: [eventhub-2-name]
+          group: [consumer-group]
+        output1:
+          binder: eventhub-2
+          destination: [the-same-eventhub-2-name-as-above]
+
+      binders:
+        eventhub-1:
+          type: eventhub
+          default-candidate: true
+          environment:
+            spring:
+              cloud:
+                azure:
+                  eventhub:
+                    namespace: [first-eventhub-namespace]
+                    checkpoint-storage-account: [checkpoint-storage-account]
+                    checkpoint-container: [checkpoint-container-1]
+        eventhub-2:
+          type: eventhub
+          default-candidate: false
+          environment:
+            spring:
+              cloud:
+                azure:
+                  eventhub:
+                    namespace: [second-eventhub-namespace]
+                    checkpoint-storage-account: [checkpoint-storage-account]
+                    checkpoint-container: [checkpoint-container-2]
+      eventhub:
+        bindings:
+          input:
+            consumer:
+              checkpoint-mode: MANUAL
+          input1:
+            consumer:
+              checkpoint-mode: MANUAL

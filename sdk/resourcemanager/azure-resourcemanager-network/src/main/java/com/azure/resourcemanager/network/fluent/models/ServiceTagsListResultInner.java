@@ -52,6 +52,12 @@ public final class ServiceTagsListResultInner {
     @JsonProperty(value = "values", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServiceTagInformation> values;
 
+    /*
+     * The URL to get next page of service tag information resources.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
     /**
      * Get the name property: The name of the cloud.
      *
@@ -104,6 +110,15 @@ public final class ServiceTagsListResultInner {
      */
     public List<ServiceTagInformation> values() {
         return this.values;
+    }
+
+    /**
+     * Get the nextLink property: The URL to get next page of service tag information resources.
+     *
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
