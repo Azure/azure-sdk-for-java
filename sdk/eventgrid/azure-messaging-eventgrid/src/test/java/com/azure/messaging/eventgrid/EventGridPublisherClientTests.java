@@ -5,6 +5,7 @@ package com.azure.messaging.eventgrid;
 
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -99,14 +100,14 @@ public class EventGridPublisherClientTests extends TestBase {
 
     @Test
     public void publishWithSasToken() {
-        String sasToken = EventGridSasCredential.createSas(
+        String sasToken = EventGridPublisherClient.buildSas(
             getEndpoint(EVENTGRID_ENDPOINT),
             OffsetDateTime.now().plusMinutes(20),
             getKey(EVENTGRID_KEY)
         );
 
         EventGridPublisherAsyncClient egClient = builder
-            .credential(new EventGridSasCredential(sasToken))
+            .credential(new AzureSasCredential(sasToken))
             .endpoint(getEndpoint(EVENTGRID_ENDPOINT))
             .buildAsyncClient();
 

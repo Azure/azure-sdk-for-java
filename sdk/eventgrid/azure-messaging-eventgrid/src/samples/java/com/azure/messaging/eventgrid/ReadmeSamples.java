@@ -4,6 +4,7 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 
 import java.time.OffsetDateTime;
@@ -102,9 +103,9 @@ public class ReadmeSamples {
 
     public void createSharedAccessSignature() {
         OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
-        String credentialString = EventGridSasCredential
-            .createSas(endpoint, expiration, new AzureKeyCredential(key));
-        EventGridSasCredential signature = new EventGridSasCredential(credentialString);
+        String credentialString = EventGridPublisherClient
+            .buildSas(endpoint, expiration, new AzureKeyCredential(key));
+        AzureSasCredential signature = new AzureSasCredential(credentialString);
     }
 
 

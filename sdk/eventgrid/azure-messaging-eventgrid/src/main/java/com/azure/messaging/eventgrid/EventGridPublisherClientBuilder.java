@@ -5,6 +5,7 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -59,7 +60,7 @@ public final class EventGridPublisherClientBuilder {
 
     private AzureKeyCredential keyCredential;
 
-    private EventGridSasCredential sasToken;
+    private AzureSasCredential sasToken;
 
     private EventGridServiceVersion serviceVersion;
 
@@ -88,7 +89,7 @@ public final class EventGridPublisherClientBuilder {
     /**
      * Build a publisher client with asynchronous publishing methods and the current settings. An endpoint must be set,
      * and either a pipeline with correct authentication must be set, or a credential must be set in the form of
-     * an {@link EventGridSasCredential} or a {@link AzureKeyCredential} at the respective methods.
+     * an {@link AzureSasCredential} or a {@link AzureKeyCredential} at the respective methods.
      * All other settings have defaults and are optional.
      * @return a publisher client with asynchronous publishing methods.
      */
@@ -127,7 +128,7 @@ public final class EventGridPublisherClientBuilder {
         // Using token before key if both are set
         if (sasToken != null) {
             httpPipelinePolicies.add((context, next) -> {
-                context.getHttpRequest().getHeaders().put(AEG_SAS_TOKEN, sasToken.getSas());
+                context.getHttpRequest().getHeaders().put(AEG_SAS_TOKEN, sasToken.getSignature());
                 return next.process();
             });
         } else {
@@ -213,7 +214,7 @@ public final class EventGridPublisherClientBuilder {
      *
      * @return the builder itself.
      */
-    public EventGridPublisherClientBuilder credential(EventGridSasCredential credential) {
+    public EventGridPublisherClientBuilder credential(AzureSasCredential credential) {
         this.sasToken = credential;
         return this;
     }
