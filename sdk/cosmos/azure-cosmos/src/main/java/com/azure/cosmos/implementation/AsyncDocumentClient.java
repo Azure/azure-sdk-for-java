@@ -5,9 +5,9 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -80,6 +80,7 @@ public interface AsyncDocumentClient {
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
+        private CosmosClientMetadataCachesSnapshot state;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -87,6 +88,11 @@ public interface AsyncDocumentClient {
             } catch (URISyntaxException e) {
                 throw new IllegalArgumentException(e.getMessage());
             }
+            return this;
+        }
+
+        public Builder withState(CosmosClientMetadataCachesSnapshot state) {
+            this.state = state;
             return this;
         }
 
@@ -216,9 +222,10 @@ public interface AsyncDocumentClient {
                 tokenCredential,
                 sessionCapturingOverride,
                 transportClientSharing,
-                contentResponseOnWriteEnabled);
+                contentResponseOnWriteEnabled,
+                state);
 
-            client.init();
+            client.init(state);
             return client;
         }
 

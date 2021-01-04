@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.models.CosmosParametrizedQuery
+import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.connector.read.{Batch, InputPartition, PartitionReaderFactory, Scan}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
 case class CosmosScan(schema: StructType,
-                      config: Map[String, String], cosmosQuery: CosmosParametrizedQuery)
+                      config: Map[String, String], cosmosQuery: CosmosParametrizedQuery, cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
   extends Scan
     with Batch
     with CosmosLoggingTrait {
@@ -28,7 +30,7 @@ case class CosmosScan(schema: StructType,
   }
 
   override def createReaderFactory(): PartitionReaderFactory = {
-    CosmosScanPartitionReaderFactory(config, schema, cosmosQuery)
+    CosmosScanPartitionReaderFactory(config, schema, cosmosQuery, cosmosClientStateHandle)
   }
 
   override def toBatch: Batch = {

@@ -4,14 +4,19 @@ package com.azure.cosmos.spark
 
 import java.util.UUID
 
-import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.{ConsistencyLevel, CosmosClientBuilder}
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
+import com.azure.cosmos.{ConsistencyLevel, CosmosBridgeInternal, CosmosClientBuilder}
+import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.write.{DataWriter, DataWriterFactory, WriterCommitMessage}
 import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
 
 class CosmosDataWriteFactory(userConfig: Map[String, String],
-                             inputSchema: StructType) extends DataWriterFactory with CosmosLoggingTrait {
+                             inputSchema: StructType,
+                             cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
+  extends DataWriterFactory
+    with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
   override def createWriter(i: Int, l: Long): DataWriter[InternalRow] = new CosmosWriter(inputSchema)
@@ -23,11 +28,15 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
     val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
 
     // TODO moderakh: this needs to be shared to avoid creating multiple clients
-    val client = new CosmosClientBuilder()
+    val builder = new CosmosClientBuilder()
       .key(cosmosAccountConfig.key)
       .endpoint(cosmosAccountConfig.endpoint)
-      .consistencyLevel(ConsistencyLevel.EVENTUAL)
-      .buildAsyncClient();
+      .consistencyLevel(ConsistencyLevel.EVENTUAL);
+
+    val clientBuilderAccessor = CosmosClientBuilderHelper.getCosmosClientBuilderAccessor()
+    clientBuilderAccessor.setCosmosClientMetadataCachesSnapshot(builder, cosmosClientStateHandle.value)
+
+    val client = builder.buildAsyncClient();
 
     override def write(internalRow: InternalRow): Unit = {
       // TODO moderakh: schema is hard coded for now to make end to end TestE2EMain work implement schema inference code

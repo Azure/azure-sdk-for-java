@@ -33,7 +33,7 @@ public class SpyClientUnderTestFactory {
     public static abstract class SpyBaseClass<T> extends RxDocumentClientImpl {
 
         public SpyBaseClass(URI serviceEndpoint, String masterKeyOrResourceToken, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
-            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, credential, null, false, false, contentResponseOnWriteEnabled);
+            super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, credential, null, false, false, contentResponseOnWriteEnabled, null);
         }
 
         public abstract List<T> getCapturedRequests();
@@ -57,7 +57,7 @@ public class SpyClientUnderTestFactory {
 
         ClientWithGatewaySpy(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled);
-            init();
+            init(null);
         }
 
         @Override
@@ -119,7 +119,7 @@ public class SpyClientUnderTestFactory {
 
         ClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, Configs configs, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled);
-            init();
+            init(null);
         }
 
         public List<Pair<HttpRequest, Future<HttpHeaders>>> capturedRequestResponseHeaderPairs() {
@@ -173,7 +173,7 @@ public class SpyClientUnderTestFactory {
         DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
             super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS), credential, contentResponseOnWriteEnabled);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
-            init();
+            init(null);
 
             this.origHttpClient = ReflectionUtils.getDirectHttpsHttpClient(this);
             this.spyHttpClient = spy(this.origHttpClient);
