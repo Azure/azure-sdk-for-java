@@ -115,7 +115,7 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
             .append("\n");
         builder
             .append("  ")
-            .append(String.format("\"subscriptionId\": \"%s\",", servicePrincipal.assignedSubscription))
+            .append(String.format("\"subscriptionId\": \"%s\",", subscriptionId))
             .append("\n");
         builder
             .append("  ")
