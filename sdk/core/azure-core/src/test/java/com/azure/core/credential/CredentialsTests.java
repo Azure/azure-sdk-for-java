@@ -113,7 +113,7 @@ public class CredentialsTests {
     }
 
     @Test
-    public void sasCredentialsHTTPSchemeTest() throws Exception {
+    public void sasCredentialsRequireHTTPSSchemeTest() throws Exception {
         AzureSasCredential credential = new AzureSasCredential("foo");
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -125,5 +125,24 @@ public class CredentialsTests {
         StepVerifier.create(pipeline.send(request))
             .expectErrorMessage("Shared access signature credentials require HTTPS to prevent leaking the shared access signature.")
             .verify();
+    }
+
+    @Test
+    public void sasCredentialsDoNotRequireHTTPSchemeTest() throws Exception {
+        AzureSasCredential credential = new AzureSasCredential("foo");
+
+        HttpPipelinePolicy auditorPolicy =  (context, next) -> {
+            String actualUrl = context.getHttpRequest().getUrl().toString();
+            Assertions.assertEquals("http://localhost?foo", actualUrl);
+            return next.process();
+        };
+
+        final HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(new NoOpHttpClient())
+            .policies(new AzureSasCredentialPolicy(credential, false), auditorPolicy)
+            .build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
+        pipeline.send(request).block();
     }
 }
