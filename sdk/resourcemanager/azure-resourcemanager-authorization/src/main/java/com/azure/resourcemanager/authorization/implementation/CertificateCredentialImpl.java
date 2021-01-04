@@ -120,14 +120,27 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
     }
 
     void exportAuthFile(ServicePrincipalImpl servicePrincipal) {
+        exportAuthFile(servicePrincipal.manager().environment(),
+            servicePrincipal.applicationId(),
+            servicePrincipal.manager().tenantId(),
+            servicePrincipal.assignedSubscription);
+    }
+
+    void exportAuthFile(ActiveDirectoryApplicationImpl activeDirectoryApplication) {
+        exportAuthFile(activeDirectoryApplication.manager().environment(),
+            activeDirectoryApplication.applicationId(),
+            activeDirectoryApplication.manager().tenantId(),
+            null);
+    }
+
+    void exportAuthFile(AzureEnvironment environment, String clientId, String tenantId, String subscriptionId) {
         if (authFile == null) {
             return;
         }
-        AzureEnvironment environment = AzureEnvironment.AZURE;
         StringBuilder builder = new StringBuilder("{\n");
         builder
             .append("  ")
-            .append(String.format("\"clientId\": \"%s\",", servicePrincipal.applicationId()))
+            .append(String.format("\"clientId\": \"%s\",", clientId))
             .append("\n");
         builder
             .append("  ")
@@ -139,11 +152,11 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
             .append("\n");
         builder
             .append("  ")
-            .append(String.format("\"tenantId\": \"%s\",", servicePrincipal.manager().tenantId()))
+            .append(String.format("\"tenantId\": \"%s\",", tenantId))
             .append("\n");
         builder
             .append("  ")
-            .append(String.format("\"subscriptionId\": \"%s\",", servicePrincipal.assignedSubscription))
+            .append(String.format("\"subscriptionId\": \"%s\",", subscriptionId))
             .append("\n");
         builder
             .append("  ")
