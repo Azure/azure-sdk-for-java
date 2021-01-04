@@ -40,7 +40,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 .println(servicePrincipal.id() + " - " + String.join(",", servicePrincipal.servicePrincipalNames()));
             Assertions.assertNotNull(servicePrincipal.id());
             Assertions.assertNotNull(servicePrincipal.applicationId());
-            Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
+            Assertions.assertEquals(1, servicePrincipal.servicePrincipalNames().size());
             Assertions.assertEquals(1, servicePrincipal.passwordCredentials().size());
             Assertions.assertEquals(0, servicePrincipal.certificateCredentials().size());
 
@@ -48,7 +48,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             servicePrincipal = authorizationManager.servicePrincipals().getByName(name);
             Assertions.assertNotNull(servicePrincipal);
             Assertions.assertNotNull(servicePrincipal.applicationId());
-            Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
+            Assertions.assertEquals(1, servicePrincipal.servicePrincipalNames().size());
             Assertions.assertEquals(1, servicePrincipal.passwordCredentials().size());
             Assertions.assertEquals(0, servicePrincipal.certificateCredentials().size());
 
@@ -64,7 +64,7 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
                 .apply();
             Assertions.assertNotNull(servicePrincipal);
             Assertions.assertNotNull(servicePrincipal.applicationId());
-            Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
+            Assertions.assertEquals(1, servicePrincipal.servicePrincipalNames().size());
             Assertions.assertEquals(0, servicePrincipal.passwordCredentials().size());
             Assertions.assertEquals(1, servicePrincipal.certificateCredentials().size());
         } finally {
