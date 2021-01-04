@@ -26,13 +26,13 @@ import java.util.function.Function;
  */
 final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     private final ClientLogger logger = new ClientLogger(DefaultSyncPoller.class);
-    private final Duration defaultPollInterval;
     private final Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation;
     private final BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation;
     private final Function<PollingContext<T>, Mono<U>> fetchResultOperation;
     private final PollResponse<T> activationResponse;
-    private volatile PollingContext<T> terminalPollContext;
     private final PollingContext<T> pollingContext = new PollingContext<>();
+    private volatile PollingContext<T> terminalPollContext;
+    private volatile Duration pollInterval;
 
     /**
      * Creates DefaultSyncPoller.
@@ -62,7 +62,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
-        this.defaultPollInterval = pollInterval;
+        this.pollInterval = pollInterval;
         Objects.requireNonNull(syncActivationOperation, "'syncActivationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
@@ -206,6 +206,16 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
         }
     }
 
+    @Override
+    public void updatePollInterval(Duration pollInterval) {
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+                "Negative or zero value for 'defaultPollInterval' is not allowed."));
+        }
+        this.pollInterval = pollInterval;
+    }
+
     private static <T, U> PollResponse<T> toPollResponse(AsyncPollResponse<T, U> asyncPollResponse) {
         return new PollResponse<>(asyncPollResponse.getStatus(),
             asyncPollResponse.getValue(),
@@ -252,11 +262,11 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     private Duration getDelay(PollResponse<T> pollResponse) {
         Duration retryAfter = pollResponse.getRetryAfter();
         if (retryAfter == null) {
-            return this.defaultPollInterval;
+            return this.pollInterval;
         } else {
             return retryAfter.compareTo(Duration.ZERO) > 0
                     ? retryAfter
-                    : this.defaultPollInterval;
+                    : this.pollInterval;
         }
     }
 }

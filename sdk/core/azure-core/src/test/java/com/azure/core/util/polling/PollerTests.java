@@ -28,6 +28,7 @@ import static com.azure.core.util.polling.LongRunningOperationStatus.IN_PROGRESS
 import static com.azure.core.util.polling.LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
 import static com.azure.core.util.polling.PollerFlux.create;
 import static com.azure.core.util.polling.PollerFlux.error;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -204,7 +205,7 @@ public class PollerTests {
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus()
                 == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
             .verifyComplete();
-        Assertions.assertEquals(1, activationCallCount[0]);
+        assertEquals(1, activationCallCount[0]);
     }
 
     @Test
@@ -252,7 +253,7 @@ public class PollerTests {
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response3.getStatus())
             .verifyComplete();
-        Assertions.assertEquals(1, activationCallCount[0]);
+        assertEquals(1, activationCallCount[0]);
     }
 
     @Test
@@ -307,7 +308,7 @@ public class PollerTests {
             .expectNextMatches(asyncPollResponse -> asyncPollResponse.getStatus() == response2.getStatus())
             .verifyComplete();
 
-        Assertions.assertEquals(1, activationCallCount[0]);
+        assertEquals(1, activationCallCount[0]);
     }
 
     @Test
@@ -363,7 +364,7 @@ public class PollerTests {
         Assertions.assertTrue(cancelResponse.getResponse().equalsIgnoreCase("OperationCancelled"));
         Assertions.assertNotNull(secondAsyncResponse[0]);
         Assertions.assertTrue(secondAsyncResponse[0].getValue().getResponse().equalsIgnoreCase("1"));
-        Assertions.assertEquals(2, cancelParameters.size());
+        assertEquals(2, cancelParameters.size());
         cancelParameters.get(0).equals(activationResponse);
         cancelParameters.get(1).equals(response1);
     }
@@ -422,7 +423,7 @@ public class PollerTests {
         Assertions.assertTrue(lroResult.getName().equalsIgnoreCase("LROFinalResult"));
         Assertions.assertNotNull(terminalAsyncResponse[0]);
         Assertions.assertTrue(terminalAsyncResponse[0].getValue().getResponse().equalsIgnoreCase("2"));
-        Assertions.assertEquals(1, fetchResultParameters.size());
+        assertEquals(1, fetchResultParameters.size());
         Assertions.assertTrue(fetchResultParameters.get(0) instanceof PollingContext);
         PollingContext<Response>  pollingContext = (PollingContext<Response>) fetchResultParameters.get(0);
         pollingContext.getActivationResponse().equals(activationResponse);
@@ -599,7 +600,7 @@ public class PollerTests {
     public void eachPollShouldReceiveLastPollResponse() {
         when(activationOperation.apply(any())).thenReturn(Mono.defer(() -> Mono.just(new Response("A"))));
         when(pollOperation.apply(any())).thenAnswer((Answer) invocation -> {
-            Assertions.assertEquals(1, invocation.getArguments().length);
+            assertEquals(1, invocation.getArguments().length);
             Assertions.assertTrue(invocation.getArguments()[0] instanceof PollingContext);
             PollingContext<Response> pollingContext = (PollingContext<Response>) invocation.getArguments()[0];
             Assertions.assertTrue(pollingContext.getActivationResponse() instanceof PollResponse);
@@ -670,8 +671,8 @@ public class PollerTests {
 
         PollResponse<Response> pollResponse = poller.waitForCompletion();
         Assertions.assertNotNull(pollResponse.getValue());
-        Assertions.assertEquals(response2.getValue().getResponse(), pollResponse.getValue().getResponse());
-        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
+        assertEquals(response2.getValue().getResponse(), pollResponse.getValue().getResponse());
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
     }
 
     @Test
@@ -713,8 +714,8 @@ public class PollerTests {
 
         CertificateOutput certificateOutput = poller.getFinalResult();
         Assertions.assertNotNull(certificateOutput);
-        Assertions.assertEquals("cert1", certificateOutput.getName());
-        Assertions.assertEquals(2, invocationCount[0]);
+        assertEquals("cert1", certificateOutput.getName());
+        assertEquals(2, invocationCount[0]);
     }
 
     @Test
@@ -750,8 +751,8 @@ public class PollerTests {
 
         PollResponse<Response> pollResponse = poller.waitForCompletion();
         Assertions.assertNotNull(pollResponse.getValue());
-        Assertions.assertEquals(response2.getValue().getResponse(), pollResponse.getValue().getResponse());
-        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
+        assertEquals(response2.getValue().getResponse(), pollResponse.getValue().getResponse());
+        assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, pollResponse.getStatus());
         //
         when(pollOperation.apply(any())).thenAnswer((Answer<Mono<PollResponse<Response>>>) invocationOnMock -> {
             Assertions.assertTrue(true, "A Poll after completion should be called");
@@ -759,7 +760,7 @@ public class PollerTests {
         });
         CertificateOutput certificateOutput = poller.getFinalResult();
         Assertions.assertNotNull(certificateOutput);
-        Assertions.assertEquals("cert1", certificateOutput.getName());
+        assertEquals("cert1", certificateOutput.getName());
     }
 
     @Test
@@ -799,8 +800,8 @@ public class PollerTests {
                 fetchResultOperation);
 
         PollResponse<Response> pollResponse = poller.waitUntil(matchStatus);
-        Assertions.assertEquals(matchStatus, pollResponse.getStatus());
-        Assertions.assertEquals(2, invocationCount[0]);
+        assertEquals(matchStatus, pollResponse.getStatus());
+        assertEquals(2, invocationCount[0]);
     }
 
     @Test
@@ -833,7 +834,7 @@ public class PollerTests {
 
         RuntimeException exception = assertThrows(RuntimeException.class,
             () -> poller.getFinalResult());
-        Assertions.assertEquals(exception.getMessage(), "Polling operation failed!");
+        assertEquals(exception.getMessage(), "Polling operation failed!");
     }
 
     @Test
@@ -858,6 +859,32 @@ public class PollerTests {
         PollerFlux<String, String> pollerFlux = error(new IllegalArgumentException());
         // should getSyncPoller() be lazy?
         Assertions.assertThrows(IllegalArgumentException.class, () -> pollerFlux.getSyncPoller());
+    }
+
+    @Test
+    public void testUpdatePollingInterval() {
+        PollerFlux<String, String> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+            context -> Mono.just(new PollResponse<>(IN_PROGRESS, "Activation")),
+            context -> Mono.just(new PollResponse<>(IN_PROGRESS, "PollOperation")),
+            (context, response) -> Mono.just("Cancel"),
+            context -> Mono.just("FinalResult"));
+
+        StepVerifier.withVirtualTime(() -> pollerFlux.take(5))
+            .thenAwait(Duration.ofSeconds(5))
+            .expectNextCount(5)
+            .verifyComplete();
+
+        pollerFlux.updatePollInterval(Duration.ofSeconds(5));
+        StepVerifier.withVirtualTime(() -> pollerFlux.take(5))
+            .thenAwait(Duration.ofSeconds(25))
+            .expectNextCount(5)
+            .verifyComplete();
+
+        pollerFlux.updatePollInterval(Duration.ofSeconds(10));
+        StepVerifier.withVirtualTime(() -> pollerFlux.take(5))
+            .thenAwait(Duration.ofSeconds(50))
+            .expectNextCount(5)
+            .verifyComplete();
     }
 
     public static class Response {
