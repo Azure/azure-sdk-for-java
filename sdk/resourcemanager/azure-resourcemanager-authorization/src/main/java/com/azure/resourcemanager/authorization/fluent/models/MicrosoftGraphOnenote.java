@@ -33,7 +33,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
      * Nullable.
      */
     @JsonProperty(value = "operations")
-    private List<MicrosoftGraphOnenoteOperationInner> operations;
+    private List<MicrosoftGraphOnenoteOperation> operations;
 
     /*
      * The pages in all OneNote notebooks that are owned by the user or group.
@@ -98,7 +98,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
      *
      * @return the operations value.
      */
-    public List<MicrosoftGraphOnenoteOperationInner> operations() {
+    public List<MicrosoftGraphOnenoteOperation> operations() {
         return this.operations;
     }
 
@@ -110,7 +110,7 @@ public final class MicrosoftGraphOnenote extends MicrosoftGraphEntity {
      * @param operations the operations value to set.
      * @return the MicrosoftGraphOnenote object itself.
      */
-    public MicrosoftGraphOnenote withOperations(List<MicrosoftGraphOnenoteOperationInner> operations) {
+    public MicrosoftGraphOnenote withOperations(List<MicrosoftGraphOnenoteOperation> operations) {
         this.operations = operations;
         return this;
     }

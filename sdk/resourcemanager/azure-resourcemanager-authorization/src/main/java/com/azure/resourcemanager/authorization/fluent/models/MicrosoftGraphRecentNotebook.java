@@ -16,8 +16,8 @@ import java.util.Map;
 
 /** recentNotebook. */
 @Fluent
-public final class MicrosoftGraphRecentNotebookInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphRecentNotebookInner.class);
+public final class MicrosoftGraphRecentNotebook {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphRecentNotebook.class);
 
     /*
      * The name of the notebook.
@@ -64,9 +64,9 @@ public final class MicrosoftGraphRecentNotebookInner {
      * Set the displayName property: The name of the notebook.
      *
      * @param displayName the displayName value to set.
-     * @return the MicrosoftGraphRecentNotebookInner object itself.
+     * @return the MicrosoftGraphRecentNotebook object itself.
      */
-    public MicrosoftGraphRecentNotebookInner withDisplayName(String displayName) {
+    public MicrosoftGraphRecentNotebook withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -88,9 +88,9 @@ public final class MicrosoftGraphRecentNotebookInner {
      * on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
      *
      * @param lastAccessedTime the lastAccessedTime value to set.
-     * @return the MicrosoftGraphRecentNotebookInner object itself.
+     * @return the MicrosoftGraphRecentNotebook object itself.
      */
-    public MicrosoftGraphRecentNotebookInner withLastAccessedTime(OffsetDateTime lastAccessedTime) {
+    public MicrosoftGraphRecentNotebook withLastAccessedTime(OffsetDateTime lastAccessedTime) {
         this.lastAccessedTime = lastAccessedTime;
         return this;
     }
@@ -108,9 +108,9 @@ public final class MicrosoftGraphRecentNotebookInner {
      * Set the links property: recentNotebookLinks.
      *
      * @param links the links value to set.
-     * @return the MicrosoftGraphRecentNotebookInner object itself.
+     * @return the MicrosoftGraphRecentNotebook object itself.
      */
-    public MicrosoftGraphRecentNotebookInner withLinks(MicrosoftGraphRecentNotebookLinks links) {
+    public MicrosoftGraphRecentNotebook withLinks(MicrosoftGraphRecentNotebookLinks links) {
         this.links = links;
         return this;
     }
@@ -128,9 +128,9 @@ public final class MicrosoftGraphRecentNotebookInner {
      * Set the sourceService property: onenoteSourceService.
      *
      * @param sourceService the sourceService value to set.
-     * @return the MicrosoftGraphRecentNotebookInner object itself.
+     * @return the MicrosoftGraphRecentNotebook object itself.
      */
-    public MicrosoftGraphRecentNotebookInner withSourceService(MicrosoftGraphOnenoteSourceService sourceService) {
+    public MicrosoftGraphRecentNotebook withSourceService(MicrosoftGraphOnenoteSourceService sourceService) {
         this.sourceService = sourceService;
         return this;
     }
@@ -149,9 +149,9 @@ public final class MicrosoftGraphRecentNotebookInner {
      * Set the additionalProperties property: recentNotebook.
      *
      * @param additionalProperties the additionalProperties value to set.
-     * @return the MicrosoftGraphRecentNotebookInner object itself.
+     * @return the MicrosoftGraphRecentNotebook object itself.
      */
-    public MicrosoftGraphRecentNotebookInner withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public MicrosoftGraphRecentNotebook withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

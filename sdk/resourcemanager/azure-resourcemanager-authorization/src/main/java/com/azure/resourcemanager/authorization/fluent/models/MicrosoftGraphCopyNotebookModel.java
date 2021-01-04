@@ -16,8 +16,8 @@ import java.util.Map;
 
 /** CopyNotebookModel. */
 @Fluent
-public final class MicrosoftGraphCopyNotebookModelInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphCopyNotebookModelInner.class);
+public final class MicrosoftGraphCopyNotebookModel {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphCopyNotebookModel.class);
 
     /*
      * The createdBy property.
@@ -127,9 +127,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the createdBy property: The createdBy property.
      *
      * @param createdBy the createdBy value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withCreatedBy(String createdBy) {
+    public MicrosoftGraphCopyNotebookModel withCreatedBy(String createdBy) {
         this.createdBy = createdBy;
         return this;
     }
@@ -147,9 +147,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the createdByIdentity property: identitySet.
      *
      * @param createdByIdentity the createdByIdentity value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withCreatedByIdentity(MicrosoftGraphIdentitySet createdByIdentity) {
+    public MicrosoftGraphCopyNotebookModel withCreatedByIdentity(MicrosoftGraphIdentitySet createdByIdentity) {
         this.createdByIdentity = createdByIdentity;
         return this;
     }
@@ -167,9 +167,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the createdTime property: The createdTime property.
      *
      * @param createdTime the createdTime value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withCreatedTime(OffsetDateTime createdTime) {
+    public MicrosoftGraphCopyNotebookModel withCreatedTime(OffsetDateTime createdTime) {
         this.createdTime = createdTime;
         return this;
     }
@@ -187,9 +187,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the id property: The id property.
      *
      * @param id the id value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withId(String id) {
+    public MicrosoftGraphCopyNotebookModel withId(String id) {
         this.id = id;
         return this;
     }
@@ -207,9 +207,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the isDefault property: The isDefault property.
      *
      * @param isDefault the isDefault value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withIsDefault(Boolean isDefault) {
+    public MicrosoftGraphCopyNotebookModel withIsDefault(Boolean isDefault) {
         this.isDefault = isDefault;
         return this;
     }
@@ -227,9 +227,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the isShared property: The isShared property.
      *
      * @param isShared the isShared value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withIsShared(Boolean isShared) {
+    public MicrosoftGraphCopyNotebookModel withIsShared(Boolean isShared) {
         this.isShared = isShared;
         return this;
     }
@@ -247,9 +247,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the lastModifiedBy property: The lastModifiedBy property.
      *
      * @param lastModifiedBy the lastModifiedBy value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withLastModifiedBy(String lastModifiedBy) {
+    public MicrosoftGraphCopyNotebookModel withLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
         return this;
     }
@@ -267,9 +267,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the lastModifiedByIdentity property: identitySet.
      *
      * @param lastModifiedByIdentity the lastModifiedByIdentity value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withLastModifiedByIdentity(
+    public MicrosoftGraphCopyNotebookModel withLastModifiedByIdentity(
         MicrosoftGraphIdentitySet lastModifiedByIdentity) {
         this.lastModifiedByIdentity = lastModifiedByIdentity;
         return this;
@@ -288,9 +288,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the lastModifiedTime property: The lastModifiedTime property.
      *
      * @param lastModifiedTime the lastModifiedTime value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withLastModifiedTime(OffsetDateTime lastModifiedTime) {
+    public MicrosoftGraphCopyNotebookModel withLastModifiedTime(OffsetDateTime lastModifiedTime) {
         this.lastModifiedTime = lastModifiedTime;
         return this;
     }
@@ -308,9 +308,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the links property: notebookLinks.
      *
      * @param links the links value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withLinks(MicrosoftGraphNotebookLinks links) {
+    public MicrosoftGraphCopyNotebookModel withLinks(MicrosoftGraphNotebookLinks links) {
         this.links = links;
         return this;
     }
@@ -328,9 +328,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the name property: The name property.
      *
      * @param name the name value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withName(String name) {
+    public MicrosoftGraphCopyNotebookModel withName(String name) {
         this.name = name;
         return this;
     }
@@ -348,9 +348,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the sectionGroupsUrl property: The sectionGroupsUrl property.
      *
      * @param sectionGroupsUrl the sectionGroupsUrl value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withSectionGroupsUrl(String sectionGroupsUrl) {
+    public MicrosoftGraphCopyNotebookModel withSectionGroupsUrl(String sectionGroupsUrl) {
         this.sectionGroupsUrl = sectionGroupsUrl;
         return this;
     }
@@ -368,9 +368,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the sectionsUrl property: The sectionsUrl property.
      *
      * @param sectionsUrl the sectionsUrl value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withSectionsUrl(String sectionsUrl) {
+    public MicrosoftGraphCopyNotebookModel withSectionsUrl(String sectionsUrl) {
         this.sectionsUrl = sectionsUrl;
         return this;
     }
@@ -388,9 +388,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the self property: The self property.
      *
      * @param self the self value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withSelf(String self) {
+    public MicrosoftGraphCopyNotebookModel withSelf(String self) {
         this.self = self;
         return this;
     }
@@ -408,9 +408,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the userRole property: The userRole property.
      *
      * @param userRole the userRole value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withUserRole(MicrosoftGraphOnenoteUserRole userRole) {
+    public MicrosoftGraphCopyNotebookModel withUserRole(MicrosoftGraphOnenoteUserRole userRole) {
         this.userRole = userRole;
         return this;
     }
@@ -429,9 +429,9 @@ public final class MicrosoftGraphCopyNotebookModelInner {
      * Set the additionalProperties property: CopyNotebookModel.
      *
      * @param additionalProperties the additionalProperties value to set.
-     * @return the MicrosoftGraphCopyNotebookModelInner object itself.
+     * @return the MicrosoftGraphCopyNotebookModel object itself.
      */
-    public MicrosoftGraphCopyNotebookModelInner withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public MicrosoftGraphCopyNotebookModel withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }

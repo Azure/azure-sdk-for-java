@@ -16,8 +16,8 @@ import java.util.Map;
 
 /** onenoteOperation. */
 @Fluent
-public final class MicrosoftGraphOnenoteOperationInner extends MicrosoftGraphOperation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnenoteOperationInner.class);
+public final class MicrosoftGraphOnenoteOperation extends MicrosoftGraphOperation {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnenoteOperation.class);
 
     /*
      * onenoteOperationError
@@ -63,9 +63,9 @@ public final class MicrosoftGraphOnenoteOperationInner extends MicrosoftGraphOpe
      * Set the error property: onenoteOperationError.
      *
      * @param error the error value to set.
-     * @return the MicrosoftGraphOnenoteOperationInner object itself.
+     * @return the MicrosoftGraphOnenoteOperation object itself.
      */
-    public MicrosoftGraphOnenoteOperationInner withError(MicrosoftGraphOnenoteOperationError error) {
+    public MicrosoftGraphOnenoteOperation withError(MicrosoftGraphOnenoteOperationError error) {
         this.error = error;
         return this;
     }
@@ -83,9 +83,9 @@ public final class MicrosoftGraphOnenoteOperationInner extends MicrosoftGraphOpe
      * Set the percentComplete property: The operation percent complete if the operation is still in running status.
      *
      * @param percentComplete the percentComplete value to set.
-     * @return the MicrosoftGraphOnenoteOperationInner object itself.
+     * @return the MicrosoftGraphOnenoteOperation object itself.
      */
-    public MicrosoftGraphOnenoteOperationInner withPercentComplete(String percentComplete) {
+    public MicrosoftGraphOnenoteOperation withPercentComplete(String percentComplete) {
         this.percentComplete = percentComplete;
         return this;
     }
@@ -103,9 +103,9 @@ public final class MicrosoftGraphOnenoteOperationInner extends MicrosoftGraphOpe
      * Set the resourceId property: The resource id.
      *
      * @param resourceId the resourceId value to set.
-     * @return the MicrosoftGraphOnenoteOperationInner object itself.
+     * @return the MicrosoftGraphOnenoteOperation object itself.
      */
-    public MicrosoftGraphOnenoteOperationInner withResourceId(String resourceId) {
+    public MicrosoftGraphOnenoteOperation withResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
     }
@@ -125,9 +125,9 @@ public final class MicrosoftGraphOnenoteOperationInner extends MicrosoftGraphOpe
      * page or section.
      *
      * @param resourceLocation the resourceLocation value to set.
-     * @return the MicrosoftGraphOnenoteOperationInner object itself.
+     * @return the MicrosoftGraphOnenoteOperation object itself.
      */
-    public MicrosoftGraphOnenoteOperationInner withResourceLocation(String resourceLocation) {
+    public MicrosoftGraphOnenoteOperation withResourceLocation(String resourceLocation) {
         this.resourceLocation = resourceLocation;
         return this;
     }
@@ -146,9 +146,9 @@ public final class MicrosoftGraphOnenoteOperationInner extends MicrosoftGraphOpe
      * Set the additionalProperties property: onenoteOperation.
      *
      * @param additionalProperties the additionalProperties value to set.
-     * @return the MicrosoftGraphOnenoteOperationInner object itself.
+     * @return the MicrosoftGraphOnenoteOperation object itself.
      */
-    public MicrosoftGraphOnenoteOperationInner withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public MicrosoftGraphOnenoteOperation withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
@@ -163,28 +163,28 @@ public final class MicrosoftGraphOnenoteOperationInner extends MicrosoftGraphOpe
 
     /** {@inheritDoc} */
     @Override
-    public MicrosoftGraphOnenoteOperationInner withCreatedDateTime(OffsetDateTime createdDateTime) {
+    public MicrosoftGraphOnenoteOperation withCreatedDateTime(OffsetDateTime createdDateTime) {
         super.withCreatedDateTime(createdDateTime);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public MicrosoftGraphOnenoteOperationInner withLastActionDateTime(OffsetDateTime lastActionDateTime) {
+    public MicrosoftGraphOnenoteOperation withLastActionDateTime(OffsetDateTime lastActionDateTime) {
         super.withLastActionDateTime(lastActionDateTime);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public MicrosoftGraphOnenoteOperationInner withStatus(MicrosoftGraphOperationStatus status) {
+    public MicrosoftGraphOnenoteOperation withStatus(MicrosoftGraphOperationStatus status) {
         super.withStatus(status);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public MicrosoftGraphOnenoteOperationInner withId(String id) {
+    public MicrosoftGraphOnenoteOperation withId(String id) {
         super.withId(id);
         return this;
     }

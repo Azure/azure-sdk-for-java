@@ -15,8 +15,8 @@ import java.util.Map;
 
 /** onenotePagePreview. */
 @Fluent
-public final class MicrosoftGraphOnenotePagePreviewInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnenotePagePreviewInner.class);
+public final class MicrosoftGraphOnenotePagePreview {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnenotePagePreview.class);
 
     /*
      * onenotePagePreviewLinks
@@ -48,9 +48,9 @@ public final class MicrosoftGraphOnenotePagePreviewInner {
      * Set the links property: onenotePagePreviewLinks.
      *
      * @param links the links value to set.
-     * @return the MicrosoftGraphOnenotePagePreviewInner object itself.
+     * @return the MicrosoftGraphOnenotePagePreview object itself.
      */
-    public MicrosoftGraphOnenotePagePreviewInner withLinks(MicrosoftGraphOnenotePagePreviewLinks links) {
+    public MicrosoftGraphOnenotePagePreview withLinks(MicrosoftGraphOnenotePagePreviewLinks links) {
         this.links = links;
         return this;
     }
@@ -68,9 +68,9 @@ public final class MicrosoftGraphOnenotePagePreviewInner {
      * Set the previewText property: The previewText property.
      *
      * @param previewText the previewText value to set.
-     * @return the MicrosoftGraphOnenotePagePreviewInner object itself.
+     * @return the MicrosoftGraphOnenotePagePreview object itself.
      */
-    public MicrosoftGraphOnenotePagePreviewInner withPreviewText(String previewText) {
+    public MicrosoftGraphOnenotePagePreview withPreviewText(String previewText) {
         this.previewText = previewText;
         return this;
     }
@@ -89,9 +89,9 @@ public final class MicrosoftGraphOnenotePagePreviewInner {
      * Set the additionalProperties property: onenotePagePreview.
      *
      * @param additionalProperties the additionalProperties value to set.
-     * @return the MicrosoftGraphOnenotePagePreviewInner object itself.
+     * @return the MicrosoftGraphOnenotePagePreview object itself.
      */
-    public MicrosoftGraphOnenotePagePreviewInner withAdditionalProperties(Map<String, Object> additionalProperties) {
+    public MicrosoftGraphOnenotePagePreview withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
     }
