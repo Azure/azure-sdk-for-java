@@ -14,29 +14,42 @@ import java.util.Objects;
 
 /**
  * Pipeline policy that uses an {@link AzureSasCredential} to set the shared access signature for a request.
- * <p>
- * Requests sent with this pipeline policy are required to use {@code HTTPS}. If the request isn't using {@code HTTPS}
- * an exception will be thrown to prevent leaking the shared access signature.
  */
 public final class AzureSasCredentialPolicy implements HttpPipelinePolicy {
     private final AzureSasCredential credential;
+    private final boolean requireHttps;
 
     /**
      * Creates a policy that uses the passed {@link AzureSasCredential} to append sas to query string.
+     * <p>
+     * Requests sent with this pipeline policy are required to use {@code HTTPS}.
+     * If the request isn't using {@code HTTPS}
+     * an exception will be thrown to prevent leaking the shared access signature.
      *
      * @param credential The {@link AzureSasCredential} containing the shared access signature to use.
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public AzureSasCredentialPolicy(AzureSasCredential credential) {
-        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        this(credential, true);
+    }
 
+    /**
+     * Creates a policy that uses the passed {@link AzureSasCredential} to append sas to query string.
+     *
+     * @param credential The {@link AzureSasCredential} containing the shared access signature to use.
+     * @param requireHttps A flag indicating whether {@code HTTPS} is required.
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public AzureSasCredentialPolicy(AzureSasCredential credential, boolean requireHttps) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.credential = credential;
+        this.requireHttps = requireHttps;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         HttpRequest httpRequest = context.getHttpRequest();
-        if ("http".equals(httpRequest.getUrl().getProtocol())) {
+        if (requireHttps && "http".equals(httpRequest.getUrl().getProtocol())) {
             return Mono.error(new IllegalStateException(
                 "Shared access signature credentials require HTTPS to prevent leaking the shared access signature."));
         }

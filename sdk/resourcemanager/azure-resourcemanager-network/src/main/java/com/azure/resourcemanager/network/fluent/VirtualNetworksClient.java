@@ -13,7 +13,6 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.network.fluent.models.BastionHostListResultInner;
 import com.azure.resourcemanager.network.fluent.models.IpAddressAvailabilityResultInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkUsageInner;
@@ -542,60 +541,5 @@ public interface VirtualNetworksClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkUsageInner> listUsage(
-        String resourceGroupName, String virtualNetworkName, Context context);
-
-    /**
-     * Get a list of bastion hosts accessible from the given network.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bastion hosts accessible from the given network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BastionHostListResultInner>> getBastionHostsWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName);
-
-    /**
-     * Get a list of bastion hosts accessible from the given network.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bastion hosts accessible from the given network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BastionHostListResultInner> getBastionHostsAsync(String resourceGroupName, String virtualNetworkName);
-
-    /**
-     * Get a list of bastion hosts accessible from the given network.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bastion hosts accessible from the given network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BastionHostListResultInner getBastionHosts(String resourceGroupName, String virtualNetworkName);
-
-    /**
-     * Get a list of bastion hosts accessible from the given network.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of bastion hosts accessible from the given network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BastionHostListResultInner> getBastionHostsWithResponse(
         String resourceGroupName, String virtualNetworkName, Context context);
 }

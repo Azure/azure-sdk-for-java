@@ -196,6 +196,13 @@ public class ServiceAssociationLink extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ServiceAssociationLink withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -62,7 +63,7 @@ public final class NetworkInterfaceLoadBalancersClientImpl implements NetworkInt
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface NetworkInterfaceLoadBalancersService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkInterfaces/{networkInterfaceName}/loadBalancers")
@@ -74,14 +75,18 @@ public final class NetworkInterfaceLoadBalancersClientImpl implements NetworkInt
             @PathParam("networkInterfaceName") String networkInterfaceName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NetworkInterfaceLoadBalancerListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -117,7 +122,8 @@ public final class NetworkInterfaceLoadBalancersClientImpl implements NetworkInt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -128,6 +134,7 @@ public final class NetworkInterfaceLoadBalancersClientImpl implements NetworkInt
                             networkInterfaceName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<LoadBalancerInner>>map(
                 res ->
@@ -175,7 +182,8 @@ public final class NetworkInterfaceLoadBalancersClientImpl implements NetworkInt
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -184,6 +192,7 @@ public final class NetworkInterfaceLoadBalancersClientImpl implements NetworkInt
                 networkInterfaceName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -278,8 +287,15 @@ public final class NetworkInterfaceLoadBalancersClientImpl implements NetworkInt
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<LoadBalancerInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -307,9 +323,16 @@ public final class NetworkInterfaceLoadBalancersClientImpl implements NetworkInt
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

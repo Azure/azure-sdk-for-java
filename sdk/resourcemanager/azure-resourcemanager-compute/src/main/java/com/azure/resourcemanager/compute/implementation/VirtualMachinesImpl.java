@@ -215,7 +215,7 @@ public class VirtualMachinesImpl
                 logger,
                 this.manager().serviceClient().getHttpPipeline(),
                 this.manager().serviceClient().getDefaultPollInterval(),
-                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
+                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, null).block(),
                 Function.identity(),
                 Void.class,
                 null);
