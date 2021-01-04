@@ -151,6 +151,7 @@
         <module>azure-spring-boot-test-aad</module>
         <module>azure-spring-boot-test-aad-obo</module>
         <module>azure-spring-boot-test-aad-resource-server</module>
+        <module>azure-spring-boot-test-aad-resource-server-by-filter</module>
         <module>azure-spring-boot-test-cosmos</module>
         <module>azure-spring-boot-test-keyvault</module>
         <module>azure-spring-boot-test-servicebus-jms</module>
