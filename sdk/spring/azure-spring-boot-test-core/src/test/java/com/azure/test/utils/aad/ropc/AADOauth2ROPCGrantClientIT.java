@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.aad.util;
+package com.azure.test.utils.aad.ropc;
 
-import com.azure.test.utils.aad.ropc.AADOauth2ROPCGrantClient;
 import org.junit.Test;
 
 import static com.azure.test.utils.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;

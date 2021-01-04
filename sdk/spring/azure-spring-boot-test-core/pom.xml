@@ -81,5 +81,12 @@
       <artifactId>azure-spring-boot-starter</artifactId>
       <version>3.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter;current} -->
     </dependency>
+
+    <!-- test dependencies. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>
