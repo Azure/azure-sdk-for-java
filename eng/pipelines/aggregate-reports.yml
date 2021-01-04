@@ -17,10 +17,10 @@ jobs:
       vmImage: 'ubuntu-18.04'
     steps:
 
-#    - template: ../common/pipelines/templates/steps/verify-links.yml
-#      parameters:
-#        Directory: ""
-#        CheckLinkGuidance: $true
+    - template: ../common/pipelines/templates/steps/verify-links.yml
+      parameters:
+        Directory: ""
+        CheckLinkGuidance: $true
 
     # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
     # reports. This means it is available as part of that, but also so that this is not documented in the project report.
