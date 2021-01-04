@@ -439,4 +439,4 @@ Please follow [instructions here] to build from source or contribute.
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
 [set up in the manifest of your application registration]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps
-[Azure China]: https://docs.microsoft.com/en-us/azure/china/resources-developer-guide#check-endpoints-in-azure
+[Azure China]: https://docs.microsoft.com/azure/china/resources-developer-guide#check-endpoints-in-azure
