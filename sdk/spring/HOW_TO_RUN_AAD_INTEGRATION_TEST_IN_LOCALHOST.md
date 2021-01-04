@@ -105,9 +105,21 @@ $env:AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE='xxxxxxxx'
 ```
 
 ## Run AAD integration test by maven.
-Command:
+azure-spring-boot-test-aad:
 ```
 mvn -f .\sdk\spring\azure-spring-boot-test-aad\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
+```
+azure-spring-boot-test-aad-obo:
+```
+mvn -f .\sdk\spring\azure-spring-boot-test-aad-obo\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
+```
+azure-spring-boot-test-aad-resource-server:
+```
+mvn -f .\sdk\spring\azure-spring-boot-test-aad-resource-server\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
+```
+azure-spring-boot-test-aad-resource-server-by-filter:
+```
+mvn -f .\sdk\spring\azure-spring-boot-test-aad-resource-server-by-filter\pom.xml --fail-at-end "-Dmaven.javadoc.skip=true" "-Drevapi.skip=true" "-DskipSpringITs=false" verify
 ```
 
 
