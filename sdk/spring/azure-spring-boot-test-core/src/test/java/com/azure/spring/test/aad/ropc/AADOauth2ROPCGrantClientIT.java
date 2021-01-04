@@ -16,7 +16,7 @@ import static org.junit.Assert.assertNotNull;
 public class AADOauth2ROPCGrantClientIT {
 
     @Test
-    public void getAccessTokenForTestAccountTest() {
+    public void getOAuth2ROPCResponseByROPCGrantTest() {
         AADOauth2ROPCGrantClient.OAuth2ROPCResponse oAuth2ROPCResponse =
             AADOauth2ROPCGrantClient.getOAuth2ROPCResponseByROPCGrant(
             AAD_TENANT_ID_1,
