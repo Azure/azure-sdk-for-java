@@ -36,6 +36,7 @@
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-test-core</artifactId>
       <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-core;current} -->
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -45,6 +46,7 @@
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
