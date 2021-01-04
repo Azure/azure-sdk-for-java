@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.filter.stateful;
 
-import com.azure.test.utils.aad.AADWebApiITHelper;
+import com.azure.spring.test.aad.AADWebApiITHelper;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,12 +26,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.test.utils.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.test.utils.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.test.utils.aad.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_ID;
-import static com.azure.test.utils.aad.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_SECRET;
-import static com.azure.test.utils.aad.EnvironmentVariables.SCOPE_GRAPH_READ;
-import static com.azure.test.utils.aad.EnvironmentVariables.toFullNameScope;
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.aad.EnvironmentVariables.SCOPE_GRAPH_READ;
+import static com.azure.spring.test.aad.EnvironmentVariables.toFullNameScope;
 import static org.junit.Assert.assertEquals;
 
 public class AADAuthenticationFilterIT {

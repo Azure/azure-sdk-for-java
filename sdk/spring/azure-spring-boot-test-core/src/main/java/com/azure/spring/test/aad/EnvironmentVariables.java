@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.utils.aad;
+package com.azure.spring.test.aad;
 
 public class EnvironmentVariables {
     // Test accounts

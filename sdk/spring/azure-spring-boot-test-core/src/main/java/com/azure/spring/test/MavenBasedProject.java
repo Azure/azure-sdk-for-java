@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.utils;
+package com.azure.spring.test;
 
 import org.apache.maven.cli.MavenCli;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;

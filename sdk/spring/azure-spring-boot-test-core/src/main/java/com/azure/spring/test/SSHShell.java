@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.utils;
+package com.azure.spring.test;
 
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.ChannelShell;
