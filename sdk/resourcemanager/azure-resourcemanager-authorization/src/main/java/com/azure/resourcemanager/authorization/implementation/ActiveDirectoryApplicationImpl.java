@@ -20,6 +20,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -134,7 +135,7 @@ class ActiveDirectoryApplicationImpl
         if (innerModel().identifierUris() == null) {
             return null;
         }
-        return Set.copyOf(innerModel().identifierUris());
+        return new HashSet<>(innerModel().identifierUris());
     }
 
     @Override
@@ -142,7 +143,7 @@ class ActiveDirectoryApplicationImpl
         if (innerModel().web() == null || innerModel().web().redirectUris() == null) {
             return null;
         }
-        return Set.copyOf(innerModel().web().redirectUris());
+        return new HashSet<>(innerModel().web().redirectUris());
     }
 
     @Override

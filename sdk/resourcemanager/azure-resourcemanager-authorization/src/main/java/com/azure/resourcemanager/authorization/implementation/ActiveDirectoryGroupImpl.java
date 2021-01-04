@@ -23,6 +23,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -175,9 +176,9 @@ class ActiveDirectoryGroupImpl
     public ActiveDirectoryGroupImpl withMember(String objectId) {
         // https://docs.microsoft.com/en-us/graph/api/group-post-members
         String membersKey = "@odata.id";
-        membersToAdd.add(Map.of(
-            membersKey, String.format("%s/directoryObjects/%s", manager().serviceClient().getEndpoint(), objectId))
-        );
+        membersToAdd.add(new HashMap<>() {{
+            put(membersKey, String.format("%s/directoryObjects/%s", manager().serviceClient().getEndpoint(), objectId));
+        }});
         return this;
     }
 
