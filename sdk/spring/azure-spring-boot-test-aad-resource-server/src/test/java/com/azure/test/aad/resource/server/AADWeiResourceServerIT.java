@@ -46,12 +46,12 @@ public class AADWeiResourceServerIT {
 
     @Test
     public void testHasScope() {
-        assertEquals(aadWebApiITHelper.httpGetByAccessToken("graph"), "graph");
+        assertEquals(aadWebApiITHelper.httpGetStringByAccessToken("graph"), "graph");
     }
 
     @Test(expected = HttpClientErrorException.class)
     public void testHasNoScope() {
-        aadWebApiITHelper.httpGetByAccessToken("notExist");
+        aadWebApiITHelper.httpGetStringByAccessToken("notExist");
     }
 
     @EnableWebSecurity

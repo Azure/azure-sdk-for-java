@@ -49,13 +49,13 @@ public class AADAppRoleStatelessAuthenticationFilterIT {
 
     @Test
     public void testAllowedEndpoints() {
-        assertEquals("public", aadWebApiITHelper.httpGetByIdToken("public"));
-        assertEquals("userRole", aadWebApiITHelper.httpGetByIdToken("userRole"));
+        assertEquals("public", aadWebApiITHelper.httpGetStringByIdToken("public"));
+        assertEquals("userRole", aadWebApiITHelper.httpGetStringByIdToken("userRole"));
     }
 
     @Test(expected = HttpClientErrorException.class)
     public void testNotAllowedEndpoints() {
-        aadWebApiITHelper.httpGetByIdToken("adminRole");
+        aadWebApiITHelper.httpGetStringByIdToken("adminRole");
     }
 
     @EnableGlobalMethodSecurity(prePostEnabled = true)

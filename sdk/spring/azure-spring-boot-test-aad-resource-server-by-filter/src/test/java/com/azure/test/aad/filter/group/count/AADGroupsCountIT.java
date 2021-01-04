@@ -51,7 +51,7 @@ public class AADGroupsCountIT {
 
     @Test
     public void testGroupsCount() {
-        assertEquals("111", aadWebApiITHelper.httpGetByAccessToken("api/groupsCount"));
+        assertEquals("111", aadWebApiITHelper.httpGetStringByAccessToken("api/groupsCount"));
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)

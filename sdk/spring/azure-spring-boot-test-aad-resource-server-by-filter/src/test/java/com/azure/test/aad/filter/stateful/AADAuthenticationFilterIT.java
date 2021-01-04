@@ -3,8 +3,8 @@
 
 package com.azure.test.aad.filter.stateful;
 
-import com.azure.spring.test.aad.AADWebApiITHelper;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
+import com.azure.spring.test.aad.AADWebApiITHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,27 +59,47 @@ public class AADAuthenticationFilterIT {
     }
 
     @Test
-    public void testAllowedEndpointsForSingleTenant() {
-        assertEquals("home", singleTenantITHelper.httpGetByAccessToken("home"));
-        assertEquals("api/all", singleTenantITHelper.httpGetByAccessToken("api/all"));
-        assertEquals("api/group1", singleTenantITHelper.httpGetByAccessToken("api/group1"));
+    public void testAllowedEndpointsForSingleTenantByAccessToken() {
+        assertEquals("home", singleTenantITHelper.httpGetStringByAccessToken("home"));
+        assertEquals("api/all", singleTenantITHelper.httpGetStringByAccessToken("api/all"));
+        assertEquals("api/group1", singleTenantITHelper.httpGetStringByAccessToken("api/group1"));
+    }
+
+    @Test
+    public void testAllowedEndpointsForSingleTenantByCookie() {
+        assertEquals("home",
+            singleTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "home"));
+        assertEquals("api/all",
+            singleTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "api/all"));
+        assertEquals("api/group1",
+            singleTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "api/group1"));
     }
 
     @Test(expected = HttpClientErrorException.class)
     public void testNotAllowedEndpointsForSingleTenant() {
-        singleTenantITHelper.httpGetByAccessToken("api/group2");
+        singleTenantITHelper.httpGetStringByAccessToken("api/group2");
     }
 
     @Test
-    public void testAllowedEndpointsForMultiTenant() {
-        assertEquals("home", multiTenantITHelper.httpGetByAccessToken("home"));
-        assertEquals("api/all", multiTenantITHelper.httpGetByAccessToken("api/all"));
-        assertEquals("api/group1", multiTenantITHelper.httpGetByAccessToken("api/group1"));
+    public void testAllowedEndpointsForMultiTenantByAccessToken() {
+        assertEquals("home", multiTenantITHelper.httpGetStringByAccessToken("home"));
+        assertEquals("api/all", multiTenantITHelper.httpGetStringByAccessToken("api/all"));
+        assertEquals("api/group1", multiTenantITHelper.httpGetStringByAccessToken("api/group1"));
+    }
+
+    @Test
+    public void testAllowedEndpointsForMultipleTenantByCookie() {
+        assertEquals("home",
+            multiTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "home"));
+        assertEquals("api/all",
+            multiTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "api/all"));
+        assertEquals("api/group1",
+            multiTenantITHelper.httpGetCookieByAccessTokenThenGetStringByCookie("home", "api/group1"));
     }
 
     @Test(expected = HttpClientErrorException.class)
     public void testNotAllowedEndpointsForMultiTenant() {
-        multiTenantITHelper.httpGetByAccessToken("api/group2");
+        multiTenantITHelper.httpGetStringByAccessToken("api/group2");
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)

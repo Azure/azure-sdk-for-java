@@ -67,7 +67,7 @@ public class AADWebApiOboIT {
 
     @Test
     public void testCallGraph() {
-        assertEquals("Graph response success.", aadWebApiITHelper.httpGetByAccessToken("call-graph"));
+        assertEquals("Graph response success.", aadWebApiITHelper.httpGetStringByAccessToken("call-graph"));
     }
 
     private void runApp(Consumer<AppRunner> command) {
