@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Specifies information about the gallery Application Version that you want to update. */
 @JsonFlatten
@@ -71,6 +72,13 @@ public class GalleryApplicationVersionUpdate extends UpdateResourceDefinition {
      */
     public ReplicationStatus replicationStatus() {
         return this.replicationStatus;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

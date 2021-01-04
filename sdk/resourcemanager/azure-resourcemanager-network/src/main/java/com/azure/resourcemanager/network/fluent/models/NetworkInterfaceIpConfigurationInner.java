@@ -393,6 +393,13 @@ public class NetworkInterfaceIpConfigurationInner extends SubResource {
         return this.privateLinkConnectionProperties;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public NetworkInterfaceIpConfigurationInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

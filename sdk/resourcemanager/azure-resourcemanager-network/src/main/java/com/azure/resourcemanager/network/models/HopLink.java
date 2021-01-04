@@ -52,19 +52,19 @@ public class HopLink {
      * Minimum roundtrip time in milliseconds.
      */
     @JsonProperty(value = "properties.roundTripTimeMin", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer roundTripTimeMin;
+    private Long roundTripTimeMin;
 
     /*
      * Average roundtrip time in milliseconds.
      */
     @JsonProperty(value = "properties.roundTripTimeAvg", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer roundTripTimeAvg;
+    private Long roundTripTimeAvg;
 
     /*
      * Maximum roundtrip time in milliseconds.
      */
     @JsonProperty(value = "properties.roundTripTimeMax", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer roundTripTimeMax;
+    private Long roundTripTimeMax;
 
     /**
      * Get the nextHopId property: The ID of the next hop.
@@ -116,7 +116,7 @@ public class HopLink {
      *
      * @return the roundTripTimeMin value.
      */
-    public Integer roundTripTimeMin() {
+    public Long roundTripTimeMin() {
         return this.roundTripTimeMin;
     }
 
@@ -125,7 +125,7 @@ public class HopLink {
      *
      * @return the roundTripTimeAvg value.
      */
-    public Integer roundTripTimeAvg() {
+    public Long roundTripTimeAvg() {
         return this.roundTripTimeAvg;
     }
 
@@ -134,7 +134,7 @@ public class HopLink {
      *
      * @return the roundTripTimeMax value.
      */
-    public Integer roundTripTimeMax() {
+    public Long roundTripTimeMax() {
         return this.roundTripTimeMax;
     }
 

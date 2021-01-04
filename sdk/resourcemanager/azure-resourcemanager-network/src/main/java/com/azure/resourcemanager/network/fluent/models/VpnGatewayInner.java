@@ -11,9 +11,11 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VpnGatewayIpConfiguration;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** VpnGateway Resource. */
 @JsonFlatten
@@ -56,6 +58,19 @@ public class VpnGatewayInner extends Resource {
      */
     @JsonProperty(value = "properties.vpnGatewayScaleUnit")
     private Integer vpnGatewayScaleUnit;
+
+    /*
+     * List of all IPs configured on the gateway.
+     */
+    @JsonProperty(value = "properties.ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<VpnGatewayIpConfiguration> ipConfigurations;
+
+    /*
+     * Enable Routing Preference property for the Public IP Interface of the
+     * VpnGateway.
+     */
+    @JsonProperty(value = "properties.isRoutingPreferenceInternet")
+    private Boolean isRoutingPreferenceInternet;
 
     /*
      * Resource ID.
@@ -162,6 +177,37 @@ public class VpnGatewayInner extends Resource {
     }
 
     /**
+     * Get the ipConfigurations property: List of all IPs configured on the gateway.
+     *
+     * @return the ipConfigurations value.
+     */
+    public List<VpnGatewayIpConfiguration> ipConfigurations() {
+        return this.ipConfigurations;
+    }
+
+    /**
+     * Get the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
+     * the VpnGateway.
+     *
+     * @return the isRoutingPreferenceInternet value.
+     */
+    public Boolean isRoutingPreferenceInternet() {
+        return this.isRoutingPreferenceInternet;
+    }
+
+    /**
+     * Set the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
+     * the VpnGateway.
+     *
+     * @param isRoutingPreferenceInternet the isRoutingPreferenceInternet value to set.
+     * @return the VpnGatewayInner object itself.
+     */
+    public VpnGatewayInner withIsRoutingPreferenceInternet(Boolean isRoutingPreferenceInternet) {
+        this.isRoutingPreferenceInternet = isRoutingPreferenceInternet;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -181,6 +227,20 @@ public class VpnGatewayInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VpnGatewayInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VpnGatewayInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -192,6 +252,9 @@ public class VpnGatewayInner extends Resource {
         }
         if (bgpSettings() != null) {
             bgpSettings().validate();
+        }
+        if (ipConfigurations() != null) {
+            ipConfigurations().forEach(e -> e.validate());
         }
     }
 }
