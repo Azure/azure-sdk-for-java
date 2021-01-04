@@ -24,12 +24,12 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
       <artifactId>azure-spring-boot-starter-active-directory</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-oauth2-resource-server</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-client</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-oauth2-client</artifactId>
+      <artifactId>spring-boot-starter-resource-server</artifactId>
     </dependency>
 </dependencies>
 ```
