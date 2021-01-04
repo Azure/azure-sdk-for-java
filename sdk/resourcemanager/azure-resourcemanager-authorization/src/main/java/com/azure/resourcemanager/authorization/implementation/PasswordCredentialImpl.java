@@ -77,12 +77,6 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
     }
 
     @Override
-    public PasswordCredentialImpl<T> withPasswordValue(String password) {
-        innerModel().withSecretText(password);
-        return this;
-    }
-
-    @Override
     public PasswordCredentialImpl<T> withStartDate(OffsetDateTime startDate) {
         OffsetDateTime original = startDate();
         innerModel().withStartDateTime(startDate);

@@ -42,23 +42,6 @@ public interface PasswordCredential extends Credential, HasInnerModel<MicrosoftG
         }
 
         /**
-         * The credential definition stage allowing the the password or certificate to be set.
-         *
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
-         */
-        interface WithKey<ParentT> {
-            /**
-             * Use a password as a key.
-             *
-             * @param password the password value
-             * @return the next stage in credential definition
-             * @deprecated service doesn't allow specifying password now
-             */
-            @Deprecated
-            WithAttach<ParentT> withPasswordValue(String password);
-        }
-
-        /**
          * The credential definition stage allowing start date to be set.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
@@ -130,7 +113,6 @@ public interface PasswordCredential extends Credential, HasInnerModel<MicrosoftG
             extends Attachable.InDefinition<ParentT>,
                 WithStartDate<ParentT>,
                 WithDuration<ParentT>,
-                WithKey<ParentT>,
                 WithAuthFile<ParentT> {
         }
     }
