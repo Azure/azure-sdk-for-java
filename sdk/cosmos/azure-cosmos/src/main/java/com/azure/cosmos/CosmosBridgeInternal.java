@@ -126,13 +126,6 @@ public final class CosmosBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosClientBuilder metadataCaches(CosmosClientBuilder cosmosClientBuilder,
-                                                     CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
-        cosmosClientBuilder.metadataCaches(metadataCachesSnapshot);
-        return cosmosClientBuilder;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosException cosmosException(int statusCode, Exception innerException) {
         return new CosmosException(statusCode, innerException);
     }

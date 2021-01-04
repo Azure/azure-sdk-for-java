@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -799,5 +800,27 @@ public class CosmosClientBuilder {
         if (value) {
             throw new IllegalArgumentException(error);
         }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        CosmosClientBuilderHelper.setCosmosClientBuilderAccessor(
+            new CosmosClientBuilderHelper.CosmosClientBuilderAccessor() {
+
+                @Override
+                public void setCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder,
+                                                                  CosmosClientMetadataCachesSnapshot metadataCache) {
+                    builder.metadataCaches(metadataCache);
+                }
+
+                @Override
+                public CosmosClientMetadataCachesSnapshot getCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder) {
+                    return builder.metadataCaches();
+                }
+            });
     }
 }

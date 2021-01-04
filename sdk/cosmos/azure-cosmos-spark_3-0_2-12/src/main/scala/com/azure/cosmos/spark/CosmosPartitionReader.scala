@@ -4,6 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
 import com.azure.cosmos.{ConsistencyLevel, CosmosBridgeInternal, CosmosClientBuilder}
 import com.azure.cosmos.models.{CosmosParametrizedQuery, CosmosQueryRequestOptions}
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -36,7 +37,8 @@ case class CosmosPartitionReader(config: Map[String, String],
 
   val state = cosmosClientStateHandle.value;
 
-  CosmosBridgeInternal.metadataCaches(builder, cosmosClientStateHandle.value)
+  val clientBuilderAccessor = CosmosClientBuilderHelper.getCosmosClientBuilderAccessor()
+  clientBuilderAccessor.setCosmosClientMetadataCachesSnapshot(builder, cosmosClientStateHandle.value)
   val client = builder.buildAsyncClient();
 
   val cosmosAsyncContainer = client
