@@ -3,15 +3,15 @@
 
 package com.azure.test.aad.util;
 
-import com.azure.spring.aad.util.ropc.AADOauth2ROPCGrantClient;
+import com.azure.test.utils.aad.ropc.AADOauth2ROPCGrantClient;
 import org.junit.Test;
 
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_TENANT_ID_1;
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_USER_NAME_1;
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_USER_PASSWORD_1;
-import static com.azure.spring.aad.util.EnvironmentVariables.MULTI_TENANT_SCOPE_GRAPH_READ;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_TENANT_ID_1;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_USER_NAME_1;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_USER_PASSWORD_1;
+import static com.azure.test.utils.aad.EnvironmentVariables.MULTI_TENANT_SCOPE_GRAPH_READ;
 import static org.junit.Assert.assertNotNull;
 
 public class AADOauth2ROPCGrantClientIT {

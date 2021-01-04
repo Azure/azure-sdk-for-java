@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.filter.group.count;
 
-import com.azure.spring.aad.util.AADWebApiITHelper;
+import com.azure.test.utils.aad.AADWebApiITHelper;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationFilter;
 import com.azure.spring.autoconfigure.aad.UserPrincipal;
 import org.junit.Before;
@@ -26,9 +26,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.spring.aad.util.EnvironmentVariables.MULTI_TENANT_SCOPE_GRAPH_READ;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.test.utils.aad.EnvironmentVariables.MULTI_TENANT_SCOPE_GRAPH_READ;
 import static org.junit.Assert.assertEquals;
 
 public class AADGroupsCountIT {

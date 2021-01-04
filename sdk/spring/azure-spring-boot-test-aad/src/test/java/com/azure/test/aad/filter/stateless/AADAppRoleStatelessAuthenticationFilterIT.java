@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.filter.stateless;
 
-import com.azure.spring.aad.util.AADWebApiITHelper;
+import com.azure.test.utils.aad.AADWebApiITHelper;
 import com.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,8 +23,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
 import static org.junit.Assert.assertEquals;
 
 public class AADAppRoleStatelessAuthenticationFilterIT {

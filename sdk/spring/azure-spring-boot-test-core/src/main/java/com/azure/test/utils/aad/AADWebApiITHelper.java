@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.util;
+package com.azure.test.utils.aad;
 
-import com.azure.spring.aad.util.ropc.AADOauth2ROPCGrantClient;
+import com.azure.test.utils.aad.ropc.AADOauth2ROPCGrantClient;
 import com.azure.test.utils.AppRunner;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,9 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_TENANT_ID_1;
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_USER_NAME_1;
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_USER_PASSWORD_1;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_TENANT_ID_1;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_USER_NAME_1;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_USER_PASSWORD_1;
 
 public class AADWebApiITHelper {
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();

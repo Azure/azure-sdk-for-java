@@ -3,7 +3,7 @@
 
 package com.azure.test.aad.webapi;
 
-import com.azure.spring.aad.util.AADWebApiITHelper;
+import com.azure.test.utils.aad.AADWebApiITHelper;
 import com.azure.test.utils.AppRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,9 +36,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.aad.util.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.spring.aad.util.EnvironmentVariables.MULTI_TENANT_SCOPE_GRAPH_READ;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.test.utils.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.test.utils.aad.EnvironmentVariables.MULTI_TENANT_SCOPE_GRAPH_READ;
 import static org.junit.Assert.assertEquals;
 import static org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction.oauth2AuthorizedClient;
 
