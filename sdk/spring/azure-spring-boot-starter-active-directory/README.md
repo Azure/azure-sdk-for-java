@@ -379,6 +379,12 @@ public class AADAppRoleStatelessAuthenticationFilterConfigSample extends WebSecu
 
 The roles you want to use within your application have to be [set up in the manifest of your application registration].
 
+### Azure China
+```properties
+azure.activedirectory.base-uri=https://login.partner.microsoftonline.cn
+azure.activedirectory.graph-membership-uri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf
+```
+
 ## Troubleshooting
 ### Enable client logging
 Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
