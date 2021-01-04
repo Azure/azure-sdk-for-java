@@ -35,7 +35,7 @@ public class CommunicationLoggerPolicy implements HttpPipelinePolicy {
 
             // Should sanitize printed reponse url
             System.out.println("MS-CV header for " + testName + " request "
-                + bufferedResponse.getRequest().getUrl() + " :" + bufferedResponse.getHeaderValue("MS-CV"));
+                + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
             return Mono.just(bufferedResponse);
         });
     }
