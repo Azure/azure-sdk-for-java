@@ -19,7 +19,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 public class RntbdServiceEndpointTest {
 
-    @Test(groups = "direct")
+    @Test(groups = { "unit" })
     public void endpointCloseOnIdleEndpointTimeout() throws Exception {
         DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
         directConnectionConfig.setIdleEndpointTimeout(Duration.ofSeconds(20));
