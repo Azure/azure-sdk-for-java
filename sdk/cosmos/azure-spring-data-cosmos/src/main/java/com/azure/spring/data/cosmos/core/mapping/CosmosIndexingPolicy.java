@@ -48,7 +48,7 @@ public @interface CosmosIndexingPolicy {
 
     /**
      * Composite Indexes
-     * @return List<CompositeIndexDefinition>
+     * @return CompositeIndexDefinition[]
      */
     CompositeIndex[] compositeIndexes() default {};
 }
