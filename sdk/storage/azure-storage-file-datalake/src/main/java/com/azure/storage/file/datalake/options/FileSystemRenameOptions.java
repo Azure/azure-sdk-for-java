@@ -53,6 +53,7 @@ public class FileSystemRenameOptions {
     /**
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return The updated options.
+     * @throws UnsupportedOperationException if a condition other than lease id is set.
      */
     public FileSystemRenameOptions setRequestConditions(DataLakeRequestConditions requestConditions) {
         this.requestConditions = requestConditions;

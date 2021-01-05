@@ -53,6 +53,7 @@ public class ContainerRenameOptions {
     /**
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
+     * @throws UnsupportedOperationException if a condition other than lease id is set.
      */
     public ContainerRenameOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
