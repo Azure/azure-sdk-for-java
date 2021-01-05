@@ -46,7 +46,7 @@
       "OData-Version" : "4.0",
       "x-ms-resource-unit" : "1",
       "Content-Length" : "350",
-      "Body" : "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#microsoft.graph.passwordCredential\",\"customKeyIdentifier\":null,\"displayName\":\"passwd\",\"endDateTime\":\"2022-12-05T05:07:32.0668425Z\",\"hint\":\"u1H\",\"keyId\":\"082d146c-9e54-448b-babc-a6213895325f\",\"secretText\":\"u1H0d4B_OS~534URHN6fWX9_r5t0Og.Uyv\",\"startDateTime\":\"2021-01-04T05:07:32.0668425Z\"}",
+      "Body" : "{\"@odata.context\":\"https://graph.microsoft.com/v1.0/$metadata#microsoft.graph.passwordCredential\",\"customKeyIdentifier\":null,\"displayName\":\"passwd\",\"endDateTime\":\"2022-12-05T05:07:32.0668425Z\",\"hint\":\"u1H\",\"keyId\":\"082d146c-9e54-448b-babc-a6213895325f\",\"secretText\":\"***REMOVED***\",\"startDateTime\":\"2021-01-04T05:07:32.0668425Z\"}",
       "Content-Type" : "application/json;odata.metadata=minimal;odata.streaming=true;IEEE754Compatible=false;charset=utf-8",
       "Location" : "https://graph.microsoft.com"
     },

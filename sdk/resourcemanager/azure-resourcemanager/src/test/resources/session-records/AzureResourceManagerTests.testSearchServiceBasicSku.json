@@ -166,7 +166,7 @@
       "Expires" : "-1",
       "Content-Length" : "99",
       "x-ms-request-id" : "6e2b247b-61c6-44f8-a489-dad0fb6b5579",
-      "Body" : "{\"primaryKey\":\"EE0B17F39BCC17D4A6D8E222C2DD1655\",\"secondaryKey\":\"E4E326CF08009136090378F93BE75EC6\"}",
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}",
       "x-ms-client-request-id" : "6e2b247b-61c6-44f8-a489-dad0fb6b5579",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -354,7 +354,7 @@
       "Expires" : "-1",
       "Content-Length" : "99",
       "x-ms-request-id" : "e6da5d35-c8a9-4511-a259-aa8010d18c66",
-      "Body" : "{\"primaryKey\":\"EE0B17F39BCC17D4A6D8E222C2DD1655\",\"secondaryKey\":\"E4E326CF08009136090378F93BE75EC6\"}",
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}",
       "x-ms-client-request-id" : "e6da5d35-c8a9-4511-a259-aa8010d18c66",
       "Content-Type" : "application/json; charset=utf-8"
     },
@@ -448,7 +448,7 @@
       "Expires" : "-1",
       "Content-Length" : "99",
       "x-ms-request-id" : "d3281534-c175-4c50-9bc5-ef2ba42710e2",
-      "Body" : "{\"primaryKey\":\"EE0B17F39BCC17D4A6D8E222C2DD1655\",\"secondaryKey\":\"E4E326CF08009136090378F93BE75EC6\"}",
+      "Body" : "{\"primaryKey\":\"***REMOVED***\",\"secondaryKey\":\"***REMOVED***\"}",
       "x-ms-client-request-id" : "d3281534-c175-4c50-9bc5-ef2ba42710e2",
       "Content-Type" : "application/json; charset=utf-8"
     },
