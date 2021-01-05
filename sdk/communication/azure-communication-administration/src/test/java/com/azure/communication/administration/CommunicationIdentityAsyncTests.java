@@ -54,7 +54,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
     public void createAsyncIdentityClientUsingConnectionString(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientUsingConnectionString(httpClient);
-        setupAsyncClient(builder, "createAsyncIdentityClientUsingConnectionString");
+        asyncClient = setupAsyncClient(builder, "createAsyncIdentityClientUsingConnectionString");
         assertNotNull(asyncClient);
 
         // Action & Assert
