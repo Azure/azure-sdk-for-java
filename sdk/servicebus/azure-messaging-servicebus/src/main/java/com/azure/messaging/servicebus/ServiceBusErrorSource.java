@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.ExpandableStringEnum;
 
 /**
- * Represent the operation this sdk was performing when the error happened.
+ * Represent the operation this SDK was performing when the error happened.
  */
 public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBusErrorSource> {
 
