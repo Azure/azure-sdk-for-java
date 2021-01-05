@@ -33,22 +33,22 @@ parameters:
     type: object
     default:
       Linux - Java 8:
-        Pool: ${{ parameters.LinuxPool }}
+        Pool: $(LinuxPool)
         OSVmImage:
         JavaTestVersion: '1.8'
         RunTitle: 'Linux on Java 1.8'
       macOS - Java 8:
         Pool:
-        OSVmImage: 'macOS-10.15'
+        OS: 'macOS-10.15'
         JavaTestVersion: '1.8'
         RunTitle: 'macOS on Java 1.8'
       Windows - Java 8:
-        Pool: ${{ parameters.WindowsPool }}
-        OSVmImage: 'windows-2019'
+        Pool: $(WindowsPool)
+        OSVmImage:
         JavaTestVersion: '1.8'
         RunTitle: 'Windows on Java 1.8'
       Linux - Java 11:
-        Pool: ${{ parameters.LinuxPool }}
+        Pool: $(LinuxPool)
         OSVmImage:
         JavaTestVersion: '1.11'
         RunTitle: 'Linux on Java 1.11'
@@ -58,17 +58,26 @@ parameters:
         JavaTestVersion: '1.11'
         RunTitle: 'macOS on Java 1.11'
       Windows - Java 11:
-        Pool: ${{ parameters.WindowsPool }}
+        Pool: $(WindowsPool)
         OSVmImage:
         JavaTestVersion: '1.11'
         RunTitle: 'Windows on Java 1.11'
       Linux From Source - Java 11:
-        Pool: ${{ parameters.LinuxPool }}
+        Pool: $(LinuxPool)
         OSVmImage:
         JavaTestVersion: '1.11'
         RunTitle: 'From Source: Linux on Java 1.11'
         AdditionalOptions: '-amd'
         TestFromSource: true
+
+# HACK: We can't reference parameters to define other parameters, so I am
+#       setting some variables with the value of parameters which can then
+#       be used later in the test evaluations.
+variables:
+  - name: WindowsPool
+    value: ${{parameters.WindowsPool}}
+  - name: LinuxPool
+    value: ${{parameters.LinuxPool}}
 
 jobs:
   - job: 'Build'
@@ -175,8 +184,6 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
-      - name: OSVmImage
-        value: 'ubuntu-18.04'
 
     pool:
       pool: ${{ parameters.LinuxPool }}
