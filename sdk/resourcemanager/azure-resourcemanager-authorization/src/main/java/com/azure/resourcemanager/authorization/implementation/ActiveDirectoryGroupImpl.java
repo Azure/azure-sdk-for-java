@@ -76,7 +76,7 @@ class ActiveDirectoryGroupImpl
             Object odataTypeObject = inner.additionalProperties().get("@odata.type");
             if (odataTypeObject instanceof String) {
                 SerializerAdapter serializerAdapter =
-                    ((MicrosoftGraphClientImpl)manager().serviceClient()).getSerializerAdapter();
+                    ((MicrosoftGraphClientImpl) manager().serviceClient()).getSerializerAdapter();
                 String odataType = ((String) odataTypeObject).toLowerCase(Locale.ROOT);
                 try {
                     String jsonString = serializerAdapter.serialize(inner, SerializerEncoding.JSON);
@@ -177,8 +177,8 @@ class ActiveDirectoryGroupImpl
         // https://docs.microsoft.com/en-us/graph/api/group-post-members
         String membersKey = "@odata.id";
         membersToAdd.add(new HashMap<String, Object>() {{
-            put(membersKey, String.format("%s/directoryObjects/%s", manager().serviceClient().getEndpoint(), objectId));
-        }});
+                put(membersKey, String.format("%s/directoryObjects/%s", manager().serviceClient().getEndpoint(), objectId));
+            }});
         return this;
     }
 

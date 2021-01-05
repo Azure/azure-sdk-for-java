@@ -25,7 +25,7 @@ public final class MicrosoftGraphOptionalClaim {
      * the name property.
      */
     @JsonProperty(value = "additionalProperties")
-    private List<String> AdditionalPropertiesProperty;
+    private List<String> additionalPropertiesProperty;
 
     /*
      * If the value is true, the claim specified by the client is necessary to
@@ -57,24 +57,24 @@ public final class MicrosoftGraphOptionalClaim {
     @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
-     * Get the AdditionalPropertiesProperty property: Additional properties of the claim. If a property exists in this
+     * Get the additionalPropertiesProperty property: Additional properties of the claim. If a property exists in this
      * collection, it modifies the behavior of the optional claim specified in the name property.
      *
-     * @return the AdditionalPropertiesProperty value.
+     * @return the additionalPropertiesProperty value.
      */
     public List<String> additionalPropertiesProperty() {
-        return this.AdditionalPropertiesProperty;
+        return this.additionalPropertiesProperty;
     }
 
     /**
-     * Set the AdditionalPropertiesProperty property: Additional properties of the claim. If a property exists in this
+     * Set the additionalPropertiesProperty property: Additional properties of the claim. If a property exists in this
      * collection, it modifies the behavior of the optional claim specified in the name property.
      *
-     * @param AdditionalPropertiesProperty the AdditionalPropertiesProperty value to set.
+     * @param additionalPropertiesProperty the additionalPropertiesProperty value to set.
      * @return the MicrosoftGraphOptionalClaim object itself.
      */
-    public MicrosoftGraphOptionalClaim withAdditionalPropertiesProperty(List<String> AdditionalPropertiesProperty) {
-        this.AdditionalPropertiesProperty = AdditionalPropertiesProperty;
+    public MicrosoftGraphOptionalClaim withAdditionalPropertiesProperty(List<String> additionalPropertiesProperty) {
+        this.additionalPropertiesProperty = additionalPropertiesProperty;
         return this;
     }
 

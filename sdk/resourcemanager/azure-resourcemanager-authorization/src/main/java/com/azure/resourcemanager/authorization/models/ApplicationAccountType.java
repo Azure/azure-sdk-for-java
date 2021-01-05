@@ -7,6 +7,7 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
+/** Defines values for Application Account Type */
 public final class ApplicationAccountType extends ExpandableStringEnum<ApplicationAccountType> {
 
     /** Users with a Microsoft work or school account in my organization’s Azure AD tenant (single tenant) */

@@ -45,7 +45,7 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
     private RoleAssignments roleAssignments;
     private RoleDefinitions roleDefinitions;
 
-    private static final String defaultGraphEndpointSuffix = "v1.0";
+    private static final String DEFAULT_GRAPH_ENDPOINT_SUFFIX = "v1.0";
 
     /**
      * Creates an instance of AuthorizationManager that exposes Authorization
@@ -109,8 +109,8 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
     private AuthorizationManager(HttpPipeline httpPipeline, AzureProfile profile) {
         String graphEndpoint = profile.getEnvironment().getGraphEndpoint();
         graphEndpoint = graphEndpoint.endsWith("/")
-            ? graphEndpoint + defaultGraphEndpointSuffix
-            : graphEndpoint + "/" + defaultGraphEndpointSuffix;
+            ? graphEndpoint + DEFAULT_GRAPH_ENDPOINT_SUFFIX
+            : graphEndpoint + "/" + DEFAULT_GRAPH_ENDPOINT_SUFFIX;
 
         this.microsoftGraphClient =
             new MicrosoftGraphClientBuilder()
