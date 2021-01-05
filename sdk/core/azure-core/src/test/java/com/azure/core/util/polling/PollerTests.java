@@ -874,13 +874,13 @@ public class PollerTests {
             .expectNextCount(5)
             .verifyComplete();
 
-        pollerFlux.updatePollInterval(Duration.ofSeconds(5));
+        pollerFlux.setPollInterval(Duration.ofSeconds(5));
         StepVerifier.withVirtualTime(() -> pollerFlux.take(5))
             .thenAwait(Duration.ofSeconds(25))
             .expectNextCount(5)
             .verifyComplete();
 
-        pollerFlux.updatePollInterval(Duration.ofSeconds(10));
+        pollerFlux.setPollInterval(Duration.ofSeconds(10));
         StepVerifier.withVirtualTime(() -> pollerFlux.take(5))
             .thenAwait(Duration.ofSeconds(50))
             .expectNextCount(5)

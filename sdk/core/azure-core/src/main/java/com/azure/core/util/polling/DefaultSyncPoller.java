@@ -207,13 +207,14 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     }
 
     @Override
-    public void updatePollInterval(Duration pollInterval) {
+    public SyncPoller<T, U> setPollInterval(Duration pollInterval) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.compareTo(Duration.ZERO) <= 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'defaultPollInterval' is not allowed."));
+                "Negative or zero value for 'pollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
+        return this;
     }
 
     private static <T, U> PollResponse<T> toPollResponse(AsyncPollResponse<T, U> asyncPollResponse) {

@@ -180,19 +180,21 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     }
 
     /**
-     * Updates the poll interval for this poller.
+     * Sets the poll interval for this poller. The new interval will be used for all subsequent polling operations
+     * including the subscriptions that are already in progress.
      *
      * @param pollInterval The new poll interval for this poller.
      * @throws NullPointerException if the {@code pollInterval} is null.
      * @throws IllegalArgumentException if the {@code pollInterval} is zero or negative.
      */
-    public void updatePollInterval(Duration pollInterval) {
+    public PollerFlux<T, U> setPollInterval(Duration pollInterval) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.compareTo(Duration.ZERO) <= 0) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'defaultPollInterval' is not allowed."));
+                "Negative or zero value for 'pollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
+        return this;
     }
 
     @Override
