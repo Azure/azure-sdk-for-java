@@ -4,13 +4,12 @@ package com.azure.cosmos.spark
 
 import java.util.UUID
 
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
-import com.azure.cosmos.{ConsistencyLevel, CosmosBridgeInternal, CosmosClientBuilder}
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeInternal}
+import com.azure.cosmos.{ConsistencyLevel, CosmosClientBuilder}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.write.{DataWriter, DataWriterFactory, WriterCommitMessage}
-import org.apache.spark.sql.types.{IntegerType, StringType, StructField, StructType}
+import org.apache.spark.sql.types.StructType
 
 class CosmosDataWriteFactory(userConfig: Map[String, String],
                              inputSchema: StructType,
@@ -33,9 +32,7 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
       .endpoint(cosmosAccountConfig.endpoint)
       .consistencyLevel(ConsistencyLevel.EVENTUAL);
 
-    val clientBuilderAccessor = CosmosClientBuilderHelper.getCosmosClientBuilderAccessor()
-    clientBuilderAccessor.setCosmosClientMetadataCachesSnapshot(builder, cosmosClientStateHandle.value)
-
+    val clientBuilderAccessor = SparkBridgeInternal.setMetadataCacheSnapshot(builder, cosmosClientStateHandle.value)
     val client = builder.buildAsyncClient();
 
     override def write(internalRow: InternalRow): Unit = {

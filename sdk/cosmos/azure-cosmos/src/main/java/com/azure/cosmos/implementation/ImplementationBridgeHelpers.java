@@ -6,10 +6,10 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosClientBuilder;
 
 public class ImplementationBridgeHelpers {
-    public abstract static class CosmosClientBuilderHelper {
+    public static final class CosmosClientBuilderHelper {
         private static CosmosClientBuilderAccessor accessor;
 
-        protected CosmosClientBuilderHelper() {}
+        private CosmosClientBuilderHelper() {}
 
         public static void setCosmosClientBuilderAccessor(final CosmosClientBuilderAccessor newAccessor) {
             if (accessor != null) {
@@ -19,7 +19,7 @@ public class ImplementationBridgeHelpers {
             accessor = newAccessor;
         }
 
-        public static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
+        static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
             if (accessor == null) {
                 throw new IllegalStateException("accessor is not initialized yet!");
             }
