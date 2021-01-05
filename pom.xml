@@ -27,6 +27,7 @@
     <module>sdk/formrecognizer</module>
     <module>sdk/hdinsight</module>
     <module>sdk/identity</module>
+    <module>sdk/iothub</module>
     <module>sdk/keyvault</module>
     <module>sdk/kusto</module>
     <module>sdk/loganalytics</module>
