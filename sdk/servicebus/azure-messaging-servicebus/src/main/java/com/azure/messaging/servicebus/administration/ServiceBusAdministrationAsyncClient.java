@@ -94,13 +94,12 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * An <b>asynchronous</b> client for managing a Service Bus namespace. Instantiated via
  * {@link ServiceBusAdministrationClientBuilder}.
  *
- * <p>
  * <p><strong>Create a queue</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.createqueue#string}
- * <p>
+ *
  * <p><strong>Edit an existing subscription</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.updatesubscription#subscriptionproperties}
- * <p>
+ *
  * <p><strong>List all queues</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.listQueues}
  *
