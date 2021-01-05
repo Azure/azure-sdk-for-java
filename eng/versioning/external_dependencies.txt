@@ -132,8 +132,11 @@ org.springframework:spring-tx;5.3.1
 org.springframework:spring-web;5.3.1
 org.springframework:spring-webmvc;5.3.1
 
-# spring-boot-starter-parent is not managed by spring-boot-dependencies or spring-cloud-dependencies.
-org.springframework.boot:spring-boot-starter-parent;2.3.7.RELEASE
+# spring-boot-starter-parent's version should be updated manually. Because:
+# 1. It's not managed by spring-boot-dependencies or spring-cloud-dependencies.
+# 2. When spring-boot have minor version up, we should update it's version. But should not
+#    update spring-boot-dependencies' version.
+org.springframework.boot:spring-boot-starter-parent;2.4.0
 
 ## Spring cloud dependency versions
 org.springframework.cloud:spring-cloud-dependencies;2020.0.0
