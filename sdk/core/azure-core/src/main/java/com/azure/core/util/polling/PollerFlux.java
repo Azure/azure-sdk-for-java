@@ -184,6 +184,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * including the subscriptions that are already in progress.
      *
      * @param pollInterval The new poll interval for this poller.
+     * @return The updated instance of {@link PollerFlux}.
      * @throws NullPointerException if the {@code pollInterval} is null.
      * @throws IllegalArgumentException if the {@code pollInterval} is zero or negative.
      */

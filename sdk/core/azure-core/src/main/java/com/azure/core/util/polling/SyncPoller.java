@@ -82,7 +82,8 @@ public interface SyncPoller<T, U> {
      * including the polling operations that are already in progress.
      *
      * @param pollInterval The new poll interval for this poller.
-     * @throws NullPointerException     if the {@code pollInterval} is null.
+     * @return The updated instance of {@link SyncPoller}.
+     * @throws NullPointerException if the {@code pollInterval} is null.
      * @throws IllegalArgumentException if the {@code pollInterval} is zero or negative.
      */
     default SyncPoller<T, U> setPollInterval(Duration pollInterval) {
