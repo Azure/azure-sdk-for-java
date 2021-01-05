@@ -49,7 +49,7 @@ public class AADAuthenticationFilterIT {
         Map<String, String> properties = new HashMap<>();
         properties.put("azure.activedirectory.client-id", clientId);
         properties.put("azure.activedirectory.client-secret", clientSecret);
-        properties.put("azure.activedirectory.user-group.allowed-groups", "group1,group2");
+        properties.put("azure.activedirectory.user-group.allowed-groups", "group1");
         return new AADWebApiITHelper(
             DumbApp.class,
             properties,
@@ -142,10 +142,10 @@ public class AADAuthenticationFilterIT {
             return new ResponseEntity<>("api/group1", HttpStatus.OK);
         }
 
-        @PreAuthorize("hasRole('ROLE_notExist')")
-        @GetMapping(value = "api/notExist")
+        @PreAuthorize("hasRole('ROLE_group2')")
+        @GetMapping(value = "api/group2")
         public ResponseEntity<String> getRoleGroup2() {
-            return new ResponseEntity<>("api/notExist", HttpStatus.OK);
+            return new ResponseEntity<>("api/group2", HttpStatus.OK);
         }
     }
 
