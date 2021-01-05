@@ -78,7 +78,7 @@ This starter provides following properties to be customized:
 | **azure.activedirectory**.authorization-clients.{client-name}.scopes | API permissions of a resource server that the application is going to acquire. |
 | **azure.activedirectory**.authorization-clients.{client-name}.scopes.on-demand | If the authorization flow of current resource server will be executed on demand. The default value is false. |
 | **azure.activedirectory**.base-uri                               | Base uri for authorization server, the default value is `https://login.microsoftonline.com/`. |
-| **azure.activedirectory**.graph-base-uri                         | Graph base uri for authorization server, the default value is `https://graph.microsoft.com/`. |
+| **azure.activedirectory**.graph-base-uri                         | Base uri for Microsoft Graph server, the default value is `https://graph.microsoft.com/`. |
 | **azure.activedirectory**.client-id                              | Registered application ID in Azure AD.                       |
 | **azure.activedirectory**.client-secret                          | API Access Key of the registered application.                |
 | **azure.activedirectory**.graph-membership-uri                   | The way this starter uses to load users' membership depends on the configured membership URI. By default, the starter uses `https://graph.microsoft.com/v1.0/me/memberOf` to get direct membership of current user. <br>To get all transitive membership, you can configure it as `https://graph.microsoft.com/v1.0/me/transitiveMemberOf`. |

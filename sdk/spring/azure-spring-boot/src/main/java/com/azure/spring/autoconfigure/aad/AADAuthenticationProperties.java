@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.util.ClassUtils;
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Validated
 @ConfigurationProperties("azure.activedirectory")
-public class AADAuthenticationProperties {
+public class AADAuthenticationProperties implements InitializingBean {
 
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
@@ -284,7 +285,7 @@ public class AADAuthenticationProperties {
     }
 
     public void setGraphBaseUri(String graphBaseUri) {
-        this.graphBaseUri = graphBaseUri;
+        this.graphBaseUri = addSlash(graphBaseUri);
     }
 
     public String getGraphMembershipUri() {
@@ -308,5 +309,20 @@ public class AADAuthenticationProperties {
                        .map(UserGroupProperties::getAllowedGroups)
                        .orElseGet(Collections::emptyList)
                        .contains(group);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        validateDomain();
+    }
+
+    private String addSlash(String uri) {
+        return uri.endsWith("/") ? uri : uri + "/";
+    }
+
+    private void validateDomain() {
+        if (!graphMembershipUri.substring(0, graphMembershipUri.indexOf("v1.0")).equals(graphBaseUri)) {
+            throw new IllegalStateException("The domains of graphBaseUri and graphMembershipUri are inconsistent.");
+        }
     }
 }
