@@ -32,7 +32,7 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
       .endpoint(cosmosAccountConfig.endpoint)
       .consistencyLevel(ConsistencyLevel.EVENTUAL);
 
-    val clientBuilderAccessor = SparkBridgeInternal.setMetadataCacheSnapshot(builder, cosmosClientStateHandle.value)
+    SparkBridgeInternal.setMetadataCacheSnapshot(builder, cosmosClientStateHandle.value)
     val client = builder.buildAsyncClient();
 
     override def write(internalRow: InternalRow): Unit = {

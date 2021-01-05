@@ -36,7 +36,7 @@ case class CosmosPartitionReader(config: Map[String, String],
 
   val metadataCache = cosmosClientStateHandle.value;
 
-  val clientBuilderAccessor = SparkBridgeInternal.setMetadataCacheSnapshot(builder, metadataCache)
+  SparkBridgeInternal.setMetadataCacheSnapshot(builder, metadataCache)
   val client = builder.buildAsyncClient();
 
   val cosmosAsyncContainer = client
