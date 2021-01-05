@@ -418,7 +418,6 @@ class ServiceBusSessionManagerTest {
     @Test
     void singleUnnamedSessionCleanupAfterTimeout() {
         // Arrange
-        Duration shortTimeout =  Duration.ofSeconds(15);
         ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
             2);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
@@ -460,7 +459,7 @@ class ServiceBusSessionManagerTest {
 
             })
             .thenCancel()
-            .verify(shortTimeout);
+            .verify(TIMEOUT);
     }
 
     private static void assertMessageEquals(String sessionId, ServiceBusReceivedMessage expected,
