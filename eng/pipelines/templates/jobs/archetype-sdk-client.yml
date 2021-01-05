@@ -70,14 +70,6 @@ parameters:
         AdditionalOptions: '-amd'
         TestFromSource: true
 
-# HACK: We can't reference parameters to define other parameters, so I am
-#       setting some variables with the value of parameters which can then
-#       be used later in the test evaluations.
-variables:
-  - name: WindowsPool
-    value: ${{parameters.WindowsPool}}
-  - name: LinuxPool
-    value: ${{parameters.LinuxPool}}
 
 jobs:
   - job: 'Build'
@@ -269,8 +261,15 @@ jobs:
   - job: 'Test'
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
 
+    # HACK: We can't reference parameters to define other parameters, so I am
+    #       setting some variables with the value of parameters which can then
+    #       be used later in the test evaluations.
     variables:
       - template: ../variables/globals.yml
+      - name: WindowsPool
+        value: ${{parameters.WindowsPool}}
+      - name: LinuxPool
+        value: ${{parameters.LinuxPool}}
 
     strategy:
       matrix:
