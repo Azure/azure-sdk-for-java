@@ -39,7 +39,7 @@ parameters:
         RunTitle: 'Linux on Java 1.8'
       macOS - Java 8:
         Pool:
-        OS: 'macOS-10.15'
+        OSVmImage: 'macOS-10.15'
         JavaTestVersion: '1.8'
         RunTitle: 'macOS on Java 1.8'
       Windows - Java 8:
