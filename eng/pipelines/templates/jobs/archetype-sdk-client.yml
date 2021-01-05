@@ -1,43 +1,74 @@
 parameters:
-  SDKType: client
-  ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
-  TestPipeline: false
-  Artifacts: []
-  AdditionalModules: []
-  PreTestSteps: []
-  TestOptions: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
-  TestGoals: verify
-  TestMatrix:
-    Linux - Java 8:
-      OSVmImage: 'ubuntu-18.04'
-      JavaTestVersion: '1.8'
-      RunTitle: 'Linux on Java 1.8'
-    macOS - Java 8:
-      OSVmImage: 'macOS-10.15'
-      JavaTestVersion: '1.8'
-      RunTitle: 'macOS on Java 1.8'
-    Windows - Java 8:
-      OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.8'
-      RunTitle: 'Windows on Java 1.8'
-    Linux - Java 11:
-      OSVmImage: 'ubuntu-18.04'
-      JavaTestVersion: '1.11'
-      RunTitle: 'Linux on Java 1.11'
-    macOS - Java 11:
-      OSVmImage: 'macOS-10.15'
-      JavaTestVersion: '1.11'
-      RunTitle: 'macOS on Java 1.11'
-    Windows - Java 11:
-      OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.11'
-      RunTitle: 'Windows on Java 1.11'
-    Linux From Source - Java 11:
-      OSVmImage: 'ubuntu-18.04'
-      JavaTestVersion: '1.11'
-      RunTitle: 'From Source: Linux on Java 1.11'
-      AdditionalOptions: '-amd'
-      TestFromSource: true
+  - name: SDKType
+    type: string
+    default: client
+  - name: ServiceDirectory
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: TestPipeline
+    type: string
+    default: false
+  - name: Artifacts
+    type: object
+    default: []
+  - name: AdditionalModules
+    type: object
+    default: []
+  - name: PreTestSteps
+    type: object
+    default: []
+  - name: TestOptions
+    type: string
+    default: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
+  - name: TestGoals
+    type: string
+    default: verify
+  - name: WindowsPool
+    type: string
+    default: azsdk-pool-mms-win-2019-general
+  - name: LinuxPool
+    type: string
+    default: azsdk-pool-mms-ubuntu-1804-general
+  - name: TestMatrix
+    type: object
+    default:
+      Linux - Java 8:
+        Pool: ${{ parameters.LinuxPool }}
+        OSVmImage:
+        JavaTestVersion: '1.8'
+        RunTitle: 'Linux on Java 1.8'
+      macOS - Java 8:
+        Pool:
+        OSVmImage: 'macOS-10.15'
+        JavaTestVersion: '1.8'
+        RunTitle: 'macOS on Java 1.8'
+      Windows - Java 8:
+        Pool: ${{ parameters.WindowsPool }}
+        OSVmImage: 'windows-2019'
+        JavaTestVersion: '1.8'
+        RunTitle: 'Windows on Java 1.8'
+      Linux - Java 11:
+        Pool: ${{ parameters.LinuxPool }}
+        OSVmImage:
+        JavaTestVersion: '1.11'
+        RunTitle: 'Linux on Java 1.11'
+      macOS - Java 11:
+        Pool:
+        OSVmImage: 'macOS-10.15'
+        JavaTestVersion: '1.11'
+        RunTitle: 'macOS on Java 1.11'
+      Windows - Java 11:
+        Pool: ${{ parameters.WindowsPool }}
+        OSVmImage:
+        JavaTestVersion: '1.11'
+        RunTitle: 'Windows on Java 1.11'
+      Linux From Source - Java 11:
+        Pool: ${{ parameters.LinuxPool }}
+        OSVmImage:
+        JavaTestVersion: '1.11'
+        RunTitle: 'From Source: Linux on Java 1.11'
+        AdditionalOptions: '-amd'
+        TestFromSource: true
 
 jobs:
   - job: 'Build'
@@ -46,7 +77,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      vmImage: 'ubuntu-18.04'
+      name: ${{ parameters.LinuxPool }}
 
     strategy:
       matrix:
@@ -148,7 +179,7 @@ jobs:
         value: 'ubuntu-18.04'
 
     pool:
-      vmImage: $(OSVmImage)
+      pool: ${{ parameters.LinuxPool }}
 
     steps:
       - pwsh: |
@@ -243,6 +274,7 @@ jobs:
               ${{ insert }}: ${{ matrixEntry.value }}
 
     pool:
+      name: $(Pool)
       vmImage: $(OSVmImage)
 
     steps:
