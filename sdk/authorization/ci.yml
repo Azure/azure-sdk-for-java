@@ -42,3 +42,6 @@ extends:
       - name: azure-authentication-msi-token-provider
         groupId: com.microsoft.azure.msi_auth_token_provider
         safeName: azureauthenticationmsitokenprovider
+      - name: azure-resourcemanager-authorization-generated
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerauthorizationgenerated
