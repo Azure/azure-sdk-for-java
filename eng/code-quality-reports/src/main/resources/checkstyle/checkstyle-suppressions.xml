@@ -597,6 +597,7 @@
   <!-- Checkstyle suppressions for resource manager package -->
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.resourcemanager.*"/>
 
+
   <!-- Checkstyle suppressions for the auto generated Chat Client Implementation -->
   <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl.java"/>
 
