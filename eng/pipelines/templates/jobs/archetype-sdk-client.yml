@@ -280,8 +280,8 @@ jobs:
               ${{ insert }}: ${{ matrixEntry.value }}
 
     pool:
-      name: $(Pool)
-      vmImage: $(OSVmImage)
+      name: $[coalesce(variables['Pool'], '')]
+      vmImage: $[coalesce(variables['OSVmImage'], '')]
 
     steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
