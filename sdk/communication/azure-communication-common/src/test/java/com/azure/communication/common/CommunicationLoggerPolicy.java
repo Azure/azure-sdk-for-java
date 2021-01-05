@@ -16,8 +16,8 @@ import reactor.core.publisher.Mono;
  */
 public class CommunicationLoggerPolicy implements HttpPipelinePolicy {
 
-    final ClientLogger logger = new ClientLogger(CommunicationLoggerPolicy.class);
-    final String testName;
+    private final ClientLogger logger = new ClientLogger(CommunicationLoggerPolicy.class);
+    private final String testName;
 
     /**
      * Creates a policy that logs the Http Response

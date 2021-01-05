@@ -102,9 +102,6 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
     }
 
     protected PhoneNumberClientBuilder addLoggingPolicy(PhoneNumberClientBuilder builder, String testName) {
-        if (getTestMode() == TestMode.LIVE) {
-            builder.addPolicy(new CommunicationLoggerPolicy(testName));
-        }
-        return builder;
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
     }
 }

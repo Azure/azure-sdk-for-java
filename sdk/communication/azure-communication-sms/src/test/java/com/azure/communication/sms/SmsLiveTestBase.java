@@ -90,9 +90,6 @@ public class SmsLiveTestBase extends TestBase {
     }
     
     protected SmsClientBuilder addLoggingPolicy(SmsClientBuilder builder, String testName) {
-        if (getTestMode() == TestMode.LIVE) {
-            builder.addPolicy(new CommunicationLoggerPolicy(testName));
-        }
-        return builder;
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
     }
 }
