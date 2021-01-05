@@ -16,6 +16,7 @@ import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** ExpressRouteCircuit resource. */
 @JsonFlatten
@@ -437,6 +438,20 @@ public class ExpressRouteCircuitInner extends Resource {
      */
     public ExpressRouteCircuitInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteCircuitInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteCircuitInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

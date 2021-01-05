@@ -3,36 +3,36 @@
 
 package com.azure.spring.cloud.context.core.storage;
 
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.management.storage.StorageAccount;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.storage.models.StorageAccount;
 
 /**
- * Get connection string from the Azure environment for the storage account.
+ * A provider that holds the storage account connection string.
  */
 public class StorageConnectionStringProvider {
 
-    public static String getConnectionString(StorageAccount storageAccount, AzureEnvironment environment,
-        boolean isSecureTransfer) {
-        return buildConnectionString(storageAccount, environment, isSecureTransfer);
+    private final String connectionString;
+
+    public StorageConnectionStringProvider(StorageAccount storageAccount) {
+        this.connectionString = buildConnectionString(storageAccount);
     }
 
-    public static String getConnectionString(StorageAccount storageAccount, AzureEnvironment environment) {
-        return getConnectionString(storageAccount, environment, true);
+    public StorageConnectionStringProvider(String accountName, String accountKey, AzureEnvironment environment) {
+        this.connectionString = ResourceManagerUtils.getStorageConnectionString(accountName, accountKey, environment);
     }
 
-    public static String getConnectionString(String storageAccount, String accessKey, AzureEnvironment environment) {
-        return getConnectionString(storageAccount, accessKey, environment, true);
+    private static String buildConnectionString(StorageAccount storageAccount) {
+        return storageAccount.getKeys()
+                             .stream()
+                             .findFirst()
+                             .map(key -> ResourceManagerUtils.getStorageConnectionString(storageAccount.name(),
+                                 key.value(),
+                                 storageAccount.manager().environment()))
+                             .orElseThrow(() -> new RuntimeException("Storage account key is empty."));
     }
 
-    public static String getConnectionString(String storageAccount, String accessKey, AzureEnvironment environment,
-        boolean isSecureTransfer) {
-        return StorageConnectionStringBuilder.build(storageAccount, accessKey, environment, isSecureTransfer);
-    }
-
-    private static String buildConnectionString(StorageAccount storageAccount, AzureEnvironment environment,
-        boolean isSecureTransfer) {
-        return storageAccount.getKeys().stream().findFirst().map(key -> StorageConnectionStringBuilder
-            .build(storageAccount.name(), key.value(), environment, isSecureTransfer))
-            .orElseThrow(() -> new RuntimeException("Storage account key is empty."));
+    public String getConnectionString() {
+        return connectionString;
     }
 }

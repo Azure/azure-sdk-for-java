@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents an included path of the IndexingPolicy in the Azure Cosmos DB database service.
@@ -135,4 +136,19 @@ public final class IncludedPath {
     }
 
     JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IncludedPath that = (IncludedPath) o;
+        return Objects.equals(jsonSerializable, that.jsonSerializable);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(jsonSerializable);
+    }
 }

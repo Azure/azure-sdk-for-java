@@ -3,9 +3,9 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
+import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.context.core.api.EnvironmentProvider;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
-import com.microsoft.azure.AzureEnvironment;
 
 /**
  * A {@link EnvironmentProvider} implementation that based on {@link

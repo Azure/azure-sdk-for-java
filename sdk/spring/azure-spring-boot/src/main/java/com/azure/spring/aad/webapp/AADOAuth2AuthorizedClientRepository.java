@@ -3,111 +3,115 @@
 
 package com.azure.spring.aad.webapp;
 
-import com.azure.spring.aad.webapp.jackson.AADDatabindModule;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.azure.spring.aad.AADClientRegistrationRepository;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.jackson2.CoreJackson2Module;
+import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
+import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
-import org.springframework.util.Assert;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
-import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
- * An implementation of an {@link OAuth2AuthorizedClientRepository} that stores {@link OAuth2AuthorizedClient}'s in the
- * {@code HttpSession}. To make it compatible with different spring versions. Refs:
- * https://github.com/spring-projects/spring-security/issues/9204
- *
- * @see OAuth2AuthorizedClientRepository
- * @see OAuth2AuthorizedClient
+ * OAuth2AuthorizedClientRepository used for AAD oauth2 clients.
  */
 public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
-    private static final String AUTHORIZED_CLIENTS_ATTR_NAME =
-        AADOAuth2AuthorizedClientRepository.class.getName() + ".AUTHORIZED_CLIENTS";
-    private final ObjectMapper objectMapper;
-    private static final TypeReference<Map<String, OAuth2AuthorizedClient>> TYPE_REFERENCE =
-        new TypeReference<Map<String, OAuth2AuthorizedClient>>() {
-        };
 
-    public AADOAuth2AuthorizedClientRepository() {
-        objectMapper = new ObjectMapper();
-        // TODO: Use OAuth2ClientJackson2Module in spring-security
-        // after min spring-security version we need to support >=5.3.0
-        objectMapper.registerModule(new AADDatabindModule());
-        objectMapper.registerModule(new CoreJackson2Module());
-        objectMapper.registerModule(new JavaTimeModule());
+    private final AADWebAppClientRegistrationRepository repo;
+    private final OAuth2AuthorizedClientRepository delegate;
+    private final OAuth2AuthorizedClientProvider provider;
+
+    public AADOAuth2AuthorizedClientRepository(AADWebAppClientRegistrationRepository repo) {
+        this(repo,
+            new JacksonHttpSessionOAuth2AuthorizedClientRepository(),
+            new RefreshTokenOAuth2AuthorizedClientProvider());
     }
 
-    @SuppressWarnings("unchecked")
+    public AADOAuth2AuthorizedClientRepository(AADWebAppClientRegistrationRepository repo,
+                                               OAuth2AuthorizedClientRepository delegate,
+                                               OAuth2AuthorizedClientProvider provider) {
+        this.repo = repo;
+        this.delegate = delegate;
+        this.provider = provider;
+    }
+
     @Override
-    public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String clientRegistrationId,
+    public void saveAuthorizedClient(OAuth2AuthorizedClient client,
+                                     Authentication principal,
+                                     HttpServletRequest request,
+                                     HttpServletResponse response) {
+        delegate.saveAuthorizedClient(client, principal, request, response);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T extends OAuth2AuthorizedClient> T loadAuthorizedClient(String id,
                                                                      Authentication principal,
                                                                      HttpServletRequest request) {
-        Assert.hasText(clientRegistrationId, "clientRegistrationId cannot be empty");
-        Assert.notNull(request, "request cannot be null");
-        return (T) this.getAuthorizedClients(request).get(clientRegistrationId);
-    }
+        OAuth2AuthorizedClient result = delegate.loadAuthorizedClient(id, principal, request);
+        if (result != null) {
+            return (T) result;
+        }
 
-    @Override
-    public void saveAuthorizedClient(OAuth2AuthorizedClient authorizedClient, Authentication principal,
-                                     HttpServletRequest request, HttpServletResponse response) {
-        Assert.notNull(authorizedClient, "authorizedClient cannot be null");
-        Assert.notNull(request, "request cannot be null");
-        Assert.notNull(response, "response cannot be null");
-        Map<String, OAuth2AuthorizedClient> authorizedClients = this.getAuthorizedClients(request);
-        authorizedClients.put(authorizedClient.getClientRegistration().getRegistrationId(), authorizedClient);
-        request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME, toString(authorizedClients));
-    }
-
-    @Override
-    public void removeAuthorizedClient(String clientRegistrationId, Authentication principal,
-                                       HttpServletRequest request, HttpServletResponse response) {
-        Assert.hasText(clientRegistrationId, "clientRegistrationId cannot be empty");
-        Assert.notNull(request, "request cannot be null");
-        Map<String, OAuth2AuthorizedClient> authorizedClients = this.getAuthorizedClients(request);
-        if (!authorizedClients.isEmpty()) {
-            if (authorizedClients.remove(clientRegistrationId) != null) {
-                if (!authorizedClients.isEmpty()) {
-                    request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME, toString(authorizedClients));
-                } else {
-                    request.getSession().removeAttribute(AUTHORIZED_CLIENTS_ATTR_NAME);
-                }
+        if (repo.isClientNeedConsentWhenLogin(id)) {
+            OAuth2AuthorizedClient azureClient = loadAuthorizedClient(getAzureClientId(), principal, request);
+            OAuth2AuthorizedClient fakeAuthzClient = createFakeAuthzClient(azureClient, id, principal);
+            OAuth2AuthorizationContext.Builder contextBuilder =
+                OAuth2AuthorizationContext.withAuthorizedClient(fakeAuthzClient);
+            String[] scopes = null;
+            if (!AADClientRegistrationRepository.isDefaultClient(id)) {
+                scopes = repo.findByRegistrationId(id).getScopes().toArray(new String[0]);
             }
+            OAuth2AuthorizationContext context = contextBuilder
+                .principal(principal)
+                .attributes(getAttributesConsumer(scopes))
+                .build();
+            return (T) provider.authorize(context);
         }
+        return null;
     }
 
-    private String toString(Map<String, OAuth2AuthorizedClient> authorizedClients) {
-        String result;
-        try {
-            result = objectMapper.writeValueAsString(authorizedClients);
-        } catch (JsonProcessingException e) {
-            throw new IllegalStateException(e);
-        }
-        return result;
+    private Consumer<Map<String, Object>> getAttributesConsumer(String[] scopes) {
+        return attributes -> attributes.put(OAuth2AuthorizationContext.REQUEST_SCOPE_ATTRIBUTE_NAME, scopes);
     }
 
-    private Map<String, OAuth2AuthorizedClient> getAuthorizedClients(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        String authorizedClientsString = (String) Optional.ofNullable(session)
-                                                          .map(s -> s.getAttribute(AUTHORIZED_CLIENTS_ATTR_NAME))
-                                                          .orElse(null);
-        if (authorizedClientsString == null) {
-            return new HashMap<>();
+    private String getAzureClientId() {
+        return repo.getAzureClient().getClient().getRegistrationId();
+    }
+
+    private OAuth2AuthorizedClient createFakeAuthzClient(OAuth2AuthorizedClient azureClient,
+                                                         String id,
+                                                         Authentication principal) {
+        if (azureClient == null || azureClient.getRefreshToken() == null) {
+            return null;
         }
-        Map<String, OAuth2AuthorizedClient> authorizedClients;
-        try {
-            authorizedClients = objectMapper.readValue(authorizedClientsString, TYPE_REFERENCE);
-        } catch (JsonProcessingException e) {
-            throw new IllegalStateException(e);
-        }
-        return authorizedClients;
+
+        OAuth2AccessToken accessToken = new OAuth2AccessToken(
+            OAuth2AccessToken.TokenType.BEARER,
+            "non-access-token",
+            Instant.MIN,
+            Instant.now().minus(100, ChronoUnit.DAYS));
+
+        return new OAuth2AuthorizedClient(
+            repo.findByRegistrationId(id),
+            principal.getName(),
+            accessToken,
+            azureClient.getRefreshToken()
+        );
+    }
+
+    @Override
+    public void removeAuthorizedClient(String id,
+                                       Authentication principal,
+                                       HttpServletRequest request,
+                                       HttpServletResponse response) {
+        delegate.removeAuthorizedClient(id, principal, request, response);
     }
 }
