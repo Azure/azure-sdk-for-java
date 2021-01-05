@@ -4,6 +4,7 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.Test;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -217,6 +218,53 @@ public class AADWebAppConfigurationTest {
                     "openid", "profile", "https://graph.microsoft.com/User.Read",
                     "https://graph.microsoft.com/Directory.AccessAsUser.All"
                 );
+            });
+    }
+
+    @Test
+    public void graphUriConfigurationTest() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .run(context -> {
+                AADAuthenticationProperties properties =
+                    context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getGraphBaseUri(),"https://graph.microsoft.com/");
+                assertEquals(properties.getGraphMembershipUri(),"https://graph.microsoft.com/v1.0/me/memberOf");
+            });
+
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties =
+                    context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getGraphBaseUri(),"https://microsoftgraph.chinacloudapi.cn/");
+                assertEquals(properties.getGraphMembershipUri(),
+                    "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
+            });
+
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn/",
+                "azure.activedirectory.graph-membership-uri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties =
+                    context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getGraphBaseUri(),"https://microsoftgraph.chinacloudapi.cn/");
+                assertEquals(properties.getGraphMembershipUri(),
+                    "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
+            });
+
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.graph-membership-uri=https://graph.microsoft.com/v1.0/me/memberOf"
+            )
+            .run(context -> {
             });
     }
 

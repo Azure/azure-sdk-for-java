@@ -9,6 +9,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     private String graphBaseUri = "https://graph.microsoft.com/";
 
-    private String graphMembershipUri = graphBaseUri + "v1.0/me/memberOf";
+    private String graphMembershipUri;
 
     private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
@@ -313,15 +314,18 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        validateDomain();
+        if (!StringUtils.hasText(graphMembershipUri)) {
+            graphMembershipUri = graphBaseUri + "v1.0/me/memberOf";
+        }
+        validate();
     }
 
     private String addSlash(String uri) {
         return uri.endsWith("/") ? uri : uri + "/";
     }
 
-    private void validateDomain() {
-        if (!graphMembershipUri.substring(0, graphMembershipUri.indexOf("v1.0")).equals(graphBaseUri)) {
+    private void validate() {
+        if (!graphMembershipUri.startsWith(graphBaseUri)) {
             throw new IllegalStateException("The domains of graphBaseUri and graphMembershipUri are inconsistent.");
         }
     }
