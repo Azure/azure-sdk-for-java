@@ -79,6 +79,14 @@ public interface ServicePrincipal
             /**
              * Specifies a new application to create and use by the service principal.
              *
+             * @param signOnUrl the new application's sign on URL
+             * @return the next stage of the service principal definition
+             */
+            WithCreate withNewApplication(String signOnUrl);
+
+            /**
+             * Specifies a new application to create and use by the service principal.
+             *
              * @return the next stage of the service principal definition
              */
             WithCreate withNewApplication();

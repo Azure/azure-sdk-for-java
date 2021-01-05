@@ -294,6 +294,12 @@ class ServicePrincipalImpl
     }
 
     @Override
+    public ServicePrincipalImpl withNewApplication(String signOnUrl) {
+        return withNewApplication(
+            manager.applications().define(name()).withSignOnUrl(signOnUrl).withIdentifierUrl(signOnUrl));
+    }
+
+    @Override
     public ServicePrincipalImpl withNewApplication() {
         return withNewApplication(
             manager.applications().define(name()));
