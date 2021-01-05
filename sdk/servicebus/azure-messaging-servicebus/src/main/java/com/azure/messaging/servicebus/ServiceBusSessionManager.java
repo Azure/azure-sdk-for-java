@@ -298,14 +298,15 @@ class ServiceBusSessionManager implements AutoCloseable {
                 if (existing != null) {
                     return existing;
                 }
+
                 return new ServiceBusSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock,
                     maxSessionLockRenewDuration);
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
-                logger.verbose("Adding scheduler back to pool.");
+                logger.verbose("Adding scheduler back to pool for session-id [{}].", sessionReceiver.getSessionId());
                 availableSchedulers.push(scheduler);
-                sessionReceivers.remove("1");
+                sessionReceivers.remove(sessionReceiver.getSessionId());
                 sessionReceiver.close();
 
                 if (receiverOptions.isRollingSessionReceiver()) {
