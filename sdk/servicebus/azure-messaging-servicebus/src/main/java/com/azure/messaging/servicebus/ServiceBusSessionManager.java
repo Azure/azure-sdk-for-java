@@ -304,7 +304,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                     maxSessionLockRenewDuration);
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
-                logger.verbose("Adding scheduler back to pool for session-id [{}].", sessionReceiver.getSessionId());
+                logger.verbose("Closing session receiver for session id [{}].", sessionReceiver.getSessionId());
                 availableSchedulers.push(scheduler);
                 sessionReceivers.remove(sessionReceiver.getSessionId());
                 sessionReceiver.close();
