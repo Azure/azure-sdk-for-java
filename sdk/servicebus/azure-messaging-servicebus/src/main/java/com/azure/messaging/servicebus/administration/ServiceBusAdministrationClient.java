@@ -34,8 +34,18 @@ import java.util.function.Function;
 
 /**
  * A <b>synchronous</b> client for managing a Service Bus namespace.
+ * <p>
+ * <p><strong>Create a queue</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationclient.createqueue#string}
+ * <p>
+ * <p><strong>Edit an existing subscription</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationclient.updatesubscription#subscriptionproperties}
+ * <p>
+ * <p><strong>List all queues</strong></p>
+ * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationclient.listQueues}
  *
- * @see ServiceBusAdministrationAsyncClient ServiceBusManagementAsyncClient for an asynchronous client.
+ * @see ServiceBusAdministrationClientBuilder
+ * @see ServiceBusAdministrationAsyncClient ServiceBusAdministrationAsyncClient for an asynchronous client.
  */
 @ServiceClient(builder = ServiceBusAdministrationClientBuilder.class)
 public final class ServiceBusAdministrationClient {
