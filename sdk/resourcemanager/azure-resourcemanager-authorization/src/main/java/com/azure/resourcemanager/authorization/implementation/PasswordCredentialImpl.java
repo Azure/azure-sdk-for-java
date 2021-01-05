@@ -15,6 +15,9 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class PasswordCredentialImpl<T extends HasCredential<T>>
@@ -25,6 +28,7 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
     private HasCredential<T> parent;
     OutputStream authFile;
     private String subscriptionId;
+    private final List<Consumer<? super PasswordCredential>> consumers = new ArrayList<>();
     private final ClientLogger logger = new ClientLogger(PasswordCredentialImpl.class);
 
     PasswordCredentialImpl(MicrosoftGraphPasswordCredentialInner passwordCredential) {
@@ -152,6 +156,10 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
         }
     }
 
+    void consumeSecret() {
+        consumers.forEach(consumer -> consumer.accept(this));
+    }
+
     @Override
     public PasswordCredentialImpl<T> withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
@@ -166,5 +174,11 @@ class PasswordCredentialImpl<T extends HasCredential<T>>
     @Override
     public String name() {
         return this.name;
+    }
+
+    @Override
+    public PasswordCredentialImpl<T> withPasswordConsumer(Consumer<? super PasswordCredential> passwordConsumer) {
+        consumers.add(passwordConsumer);
+        return this;
     }
 }

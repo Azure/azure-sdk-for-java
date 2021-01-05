@@ -117,6 +117,7 @@ class ServicePrincipalImpl
                 servicePrincipal -> {
                     for (PasswordCredentialImpl<?> passwordCredential : passwordCredentialsToCreate) {
                         passwordCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);
+                        passwordCredential.consumeSecret();
                     }
                     for (CertificateCredentialImpl<?> certificateCredential : certificateCredentialsToCreate) {
                         certificateCredential.exportAuthFile((ServicePrincipalImpl) servicePrincipal);

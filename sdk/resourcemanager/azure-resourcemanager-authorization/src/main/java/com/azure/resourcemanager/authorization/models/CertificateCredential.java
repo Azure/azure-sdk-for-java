@@ -133,7 +133,9 @@ public interface CertificateCredential extends Credential, HasInnerModel<Microso
              *
              * @param outputStream the output stream to export the file
              * @return the next stage in credential definition
+             * @deprecated azure-identity doesn't accept auth file anymore.
              */
+            @Deprecated
             WithAuthFileCertificate<ParentT> withAuthFileToExport(OutputStream outputStream);
         }
 

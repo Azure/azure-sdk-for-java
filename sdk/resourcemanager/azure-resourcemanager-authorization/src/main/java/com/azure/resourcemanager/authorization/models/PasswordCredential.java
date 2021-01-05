@@ -11,6 +11,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.io.OutputStream;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.function.Consumer;
 
 /** An immutable client-side representation of an Azure AD credential. */
 @Fluent
@@ -82,7 +83,9 @@ public interface PasswordCredential extends Credential, HasInnerModel<MicrosoftG
              *
              * @param outputStream the output stream to export the file
              * @return the next stage in credential definition
+             * @deprecated azure-identity doesn't accept auth file anymore. use {@link WithConsumer} to get the secret.
              */
+            @Deprecated
             WithSubscriptionInAuthFile<ParentT> withAuthFileToExport(OutputStream outputStream);
         }
 
@@ -102,6 +105,21 @@ public interface PasswordCredential extends Credential, HasInnerModel<MicrosoftG
         }
 
         /**
+         * A credential definition stage allowing consuming the credential after creation.
+         *
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        interface WithConsumer<ParentT> {
+            /**
+             * Consumes the credential after creation.
+             * Note: it is the only way to get secret from the credential.
+             * @param passwordConsumer a consumer to consume password credential
+             * @return the next stage in credential definition
+             */
+            WithAttach<ParentT> withPasswordConsumer(Consumer<? super PasswordCredential> passwordConsumer);
+        }
+
+        /**
          * The final stage of the credential definition.
          *
          * <p>At this stage, more settings can be specified, or the credential definition can be attached to the parent
@@ -113,6 +131,7 @@ public interface PasswordCredential extends Credential, HasInnerModel<MicrosoftG
             extends Attachable.InDefinition<ParentT>,
                 WithStartDate<ParentT>,
                 WithDuration<ParentT>,
+                WithConsumer<ParentT>,
                 WithAuthFile<ParentT> {
         }
     }

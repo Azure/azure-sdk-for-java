@@ -64,13 +64,13 @@ class ActiveDirectoryApplicationImpl
             .getApplicationsApplications()
             .createApplicationAsync(innerModel())
             .map(innerToFluentMap(this))
-            .flatMap(app -> submitCredentialAsync().doOnComplete(this::exportToAuthFile).then(refreshAsync()));
+            .flatMap(app -> submitCredentialAsync().doOnComplete(this::postRequest).then(refreshAsync()));
     }
 
     @Override
     public Mono<ActiveDirectoryApplication> updateResourceAsync() {
         return manager.serviceClient().getApplicationsApplications().updateApplicationAsync(id(), innerModel())
-            .then(submitCredentialAsync().doOnComplete(this::exportToAuthFile).then(refreshAsync()));
+            .then(submitCredentialAsync().doOnComplete(this::postRequest).then(refreshAsync()));
     }
 
     void refreshCredentials(MicrosoftGraphApplicationInner inner) {
@@ -103,8 +103,9 @@ class ActiveDirectoryApplicationImpl
             );
     }
 
-    void exportToAuthFile() {
+    void postRequest() {
         passwordCredentialToCreate.forEach(passwordCredential -> passwordCredential.exportAuthFile(this));
+        passwordCredentialToCreate.forEach(PasswordCredentialImpl::consumeSecret);
         passwordCredentialToCreate.clear();
         certificateCredentialToCreate.forEach(certificateCredential -> certificateCredential.exportAuthFile(this));
         certificateCredentialToCreate.clear();
