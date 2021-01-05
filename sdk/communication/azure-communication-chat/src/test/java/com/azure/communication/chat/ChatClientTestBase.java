@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.azure.communication.administration.CommunicationIdentityClientBuilder;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
+import com.azure.communication.common.CommunicationLoggerPolicy;
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -164,5 +165,9 @@ public class ChatClientTestBase extends TestBase {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
             return TestMode.PLAYBACK;
         }
+    }
+
+    protected ChatClientBuilder addLoggingPolicyForIdentityClientBuilder(ChatClientBuilder builder, String testName) {
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
     }
 }

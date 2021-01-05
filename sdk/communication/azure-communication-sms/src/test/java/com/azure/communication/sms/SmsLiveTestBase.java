@@ -3,6 +3,7 @@
 
 package com.azure.communication.sms;
 
+import com.azure.communication.common.CommunicationLoggerPolicy;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.HttpClient;
@@ -32,7 +33,7 @@ public class SmsLiveTestBase extends TestBase {
     static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
 
-    protected SmsClientBuilder getSmsClientBuilder(HttpClient httpClient) {
+    protected SmsClientBuilder getSmsClientBuilder(HttpClient httpClient, String testName) {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder.endpoint(ENDPOINT)
@@ -86,5 +87,9 @@ public class SmsLiveTestBase extends TestBase {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
             return TestMode.PLAYBACK;
         }
-    }    
+    }
+    
+    protected SmsClientBuilder addLoggingPolicy(SmsClientBuilder builder, String testName) {
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
 }

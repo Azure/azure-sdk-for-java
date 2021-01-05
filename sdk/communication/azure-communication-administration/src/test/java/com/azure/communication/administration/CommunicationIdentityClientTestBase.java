@@ -3,6 +3,7 @@
 
 package com.azure.communication.administration;
 
+import com.azure.communication.common.CommunicationLoggerPolicy;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -91,6 +92,10 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
             return TestMode.PLAYBACK;
         }
+    }
+    
+    protected CommunicationIdentityClientBuilder addLoggingPolicy(CommunicationIdentityClientBuilder builder, String testName) {
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
     }
 
     static class FakeCredentials implements TokenCredential {
