@@ -1010,6 +1010,7 @@ org.springframework.boot:spring-boot-autoconfigure-processor;2.4.0
 org.springframework.boot:spring-boot-buildpack-platform;2.4.0
 org.springframework.boot:spring-boot-configuration-metadata;2.4.0
 org.springframework.boot:spring-boot-configuration-processor;2.4.0
+org.springframework.boot:spring-boot-dependencies;2.4.0
 org.springframework.boot:spring-boot-devtools;2.4.0
 org.springframework.boot:spring-boot-jarmode-layertools;2.4.0
 org.springframework.boot:spring-boot-loader;2.4.0
@@ -1107,6 +1108,7 @@ org.springframework.cloud:spring-cloud-contract-stub-runner;3.0.0
 org.springframework.cloud:spring-cloud-contract-stub-runner-boot;3.0.0
 org.springframework.cloud:spring-cloud-contract-verifier;3.0.0
 org.springframework.cloud:spring-cloud-contract-wiremock;3.0.0
+org.springframework.cloud:spring-cloud-dependencies;2020.0.0
 org.springframework.cloud:spring-cloud-function-adapter-aws;3.1.0
 org.springframework.cloud:spring-cloud-function-adapter-azure;3.1.0
 org.springframework.cloud:spring-cloud-function-adapter-gcp;3.1.0

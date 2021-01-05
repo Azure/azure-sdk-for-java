@@ -92,7 +92,7 @@ org.slf4j:slf4j-nop;1.7.30
 org.slf4j:slf4j-simple;1.7.30
 
 ## Spring boot dependency versions
-org.springframework.boot:spring-boot-dependencies;2.3.5.RELEASE
+org.springframework.boot:spring-boot-dependencies;2.4.0
 org.springframework.boot:spring-boot-actuator-autoconfigure;2.4.0
 org.springframework.boot:spring-boot-autoconfigure-processor;2.4.0
 org.springframework.boot:spring-boot-autoconfigure;2.4.0
@@ -136,7 +136,7 @@ org.springframework:spring-webmvc;5.3.1
 org.springframework.boot:spring-boot-starter-parent;2.3.7.RELEASE
 
 ## Spring cloud dependency versions
-org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR8
+org.springframework.cloud:spring-cloud-dependencies;2020.0.0
 org.springframework.cloud:spring-cloud-bus;3.0.0
 org.springframework.cloud:spring-cloud-context;3.0.0
 org.springframework.cloud:spring-cloud-starter-stream-kafka;3.1.0
