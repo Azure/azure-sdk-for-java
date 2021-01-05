@@ -153,6 +153,13 @@ public class ApplicationGatewayPrivateEndpointConnectionInner extends SubResourc
         return this.linkIdentifier;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayPrivateEndpointConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
