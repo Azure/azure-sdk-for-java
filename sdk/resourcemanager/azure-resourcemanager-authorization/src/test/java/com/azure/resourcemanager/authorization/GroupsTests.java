@@ -59,7 +59,13 @@ public class GroupsTests extends GraphRbacManagementTest {
         } finally {
             try {
                 if (servicePrincipal != null) {
-                    authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
+                    try {
+                        authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
+                    } finally {
+                        authorizationManager.applications().deleteById(
+                            authorizationManager.applications().getByName(servicePrincipal.applicationId()).id()
+                        );
+                    }
                 }
             } finally {
                 try {
