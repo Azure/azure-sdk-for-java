@@ -42,10 +42,10 @@ import java.util.Objects;
  * ServiceBusAdministrationClient} and {@link ServiceBusAdministrationAsyncClient}. Call
  * {@link #buildClient() buildClient()} and {@link #buildAsyncClient() buildAsyncClient()} respectively to construct an
  * instance of the desired client.
- * <p>
+ *
  * <p><strong>Create the sync client using a connection string</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation}
- * <p>
+ *
  * <p><strong>Create the async client using Azure Identity</strong></p>
  * {@codesnippet com.azure.messaging.servicebus.administration.servicebusadministrationasyncclient.instantiation}
  *
