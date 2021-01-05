@@ -106,7 +106,10 @@ def update_dependency_dict(dependency_dict, root_pom_id):
                 log.debug('Dependency version skipped. key = {}, version = {}, dependency_dict[key] = {}.'.format(key, version, dependency_dict[key]))
             artifact_type = dependency_element.find('./maven:type', MAVEN_NAME_SPACE)
             artifact_scope = dependency_element.find('./maven:scope', MAVEN_NAME_SPACE)
-            if all([artifact_type, artifact_scope]) and artifact_type.text.strip() == 'pom' and artifact_scope.text.strip() == 'import':
+            if artifact_type is not None and \
+                artifact_scope is not None and \
+                artifact_type.text.strip() == 'pom' and \
+                artifact_scope.text.strip() == 'import':
                 new_pom = Pom(group_id, artifact_id, version, pom.depth + 1)
                 new_pom_group_artifact = '{}:{}'.format(group_id, artifact_id)
                 if new_pom_group_artifact not in visited_pom_dict:
