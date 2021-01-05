@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
@@ -36,6 +37,7 @@ class ActiveDirectoryGroupImpl
     implements ActiveDirectoryGroup, ActiveDirectoryGroup.Definition, ActiveDirectoryGroup.Update {
 
     private final AuthorizationManager manager;
+    private final ClientLogger logger = new ClientLogger(getClass());
     private Set<Map<String, Object>> membersToAdd;
     private Set<String> membersToRemove;
 
@@ -100,9 +102,11 @@ class ActiveDirectoryGroupImpl
                             jsonString, MicrosoftGraphApplicationInner.class, SerializerEncoding.JSON);
                         return new ActiveDirectoryApplicationImpl(applicationInner, manager());
                     } else {
+                        logger.warning("Can't recognize member type '{}' of ActiveDirectoryGroup", odataType);
                         return null;
                     }
                 } catch (IOException e) {
+                    logger.logThrowableAsWarning(e);
                     return null;
                 }
             }
