@@ -178,7 +178,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      pool: ${{ parameters.LinuxPool }}
+      name: ${{ parameters.LinuxPool }}
 
     steps:
       - pwsh: |
