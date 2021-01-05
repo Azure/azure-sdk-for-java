@@ -222,9 +222,9 @@ class ServiceAPITest extends APISpec {
                 .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)),
             null).first()
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfRecord(30000)
+
+        assert !cc1.blobContainerClient.exists() // TODO (gapra) : Expose exists on file system client
 
         when:
         def restoredContainerClient = primaryDataLakeServiceClient
@@ -247,20 +247,20 @@ class ServiceAPITest extends APISpec {
                 .setPrefix(cc1.getFileSystemName())
                 .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)),
             null).first()
+        def destinationFileSystemName = generateFileSystemName()
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfRecord(30000)
 
         when:
         def restoredContainerClient = primaryDataLakeServiceClient.undeleteFileSystemWithResponse(
             new FileSystemUndeleteOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-                .setDestinationFileSystemName(generateFileSystemName()), null, Context.NONE)
+                .setDestinationFileSystemName(destinationFileSystemName), null, Context.NONE)
             .getValue()
 
         then:
         restoredContainerClient.listPaths().size() == 1
         restoredContainerClient.listPaths().first().getName() == blobName
+        restoredContainerClient.getFileSystemName() == destinationFileSystemName
     }
 
     def "Restore file system with response"() {
@@ -276,9 +276,7 @@ class ServiceAPITest extends APISpec {
                 .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)),
             null).first()
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfRecord(30000)
 
         when:
         def response = primaryDataLakeServiceClient.undeleteFileSystemWithResponse(
@@ -377,9 +375,7 @@ class ServiceAPITest extends APISpec {
                 .setDetails(new FileSystemListDetails().setRetrieveDeleted(true)),
             null).first()
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfRecord(30000)
 
         when:
         def cc2 = primaryDataLakeServiceClient.createFileSystem(generateFileSystemName())

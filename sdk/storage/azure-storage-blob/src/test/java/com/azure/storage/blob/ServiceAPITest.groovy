@@ -754,9 +754,7 @@ class ServiceAPITest extends APISpec {
                 .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
             null).first()
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfRecord(30000)
 
         when:
         def restoredContainerClient = primaryBlobServiceClient
@@ -780,9 +778,7 @@ class ServiceAPITest extends APISpec {
                 .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
             null).first()
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfRecord(30000)
 
         when:
         def restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
@@ -808,9 +804,7 @@ class ServiceAPITest extends APISpec {
                 .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
             null).first()
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfRecord(30000)
 
         when:
         def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
@@ -909,9 +903,7 @@ class ServiceAPITest extends APISpec {
                 .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
             null).first()
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfRecord(30000)
 
         when:
         def cc2 = primaryBlobServiceClient.createBlobContainer(generateContainerName())
