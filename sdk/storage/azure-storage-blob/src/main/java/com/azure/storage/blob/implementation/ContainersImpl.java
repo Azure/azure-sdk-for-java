@@ -34,6 +34,7 @@ import com.azure.storage.blob.implementation.models.ContainersGetPropertiesRespo
 import com.azure.storage.blob.implementation.models.ContainersListBlobFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchySegmentResponse;
 import com.azure.storage.blob.implementation.models.ContainersReleaseLeaseResponse;
+import com.azure.storage.blob.implementation.models.ContainersRenameResponse;
 import com.azure.storage.blob.implementation.models.ContainersRenewLeaseResponse;
 import com.azure.storage.blob.implementation.models.ContainersRestoreResponse;
 import com.azure.storage.blob.implementation.models.ContainersSetAccessPolicyResponse;
@@ -114,6 +115,11 @@ public final class ContainersImpl {
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<ContainersRestoreResponse> restore(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-deleted-container-name") String deletedContainerName, @HeaderParam("x-ms-deleted-container-version") String deletedContainerVersion, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+
+        @Put("{containerName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Mono<ContainersRenameResponse> rename(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-source-container-name") String sourceContainerName, @HeaderParam("x-ms-source-lease-id") String sourceLeaseId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{containerName}")
         @ExpectedResponses({201})
@@ -437,6 +443,44 @@ public final class ContainersImpl {
         final String restype = "container";
         final String comp = "undelete";
         return service.restore(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, restype, comp, context);
+    }
+
+    /**
+     * Renames an existing container.
+     *
+     * @param containerName The container name.
+     * @param sourceContainerName Required.  Specifies the name of the container to rename.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContainersRenameResponse> renameWithRestResponseAsync(String containerName, String sourceContainerName, Context context) {
+        final Integer timeout = null;
+        final String requestId = null;
+        final String sourceLeaseId = null;
+        final String restype = "container";
+        final String comp = "rename";
+        return service.rename(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, restype, comp, context);
+    }
+
+    /**
+     * Renames an existing container.
+     *
+     * @param containerName The container name.
+     * @param sourceContainerName Required.  Specifies the name of the container to rename.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param sourceLeaseId A lease ID for the source path. If specified, the source path must have an active lease and the lease ID must match.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ContainersRenameResponse> renameWithRestResponseAsync(String containerName, String sourceContainerName, Integer timeout, String requestId, String sourceLeaseId, Context context) {
+        final String restype = "container";
+        final String comp = "rename";
+        return service.rename(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, restype, comp, context);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 ## 12.10.0-beta.2 (Unreleased)
 - Added support for the 2020-06-12 service version. 
-
+- Added support to rename a container.
 
 ## 12.10.0-beta.1 (2020-12-07)
 - Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.

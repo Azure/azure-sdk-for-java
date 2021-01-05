@@ -30,6 +30,8 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.options.ContainerRenameOptions;
+import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.AccessTier;
 import com.azure.storage.file.datalake.models.ArchiveStatus;
@@ -67,6 +69,8 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
+import com.azure.storage.file.datalake.options.FileSystemRenameOptions;
+import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -157,7 +161,8 @@ class Transforms {
             return null;
         }
         return new BlobContainerListDetails()
-            .setRetrieveMetadata(fileSystemListDetails.getRetrieveMetadata());
+            .setRetrieveMetadata(fileSystemListDetails.getRetrieveMetadata())
+            .setRetrieveDeleted(fileSystemListDetails.getRetrieveDeleted());
     }
 
     static ListBlobContainersOptions toListBlobContainersOptions(ListFileSystemsOptions listFileSystemsOptions) {
@@ -240,6 +245,8 @@ class Transforms {
         }
         return new FileSystemItem()
             .setName(blobContainerItem.getName())
+            .setDeleted(blobContainerItem.isDeleted())
+            .setVersion(blobContainerItem.getVersion())
             .setMetadata(blobContainerItem.getMetadata())
             .setProperties(Transforms.toFileSystemItemProperties(blobContainerItem.getProperties()));
     }
@@ -551,5 +558,21 @@ class Transforms {
                 .setProgressConsumer(Transforms.toBlobQueryProgressConsumer(options.getProgressConsumer()));
         }
 
+    }
+
+    static ContainerRenameOptions toBlobContainerRenameOptions(FileSystemRenameOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new ContainerRenameOptions(options.getDestinationFileSystemName(), options.getSourceFileSystemName())
+            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
+    }
+
+    static UndeleteBlobContainerOptions toBlobContainerUndeleteOptions(FileSystemUndeleteOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new UndeleteBlobContainerOptions(options.getDeletedFileSystemName(),
+            options.getDeletedFileSystemVersion()).setDestinationContainerName(options.getDestinationFileSystemName());
     }
 }

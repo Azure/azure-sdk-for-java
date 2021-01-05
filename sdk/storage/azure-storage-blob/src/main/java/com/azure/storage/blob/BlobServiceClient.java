@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
+import com.azure.storage.blob.options.ContainerRenameOptions;
 import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -435,6 +436,7 @@ public final class BlobServiceClient {
         return this.blobServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
     }
 
+    /* TODO(gapra): REST Docs*/
     /**
      * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
      * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
@@ -460,8 +462,6 @@ public final class BlobServiceClient {
      * already exists, this call will result in a 409 (conflict).
      * This API is only functional if Container Soft Delete is enabled
      * for the storage account associated with the container.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -485,8 +485,6 @@ public final class BlobServiceClient {
      * already exists, this call will result in a 409 (conflict).
      * This API is only functional if Container Soft Delete is enabled
      * for the storage account associated with the container.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -503,6 +501,45 @@ public final class BlobServiceClient {
         Mono<Response<BlobContainerClient>> response =
             this.blobServiceAsyncClient.undeleteBlobContainerWithResponse(options, context)
             .map(r -> new SimpleResponse<>(r, getBlobContainerClient(r.getValue().getBlobContainerName())));
+
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Renames an existing blob container.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.renameBlobContainer#String-String}
+     *
+     * @param destinationContainerName The new name of the container.
+     * @param sourceContainerName The current name of the container.
+     * @return A {@link BlobContainerClient} used to interact with the renamed container.
+     */
+    public BlobContainerClient renameBlobContainer(String destinationContainerName,
+        String sourceContainerName) {
+        return renameBlobContainerWithResponse(new ContainerRenameOptions(destinationContainerName,
+            sourceContainerName), null, Context.NONE).getValue();
+    }
+
+    /**
+     * Renames an existing blob container.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceClient.renameBlobContainerWithResponse#ContainerRenameOptions-Duration-Context}
+     *
+     * @param options {@link ContainerRenameOptions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains a
+     * {@link BlobContainerClient} used to interact with the renamed container.
+     */
+    public Response<BlobContainerClient> renameBlobContainerWithResponse(ContainerRenameOptions options,
+        Duration timeout, Context context) {
+        Mono<Response<BlobContainerClient>> response =
+            this.blobServiceAsyncClient.renameBlobContainerWithResponse(options, context)
+                .map(r -> new SimpleResponse<>(r, getBlobContainerClient(r.getValue().getBlobContainerName())));
 
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
