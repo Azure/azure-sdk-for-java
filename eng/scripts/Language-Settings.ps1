@@ -3,6 +3,7 @@ $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
+$PACKAGE_INSTALL_NOTES_REGEX = "<artifactId>(?<PackageName>.*)<\/artifactId>\r\n\s+<version>(?<Version>.*)<\/version>"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 {
@@ -25,7 +26,7 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 }
 
 # Returns the maven (really sonatype) publish status of a package id and version.
-function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId) 
+function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
   try 
   {
@@ -58,7 +59,8 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 }
 
 # Parse out package publishing information given a maven POM file
-function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory) {
+function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
+{
   [xml]$contentXML = Get-Content $pkg
 
   $pkgId = $contentXML.project.artifactId
@@ -156,7 +158,8 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
   }
 }
 
-function Get-java-GithubIoDocIndex() {
+function Get-java-GithubIoDocIndex()
+{
   # Update the main.js and docfx.json language content
   UpdateDocIndexFiles -appTitleLang "Java"
   # Fetch out all package metadata from csv file.
@@ -175,7 +178,8 @@ function Get-java-GithubIoDocIndex() {
 
 # a "package.json configures target packages for all the monikers in a Repository, it also has a slightly different
 # schema than the moniker-specific json config that is seen in python and js
-function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$null){
+function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$null)
+{
   $pkgJsonLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo)
   
   if (-not (Test-Path $pkgJsonLoc)) {
@@ -217,7 +221,6 @@ function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$nu
   Set-Content -Path $pkgJsonLoc -Value $jsonContent
 }
 
-
 # function is used to filter packages to submit to API view tool
 function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
 {
@@ -242,3 +245,32 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
 
   return $packages
 }
+
+function GetExistingPackageVersions ($PackageName, $GroupId=$null)
+{
+  try {
+    $Uri = 'https://search.maven.org/solrsearch/select?q=g:"' + $GroupId + '"+AND+a:"' + $PackageName +'"&core=gav&rows=20&wt=json'
+    $existingVersion = Invoke-RestMethod -Method GET -Uri $Uri
+    return $existingVersion.response.docs.v
+  }
+  catch {
+    LogError "Failed to retrieve package versions. `n$_"
+    return $null
+  }
+}
+function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $BuildType, $GroupId)
+{
+  if($null -eq $ReleaseDate)
+  {
+    $ReleaseDate = Get-Date -Format "yyyy-MM-dd"
+  }
+  python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupId
+  python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --sr
+  & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
+  -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
+}
+function GetPackageInstallNote ($PackageName, $Version, $GroupId=$null)
+{
+  return "<dependency>`n  <groupId>$GroupId</groupId>`n  <artifactId>$PackageName</artifactId>`n  <version>$Version</version>`n</dependency>`n`n";
+}
+
