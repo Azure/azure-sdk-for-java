@@ -92,9 +92,9 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     }
 
     /**
-     * Edits a subscription.
+     * Updates a subscription.
      */
-    public void editSubscription() {
+    public void updateSubscription() {
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
             .connectionString("<< Service Bus NAMESPACE connection string>>")
             .buildClient();
@@ -122,7 +122,7 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     /**
      * Edits a subscription asynchronously.
      */
-    public void editSubscriptionAsync() {
+    public void updateSubscriptionAsync() {
         ServiceBusAdministrationAsyncClient client = new ServiceBusAdministrationClientBuilder()
             .connectionString("<< Service Bus NAMESPACE connection string>>")
             .buildAsyncClient();
