@@ -11,8 +11,11 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import static com.azure.spring.aad.webapp.AADWebAppConfiguration.resourceServerCount;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -235,13 +238,31 @@ public class AADWebAppConfigurationTest {
                     context.getBean(AADWebAppClientRegistrationRepository.class);
                 AzureClientRegistration azure = repo.getAzureClient();
                 assertNotNull(azure);
-                int resourceServerCountInAuthCode =
-                    AADWebAppConfiguration.resourceServerCount(azure.getClient().getScopes());
+                int resourceServerCountInAuthCode = resourceServerCount(azure.getClient().getScopes());
                 assertTrue(resourceServerCountInAuthCode > 1);
-                int resourceServerCountInAccessToken =
-                    AADWebAppConfiguration.resourceServerCount(azure.getAccessTokenScopes());
+                int resourceServerCountInAccessToken = resourceServerCount(azure.getAccessTokenScopes());
                 assertTrue(resourceServerCountInAccessToken != 0);
             });
+    }
+
+    @Test
+    public void resourceServerCountTest() {
+        Set<String> scopes = new HashSet<>();
+        assertEquals(resourceServerCount(scopes), 0);
+        scopes.add("openid");
+        scopes.add("profile");
+        scopes.add("offline_access");
+        assertEquals(resourceServerCount(scopes), 0);
+        scopes.add("https://graph.microsoft.com/User.Read");
+        assertEquals(resourceServerCount(scopes), 1);
+        scopes.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
+        assertEquals(resourceServerCount(scopes), 1);
+        scopes.add("https://manage.office.com/ActivityFeed.Read");
+        assertEquals(resourceServerCount(scopes), 2);
+        scopes.add("https://manage.office.com/ActivityFeed.ReadDlp");
+        assertEquals(resourceServerCount(scopes), 2);
+        scopes.add("https://manage.office.com/ServiceHealth.Read");
+        assertEquals(resourceServerCount(scopes), 2);
     }
 
     private void assertDefaultScopes(ClientRegistration client, String... scopes) {

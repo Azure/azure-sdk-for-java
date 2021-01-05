@@ -88,7 +88,9 @@ public class AADWebAppConfiguration {
 
     public static int resourceServerCount(Set<String> scopes) {
         return (int) scopes.stream()
-                           .filter(scope -> scope.startsWith("http"))
+                           .filter(scope -> scope.contains("/"))
+                           .map(scope -> scope.substring(0, scope.lastIndexOf('/')))
+                           .distinct()
                            .count();
     }
 
