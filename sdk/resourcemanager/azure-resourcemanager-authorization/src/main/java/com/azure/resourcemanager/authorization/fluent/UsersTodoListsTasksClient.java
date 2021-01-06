@@ -10,7 +10,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.authorization.fluent.models.Get10ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.Get5ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphExtensionInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphLinkedResourceInner;
@@ -53,7 +52,7 @@ public interface UsersTodoListsTasksClient {
         Boolean count,
         List<UsersTodoListsTasksOrderby> orderby,
         List<String> select,
-        List<Get10ItemsItem> expand);
+        List<String> expand);
 
     /**
      * Get extensions from users.
@@ -119,7 +118,7 @@ public interface UsersTodoListsTasksClient {
         Boolean count,
         List<UsersTodoListsTasksOrderby> orderby,
         List<String> select,
-        List<Get10ItemsItem> expand,
+        List<String> expand,
         Context context);
 
     /**

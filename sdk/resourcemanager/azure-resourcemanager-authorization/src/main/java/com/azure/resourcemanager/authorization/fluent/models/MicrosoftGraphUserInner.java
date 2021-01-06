@@ -637,7 +637,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * The calendar view for the calendar. Read-only. Nullable.
      */
     @JsonProperty(value = "calendarView")
-    private List<MicrosoftGraphEventInner> calendarView;
+    private List<MicrosoftGraphEvent> calendarView;
 
     /*
      * The user's contacts folders. Read-only. Nullable.
@@ -656,7 +656,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * Read-only. Nullable.
      */
     @JsonProperty(value = "events")
-    private List<MicrosoftGraphEventInner> events;
+    private List<MicrosoftGraphEvent> events;
 
     /*
      * inferenceClassification
@@ -2655,7 +2655,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the calendarView value.
      */
-    public List<MicrosoftGraphEventInner> calendarView() {
+    public List<MicrosoftGraphEvent> calendarView() {
         return this.calendarView;
     }
 
@@ -2665,7 +2665,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param calendarView the calendarView value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withCalendarView(List<MicrosoftGraphEventInner> calendarView) {
+    public MicrosoftGraphUserInner withCalendarView(List<MicrosoftGraphEvent> calendarView) {
         this.calendarView = calendarView;
         return this;
     }
@@ -2716,7 +2716,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the events value.
      */
-    public List<MicrosoftGraphEventInner> events() {
+    public List<MicrosoftGraphEvent> events() {
         return this.events;
     }
 
@@ -2727,7 +2727,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param events the events value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withEvents(List<MicrosoftGraphEventInner> events) {
+    public MicrosoftGraphUserInner withEvents(List<MicrosoftGraphEvent> events) {
         this.events = events;
         return this;
     }

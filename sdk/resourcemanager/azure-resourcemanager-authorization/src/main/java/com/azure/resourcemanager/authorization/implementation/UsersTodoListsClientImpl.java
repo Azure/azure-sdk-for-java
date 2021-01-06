@@ -34,8 +34,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.authorization.fluent.UsersTodoListsClient;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfExtension0;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfTodoTask;
-import com.azure.resourcemanager.authorization.fluent.models.Get4ItemsItem;
-import com.azure.resourcemanager.authorization.fluent.models.Get9ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphExtensionInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphTodoTaskInner;
 import com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException;
@@ -259,7 +257,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
         Boolean count,
         List<UsersTodoListsOrderby> orderby,
         List<String> select,
-        List<Get9ItemsItem> expand) {
+        List<String> expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -339,7 +337,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
         Boolean count,
         List<UsersTodoListsOrderby> orderby,
         List<String> select,
-        List<Get9ItemsItem> expand,
+        List<String> expand,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -416,7 +414,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
         Boolean count,
         List<UsersTodoListsOrderby> orderby,
         List<String> select,
-        List<Get9ItemsItem> expand) {
+        List<String> expand) {
         return new PagedFlux<>(
             () ->
                 listExtensionsSinglePageAsync(
@@ -443,7 +441,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
         final Boolean count = null;
         final List<UsersTodoListsOrderby> orderby = null;
         final List<String> select = null;
-        final List<Get9ItemsItem> expand = null;
+        final List<String> expand = null;
         return new PagedFlux<>(
             () ->
                 listExtensionsSinglePageAsync(
@@ -481,7 +479,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
         Boolean count,
         List<UsersTodoListsOrderby> orderby,
         List<String> select,
-        List<Get9ItemsItem> expand,
+        List<String> expand,
         Context context) {
         return new PagedFlux<>(
             () ->
@@ -509,7 +507,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
         final Boolean count = null;
         final List<UsersTodoListsOrderby> orderby = null;
         final List<String> select = null;
-        final List<Get9ItemsItem> expand = null;
+        final List<String> expand = null;
         return new PagedIterable<>(
             listExtensionsAsync(userId, todoTaskListId, top, skip, search, filter, count, orderby, select, expand));
     }
@@ -544,7 +542,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
         Boolean count,
         List<UsersTodoListsOrderby> orderby,
         List<String> select,
-        List<Get9ItemsItem> expand,
+        List<String> expand,
         Context context) {
         return new PagedIterable<>(
             listExtensionsAsync(
@@ -702,7 +700,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphExtensionInner>> getExtensionsWithResponseAsync(
-        String userId, String todoTaskListId, String extensionId, List<String> select, List<Get4ItemsItem> expand) {
+        String userId, String todoTaskListId, String extensionId, List<String> select, List<String> expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -759,7 +757,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
         String todoTaskListId,
         String extensionId,
         List<String> select,
-        List<Get4ItemsItem> expand,
+        List<String> expand,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -809,7 +807,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphExtensionInner> getExtensionsAsync(
-        String userId, String todoTaskListId, String extensionId, List<String> select, List<Get4ItemsItem> expand) {
+        String userId, String todoTaskListId, String extensionId, List<String> select, List<String> expand) {
         return getExtensionsWithResponseAsync(userId, todoTaskListId, extensionId, select, expand)
             .flatMap(
                 (Response<MicrosoftGraphExtensionInner> res) -> {
@@ -836,7 +834,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
     public Mono<MicrosoftGraphExtensionInner> getExtensionsAsync(
         String userId, String todoTaskListId, String extensionId) {
         final List<String> select = null;
-        final List<Get4ItemsItem> expand = null;
+        final List<String> expand = null;
         return getExtensionsWithResponseAsync(userId, todoTaskListId, extensionId, select, expand)
             .flatMap(
                 (Response<MicrosoftGraphExtensionInner> res) -> {
@@ -862,7 +860,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MicrosoftGraphExtensionInner getExtensions(String userId, String todoTaskListId, String extensionId) {
         final List<String> select = null;
-        final List<Get4ItemsItem> expand = null;
+        final List<String> expand = null;
         return getExtensionsAsync(userId, todoTaskListId, extensionId, select, expand).block();
     }
 
@@ -886,7 +884,7 @@ public final class UsersTodoListsClientImpl implements UsersTodoListsClient {
         String todoTaskListId,
         String extensionId,
         List<String> select,
-        List<Get4ItemsItem> expand,
+        List<String> expand,
         Context context) {
         return getExtensionsWithResponseAsync(userId, todoTaskListId, extensionId, select, expand, context).block();
     }

@@ -402,19 +402,19 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * The calendar view for the calendar. Read-only.
      */
     @JsonProperty(value = "calendarView")
-    private List<MicrosoftGraphEventInner> calendarView;
+    private List<MicrosoftGraphEvent> calendarView;
 
     /*
      * The group's conversations.
      */
     @JsonProperty(value = "conversations")
-    private List<MicrosoftGraphConversationInner> conversations;
+    private List<MicrosoftGraphConversation> conversations;
 
     /*
      * The group's calendar events.
      */
     @JsonProperty(value = "events")
-    private List<MicrosoftGraphEventInner> events;
+    private List<MicrosoftGraphEvent> events;
 
     /*
      * profilePhoto
@@ -439,7 +439,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * The group's conversation threads. Nullable.
      */
     @JsonProperty(value = "threads")
-    private List<MicrosoftGraphConversationThreadInner> threads;
+    private List<MicrosoftGraphConversationThread> threads;
 
     /*
      * drive
@@ -1601,7 +1601,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      *
      * @return the calendarView value.
      */
-    public List<MicrosoftGraphEventInner> calendarView() {
+    public List<MicrosoftGraphEvent> calendarView() {
         return this.calendarView;
     }
 
@@ -1611,7 +1611,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * @param calendarView the calendarView value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withCalendarView(List<MicrosoftGraphEventInner> calendarView) {
+    public MicrosoftGraphGroupInner withCalendarView(List<MicrosoftGraphEvent> calendarView) {
         this.calendarView = calendarView;
         return this;
     }
@@ -1621,7 +1621,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      *
      * @return the conversations value.
      */
-    public List<MicrosoftGraphConversationInner> conversations() {
+    public List<MicrosoftGraphConversation> conversations() {
         return this.conversations;
     }
 
@@ -1631,7 +1631,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * @param conversations the conversations value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withConversations(List<MicrosoftGraphConversationInner> conversations) {
+    public MicrosoftGraphGroupInner withConversations(List<MicrosoftGraphConversation> conversations) {
         this.conversations = conversations;
         return this;
     }
@@ -1641,7 +1641,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      *
      * @return the events value.
      */
-    public List<MicrosoftGraphEventInner> events() {
+    public List<MicrosoftGraphEvent> events() {
         return this.events;
     }
 
@@ -1651,7 +1651,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * @param events the events value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withEvents(List<MicrosoftGraphEventInner> events) {
+    public MicrosoftGraphGroupInner withEvents(List<MicrosoftGraphEvent> events) {
         this.events = events;
         return this;
     }
@@ -1723,7 +1723,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      *
      * @return the threads value.
      */
-    public List<MicrosoftGraphConversationThreadInner> threads() {
+    public List<MicrosoftGraphConversationThread> threads() {
         return this.threads;
     }
 
@@ -1733,7 +1733,7 @@ public final class MicrosoftGraphGroupInner extends MicrosoftGraphDirectoryObjec
      * @param threads the threads value to set.
      * @return the MicrosoftGraphGroupInner object itself.
      */
-    public MicrosoftGraphGroupInner withThreads(List<MicrosoftGraphConversationThreadInner> threads) {
+    public MicrosoftGraphGroupInner withThreads(List<MicrosoftGraphConversationThread> threads) {
         this.threads = threads;
         return this;
     }

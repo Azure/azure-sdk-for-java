@@ -72,14 +72,14 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
      * mailFolder. Read-only. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
-    private List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties;
+    private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * The collection of single-value extended properties defined for the
      * mailFolder. Read-only. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
-    private List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties;
+    private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * mailFolder
@@ -252,7 +252,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
      *
      * @return the multiValueExtendedProperties value.
      */
-    public List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties() {
+    public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
         return this.multiValueExtendedProperties;
     }
 
@@ -264,7 +264,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
      * @return the MicrosoftGraphMailFolder object itself.
      */
     public MicrosoftGraphMailFolder withMultiValueExtendedProperties(
-        List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties) {
+        List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties) {
         this.multiValueExtendedProperties = multiValueExtendedProperties;
         return this;
     }
@@ -275,7 +275,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
      *
      * @return the singleValueExtendedProperties value.
      */
-    public List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties() {
+    public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
         return this.singleValueExtendedProperties;
     }
 
@@ -287,7 +287,7 @@ public final class MicrosoftGraphMailFolder extends MicrosoftGraphEntity {
      * @return the MicrosoftGraphMailFolder object itself.
      */
     public MicrosoftGraphMailFolder withSingleValueExtendedProperties(
-        List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties) {
+        List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties) {
         this.singleValueExtendedProperties = singleValueExtendedProperties;
         return this;
     }

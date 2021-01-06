@@ -119,27 +119,27 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      * The calendar view for the calendar. Navigation property. Read-only.
      */
     @JsonProperty(value = "calendarView")
-    private List<MicrosoftGraphEventInner> calendarView;
+    private List<MicrosoftGraphEvent> calendarView;
 
     /*
      * The events in the calendar. Navigation property. Read-only.
      */
     @JsonProperty(value = "events")
-    private List<MicrosoftGraphEventInner> events;
+    private List<MicrosoftGraphEvent> events;
 
     /*
      * The collection of multi-value extended properties defined for the
      * calendar. Read-only. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
-    private List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties;
+    private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * The collection of single-value extended properties defined for the
      * calendar. Read-only. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
-    private List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties;
+    private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * calendar
@@ -449,7 +449,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      *
      * @return the calendarView value.
      */
-    public List<MicrosoftGraphEventInner> calendarView() {
+    public List<MicrosoftGraphEvent> calendarView() {
         return this.calendarView;
     }
 
@@ -459,7 +459,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      * @param calendarView the calendarView value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
-    public MicrosoftGraphCalendar withCalendarView(List<MicrosoftGraphEventInner> calendarView) {
+    public MicrosoftGraphCalendar withCalendarView(List<MicrosoftGraphEvent> calendarView) {
         this.calendarView = calendarView;
         return this;
     }
@@ -469,7 +469,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      *
      * @return the events value.
      */
-    public List<MicrosoftGraphEventInner> events() {
+    public List<MicrosoftGraphEvent> events() {
         return this.events;
     }
 
@@ -479,7 +479,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      * @param events the events value to set.
      * @return the MicrosoftGraphCalendar object itself.
      */
-    public MicrosoftGraphCalendar withEvents(List<MicrosoftGraphEventInner> events) {
+    public MicrosoftGraphCalendar withEvents(List<MicrosoftGraphEvent> events) {
         this.events = events;
         return this;
     }
@@ -490,7 +490,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      *
      * @return the multiValueExtendedProperties value.
      */
-    public List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties() {
+    public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
         return this.multiValueExtendedProperties;
     }
 
@@ -502,7 +502,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      * @return the MicrosoftGraphCalendar object itself.
      */
     public MicrosoftGraphCalendar withMultiValueExtendedProperties(
-        List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties) {
+        List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties) {
         this.multiValueExtendedProperties = multiValueExtendedProperties;
         return this;
     }
@@ -513,7 +513,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      *
      * @return the singleValueExtendedProperties value.
      */
-    public List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties() {
+    public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
         return this.singleValueExtendedProperties;
     }
 
@@ -525,7 +525,7 @@ public final class MicrosoftGraphCalendar extends MicrosoftGraphEntity {
      * @return the MicrosoftGraphCalendar object itself.
      */
     public MicrosoftGraphCalendar withSingleValueExtendedProperties(
-        List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties) {
+        List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties) {
         this.singleValueExtendedProperties = singleValueExtendedProperties;
         return this;
     }

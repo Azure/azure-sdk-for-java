@@ -204,7 +204,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * The fileAttachment and itemAttachment attachments for the message.
      */
     @JsonProperty(value = "attachments")
-    private List<MicrosoftGraphAttachmentInner> attachments;
+    private List<MicrosoftGraphAttachment> attachments;
 
     /*
      * The collection of open extensions defined for the message. Nullable.
@@ -217,14 +217,14 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * message. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
-    private List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties;
+    private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * The collection of single-value extended properties defined for the
      * message. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
-    private List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties;
+    private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * message
@@ -797,7 +797,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      *
      * @return the attachments value.
      */
-    public List<MicrosoftGraphAttachmentInner> attachments() {
+    public List<MicrosoftGraphAttachment> attachments() {
         return this.attachments;
     }
 
@@ -807,7 +807,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * @param attachments the attachments value to set.
      * @return the MicrosoftGraphMessage object itself.
      */
-    public MicrosoftGraphMessage withAttachments(List<MicrosoftGraphAttachmentInner> attachments) {
+    public MicrosoftGraphMessage withAttachments(List<MicrosoftGraphAttachment> attachments) {
         this.attachments = attachments;
         return this;
     }
@@ -838,7 +838,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      *
      * @return the multiValueExtendedProperties value.
      */
-    public List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties() {
+    public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
         return this.multiValueExtendedProperties;
     }
 
@@ -850,7 +850,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * @return the MicrosoftGraphMessage object itself.
      */
     public MicrosoftGraphMessage withMultiValueExtendedProperties(
-        List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties) {
+        List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties) {
         this.multiValueExtendedProperties = multiValueExtendedProperties;
         return this;
     }
@@ -861,7 +861,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      *
      * @return the singleValueExtendedProperties value.
      */
-    public List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties() {
+    public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
         return this.singleValueExtendedProperties;
     }
 
@@ -873,7 +873,7 @@ public final class MicrosoftGraphMessage extends MicrosoftGraphOutlookItem {
      * @return the MicrosoftGraphMessage object itself.
      */
     public MicrosoftGraphMessage withSingleValueExtendedProperties(
-        List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties) {
+        List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties) {
         this.singleValueExtendedProperties = singleValueExtendedProperties;
         return this;
     }

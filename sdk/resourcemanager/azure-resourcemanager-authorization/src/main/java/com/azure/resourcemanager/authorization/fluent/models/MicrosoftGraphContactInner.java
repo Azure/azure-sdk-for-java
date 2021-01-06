@@ -237,7 +237,7 @@ public final class MicrosoftGraphContactInner extends MicrosoftGraphOutlookItem 
      * contact. Read-only. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
-    private List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties;
+    private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * profilePhoto
@@ -250,7 +250,7 @@ public final class MicrosoftGraphContactInner extends MicrosoftGraphOutlookItem 
      * contact. Read-only. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
-    private List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties;
+    private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * contact
@@ -953,7 +953,7 @@ public final class MicrosoftGraphContactInner extends MicrosoftGraphOutlookItem 
      *
      * @return the multiValueExtendedProperties value.
      */
-    public List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties() {
+    public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
         return this.multiValueExtendedProperties;
     }
 
@@ -965,7 +965,7 @@ public final class MicrosoftGraphContactInner extends MicrosoftGraphOutlookItem 
      * @return the MicrosoftGraphContactInner object itself.
      */
     public MicrosoftGraphContactInner withMultiValueExtendedProperties(
-        List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties) {
+        List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties) {
         this.multiValueExtendedProperties = multiValueExtendedProperties;
         return this;
     }
@@ -996,7 +996,7 @@ public final class MicrosoftGraphContactInner extends MicrosoftGraphOutlookItem 
      *
      * @return the singleValueExtendedProperties value.
      */
-    public List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties() {
+    public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
         return this.singleValueExtendedProperties;
     }
 
@@ -1008,7 +1008,7 @@ public final class MicrosoftGraphContactInner extends MicrosoftGraphOutlookItem 
      * @return the MicrosoftGraphContactInner object itself.
      */
     public MicrosoftGraphContactInner withSingleValueExtendedProperties(
-        List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties) {
+        List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties) {
         this.singleValueExtendedProperties = singleValueExtendedProperties;
         return this;
     }

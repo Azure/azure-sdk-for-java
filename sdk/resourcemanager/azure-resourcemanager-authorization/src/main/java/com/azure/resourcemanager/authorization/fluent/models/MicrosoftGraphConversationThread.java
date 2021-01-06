@@ -76,7 +76,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
      * Read-only. Nullable.
      */
     @JsonProperty(value = "posts")
-    private List<MicrosoftGraphPostInner> posts;
+    private List<MicrosoftGraphPost> posts;
 
     /*
      * conversationThread
@@ -256,7 +256,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
      *
      * @return the posts value.
      */
-    public List<MicrosoftGraphPostInner> posts() {
+    public List<MicrosoftGraphPost> posts() {
         return this.posts;
     }
 
@@ -266,7 +266,7 @@ public final class MicrosoftGraphConversationThread extends MicrosoftGraphEntity
      * @param posts the posts value to set.
      * @return the MicrosoftGraphConversationThread object itself.
      */
-    public MicrosoftGraphConversationThread withPosts(List<MicrosoftGraphPostInner> posts) {
+    public MicrosoftGraphConversationThread withPosts(List<MicrosoftGraphPost> posts) {
         this.posts = posts;
         return this;
     }

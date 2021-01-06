@@ -10,8 +10,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.authorization.fluent.models.Get4ItemsItem;
-import com.azure.resourcemanager.authorization.fluent.models.Get9ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphExtensionInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphTodoTaskInner;
 import com.azure.resourcemanager.authorization.fluent.models.UsersTodoListsExpand;
@@ -52,7 +50,7 @@ public interface UsersTodoListsClient {
         Boolean count,
         List<UsersTodoListsOrderby> orderby,
         List<String> select,
-        List<Get9ItemsItem> expand);
+        List<String> expand);
 
     /**
      * Get extensions from users.
@@ -113,7 +111,7 @@ public interface UsersTodoListsClient {
         Boolean count,
         List<UsersTodoListsOrderby> orderby,
         List<String> select,
-        List<Get9ItemsItem> expand,
+        List<String> expand,
         Context context);
 
     /**
@@ -197,7 +195,7 @@ public interface UsersTodoListsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphExtensionInner>> getExtensionsWithResponseAsync(
-        String userId, String todoTaskListId, String extensionId, List<String> select, List<Get4ItemsItem> expand);
+        String userId, String todoTaskListId, String extensionId, List<String> select, List<String> expand);
 
     /**
      * Get extensions from users.
@@ -215,7 +213,7 @@ public interface UsersTodoListsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphExtensionInner> getExtensionsAsync(
-        String userId, String todoTaskListId, String extensionId, List<String> select, List<Get4ItemsItem> expand);
+        String userId, String todoTaskListId, String extensionId, List<String> select, List<String> expand);
 
     /**
      * Get extensions from users.
@@ -268,7 +266,7 @@ public interface UsersTodoListsClient {
         String todoTaskListId,
         String extensionId,
         List<String> select,
-        List<Get4ItemsItem> expand,
+        List<String> expand,
         Context context);
 
     /**

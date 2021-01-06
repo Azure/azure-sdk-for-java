@@ -49,14 +49,14 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
      * contactFolder. Read-only. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
-    private List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties;
+    private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * The collection of single-value extended properties defined for the
      * contactFolder. Read-only. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
-    private List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties;
+    private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * contactFolder
@@ -151,7 +151,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
      *
      * @return the multiValueExtendedProperties value.
      */
-    public List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties() {
+    public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
         return this.multiValueExtendedProperties;
     }
 
@@ -163,7 +163,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
      * @return the MicrosoftGraphContactFolder object itself.
      */
     public MicrosoftGraphContactFolder withMultiValueExtendedProperties(
-        List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties) {
+        List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties) {
         this.multiValueExtendedProperties = multiValueExtendedProperties;
         return this;
     }
@@ -174,7 +174,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
      *
      * @return the singleValueExtendedProperties value.
      */
-    public List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties() {
+    public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
         return this.singleValueExtendedProperties;
     }
 
@@ -186,7 +186,7 @@ public final class MicrosoftGraphContactFolder extends MicrosoftGraphEntity {
      * @return the MicrosoftGraphContactFolder object itself.
      */
     public MicrosoftGraphContactFolder withSingleValueExtendedProperties(
-        List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties) {
+        List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties) {
         this.singleValueExtendedProperties = singleValueExtendedProperties;
         return this;
     }

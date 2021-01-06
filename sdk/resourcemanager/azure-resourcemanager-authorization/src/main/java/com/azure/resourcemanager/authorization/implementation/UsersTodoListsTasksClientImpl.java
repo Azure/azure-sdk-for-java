@@ -34,7 +34,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.authorization.fluent.UsersTodoListsTasksClient;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfExtension1;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfLinkedResource;
-import com.azure.resourcemanager.authorization.fluent.models.Get10ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.Get5ItemsItem;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphExtensionInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphLinkedResourceInner;
@@ -270,7 +269,7 @@ public final class UsersTodoListsTasksClientImpl implements UsersTodoListsTasksC
         Boolean count,
         List<UsersTodoListsTasksOrderby> orderby,
         List<String> select,
-        List<Get10ItemsItem> expand) {
+        List<String> expand) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -356,7 +355,7 @@ public final class UsersTodoListsTasksClientImpl implements UsersTodoListsTasksC
         Boolean count,
         List<UsersTodoListsTasksOrderby> orderby,
         List<String> select,
-        List<Get10ItemsItem> expand,
+        List<String> expand,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -439,7 +438,7 @@ public final class UsersTodoListsTasksClientImpl implements UsersTodoListsTasksC
         Boolean count,
         List<UsersTodoListsTasksOrderby> orderby,
         List<String> select,
-        List<Get10ItemsItem> expand) {
+        List<String> expand) {
         return new PagedFlux<>(
             () ->
                 listExtensionsSinglePageAsync(
@@ -468,7 +467,7 @@ public final class UsersTodoListsTasksClientImpl implements UsersTodoListsTasksC
         final Boolean count = null;
         final List<UsersTodoListsTasksOrderby> orderby = null;
         final List<String> select = null;
-        final List<Get10ItemsItem> expand = null;
+        final List<String> expand = null;
         return new PagedFlux<>(
             () ->
                 listExtensionsSinglePageAsync(
@@ -508,7 +507,7 @@ public final class UsersTodoListsTasksClientImpl implements UsersTodoListsTasksC
         Boolean count,
         List<UsersTodoListsTasksOrderby> orderby,
         List<String> select,
-        List<Get10ItemsItem> expand,
+        List<String> expand,
         Context context) {
         return new PagedFlux<>(
             () ->
@@ -549,7 +548,7 @@ public final class UsersTodoListsTasksClientImpl implements UsersTodoListsTasksC
         final Boolean count = null;
         final List<UsersTodoListsTasksOrderby> orderby = null;
         final List<String> select = null;
-        final List<Get10ItemsItem> expand = null;
+        final List<String> expand = null;
         return new PagedIterable<>(
             listExtensionsAsync(
                 userId, todoTaskListId, todoTaskId, top, skip, search, filter, count, orderby, select, expand));
@@ -587,7 +586,7 @@ public final class UsersTodoListsTasksClientImpl implements UsersTodoListsTasksC
         Boolean count,
         List<UsersTodoListsTasksOrderby> orderby,
         List<String> select,
-        List<Get10ItemsItem> expand,
+        List<String> expand,
         Context context) {
         return new PagedIterable<>(
             listExtensionsAsync(

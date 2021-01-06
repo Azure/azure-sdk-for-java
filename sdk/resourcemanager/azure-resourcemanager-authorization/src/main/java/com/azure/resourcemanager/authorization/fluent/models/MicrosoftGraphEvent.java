@@ -272,7 +272,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * event. Navigation property. Read-only. Nullable.
      */
     @JsonProperty(value = "attachments")
-    private List<MicrosoftGraphAttachmentInner> attachments;
+    private List<MicrosoftGraphAttachment> attachments;
 
     /*
      * calendar
@@ -298,14 +298,14 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * Read-only. Nullable.
      */
     @JsonProperty(value = "multiValueExtendedProperties")
-    private List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties;
+    private List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties;
 
     /*
      * The collection of single-value extended properties defined for the
      * event. Read-only. Nullable.
      */
     @JsonProperty(value = "singleValueExtendedProperties")
-    private List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties;
+    private List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties;
 
     /*
      * event
@@ -1079,7 +1079,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      *
      * @return the attachments value.
      */
-    public List<MicrosoftGraphAttachmentInner> attachments() {
+    public List<MicrosoftGraphAttachment> attachments() {
         return this.attachments;
     }
 
@@ -1090,7 +1090,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * @param attachments the attachments value to set.
      * @return the MicrosoftGraphEvent object itself.
      */
-    public MicrosoftGraphEvent withAttachments(List<MicrosoftGraphAttachmentInner> attachments) {
+    public MicrosoftGraphEvent withAttachments(List<MicrosoftGraphAttachment> attachments) {
         this.attachments = attachments;
         return this;
     }
@@ -1161,7 +1161,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      *
      * @return the multiValueExtendedProperties value.
      */
-    public List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties() {
+    public List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties() {
         return this.multiValueExtendedProperties;
     }
 
@@ -1173,7 +1173,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * @return the MicrosoftGraphEvent object itself.
      */
     public MicrosoftGraphEvent withMultiValueExtendedProperties(
-        List<MicrosoftGraphMultiValueLegacyExtendedPropertyInner> multiValueExtendedProperties) {
+        List<MicrosoftGraphMultiValueLegacyExtendedProperty> multiValueExtendedProperties) {
         this.multiValueExtendedProperties = multiValueExtendedProperties;
         return this;
     }
@@ -1184,7 +1184,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      *
      * @return the singleValueExtendedProperties value.
      */
-    public List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties() {
+    public List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties() {
         return this.singleValueExtendedProperties;
     }
 
@@ -1196,7 +1196,7 @@ public final class MicrosoftGraphEvent extends MicrosoftGraphOutlookItem {
      * @return the MicrosoftGraphEvent object itself.
      */
     public MicrosoftGraphEvent withSingleValueExtendedProperties(
-        List<MicrosoftGraphSingleValueLegacyExtendedPropertyInner> singleValueExtendedProperties) {
+        List<MicrosoftGraphSingleValueLegacyExtendedProperty> singleValueExtendedProperties) {
         this.singleValueExtendedProperties = singleValueExtendedProperties;
         return this;
     }
