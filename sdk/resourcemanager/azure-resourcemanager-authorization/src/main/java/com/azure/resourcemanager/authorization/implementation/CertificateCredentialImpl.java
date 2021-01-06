@@ -172,6 +172,11 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
             .append("\n");
         builder
             .append("  ")
+            .append(String.format("\"%s\": \"%s\",",
+                AzureEnvironment.Endpoint.MICROSOFT_GRAPH.identifier(), environment.getMicrosoftGraphEndpoint()))
+            .append("\n");
+        builder
+            .append("  ")
             .append(String.format("\"managementEndpointUrl\": \"%s\"", environment.getManagementEndpoint()))
             .append("\n");
         builder.append("}");

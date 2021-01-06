@@ -107,7 +107,7 @@ public final class AuthorizationManager implements HasServiceClient<MicrosoftGra
     }
 
     private AuthorizationManager(HttpPipeline httpPipeline, AzureProfile profile) {
-        String graphEndpoint = profile.getEnvironment().getGraphEndpoint();
+        String graphEndpoint = profile.getEnvironment().getMicrosoftGraphEndpoint();
         graphEndpoint = graphEndpoint.endsWith("/")
             ? graphEndpoint + DEFAULT_GRAPH_ENDPOINT_SUFFIX
             : graphEndpoint + "/" + DEFAULT_GRAPH_ENDPOINT_SUFFIX;
