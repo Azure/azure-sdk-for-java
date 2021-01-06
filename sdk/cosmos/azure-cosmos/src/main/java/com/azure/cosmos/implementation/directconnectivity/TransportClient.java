@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.throughputBudget.ThroughputBudgetControlStore;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Mono;
 
 // We suppress the "try" warning here because the close() method's signature
@@ -14,16 +14,16 @@ import reactor.core.publisher.Mono;
 // signature for backwards compatibility purposes.
 @SuppressWarnings("try")
 public abstract class TransportClient implements AutoCloseable {
-    private ThroughputBudgetControlStore throughputBudgetControlStore;
+    private ThroughputControlStore throughputControlStore;
 
-    public void enableThroughputBudgetControl(ThroughputBudgetControlStore throughputBudgetControlStore) {
-        this.throughputBudgetControlStore = throughputBudgetControlStore;
+    public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
+        this.throughputControlStore = throughputControlStore;
     }
 
     // Uses requests's ResourceOperation to determine the operation
     public Mono<StoreResponse> invokeResourceOperationAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
-        if (this.throughputBudgetControlStore != null) {
-            return this.throughputBudgetControlStore.processRequest(request, this.invokeStoreAsync(physicalAddress, request));
+        if (this.throughputControlStore != null) {
+            return this.throughputControlStore.processRequest(request, this.invokeStoreAsync(physicalAddress, request));
         }
 
         return this.invokeStoreAsync(physicalAddress, request);

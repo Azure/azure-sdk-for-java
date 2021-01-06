@@ -67,7 +67,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     public volatile boolean isFeed;
     public volatile AuthorizationTokenType authorizationTokenType;
     public volatile Map<String, Object> properties;
-    public String throughputGroup;
+    public String throughputControlGroupName;
 
     public boolean isReadOnlyRequest() {
         return this.operationType == OperationType.Read
@@ -357,6 +357,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
             ModelBridgeInternal.serializeJsonToByteBuffer(resource), headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
+        request.throughputControlGroupName = getThroughputControlGroupName(options);
         return request;
     }
 
@@ -382,6 +383,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
             byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
+        request.throughputControlGroupName = getThroughputControlGroupName(options);
         return request;
     }
 
@@ -396,6 +398,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
             byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
+        request.throughputControlGroupName = getThroughputControlGroupName(options);
         return request;
     }
 
@@ -420,6 +423,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
             body.getBytes(StandardCharsets.UTF_8), headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
+        request.throughputControlGroupName = getThroughputControlGroupName(options);
         return request;
     }
 
@@ -497,6 +501,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Object options) {
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
+        request.throughputControlGroupName = getThroughputControlGroupName(options);
         return request;
     }
 
@@ -1039,6 +1044,17 @@ public class RxDocumentServiceRequest implements Cloneable {
         }
     }
 
+    private static String getThroughputControlGroupName(Object options) {
+        if (options == null) {
+            return null;
+        } else if (options instanceof RequestOptions) {
+            return ((RequestOptions) options).getThroughputControlGroupName();
+        } else {
+            // TODO: add for query and changeFeed
+            return null;
+        }
+    }
+
     public static byte[] toByteArray(ByteBuffer byteBuffer) {
         if (byteBuffer == null) {
             return null;
@@ -1076,5 +1092,5 @@ public class RxDocumentServiceRequest implements Cloneable {
         isAddressRefresh = addressRefresh;
     }
 
-    public String getThroughputGroup() { return this.throughputGroup; }
+    public String getThroughputControlGroupName() { return this.throughputControlGroupName; }
 }

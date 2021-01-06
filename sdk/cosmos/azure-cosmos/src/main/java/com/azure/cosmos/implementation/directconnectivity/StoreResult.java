@@ -41,6 +41,7 @@ public class StoreResult {
     final public boolean isNotFoundException;
     final public boolean isInvalidPartitionException;
     final public Uri storePhysicalAddress;
+    final public boolean isThroughputControlThrottledException;
 
     public StoreResult(
             StoreResponse storeResponse,
@@ -75,6 +76,7 @@ public class StoreResult {
         this.numberOfReadRegions = numberOfReadRegions;
         this.itemLSN = itemLSN;
         this.sessionToken = sessionToken;
+        this.isThroughputControlThrottledException = this.exception != null && Exceptions.isThroughputControlThrottledException(this.exception);
     }
 
     public CosmosException getException() throws InternalServerErrorException {
@@ -153,6 +155,7 @@ public class StoreResult {
                 ", subStatusCode: " + subStatusCode +
                 ", isGone: " + this.isGoneException +
                 ", isNotFound: " + this.isNotFoundException +
+                ", isThroughputControlThrottled: " + this.isThroughputControlThrottledException +
                 ", isInvalidPartition: " + this.isInvalidPartitionException +
                 ", requestCharge: " + this.requestCharge +
                 ", itemLSN: " + this.itemLSN +
@@ -192,6 +195,7 @@ public class StoreResult {
             jsonGenerator.writeBooleanField("isGone", storeResult.isGoneException);
             jsonGenerator.writeBooleanField("isNotFound", storeResult.isNotFoundException);
             jsonGenerator.writeBooleanField("isInvalidPartition", storeResult.isInvalidPartitionException);
+            jsonGenerator.writeBooleanField("isThroughputControlThrottled", storeResult.isThroughputControlThrottledException);
             jsonGenerator.writeNumberField("requestCharge", storeResult.requestCharge);
             jsonGenerator.writeNumberField("itemLSN", storeResult.itemLSN);
             jsonGenerator.writeStringField("sessionToken", (storeResult.sessionToken != null ? storeResult.sessionToken.convertToString() : null));

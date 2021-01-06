@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.throughputBudget.ThroughputBudgetControlStore;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Mono;
 
 /**
@@ -22,5 +22,5 @@ public interface RxStoreModel {
      */
     Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request);
 
-    void enableThroughputBudgetControl(ThroughputBudgetControlStore containerControllerCache);
+    void enableThroughputControl(ThroughputControlStore containerControllerCache);
 }

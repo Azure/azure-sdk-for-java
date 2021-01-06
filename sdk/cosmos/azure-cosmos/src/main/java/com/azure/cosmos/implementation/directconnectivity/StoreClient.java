@@ -25,7 +25,7 @@ import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.math.NumberUtils;
-import com.azure.cosmos.implementation.throughputBudget.ThroughputBudgetControlStore;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -75,8 +75,8 @@ public class StoreClient implements IStoreClient {
             useMultipleWriteLocations);
     }
 
-    public void enableThroughputBudgetControl(ThroughputBudgetControlStore throughputBudgetControlStore) {
-        this.replicatedResourceClient.enableThroughputBudgetControl(throughputBudgetControlStore);
+    public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
+        this.replicatedResourceClient.enableThroughputControl(throughputControlStore);
     }
 
     @Override

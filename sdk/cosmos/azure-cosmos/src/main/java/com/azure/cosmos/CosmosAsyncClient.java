@@ -7,10 +7,23 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
-import com.azure.cosmos.implementation.*;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdMetrics;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -18,17 +31,15 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ServiceLoader;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
@@ -458,29 +469,29 @@ public final class CosmosAsyncClient implements Closeable {
     }
 
     /**
-     * Enable throughput budget control by providing the configs. Each cosmos client can only enable one time.
+     * Enable throughput control by providing the throughput control groups.
+     * Each cosmos client can only enable throughput control once.
      *
-     * @param hostName The host name. Usually this should be different across machines.
-     * @param groupConfigs The throughput budget group configurations.
+     * @param groupConfigs The throughput control group configurations.
      */
-    public void enableThroughputBudgetControl(String hostName, ThroughputBudgetGroupConfig... groupConfigs) {
-        checkArgument(StringUtils.isNotEmpty(hostName), "Host name can not be empty");
-
+    @Beta(value = Beta.SinceVersion.V4_10_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void enableThroughputControl(ThroughputControlGroup... groupConfigs) {
         // Validate no duplicate group definition.
-        Set<ThroughputBudgetGroupConfig> groupConfigSet =
-            Stream.of(groupConfigs)
-                .map(groupConfig -> {
-                    checkNotNull(groupConfig, "Throughout budget group config cannot be null");
-                    groupConfig.validate();
-                    return groupConfig;
-                }).collect(Collectors.toSet());
+        Set<ThroughputControlGroup> groupConfigSet = new HashSet<>();
+        for (ThroughputControlGroup group : groupConfigs) {
+            checkArgument(group != null, "Throughput control group config cannot be null");
+            group.validate();
+            if (!groupConfigSet.add(group)) {
+                throw new IllegalArgumentException(String.format("Duplicate throughput control group %s", group.getGroupName()));
+            }
+        }
 
         // Validate there is only at most one default group defined.
         if (groupConfigSet.stream().filter(groupConfig -> groupConfig.isUseByDefault()).count() > 1) {
             throw new IllegalArgumentException("Only at most one group can be set as default");
         }
 
-        this.asyncDocumentClient.enableThroughputBudgetControl(hostName, groupConfigSet);
+        this.asyncDocumentClient.enableThroughputControl(groupConfigSet);
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

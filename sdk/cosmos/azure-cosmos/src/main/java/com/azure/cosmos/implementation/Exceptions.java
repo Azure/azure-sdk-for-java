@@ -27,4 +27,9 @@ public class Exceptions {
         return isStatusCode(e, HttpConstants.StatusCodes.GONE)
                 && isSubStatusCode(e, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE);
     }
+
+    public static boolean isThroughputControlThrottledException(CosmosException e) {
+        return isStatusCode(e, HttpConstants.StatusCodes.TOO_MANY_REQUESTS)
+            && isSubStatusCode(e, HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_GROUP_REQUEST_RATE_TOO_LARGE);
+    }
 }

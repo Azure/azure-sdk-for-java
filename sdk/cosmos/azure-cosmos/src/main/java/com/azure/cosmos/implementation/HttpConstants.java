@@ -315,7 +315,6 @@ public class HttpConstants {
 
         // 404: LSN in session token is higher
         public static final int READ_SESSION_NOT_AVAILABLE = 1002;
-        public static final int OWNER_RESOURCE_DOES_NOT_EXISTS = 1003;
 
         // Client generated gateway network error substatus
         public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;
@@ -324,7 +323,7 @@ public class HttpConstants {
         public static final int GATEWAY_ENDPOINT_READ_TIMEOUT = 10002;
 
         // Client generated request rate too large exception
-        public static final int THROUGHPUT_BUDGET_GROUP_REQUEST_RATE_TOO_LARGE = 10003;
+        public static final int THROUGHPUT_CONTROL_GROUP_REQUEST_RATE_TOO_LARGE = 10003;
     }
 
     public static class HeaderValues {

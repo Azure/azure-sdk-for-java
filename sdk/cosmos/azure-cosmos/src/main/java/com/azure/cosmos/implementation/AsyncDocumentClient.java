@@ -5,14 +5,19 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.ThroughputBudgetGroupConfig;
+import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
-import com.azure.cosmos.models.*;
+import com.azure.cosmos.models.CosmosItemIdentity;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1479,10 +1484,9 @@ public interface AsyncDocumentClient {
     ItemDeserializer getItemDeserializer();
 
     /**
-     * Enable throughput budget control.
+     * Enable throughput control.
      *
-     * @param hostName the host name of the client.
-     * @param groupConfigs the throughput budget group configurations.
+     * @param groups the throughput control group set.
      */
-    void enableThroughputBudgetControl(String hostName, Set<ThroughputBudgetGroupConfig> groupConfigs);
+    void enableThroughputControl(Set<ThroughputControlGroup> groups);
 }

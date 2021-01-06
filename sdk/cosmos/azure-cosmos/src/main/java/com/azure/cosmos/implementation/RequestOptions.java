@@ -34,7 +34,7 @@ public class RequestOptions {
     private Map<String, Object> properties;
     private ThroughputProperties throughputProperties;
     private Boolean contentResponseOnWriteEnabled;
-    private String throughputGroup;
+    private String throughputControlGroupName;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -380,11 +380,11 @@ public class RequestOptions {
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
     }
 
-    public String getThroughputGroup() {
-        return throughputGroup;
+    public String getThroughputControlGroupName() {
+        return this.throughputControlGroupName;
     }
 
-    public void setThroughputBudgetGroup(String throughputGroup) {
-        this.throughputGroup = throughputGroup;
+    public void setThroughputControlGroupName(String throughputControlGroupName) {
+        this.throughputControlGroupName = throughputControlGroupName;
     }
 }

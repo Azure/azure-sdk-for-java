@@ -107,6 +107,7 @@ public final class RntbdTransportClient extends TransportClient {
         final ConnectionPolicy connectionPolicy,
         final UserAgentContainer userAgent,
         final IAddressResolver addressResolver) {
+
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
@@ -199,6 +200,7 @@ public final class RntbdTransportClient extends TransportClient {
      */
     @Override
     public Mono<StoreResponse> invokeStoreAsync(final Uri addressUri, final RxDocumentServiceRequest request) {
+
         checkNotNull(addressUri, "expected non-null addressUri");
         checkNotNull(request, "expected non-null request");
         this.throwIfClosed();

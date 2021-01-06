@@ -267,6 +267,10 @@ public class StoreReader {
                     }
                 }
 
+                if (srr.isThroughputControlThrottledException) {
+                    resultCollector.add(srr);
+                }
+
                 hasGoneException.v = hasGoneException.v || (srr.isGoneException && !srr.isInvalidPartitionException);
 
                 if (resultCollector.size() >= replicaCountToRead) {

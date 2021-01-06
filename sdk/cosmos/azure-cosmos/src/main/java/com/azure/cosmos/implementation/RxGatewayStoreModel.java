@@ -10,8 +10,12 @@ import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
-import com.azure.cosmos.implementation.http.*;
-import com.azure.cosmos.implementation.throughputBudget.ThroughputBudgetControlStore;
+import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
@@ -45,7 +49,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     private final GlobalEndpointManager globalEndpointManager;
     private ConsistencyLevel defaultConsistencyLevel;
     private ISessionContainer sessionContainer;
-    private ThroughputBudgetControlStore throughputBudgetControlStore;
+    private ThroughputControlStore throughputControlStore;
 
     public RxGatewayStoreModel(
             DiagnosticsClientContext clientContext,
@@ -82,31 +86,31 @@ class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request) {
-        return this.performRequestInternal(request, HttpMethod.POST);
+        return this.performRequest(request, HttpMethod.POST);
     }
 
     private Mono<RxDocumentServiceResponse> upsert(RxDocumentServiceRequest request) {
-        return this.performRequestInternal(request, HttpMethod.POST);
+        return this.performRequest(request, HttpMethod.POST);
     }
 
     private Mono<RxDocumentServiceResponse> read(RxDocumentServiceRequest request) {
-        return this.performRequestInternal(request, HttpMethod.GET);
+        return this.performRequest(request, HttpMethod.GET);
     }
 
     private Mono<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request) {
-        return this.performRequestInternal(request, HttpMethod.PUT);
+        return this.performRequest(request, HttpMethod.PUT);
     }
 
     private Mono<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request) {
-        return this.performRequestInternal(request, HttpMethod.DELETE);
+        return this.performRequest(request, HttpMethod.DELETE);
     }
 
     private Mono<RxDocumentServiceResponse> execute(RxDocumentServiceRequest request) {
-        return this.performRequestInternal(request, HttpMethod.POST);
+        return this.performRequest(request, HttpMethod.POST);
     }
 
     private Mono<RxDocumentServiceResponse> readFeed(RxDocumentServiceRequest request) {
-        return this.performRequestInternal(request, HttpMethod.GET);
+        return this.performRequest(request, HttpMethod.GET);
     }
 
     private Mono<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
@@ -126,13 +130,16 @@ class RxGatewayStoreModel implements RxStoreModel {
                         RuntimeConstants.MediaTypes.QUERY_JSON);
                 break;
         }
-
-        return this.performRequestInternal(request, HttpMethod.POST);
+        return this.performRequest(request, HttpMethod.POST);
     }
 
 
     public Mono<RxDocumentServiceResponse> performRequest(RxDocumentServiceRequest request, HttpMethod method) {
-        return this.throughputBudgetControlStore.processRequest(request, performRequest(request, method));
+        if (this.throughputControlStore != null) {
+            return this.throughputControlStore.processRequest(request, performRequest(request, method));
+        }
+
+        return this.performRequestInternal(request, method);
     }
 
     /**
@@ -420,8 +427,8 @@ class RxGatewayStoreModel implements RxStoreModel {
     }
 
     @Override
-    public void enableThroughputBudgetControl(ThroughputBudgetControlStore throughputBudgetControlStore) {
-        this.throughputBudgetControlStore = throughputBudgetControlStore;
+    public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
+        this.throughputControlStore = throughputControlStore;
     }
 
     private void captureSessionToken(RxDocumentServiceRequest request, Map<String, String> responseHeaders) {
