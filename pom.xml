@@ -34,6 +34,7 @@
     <module>sdk/metricsadvisor</module>
     <module>sdk/monitor</module>
     <module>sdk/mysql</module>
+    <module>sdk/network</module>
     <module>sdk/postgresql</module>
     <module>sdk/recoveryservices</module>
     <module>sdk/relay</module>
