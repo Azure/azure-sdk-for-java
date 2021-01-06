@@ -16,9 +16,10 @@ public class GlobalThroughputRequestController implements IThroughputRequestCont
     }
 
     @Override
-    public Mono<IThroughputRequestController> init() {
+    @SuppressWarnings("unchecked")
+    public <T> Mono<T> init() {
         this.requestAuthorizer= new ThroughputRequestAuthorizer(this.initialScheduledThroughput);
-        return Mono.just(this);
+        return Mono.just((T)this);
     }
 
     @Override

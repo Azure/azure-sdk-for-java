@@ -67,7 +67,8 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
     }
 
     @Override
-    public Mono<IThroughputRequestController> init() {
+    @SuppressWarnings("unchecked")
+    public <T> Mono<T> init() {
         return this.getPartitionKeyRanges(RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES)
             .flatMapMany(pkRanges -> {
                 if (pkRanges == null || pkRanges.isEmpty()) {
@@ -81,7 +82,7 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
                             .doOnSuccess(requestAuthorizer -> this.requestAuthorizerMap.put(pkRange.getId(), requestAuthorizer));
                     });
             })
-            .then(Mono.just(this));
+            .then(Mono.just((T)this));
     }
 
     private Mono<ThroughputRequestAuthorizer> createAndInitializeRequestAuthorizer(double throughputPerPkRange) {

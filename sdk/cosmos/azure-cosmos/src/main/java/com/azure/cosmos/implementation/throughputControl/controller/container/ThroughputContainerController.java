@@ -95,7 +95,8 @@ public class ThroughputContainerController implements IThroughputContainerContro
     }
 
     @Override
-    public Mono<ThroughputContainerController> init() {
+    @SuppressWarnings("unchecked")
+    public <T> Mono<T> init() {
         return this.resolveDatabaseResourceId()
             .then(this.resolveContainerResourceId())
             .then(this.resolveContainerMaxThroughput())
@@ -104,7 +105,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
                 this.setDefaultGroupController();
                 scheduler.schedule(() -> this.refreshContainerMaxThroughputTask(this.cancellationTokenSource.getToken()).subscribe());
             })
-            .then(Mono.just(this));
+            .thenReturn((T)this);
     }
 
     private Mono<Void> resolveDatabaseResourceId() {

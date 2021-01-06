@@ -22,8 +22,9 @@ public class EmptyThroughputContainerController implements IThroughputContainerC
     }
 
     @Override
-    public Mono<EmptyThroughputContainerController> init() {
-        return Mono.just(this);
+    @SuppressWarnings("unchecked")
+    public <T> Mono<T> init() {
+        return (Mono<T>) Mono.just(this);
     }
 
     @Override

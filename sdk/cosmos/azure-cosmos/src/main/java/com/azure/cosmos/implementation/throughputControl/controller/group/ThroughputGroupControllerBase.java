@@ -91,10 +91,11 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     }
 
     @Override
-    public Mono<ThroughputGroupControllerBase> init() {
+    @SuppressWarnings("unchecked")
+    public <T> Mono<T> init() {
         return this.resolveRequestController()
             .doOnSuccess(dummy -> scheduler.schedule(() -> this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken()).subscribe()))
-            .then(Mono.just(this));
+            .thenReturn((T)this);
     }
 
     private Flux<Void> throughputUsageCycleRenewTask(CancellationToken cancellationToken) {
