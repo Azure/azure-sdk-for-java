@@ -32,7 +32,7 @@ public class SmsLiveTestBase extends TestBase {
     static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
 
-    protected SmsClientBuilder getSmsClientBuilder(HttpClient httpClient, String testName) {
+    protected SmsClientBuilder getSmsClientBuilder(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder.endpoint(ENDPOINT)

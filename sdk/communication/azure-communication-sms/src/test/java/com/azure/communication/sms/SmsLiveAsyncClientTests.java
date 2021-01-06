@@ -34,7 +34,7 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createAsyncClientUsingConnectionString(HttpClient httpClient) {
-        SmsAsyncClient smsClient = getTestSmsClientWithConnectionString(httpClient, "createAsyncClientUsingConnectionString");
+        SmsAsyncClient smsClient = getTestSmsClient(httpClient, "createAsyncClientUsingConnectionString");
         assertNotNull(smsClient);
         // Smoke test sms client by sending message
         StepVerifier.create(smsClient.sendMessage(from, to, body, null))
@@ -47,7 +47,7 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
     public void sendSmsRequestAsync(HttpClient httpClient) {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(true);
-        SmsAsyncClient smsClient = getTestSmsClientWithConnectionString(httpClient, "sendSmsRequestAsync");
+        SmsAsyncClient smsClient = getTestSmsClient(httpClient, "sendSmsRequestAsync");
         StepVerifier.create(smsClient.sendMessage(from, to, body, smsOptions))
             .assertNext(response -> verifyResponse(response))
             .verifyComplete();
@@ -58,7 +58,7 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
     public void sendSmsRequestAsyncNoDeliveryReport(HttpClient httpClient) {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(false);        
-        SmsAsyncClient smsClient = getTestSmsClientWithConnectionString(httpClient, "sendSmsRequestAsyncNoDeliveryReport");
+        SmsAsyncClient smsClient = getTestSmsClient(httpClient, "sendSmsRequestAsyncNoDeliveryReport");
         StepVerifier.create(smsClient.sendMessage(from, to, body))
             .assertNext(response -> verifyResponse(response))
             .verifyComplete();
@@ -69,13 +69,13 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
     public void sendSmsRequestAsyncSingleNumberNoDeliveryReport(HttpClient httpClient) {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(false);        
-        SmsAsyncClient smsClient = getTestSmsClientWithConnectionString(httpClient, "sendSmsRequestAsyncSingleNumberNoDeliveryReport");
+        SmsAsyncClient smsClient = getTestSmsClient(httpClient, "sendSmsRequestAsyncSingleNumberNoDeliveryReport");
         StepVerifier.create(smsClient.sendMessage(from, to.get(0), body))
             .assertNext(response -> verifyResponse(response))
             .verifyComplete();
     }    
 
-    private SmsAsyncClient getTestSmsClientWithConnectionString(HttpClient httpClient, String testName) {
+    private SmsAsyncClient getTestSmsClient(HttpClient httpClient, String testName) {
         SmsClientBuilder builder = getSmsClientBuilderWithConnectionString(httpClient);
         return addLoggingPolicy(builder, testName).buildAsyncClient();
     }  

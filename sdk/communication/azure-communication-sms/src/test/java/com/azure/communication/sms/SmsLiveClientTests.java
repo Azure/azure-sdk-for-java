@@ -79,7 +79,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         boolean http401ExceptionThrown = false;
 
         try {
-            SmsClientBuilder builder = getSmsClientBuilder(httpClient, "sendSmsRequestBadSignatureSync");
+            SmsClientBuilder builder = getSmsClientBuilder(httpClient);
             builder.accessKey(DEFAULT_ACCESS_KEY);
             builder = addLoggingPolicy(builder, "sendSmsRequestBadSignature");
             builder.buildClient().sendMessage(from, to, body);
