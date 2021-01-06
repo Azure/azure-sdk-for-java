@@ -273,8 +273,8 @@ public class AADWebAppConfigurationTest {
             .run(context -> {
                 AADAuthenticationProperties properties =
                     context.getBean(AADAuthenticationProperties.class);
-                assertEquals(properties.getGraphBaseUri(),"https://graph.microsoft.com/");
-                assertEquals(properties.getGraphMembershipUri(),"https://graph.microsoft.com/v1.0/me/memberOf");
+                assertEquals(properties.getGraphBaseUri(), "https://graph.microsoft.com/");
+                assertEquals(properties.getGraphMembershipUri(), "https://graph.microsoft.com/v1.0/me/memberOf");
             });
 
         WebApplicationContextRunnerUtils
@@ -285,7 +285,7 @@ public class AADWebAppConfigurationTest {
             .run(context -> {
                 AADAuthenticationProperties properties =
                     context.getBean(AADAuthenticationProperties.class);
-                assertEquals(properties.getGraphBaseUri(),"https://microsoftgraph.chinacloudapi.cn/");
+                assertEquals(properties.getGraphBaseUri(), "https://microsoftgraph.chinacloudapi.cn/");
                 assertEquals(properties.getGraphMembershipUri(),
                     "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
             });
@@ -298,7 +298,7 @@ public class AADWebAppConfigurationTest {
             .run(context -> {
                 AADAuthenticationProperties properties =
                     context.getBean(AADAuthenticationProperties.class);
-                assertEquals(properties.getGraphBaseUri(),"https://microsoftgraph.chinacloudapi.cn/");
+                assertEquals(properties.getGraphBaseUri(), "https://microsoftgraph.chinacloudapi.cn/");
                 assertEquals(properties.getGraphMembershipUri(),
                     "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
             });
@@ -312,7 +312,7 @@ public class AADWebAppConfigurationTest {
             .run(context -> {
                 AADAuthenticationProperties properties =
                     context.getBean(AADAuthenticationProperties.class);
-                assertEquals(properties.getGraphBaseUri(),"https://microsoftgraph.chinacloudapi.cn/");
+                assertEquals(properties.getGraphBaseUri(), "https://microsoftgraph.chinacloudapi.cn/");
                 assertEquals(properties.getGraphMembershipUri(),
                     "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
             });
