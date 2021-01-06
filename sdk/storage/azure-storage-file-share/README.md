@@ -168,7 +168,7 @@ ShareServiceClient shareServiceClient = new ShareServiceClientBuilder().endpoint
 ```
 
 ### Share
-The share resource includes metadata and properties for that share. It allows the opertions of creating, creating snapshot, deleting shares, getting share properties, setting metadata, getting and setting ACL (Access policy).
+The share resource includes metadata and properties for that share. It allows the opertions of creating, creating snapshot, deleting shares, getting share properties, setting metadata, getting and setting ACL (Access policy). Getting and setting ACL (Access policy) can only be allowed with ShareClient with ConnectionString. 
 
 #### Share With SasToken
 Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${sasToken}`
@@ -187,7 +187,7 @@ Once you have the ConnectionString, you can construct the file service client wi
 ```java
 String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
 ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
-    .sasToken(SAS_TOKEN).shareName(shareName).buildClient();
+    .connectionString(CONNECTION_STRING).shareName(shareName).buildClient();
 ```
 
 ### Directory
