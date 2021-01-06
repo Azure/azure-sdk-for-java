@@ -132,7 +132,7 @@
       "Expires" : "-1",
       "Content-Length" : "288",
       "x-ms-request-id" : "96580971-54df-4b9d-b7ad-80b6cfb4a769",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"nuia6keZXJwY1KKbM5EjXkhmzb8KSSODFMYS7o+uW0LvvCApnsjFy61ojyLJbXcUo5JlwcS7No+j+VbmsNRpAg==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"r4Doa0yngqnc/fNBg9+/bfjaLOlf6xr2zRds9UiLwZypEWSdBTuC9YyxOUbravBOJENSRbWE1aSX0tZ6WDoQyQ==\",\"permissions\":\"FULL\"}]}",
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}",
       "x-ms-client-request-id" : "5c919dde-54f1-41b9-8957-fbc3f5fab0e7",
       "Content-Type" : "application/json"
     },

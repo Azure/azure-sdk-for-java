@@ -1,12 +1,14 @@
 # Release History
 
-## 8.1.0 (Unreleased)
-### Features
-- Adds support for task slots
-    - `JobOperations.getTaskSlotCounts()` returns task slot counts
-    - `JobOperations.getTaskResult()` returns a `TaskCountsResult` object containing both task and slot counts
+## 8.1.0 (2021-01-05)
 
-## 8.1.0-beta.1 (Unreleased)
+- Exposes a BatchClient factory method
+
+### Features
+
+- Adds support for task slots
+  - `JobOperations.getTaskSlotCounts()` returns task slot counts
+  - `JobOperations.getTaskResult()` returns a `TaskCountsResult` object containing both task and slot counts
 
 ## 8.0.0 (2020-04-27)
 ### Features

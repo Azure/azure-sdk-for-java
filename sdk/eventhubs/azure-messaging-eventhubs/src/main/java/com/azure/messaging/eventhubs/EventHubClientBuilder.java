@@ -65,7 +65,7 @@ import java.util.regex.Pattern;
  * </ul>
  *
  * <p>
- * In addition, <strong>consumer group</strong> is required when creating {@link EventHubConsumerAsyncClient} or
+ * In addition, the <strong>consumer group</strong> is required when creating {@link EventHubConsumerAsyncClient} or
  * {@link EventHubConsumerClient}.
  * </p>
  *

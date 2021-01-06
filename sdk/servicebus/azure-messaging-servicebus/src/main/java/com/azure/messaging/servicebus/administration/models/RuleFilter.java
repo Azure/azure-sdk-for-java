@@ -11,12 +11,16 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
  * <ul>
  *     <li>{@link SqlRuleFilter} that represents a filter using SQL syntax.</li>
  *     <li>{@link CorrelationRuleFilter} that provides an optimisation for correlation equality expressions.</li>
+ *     <li>{@link FalseRuleFilter} matches no messages.</li>
+ *     <li>{@link TrueRuleFilter} matches all messages.</li>
  * </ul>
  *
  * @see SqlRuleFilter
  * @see CorrelationRuleFilter
  * @see TrueRuleFilter
  * @see FalseRuleFilter
+ * @see CreateRuleOptions#setFilter(RuleFilter)
+ * @see RuleProperties#setFilter(RuleFilter)
  */
 public abstract class RuleFilter {
     RuleFilter() {
