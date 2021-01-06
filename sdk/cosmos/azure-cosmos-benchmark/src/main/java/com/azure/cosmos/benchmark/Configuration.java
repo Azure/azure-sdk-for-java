@@ -177,7 +177,8 @@ public class Configuration {
         ReadMyWrites,
         ReadThroughputWithMultipleClients,
         CtlWorkload,
-        ReadAllItemsOfLogicalPartition;
+        ReadAllItemsOfLogicalPartition,
+        LinkedInCtlWorkload;
 
         static Operation fromString(String code) {
 
