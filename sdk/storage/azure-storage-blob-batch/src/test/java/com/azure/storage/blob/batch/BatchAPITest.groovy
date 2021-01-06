@@ -6,11 +6,21 @@ import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.storage.blob.BlobServiceAsyncClient
+import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.batch.options.BlobBatchSetBlobAccessTierOptions
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.azure.storage.blob.models.RehydratePriority
+import com.azure.storage.blob.sas.BlobContainerSasPermission
+import com.azure.storage.blob.sas.BlobSasPermission
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.sas.SasIpRange
+import com.azure.storage.common.sas.SasProtocol
 import spock.lang.Unroll
 
 import java.nio.charset.StandardCharsets
@@ -687,5 +697,74 @@ class BatchAPITest extends APISpec {
 
         cleanup:
         primaryBlobServiceClient.deleteBlobContainer(containerName)
+    }
+
+    def "Submit batch with account sas credentials"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobName1 = generateBlobName()
+        def blobName2 = generateBlobName()
+
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
+        containerClient.getBlobClient(blobName1).getPageBlobClient().create(0)
+        containerClient.getBlobClient(blobName2).getPageBlobClient().create(0)
+
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setCreatePermission(true)
+            .setDeletePermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
+
+//        def permission = new BlobContainerSasPermission()
+//            .setReadPermission(true)
+//            .setWritePermission(true)
+//            .setCreatePermission(true)
+//            .setDeletePermission(true)
+//            .setAddPermission(true)
+//            .setListPermission(true)
+//            .setMovePermission(true)
+//            .setExecutePermission(true)
+//        def sasValues = new BlobServiceSasSignatureValues(getUTCNow().plusDays(1), permission)
+//            .setStartTime(getUTCNow().minusDays(1))
+//            .setProtocol(SasProtocol.HTTPS_HTTP)
+//            .setSasIpRange(new SasIpRange()
+//                .setIpMin("0.0.0.0")
+//                .setIpMax("255.255.255.255"))
+//            .setCacheControl("cache")
+//            .setContentDisposition("disposition")
+//            .setContentEncoding("encoding")
+//            .setContentLanguage("language")
+//            .setContentType("type")
+//        def sas = containerClient.generateSas(sasValues)
+
+        def batchClient = new BlobBatchClientBuilder(getServiceClient(sas, primaryBlobServiceClient.getAccountUrl()))
+                    .buildClient()
+
+        def batch = batchClient.getBlobBatch()
+
+        when:
+        def response1 = batch.deleteBlob(containerName, blobName1)
+        def response2 = batch.deleteBlob(containerName, blobName2)
+        batchClient.submitBatch(batch)
+
+        then:
+        notThrown(BlobStorageException)
+        response1.getStatusCode() == 202
+        response2.getStatusCode() == 202
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
+    }
+
+    def "Submit container scoped batch"() {
+
     }
 }

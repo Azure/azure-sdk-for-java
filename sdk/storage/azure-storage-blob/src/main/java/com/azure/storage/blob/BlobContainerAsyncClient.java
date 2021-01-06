@@ -1147,6 +1147,7 @@ public final class BlobContainerAsyncClient {
             throw logger.logExceptionAsError(new UnsupportedOperationException(
                 "Lease-Id is the only HTTP access condition supported for this API"));
         }
+        return null;
 
         return this.azureBlobStorage.containers().renameWithRestResponseAsync(null,
             options.getSourceContainerName(), null, null, requestConditions.getLeaseId(),
