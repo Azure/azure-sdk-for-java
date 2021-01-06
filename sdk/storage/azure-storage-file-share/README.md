@@ -425,7 +425,7 @@ shareClient.setMetadata(metadata);
 ```
 
 ### Get a share access policy
-Taking the shareClient in KeyConcept, [`${shareClient}`](#share)
+Taking the shareClient in KeyConcept, shareClient should created by connectionString .
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L191-L191 -->
 ```Java
@@ -433,7 +433,7 @@ shareClient.getAccessPolicy();
 ```
 
 ### Set a share access policy
-Taking the shareClient in KeyConcept, [`${shareClient}`](#share) .
+Taking the shareClient in KeyConcept, shareClient should created by connectionString .
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L195-L199 -->
 ```java
