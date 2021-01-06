@@ -1221,7 +1221,7 @@ public class BlobAsyncClientBase {
         return this.azureBlobStorage.blobs().deleteWithRestResponseAsync(null, null, snapshot, versionId,
             null, requestConditions.getLeaseId(), deleteBlobSnapshotOptions, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, context)
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
