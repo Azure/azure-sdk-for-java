@@ -248,6 +248,19 @@ public class AADWebAppConfigurationTest {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
+                "azure.activedirectory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn/"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties =
+                    context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getGraphBaseUri(),"https://microsoftgraph.chinacloudapi.cn/");
+                assertEquals(properties.getGraphMembershipUri(),
+                    "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
+            });
+
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
                 "azure.activedirectory.graph-base-uri=https://microsoftgraph.chinacloudapi.cn/",
                 "azure.activedirectory.graph-membership-uri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf"
             )
@@ -265,6 +278,10 @@ public class AADWebAppConfigurationTest {
                 "azure.activedirectory.graph-membership-uri=https://graph.microsoft.com/v1.0/me/memberOf"
             )
             .run(context -> {
+                AADAuthenticationProperties properties =
+                    context.getBean(AADAuthenticationProperties.class);
+                assertEquals(properties.getGraphMembershipUri(),
+                    "https://graph.microsoft.com/v1.0/me/memberOf");
             });
     }
 

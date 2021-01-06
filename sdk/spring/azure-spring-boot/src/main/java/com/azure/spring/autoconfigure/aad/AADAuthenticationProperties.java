@@ -99,9 +99,9 @@ public class AADAuthenticationProperties implements InitializingBean {
      */
     private Boolean sessionStateless = false;
 
-    private String baseUri = "https://login.microsoftonline.com/";
+    private String baseUri;
 
-    private String graphBaseUri = "https://graph.microsoft.com/";
+    private String graphBaseUri;
 
     private String graphMembershipUri;
 
@@ -278,7 +278,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     public void setBaseUri(String baseUri) {
-        this.baseUri = baseUri;
+        this.baseUri = addSlash(baseUri);
     }
 
     public String getGraphBaseUri() {
@@ -314,19 +314,28 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+
+        if (!StringUtils.hasText(baseUri)) {
+            baseUri = "https://login.microsoftonline.com/";
+        }
+
+        if (!StringUtils.hasText(graphBaseUri)) {
+            graphBaseUri = "https://graph.microsoft.com/";
+        }
+
         if (!StringUtils.hasText(graphMembershipUri)) {
             graphMembershipUri = graphBaseUri + "v1.0/me/memberOf";
         }
-        validate();
+
+        if (!graphMembershipUri.startsWith(graphBaseUri)) {
+            throw new IllegalStateException("azure.activedirectory.graph-base-uri should be "
+                + "the prefix of azure.activedirectory.graph-membership-uri. "
+                + "azure.activedirectory.graph-base-uri = " + graphBaseUri + ", "
+                + "azure.activedirectory.graph-membership-uri = " + graphMembershipUri + ".");
+        }
     }
 
     private String addSlash(String uri) {
         return uri.endsWith("/") ? uri : uri + "/";
-    }
-
-    private void validate() {
-        if (!graphMembershipUri.startsWith(graphBaseUri)) {
-            throw new IllegalStateException("The domains of graphBaseUri and graphMembershipUri are inconsistent.");
-        }
     }
 }
