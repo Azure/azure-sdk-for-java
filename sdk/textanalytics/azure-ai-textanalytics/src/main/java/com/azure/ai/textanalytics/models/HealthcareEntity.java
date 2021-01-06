@@ -4,8 +4,10 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
+import com.azure.core.util.IterableStream;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * The {@link HealthcareEntity} model.
@@ -13,11 +15,11 @@ import java.util.List;
 public final class HealthcareEntity {
     private String text;
     private EntityCategory category;
-    private String subcategory;
     private double confidenceScore;
     private int offset;
     private boolean negated;
-    private List<HealthcareEntityLink> healthcareEntityLinks;
+    private IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources;
+    private Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities;
 
     static {
         HealthcareEntityPropertiesHelper.setAccessor(new HealthcareEntityPropertiesHelper.HealthcareEntityAccessor() {
@@ -29,11 +31,6 @@ public final class HealthcareEntity {
             @Override
             public void setCategory(HealthcareEntity healthcareEntity, EntityCategory category) {
                 healthcareEntity.setCategory(category);
-            }
-
-            @Override
-            public void setSubcategory(HealthcareEntity healthcareEntity, String subcategory) {
-                healthcareEntity.setSubcategory(subcategory);
             }
 
             @Override
@@ -52,9 +49,15 @@ public final class HealthcareEntity {
             }
 
             @Override
-            public void setHealthcareEntityLinks(HealthcareEntity healthcareEntity,
-                List<HealthcareEntityLink> healthcareEntityLinks) {
-                healthcareEntity.setHealthcareEntityLinks(healthcareEntityLinks);
+            public void setHealthcareEntityDataSources(HealthcareEntity healthcareEntity,
+                IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources) {
+                healthcareEntity.setHealthcareEntityDataSources(healthcareEntityDataSources);
+            }
+
+            @Override
+            public void setRelatedHealthcareEntities(HealthcareEntity healthcareEntity,
+                Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities) {
+                healthcareEntity.setRelatedHealthcareEntities(relatedHealthcareEntities);
             }
         });
     }
@@ -75,15 +78,6 @@ public final class HealthcareEntity {
      */
     public EntityCategory getCategory() {
         return this.category;
-    }
-
-    /**
-     * Get the subcategory property: Healthcare entity sub category, such as Age/Year/TimeRange etc.
-     *
-     * @return The subcategory value.
-     */
-    public String getSubcategory() {
-        return this.subcategory;
     }
 
     /**
@@ -115,12 +109,21 @@ public final class HealthcareEntity {
     }
 
     /**
-     * Get the links property: Entity references in known data sources.
+     * Get the healthcare entity data sources property: Entity references in known data sources.
      *
-     * @return the links value.
+     * @return the healthcareEntityDataSources value.
      */
-    public List<HealthcareEntityLink> getDataSourceEntityLinks() {
-        return this.healthcareEntityLinks;
+    public IterableStream<HealthcareEntityDataSource> getHealthcareEntityDataSources() {
+        return this.healthcareEntityDataSources;
+    }
+
+    /**
+     * Get the related healthcare entities and relation type.
+     *
+     * @return the related healthcare entities and relation type.
+     */
+    public Map<HealthcareEntity, HealthcareEntityRelationType> getRelatedHealthcareEntities() {
+        return Collections.unmodifiableMap(relatedHealthcareEntities);
     }
 
     private void setText(String text) {
@@ -129,10 +132,6 @@ public final class HealthcareEntity {
 
     private void setCategory(EntityCategory category) {
         this.category = category;
-    }
-
-    private void setSubcategory(String subcategory) {
-        this.subcategory = subcategory;
     }
 
     private void setConfidenceScore(double confidenceScore) {
@@ -147,7 +146,13 @@ public final class HealthcareEntity {
         this.negated = negated;
     }
 
-    private void setHealthcareEntityLinks(List<HealthcareEntityLink> healthcareEntityLinks) {
-        this.healthcareEntityLinks = healthcareEntityLinks;
+    private void setHealthcareEntityDataSources(
+        IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources) {
+        this.healthcareEntityDataSources = healthcareEntityDataSources;
+    }
+
+    private void setRelatedHealthcareEntities(
+        Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities) {
+        this.relatedHealthcareEntities = relatedHealthcareEntities;
     }
 }

@@ -4,10 +4,10 @@
 package com.azure.ai.textanalytics.models;
 
 
-import com.azure.ai.textanalytics.implementation.HealthcareEntityLinkPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.HealthcareEntityDataSourcePropertiesHelper;
 
 /** The HealthcareEntityLink model. */
-public final class HealthcareEntityLink {
+public final class HealthcareEntityDataSource {
     /*
      * Entity id in the given source catalog.
      */
@@ -19,16 +19,17 @@ public final class HealthcareEntityLink {
     private String dataSource;
 
     static {
-        HealthcareEntityLinkPropertiesHelper.setAccessor(
-            new HealthcareEntityLinkPropertiesHelper.HealthcareEntityLinkAccessor() {
+        HealthcareEntityDataSourcePropertiesHelper.setAccessor(
+            new HealthcareEntityDataSourcePropertiesHelper.HealthcareEntityDataSourceAccessor() {
                 @Override
-                public void setDataSource(HealthcareEntityLink healthcareEntityLink, String dataSource) {
-                    healthcareEntityLink.setDataSource(dataSource);
+                public void setDataSource(HealthcareEntityDataSource healthcareEntityDataSource, String dataSource) {
+                    healthcareEntityDataSource.setDataSource(dataSource);
                 }
 
                 @Override
-                public void setDataSourceId(HealthcareEntityLink healthcareEntityLink, String dataSourceId) {
-                    healthcareEntityLink.setDataSourceId(dataSourceId);
+                public void setDataSourceId(HealthcareEntityDataSource healthcareEntityDataSource,
+                    String dataSourceId) {
+                    healthcareEntityDataSource.setDataSourceId(dataSourceId);
                 }
             });
     }
@@ -53,7 +54,7 @@ public final class HealthcareEntityLink {
 
     /**
      * The private setter to set the dataSource property
-     * via {@link HealthcareEntityLinkPropertiesHelper.HealthcareEntityLinkAccessor}.
+     * via {@link HealthcareEntityDataSourcePropertiesHelper.HealthcareEntityDataSourceAccessor}.
      *
      * @param dataSource the dataSource property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
      */
@@ -63,7 +64,7 @@ public final class HealthcareEntityLink {
 
     /**
      * The private setter to set the dataSourceId property
-     * via {@link HealthcareEntityLinkPropertiesHelper.HealthcareEntityLinkAccessor}.
+     * via {@link HealthcareEntityDataSourcePropertiesHelper.HealthcareEntityDataSourceAccessor}.
      *
      * @param dataSourceId The entity id in the given source catalog.
      */

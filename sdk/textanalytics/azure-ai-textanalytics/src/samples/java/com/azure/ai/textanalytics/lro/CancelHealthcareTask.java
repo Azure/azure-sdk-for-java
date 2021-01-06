@@ -5,17 +5,16 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.HealthcareTaskResult;
-import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,8 +30,8 @@ public class CancelHealthcareTask {
     public static void main(String[] args) {
         TextAnalyticsClient client =
             new TextAnalyticsClientBuilder()
-                .credential(new AzureKeyCredential("{key}"))
-                .endpoint("{endpoint}")
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
                 .buildClient();
 
         List<TextDocumentInput> documents = new ArrayList<>();
@@ -53,19 +52,14 @@ public class CancelHealthcareTask {
                     + "for revascularization with open heart surgery."));
         }
 
-        SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> syncPoller =
-            client.beginAnalyzeHealthcare(documents, null, Context.NONE);
+        SyncPoller<AnalyzeHealthcareEntitiesOperationResult, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>> syncPoller =
+            client.beginAnalyzeHealthcareEntities(documents, null, Context.NONE);
 
-        PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
-
-        System.out.printf("The Job ID that is cancelling is %s.%n", pollResponse.getValue().getResultId());
-
-        final SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
-            = client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(),
-            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
-
-        final PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
-        System.out.printf("Task status: %s.%n", poll.getStatus());
+        PollResponse<AnalyzeHealthcareEntitiesOperationResult> pollResponse = syncPoller.poll();
+        System.out.printf("The Job ID that is cancelling is %s.%n", pollResponse.getValue().getOperationId());
+        System.out.printf("Status before cancel the task: %s.%n" , syncPoller.poll().getStatus());
+        syncPoller.cancelOperation();
+        System.out.printf("Status after request the healthcare analysis cancellation: %s.%n" , syncPoller.poll().getStatus());
 
         syncPoller.waitForCompletion();
     }

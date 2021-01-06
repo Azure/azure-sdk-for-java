@@ -3,24 +3,26 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
-import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.HealthcareTaskResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationResult;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
@@ -37,6 +39,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
+import java.time.Duration;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
@@ -889,53 +892,27 @@ public final class TextAnalyticsClient {
      * {@link TextDocumentInput document} and provided request options to
      * show statistics.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcare#Iterable-RecognizeHealthcareEntityOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions-Context}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
-     * @param options The additional configurable {@link RecognizeHealthcareEntityOptions options} that may be passed
+     * @param options The additional configurable {@link AnalyzeHealthcareEntitiesOptions options} that may be passed
      * when analyzing healthcare task.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the analyze healthcare operation until it has completed, has failed,
-     * or has been cancelled. The completed operation returns a {@link PagedIterable} of {@link HealthcareTaskResult}.
+     * or has been cancelled. The completed operation returns a {@link PagedIterable} of {@link AnalyzeHealthcareEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> beginAnalyzeHealthcare(
-        Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options, Context context) {
+    public SyncPoller<AnalyzeHealthcareEntitiesOperationResult,
+                             PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+        beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options,
+            Context context) {
         return client.analyzeHealthcareAsyncClient.beginAnalyzeHealthcarePagedIterable(documents, options, context)
             .getSyncPoller();
-    }
-
-    /**
-     * Cancel a long-running operation healthcare task by given a healthcare task identification number.
-     *
-     * Note: In order to use this functionality, request to access public preview is required.
-     * Azure Active Directory (AAD) is not currently supported. For more information see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview">this</a>.
-     *
-     * <p><strong>Code Sample</strong></p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelHealthcareTask#String-RecognizeHealthcareEntityOptions-Context}
-     *
-     * @param healthcareTaskId The healthcare task identification number.
-     * @param options The additional configurable {@link RecognizeHealthcareEntityOptions options} that may be passed
-     * when cancelling healthcare task.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     *
-     * @return A {@link SyncPoller} that polls the analyze healthcare operation until it has completed, has failed,
-     * or has been cancelled.
-     *
-     * @throws NullPointerException If {@code healthcareTaskId} is null.
-     * @throws TextAnalyticsException If analyze operation fails.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<TextAnalyticsOperationResult, Void> beginCancelHealthcareTask(String healthcareTaskId,
-        RecognizeHealthcareEntityOptions options, Context context) {
-        return client.analyzeHealthcareAsyncClient.beginCancelAnalyzeHealthcare(healthcareTaskId, options, context)
-                   .getSyncPoller();
     }
 
     /**
@@ -945,24 +922,27 @@ public final class TextAnalyticsClient {
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
      *
      * <p><strong>Code Sample</strong></p>
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeTasks#Iterable-AnalyzeTasksOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeBatchTasks#Iterable-AnalyzeTasksOptions-Context}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
-     * @param options The additional configurable {@link AnalyzeTasksOptions options} that may be passed when
+     * @param tasks
+     * @param options The additional configurable {@link AnalyzeBatchOptions options} that may be passed when
      * analyzing a collection of tasks.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the analyze a collection of tasks operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
-     * {@link AnalyzeTasksResult}.
+     * {@link AnalyzeBatchResult}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyzeTasks(
-        Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
-        return client.analyzeTasksAsyncClient.beginAnalyzeTasksIterable(documents, options, context).getSyncPoller();
+    public SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>> beginAnalyzeBatchTasks(
+        Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options,
+        Context context) {
+        return client.analyzeTasksAsyncClient.beginAnalyzeTasksIterable(documents, tasks, options, context)
+                   .getSyncPoller();
     }
 }

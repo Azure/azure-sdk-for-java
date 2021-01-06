@@ -3,11 +3,10 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.AnalyzeTasksResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AnalyzeBatchOperationResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AnalyzeBatchResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.TextAnalyticsErrorInformationPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsExceptionPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.TextAnalyticsOperationResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeBatchInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeJobState;
@@ -20,16 +19,19 @@ import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.PiiTask;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskParametersDomain;
+import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasks;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionPiiTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksKeyPhraseExtractionTasksItem;
-import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
-import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
-import com.azure.ai.textanalytics.models.TextAnalyticsErrorInformation;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -41,6 +43,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -53,14 +56,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
+import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.parseModelId;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
-import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractKeyPhrasesResultCollection;
-import static com.azure.ai.textanalytics.implementation.Utility.toJobState;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeEntitiesResultCollectionResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizePiiEntitiesResultCollection;
@@ -75,142 +78,125 @@ class AnalyzeTasksAsyncClient {
         this.service = service;
     }
 
-    PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyzeTasks(
-        Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
+    PollerFlux<AnalyzeBatchOperationResult, PagedFlux<AnalyzeBatchResult>> beginAnalyzeTasks(
+        Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options,
+        Context context) {
         try {
             inputDocumentsValidation(documents);
             if (options == null) {
-                options = new AnalyzeTasksOptions();
+                options = new AnalyzeBatchOptions();
             }
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
-                    .setTasks(getJobManifestTasks(options));
+                    .setTasks(getJobManifestTasks(tasks));
             analyzeBatchInput.setDisplayName(options.getDisplayName()); // setDisplayName() returns JobDescriptor
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
-            final Integer finalTop = options.getTop();
-            final Integer finalSkip = options.getSkip();
             return new PollerFlux<>(
-                options.getPollInterval(),
+                DEFAULT_POLL_INTERVAL, // TODO: after poller has the poll interval, change it back to it.
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                         .map(analyzeResponse -> {
-                            final TextAnalyticsOperationResult textAnalyticsOperationResult =
-                                new TextAnalyticsOperationResult();
-                            TextAnalyticsOperationResultPropertiesHelper.setResultId(textAnalyticsOperationResult,
+                            final AnalyzeBatchOperationResult textAnalyticsOperationResult =
+                                new AnalyzeBatchOperationResult();
+                            AnalyzeBatchOperationResultPropertiesHelper.setOperationId(textAnalyticsOperationResult,
                                 parseModelId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                             return textAnalyticsOperationResult;
                         })),
                 pollingOperation(resultID -> service.analyzeStatusWithResponseAsync(resultID,
-                    finalIncludeStatistics, finalTop, finalSkip, context)),
+                    finalIncludeStatistics, null, null, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported.")),
                 fetchingOperation(resultId -> Mono.just(getAnalyzeOperationFluxPage(
-                    resultId, finalTop, finalSkip, finalIncludeStatistics, context)))
+                    resultId, null, null, finalIncludeStatistics, context)))
             );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
     }
 
-    PollerFlux<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyzeTasksIterable(
-        Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
+    PollerFlux<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>> beginAnalyzeTasksIterable(
+        Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options,
+        Context context) {
         try {
             inputDocumentsValidation(documents);
             if (options == null) {
-                options = new AnalyzeTasksOptions();
+                options = new AnalyzeBatchOptions();
             }
             final AnalyzeBatchInput analyzeBatchInput =
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
-                    .setTasks(getJobManifestTasks(options));
+                    .setTasks(getJobManifestTasks(tasks));
             analyzeBatchInput.setDisplayName(options.getDisplayName()); // setDisplayName() returns JobDescriptor
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
-            final Integer finalTop = options.getTop();
-            final Integer finalSkip = options.getSkip();
             return new PollerFlux<>(
-                options.getPollInterval(),
+                DEFAULT_POLL_INTERVAL, // TODO: after poller has the poll interval, change it back to it.
                 activationOperation(
                     service.analyzeWithResponseAsync(analyzeBatchInput,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
                         .map(analyzeResponse -> {
-                            final TextAnalyticsOperationResult textAnalyticsOperationResult =
-                                new TextAnalyticsOperationResult();
-                            TextAnalyticsOperationResultPropertiesHelper.setResultId(textAnalyticsOperationResult,
+                            final AnalyzeBatchOperationResult textAnalyticsOperationResult =
+                                new AnalyzeBatchOperationResult();
+                            AnalyzeBatchOperationResultPropertiesHelper.setOperationId(textAnalyticsOperationResult,
                                 parseModelId(analyzeResponse.getDeserializedHeaders().getOperationLocation()));
                             return textAnalyticsOperationResult;
                         })),
                 pollingOperation(resultID -> service.analyzeStatusWithResponseAsync(resultID,
-                    finalIncludeStatistics, finalTop, finalSkip, context)),
+                    finalIncludeStatistics, null, null, context)),
                 (activationResponse, pollingContext) ->
                     Mono.error(new RuntimeException("Cancellation is not supported.")),
                 fetchingOperationIterable(resultId -> Mono.just(new PagedIterable<>(getAnalyzeOperationFluxPage(
-                    resultId, finalTop, finalSkip, finalIncludeStatistics, context))))
+                    resultId, null, null, finalIncludeStatistics, context))))
             );
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
         }
     }
 
-    private JobManifestTasks getJobManifestTasks(AnalyzeTasksOptions options) {
+    private JobManifestTasks getJobManifestTasks(AnalyzeBatchTasks tasks) {
         return new JobManifestTasks()
-            .setEntityRecognitionTasks(options.getEntitiesRecognitionTasks() == null ? null
-                : options.getEntitiesRecognitionTasks().stream().map(
+            .setEntityRecognitionTasks(tasks.getCategorizedEntitiesRecognitions() == null ? null
+                : StreamSupport.stream(tasks.getCategorizedEntitiesRecognitions().spliterator(), false).map(
                     entitiesTask -> {
                         if (entitiesTask == null) {
                             return null;
                         }
                         final EntitiesTask entitiesTaskImpl = new EntitiesTask();
-                        final com.azure.ai.textanalytics.models.EntitiesTaskParameters entitiesTaskParameters =
-                            entitiesTask.getParameters();
-                        if (entitiesTaskParameters == null) {
-                            return entitiesTaskImpl;
-                        }
                         entitiesTaskImpl.setParameters(
-                            new EntitiesTaskParameters().setModelVersion(entitiesTaskParameters.getModelVersion()));
+                            new EntitiesTaskParameters().setModelVersion(entitiesTask.getModelVersion()));
                         return entitiesTaskImpl;
                     }).collect(Collectors.toList()))
-            .setEntityRecognitionPiiTasks(options.getPiiEntitiesRecognitionTasks() == null ? null
-                : options.getPiiEntitiesRecognitionTasks().stream().map(
+            .setEntityRecognitionPiiTasks(tasks.getPiiEntitiesRecognitions() == null ? null
+                : StreamSupport.stream(tasks.getPiiEntitiesRecognitions().spliterator(), false).map(
                     piiEntitiesTask -> {
                         if (piiEntitiesTask == null) {
                             return null;
                         }
                         final PiiTask piiTaskImpl = new PiiTask();
-                        final com.azure.ai.textanalytics.models.PiiTaskParameters piiTaskParameters =
-                            piiEntitiesTask.getParameters();
-                        if (piiTaskParameters == null) {
-                            return piiTaskImpl;
-                        }
                         piiTaskImpl.setParameters(
                             new PiiTaskParameters()
-                                .setModelVersion(piiTaskParameters.getModelVersion())
+                                .setModelVersion(piiEntitiesTask.getModelVersion())
                                 .setDomain(PiiTaskParametersDomain.fromString(
-                                    piiTaskParameters.getDomain() == null ? null
-                                        : piiTaskParameters.getDomain().toString())));
+                                    piiEntitiesTask.getDomainFilter() == null ? null
+                                        : piiEntitiesTask.getDomainFilter().toString())));
                         return piiTaskImpl;
                     }).collect(Collectors.toList()))
-            .setKeyPhraseExtractionTasks(options.getKeyPhrasesExtractionTasks() == null ? null
-                : options.getKeyPhrasesExtractionTasks().stream().map(
+            .setKeyPhraseExtractionTasks(tasks.getKeyPhrasesExtractions() == null ? null
+                : StreamSupport.stream(tasks.getKeyPhrasesExtractions().spliterator(), false).map(
                     keyPhrasesTask -> {
                         if (keyPhrasesTask == null) {
                             return null;
                         }
-                        final com.azure.ai.textanalytics.models.KeyPhrasesTaskParameters keyPhrasesTaskParameters
-                            = keyPhrasesTask.getParameters();
                         final KeyPhrasesTask keyPhrasesTaskImpl = new KeyPhrasesTask();
-                        if (keyPhrasesTaskParameters == null) {
-                            return keyPhrasesTaskImpl;
-                        }
                         keyPhrasesTaskImpl.setParameters(
-                            new KeyPhrasesTaskParameters().setModelVersion(keyPhrasesTaskParameters.getModelVersion()));
+                            new KeyPhrasesTaskParameters().setModelVersion(keyPhrasesTask.getModelVersion()));
                         return keyPhrasesTaskImpl;
                     }).collect(Collectors.toList()));
     }
 
-    private Function<PollingContext<TextAnalyticsOperationResult>, Mono<TextAnalyticsOperationResult>>
-        activationOperation(Mono<TextAnalyticsOperationResult> operationResult) {
+    private Function<PollingContext<AnalyzeBatchOperationResult>, Mono<AnalyzeBatchOperationResult>>
+        activationOperation(Mono<AnalyzeBatchOperationResult> operationResult) {
         return pollingContext -> {
             try {
                 return operationResult.onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -220,16 +206,16 @@ class AnalyzeTasksAsyncClient {
         };
     }
 
-    private Function<PollingContext<TextAnalyticsOperationResult>, Mono<PollResponse<TextAnalyticsOperationResult>>>
+    private Function<PollingContext<AnalyzeBatchOperationResult>, Mono<PollResponse<AnalyzeBatchOperationResult>>>
         pollingOperation(Function<String, Mono<Response<AnalyzeJobState>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<TextAnalyticsOperationResult> operationResultPollResponse =
+                final PollResponse<AnalyzeBatchOperationResult> operationResultPollResponse =
                     pollingContext.getLatestResponse();
                 // TODO: [Service-Bug] change back to UUID after service support it.
                 //  https://github.com/Azure/azure-sdk-for-java/issues/17629
 //                final UUID resultUUID = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                final String resultID = operationResultPollResponse.getValue().getResultId();
+                final String resultID = operationResultPollResponse.getValue().getOperationId();
                 return pollingFunction.apply(resultID)
                     .flatMap(modelResponse -> processAnalyzedModelResponse(modelResponse, operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
@@ -239,14 +225,14 @@ class AnalyzeTasksAsyncClient {
         };
     }
 
-    private Function<PollingContext<TextAnalyticsOperationResult>, Mono<PagedFlux<AnalyzeTasksResult>>>
-        fetchingOperation(Function<String, Mono<PagedFlux<AnalyzeTasksResult>>> fetchingFunction) {
+    private Function<PollingContext<AnalyzeBatchOperationResult>, Mono<PagedFlux<AnalyzeBatchResult>>>
+        fetchingOperation(Function<String, Mono<PagedFlux<AnalyzeBatchResult>>> fetchingFunction) {
         return pollingContext -> {
             try {
                 // TODO: [Service-Bug] change back to UUID after service support it.
                 //  https://github.com/Azure/azure-sdk-for-java/issues/17629
 //                final UUID resultUUID = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                final String resultUUID = pollingContext.getLatestResponse().getValue().getResultId();
+                final String resultUUID = pollingContext.getLatestResponse().getValue().getOperationId();
                 return fetchingFunction.apply(resultUUID);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -254,14 +240,14 @@ class AnalyzeTasksAsyncClient {
         };
     }
 
-    private Function<PollingContext<TextAnalyticsOperationResult>, Mono<PagedIterable<AnalyzeTasksResult>>>
-        fetchingOperationIterable(Function<String, Mono<PagedIterable<AnalyzeTasksResult>>> fetchingFunction) {
+    private Function<PollingContext<AnalyzeBatchOperationResult>, Mono<PagedIterable<AnalyzeBatchResult>>>
+        fetchingOperationIterable(Function<String, Mono<PagedIterable<AnalyzeBatchResult>>> fetchingFunction) {
         return pollingContext -> {
             try {
                 // TODO: [Service-Bug] change back to UUID after service support it.
                 //  https://github.com/Azure/azure-sdk-for-java/issues/17629
 //                final UUID resultUUID = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                final String resultUUID = pollingContext.getLatestResponse().getValue().getResultId();
+                final String resultUUID = pollingContext.getLatestResponse().getValue().getOperationId();
                 return fetchingFunction.apply(resultUUID);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -269,14 +255,14 @@ class AnalyzeTasksAsyncClient {
         };
     }
 
-    PagedFlux<AnalyzeTasksResult> getAnalyzeOperationFluxPage(String analyzeTasksId, Integer top, Integer skip,
+    PagedFlux<AnalyzeBatchResult> getAnalyzeOperationFluxPage(String analyzeTasksId, Integer top, Integer skip,
         boolean showStats, Context context) {
         return new PagedFlux<>(
             () -> getPage(null, analyzeTasksId, top, skip, showStats, context),
             continuationToken -> getPage(continuationToken, analyzeTasksId, top, skip, showStats, context));
     }
 
-    Mono<PagedResponse<AnalyzeTasksResult>> getPage(String continuationToken, String analyzeTasksId, Integer top,
+    Mono<PagedResponse<AnalyzeBatchResult>> getPage(String continuationToken, String analyzeTasksId, Integer top,
         Integer skip, boolean showStats, Context context) {
         if (continuationToken != null) {
             final Map<String, Integer> continuationTokenMap = parseNextLink(continuationToken);
@@ -292,9 +278,9 @@ class AnalyzeTasksAsyncClient {
         }
     }
 
-    private PagedResponse<AnalyzeTasksResult> toAnalyzeTasksPagedResponse(Response<AnalyzeJobState> response) {
+    private PagedResponse<AnalyzeBatchResult> toAnalyzeTasksPagedResponse(Response<AnalyzeJobState> response) {
         final AnalyzeJobState analyzeJobState = response.getValue();
-        return new PagedResponseBase<Void, AnalyzeTasksResult>(
+        return new PagedResponseBase<Void, AnalyzeBatchResult>(
             response.getRequest(),
             response.getStatusCode(),
             response.getHeaders(),
@@ -303,7 +289,7 @@ class AnalyzeTasksAsyncClient {
             null);
     }
 
-    private AnalyzeTasksResult toAnalyzeTasks(AnalyzeJobState analyzeJobState) {
+    private AnalyzeBatchResult toAnalyzeTasks(AnalyzeJobState analyzeJobState) {
         TasksStateTasks tasksStateTasks = analyzeJobState.getTasks();
         final List<TasksStateTasksEntityRecognitionPiiTasksItem> piiTasksItems =
             tasksStateTasks.getEntityRecognitionPiiTasks();
@@ -311,59 +297,68 @@ class AnalyzeTasksAsyncClient {
             tasksStateTasks.getEntityRecognitionTasks();
         final List<TasksStateTasksKeyPhraseExtractionTasksItem> keyPhraseExtractionTasks =
             tasksStateTasks.getKeyPhraseExtractionTasks();
-        List<RecognizeEntitiesResultCollection> entitiesResultCollections = null;
-        List<RecognizePiiEntitiesResultCollection> piiEntitiesResultCollections = null;
-        List<ExtractKeyPhrasesResultCollection> keyPhrasesResultCollections = null;
+        IterableStream<RecognizeEntitiesResultCollection> entitiesResultCollections = null;
+        IterableStream<RecognizePiiEntitiesResultCollection> piiEntitiesResultCollections = null;
+        IterableStream<ExtractKeyPhrasesResultCollection> keyPhrasesResultCollections = null;
         if (!CoreUtils.isNullOrEmpty(entityRecognitionTasksItems)) {
-            entitiesResultCollections = entityRecognitionTasksItems.stream()
+            entitiesResultCollections = IterableStream.of(entityRecognitionTasksItems.stream()
                 .map(taskItem -> toRecognizeEntitiesResultCollectionResponse(taskItem.getResults()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
         }
         if (!CoreUtils.isNullOrEmpty(piiTasksItems)) {
-            piiEntitiesResultCollections = piiTasksItems.stream()
+            piiEntitiesResultCollections = IterableStream.of(piiTasksItems.stream()
                 .map(taskItem -> toRecognizePiiEntitiesResultCollection(taskItem.getResults()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
         }
         if (!CoreUtils.isNullOrEmpty(keyPhraseExtractionTasks)) {
-            keyPhrasesResultCollections = keyPhraseExtractionTasks.stream()
+            keyPhrasesResultCollections = IterableStream.of(keyPhraseExtractionTasks.stream()
                 .map(taskItem -> toExtractKeyPhrasesResultCollection(taskItem.getResults()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
         }
-        final AnalyzeTasksResult analyzeTasksResult = new AnalyzeTasksResult(
-            analyzeJobState.getJobId(),
-            analyzeJobState.getCreatedDateTime(),
-            analyzeJobState.getLastUpdateDateTime(),
-            toJobState(analyzeJobState.getStatus()),
-            analyzeJobState.getDisplayName(),
-            analyzeJobState.getExpirationDateTime());
-        AnalyzeTasksResultPropertiesHelper.setErrors(analyzeTasksResult,
-            analyzeJobState.getErrors().stream().map(Utility::toTextAnalyticsError).collect(Collectors.toList()));
-        AnalyzeTasksResultPropertiesHelper.setStatistics(analyzeTasksResult,
-            analyzeJobState.getStatistics() == null ? null : toBatchStatistics(analyzeJobState.getStatistics()));
-        AnalyzeTasksResultPropertiesHelper.setCompleted(analyzeTasksResult, tasksStateTasks.getCompleted());
-        AnalyzeTasksResultPropertiesHelper.setFailed(analyzeTasksResult, tasksStateTasks.getFailed());
-        AnalyzeTasksResultPropertiesHelper.setInProgress(analyzeTasksResult, tasksStateTasks.getInProgress());
-        AnalyzeTasksResultPropertiesHelper.setTotal(analyzeTasksResult, tasksStateTasks.getTotal());
-        AnalyzeTasksResultPropertiesHelper.setEntityRecognitionTasks(analyzeTasksResult, entitiesResultCollections);
-        AnalyzeTasksResultPropertiesHelper.setEntityRecognitionPiiTasks(analyzeTasksResult,
+        final AnalyzeBatchResult analyzeBatchResult = new AnalyzeBatchResult();
+        AnalyzeBatchResultPropertiesHelper.setErrors(analyzeBatchResult,
+            IterableStream.of(analyzeJobState.getErrors()
+                                  .stream()
+                                  .map(Utility::toTextAnalyticsError)
+                                  .collect(Collectors.toList())));
+
+        final RequestStatistics requestStatistics = analyzeJobState.getStatistics();
+        TextDocumentBatchStatistics batchStatistics = null;
+        if (requestStatistics != null) {
+            batchStatistics = new TextDocumentBatchStatistics(
+                requestStatistics.getDocumentsCount(), requestStatistics.getErroneousDocumentsCount(),
+                requestStatistics.getValidDocumentsCount(), requestStatistics.getTransactionsCount()
+            );
+        }
+
+        AnalyzeBatchResultPropertiesHelper.setStatistics(analyzeBatchResult, batchStatistics);
+        AnalyzeBatchResultPropertiesHelper.setCategorizedEntityRecognitionTasksResult(analyzeBatchResult,
+            entitiesResultCollections);
+        AnalyzeBatchResultPropertiesHelper.setPiiEntityRecognitionTasksResult(analyzeBatchResult,
             piiEntitiesResultCollections);
-        AnalyzeTasksResultPropertiesHelper.setKeyPhraseExtractionTasks(analyzeTasksResult, keyPhrasesResultCollections);
-        return analyzeTasksResult;
+        AnalyzeBatchResultPropertiesHelper.setKeyPhraseExtractionTasksResult(analyzeBatchResult,
+            keyPhrasesResultCollections);
+        return analyzeBatchResult;
     }
 
-    private Mono<PollResponse<TextAnalyticsOperationResult>> processAnalyzedModelResponse(
+    private Mono<PollResponse<AnalyzeBatchOperationResult>> processAnalyzedModelResponse(
         Response<AnalyzeJobState> analyzeJobStateResponse,
-        PollResponse<TextAnalyticsOperationResult> operationResultPollResponse) {
+        PollResponse<AnalyzeBatchOperationResult> operationResultPollResponse) {
 
         LongRunningOperationStatus status;
         switch (analyzeJobStateResponse.getValue().getStatus()) {
-            case NOT_STARTED:
             case CANCELLING:
+                status = LongRunningOperationStatus.fromString("CANCELLING", false);
+                break;
+            case NOT_STARTED:
             case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
                 break;
             case SUCCEEDED:
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                break;
+            case REJECTED:
+                status = LongRunningOperationStatus.fromString("REJECTED", true);
                 break;
             case CANCELLED:
                 status = LongRunningOperationStatus.USER_CANCELLED;
@@ -371,23 +366,40 @@ class AnalyzeTasksAsyncClient {
             case FAILED:
                 final TextAnalyticsException exception = new TextAnalyticsException("Analyze operation failed",
                     null, null);
-                TextAnalyticsExceptionPropertiesHelper.setErrorInformationList(exception,
-                    analyzeJobStateResponse.getValue().getErrors().stream()
-                        .map(error -> {
-                            final TextAnalyticsErrorInformation textAnalyticsErrorInformation =
-                                new TextAnalyticsErrorInformation();
-                            TextAnalyticsErrorInformationPropertiesHelper.setErrorCode(textAnalyticsErrorInformation,
-                                TextAnalyticsErrorCode.fromString(error.getCode().toString()));
-                            TextAnalyticsErrorInformationPropertiesHelper.setMessage(textAnalyticsErrorInformation,
-                                error.getMessage());
-                            return textAnalyticsErrorInformation;
-                        }).collect(Collectors.toList()));
+                TextAnalyticsExceptionPropertiesHelper.setErrors(exception,
+                    IterableStream.of(analyzeJobStateResponse.getValue().getErrors().stream()
+                        .map(error -> new TextAnalyticsError(
+                                TextAnalyticsErrorCode.fromString(error.getCode().toString()),
+                                error.getMessage(), null)).collect(Collectors.toList())));
                 throw logger.logExceptionAsError(exception);
+            case PARTIALLY_COMPLETED:
+                status = LongRunningOperationStatus.fromString("PARTIALLY_COMPLETED", false);
+                break;
             default:
                 status = LongRunningOperationStatus.fromString(
                     analyzeJobStateResponse.getValue().getStatus().toString(), true);
                 break;
         }
+
+        AnalyzeBatchOperationResultPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
+            analyzeJobStateResponse.getValue().getDisplayName());
+        AnalyzeBatchOperationResultPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
+            analyzeJobStateResponse.getValue().getCreatedDateTime());
+        AnalyzeBatchOperationResultPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
+            analyzeJobStateResponse.getValue().getExpirationDateTime());
+        AnalyzeBatchOperationResultPropertiesHelper.setUpdatedAt(operationResultPollResponse.getValue(),
+            analyzeJobStateResponse.getValue().getLastUpdateDateTime());
+        final TasksStateTasks tasksResult = analyzeJobStateResponse.getValue().getTasks();
+        AnalyzeBatchOperationResultPropertiesHelper.setFailedTasksCount(operationResultPollResponse.getValue(),
+            tasksResult.getFailed());
+        AnalyzeBatchOperationResultPropertiesHelper.setInProgressTaskCount(operationResultPollResponse.getValue(),
+            tasksResult.getInProgress());
+        AnalyzeBatchOperationResultPropertiesHelper.setSuccessfullyCompletedTasksCount(
+            operationResultPollResponse.getValue(), tasksResult.getCompleted());
+        AnalyzeBatchOperationResultPropertiesHelper.setTotalTasksCount(operationResultPollResponse.getValue(),
+            tasksResult.getTotal());
+        AnalyzeBatchOperationResultPropertiesHelper.setAnalyzeBatchResult(operationResultPollResponse.getValue(),
+            toAnalyzeTasks(analyzeJobStateResponse.getValue()));
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
     }
 }

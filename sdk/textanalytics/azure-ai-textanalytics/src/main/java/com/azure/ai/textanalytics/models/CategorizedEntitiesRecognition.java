@@ -5,9 +5,11 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** The KeyPhrasesTaskParameters model. */
+/**
+ * The CategorizedEntitiesRecognition model.
+ */
 @Fluent
-public final class KeyPhrasesTaskParameters {
+public final class CategorizedEntitiesRecognition {
     /*
      * The model-version property.
      */
@@ -28,9 +30,9 @@ public final class KeyPhrasesTaskParameters {
      * Set the modelVersion property: The model-version property.
      *
      * @param modelVersion the modelVersion value to set.
-     * @return the KeyPhrasesTaskParameters object itself.
+     * @return the CategorizedEntitiesRecognition object itself.
      */
-    public KeyPhrasesTaskParameters setModelVersion(String modelVersion) {
+    public CategorizedEntitiesRecognition setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
     }

@@ -5,12 +5,14 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
-import com.azure.ai.textanalytics.models.EntitiesTask;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
+import com.azure.ai.textanalytics.models.CategorizedEntitiesRecognition;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.KeyPhrasesTask;
+import com.azure.ai.textanalytics.models.KeyPhrasesExtraction;
+import com.azure.ai.textanalytics.models.PiiEntitiesRecognition;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.PiiTask;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -18,10 +20,14 @@ import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.IterableStream;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -36,8 +42,8 @@ public class AnalyzeTasksAsync {
      */
     public static void main(String[] args) {
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("{endpoint}")
+                                              .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
+                                              .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
             .buildAsyncClient();
 
         List<TextDocumentInput> documents = Arrays.asList(
@@ -52,21 +58,28 @@ public class AnalyzeTasksAsync {
                     + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
         );
 
-        client.beginAnalyzeTasks(documents,
-            new AnalyzeTasksOptions().setDisplayName("{tasks_display_name}")
-                .setEntitiesRecognitionTasks(Arrays.asList(new EntitiesTask()))
-                .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))
-                .setPiiEntitiesRecognitionTasks(Arrays.asList(new PiiTask())))
-            .flatMap(AsyncPollResponse::getFinalResult)
+        client.beginAnalyzeBatchTasks(documents,
+            new AnalyzeBatchTasks()
+                .setCategorizedEntitiesRecognitions(new CategorizedEntitiesRecognition())
+                .setKeyPhrasesExtractions(new KeyPhrasesExtraction())
+                .setPiiEntitiesRecognitions(new PiiEntitiesRecognition()),
+            new AnalyzeBatchOptions().setDisplayName("{tasks_display_name}"))
+            .flatMap(result -> {
+                AnalyzeBatchOperationResult operationResult = result.getValue();
+                System.out.printf("Job display name: %s, Successfully completed tasks: %d, in-process tasks: %d, failed tasks: %d, total tasks: %d%n",
+                    operationResult.getDisplayName(), operationResult.getSuccessfullyCompletedTasksCount(),
+                    operationResult.getInProgressTaskCount(), operationResult.getFailedTasksCount(), operationResult.getTotalTasksCount());
+                return result.getFinalResult();
+            })
             .subscribe(analyzeTasksResultPagedFlux ->
                 analyzeTasksResultPagedFlux.subscribe(analyzeTasksResult -> {
-                    System.out.printf("Job Display Name: %s, Job ID: %s.%n", analyzeTasksResult.getDisplayName(),
-                        analyzeTasksResult.getJobId());
-                    System.out.printf("Total tasks: %s, completed: %s, failed: %s, in progress: %s.%n",
-                        analyzeTasksResult.getTotal(), analyzeTasksResult.getCompleted(),
-                        analyzeTasksResult.getFailed(), analyzeTasksResult.getInProgress());
 
-                    List<RecognizeEntitiesResultCollection> entityRecognitionTasks = analyzeTasksResult.getEntityRecognitionTasks();
+
+                    analyzeTasksResult.getErrors();
+
+
+                    IterableStream<RecognizeEntitiesResultCollection> entityRecognitionTasks =
+                        analyzeTasksResult.getCategorizedEntitiesRecognitionTasksResult();
                     if (entityRecognitionTasks != null) {
                         entityRecognitionTasks.forEach(taskResult -> {
                             // Recognized entities for each of documents from a batch of documents
@@ -85,7 +98,7 @@ public class AnalyzeTasksAsync {
                             }
                         });
                     }
-                    List<ExtractKeyPhrasesResultCollection> keyPhraseExtractionTasks = analyzeTasksResult.getKeyPhraseExtractionTasks();
+                    IterableStream<ExtractKeyPhrasesResultCollection> keyPhraseExtractionTasks = analyzeTasksResult.getKeyPhrasesExtractionTasksResult();
                     if (keyPhraseExtractionTasks != null) {
                         keyPhraseExtractionTasks.forEach(taskResult -> {
                             // Extracted key phrase for each of documents from a batch of documents
@@ -103,7 +116,7 @@ public class AnalyzeTasksAsync {
                             }
                         });
                     }
-                    List<RecognizePiiEntitiesResultCollection> entityRecognitionPiiTasks = analyzeTasksResult.getEntityRecognitionPiiTasks();
+                    IterableStream<RecognizePiiEntitiesResultCollection> entityRecognitionPiiTasks = analyzeTasksResult.getPiiEntitiesRecognitionTasksResult();
                     if (entityRecognitionPiiTasks != null) {
                         entityRecognitionPiiTasks.forEach(taskResult -> {
                             // Recognized Personally Identifiable Information entities for each document in a batch of documents

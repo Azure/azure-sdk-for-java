@@ -3,11 +3,16 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
+import com.azure.ai.textanalytics.models.CategorizedEntitiesRecognition;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.HealthcareTaskResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationResult;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
@@ -16,7 +21,6 @@ import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -33,6 +37,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -1537,11 +1542,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         healthcareLroRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options, Context.NONE);
+            SyncPoller<AnalyzeHealthcareEntitiesOperationResult, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
             syncPoller.waitForCompletion();
-            PagedIterable<HealthcareTaskResult> healthcareTaskResults = syncPoller.getFinalResult();
-            validateHealthcareTaskResult(
+            PagedIterable<AnalyzeHealthcareEntitiesResultCollection> healthcareTaskResults = syncPoller.getFinalResult();
+            validateHealthcareTaskResults(
                 options.isIncludeStatistics(),
                 getExpectedHealthcareTaskResultListForSinglePage(),
                 healthcareTaskResults.stream().collect(Collectors.toList()));
@@ -1553,11 +1558,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         healthcareLroPaginationRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options, Context.NONE);
+            SyncPoller<AnalyzeHealthcareEntitiesOperationResult, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
             syncPoller.waitForCompletion();
-            PagedIterable<HealthcareTaskResult> healthcareTaskResults = syncPoller.getFinalResult();
-            validateHealthcareTaskResult(
+            PagedIterable<AnalyzeHealthcareEntitiesResultCollection> healthcareTaskResults = syncPoller.getFinalResult();
+            validateHealthcareTaskResults(
                 options.isIncludeStatistics(),
                 getExpectedHealthcareTaskResultListForMultiplePages(0, 10, 0),
                 healthcareTaskResults.stream().collect(Collectors.toList()));
@@ -1566,29 +1571,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void healthcareLroPaginationWithTopAndSkip(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        healthcareLroPaginationRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options.setSkip(2).setTop(4), Context.NONE);
-            syncPoller.waitForCompletion();
-            PagedIterable<HealthcareTaskResult> healthcareEntitiesResultCollectionPagedFlux
-                = syncPoller.getFinalResult();
-            validateHealthcareTaskResult(
-                options.isIncludeStatistics(),
-                // Skip = 2, top = 4, so the first page is 4 items, second page is the remaining 3 items.
-                getExpectedHealthcareTaskResultListForMultiplePages(2, 4, 3),
-                healthcareEntitiesResultCollectionPagedFlux.stream().collect(Collectors.toList()));
-        }, 9);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void healthcareLroEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         emptyListRunner((documents, errorMessage) -> {
             final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> client.beginAnalyzeHealthcare(documents, null, Context.NONE).getFinalResult());
+                () -> client.beginAnalyzeHealthcareEntities(documents, null, Context.NONE).getFinalResult());
             assertEquals(errorMessage, exception.getMessage());
         });
     }
@@ -1600,11 +1587,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         cancelHealthcareLroRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>>
-                syncPoller = client.beginAnalyzeHealthcare(documents, options, Context.NONE);
+            SyncPoller<AnalyzeHealthcareEntitiesOperationResult, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+                syncPoller = client.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
 
-            PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
-            client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(), options, Context.NONE);
+            PollResponse<AnalyzeHealthcareEntitiesOperationResult> pollResponse = syncPoller.poll();
+//            client.beginCancelHealthcareTask(pollResponse.getValue().getTaskId(), options.getPollInterval(),
+//                Context.NONE);
             syncPoller.waitForCompletion();
         });
     }
@@ -1615,16 +1603,18 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeTasksWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeTasksLroRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> syncPoller =
-                client.beginAnalyzeTasks(documents, options, Context.NONE);
+        analyzeTasksLroRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>> syncPoller =
+                client.beginAnalyzeBatchTasks(documents, tasks,
+                    new AnalyzeBatchOptions().setDisplayName("Test1").setIncludeStatistics(false),
+                    Context.NONE);
             syncPoller.waitForCompletion();
-            PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
-            validateAnalyzeTasksResultList(options.isIncludeStatistics(),
+            PagedIterable<AnalyzeBatchResult> result = syncPoller.getFinalResult();
+            validateAnalyzeTasksResultList(false,
                 Arrays.asList(getExpectedAnalyzeTasksResult(
-                    asList(getRecognizeEntitiesResultCollection()),
-                    asList(getRecognizePiiEntitiesResultCollection()),
-                    asList(getExtractKeyPhrasesResultCollection()))),
+                    IterableStream.of(asList(getRecognizeEntitiesResultCollection())),
+                    IterableStream.of(asList(getRecognizePiiEntitiesResultCollection())),
+                    IterableStream.of(asList(getExtractKeyPhrasesResultCollection())))),
                 result.stream().collect(Collectors.toList()));
         });
     }
@@ -1633,28 +1623,16 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeTasksPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeTasksPaginationRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>>
-                syncPoller = client.beginAnalyzeTasks(documents, options, Context.NONE);
+        analyzeTasksPaginationRunner((documents, tasks) -> {
+            SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>>
+                syncPoller = client.beginAnalyzeBatchTasks(documents, tasks,
+                new AnalyzeBatchOptions().setDisplayName("Test1")
+                    .setIncludeStatistics(false),
+                Context.NONE);
             syncPoller.waitForCompletion();
-            PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
-            validateAnalyzeTasksResultList(options.isIncludeStatistics(),
+            PagedIterable<AnalyzeBatchResult> result = syncPoller.getFinalResult();
+            validateAnalyzeTasksResultList(false,
                 getExpectedAnalyzeTaskResultListForMultiplePages(0, 20, 2),
-                result.stream().collect(Collectors.toList()));
-        }, 22);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void analyzeTasksPaginationWithTopAndSkip(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeTasksPaginationRunner((documents, options) -> {
-            SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>>
-                syncPoller = client.beginAnalyzeTasks(documents, options.setSkip(3).setTop(10), Context.NONE);
-            syncPoller.waitForCompletion();
-            PagedIterable<AnalyzeTasksResult> result = syncPoller.getFinalResult();
-            validateAnalyzeTasksResultList(options.isIncludeStatistics(),
-                getExpectedAnalyzeTaskResultListForMultiplePages(3, 10, 9),
                 result.stream().collect(Collectors.toList()));
         }, 22);
     }
@@ -1665,7 +1643,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         emptyListRunner((documents, errorMessage) -> {
             final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-                () -> client.beginAnalyzeTasks(documents, null, Context.NONE)
+                () -> client.beginAnalyzeBatchTasks(documents,
+                    new AnalyzeBatchTasks().setCategorizedEntitiesRecognitions(new CategorizedEntitiesRecognition()),
+                    null, Context.NONE)
                     .getFinalResult());
             assertEquals(errorMessage, exception.getMessage());
         });

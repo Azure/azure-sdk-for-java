@@ -3,21 +3,24 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
-import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
+import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.HealthcareEntityCollection;
-import com.azure.ai.textanalytics.models.HealthcareEntityLink;
-import com.azure.ai.textanalytics.models.HealthcareTaskResult;
-import com.azure.ai.textanalytics.models.KeyPhrasesTask;
+import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityDataSource;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationResult;
+import com.azure.ai.textanalytics.models.KeyPhrasesExtraction;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.PiiTask;
-import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
+import com.azure.ai.textanalytics.models.PiiEntitiesRecognition;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -26,6 +29,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -33,6 +38,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -201,47 +207,46 @@ public class ReadmeSamples {
                 + "increased symptoms and family history and history left main disease with total occasional of his RCA was referred "
                 + "for revascularization with open heart surgery."
         ));
-        RecognizeHealthcareEntityOptions options = new RecognizeHealthcareEntityOptions().setIncludeStatistics(true);
-        SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> syncPoller =
-            textAnalyticsClient.beginAnalyzeHealthcare(documents, options, Context.NONE);
+        AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
+        SyncPoller<AnalyzeHealthcareEntitiesOperationResult, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>> syncPoller =
+            textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(healthcareTaskResult ->
-            healthcareTaskResult.getResult().forEach(healthcareEntitiesResult -> {
+            healthcareTaskResult.forEach(healthcareEntitiesResult -> {
                 System.out.println("Document entities: ");
-                HealthcareEntityCollection healthcareEntities = healthcareEntitiesResult.getEntities();
                 AtomicInteger ct = new AtomicInteger();
-                healthcareEntities.forEach(healthcareEntity -> {
-                    System.out.printf("i = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
+                healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
+                    System.out.printf("i = %d, Text: %s, category: %s, confidence score: %f.%n",
                         ct.getAndIncrement(),
-                        healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getSubcategory(),
-                        healthcareEntity.getConfidenceScore());
-                    List<HealthcareEntityLink> links = healthcareEntity.getDataSourceEntityLinks();
-                    if (links != null) {
-                        links.forEach(healthcareEntityLink ->
-                            System.out.printf("\tHealthcare data source ID: %s, data source: %s.%n",
-                                healthcareEntityLink.getDataSourceId(), healthcareEntityLink.getDataSource()));
+                        healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getConfidenceScore());
+                    IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources =
+                        healthcareEntity.getHealthcareEntityDataSources();
+                    if (healthcareEntityDataSources != null) {
+                        healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
+                            "\t\tHealthcare data source ID: %s, data source: %s.%n",
+                            healthcareEntityLink.getDataSourceId(), healthcareEntityLink.getDataSource()));
+                    }
+                    Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
+                        healthcareEntity.getRelatedHealthcareEntities();
+                    if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
+                        relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
+                            "\t\tRelated entity: %s, relation type: %s.%n",
+                            relatedHealthcareEntity.getText(), entityRelationType));
                     }
                 });
-                healthcareEntities.getEntityRelations().forEach(
-                    healthcareEntityRelation ->
-                        System.out.printf("Is bidirectional: %s, target: %s, source: %s, relation type: %s.%n",
-                            healthcareEntityRelation.isBidirectional(),
-                            healthcareEntityRelation.getTargetLink(),
-                            healthcareEntityRelation.getSourceLink(),
-                            healthcareEntityRelation.getRelationType()));
             }));
     }
 
-    /**
-     * Code snippet for cancelling a healthcare task.
-     */
-    public void cancelHealthcareTask() {
-        SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
-            = textAnalyticsClient.beginCancelHealthcareTask("{healthcare_task_id}",
-            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
-        PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
-        System.out.printf("Task status: %s.%n", poll.getStatus());
-    }
+//    /**
+//     * Code snippet for cancelling a healthcare task.
+//     */
+//    public void cancelHealthcareTask() {
+//        SyncPoller<AnalyzeHealthcareEntitiesOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
+//            = textAnalyticsClient.beginCancelAnalyzeHealthcareEntities("{healthcare_task_id}",
+//            Duration.ofSeconds(10), Context.NONE);
+//        PollResponse<AnalyzeHealthcareEntitiesOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
+//        System.out.printf("Task status: %s.%n", poll.getStatus());
+//    }
 
     /**
      * Code snippet for analyzing tasks in documents.
@@ -257,15 +262,17 @@ public class ReadmeSamples {
                     + " www.contososteakhouse.com, call 312-555-0176 or send email to order@contososteakhouse.com! The"
                     + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
         );
-        SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> syncPoller =
-            textAnalyticsClient.beginAnalyzeTasks(documents,
-                new AnalyzeTasksOptions().setDisplayName("{tasks_display_name}")
-                    .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))
-                    .setPiiEntitiesRecognitionTasks(Arrays.asList(new PiiTask())),
+
+        SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>> syncPoller =
+            textAnalyticsClient.beginAnalyzeBatchTasks(documents,
+                new AnalyzeBatchTasks()
+                    .setKeyPhrasesExtractions(new KeyPhrasesExtraction())
+                    .setPiiEntitiesRecognitions(new PiiEntitiesRecognition()),
+                new AnalyzeBatchOptions().setDisplayName("{tasks_display_name}"),
                 Context.NONE);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(analyzeJobState -> {
-            analyzeJobState.getKeyPhraseExtractionTasks().forEach(taskResult -> {
+            analyzeJobState.getKeyPhrasesExtractionTasksResult().forEach(taskResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 for (ExtractKeyPhraseResult extractKeyPhraseResult : taskResult) {
                     System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
@@ -274,7 +281,7 @@ public class ReadmeSamples {
                         .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
                 }
             });
-            analyzeJobState.getEntityRecognitionPiiTasks().forEach(taskResult -> {
+            analyzeJobState.getPiiEntitiesRecognitionTasksResult().forEach(taskResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 for (RecognizePiiEntitiesResult entitiesResult : taskResult) {
                     System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));

@@ -5,16 +5,11 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.HealthcareTaskResult;
-import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.util.polling.PollResponse;
-import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.Configuration;
+import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -31,8 +26,8 @@ public class CancelHealthcareTaskAsync {
     public static void main(String[] args) {
         TextAnalyticsAsyncClient client =
             new TextAnalyticsClientBuilder()
-                .credential(new AzureKeyCredential("{key}"))
-                .endpoint("{endpoint}")
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")))
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_ENDPOINT"))
                 .buildAsyncClient();
 
         List<TextDocumentInput> documents = new ArrayList<>();
@@ -53,23 +48,18 @@ public class CancelHealthcareTaskAsync {
                     + "for revascularization with open heart surgery."));
         }
 
-        SyncPoller<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>> syncPoller =
-            client.beginAnalyzeHealthcare(documents, null)
-                .getSyncPoller();
-
-        PollResponse<TextAnalyticsOperationResult> pollResponse = syncPoller.poll();
-
-        System.out.printf("The Job ID that is cancelling is %s.%n", pollResponse.getValue().getResultId());
-
-        client.beginCancelHealthcareTask(pollResponse.getValue().getResultId(),
-            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)))
-            .map(response -> {
-                System.out.println(response.getStatus());
-                return response;
-            })
-            .subscribe(dummyVar -> System.out.println("Job is successfully cancelled."));
-
-        syncPoller.waitForCompletion();
+        client.beginAnalyzeHealthcareEntities(documents, null)
+            .flatMap(asyncPollResponse -> {
+                if (!asyncPollResponse.getStatus().isComplete()) {
+                    System.out.printf("The Job ID that is cancelling is %s.%n", asyncPollResponse.getValue().getOperationId());
+                    System.out.printf("Status before cancel the task: %s.%n" , asyncPollResponse.getStatus());
+                    return asyncPollResponse
+                               .cancelOperation()
+                               .then(Mono.error(new RuntimeException("Healthcare entities recognition taking long time, operation is cancelled!")));
+                }
+                System.out.printf("Status after request the task cancellation: %s.%n" , asyncPollResponse.getStatus());
+                return Mono.just(asyncPollResponse);
+            });
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

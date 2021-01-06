@@ -17,24 +17,21 @@ import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
-import com.azure.ai.textanalytics.implementation.models.State;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.EntityCategory;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
-import com.azure.ai.textanalytics.models.HealthcareEntityCollection;
-import com.azure.ai.textanalytics.models.HealthcareEntityLink;
-import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
-import com.azure.ai.textanalytics.models.JobState;
+import com.azure.ai.textanalytics.models.HealthcareEntityDataSource;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeHealthcareEntitiesResult;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -45,7 +42,6 @@ import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
-import com.azure.ai.textanalytics.util.RecognizeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
@@ -70,14 +66,6 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
-
-import static com.azure.ai.textanalytics.implementation.models.State.CANCELLED;
-import static com.azure.ai.textanalytics.implementation.models.State.CANCELLING;
-import static com.azure.ai.textanalytics.implementation.models.State.FAILED;
-import static com.azure.ai.textanalytics.implementation.models.State.NOT_STARTED;
-import static com.azure.ai.textanalytics.implementation.models.State.PARTIALLY_COMPLETED;
-import static com.azure.ai.textanalytics.implementation.models.State.RUNNING;
-import static com.azure.ai.textanalytics.implementation.models.State.SUCCEEDED;
 
 /**
  * Utility method class.
@@ -428,16 +416,16 @@ public final class Utility {
     }
 
     /**
-     * Transfer {@link HealthcareResult} into {@link RecognizeHealthcareEntitiesResultCollection}
+     * Transfer {@link HealthcareResult} into {@link IterableStream} of {@link AnalyzeHealthcareEntitiesResult}.
      *
      * @param healthcareResult the service side raw data, HealthcareResult.
      *
      * @return the client side explored model, RecognizeHealthcareEntitiesResultCollection.
      */
-    public static RecognizeHealthcareEntitiesResultCollection toRecognizeHealthcareEntitiesResultCollection(
+    public static IterableStream<AnalyzeHealthcareEntitiesResult> toRecognizeHealthcareEntitiesResults(
         HealthcareResult healthcareResult) {
         // List of document results
-        List<RecognizeHealthcareEntitiesResult> recognizeHealthcareEntitiesResults = new ArrayList<>();
+        List<AnalyzeHealthcareEntitiesResult> analyzeHealthcareEntitiesResults = new ArrayList<>();
         healthcareResult.getDocuments().forEach(
             documentEntities -> {
                 final List<TextAnalyticsWarning> warnings = Optional.ofNullable(documentEntities.getWarnings())
@@ -456,100 +444,97 @@ public final class Utility {
                         HealthcareEntityPropertiesHelper.setText(healthcareEntity, entity.getText());
                         HealthcareEntityPropertiesHelper.setCategory(healthcareEntity,
                             EntityCategory.fromString(entity.getCategory()));
-                        HealthcareEntityPropertiesHelper.setSubcategory(healthcareEntity, entity.getSubcategory());
                         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity,
                             entity.getConfidenceScore());
                         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity, entity.getOffset());
                         HealthcareEntityPropertiesHelper.setNegated(healthcareEntity, entity.isNegated());
-                        HealthcareEntityPropertiesHelper.setHealthcareEntityLinks(healthcareEntity,
-                            entity.getLinks() == null ? null : entity.getLinks().stream()
+                        HealthcareEntityPropertiesHelper.setHealthcareEntityDataSources(healthcareEntity,
+                            entity.getLinks() == null ? null : IterableStream.of(entity.getLinks().stream()
                                 .map(healthcareEntityLink -> {
-                                    final HealthcareEntityLink healthcareEntityLinkOrigin = new HealthcareEntityLink();
-                                    HealthcareEntityLinkPropertiesHelper.setDataSource(healthcareEntityLinkOrigin,
+                                    final HealthcareEntityDataSource healthcareEntityDataSourceOrigin =
+                                        new HealthcareEntityDataSource();
+                                    HealthcareEntityDataSourcePropertiesHelper.setDataSource(healthcareEntityDataSourceOrigin,
                                         healthcareEntityLink.getDataSource());
-                                    HealthcareEntityLinkPropertiesHelper.setDataSourceId(healthcareEntityLinkOrigin,
-                                        healthcareEntityLink.getId());
-                                    return healthcareEntityLinkOrigin;
+                                    HealthcareEntityDataSourcePropertiesHelper.setDataSourceId(
+                                        healthcareEntityDataSourceOrigin, healthcareEntityLink.getId());
+                                    return healthcareEntityDataSourceOrigin;
                                 })
-                                .collect(Collectors.toList()));
+                                .collect(Collectors.toList())));
+                        // TODO: can we keep 'null' value for the map or by default we need to use an empty map
+                        HealthcareEntityPropertiesHelper.setRelatedHealthcareEntities(healthcareEntity,
+                            new HashMap<>());
                         return healthcareEntity;
                     }).collect(Collectors.toList());
 
-                final HealthcareEntityCollection healthcareEntityCollection = new HealthcareEntityCollection(
-                    new IterableStream<>(healthcareEntities));
-                HealthcareEntityCollectionPropertiesHelper.setWarnings(healthcareEntityCollection,
-                    new IterableStream<>(warnings));
-                HealthcareEntityCollectionPropertiesHelper.setEntityRelations(healthcareEntityCollection,
-                    new IterableStream<>(documentEntities.getRelations() == null ? null
-                        : documentEntities.getRelations()
-                        .stream()
-                        .map(healthcareRelation -> {
-                            final HealthcareEntityRelation relation = new HealthcareEntityRelation();
-                            HealthcareEntityRelationPropertiesHelper.setRelationType(relation,
-                                healthcareRelation.getRelationType());
-                            HealthcareEntityRelationPropertiesHelper.setBidirectional(relation,
-                                healthcareRelation.isBidirectional());
-                            HealthcareEntityRelationPropertiesHelper.setSourceLink(relation,
-                                healthcareRelation.getSource());
-                            HealthcareEntityRelationPropertiesHelper.setTargetLink(relation,
-                                healthcareRelation.getTarget());
-                            return relation;
-                        })
-                        .collect(Collectors.toList())));
+                Map<HealthcareEntity, Map<HealthcareEntity, HealthcareEntityRelationType>> entityRelationMap =
+                    new HashMap<>();
+                if (!CoreUtils.isNullOrEmpty(documentEntities.getRelations())) {
+                    documentEntities.getRelations().forEach(healthcareRelation -> {
+                        final HealthcareEntity targetEntity =
+                            healthcareEntities.get(getHealthcareEntityIndex(healthcareRelation.getTarget()));
+                        final HealthcareEntity sourceEntity =
+                            healthcareEntities.get(getHealthcareEntityIndex(healthcareRelation.getSource()));
+                        final HealthcareEntityRelationType relationType =
+                            HealthcareEntityRelationType.fromString(healthcareRelation.getRelationType());
 
+                        final Map<HealthcareEntity, HealthcareEntityRelationType> targetRelatedEntity =
+                            entityRelationMap.getOrDefault(targetEntity, new HashMap<>());
+                        targetRelatedEntity.putIfAbsent(sourceEntity, relationType);
+                        entityRelationMap.putIfAbsent(targetEntity, targetRelatedEntity);
 
-                final RecognizeHealthcareEntitiesResult recognizeHealthcareEntitiesResult =
-                    new RecognizeHealthcareEntitiesResult(
+                        if (healthcareRelation.isBidirectional()) {
+                            final Map<HealthcareEntity, HealthcareEntityRelationType> sourceRelatedEntity =
+                                entityRelationMap.getOrDefault(sourceEntity, new HashMap<>());
+                            sourceRelatedEntity.putIfAbsent(targetEntity, relationType);
+                            entityRelationMap.putIfAbsent(sourceEntity, sourceRelatedEntity);
+                        }
+                    });
+                }
+                healthcareEntities.forEach(healthcareEntity -> {
+                    if (entityRelationMap.containsKey(healthcareEntity)) {
+                        HealthcareEntityPropertiesHelper.setRelatedHealthcareEntities(healthcareEntity,
+                            entityRelationMap.get(healthcareEntity));
+                    }
+                });
+
+                final AnalyzeHealthcareEntitiesResult analyzeHealthcareEntitiesResult =
+                    new AnalyzeHealthcareEntitiesResult(
                         documentEntities.getId(),
                         documentEntities.getStatistics() == null ? null
                             : toTextDocumentStatistics(documentEntities.getStatistics()),
                         null);
-                RecognizeHealthcareEntitiesResultPropertiesHelper.setEntities(recognizeHealthcareEntitiesResult,
-                    healthcareEntityCollection);
-
-                recognizeHealthcareEntitiesResults.add(recognizeHealthcareEntitiesResult);
+                AnalyzeHealthcareEntitiesResultPropertiesHelper.setEntities(analyzeHealthcareEntitiesResult,
+                    IterableStream.of(healthcareEntities));
+                AnalyzeHealthcareEntitiesResultPropertiesHelper.setWarnings(analyzeHealthcareEntitiesResult,
+                    IterableStream.of(warnings));
+                analyzeHealthcareEntitiesResults.add(analyzeHealthcareEntitiesResult);
             });
         // Document errors
         healthcareResult.getErrors().forEach(documentError ->
-            recognizeHealthcareEntitiesResults.add(new RecognizeHealthcareEntitiesResult(
+            analyzeHealthcareEntitiesResults.add(new AnalyzeHealthcareEntitiesResult(
                 documentError.getId(),
                 null,
                 toTextAnalyticsError(documentError.getError())))
         );
-
-        final RecognizeHealthcareEntitiesResultCollection healthcareEntitiesResults =
-            new RecognizeHealthcareEntitiesResultCollection(recognizeHealthcareEntitiesResults);
-        RecognizeHealthcareEntitiesResultCollectionPropertiesHelper.setModelVersion(healthcareEntitiesResults,
-            healthcareResult.getModelVersion());
-        RecognizeHealthcareEntitiesResultCollectionPropertiesHelper.setStatistics(healthcareEntitiesResults,
-            healthcareResult.getStatistics() == null ? null : toBatchStatistics(healthcareResult.getStatistics()));
-        return healthcareEntitiesResults;
+        return IterableStream.of(analyzeHealthcareEntitiesResults);
     }
 
     /**
-     * Transfer {@link State} into {@link JobState}
+     * Helper function that parse healthcare entity index from the given entity reference string.
+     * The entity reference format is "#/results/documents/0/entities/3".
      *
-     * @param jobState the service side raw data, State.
+     * @param entityReference the given healthcare entity reference string.
      *
-     * @return the client side explored model, JobState.
+     * @return the healthcare entity index.
      */
-    public static JobState toJobState(State jobState) {
-        if (jobState == NOT_STARTED) {
-            return JobState.CANCELLED;
-        } else if (jobState == RUNNING) {
-            return JobState.RUNNING;
-        } else if (jobState == SUCCEEDED) {
-            return JobState.SUCCEEDED;
-        } else if (jobState == FAILED) {
-            return JobState.FAILED;
-        } else if (jobState == CANCELLED) {
-            return JobState.CANCELLED;
-        } else if (jobState == CANCELLING) {
-            return JobState.CANCELLING;
-        } else if (jobState == PARTIALLY_COMPLETED) {
-            return JobState.PARTIALLY_COMPLETED;
-        } else {
-            throw new RuntimeException(String.format("job state, %s is not supported.", jobState));
+    private static Integer getHealthcareEntityIndex(String entityReference) {
+        if (!CoreUtils.isNullOrEmpty(entityReference)) {
+            int lastIndex = entityReference.lastIndexOf('/');
+            if (lastIndex != -1) {
+                return Integer.parseInt(entityReference.substring(lastIndex + 1));
+            }
         }
+        throw LOGGER.logExceptionAsError(
+            new RuntimeException("Failed to parse healthcare entity index from: " + entityReference));
     }
 }

@@ -4,10 +4,12 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.EntityCategory;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
-import com.azure.ai.textanalytics.models.HealthcareEntityLink;
+import com.azure.ai.textanalytics.models.HealthcareEntityDataSource;
+import com.azure.core.util.IterableStream;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * The helper class to set the non-public properties of an {@link HealthcareEntity} instance.
@@ -23,12 +25,13 @@ public final class HealthcareEntityPropertiesHelper {
     public interface HealthcareEntityAccessor {
         void setText(HealthcareEntity healthcareEntity, String text);
         void setCategory(HealthcareEntity healthcareEntity, EntityCategory category);
-        void setSubcategory(HealthcareEntity healthcareEntity, String subcategory);
         void setConfidenceScore(HealthcareEntity healthcareEntity, double confidenceScore);
         void setOffset(HealthcareEntity healthcareEntity, int offset);
         void setNegated(HealthcareEntity healthcareEntity, boolean negated);
-        void setHealthcareEntityLinks(HealthcareEntity healthcareEntity,
-            List<HealthcareEntityLink> healthcareEntityLinks);
+        void setHealthcareEntityDataSources(HealthcareEntity healthcareEntity,
+            IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources);
+        void setRelatedHealthcareEntities(HealthcareEntity healthcareEntity,
+            Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities);
     }
 
     /**
@@ -48,10 +51,6 @@ public final class HealthcareEntityPropertiesHelper {
         accessor.setCategory(healthcareEntity, category);
     }
 
-    public static void setSubcategory(HealthcareEntity healthcareEntity, String subcategory) {
-        accessor.setSubcategory(healthcareEntity, subcategory);
-    }
-
     public static void setConfidenceScore(HealthcareEntity healthcareEntity, double confidenceScore) {
         accessor.setConfidenceScore(healthcareEntity, confidenceScore);
     }
@@ -64,8 +63,13 @@ public final class HealthcareEntityPropertiesHelper {
         accessor.setNegated(healthcareEntity, negated);
     }
 
-    public static void setHealthcareEntityLinks(HealthcareEntity healthcareEntity,
-        List<HealthcareEntityLink> healthcareEntityLinks) {
-        accessor.setHealthcareEntityLinks(healthcareEntity, healthcareEntityLinks);
+    public static void setHealthcareEntityDataSources(HealthcareEntity healthcareEntity,
+        IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources) {
+        accessor.setHealthcareEntityDataSources(healthcareEntity, healthcareEntityDataSources);
+    }
+
+    public static void setRelatedHealthcareEntities(HealthcareEntity healthcareEntity,
+        Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities) {
+        accessor.setRelatedHealthcareEntities(healthcareEntity, relatedHealthcareEntities);
     }
 }

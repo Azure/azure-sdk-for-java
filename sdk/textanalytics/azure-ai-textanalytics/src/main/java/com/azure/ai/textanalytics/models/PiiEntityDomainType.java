@@ -17,6 +17,9 @@ public final class PiiEntityDomainType extends ExpandableStringEnum<PiiEntityDom
      */
     public static final PiiEntityDomainType PROTECTED_HEALTH_INFORMATION = fromString("PHI");
 
+    /** Static value none for PiiTaskParametersDomain. */
+    public static final PiiEntityDomainType NONE = fromString("none");
+
     /**
      * Creates or finds a {@link EntityCategory} from its string representation.
      *
