@@ -11,8 +11,11 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import static com.azure.spring.aad.webapp.AADWebAppConfiguration.resourceServerCount;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -206,18 +209,60 @@ public class AADWebAppConfigurationTest {
 
     @Test
     public void groupConfiguration() {
-        WebApplicationContextRunnerUtils.getContextRunnerWithRequiredProperties()
-            .withPropertyValues(
-            "azure.activedirectory.user-group.allowed-groups = group1, group2"
-            )
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues("azure.activedirectory.user-group.allowed-groups = group1, group2")
             .run(context -> {
-                AADWebAppClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
+                AADWebAppClientRegistrationRepository clientRepo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
                 assertDefaultScopes(
                     clientRepo.getAzureClient(),
                     "openid", "profile", "https://graph.microsoft.com/User.Read",
                     "https://graph.microsoft.com/Directory.AccessAsUser.All"
                 );
             });
+    }
+
+    @Test
+    public void haveResourceServerScopeInAccessTokenWhenThereAreMultiResourceServerScopesInAuthCode() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.authorization-clients.office.scopes ="
+                    + " https://manage.office.com/ActivityFeed.Read",
+                "azure.activedirectory.authorization-clients.arm.scopes = "
+                    + "https://management.core.windows.net/user_impersonation"
+            )
+            .run(context -> {
+                AADWebAppClientRegistrationRepository repo =
+                    context.getBean(AADWebAppClientRegistrationRepository.class);
+                AzureClientRegistration azure = repo.getAzureClient();
+                assertNotNull(azure);
+                int resourceServerCountInAuthCode = resourceServerCount(azure.getClient().getScopes());
+                assertTrue(resourceServerCountInAuthCode > 1);
+                int resourceServerCountInAccessToken = resourceServerCount(azure.getAccessTokenScopes());
+                assertTrue(resourceServerCountInAccessToken != 0);
+            });
+    }
+
+    @Test
+    public void resourceServerCountTest() {
+        Set<String> scopes = new HashSet<>();
+        assertEquals(resourceServerCount(scopes), 0);
+        scopes.add("openid");
+        scopes.add("profile");
+        scopes.add("offline_access");
+        assertEquals(resourceServerCount(scopes), 0);
+        scopes.add("https://graph.microsoft.com/User.Read");
+        assertEquals(resourceServerCount(scopes), 1);
+        scopes.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
+        assertEquals(resourceServerCount(scopes), 1);
+        scopes.add("https://manage.office.com/ActivityFeed.Read");
+        assertEquals(resourceServerCount(scopes), 2);
+        scopes.add("https://manage.office.com/ActivityFeed.ReadDlp");
+        assertEquals(resourceServerCount(scopes), 2);
+        scopes.add("https://manage.office.com/ServiceHealth.Read");
+        assertEquals(resourceServerCount(scopes), 2);
     }
 
     private void assertDefaultScopes(ClientRegistration client, String... scopes) {

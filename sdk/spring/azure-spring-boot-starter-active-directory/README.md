@@ -16,38 +16,54 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 * **Create a client secret key for the application**: Go to API ACCESS - Keys to create a secret key (`client-secret`).
 
 ### Include the package
-To use this starter in an web application, please add following packages:
+To use this starter in a web application, please add following packages:
 
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.0.0</version>
+    <version>3.2.0-beta.1</version>
 </dependency>
 <dependency>
-    <groupId>org.springframework.security</groupId>
-    <artifactId>spring-security-oauth2-client</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-client</artifactId>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
 
-To use this starter in a resource server, please add following packages:
+To use this starter in a resource server without OBO function, please add following packages:
 
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.0.0</version>
+    <version>3.2.0-beta.1</version>
 </dependency>
 <dependency>
-    <groupId>org.springframework.security</groupId>
-    <artifactId>spring-security-oauth2-client</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+</dependency>
+```
+[//]: # "{x-version-update-end}"
+
+To use this starter in a resource server with OBO function, please add following packages:
+
+[//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
+```xml
+<dependency>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-boot-starter-active-directory</artifactId>
+    <version>3.0.0-beta.1</version>
 </dependency>
 <dependency>
-    <groupId>org.springframework.security</groupId>
-    <artifactId>spring-security-oauth2-resource-server</artifactId>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-oauth2-client</artifactId>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
@@ -299,7 +315,7 @@ azure:
 ```
 
 ### Authenticate in web APIs [Web APIs]
-Please refer to [azure-spring-boot-sample-active-directory-resource-server-with-filter] for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
+Please refer to [azure-spring-boot-sample-active-directory-resource-server-by-filter] for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
 
 #### Configure application.yml:
 ```yaml
@@ -402,7 +418,7 @@ The following section provides sample projects illustrating how to use the start
 - [Azure Active Directory for Web apps][azure-spring-boot-sample-active-directory-webapp]
 - [Azure Active Directory for Web APIs][azure-spring-boot-sample-active-directory-resource-server]
 - [Azure Active Directory for On-Behalf-Of flow][azure-spring-boot-sample-active-directory-resource-server-obo]
-- [Azure Active Directory for Resource Server with Filter(Deprecated)][azure-spring-boot-sample-active-directory-resource-server-with-filter]
+- [Azure Active Directory for Resource Server by Filter(Deprecated)][azure-spring-boot-sample-active-directory-resource-server-by-filter]
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -414,7 +430,7 @@ Please follow [instructions here] to build from source or contribute.
 [azure-spring-boot-sample-active-directory-webapp]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-webapp
 [azure-spring-boot-sample-active-directory-resource-server]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server/README.md
 [azure-spring-boot-sample-active-directory-resource-server-obo]: https://github.com/ZhuXiaoBing-cn/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-obo
-[azure-spring-boot-sample-active-directory-resource-server-with-filter]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-with-filter
+[azure-spring-boot-sample-active-directory-resource-server-by-filter]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-resource-server-by-filter
 [AAD App Roles feature]: https://docs.microsoft.com/azure/architecture/multitenant-identity/app-roles#roles-using-azure-ad-app-roles
 [client credentials grant flow]: https://docs.microsoft.com/azure/active-directory/develop/v1-oauth2-client-creds-grant-flow
 [configured in your manifest]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps#examples
