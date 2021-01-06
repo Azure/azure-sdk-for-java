@@ -776,7 +776,8 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(BlobBatchStorageException)
+        def ex = thrown(BlobBatchStorageException)
+        ex.getBatchExceptions().size() == 2
 
         cleanup:
         primaryBlobServiceClient.deleteBlobContainer(containerName)
@@ -883,6 +884,58 @@ class BatchAPITest extends APISpec {
         primaryBlobServiceClient.deleteBlobContainer(containerName)
     }
 
+    def "Set tier container scoped error wrong container"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobName1 = generateBlobName()
+        def blobName2 = generateBlobName()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
+        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+
+        // Get a batch client associated with a different container.
+        containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def batchClient = new BlobBatchClientBuilder(containerClient).buildClient()
+        def batch = batchClient.getBlobBatch()
+
+        when:
+        batch.setBlobAccessTier(containerName, blobName1, AccessTier.HOT)
+        batch.setBlobAccessTier(containerName, blobName2, AccessTier.COOL)
+        batchClient.submitBatch(batch)
+
+        then:
+        thrown(BlobStorageException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
+    }
+
+    def "Delete blob container scoped error wrong container"() {
+        setup:
+        def containerName = generateContainerName()
+        def blobName1 = generateBlobName()
+        def blobName2 = generateBlobName()
+        def containerClient = primaryBlobServiceClient.createBlobContainer(containerName)
+        containerClient.getBlobClient(blobName1).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+        containerClient.getBlobClient(blobName2).getBlockBlobClient().upload(defaultInputStream.get(), defaultDataSize)
+
+        // Get a batch client associated with a different container.
+        containerClient = primaryBlobServiceClient.createBlobContainer(generateContainerName())
+        def batchClient = new BlobBatchClientBuilder(containerClient).buildClient()
+        def batch = batchClient.getBlobBatch()
+
+        when:
+        batch.deleteBlob(containerName, blobName1)
+        batch.deleteBlob(containerName, blobName2)
+        batchClient.submitBatch(batch)
+
+        then:
+        thrown(BlobStorageException)
+
+        cleanup:
+        primaryBlobServiceClient.deleteBlobContainer(containerName)
+    }
+
     def "Submit batch with container sas credentials"() {
         setup:
         def containerName = generateContainerName()
@@ -972,7 +1025,8 @@ class BatchAPITest extends APISpec {
         batchClient.submitBatch(batch)
 
         then:
-        thrown(BlobBatchStorageException)
+        def ex = thrown(BlobBatchStorageException)
+        ex.getBatchExceptions().size() == 2
 
         cleanup:
         primaryBlobServiceClient.deleteBlobContainer(containerName)
