@@ -3,7 +3,6 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.CommunicationLoggerPolicy;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.HttpClient;

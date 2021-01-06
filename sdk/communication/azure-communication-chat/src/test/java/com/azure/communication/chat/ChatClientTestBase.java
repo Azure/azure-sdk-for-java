@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.azure.communication.administration.CommunicationIdentityClientBuilder;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
-import com.azure.communication.common.CommunicationLoggerPolicy;
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;

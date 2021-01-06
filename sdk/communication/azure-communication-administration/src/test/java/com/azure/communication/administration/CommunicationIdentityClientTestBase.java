@@ -3,7 +3,6 @@
 
 package com.azure.communication.administration;
 
-import com.azure.communication.common.CommunicationLoggerPolicy;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
