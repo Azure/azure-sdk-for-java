@@ -278,9 +278,15 @@
       <version>5.3.1</version> <!-- {x-version-update;org.springframework:spring-core;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.1</version> <!-- {x-version-update;junit:junit;external_dependency} -->
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.7.0</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>5.7.0</version> <!-- {x-version-update;org.junit.jupiter:junit-vintage-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
