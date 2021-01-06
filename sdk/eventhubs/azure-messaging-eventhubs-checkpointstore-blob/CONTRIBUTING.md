@@ -72,7 +72,7 @@ Log messages can be seen in the output window by:
    logging framework at deployment time][slf4j-implementations]".
 
 <!-- Links -->
-[design-guidelines]: https://azure.github.io/azure-sdk/java_introduction.html#java-principles
+[design-guidelines]: https://azure.github.io/azure-sdk/general_introduction.html
 [event_hubs_create]: https://docs.microsoft.com/azure/event-hubs/event-hubs-create
 [github-general]: https://github.com/Azure/azure-sdk
 [java-spec]: https://azure.github.io/azure-sdk/java_introduction.html

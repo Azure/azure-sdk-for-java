@@ -165,4 +165,8 @@ public class ChatClientTestBase extends TestBase {
             return TestMode.PLAYBACK;
         }
     }
+
+    protected ChatClientBuilder addLoggingPolicyForIdentityClientBuilder(ChatClientBuilder builder, String testName) {
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
 }
