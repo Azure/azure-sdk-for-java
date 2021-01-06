@@ -164,11 +164,8 @@ public class TableClientBuilder {
      * @throws NullPointerException if {@code sasToken} is {@code null}.
      */
     public TableClientBuilder sasToken(String sasToken) {
-        this.sasTokenCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
-        this.tablesSharedKeyCredential = null;
-        this.tokenCredential = null;
-        return this;
+        return this.sasToken(new AzureSasCredential(Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.")));
     }
 
     /**

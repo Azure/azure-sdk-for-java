@@ -168,12 +168,8 @@ public class DataLakeServiceClientBuilder {
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public DataLakeServiceClientBuilder sasToken(String sasToken) {
-        blobServiceClientBuilder.sasToken(sasToken);
-        this.sasTokenCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
-        this.storageSharedKeyCredential = null;
-        this.tokenCredential = null;
-        return this;
+        return this.sasToken(new AzureSasCredential(Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.")));
     }
 
     /**
