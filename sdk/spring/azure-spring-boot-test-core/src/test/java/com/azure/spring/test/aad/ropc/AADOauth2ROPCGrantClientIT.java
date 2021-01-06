@@ -3,7 +3,7 @@
 
 package com.azure.spring.test.aad.ropc;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
@@ -11,7 +11,7 @@ import static com.azure.spring.test.aad.EnvironmentVariables.AAD_TENANT_ID_1;
 import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_NAME_1;
 import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_1;
 import static com.azure.spring.test.aad.EnvironmentVariables.MULTI_TENANT_SCOPE_GRAPH_READ;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AADOauth2ROPCGrantClientIT {
 
