@@ -122,7 +122,7 @@ public final class ContainersImpl {
         @Post("{containerName}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<ContainersSubmitBatchResponse> submitBatch(@HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") Flux<ByteBuffer> body, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-Type") String multipartContentType, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<ContainersSubmitBatchResponse> submitBatch(@PathParam("containerName") String containerName, @HostParam("url") String url, @BodyParam("application/xml; charset=utf-8") Flux<ByteBuffer> body, @HeaderParam("Content-Length") long contentLength, @HeaderParam("Content-Type") String multipartContentType, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{containerName}")
         @ExpectedResponses({201})
@@ -451,6 +451,7 @@ public final class ContainersImpl {
     /**
      * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
      *
+     * @param containerName The container name.
      * @param body Initial data.
      * @param contentLength The length of the request.
      * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary. Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
@@ -459,17 +460,18 @@ public final class ContainersImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainersSubmitBatchResponse> submitBatchWithRestResponseAsync(Flux<ByteBuffer> body, long contentLength, String multipartContentType, Context context) {
+    public Mono<ContainersSubmitBatchResponse> submitBatchWithRestResponseAsync(String containerName, Flux<ByteBuffer> body, long contentLength, String multipartContentType, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String restype = "container";
         final String comp = "batch";
-        return service.submitBatch(this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.submitBatch(containerName, this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
      * The Batch operation allows multiple API calls to be embedded into a single HTTP request.
      *
+     * @param containerName The container name.
      * @param body Initial data.
      * @param contentLength The length of the request.
      * @param multipartContentType Required. The value of this header must be multipart/mixed with a batch boundary. Example header value: multipart/mixed; boundary=batch_&lt;GUID&gt;.
@@ -480,10 +482,10 @@ public final class ContainersImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainersSubmitBatchResponse> submitBatchWithRestResponseAsync(Flux<ByteBuffer> body, long contentLength, String multipartContentType, Integer timeout, String requestId, Context context) {
+    public Mono<ContainersSubmitBatchResponse> submitBatchWithRestResponseAsync(String containerName, Flux<ByteBuffer> body, long contentLength, String multipartContentType, Integer timeout, String requestId, Context context) {
         final String restype = "container";
         final String comp = "batch";
-        return service.submitBatch(this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, restype, comp, context);
+        return service.submitBatch(containerName, this.client.getUrl(), body, contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, restype, comp, context);
     }
 
     /**
