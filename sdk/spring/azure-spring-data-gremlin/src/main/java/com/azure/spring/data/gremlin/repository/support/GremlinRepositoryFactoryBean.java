@@ -3,6 +3,7 @@
 
 package com.azure.spring.data.gremlin.repository.support;
 
+import com.azure.spring.data.gremlin.conversion.MappingGremlinConverter;
 import com.azure.spring.data.gremlin.mapping.GremlinMappingContext;
 import com.azure.spring.data.gremlin.query.GremlinOperations;
 import org.springframework.beans.BeansException;
@@ -15,6 +16,7 @@ import org.springframework.data.repository.core.support.RepositoryFactoryBeanSup
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 public class GremlinRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extends Serializable>
         extends RepositoryFactoryBeanSupport<T, S, ID> implements ApplicationContextAware {
@@ -58,10 +60,14 @@ public class GremlinRepositoryFactoryBean<T extends Repository<S, ID>, S, ID ext
         super.afterPropertiesSet();
 
         if (!this.mappingContextConfigured) {
-            if (this.operations == null) {
+            MappingContext<?, ?> context = Optional.ofNullable(this.operations)
+                    .map(GremlinOperations::getMappingConverter)
+                    .map(MappingGremlinConverter::getMappingContext)
+                    .orElse(null);
+            if (context == null) {
                 this.setMappingContext(new GremlinMappingContext());
             } else {
-                this.setMappingContext(this.operations.getMappingConverter().getMappingContext());
+                this.setMappingContext(context);
             }
         }
     }
