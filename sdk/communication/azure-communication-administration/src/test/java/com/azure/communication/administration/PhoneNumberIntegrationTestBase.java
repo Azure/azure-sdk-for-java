@@ -99,4 +99,8 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
 
         return content;
     }
+
+    protected PhoneNumberClientBuilder addLoggingPolicy(PhoneNumberClientBuilder builder, String testName) {
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
 }
