@@ -41,6 +41,13 @@ public class LoadBalancerBackendAddress {
     @JsonProperty(value = "properties.networkInterfaceIPConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private SubResource networkInterfaceIpConfiguration;
 
+    /*
+     * Reference to the frontend ip address configuration defined in regional
+     * loadbalancer.
+     */
+    @JsonProperty(value = "properties.loadBalancerFrontendIPConfiguration")
+    private SubResource loadBalancerFrontendIpConfiguration;
+
     /**
      * Get the name property: Name of the backend address.
      *
@@ -108,6 +115,29 @@ public class LoadBalancerBackendAddress {
      */
     public SubResource networkInterfaceIpConfiguration() {
         return this.networkInterfaceIpConfiguration;
+    }
+
+    /**
+     * Get the loadBalancerFrontendIpConfiguration property: Reference to the frontend ip address configuration defined
+     * in regional loadbalancer.
+     *
+     * @return the loadBalancerFrontendIpConfiguration value.
+     */
+    public SubResource loadBalancerFrontendIpConfiguration() {
+        return this.loadBalancerFrontendIpConfiguration;
+    }
+
+    /**
+     * Set the loadBalancerFrontendIpConfiguration property: Reference to the frontend ip address configuration defined
+     * in regional loadbalancer.
+     *
+     * @param loadBalancerFrontendIpConfiguration the loadBalancerFrontendIpConfiguration value to set.
+     * @return the LoadBalancerBackendAddress object itself.
+     */
+    public LoadBalancerBackendAddress withLoadBalancerFrontendIpConfiguration(
+        SubResource loadBalancerFrontendIpConfiguration) {
+        this.loadBalancerFrontendIpConfiguration = loadBalancerFrontendIpConfiguration;
+        return this;
     }
 
     /**

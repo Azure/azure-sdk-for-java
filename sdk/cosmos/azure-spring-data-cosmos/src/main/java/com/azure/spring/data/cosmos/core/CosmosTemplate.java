@@ -451,6 +451,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             .flatMap(cosmosDatabaseResponse -> {
                 CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                     cosmosDatabaseResponse.getDiagnostics(), null);
+
                 final CosmosContainerProperties cosmosContainerProperties =
                     new CosmosContainerProperties(information.getContainerName(), information.getPartitionKeyPath());
                 cosmosContainerProperties.setDefaultTimeToLiveInSeconds(information.getTimeToLive());
@@ -479,6 +480,27 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                         CosmosUtils.fillAndProcessResponseDiagnostics(this.responseDiagnosticsProcessor,
                             cosmosContainerResponse.getDiagnostics(), null));
             })
+            .block();
+        assert response != null;
+        return response.getProperties();
+    }
+
+    @Override
+    public CosmosContainerProperties getContainerProperties(String containerName) {
+        final CosmosContainerResponse response = cosmosAsyncClient.getDatabase(this.databaseName)
+            .getContainer(containerName)
+            .read()
+            .block();
+        assert response != null;
+        return response.getProperties();
+    }
+
+    @Override
+    public CosmosContainerProperties replaceContainerProperties(String containerName,
+                                                                CosmosContainerProperties properties) {
+        CosmosContainerResponse response = this.cosmosAsyncClient.getDatabase(this.databaseName)
+            .getContainer(containerName)
+            .replace(properties)
             .block();
         assert response != null;
         return response.getProperties();

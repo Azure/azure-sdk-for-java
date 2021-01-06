@@ -108,6 +108,13 @@ public class PrivateDnsZoneGroupInner extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PrivateDnsZoneGroupInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

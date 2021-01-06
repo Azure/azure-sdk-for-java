@@ -52,6 +52,12 @@ public final class WindowsConfiguration {
     private List<AdditionalUnattendContent> additionalUnattendContent;
 
     /*
+     * Specifies settings related to in-guest patching (KBs).
+     */
+    @JsonProperty(value = "patchSettings")
+    private PatchSettings patchSettings;
+
+    /*
      * Specifies the Windows Remote Management listeners. This enables remote
      * Windows PowerShell.
      */
@@ -160,6 +166,26 @@ public final class WindowsConfiguration {
     }
 
     /**
+     * Get the patchSettings property: Specifies settings related to in-guest patching (KBs).
+     *
+     * @return the patchSettings value.
+     */
+    public PatchSettings patchSettings() {
+        return this.patchSettings;
+    }
+
+    /**
+     * Set the patchSettings property: Specifies settings related to in-guest patching (KBs).
+     *
+     * @param patchSettings the patchSettings value to set.
+     * @return the WindowsConfiguration object itself.
+     */
+    public WindowsConfiguration withPatchSettings(PatchSettings patchSettings) {
+        this.patchSettings = patchSettings;
+        return this;
+    }
+
+    /**
      * Get the winRM property: Specifies the Windows Remote Management listeners. This enables remote Windows
      * PowerShell.
      *
@@ -189,6 +215,9 @@ public final class WindowsConfiguration {
     public void validate() {
         if (additionalUnattendContent() != null) {
             additionalUnattendContent().forEach(e -> e.validate());
+        }
+        if (patchSettings() != null) {
+            patchSettings().validate();
         }
         if (winRM() != null) {
             winRM().validate();
