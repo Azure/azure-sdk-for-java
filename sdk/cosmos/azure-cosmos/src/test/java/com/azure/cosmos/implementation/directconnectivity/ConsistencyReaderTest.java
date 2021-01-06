@@ -39,7 +39,7 @@ import static com.azure.cosmos.implementation.TestUtils.*;
 
 public class ConsistencyReaderTest {
     private final Configs configs = new Configs();
-    private static final int TIMEOUT = 45000;
+    private static final int TIMEOUT = 90000;
     @DataProvider(name = "deduceReadModeArgProvider")
     public Object[][] deduceReadModeArgProvider() {
         return new Object[][]{
