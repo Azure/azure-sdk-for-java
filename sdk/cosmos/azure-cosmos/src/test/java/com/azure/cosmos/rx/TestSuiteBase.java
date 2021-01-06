@@ -93,7 +93,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
     protected static Logger logger = LoggerFactory.getLogger(TestSuiteBase.class.getSimpleName());
-    protected static final int TIMEOUT = 400000;
+    protected static final int TIMEOUT = 40000;
     protected static final int FEED_TIMEOUT = 40000;
     protected static final int SETUP_TIMEOUT = 60000;
     protected static final int SHUTDOWN_TIMEOUT = 24000;
@@ -856,9 +856,9 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     @DataProvider
     public static Object[][] clientBuildersWithSessionConsistency() {
         return new Object[][]{
-           // {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.HTTPS, false, null, true)},
+            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.HTTPS, false, null, true)},
             {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true)},
-           // {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)}
+            {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)}
         };
     }
 
