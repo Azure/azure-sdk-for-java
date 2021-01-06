@@ -312,6 +312,16 @@ public interface AvailabilitySetsClient
     /**
      * Lists all availability sets in a subscription.
      *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Availability Set operation response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<AvailabilitySetInner> list();
+
+    /**
+     * Lists all availability sets in a subscription.
+     *
      * @param expand The expand expression to apply to the operation. Allowed values are 'instanceView'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -321,16 +331,6 @@ public interface AvailabilitySetsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AvailabilitySetInner> list(String expand, Context context);
-
-    /**
-     * Lists all availability sets in a subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Availability Set operation response.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AvailabilitySetInner> list();
 
     /**
      * Lists all availability sets in a resource group.

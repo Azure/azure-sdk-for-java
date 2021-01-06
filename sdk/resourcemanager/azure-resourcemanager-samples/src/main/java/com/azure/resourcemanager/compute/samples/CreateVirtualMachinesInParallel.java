@@ -52,9 +52,9 @@ public final class CreateVirtualMachinesInParallel {
 
         // final demo target
         virtualMachinesByLocation.put(Region.US_EAST, 4);
-        virtualMachinesByLocation.put(Region.US_SOUTH_CENTRAL, 4);
+        virtualMachinesByLocation.put(Region.US_EAST2, 4);
         virtualMachinesByLocation.put(Region.US_WEST, 4);
-        virtualMachinesByLocation.put(Region.US_NORTH_CENTRAL, 4);
+        virtualMachinesByLocation.put(Region.US_WEST2, 4);
         // virtualMachinesByLocation.put(Region.BRAZIL_SOUTH, 5);
         // virtualMachinesByLocation.put(Region.EUROPE_NORTH, 5);
         // virtualMachinesByLocation.put(Region.EUROPE_WEST, 5);

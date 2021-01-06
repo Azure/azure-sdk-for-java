@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -17,12 +18,19 @@ import com.azure.resourcemanager.network.models.ReferencedPublicIpAddress;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Public IP prefix resource. */
 @JsonFlatten
 @Fluent
 public class PublicIpPrefixInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpPrefixInner.class);
+
+    /*
+     * The extended location of the public ip address.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * The public IP prefix SKU.
@@ -81,6 +89,12 @@ public class PublicIpPrefixInner extends Resource {
     private SubResource loadBalancerFrontendIpConfiguration;
 
     /*
+     * The customIpPrefix that this prefix is associated with.
+     */
+    @JsonProperty(value = "properties.customIPPrefix")
+    private SubResource customIpPrefix;
+
+    /*
      * The resource GUID property of the public IP prefix resource.
      */
     @JsonProperty(value = "properties.resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
@@ -97,6 +111,26 @@ public class PublicIpPrefixInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the extendedLocation property: The extended location of the public ip address.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the public ip address.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the PublicIpPrefixInner object itself.
+     */
+    public PublicIpPrefixInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
 
     /**
      * Get the sku property: The public IP prefix SKU.
@@ -238,6 +272,26 @@ public class PublicIpPrefixInner extends Resource {
     }
 
     /**
+     * Get the customIpPrefix property: The customIpPrefix that this prefix is associated with.
+     *
+     * @return the customIpPrefix value.
+     */
+    public SubResource customIpPrefix() {
+        return this.customIpPrefix;
+    }
+
+    /**
+     * Set the customIpPrefix property: The customIpPrefix that this prefix is associated with.
+     *
+     * @param customIpPrefix the customIpPrefix value to set.
+     * @return the PublicIpPrefixInner object itself.
+     */
+    public PublicIpPrefixInner withCustomIpPrefix(SubResource customIpPrefix) {
+        this.customIpPrefix = customIpPrefix;
+        return this;
+    }
+
+    /**
      * Get the resourceGuid property: The resource GUID property of the public IP prefix resource.
      *
      * @return the resourceGuid value.
@@ -275,12 +329,29 @@ public class PublicIpPrefixInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PublicIpPrefixInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PublicIpPrefixInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }

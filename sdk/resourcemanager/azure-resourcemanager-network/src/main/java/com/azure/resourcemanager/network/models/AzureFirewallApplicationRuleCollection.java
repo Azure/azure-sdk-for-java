@@ -155,6 +155,13 @@ public class AzureFirewallApplicationRuleCollection extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureFirewallApplicationRuleCollection withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

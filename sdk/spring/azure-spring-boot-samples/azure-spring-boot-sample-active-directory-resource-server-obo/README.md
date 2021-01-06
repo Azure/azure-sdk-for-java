@@ -70,9 +70,6 @@ See [OAuth 2.0 On-Behalf-Of flow] for more information about OBO.
 ```yaml
 azure:
   activedirectory:
-    resource-server:
-      obo:
-        enabled: true
     client-id: <Web-API-A-client-id>
     client-secret: <Web-API-A-client-secret>
     tenant-id: <tenant-id-registered-by-application>

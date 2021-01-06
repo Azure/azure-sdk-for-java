@@ -34,7 +34,7 @@ public final class ManageVirtualMachineExtension {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final Region region = Region.US_WEST_CENTRAL;
+        final Region region = Region.US_WEST;
         final String linuxVMName = Utils.randomResourceName(azureResourceManager, "lVM", 10);
         final String windowsVMName = Utils.randomResourceName(azureResourceManager, "wVM", 10);
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOVE", 15);
