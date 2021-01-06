@@ -123,7 +123,7 @@ public class AppConfigurationProperties {
             store.validateAndInit();
         });
 
-        int uniqueStoreSize = this.stores.stream().map(s -> s.getEndpoint()+s.getPrefix()).distinct().collect(Collectors.toList())
+        int uniqueStoreSize = this.stores.stream().map(s -> s.getEndpoint() + s.getPrefix()).distinct().collect(Collectors.toList())
             .size();
         Assert.isTrue(this.stores.size() == uniqueStoreSize, "Duplicate store name exists.");
     }

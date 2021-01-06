@@ -178,7 +178,7 @@ public class AppConfigurationPropertiesTest {
                 propPair(CONN_STRING_PROP, TEST_CONN_STRING),
                 propPair(CONN_STRING_PROP_NEW, TEST_CONN_STRING),
                 propPair(PREFIX_PROP, TEST_PREFIX),
-                propPair(PREFIX_PROP_NEW,TEST_PREFIX)
+                propPair(PREFIX_PROP_NEW, TEST_PREFIX)
             )
             .run(context -> assertThat(context)
                 .getFailure()
@@ -191,7 +191,7 @@ public class AppConfigurationPropertiesTest {
             .withPropertyValues(
                 propPair(CONN_STRING_PROP, TEST_CONN_STRING),
                 propPair(CONN_STRING_PROP_NEW, TEST_CONN_STRING),
-                propPair(PREFIX_PROP_NEW,TEST_PREFIX)
+                propPair(PREFIX_PROP_NEW, TEST_PREFIX)
             )
             .run(context -> assertThat(context).hasSingleBean(AppConfigurationProperties.class));
 
