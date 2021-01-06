@@ -296,8 +296,6 @@ public final class AzureEnvironment {
         ACTIVE_DIRECTORY("activeDirectoryEndpointUrl"),
         /** Azure Active Directory Graph APIs endpoint. */
         GRAPH("activeDirectoryGraphResourceId"),
-        /** Microsoft Graph APIs endpoint. */
-        MICROSOFT_GRAPH("microsoftGraphResourceId"),
         /** Key Vault DNS suffix. */
         KEYVAULT("keyVaultDnsSuffix"),
         /** Azure Data Lake Store DNS suffix. */
@@ -307,7 +305,9 @@ public final class AzureEnvironment {
         /** Azure Log Analytics endpoint. */
         LOG_ANALYTICS("azureLogAnalyticsResourceId"),
         /** Azure Application Insights. */
-        APPLICATION_INSIGHTS("azureApplicationInsightsResourceId");
+        APPLICATION_INSIGHTS("azureApplicationInsightsResourceId"),
+        /** Microsoft Graph APIs endpoint. */
+        MICROSOFT_GRAPH("microsoftGraphResourceId");
 
         private final String field;
 
