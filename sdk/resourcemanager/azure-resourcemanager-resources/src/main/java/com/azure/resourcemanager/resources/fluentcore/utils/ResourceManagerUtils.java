@@ -163,6 +163,9 @@ public final class ResourceManagerUtils {
                 } else if (endpoint.getKey().equals(AzureEnvironment.Endpoint.GRAPH.identifier())) {
                     resource = environment.getGraphEndpoint();
                     break;
+                } else if (endpoint.getKey().equals(AzureEnvironment.Endpoint.MICROSOFT_GRAPH.identifier())) {
+                    resource = environment.getMicrosoftGraphEndpoint();
+                    break;
                 } else if (endpoint.getKey().equals(AzureEnvironment.Endpoint.LOG_ANALYTICS.identifier())) {
                     resource = environment.getLogAnalyticsEndpoint();
                     break;
