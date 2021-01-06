@@ -168,10 +168,10 @@ ShareServiceClient shareServiceClient = new ShareServiceClientBuilder().endpoint
 ```
 
 ### Share
-The share resource includes metadata and properties for that share. It allows the opertions of creating, creating snapshot, deleting shares, getting share properties, setting metadata, getting and setting ACL (Access policy). Getting and setting ACL (Access policy) can only be allowed with ShareClient with ConnectionString. 
+The share resource includes metadata and properties for that share. It allows the opertions of creating, creating snapshot, deleting shares, getting share properties, setting metadata, getting and setting ACL (Access policy). Getting and setting ACL (Access policy) can only be used by the ShareClient with ConnectionString. 
 
-#### Share With SasToken
-Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${sasToken}`
+#### Share With SASToken
+Once you have the SASToken, you can construct the share client with `${accountName}`, `${shareName}`, `${sasToken}`
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L60-L62 -->
 ```java
@@ -181,7 +181,7 @@ ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
 ```
 
 #### Share With ConnectionString
-Once you have the ConnectionString, you can construct the file service client with `${accountName}`, `${shareName}`, `${connectionString}`
+Once you have the ConnectionString, you can construct the share client with `${accountName}`, `${shareName}`, `${connectionString}`
 
 <!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L67-L69 -->
 ```java
