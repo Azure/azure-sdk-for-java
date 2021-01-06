@@ -1429,7 +1429,7 @@ directive:
 ``` yaml
 directive:
 - from: swagger-document
-  where: $.definitions.RetentionPolicy
+  where: $.definitions.BlobRetentionPolicy
   transform: >
     delete $.properties.AllowPermanentDelete;
 ```
