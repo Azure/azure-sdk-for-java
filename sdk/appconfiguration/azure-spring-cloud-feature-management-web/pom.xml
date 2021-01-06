@@ -12,7 +12,7 @@
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-feature-management-web</artifactId>
   <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management-web;current} -->
-  <name>Spring Cloud Azure Feature Management Web</name>
+  <name>Azure Spring Cloud Feature Management Web</name>
   <description>Adds Feature Management into Spring Web</description>
 
   <dependencies>
