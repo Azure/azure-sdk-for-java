@@ -73,7 +73,7 @@ You can manually add a new application or use the service principal created in t
        ```
 ## Examples
 
-### Service-principal-based authentication property setting
+### Service-principle-based authentication property setting
 Open `application.properties` file and add below properties to specify your Azure Key Vault url, Azure service principle client id and client key.
 
 ```properties
