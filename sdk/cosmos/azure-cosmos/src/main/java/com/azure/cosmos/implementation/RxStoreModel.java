@@ -22,5 +22,5 @@ public interface RxStoreModel {
      */
     Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request);
 
-    void enableThroughputControl(ThroughputControlStore containerControllerCache);
+    void enableThroughputControl(ThroughputControlStore throughputControlStore);
 }

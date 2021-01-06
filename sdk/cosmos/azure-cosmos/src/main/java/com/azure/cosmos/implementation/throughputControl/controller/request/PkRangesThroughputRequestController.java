@@ -92,10 +92,12 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
     @Override
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> nextRequestMono) {
         PartitionKeyRange resolvedPkRange = request.requestContext.resolvedPartitionKeyRange;
+
+        // If we reach here, it means we should find the mapping pkRange
         return Mono.just(this.requestAuthorizerMap.get(resolvedPkRange.getId()))
             .flatMap(requestAuthorizer -> {
                 if (requestAuthorizer != null) {
-                    return requestAuthorizer.authorize(nextRequestMono);
+                    return requestAuthorizer.authorize(request, nextRequestMono);
                 } else {
                     return nextRequestMono;
                 }

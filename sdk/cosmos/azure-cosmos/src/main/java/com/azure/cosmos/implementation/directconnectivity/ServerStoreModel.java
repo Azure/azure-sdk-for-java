@@ -29,8 +29,7 @@ public class ServerStoreModel implements RxStoreModel {
         request.requestContext.originalRequestConsistencyLevel = null;
 
         if (!Strings.isNullOrEmpty(requestConsistencyLevelHeaderValue)) {
-            ConsistencyLevel requestConsistencyLevel;
-
+                ConsistencyLevel requestConsistencyLevel;
                 if ((requestConsistencyLevel = BridgeInternal.fromServiceSerializedFormat(requestConsistencyLevelHeaderValue)) == null) {
                 return Mono.error(new BadRequestException(
                     String.format(

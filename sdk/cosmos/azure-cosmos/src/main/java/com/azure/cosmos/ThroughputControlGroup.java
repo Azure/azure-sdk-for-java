@@ -205,11 +205,6 @@ public class ThroughputControlGroup {
 
     @Override
     public int hashCode() {
-        int result = this.groupName != null ? this.groupName.hashCode() : 0;
-        if (this.targetContainer != null) {
-            result = (397 * result) ^ this.targetContainer.getId().hashCode() ^ this.targetContainer.getDatabase().getId().hashCode();
-        }
-
-        return result;
+        return this.getId().hashCode();
     }
 }

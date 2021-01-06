@@ -171,7 +171,7 @@ public class StoreReader {
                                 null,
                                 storeException, requiresValidLsn,
                                 readMode != ReadMode.Strong,
-                                null);
+                                storeRespAndURI.getRight());
                         if (storeException instanceof TransportException) {
                             BridgeInternal.getFailedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                         }
@@ -267,7 +267,7 @@ public class StoreReader {
                     }
                 }
 
-                if (srr.isThroughputControlThrottledException) {
+                if (srr.isThroughputControlRequestRateTooLargeException) {
                     resultCollector.add(srr);
                 }
 

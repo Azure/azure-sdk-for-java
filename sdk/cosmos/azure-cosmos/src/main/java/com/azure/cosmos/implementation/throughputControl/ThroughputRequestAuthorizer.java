@@ -3,9 +3,11 @@
 
 package com.azure.cosmos.implementation.throughputControl;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -16,6 +18,9 @@ import reactor.core.publisher.Mono;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * This is the place where we tracking the RU usage, and make decision whether we should block the request.
+ */
 public class ThroughputRequestAuthorizer {
     private static final Logger logger = LoggerFactory.getLogger(ThroughputRequestAuthorizer.class);
 
@@ -48,7 +53,7 @@ public class ThroughputRequestAuthorizer {
         this.availableThroughput.getAndAccumulate(this.scheduledThroughput.get(), (available, refill) -> Math.min(available,0) + refill);
     }
 
-    public <T> Mono<T> authorize(Mono<T> nextRequestMono) {
+    public <T> Mono<T> authorize(RxDocumentServiceRequest request, Mono<T> nextRequestMono) {
         if (this.availableThroughput.get() > 0) {
             return nextRequestMono
                 .doOnSuccess(response -> {
@@ -73,9 +78,9 @@ public class ThroughputRequestAuthorizer {
 
             requestRateTooLargeException.getResponseHeaders().put(
                 HttpConstants.HttpHeaders.SUB_STATUS,
-                String.valueOf(HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_GROUP_REQUEST_RATE_TOO_LARGE));
+                String.valueOf(HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE));
 
-            requestRateTooLargeException.getResponseHeaders().put(HttpConstants.HttpHeaders.LSN, "0");
+            BridgeInternal.setResourceAddress(requestRateTooLargeException, request.requestContext.resourcePhysicalAddress);
 
             return Mono.error(requestRateTooLargeException);
         }

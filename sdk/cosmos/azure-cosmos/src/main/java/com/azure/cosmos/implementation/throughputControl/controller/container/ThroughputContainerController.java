@@ -217,16 +217,19 @@ public class ThroughputContainerController implements IThroughputContainerContro
         return Mono.just(request)
             .flatMap(request1 -> {
                 if (request1.getThroughputControlGroupName() == null) {
-                    return Mono.just(this.defaultGroupController);
+                    return Mono.just(new Utils.ValueHolder<>(this.defaultGroupController));
                 }
                 else {
+                    // TODO: if customer used a group not defined:
+                    //  should we fall back to default? or let it passing through? or throw exception back to client?
                     return Mono.justOrEmpty(this.groupControllers.get(request1.getThroughputControlGroupName()))
-                        .defaultIfEmpty(this.defaultGroupController);
+                        .defaultIfEmpty(this.defaultGroupController)
+                        .map(Utils.ValueHolder::new);
                 }
             })
             .flatMap(groupController -> {
-                if (groupController != null) {
-                    return groupController.processRequest(request, originalRequestMono);
+                if (groupController.v != null) {
+                    return groupController.v.processRequest(request, originalRequestMono);
                 }
 
                 return originalRequestMono;

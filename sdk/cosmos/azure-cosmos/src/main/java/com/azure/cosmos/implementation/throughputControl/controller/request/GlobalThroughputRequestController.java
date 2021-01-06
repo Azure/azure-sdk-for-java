@@ -28,7 +28,7 @@ public class GlobalThroughputRequestController implements IThroughputRequestCont
 
     @Override
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> nextRequestMono) {
-        return this.requestAuthorizer.authorize(nextRequestMono);
+        return this.requestAuthorizer.authorize(request, nextRequestMono);
     }
 
     @Override

@@ -184,7 +184,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
 
     private Mono<Boolean> shouldUpdateRequestController(RxDocumentServiceRequest request) {
         return this.partitionKeyRangeCache.tryGetRangeByPartitionKeyRangeId(
-            null, request.requestContext.resolvedCollectionRid, request.requestContext.resolvedPartitionKeyRange.getId(), null)
+                null, request.requestContext.resolvedCollectionRid, request.requestContext.resolvedPartitionKeyRange.getId(), null)
             .map(pkRangeHolder -> pkRangeHolder.v)
             .flatMap(pkRange -> {
                 if (pkRange == null) {
@@ -211,20 +211,9 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         checkNotNull(throwable, "Throwable can not be null");
 
         CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
-        if (this.isPartitionKeyRangeGoneException(cosmosException)
-            || this.isPartitionKeySplittingException(cosmosException)) {
+        if (Exceptions.isPartitionSplit(cosmosException) || Exceptions.isPartitionCompletingSplittingException(cosmosException)) {
             this.refreshRequestController();
         }
-    }
-
-    private boolean isPartitionKeyRangeGoneException(CosmosException cosmosException) {
-        return Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.GONE) &&
-            Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
-    }
-
-    private boolean isPartitionKeySplittingException(CosmosException cosmosException) {
-        return Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.GONE) &&
-            Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.COMPLETING_SPLIT);
     }
 
     @Override

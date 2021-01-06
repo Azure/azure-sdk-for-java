@@ -323,7 +323,7 @@ public class HttpConstants {
         public static final int GATEWAY_ENDPOINT_READ_TIMEOUT = 10002;
 
         // Client generated request rate too large exception
-        public static final int THROUGHPUT_CONTROL_GROUP_REQUEST_RATE_TOO_LARGE = 10003;
+        public static final int THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE = 10003;
     }
 
     public static class HeaderValues {

@@ -114,20 +114,11 @@ public class ThroughputControlStore {
 
     public Mono<Void> init() {
         return Flux.fromIterable(Collections.list(this.groupMapByContainer.keys()))
-            .flatMap(containerLink -> {
-                return this.containerControllerCache.getAsync(
-                    containerLink,
-                    null,
-                    () -> this.createAndInitContainerController(containerLink));
-            }).then();
+            .flatMap(containerLink -> this.resolveContainerController(containerLink)).then();
     }
 
     private Mono<IThroughputContainerController> createAndInitContainerController(String containerLink) {
         checkArgument(StringUtils.isNotEmpty(containerLink), "Container link should not be null or empty");
-
-        if (!this.groupMapByContainer.containsKey(containerLink)) {
-            return Mono.error(new IllegalArgumentException(String.format("There is no control group configured for container %s", containerLink)));
-        }
 
         if (this.groupMapByContainer.containsKey(containerLink)) {
             return Mono.just(this.groupMapByContainer.get(containerLink))
@@ -151,44 +142,43 @@ public class ThroughputControlStore {
         checkNotNull(request, "Request can not be null");
         checkNotNull(originalRequestMono, "originalRequestMono can not be null");
 
-        if (request.getResourceType() != ResourceType.Document
-            && request.getResourceType() != ResourceType.StoredProcedure) {
+        if (request.getResourceType() == ResourceType.Document || request.getResourceType() == ResourceType.StoredProcedure) {
+            String collectionLink = Utils.getCollectionName(request.getResourceAddress());
+            return this.resolveContainerController(collectionLink)
+                .flatMap(containerController -> {
+                    if (containerController.canHandleRequest(request)) {
+                        return Mono.just(containerController);
+                    }
+
+                    // Unable to find container controller to handle the request,
+                    // It is caused by control store out of sync or the request has staled info.
+                    // We will handle the first scenario by creating a new container controller,
+                    // while fall back to original request Mono for the second scenario.
+                    return this.shouldRefreshContainerController(collectionLink, request)
+                        .flatMap(shouldRefresh -> {
+                            if (shouldRefresh) {
+                                containerController.close();
+                                this.containerControllerCache.refresh(collectionLink, () -> this.createAndInitContainerController(collectionLink));
+                                return this.resolveContainerController(collectionLink);
+                            }
+
+                            // The container container controller is up to date, the request has staled info, will let the request pass
+                            return Mono.just(containerController);
+                        });
+                })
+                .flatMap(containerController -> {
+                    if (containerController.canHandleRequest(request)) {
+                        return containerController.processRequest(request, originalRequestMono)
+                            .doOnError(throwable -> this.doOnError(request, containerController, throwable));
+                    } else {
+                        // still can not handle the request
+                        return originalRequestMono;
+                    }
+
+                });
+        } else {
             return originalRequestMono;
         }
-
-        String collectionLink = Utils.getCollectionName(request.getResourceAddress());
-        return this.resolveContainerController(collectionLink)
-            .flatMap(containerController -> {
-                if (containerController.canHandleRequest(request)) {
-                    return Mono.just(containerController);
-                }
-
-                // Unable to find container controller to handle the request,
-                // It is caused by control store out of sync or the request has staled info.
-                // We will handle the first scenario by creating a new container controller,
-                // while fall back to original request Mono for the second scenario.
-                return this.shouldRefreshContainerController(collectionLink, request)
-                    .flatMap(shouldRefresh -> {
-                        if (shouldRefresh) {
-                            containerController.close();
-                            this.containerControllerCache.refresh(collectionLink, () -> this.createAndInitContainerController(collectionLink));
-                            return this.resolveContainerController(collectionLink);
-                        }
-
-                        // The container container controller is up to date, the request has staled info, will let the request pass
-                        return Mono.just(containerController);
-                    });
-            })
-            .flatMap(containerController -> {
-                if (containerController.canHandleRequest(request)) {
-                    return containerController.processRequest(request, originalRequestMono)
-                        .doOnError(throwable -> this.doOnError(request, containerController, throwable));
-                } else {
-                    // still can not handle the request
-                    return originalRequestMono;
-                }
-
-            });
     }
 
     private Mono<Boolean> shouldRefreshContainerController(String containerLink, RxDocumentServiceRequest request) {
@@ -205,8 +195,9 @@ public class ThroughputControlStore {
 
         CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
+        // TODO: should we handle partitionKeyMismatchException ?
         if (cosmosException != null &&
-            (this.isInvalidPartitionKeyException(cosmosException) || this.isPartitionKeyMismatchException(cosmosException))) {
+            (Exceptions.isNameCacheStale(cosmosException) || Exceptions.isPartitionKeyMismatchException(cosmosException))) {
 
             controller.close();
             String containerLink = Utils.getCollectionName(request.getResourceAddress());
@@ -217,16 +208,6 @@ public class ThroughputControlStore {
                 () -> createAndInitContainerController(containerLink)
             );
         }
-    }
-
-    private boolean isInvalidPartitionKeyException(CosmosException cosmosException) {
-        return Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.GONE) &&
-            Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE);
-    }
-
-    private boolean isPartitionKeyMismatchException(CosmosException cosmosException) {
-        return Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.NOTFOUND) &&
-            Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH);
     }
 
     private Mono<IThroughputContainerController> resolveContainerController(String collectionLink) {

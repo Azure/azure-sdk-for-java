@@ -135,11 +135,18 @@ class RxGatewayStoreModel implements RxStoreModel {
 
 
     public Mono<RxDocumentServiceResponse> performRequest(RxDocumentServiceRequest request, HttpMethod method) {
-        if (this.throughputControlStore != null) {
-            return this.throughputControlStore.processRequest(request, performRequest(request, method));
-        }
+        try {
+            URI uri = getUri(request);
+            request.requestContext.resourcePhysicalAddress = uri.toString();
 
-        return this.performRequestInternal(request, method);
+            if (this.throughputControlStore != null) {
+                return this.throughputControlStore.processRequest(request, performRequestInternal(request, method));
+            }
+
+            return this.performRequestInternal(request, method);
+        } catch (Exception e) {
+            return Mono.error(e);
+        }
     }
 
     /**
@@ -152,13 +159,11 @@ class RxGatewayStoreModel implements RxStoreModel {
     public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, HttpMethod method) {
 
         try {
-
             if (request.requestContext.cosmosDiagnostics == null) {
                 request.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
             }
 
             URI uri = getUri(request);
-            request.requestContext.resourcePhysicalAddress = uri.toString();
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 

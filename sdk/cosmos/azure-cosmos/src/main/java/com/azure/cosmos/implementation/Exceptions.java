@@ -28,8 +28,18 @@ public class Exceptions {
                 && isSubStatusCode(e, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE);
     }
 
-    public static boolean isThroughputControlThrottledException(CosmosException e) {
+    public static boolean isThroughputControlRequestRateTooLargeException(CosmosException e) {
         return isStatusCode(e, HttpConstants.StatusCodes.TOO_MANY_REQUESTS)
-            && isSubStatusCode(e, HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_GROUP_REQUEST_RATE_TOO_LARGE);
+            && isSubStatusCode(e, HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE);
+    }
+
+    public static boolean isPartitionCompletingSplittingException(CosmosException cosmosException) {
+        return Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.GONE) &&
+            Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.COMPLETING_SPLIT);
+    }
+
+    public static boolean isPartitionKeyMismatchException(CosmosException cosmosException) {
+        return Exceptions.isStatusCode(cosmosException, HttpConstants.StatusCodes.NOTFOUND) &&
+            Exceptions.isSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.PARTITION_KEY_MISMATCH);
     }
 }
