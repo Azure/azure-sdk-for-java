@@ -824,7 +824,7 @@ public class ConsistencyReaderTest {
 
     public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator) {
-        validateSuccess(single, validator, 15000);
+        validateSuccess(single, validator, TIMEOUT);
     }
 
     public static void validateSuccess(Mono<List<StoreResult>> single,
@@ -842,7 +842,7 @@ public class ConsistencyReaderTest {
 
     public static void validateSuccess(Mono<StoreResponse> single,
                                        StoreResponseValidator validator) {
-        validateSuccess(single, validator, 15000);
+        validateSuccess(single, validator, TIMEOUT);
     }
 
     public static void validateSuccess(Mono<StoreResponse> single,
