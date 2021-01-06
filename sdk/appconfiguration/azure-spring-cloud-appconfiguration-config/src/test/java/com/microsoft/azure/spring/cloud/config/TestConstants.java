@@ -40,6 +40,9 @@ public final class TestConstants {
     public static final String TEST_ID = "fake-conn-id";
     public static final String TEST_SECRET = "ZmFrZS1jb25uLXNlY3JldA=="; // Base64 encoded
     public static final String TEST_ACCESS_TOKEN = "fake_token";
+    public static final String TEST_PREFIX = "/shared";
+    public static final String PREFIX_PROP_NEW = "spring.cloud.azure.appconfiguration.stores[1].prefix";
+
     // from
     // fake-conn-secret
     public static final String TEST_DEFAULT_CONTEXT = "/application/";

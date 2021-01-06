@@ -2,16 +2,7 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
-import static com.microsoft.azure.spring.cloud.config.TestConstants.CACHE_EXPIRATION_PROP;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.CONN_STRING_PROP_NEW;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.DEFAULT_CONTEXT_PROP;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.FAIL_FAST_PROP;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.LABEL_PROP;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.PREFIX_PROP;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.SEPARATOR_PROP;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.STORE_ENDPOINT_PROP;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
+import static com.microsoft.azure.spring.cloud.config.TestConstants.*;
 import static com.microsoft.azure.spring.cloud.config.TestUtils.propPair;
 import static com.microsoft.azure.spring.cloud.config.resource.Connection.ENDPOINT_ERR_MSG;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -185,11 +176,25 @@ public class AppConfigurationPropertiesTest {
         this.contextRunner
             .withPropertyValues(
                 propPair(CONN_STRING_PROP, TEST_CONN_STRING),
-                propPair(CONN_STRING_PROP_NEW, TEST_CONN_STRING)
+                propPair(CONN_STRING_PROP_NEW, TEST_CONN_STRING),
+                propPair(PREFIX_PROP, TEST_PREFIX),
+                propPair(PREFIX_PROP_NEW,TEST_PREFIX)
             )
             .run(context -> assertThat(context)
                 .getFailure()
                 .hasStackTraceContaining("Duplicate store name exists"));
+    }
+
+    @Test
+    public void duplicateConnectionStringButDifferentPrefixAllowed() {
+        this.contextRunner
+            .withPropertyValues(
+                propPair(CONN_STRING_PROP, TEST_CONN_STRING),
+                propPair(CONN_STRING_PROP_NEW, TEST_CONN_STRING),
+                propPair(PREFIX_PROP_NEW,TEST_PREFIX)
+            )
+            .run(context -> assertThat(context).hasSingleBean(AppConfigurationProperties.class));
+
     }
 
     @Test
