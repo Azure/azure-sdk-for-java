@@ -16,7 +16,7 @@ With Spring Starter for Azure Active Directory, now you can get started quickly 
 * **Create a client secret key for the application**: Go to API ACCESS - Keys to create a secret key (`client-secret`).
 
 ### Include the package
-To use this starter in an web application, please add following packages:
+To use this starter in a web application, please add following packages:
 
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
@@ -48,7 +48,7 @@ To use this starter in a resource server without OBO function, please add follow
 ```
 [//]: # "{x-version-update-end}"
 
-To use this starter in a resource server, please add following packages:
+To use this starter in a resource server with OBO function, please add following packages:
 
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
@@ -315,7 +315,7 @@ azure:
 ```
 
 ### [Web API] (Deprecated) Authenticate in web API by a filter
-Please refer to [azure-spring-boot-sample-active-directory-resource-server-with-filter] for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
+Please refer to [azure-spring-boot-sample-active-directory-resource-server-by-filter] for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
 
 #### Configure application.yml:
 ```yaml

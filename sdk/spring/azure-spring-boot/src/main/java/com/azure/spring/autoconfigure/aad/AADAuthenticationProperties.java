@@ -278,7 +278,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     public void setBaseUri(String baseUri) {
-        this.baseUri = addSlash(baseUri);
+        this.baseUri = baseUri;
     }
 
     public String getGraphBaseUri() {
@@ -286,7 +286,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     }
 
     public void setGraphBaseUri(String graphBaseUri) {
-        this.graphBaseUri = addSlash(graphBaseUri);
+        this.graphBaseUri = graphBaseUri;
     }
 
     public String getGraphMembershipUri() {
@@ -317,10 +317,14 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         if (!StringUtils.hasText(baseUri)) {
             baseUri = "https://login.microsoftonline.com/";
+        } else {
+            baseUri = addSlash(baseUri);
         }
 
         if (!StringUtils.hasText(graphBaseUri)) {
             graphBaseUri = "https://graph.microsoft.com/";
+        } else {
+            graphBaseUri = addSlash(graphBaseUri);
         }
 
         if (!StringUtils.hasText(graphMembershipUri)) {
