@@ -101,6 +101,11 @@ class DataMaskingPolicyImpl extends CreatableUpdatableImpl<DataMaskingPolicy, Da
     }
 
     @Override
+    public String managedBy() {
+        return this.inner().managedBy();
+    }
+
+    @Override
     public String maskingLevel() {
         return this.inner().maskingLevel();
     }

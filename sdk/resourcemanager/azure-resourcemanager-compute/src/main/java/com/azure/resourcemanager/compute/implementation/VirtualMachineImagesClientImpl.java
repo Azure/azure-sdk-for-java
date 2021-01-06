@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -56,7 +57,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface VirtualMachineImagesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers"
                 + "/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions/{version}")
@@ -71,9 +72,10 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             @PathParam("version") String version,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers"
                 + "/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus/{skus}/versions")
@@ -90,9 +92,10 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             @QueryParam("$orderby") String orderby,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers"
                 + "/{publisherName}/artifacttypes/vmimage/offers")
@@ -104,9 +107,10 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             @PathParam("publisherName") String publisherName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -115,9 +119,10 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/publishers"
                 + "/{publisherName}/artifacttypes/vmimage/offers/{offer}/skus")
@@ -130,6 +135,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
             @PathParam("offer") String offer,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -176,7 +182,8 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -190,6 +197,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                             version,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -238,7 +246,8 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -250,6 +259,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                 version,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -361,7 +371,8 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -377,6 +388,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                             orderby,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -431,7 +443,8 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -445,6 +458,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                 orderby,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -587,7 +601,8 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -598,6 +613,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                             publisherName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -634,7 +650,8 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listOffers(
@@ -643,6 +660,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                 publisherName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -727,13 +745,19 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .listPublishers(
-                            this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), context))
+                            this.client.getEndpoint(),
+                            location,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -765,10 +789,12 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listPublishers(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), context);
+            .listPublishers(
+                this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -858,7 +884,8 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -870,6 +897,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                             offer,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -910,7 +938,8 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listSkus(
@@ -920,6 +949,7 @@ public final class VirtualMachineImagesClientImpl implements VirtualMachineImage
                 offer,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 

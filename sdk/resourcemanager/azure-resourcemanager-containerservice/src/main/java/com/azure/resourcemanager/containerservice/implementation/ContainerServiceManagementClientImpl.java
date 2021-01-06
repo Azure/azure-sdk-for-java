@@ -16,6 +16,8 @@ import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OpenShiftManagedClustersClient;
 import com.azure.resourcemanager.containerservice.fluent.OperationsClient;
 import com.azure.resourcemanager.containerservice.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.containerservice.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.containerservice.fluent.ResolvePrivateLinkServiceIdsClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -161,6 +163,30 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         return this.privateEndpointConnections;
     }
 
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
+    }
+
+    /** The ResolvePrivateLinkServiceIdsClient object to access its operations. */
+    private final ResolvePrivateLinkServiceIdsClient resolvePrivateLinkServiceIds;
+
+    /**
+     * Gets the ResolvePrivateLinkServiceIdsClient object to access its operations.
+     *
+     * @return the ResolvePrivateLinkServiceIdsClient object.
+     */
+    public ResolvePrivateLinkServiceIdsClient getResolvePrivateLinkServiceIds() {
+        return this.resolvePrivateLinkServiceIds;
+    }
+
     /**
      * Initializes an instance of ContainerServiceManagementClient client.
      *
@@ -191,5 +217,7 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
         this.managedClusters = new ManagedClustersClientImpl(this);
         this.agentPools = new AgentPoolsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.resolvePrivateLinkServiceIds = new ResolvePrivateLinkServiceIdsClientImpl(this);
     }
 }

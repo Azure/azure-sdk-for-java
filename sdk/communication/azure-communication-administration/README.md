@@ -28,14 +28,39 @@ Acquired phone numbers can come with many capabilities, depending on the country
 
 ## Key concepts
 
-To use the Admnistration SDK, a resource access key is required for authentication. 
+There are two forms of authentication to use the Administration SDK:
 
-Administration uses HMAC authentication with the resource access key.
-The access key must be provided to the CommunicationIdentityClientBuilder 
-or the PhoneNumberClientBuilder via the accessKey() function. Endpoint and httpClient must also be set
+### Azure Active Directory Token Authentication
+Currently, Azure Active Directory (AAD) authentication is only possible for CommunicationIdentityClient.
+The `DefaultAzureCredential` object must be passed to the `CommunicationIdentityClientBuilder` via
+the credential() funtion. Endpoint and httpClient must also be set
 via the endpoint() and httpClient() functions respectively.
 
-### Initializing Identity Client
+`CLIENT_SECRET`, `CLIENT_ID` and `TENANT_ID` environment variables 
+are needed to create a DefaultAzureCredential object.
+
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L377-L389 -->
+```java
+    String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+
+    // Create an HttpClient builder of your choice and customize it
+    HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+    CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
+        .endpoint(endpoint)
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .httpClient(httpClient)
+        .buildClient();
+
+    return communicationIdentityClient;
+}
+```
+
+### Access Key Authentication
+Administration uses HMAC authentication with the resource access key.
+The access key must be provided to the `CommunicationIdentityClientBuilder`
+or the `PhoneNumberClientBuilder` via the accessKey() function. Endpoint and httpClient must also be set
+via the endpoint() and httpClient() functions respectively.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L37-L48 -->
 ```java
@@ -105,7 +130,7 @@ unique ID of the user that was created.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L80-L81 -->
 ```java
-CommunicationUser user = communicationIdentityClient.createUser();
+CommunicationUserIdentifier user = communicationIdentityClient.createUser();
 System.out.println("User id: " + user.getId());
 ```
 
@@ -298,8 +323,8 @@ res.waitForCompletion();
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L357-L367 -->
 ```java
 Duration duration = Duration.ofSeconds(1);
-PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
-List<PhoneNumber> phoneNumbers = new ArrayList<>();
+PhoneNumberIdentifier phoneNumber = new PhoneNumberIdentifier("PHONE_NUMBER_TO_RELEASE");
+List<PhoneNumberIdentifier> phoneNumbers = new ArrayList<>();
 phoneNumbers.add(phoneNumber);
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 

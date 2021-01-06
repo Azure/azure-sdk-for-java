@@ -18,9 +18,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains code snippets when generating javadocs through doclets for {@link ServiceBusSenderAsyncClient}.
  */
 public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
-    private final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
-        .connectionString("fake-string");
-
     /**
      * Code snippet demonstrating how to create an {@link ServiceBusSenderAsyncClient}.
      */
@@ -90,28 +87,28 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
      * Code snippet demonstrating how to create a size-limited {@link ServiceBusMessageBatch} and send it.
      */
     public void batchSizeLimited() {
-        final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
+        ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
             .sender()
             .buildAsyncClient();
 
-        final ServiceBusMessage firstMessage = new ServiceBusMessage(BinaryData.fromBytes("92".getBytes(UTF_8)));
+        ServiceBusMessage firstMessage = new ServiceBusMessage(BinaryData.fromBytes("92".getBytes(UTF_8)));
         firstMessage.getApplicationProperties().put("telemetry", "latency");
-        final ServiceBusMessage secondMessage = new ServiceBusMessage(BinaryData.fromBytes("98".getBytes(UTF_8)));
+        ServiceBusMessage secondMessage = new ServiceBusMessage(BinaryData.fromBytes("98".getBytes(UTF_8)));
         secondMessage.getApplicationProperties().put("telemetry", "cpu-temperature");
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncsenderclient.createMessageBatch#CreateMessageBatchOptionsLimitedSize
-        final Flux<ServiceBusMessage> telemetryMessages = Flux.just(firstMessage, secondMessage);
+        Flux<ServiceBusMessage> telemetryMessages = Flux.just(firstMessage, secondMessage);
 
         // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
         // In this case, all the batches created with these options are limited to 256 bytes.
-        final CreateMessageBatchOptions options = new CreateMessageBatchOptions()
+        CreateMessageBatchOptions options = new CreateMessageBatchOptions()
             .setMaximumSizeInBytes(256);
-        final AtomicReference<ServiceBusMessageBatch> currentBatch = new AtomicReference<>(
+        AtomicReference<ServiceBusMessageBatch> currentBatch = new AtomicReference<>(
             sender.createMessageBatch(options).block());
 
         // The sample Flux contains two messages, but it could be an infinite stream of telemetry messages.
         telemetryMessages.flatMap(message -> {
-            final ServiceBusMessageBatch batch = currentBatch.get();
+            ServiceBusMessageBatch batch = currentBatch.get();
             if (batch.tryAddMessage(message)) {
                 return Mono.empty();
             }
@@ -131,7 +128,7 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
                 }));
         }).then()
             .doFinally(signal -> {
-                final ServiceBusMessageBatch batch = currentBatch.getAndSet(null);
+                ServiceBusMessageBatch batch = currentBatch.getAndSet(null);
                 if (batch != null && batch.getCount() > 0) {
                     sender.sendMessages(batch).block();
                 }

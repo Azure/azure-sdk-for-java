@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.util.Context
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
 import com.azure.storage.blob.models.BlobAccessPolicy
 import com.azure.storage.blob.models.BlobProperties
@@ -730,7 +731,7 @@ class SasClientTests extends APISpec {
 
         def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", snapId, versionId)
 
-        def sasToken = implUtil.generateSas(primaryCredential)
+        def sasToken = implUtil.generateSas(primaryCredential, Context.NONE)
 
         def token = BlobUrlParts.parse(cc.getBlobContainerUrl() + "?" + sasToken).getCommonSasQueryParameters()
 
@@ -793,7 +794,7 @@ class SasClientTests extends APISpec {
 
         def implUtil = new BlobSasImplUtil(v, "containerName", "blobName", snapId, versionId)
 
-        def sasToken = implUtil.generateUserDelegationSas(key, primaryCredential.getAccountName())
+        def sasToken = implUtil.generateUserDelegationSas(key, primaryCredential.getAccountName(), Context.NONE)
 
         def token = BlobUrlParts.parse(cc.getBlobContainerUrl() + "?" + sasToken).getCommonSasQueryParameters()
 
@@ -837,7 +838,7 @@ class SasClientTests extends APISpec {
             primaryCredential.getAccountName())
 
         when:
-        String token = implUtil.generateSas(primaryCredential)
+        String token = implUtil.generateSas(primaryCredential, Context.NONE)
 
         def queryParams = new CommonSasQueryParameters(SasImplUtils.parseQueryString(token), true)
 
@@ -872,7 +873,7 @@ class SasClientTests extends APISpec {
 
         def implUtil = new AccountSasImplUtil(v)
 
-        def sasToken = implUtil.generateSas(primaryCredential)
+        def sasToken = implUtil.generateSas(primaryCredential, Context.NONE)
 
         def token = BlobUrlParts.parse(cc.getBlobContainerUrl() + "?" + sasToken).getCommonSasQueryParameters()
 

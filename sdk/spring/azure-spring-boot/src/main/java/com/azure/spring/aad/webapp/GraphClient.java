@@ -96,6 +96,6 @@ public class GraphClient {
     }
 
     private boolean isGroupObject(final Membership membership) {
-        return membership.getObjectType().equals("#microsoft.graph.group");
+        return membership.getObjectType().equals(Membership.OBJECT_TYPE_GROUP);
     }
 }

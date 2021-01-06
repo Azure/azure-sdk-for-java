@@ -86,5 +86,9 @@ public class SmsLiveTestBase extends TestBase {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
             return TestMode.PLAYBACK;
         }
-    }    
+    }
+    
+    protected SmsClientBuilder addLoggingPolicy(SmsClientBuilder builder, String testName) {
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
 }

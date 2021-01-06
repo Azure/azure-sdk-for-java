@@ -10,6 +10,7 @@ import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.DdosSettings;
+import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
@@ -19,12 +20,19 @@ import com.azure.resourcemanager.network.models.PublicIpAddressSku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Public IP address resource. */
 @JsonFlatten
 @Fluent
 public class PublicIpAddressInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressInner.class);
+
+    /*
+     * The extended location of the public ip address.
+     */
+    @JsonProperty(value = "extendedLocation")
+    private ExtendedLocation extendedLocation;
 
     /*
      * The public IP address SKU.
@@ -116,6 +124,26 @@ public class PublicIpAddressInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the extendedLocation property: The extended location of the public ip address.
+     *
+     * @return the extendedLocation value.
+     */
+    public ExtendedLocation extendedLocation() {
+        return this.extendedLocation;
+    }
+
+    /**
+     * Set the extendedLocation property: The extended location of the public ip address.
+     *
+     * @param extendedLocation the extendedLocation value to set.
+     * @return the PublicIpAddressInner object itself.
+     */
+    public PublicIpAddressInner withExtendedLocation(ExtendedLocation extendedLocation) {
+        this.extendedLocation = extendedLocation;
+        return this;
+    }
 
     /**
      * Get the sku property: The public IP address SKU.
@@ -375,12 +403,29 @@ public class PublicIpAddressInner extends Resource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PublicIpAddressInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PublicIpAddressInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (extendedLocation() != null) {
+            extendedLocation().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }

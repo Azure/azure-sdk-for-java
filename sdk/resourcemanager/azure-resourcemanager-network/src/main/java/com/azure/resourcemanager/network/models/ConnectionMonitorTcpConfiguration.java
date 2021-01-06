@@ -27,6 +27,12 @@ public final class ConnectionMonitorTcpConfiguration {
     @JsonProperty(value = "disableTraceRoute")
     private Boolean disableTraceRoute;
 
+    /*
+     * Destination port behavior.
+     */
+    @JsonProperty(value = "destinationPortBehavior")
+    private DestinationPortBehavior destinationPortBehavior;
+
     /**
      * Get the port property: The port to connect to.
      *
@@ -64,6 +70,27 @@ public final class ConnectionMonitorTcpConfiguration {
      */
     public ConnectionMonitorTcpConfiguration withDisableTraceRoute(Boolean disableTraceRoute) {
         this.disableTraceRoute = disableTraceRoute;
+        return this;
+    }
+
+    /**
+     * Get the destinationPortBehavior property: Destination port behavior.
+     *
+     * @return the destinationPortBehavior value.
+     */
+    public DestinationPortBehavior destinationPortBehavior() {
+        return this.destinationPortBehavior;
+    }
+
+    /**
+     * Set the destinationPortBehavior property: Destination port behavior.
+     *
+     * @param destinationPortBehavior the destinationPortBehavior value to set.
+     * @return the ConnectionMonitorTcpConfiguration object itself.
+     */
+    public ConnectionMonitorTcpConfiguration withDestinationPortBehavior(
+        DestinationPortBehavior destinationPortBehavior) {
+        this.destinationPortBehavior = destinationPortBehavior;
         return this;
     }
 

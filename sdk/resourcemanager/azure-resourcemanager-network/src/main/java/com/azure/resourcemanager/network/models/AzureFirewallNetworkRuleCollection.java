@@ -155,6 +155,13 @@ public class AzureFirewallNetworkRuleCollection extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AzureFirewallNetworkRuleCollection withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
