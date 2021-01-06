@@ -50,7 +50,7 @@ Open a command prompt/terminal:
 
 ## Building only the Azure SDK client library for Storage Blob Checkpoint Store
 
-After building the tooling and solution once from the section, 
+After building the tooling and solution once from the section,
 [Building all the client libraries](#building-all-the-client-libraries), you can build just the Azure SDK client library
  for Checkpoint store using Storage Blobs by executing:
 1. `mvn compile -f sdk\eventhubs\azure-messaging-eventhubs-checkpointstore-blob\pom.xml`
