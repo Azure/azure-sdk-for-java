@@ -21,7 +21,7 @@ class Util {
      * @return the Azure-AsyncOperation header value if exists, null otherwise
      */
     static URL getAzureAsyncOperationUrl(HttpHeaders headers, ClientLogger logger) {
-        return getUrl("Azure-AsyncOperation", headers, logger);
+        return getUrl("Azure-AsyncOperation", headers, logger, false);
     }
 
     /**
@@ -32,7 +32,7 @@ class Util {
      * @return the Location header value if exists, null otherwise
      */
     static URL getLocationUrl(HttpHeaders headers, ClientLogger logger) {
-        return getUrl("Location", headers, logger);
+        return getUrl("Location", headers, logger, true);
     }
 
     /**
@@ -43,14 +43,18 @@ class Util {
      * @param logger the logger
      * @return the URL value of the given header, null if header does not exists.
      */
-    static URL getUrl(String urlHeaderName, HttpHeaders headers, ClientLogger logger) {
+    static URL getUrl(String urlHeaderName, HttpHeaders headers, ClientLogger logger, boolean ignoreException) {
         String value = headers.getValue(urlHeaderName);
         if (value != null) {
             try {
                 return new URL(value);
             } catch (MalformedURLException me) {
-                throw logger.logExceptionAsError(new RuntimeException("Malformed value '" + value
-                    + "' for URL header: '" + urlHeaderName + "'.", me));
+                String message = "Malformed value '" + value + "' for URL header: '" + urlHeaderName + "'.";
+                if (ignoreException) {
+                    logger.logExceptionAsError(new RuntimeException(message, me));
+                } else {
+                    throw logger.logExceptionAsError(new RuntimeException(message, me));
+                }
             }
         }
         return null;

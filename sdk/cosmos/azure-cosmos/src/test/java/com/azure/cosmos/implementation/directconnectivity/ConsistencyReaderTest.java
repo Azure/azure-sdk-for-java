@@ -39,7 +39,7 @@ import static com.azure.cosmos.implementation.TestUtils.*;
 
 public class ConsistencyReaderTest {
     private final Configs configs = new Configs();
-    private static final int TIMEOUT = 45000;
+    private static final int TIMEOUT = 90000;
     @DataProvider(name = "deduceReadModeArgProvider")
     public Object[][] deduceReadModeArgProvider() {
         return new Object[][]{
@@ -824,7 +824,7 @@ public class ConsistencyReaderTest {
 
     public static void validateSuccess(Mono<List<StoreResult>> single,
                                        MultiStoreResultValidator validator) {
-        validateSuccess(single, validator, 15000);
+        validateSuccess(single, validator, TIMEOUT);
     }
 
     public static void validateSuccess(Mono<List<StoreResult>> single,
@@ -842,7 +842,7 @@ public class ConsistencyReaderTest {
 
     public static void validateSuccess(Mono<StoreResponse> single,
                                        StoreResponseValidator validator) {
-        validateSuccess(single, validator, 15000);
+        validateSuccess(single, validator, TIMEOUT);
     }
 
     public static void validateSuccess(Mono<StoreResponse> single,
