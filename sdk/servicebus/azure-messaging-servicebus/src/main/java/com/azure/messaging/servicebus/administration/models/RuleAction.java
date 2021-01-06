@@ -12,6 +12,11 @@ package com.azure.messaging.servicebus.administration.models;
  * use case for filter actions is to append or update the properties that are attached to a message, for example
  * assigning a group ID based on the correlation ID of a message.
  * </p>
+ *
+ * @see EmptyRuleAction
+ * @see SqlRuleAction
+ * @see CreateRuleOptions#setAction(RuleAction)
+ * @see RuleProperties#setAction(RuleAction)
  */
 public class RuleAction {
     RuleAction() {
