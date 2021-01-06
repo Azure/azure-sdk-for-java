@@ -394,7 +394,7 @@
       "Expires" : "-1",
       "Content-Length" : "288",
       "x-ms-request-id" : "c6185842-1cf1-44d7-9ab7-379543ad450a",
-      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"ROw6nrjZLYkDcwWzPNP+EmLqXXDl3uzhibLNQX4b4tjXb1w7I7QfOCJNqcweadUC7AQtoUtpswT7igp2+pYRaw==\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"AQ32P1H0jdQL1xBnW5YGQ7HClApXbwa2eWwXWD2flDhS5s5N/Gqhpv3nj0jT51zg9B1NtCZPoylRMsW38W/Rfw==\",\"permissions\":\"FULL\"}]}",
+      "Body" : "{\"keys\":[{\"keyName\":\"key1\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"},{\"keyName\":\"key2\",\"value\":\"***REMOVED***\",\"permissions\":\"FULL\"}]}",
       "x-ms-client-request-id" : "75b56dd0-e5eb-4cc2-916e-e755ec407c7e",
       "Content-Type" : "application/json"
     },
