@@ -3,7 +3,6 @@ $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
 $BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
-$PACKAGE_INSTALL_NOTES_REGEX = "<artifactId>(?<PackageName>.*)<\/artifactId>\r\n\s+<version>(?<Version>.*)<\/version>"
 
 function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 {
@@ -246,18 +245,6 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
   return $packages
 }
 
-function GetExistingPackageVersions ($PackageName, $GroupId=$null)
-{
-  try {
-    $Uri = 'https://search.maven.org/solrsearch/select?q=g:"' + $GroupId + '"+AND+a:"' + $PackageName +'"&core=gav&rows=20&wt=json'
-    $existingVersion = Invoke-RestMethod -Method GET -Uri $Uri
-    return $existingVersion.response.docs.v
-  }
-  catch {
-    LogError "Failed to retrieve package versions. `n$_"
-    return $null
-  }
-}
 function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $BuildType, $GroupId)
 {
   if($null -eq $ReleaseDate)
@@ -269,8 +256,3 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
   & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
   -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
 }
-function GetPackageInstallNote ($PackageName, $Version, $GroupId=$null)
-{
-  return "<dependency>`n  <groupId>$GroupId</groupId>`n  <artifactId>$PackageName</artifactId>`n  <version>$Version</version>`n</dependency>`n`n";
-}
-
