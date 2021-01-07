@@ -26,7 +26,8 @@ public class AADB2CIT {
 
     @Test
     public void testSignIn() throws InterruptedException {
-        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
+            Collections.emptyMap());
         AADB2CSeleniumITHelper.signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
         String name = AADB2CSeleniumITHelper.getName();
         String userFlowName = AADB2CSeleniumITHelper.getUserFlowName();
@@ -38,7 +39,8 @@ public class AADB2CIT {
 
     @Test
     public void testProfileEdit() throws InterruptedException {
-        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
+            Collections.emptyMap());
         AADB2CSeleniumITHelper.signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
         String currentJobTitle = AADB2CSeleniumITHelper.getJobTitle();
         String newJobTitle = JOB_TITLE_A_WORKER.equals(currentJobTitle) ? JOB_TITLE_WORKER : JOB_TITLE_A_WORKER;
@@ -55,7 +57,8 @@ public class AADB2CIT {
 
     @Test
     public void testLogOut() throws InterruptedException {
-        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
+            Collections.emptyMap());
         AADB2CSeleniumITHelper.signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
         AADB2CSeleniumITHelper.logout();
         String signInButtonText = AADB2CSeleniumITHelper.getSignInButtonText();

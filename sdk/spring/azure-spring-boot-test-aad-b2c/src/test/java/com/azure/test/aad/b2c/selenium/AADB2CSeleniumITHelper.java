@@ -31,7 +31,8 @@ public class AADB2CSeleniumITHelper {
             .put("azure.activedirectory.b2c.user-flows.sign-up-or-sign-in", System.getenv(
                 AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN));
         DEFAULT_PROPERTIES
-            .put("azure.activedirectory.b2c.user-flows.profile-edit", System.getenv(AADB2CTestUtils.AAD_B2C_PROFILE_EDIT));
+            .put("azure.activedirectory.b2c.user-flows.profile-edit",
+                System.getenv(AADB2CTestUtils.AAD_B2C_PROFILE_EDIT));
 
         final String directory = "src/test/resources/driver/";
         final String chromedriverLinux = "chromedriver_linux64";
@@ -109,7 +110,8 @@ public class AADB2CSeleniumITHelper {
         Thread.sleep(5000);
         manualRedirection();
         driver.findElement(
-            By.cssSelector("a[href='/oauth2/authorization/" + System.getenv(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN) + "']"))
+            By.cssSelector(
+                "a[href='/oauth2/authorization/" + System.getenv(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN) + "']"))
             .click();
         Thread.sleep(5000);
     }
