@@ -280,10 +280,15 @@ public class AADWebAppConfigurationTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void graphUriConfigurationWithExceptionTest() throws Exception {
-        AADAuthenticationProperties properties = new AADAuthenticationProperties();
-        properties.setGraphMembershipUri("https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
-        properties.afterPropertiesSet();
+    public void graphUriConfigurationWithExceptionTest() {
+        WebApplicationContextRunnerUtils
+            .getContextRunnerWithRequiredProperties()
+            .withPropertyValues(
+                "azure.activedirectory.graph-membership-uri=https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf"
+            )
+            .run(context -> {
+                AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
+            });
     }
 
     @Test
