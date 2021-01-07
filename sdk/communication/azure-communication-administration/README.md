@@ -138,8 +138,7 @@ System.out.println("User id: " + user.getId());
 Use the `issueToken` function to issue or refresh a token for an existing user. The function
 also takes in a list of communication token scopes. Scope options include:
 - `chat` (Chat)
-- `pstn` (Public switched telephone network)
-- `voip` (Voice over IP)
+- `voip` (Voice over IP) - this option is used for all calling activities, including PSTN calling.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L93-L96 -->
 ```java
