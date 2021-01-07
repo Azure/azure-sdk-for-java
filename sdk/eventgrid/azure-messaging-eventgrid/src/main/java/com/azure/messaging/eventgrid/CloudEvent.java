@@ -42,10 +42,7 @@ public final class CloudEvent {
 
     private boolean parsed = false;
 
-    private static final JsonSerializer deserializer = new JacksonJsonSerializerBuilder()
-        .serializer(new JacksonAdapter().serializer() // this is a workaround to get the FlatteningDeserializer
-            .registerModule(new JavaTimeModule())) // probably also change this to DateTimeDeserializer when/if it
-        .build();                                  // becomes public in core
+    private static final JsonSerializer deserializer = EventParser.DESERIALIZER;
 
     /**
      * Create an instance of a CloudEvent. The source and type are required fields to publish.
@@ -359,7 +356,7 @@ public final class CloudEvent {
         return this;
     }
 
-    private CloudEvent(com.azure.messaging.eventgrid.implementation.models.CloudEvent impl) {
+    CloudEvent(com.azure.messaging.eventgrid.implementation.models.CloudEvent impl) {
         this.cloudEvent = impl;
         this.parsed = true;
     }

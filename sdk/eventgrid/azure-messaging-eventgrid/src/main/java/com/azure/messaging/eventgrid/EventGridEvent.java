@@ -36,11 +36,7 @@ public final class EventGridEvent {
 
     private boolean parsed = false;
 
-    private static final JsonSerializer deserializer = new JacksonJsonSerializerBuilder()
-        .serializer(new JacksonAdapter().serializer() // this is a workaround to get the FlatteningDeserializer
-            .registerModule(new JavaTimeModule())) // probably also change this to DateTimeDeserializer when/if it
-        .build();                                  // becomes public in core
-
+    private static final JsonSerializer deserializer = EventParser.DESERIALIZER;
     /**
      * Create a new instance of the EventGridEvent, with the given required fields.
      * @param subject     the subject of the event.
@@ -267,7 +263,7 @@ public final class EventGridEvent {
         return this.event.getMetadataVersion();
     }
 
-    private EventGridEvent(com.azure.messaging.eventgrid.implementation.models.EventGridEvent impl) {
+    EventGridEvent(com.azure.messaging.eventgrid.implementation.models.EventGridEvent impl) {
         this.event = impl;
         parsed = true;
     }
