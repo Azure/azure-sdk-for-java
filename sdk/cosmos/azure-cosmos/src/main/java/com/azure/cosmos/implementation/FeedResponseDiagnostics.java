@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class FeedResponseDiagnostics {
 
     public FeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
         this.queryMetricsMap = queryMetricsMap;
-        this.clientSideRequestStatisticsList = new ArrayList<>();
+        this.clientSideRequestStatisticsList = Collections.synchronizedList(new ArrayList<>());
     }
 
     Map<String, QueryMetrics> getQueryMetricsMap() {
@@ -73,13 +74,11 @@ public class FeedResponseDiagnostics {
                 .append(value.toString())
                 .append(System.lineSeparator()));
         }
-        for (ClientSideRequestStatistics statistics : clientSideRequestStatisticsList) {
-            try {
-                stringBuilder
-                    .append(Utils.getSimpleObjectMapper().writeValueAsString(statistics));
-            } catch (JsonProcessingException e) {
-                LOGGER.error("Error while parsing diagnostics " + e);
-            }
+        try {
+            stringBuilder
+                .append(Utils.getSimpleObjectMapper().writeValueAsString(clientSideRequestStatisticsList));
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Error while parsing diagnostics ", e);
         }
 
         return stringBuilder.toString();

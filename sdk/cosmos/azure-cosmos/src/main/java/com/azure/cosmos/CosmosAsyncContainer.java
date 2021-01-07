@@ -492,13 +492,12 @@ public class CosmosAsyncContainer {
                                                                      response.getCosmosDiagnostics());
 
         }
-        FeedResponse<T> feedResponseWithQueryMetrics = BridgeInternal.createFeedResponseWithQueryMetrics(
+        return BridgeInternal.createFeedResponseWithQueryMetrics(
             (response.getResults().stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document,
                                                                                                              classType))
                  .collect(Collectors.toList())), response.getResponseHeaders(),
             ModelBridgeInternal.queryMetrics(response),
             ModelBridgeInternal.getQueryPlanDiagnosticsContext(response), response.getCosmosDiagnostics());
-        return feedResponseWithQueryMetrics;
     }
 
     private <T> T transform(Object object, Class<T> classType) {
