@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
 import org.jetbrains.annotations.NotNull;
@@ -11,10 +13,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * <p>
+ * ClientRegistrationRepository for aad b2c
+ * </p>
+ */
 public class AADB2CClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
-    private InMemoryClientRegistrationRepository clientRegistrations;
-    private List<ClientRegistration> signUpOrSignInRegistrations;
+    private final InMemoryClientRegistrationRepository clientRegistrations;
+    private final List<ClientRegistration> signUpOrSignInRegistrations;
 
 
     AADB2CClientRegistrationRepository(List<ClientRegistration> signUpOrSignInRegistrations,

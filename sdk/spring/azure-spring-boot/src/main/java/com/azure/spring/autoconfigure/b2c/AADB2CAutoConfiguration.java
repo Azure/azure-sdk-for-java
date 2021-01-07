@@ -132,7 +132,7 @@ public class AADB2CAutoConfiguration {
             addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getProfileEdit());
             addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getPasswordReset());
 
-            return new AADB2CClientRegistrationRepository(signUpOrSignInRegistrations,otherRegistrations);
+            return new AADB2CClientRegistrationRepository(signUpOrSignInRegistrations, otherRegistrations);
         }
 
         private ClientRegistration b2cClientRegistration(String userFlow) {

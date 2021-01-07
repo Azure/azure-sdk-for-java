@@ -4,7 +4,6 @@ package com.azure.spring.autoconfigure.b2c;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 
 /**
  * Configure B2C OAUTH2 login properties.
