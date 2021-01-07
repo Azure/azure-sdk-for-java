@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -74,7 +75,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface VirtualMachineScaleSetExtensionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}")
@@ -88,9 +89,10 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VirtualMachineScaleSetExtensionInner extensionParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}")
@@ -104,6 +106,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") VirtualMachineScaleSetExtensionUpdate extensionParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -121,7 +124,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{vmScaleSetName}/extensions/{vmssExtensionName}")
@@ -135,9 +138,10 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             @QueryParam("$expand") String expand,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{vmScaleSetName}/extensions")
@@ -149,14 +153,18 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
             @PathParam("vmScaleSetName") String vmScaleSetName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualMachineScaleSetExtensionListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -206,7 +214,8 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -219,6 +228,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                             apiVersion,
                             this.client.getSubscriptionId(),
                             extensionParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -272,7 +282,8 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -283,6 +294,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                 apiVersion,
                 this.client.getSubscriptionId(),
                 extensionParameters,
+                accept,
                 context);
     }
 
@@ -542,7 +554,8 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -555,6 +568,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                             apiVersion,
                             this.client.getSubscriptionId(),
                             extensionParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -608,7 +622,8 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -619,6 +634,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                 apiVersion,
                 this.client.getSubscriptionId(),
                 extensionParameters,
+                accept,
                 context);
     }
 
@@ -864,7 +880,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -918,7 +934,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1117,7 +1133,8 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1130,6 +1147,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                             expand,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1173,7 +1191,8 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -1184,6 +1203,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                 expand,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1308,7 +1328,8 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1319,6 +1340,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                             vmScaleSetName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<VirtualMachineScaleSetExtensionInner>>map(
                 res ->
@@ -1365,7 +1387,8 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -1374,6 +1397,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                 vmScaleSetName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1468,8 +1492,15 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<VirtualMachineScaleSetExtensionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1498,9 +1529,16 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

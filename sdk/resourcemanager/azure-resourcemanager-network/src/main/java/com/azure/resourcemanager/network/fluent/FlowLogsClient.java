@@ -15,6 +15,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.FlowLogInner;
 import java.nio.ByteBuffer;
+import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -140,6 +141,87 @@ public interface FlowLogsClient {
         String networkWatcherName,
         String flowLogName,
         FlowLogInner parameters,
+        Context context);
+
+    /**
+     * Update tags of the specified flow log.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param flowLogName The name of the flow log.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a flow log resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<FlowLogInner>> updateTagsWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, String flowLogName, Map<String, String> tags);
+
+    /**
+     * Update tags of the specified flow log.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param flowLogName The name of the flow log.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a flow log resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<FlowLogInner> updateTagsAsync(
+        String resourceGroupName, String networkWatcherName, String flowLogName, Map<String, String> tags);
+
+    /**
+     * Update tags of the specified flow log.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param flowLogName The name of the flow log.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a flow log resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<FlowLogInner> updateTagsAsync(String resourceGroupName, String networkWatcherName, String flowLogName);
+
+    /**
+     * Update tags of the specified flow log.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param flowLogName The name of the flow log.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a flow log resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FlowLogInner updateTags(String resourceGroupName, String networkWatcherName, String flowLogName);
+
+    /**
+     * Update tags of the specified flow log.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param flowLogName The name of the flow log.
+     * @param tags Resource tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a flow log resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<FlowLogInner> updateTagsWithResponse(
+        String resourceGroupName,
+        String networkWatcherName,
+        String flowLogName,
+        Map<String, String> tags,
         Context context);
 
     /**

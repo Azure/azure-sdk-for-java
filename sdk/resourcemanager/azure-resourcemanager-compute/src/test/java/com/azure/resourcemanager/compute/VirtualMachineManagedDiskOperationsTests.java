@@ -150,7 +150,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewDataDisk(creatableEmptyDisk2, 2, CachingTypes.NONE) // CreateOption: ATTACH
                 .withNewDataDisk(creatableEmptyDisk3, 3, CachingTypes.NONE) // CreateOption: ATTACH
                 // End : Add 5 empty managed disks
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
@@ -310,7 +310,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withNewDataDisk(creatableEmptyDisk2, 2, CachingTypes.NONE) // CreateOption: ATTACH
                 .withNewDataDisk(creatableEmptyDisk3, 3, CachingTypes.NONE) // CreateOption: ATTACH
                 // End : Add bunch of empty managed disks
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
         System.out.println("Waiting for some time before de-provision");
@@ -361,7 +361,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 .withRootUsername(uname)
                 .withRootPassword(password)
                 // No explicit data disks, let CRP create it from the image's data disk images
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
@@ -408,7 +408,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
         VirtualMachine virtualMachine3 =
             creatableVirtualMachine3
                 .withNewDataDisk(200) // CreateOption: EMPTY
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 
@@ -487,7 +487,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
                 // End : Add bunch of empty managed disks
                 .withDataDiskDefaultCachingType(CachingTypes.READ_ONLY)
                 .withDataDiskDefaultStorageAccountType(StorageAccountTypes.STANDARD_LRS)
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D4a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 

@@ -223,7 +223,6 @@ public class CosmosContainerTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void replace() throws Exception {
-
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
@@ -235,17 +234,20 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse replaceResponse = createdDatabase.getContainer(containerProperties.getId())
                                                           .replace(containerResponse.getProperties().setIndexingPolicy(
-                                                              new IndexingPolicy().setIndexingMode(IndexingMode.CONSISTENT)));
+                                                              new IndexingPolicy().setAutomatic(false).setIndexingMode(IndexingMode.NONE)));
+        assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
+            .isEqualTo(IndexingMode.NONE);
+        assertThat(replaceResponse.getProperties().getIndexingPolicy().isAutomatic())
+            .isEqualTo(false);
+
+        replaceResponse = createdDatabase.getContainer(containerProperties.getId())
+                                                          .replace(containerResponse.getProperties().setIndexingPolicy(
+                                                              new IndexingPolicy().setAutomatic(true).setIndexingMode(IndexingMode.CONSISTENT)),
+                                                              options);
         assertThat(replaceResponse.getProperties().getIndexingPolicy().getIndexingMode())
             .isEqualTo(IndexingMode.CONSISTENT);
-
-        CosmosContainerResponse replaceResponse1 = createdDatabase.getContainer(containerProperties.getId())
-                                                          .replace(containerResponse.getProperties().setIndexingPolicy(
-                                                              new IndexingPolicy().setIndexingMode(IndexingMode.CONSISTENT)),
-                                                              options);
-        assertThat(replaceResponse1.getProperties().getIndexingPolicy().getIndexingMode())
-            .isEqualTo(IndexingMode.CONSISTENT);
-
+        assertThat(replaceResponse.getProperties().getIndexingPolicy().isAutomatic())
+            .isEqualTo(true);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
