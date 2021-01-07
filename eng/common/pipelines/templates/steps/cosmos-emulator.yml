@@ -12,7 +12,7 @@ steps:
   - powershell: |
       Write-Host "Deleting Cosmos DB Emulator data"
       if (Test-Path $Env:LOCALAPPDATA\CosmosDbEmulator) { Remove-Item -Recurse -Force $Env:LOCALAPPDATA\CosmosDbEmulator }
-      displayName: Deleting Cosmos DB Emulator data
+    displayName: Deleting Cosmos DB Emulator data
   - powershell: |
       Write-Host "Launching Cosmos DB Emulator"
       Import-Module "$env:temp\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
