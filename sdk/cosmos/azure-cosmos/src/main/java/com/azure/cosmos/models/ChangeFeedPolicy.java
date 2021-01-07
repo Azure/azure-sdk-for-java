@@ -33,7 +33,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * }
  * </pre>
  * <p>
- * <p>
  * The example below creates a new container with a change feed policy for incremental change feed. Processing
  * the change feed with full fidelity mode will not be possible for this container. It would still be possible to
  * process changes using Incremental mode. The Incremental change feed policy is also the default that
