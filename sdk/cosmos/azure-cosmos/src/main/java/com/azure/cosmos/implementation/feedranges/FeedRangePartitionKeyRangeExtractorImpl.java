@@ -19,7 +19,7 @@ import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-final class FeedRangePartitionKeyRangeExtractorImpl extends FeedRangeAsyncVisitor<List<Range<String>>> {
+public final class FeedRangePartitionKeyRangeExtractorImpl extends FeedRangeAsyncVisitor<List<Range<String>>> {
 
     private final RxDocumentClientImpl client;
     private final String collectionLink;

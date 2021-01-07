@@ -63,4 +63,9 @@ class ChangeFeedStartFromPointInTimeImpl extends ChangeFeedStartFromInternal {
 
         visitor.visit(this, request);
     }
+
+    @Override
+    public boolean supportsFullFidelityRetention() {
+        return false;
+    }
 }

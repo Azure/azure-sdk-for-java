@@ -167,15 +167,19 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         request.getHeaders().put(
             HttpConstants.HttpHeaders.PAGE_SIZE,
             String.valueOf(maxItemCount));
-
-        if (this.mode == ChangeFeedMode.INCREMENTAL) {
-            request.getHeaders().put(
-                HttpConstants.HttpHeaders.A_IM,
-                HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
-        } else {
-
-            // TODO fabianm implement full fidelity
-            throw new IllegalStateException("Unsupported change feed mode");
+        switch (this.mode) {
+            case INCREMENTAL:
+                request.getHeaders().put(
+                    HttpConstants.HttpHeaders.A_IM,
+                    HttpConstants.A_IMHeaderValues.INCREMENTAL_FEED);
+                break;
+            case FULL_FIDELITY:
+                request.getHeaders().put(
+                    HttpConstants.HttpHeaders.A_IM,
+                    HttpConstants.A_IMHeaderValues.FullFidelityFeed);
+                break;
+            default:
+                throw new IllegalStateException("Unsupported change feed mode");
         }
 
         this.populateEffectiveRangeAndStartFromSettingsToRequest(request);

@@ -23,6 +23,11 @@ class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
     }
 
     @Override
+    public boolean supportsFullFidelityRetention() {
+        return true;
+    }
+
+    @Override
     public void populateRequest(ChangeFeedStartFromVisitor visitor,
                                 RxDocumentServiceRequest request) {
 

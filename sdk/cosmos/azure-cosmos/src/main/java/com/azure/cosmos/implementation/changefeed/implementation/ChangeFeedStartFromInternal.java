@@ -41,6 +41,8 @@ public abstract class ChangeFeedStartFromInternal extends JsonSerializable {
         return this.toJson();
     }
 
+    public abstract boolean supportsFullFidelityRetention();
+
     public abstract void populateRequest(
         ChangeFeedStartFromVisitor visitor,
         RxDocumentServiceRequest request);

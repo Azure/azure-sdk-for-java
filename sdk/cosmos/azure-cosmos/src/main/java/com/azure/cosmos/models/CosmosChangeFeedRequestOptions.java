@@ -110,6 +110,15 @@ public final class CosmosChangeFeedRequestOptions {
 
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
     public CosmosChangeFeedRequestOptions withFullFidelity() {
+
+        if (!this.startFromInternal.supportsFullFidelityRetention()) {
+            throw new IllegalStateException(
+                "Full fidelity retention is not supported for the chosen change feed start from " +
+                "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
+                "CosmosChangeFeedRequestOptions.createFromContinuation instead."
+            );
+        }
+
         this.mode = ChangeFeedMode.FULL_FIDELITY;
         return this;
     }

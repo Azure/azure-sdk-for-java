@@ -181,6 +181,10 @@ public final class Constants {
         public static final int DEFAULT_MAX_PAGE_SIZE = 100;
         public static final String ENABLE_MULTIPLE_WRITE_LOCATIONS = "enableMultipleWriteLocations";
 
+        // Change feed policy
+        public static final String CHANGE_FEED_POLICY = "changeFeedPolicy";
+        public static final String LOG_RETENTION_DURATION = "retentionDuration";
+
         // Conflict resolution policy
         public static final String CONFLICT_RESOLUTION_POLICY = "conflictResolutionPolicy";
         public static final String MODE = "mode";

@@ -85,4 +85,9 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
             this,
             true);
     }
+
+    @Override
+    public boolean supportsFullFidelityRetention() {
+        return true;
+    }
 }
