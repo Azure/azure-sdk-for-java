@@ -159,7 +159,7 @@ Refer to different samples for different authentication ways.
 
 **Note**: `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter` will be deprecated. [Click here](https://github.com/Azure/azure-sdk-for-java/issues/17860) to replace it.
 
-### Authenticate in web apps [Web apps]
+### [Web APP] Authenticate in web app
 Please refer to [azure-spring-boot-sample-active-directory-webapp] for authenticate in web apps.
 
 ####  Configure application.yml:
@@ -188,7 +188,7 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 }
 ```
 
-### Configure scopes of multiple resources [Web apps]
+### [Web APP] Configure scopes of multiple resources
 By default, `azure-spring-boot-starter-active-directory` configures scopes of `openid`, `profile` and `https://graph.microsoft.com/user.read` to implement OpenID Connect protocol and access of membership information of logging in users.
 
 To customize scope configurations of multiple resources, developers need to configure the registration id and scopes in the `application.yml` as needed. Here the {registration-id} is defined by developers themselves to generate correspondding `OAuth2AuthorizedClient` to acquire access tokens, and scope names should follow the specification of `resource-uri/permission`.
@@ -202,7 +202,7 @@ azure:
         scopes: {scope1}, {scope2}
 ``` 
 
-### Configure on-demand resource authorization [Web apps]
+### [Web APP] Configure on-demand resource authorization
 To configure the authorization of certain resource as on-demand, developers need to add following property in `application.yml`:
 ```yaml
 azure:
@@ -213,7 +213,7 @@ azure:
         scopes: {scope1}, {scope2}
 ```
 
-### Protect the resource APIs in resource server [Web APIs]
+### [Web API] Protect the resource APIs in resource server
 Please refer to [azure-spring-boot-sample-active-directory-resource-server] for access resource APIs.
 
 #### Include the package
@@ -250,7 +250,7 @@ public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurer
 }
 ```
 
-### OAuth 2.0 On-Behalf-Of flow [Web APIs]
+### [Web API] OAuth 2.0 On-Behalf-Of flow
 Please refer [azure-spring-boot-sample-active-directory-resource-server-obo] to for access On-Behalf-Of flow.
 
 #### Include the package
@@ -314,7 +314,7 @@ azure:
  }
 ```
 
-### Authenticate in web APIs [Web APIs]
+### [Web API] (Deprecated) Authenticate in web API by a filter
 Please refer to [azure-spring-boot-sample-active-directory-resource-server-by-filter] for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
 
 #### Configure application.yml:
@@ -341,7 +341,7 @@ public class AADAuthenticationFilterConfigSample extends WebSecurityConfigurerAd
 * Role-based Authorization with annotation `@PreAuthorize("hasRole('GROUP_NAME')")`
 * Role-based Authorization with method `isMemberOf()`
 
-### Authenticate stateless web APIs using AAD app roles [Web APIs]
+### [Web API] (Deprecated) Authenticate stateless web API by a filter, using AAD app roles
 This scenario fits best for stateless Spring backends exposing an API to SPAs ([OAuth 2.0 implicit grant flow]) or service-to-service access using the [client credentials grant flow].
 The stateless processing can be activated with the `azure.activedirectory.session-stateless` property. The authorization is using the [AAD App Roles feature], so instead of using the `groups` claim the token has a `roles` claim which contains roles [configured in your manifest]. 
 
@@ -395,6 +395,15 @@ public class AADAppRoleStatelessAuthenticationFilterConfigSample extends WebSecu
 
 The roles you want to use within your application have to be [set up in the manifest of your application registration].
 
+### [Web APP & Web API] Use Azure China instead of Azure Global
+If you use [Azure China] instead of **Azure Global**, you need to configure your `application.yml`:
+```yaml
+azure:
+  activedirectory:
+    base-uri: https://login.partner.microsoftonline.cn
+    graph-membership-uri: https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf
+```
+
 ## Troubleshooting
 ### Enable client logging
 Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
@@ -446,3 +455,4 @@ Please follow [instructions here] to build from source or contribute.
 [refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples
 [set up in the manifest of your application registration]: https://docs.microsoft.com/azure/active-directory/develop/howto-add-app-roles-in-azure-ad-apps
+[Azure China]: https://docs.microsoft.com/azure/china/resources-developer-guide#check-endpoints-in-azure
