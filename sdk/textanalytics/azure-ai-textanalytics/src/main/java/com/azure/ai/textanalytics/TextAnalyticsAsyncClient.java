@@ -1018,6 +1018,18 @@ public final class TextAnalyticsAsyncClient {
         return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents, options);
     }
 
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeHealthcareEntitiesOperationResult, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+    beginAnalyzeHealthcareEntities(Iterable<String> documents, String language,
+        AnalyzeHealthcareEntitiesOptions options) {
+        return beginAnalyzeHealthcareEntities(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options);
+    }
+
     /**
      * Analyze healthcare entities, entity linking, and entity relations in a list of
      * {@link TextDocumentInput document} with provided request options.
@@ -1080,5 +1092,16 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<AnalyzeBatchOperationResult, PagedFlux<AnalyzeBatchResult>> beginAnalyzeBatchTasks(
         Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options) {
         return analyzeTasksAsyncClient.beginAnalyzeTasks(documents, tasks, options, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeBatchOperationResult, PagedFlux<AnalyzeBatchResult>> beginAnalyzeBatchTasks(
+        Iterable<String> documents, String language, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options) {
+        return beginAnalyzeBatchTasks(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), tasks, options);
     }
 }

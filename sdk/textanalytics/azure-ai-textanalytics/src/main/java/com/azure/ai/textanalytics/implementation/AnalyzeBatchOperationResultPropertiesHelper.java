@@ -29,8 +29,6 @@ public final class AnalyzeBatchOperationResultPropertiesHelper {
         void setExpiresAt(AnalyzeBatchOperationResult operationResult, OffsetDateTime expiresAt);
         void setCreatedAt(AnalyzeBatchOperationResult operationResult, OffsetDateTime createdAt);
         void setUpdatedAt(AnalyzeBatchOperationResult operationResult, OffsetDateTime updatedAt);
-
-        void setAnalyzeBatchResult(AnalyzeBatchOperationResult operationResult, AnalyzeBatchResult analyzeBatchResult);
     }
 
     /**
@@ -80,9 +78,5 @@ public final class AnalyzeBatchOperationResultPropertiesHelper {
 
     public static void setUpdatedAt(AnalyzeBatchOperationResult operationResult, OffsetDateTime updatedAt) {
         accessor.setUpdatedAt(operationResult, updatedAt);
-    }
-
-    public static void setAnalyzeBatchResult(AnalyzeBatchOperationResult operationResult, AnalyzeBatchResult analyzeBatchResult) {
-        accessor.setAnalyzeBatchResult(operationResult, analyzeBatchResult);
     }
 }

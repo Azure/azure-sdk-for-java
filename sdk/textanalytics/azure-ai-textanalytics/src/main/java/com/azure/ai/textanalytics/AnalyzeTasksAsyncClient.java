@@ -345,42 +345,46 @@ class AnalyzeTasksAsyncClient {
         Response<AnalyzeJobState> analyzeJobStateResponse,
         PollResponse<AnalyzeBatchOperationResult> operationResultPollResponse) {
 
-        LongRunningOperationStatus status;
-        switch (analyzeJobStateResponse.getValue().getStatus()) {
-            case CANCELLING:
-                status = LongRunningOperationStatus.fromString("CANCELLING", false);
-                break;
-            case NOT_STARTED:
-            case RUNNING:
-                status = LongRunningOperationStatus.IN_PROGRESS;
-                break;
-            case SUCCEEDED:
-                status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-                break;
-            case REJECTED:
-                status = LongRunningOperationStatus.fromString("REJECTED", true);
-                break;
-            case CANCELLED:
-                status = LongRunningOperationStatus.USER_CANCELLED;
-                break;
-            case FAILED:
-                final TextAnalyticsException exception = new TextAnalyticsException("Analyze operation failed",
-                    null, null);
-                TextAnalyticsExceptionPropertiesHelper.setErrors(exception,
-                    IterableStream.of(analyzeJobStateResponse.getValue().getErrors().stream()
-                        .map(error -> new TextAnalyticsError(
-                                TextAnalyticsErrorCode.fromString(error.getCode().toString()),
-                                error.getMessage(), null)).collect(Collectors.toList())));
-                throw logger.logExceptionAsError(exception);
-            case PARTIALLY_COMPLETED:
-                status = LongRunningOperationStatus.fromString("PARTIALLY_COMPLETED", false);
-                break;
-            default:
-                status = LongRunningOperationStatus.fromString(
-                    analyzeJobStateResponse.getValue().getStatus().toString(), true);
-                break;
+        LongRunningOperationStatus status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+        if (analyzeJobStateResponse.getValue() != null && analyzeJobStateResponse.getValue().getStatus() != null) {
+            // TODO: analyzeJobStateResponse.getValue().getStatus() could return a null value
+            switch (analyzeJobStateResponse.getValue().getStatus()) {
+                case CANCELLING:
+                    status = LongRunningOperationStatus.fromString("CANCELLING", false);
+                    break;
+                case NOT_STARTED:
+                case RUNNING:
+                    status = LongRunningOperationStatus.IN_PROGRESS;
+                    break;
+                case SUCCEEDED:
+                    status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                    break;
+                case REJECTED:
+                    status = LongRunningOperationStatus.fromString("REJECTED", true);
+                    break;
+                case CANCELLED:
+                    status = LongRunningOperationStatus.USER_CANCELLED;
+                    break;
+                case FAILED:
+                    //                final TextAnalyticsException exception = new TextAnalyticsException("Analyze operation failed",
+                    //                    null, null);
+                    //                TextAnalyticsExceptionPropertiesHelper.setErrors(exception,
+                    //                    IterableStream.of(analyzeJobStateResponse.getValue().getErrors().stream()
+                    //                        .map(error -> new TextAnalyticsError(
+                    //                                TextAnalyticsErrorCode.fromString(error.getCode().toString()),
+                    //                                error.getMessage(), null)).collect(Collectors.toList())));
+                    //                throw logger.logExceptionAsError(exception);
+                    status = LongRunningOperationStatus.fromString("FAILED", true);
+                    break;
+                case PARTIALLY_COMPLETED:
+                    status = LongRunningOperationStatus.fromString("PARTIALLY_COMPLETED", true);
+                    break;
+                default:
+                    status = LongRunningOperationStatus.fromString(
+                        analyzeJobStateResponse.getValue().getStatus().toString(), true);
+                    break;
+            }
         }
-
         AnalyzeBatchOperationResultPropertiesHelper.setDisplayName(operationResultPollResponse.getValue(),
             analyzeJobStateResponse.getValue().getDisplayName());
         AnalyzeBatchOperationResultPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
@@ -398,8 +402,6 @@ class AnalyzeTasksAsyncClient {
             operationResultPollResponse.getValue(), tasksResult.getCompleted());
         AnalyzeBatchOperationResultPropertiesHelper.setTotalTasksCount(operationResultPollResponse.getValue(),
             tasksResult.getTotal());
-        AnalyzeBatchOperationResultPropertiesHelper.setAnalyzeBatchResult(operationResultPollResponse.getValue(),
-            toAnalyzeTasks(analyzeJobStateResponse.getValue()));
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
     }
 }

@@ -5,9 +5,15 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -48,18 +54,18 @@ public class CancelHealthcareTaskAsync {
                     + "for revascularization with open heart surgery."));
         }
 
-        client.beginAnalyzeHealthcareEntities(documents, null)
-            .flatMap(asyncPollResponse -> {
-                if (!asyncPollResponse.getStatus().isComplete()) {
-                    System.out.printf("The Job ID that is cancelling is %s.%n", asyncPollResponse.getValue().getOperationId());
-                    System.out.printf("Status before cancel the task: %s.%n" , asyncPollResponse.getStatus());
-                    return asyncPollResponse
-                               .cancelOperation()
-                               .then(Mono.error(new RuntimeException("Healthcare entities recognition taking long time, operation is cancelled!")));
-                }
-                System.out.printf("Status after request the task cancellation: %s.%n" , asyncPollResponse.getStatus());
-                return Mono.just(asyncPollResponse);
-            });
+        final PollerFlux<AnalyzeHealthcareEntitiesOperationResult, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
+            poller = client.beginAnalyzeHealthcareEntities(documents, null);
+
+        poller
+            .take(1)
+            .flatMap(response -> {
+                System.out.printf("The Job ID that is cancelling is %s.%n", response.getValue().getOperationId());
+                System.out.printf("Status before cancel the task: %s.%n" , response.getStatus());
+                return response.cancelOperation();
+            })
+            .thenMany(poller.take(1))
+            .subscribe(response -> System.out.printf("Status after request the task cancellation: %s.%n", response.getStatus()));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

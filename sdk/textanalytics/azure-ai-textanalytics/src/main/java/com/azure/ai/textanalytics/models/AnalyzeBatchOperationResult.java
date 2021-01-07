@@ -20,7 +20,6 @@ public final class AnalyzeBatchOperationResult {
     private OffsetDateTime expiresAt;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
-    private AnalyzeBatchResult analyzeBatchResult; // partial final result
 
     static {
         AnalyzeBatchOperationResultPropertiesHelper.setAccessor(
@@ -74,12 +73,6 @@ public final class AnalyzeBatchOperationResult {
                 public void setUpdatedAt(AnalyzeBatchOperationResult operationResult,
                     OffsetDateTime updatedAt) {
                     operationResult.setUpdatedAt(updatedAt);
-                }
-
-                @Override
-                public void setAnalyzeBatchResult(AnalyzeBatchOperationResult operationResult,
-                    AnalyzeBatchResult analyzeBatchResult) {
-                    operationResult.setAnalyzeBatchResult(analyzeBatchResult);
                 }
             });
     }
@@ -199,13 +192,5 @@ public final class AnalyzeBatchOperationResult {
 
     private void setUpdatedAt(OffsetDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    private void setAnalyzeBatchResult(AnalyzeBatchResult analyzeBatchResult) {
-        this.analyzeBatchResult = analyzeBatchResult;
-    }
-
-    public AnalyzeBatchResult getAnalyzeBatchResult() {
-        return this.analyzeBatchResult;
     }
 }

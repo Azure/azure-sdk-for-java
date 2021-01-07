@@ -877,6 +877,14 @@ public final class TextAnalyticsClient {
         return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, options, context).block();
     }
 
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AnalyzeHealthcareEntitiesOperationResult,
+                         PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+    beginAnalyzeHealthcareEntities(Iterable<String> documents, String language, AnalyzeHealthcareEntitiesOptions options,
+        Context context) {
+        return null;
+    }
+
     /**
      * Analyze healthcare entities, entity linking, and entity relations in a list of
      * {@link TextDocumentInput document} with provided request options.
@@ -913,6 +921,13 @@ public final class TextAnalyticsClient {
             Context context) {
         return client.analyzeHealthcareAsyncClient.beginAnalyzeHealthcarePagedIterable(documents, options, context)
             .getSyncPoller();
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>> beginAnalyzeBatchTasks(
+        Iterable<String> documents, String language, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options,
+        Context context) {
+        return null;
     }
 
     /**

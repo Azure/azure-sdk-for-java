@@ -73,11 +73,6 @@ public class AnalyzeTasksAsync {
             })
             .subscribe(analyzeTasksResultPagedFlux ->
                 analyzeTasksResultPagedFlux.subscribe(analyzeTasksResult -> {
-
-
-                    analyzeTasksResult.getErrors();
-
-
                     IterableStream<RecognizeEntitiesResultCollection> entityRecognitionTasks =
                         analyzeTasksResult.getCategorizedEntitiesRecognitionTasksResult();
                     if (entityRecognitionTasks != null) {

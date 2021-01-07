@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -43,9 +44,9 @@ public class AnalyzeHealthcareTask {
                 .buildClient();
 
         List<TextDocumentInput> documents = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 9; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i),
-                "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months. " +
+                "The patient is a 54-year-old gentleman electro with a history of progressive angina over the past several months. " +
                     "The patient could have Parkinson's Disease (PD)."
             ));
         }
@@ -60,47 +61,51 @@ public class AnalyzeHealthcareTask {
         PagedIterable<AnalyzeHealthcareEntitiesResultCollection> healthcareResultIterable = syncPoller.getFinalResult();
 
         // Task operation statistics
-        final AnalyzeHealthcareEntitiesOperationResult operationResult = syncPoller.poll().getValue();
+        AnalyzeHealthcareEntitiesOperationResult operationResult = syncPoller.poll().getValue();
         System.out.printf("Job created time: %s, expiration time: %s.%n",
             operationResult.getCreatedAt(), operationResult.getExpiresAt());
 
         System.out.printf("Poller status: %s.%n", syncPoller.poll().getStatus());
 
-        healthcareResultIterable.forEach(healthcareTaskResult -> {
-            // Model version
-            System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
-                healthcareTaskResult.getModelVersion());
+        Iterable<PagedResponse<AnalyzeHealthcareEntitiesResultCollection>> pagedResults = healthcareResultIterable.iterableByPage();
+        for (PagedResponse<AnalyzeHealthcareEntitiesResultCollection> page : pagedResults) {
+            System.out.println("Response code: " + page.getStatusCode());
+            System.out.println("Continuation Token: " + page.getContinuationToken());
+            page.getElements().forEach(healthcareTaskResult -> {
+                // Model version
+                System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
+                    healthcareTaskResult.getModelVersion());
 
-            TextDocumentBatchStatistics healthcareTaskStatistics = healthcareTaskResult.getStatistics();
-            // Batch statistics
-            System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
-                healthcareTaskStatistics.getDocumentCount(), healthcareTaskStatistics.getInvalidDocumentCount(),
-                healthcareTaskStatistics.getTransactionCount(), healthcareTaskStatistics.getValidDocumentCount());
+                TextDocumentBatchStatistics healthcareTaskStatistics = healthcareTaskResult.getStatistics();
+                // Batch statistics
+                System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+                    healthcareTaskStatistics.getDocumentCount(), healthcareTaskStatistics.getInvalidDocumentCount(),
+                    healthcareTaskStatistics.getTransactionCount(), healthcareTaskStatistics.getValidDocumentCount());
 
-            healthcareTaskResult.forEach(healthcareEntitiesResult -> {
-                System.out.println("Document id = " + healthcareEntitiesResult.getId());
-                System.out.println("Document entities: ");
-                AtomicInteger ct = new AtomicInteger();
-                healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
-                    System.out.printf("\ti = %d, Text: %s, category: %s, confidence score: %f.%n",
-                        ct.getAndIncrement(),
-                        healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getConfidenceScore());
-                    IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources = healthcareEntity.getHealthcareEntityDataSources();
-                    if (healthcareEntityDataSources != null) {
-                        healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
-                            "\t\tHealthcare data source ID: %s, data source: %s.%n",
-                            healthcareEntityLink.getDataSourceId(), healthcareEntityLink.getDataSource()));
-                    }
-                    Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities = healthcareEntity.getRelatedHealthcareEntities();
-                    if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
-                        relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
-                            "\t\tRelated entity: %s, relation type: %s.%n",
-                            relatedHealthcareEntity.getText(), entityRelationType));
-                    }
+                healthcareTaskResult.forEach(healthcareEntitiesResult -> {
+                    System.out.println("Document id = " + healthcareEntitiesResult.getId());
+                    System.out.println("Document entities: ");
+                    AtomicInteger ct = new AtomicInteger();
+                    healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
+                        System.out.printf("\ti = %d, Text: %s, category: %s, confidence score: %f.%n",
+                            ct.getAndIncrement(),
+                            healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getConfidenceScore());
+                        IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources = healthcareEntity.getHealthcareEntityDataSources();
+                        if (healthcareEntityDataSources != null) {
+                            healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
+                                "\t\tHealthcare data source ID: %s, data source: %s.%n",
+                                healthcareEntityLink.getDataSourceId(), healthcareEntityLink.getDataSource()));
+                        }
+                        Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities = healthcareEntity.getRelatedHealthcareEntities();
+                        if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
+                            relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
+                                "\t\tRelated entity: %s, relation type: %s.%n",
+                                relatedHealthcareEntity.getText(), entityRelationType));
+                        }
+                    });
                 });
             });
-        });
+        }
         System.out.printf("Poller status: %s.%n", syncPoller.poll().getStatus());
-
     }
 }

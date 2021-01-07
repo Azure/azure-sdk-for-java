@@ -97,8 +97,6 @@ class AnalyzeHealthcareAsyncClient {
                     })),
                 pollingOperation(healthcareTaskId -> service.healthStatusWithResponseAsync(healthcareTaskId,
                     null, null, finalIncludeStatistics, context)),
-//                (activationResponse, pollingContext) ->
-//                    monoError(logger, new RuntimeException("Use the `beginCancelHealthcareJob` to cancel the job")),
                 cancelOperation(healthcareTaskId -> service.cancelHealthJobWithResponseAsync(healthcareTaskId,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))),
                 fetchingOperation(resultId -> Mono.just(getHealthcareFluxPage(resultId, null, null,
@@ -136,8 +134,6 @@ class AnalyzeHealthcareAsyncClient {
                     null, finalIncludeStatistics, context)),
                 cancelOperation(healthcareTaskId -> service.cancelHealthJobWithResponseAsync(healthcareTaskId,
                     context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))),
-//                (activationResponse, pollingContext) ->
-//                    monoError(logger, new RuntimeException("Use the `beginCancelHealthcareJob` to cancel the job")),
                 fetchingOperationIterable(resultId -> Mono.just(new PagedIterable<>(getHealthcareFluxPage(resultId,
                     null, null, finalIncludeStatistics, context))))
             );
@@ -308,7 +304,6 @@ class AnalyzeHealthcareAsyncClient {
             try {
                 return cancelFunction.apply(resultUuid)
                     .map(cancelHealthJobResponse -> {
-
                         final AnalyzeHealthcareEntitiesOperationResult operationResult =
                             new AnalyzeHealthcareEntitiesOperationResult();
                         AnalyzeHealthcareEntitiesOperationResultPropertiesHelper.setOperationId(operationResult,
