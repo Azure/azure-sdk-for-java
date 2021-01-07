@@ -16,20 +16,6 @@ This sample illustrates how to protect a Java web API by restricting access to i
 ### Environment checklist
 We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
-### Include the package
-```xml
-<dependencies>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-resource-server</artifactId>
-    </dependency>
-</dependencies>
-```
-
 ### Configure Web API
 1. In this section, you register your web API in App registrations in the Azure portal.
 2. Search for and select your tenant in **Azure Active Directory**.
