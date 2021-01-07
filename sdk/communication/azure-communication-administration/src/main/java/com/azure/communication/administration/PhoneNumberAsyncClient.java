@@ -147,7 +147,6 @@ public final class PhoneNumberAsyncClient {
      * @param searchId ID of the search
      * @return A {@link PollerFlux} object.
      */
-
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<Void, Void> beginPurchasePhoneNumbers(String searchId) {
         Objects.requireNonNull(searchId, "'searchId' can not be null.");
@@ -175,11 +174,11 @@ public final class PhoneNumberAsyncClient {
      * Update capabilities of an acquired phone number.
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @param capabilitiesUpdate Update capabilities of an acquired phone number.
+     * @param capabilitiesUpdateRequest Update capabilities of an acquired phone number.
      * @return A {@link PollerFlux} object
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AcquiredPhoneNumber, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdate) {
+    public PollerFlux<AcquiredPhoneNumber, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
         Objects.requireNonNull(phoneNumber, "'phoneNumbers' cannot be null.");
         return null;
     }

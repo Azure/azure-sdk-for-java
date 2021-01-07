@@ -127,7 +127,6 @@ public final class PhoneNumberClient {
      * @param searchId ID of the search
      * @return A {@link SyncPoller} object.
      */
-
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<Void, Void> beginPurchasePhoneNumbers(String searchId) {
         return null;
@@ -156,11 +155,11 @@ public final class PhoneNumberClient {
      * operation is complete.
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
      *                    as %2B.
-     * @param capabilitiesUpdate Update capabilities of an acquired phone number.
+     * @param capabilitiesUpdateRequest Update capabilities of an acquired phone number.
      * @return A {@link SyncPoller} object
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AcquiredPhoneNumber, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdate) {
+    public SyncPoller<AcquiredPhoneNumber, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
         return null;
     }
 }
