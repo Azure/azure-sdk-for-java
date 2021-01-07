@@ -4,8 +4,9 @@ package com.azure.cosmos.spark
 
 import java.sql.Date
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
-import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
-import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType, Decimal, DecimalType, DoubleType, FloatType, IntegerType, LongType, MapType, NullType, StringType, StructField, StructType}
+import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema}
+import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType, Decimal, DecimalType, DoubleType,
+    FloatType, IntegerType, LongType, MapType, NullType, StringType, StructField, StructType}
 import org.assertj.core.api.Assertions.assertThat
 
 class CosmosRowConverterSpec extends UnitSpec {
