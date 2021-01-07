@@ -1,7 +1,7 @@
 # Guide for migrating to azure-security-keyvault-keys from azure-keyvault
 This guide is intended to assist in the migration to `azure-security-keyvault-keys` from `azure-keyvault`. It will focus on side-by-side comparisons for similar operations between the two packages.
 
-Familiarity with the `azure-keyvault` package is assumed. For those new to the Key Vault Key client library for Java, please refer to the [README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/README.md) rather than this guide.
+Familiarity with the `azure-keyvault` package is assumed. For those new to the Key Vault Key client library for Java, please refer to the [README for azure-security-keyvault-keys](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-keys/README.md) rather than this guide.
 
 ## Table of contents
 - [Migration benefits](#migration-benefits)
