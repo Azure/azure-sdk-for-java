@@ -357,11 +357,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             String queryDiagnostics = feedResponse.getCosmosDiagnostics().toString();
             assertThat(feedResponse.getResults().size()).isEqualTo(0);
             if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
-                if (qmEnabled) {
-                    validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
-                    validateDirectModeQueryDiagnostics(queryDiagnostics);
-                    validateTransportRequestTimelineDirect(queryDiagnostics);
-                }
+                validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
+                validateDirectModeQueryDiagnostics(queryDiagnostics);
+                validateTransportRequestTimelineDirect(queryDiagnostics);
                 if (query.contains("group by")) {
                     qroupByFirstResponse = false;
                 }
@@ -408,9 +406,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             }
         }
         boolean qroupByFirstResponse = true;
-//        if (qmEnabled != null) {
-//            options.setQueryMetricsEnabled(qmEnabled);
-//        }
+        if (qmEnabled != null) {
+            options.setQueryMetricsEnabled(qmEnabled);
+        }
         Iterator<FeedResponse<InternalObjectNode>> iterator = cosmosContainer
                                                                   .queryItems(query, options, InternalObjectNode.class)
                                                                   .iterableByPage()
@@ -423,9 +421,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(feedResponse.getResults().size()).isEqualTo(0);
             if (!query.contains("group by") || qroupByFirstResponse) { // TODO https://github
                 validateQueryDiagnostics(queryDiagnostics, qmEnabled, true);
-                if (qmEnabled) {
-                    validateGatewayModeQueryDiagnostics(queryDiagnostics);
-                }
+                validateGatewayModeQueryDiagnostics(queryDiagnostics);
                 if (query.contains("group by")) {
                     qroupByFirstResponse = false;
                 }
