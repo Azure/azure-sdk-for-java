@@ -4,7 +4,7 @@ package com.azure.cosmos.spark
 
 import java.sql.Date
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
-import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema}
+import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType, Decimal, DecimalType, DoubleType,
     FloatType, IntegerType, LongType, MapType, NullType, StringType, StructField, StructType}
 import org.assertj.core.api.Assertions.assertThat
@@ -94,7 +94,6 @@ class CosmosRowConverterSpec extends UnitSpec {
 
   "date and time in spark row" should "translate to ObjectNode" in {
     val colName1 = "testCol1"
-    val colName2 = "testCol2"
     val currentMillis = System.currentTimeMillis()
     val colVal1 = new Date(currentMillis)
 
@@ -139,7 +138,7 @@ class CosmosRowConverterSpec extends UnitSpec {
         Array(colVal1),
         StructType(Seq(StructField(colName1, MapType(keyType = StringType, valueType = StringType, valueContainsNull = false)))))
 
-    val objectNode = CosmosRowConverter.rowToObjectNode(row)
+    CosmosRowConverter.rowToObjectNode(row)
   }
 
   "struct in spark row" should "translate to ObjectNode" in {
@@ -158,7 +157,7 @@ class CosmosRowConverterSpec extends UnitSpec {
 
     val objectNode = CosmosRowConverter.rowToObjectNode(row)
     assertThat(objectNode.get(colName1).isInstanceOf[ObjectNode])
-    var nestedNode = objectNode.get(colName1).asInstanceOf[ObjectNode]
+    val nestedNode = objectNode.get(colName1).asInstanceOf[ObjectNode]
     assertThat(nestedNode.get(structCol1Name).asText()).isEqualTo(structCol1Val)
   }
 
