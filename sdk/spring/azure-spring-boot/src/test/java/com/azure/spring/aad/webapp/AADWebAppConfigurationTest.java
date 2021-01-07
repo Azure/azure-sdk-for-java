@@ -66,8 +66,8 @@ public class AADWebAppConfigurationTest {
                 assertEquals("fake-client-id", azure.getClientId());
                 assertEquals("fake-client-secret", azure.getClientSecret());
 
-                AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints("https://login"
-                    + ".microsoftonline.com/", "fake-tenant-id");
+                AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints(
+                    "https://login.microsoftonline.com/", "fake-tenant-id");
                 assertEquals(endpoints.authorizationEndpoint(),
                     azure.getProviderDetails().getAuthorizationUri());
                 assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
@@ -83,8 +83,8 @@ public class AADWebAppConfigurationTest {
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
-                "azure.activedirectory.authorization-clients.arm.scopes = https://management.core.windows"
-                    + ".net/user_impersonation"
+                "azure.activedirectory.authorization-clients.arm.scopes = "
+                    + "https://management.core.windows.net/user_impersonation"
             )
             .run(context -> {
                 ClientRegistrationRepository clientRepo = context.getBean(AADWebAppClientRegistrationRepository.class);
@@ -108,8 +108,8 @@ public class AADWebAppConfigurationTest {
             .withPropertyValues(
                 "azure.activedirectory.authorization-clients.graph.scopes = Calendars.Read",
                 "azure.activedirectory.authorization-clients.graph.on-demand = true",
-                "azure.activedirectory.authorization-clients.arm.scopes = https://management.core.windows"
-                    + ".net/user_impersonation"
+                "azure.activedirectory.authorization-clients.arm.scopes = "
+                    + "https://management.core.windows.net/user_impersonation"
             )
             .run(context -> {
                 AADWebAppClientRegistrationRepository repo =
@@ -162,8 +162,7 @@ public class AADWebAppConfigurationTest {
 
                 assertNotNull(azure);
                 assertNotNull(graph);
-                assertDefaultScopes(azure,
-                    "openid", "profile", "offline_access", "Calendars.Read");
+                assertDefaultScopes(azure, "openid", "profile", "offline_access", "Calendars.Read");
                 assertDefaultScopes(graph, "Calendars.Read");
             });
     }
@@ -190,8 +189,8 @@ public class AADWebAppConfigurationTest {
                 AADWebAppClientRegistrationRepository clientRepo =
                     context.getBean(AADWebAppClientRegistrationRepository.class);
                 ClientRegistration azure = clientRepo.findByRegistrationId("azure");
-                AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints("http://localhost/",
-                    "fake-tenant-id");
+                AADAuthorizationServerEndpoints endpoints = new AADAuthorizationServerEndpoints(
+                    "http://localhost/", "fake-tenant-id");
                 assertEquals(endpoints.authorizationEndpoint(),
                     azure.getProviderDetails().getAuthorizationUri());
                 assertEquals(endpoints.tokenEndpoint(), azure.getProviderDetails().getTokenUri());
@@ -312,8 +311,8 @@ public class AADWebAppConfigurationTest {
         WebApplicationContextRunnerUtils
             .getContextRunnerWithRequiredProperties()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.office.scopes ="
-                    + " https://manage.office.com/ActivityFeed.Read",
+                "azure.activedirectory.authorization-clients.office.scopes = "
+                    + "https://manage.office.com/ActivityFeed.Read",
                 "azure.activedirectory.authorization-clients.arm.scopes = "
                     + "https://management.core.windows.net/user_impersonation"
             )
