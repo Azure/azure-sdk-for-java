@@ -52,6 +52,9 @@ jobs:
           AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
           AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role)
           AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role)
+          B2C_USER_PASSWORD: $(java-spring-b2c-user-password)
+          B2C_CLIENT_ID: $(java-spring-b2c-client-id)
+          B2C_CLIENT_SECRET: $(java-spring-b2c-client-secret)
 
         PostRunSteps:
           - script: |
