@@ -51,6 +51,7 @@ public final class PhoneNumberClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Response<AcquiredPhoneNumber> getPhoneNumberWithResponse(String phoneNumber, Context context) {
+        context = context == null ? Context.NONE : context;
         return phoneNumbersImpl.getPhoneNumberWithResponseAsync(phoneNumber, context).block();
     }
 
@@ -67,11 +68,12 @@ public final class PhoneNumberClient {
     /**
      * Gets the list of the acquired phone numbers with context.
      *
-     * @param context the context of the request. Can also be null or Context.NONE.
+     * @param context A {@link Context} representing the request context.
      * @return A {@link PagedIterable} of {@link AcquiredPhoneNumber} instances representing acquired telephone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AcquiredPhoneNumber> listPhoneNumbers(Context context) {
+        context = context == null ? Context.NONE : context;
         return phoneNumbersImpl.listPhoneNumbers(context);
     }
 
@@ -99,6 +101,7 @@ public final class PhoneNumberClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AcquiredPhoneNumber> updatePhoneNumberWithResponse(String phoneNumber, AcquiredPhoneNumberUpdate update, Context context){
+        context = context == null ? Context.NONE : context;
         return phoneNumbersImpl.updatePhoneNumberWithResponseAsync(phoneNumber, update.getCallbackUri(), update.getApplicationId()).block();
     }
 
