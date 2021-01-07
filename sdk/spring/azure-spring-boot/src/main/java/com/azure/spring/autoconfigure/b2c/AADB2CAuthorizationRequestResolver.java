@@ -86,8 +86,6 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
             return null;
         }
 
-        cleanupSecurityContextAuthentication();
-
         final Map<String, Object> additionalParameters = new HashMap<>();
         Optional.ofNullable(this.properties)
                 .map(AADB2CProperties::getAuthenticateAdditionalParameters)

@@ -4,6 +4,7 @@ package com.azure.spring.autoconfigure.b2c;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 
 /**
  * Configure B2C OAUTH2 login properties.
@@ -26,10 +27,11 @@ public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidc
     @Override
     public void init(HttpSecurity http) throws Exception {
         http.logout()
-            .logoutSuccessHandler(handler)
-            .and()
+                .logoutSuccessHandler(handler)
+                .and()
             .oauth2Login()
-            .loginProcessingUrl(properties.getLoginProcessingUrl())
-            .authorizationEndpoint().authorizationRequestResolver(resolver);
+                .loginProcessingUrl(properties.getLoginProcessingUrl())
+                .authorizationEndpoint()
+                    .authorizationRequestResolver(resolver);
     }
 }
