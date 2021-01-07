@@ -90,10 +90,8 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         ObjectNode properties = getDocumentDefinition(documentId, pkIds);
         createdMultiHashContainer.createItem(properties);
 
-
         CosmosItemResponse<ObjectNode> readResponse1 = createdMultiHashContainer.readItem(
                                                         documentId, partitionKey, ObjectNode.class);
-
         validateIdOfItemResponse(documentId, readResponse1);
         assertThat(readResponse1.getItem().equals(properties));
     }
