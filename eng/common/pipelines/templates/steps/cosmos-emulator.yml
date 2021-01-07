@@ -11,8 +11,7 @@ steps:
     displayName: Download and Extract Public Cosmos DB Emulator
   - powershell: |
       Write-Host "Deleting Cosmos DB Emulator data"
-      Import-Module "$env:temp\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
-      Remove-CosmosDbEmulatorData
+      Remove-Item -Recurse -Force $Env:LOCALAPPDATA\CosmosDbEmulator
       displayName: Deleting Cosmos DB Emulator data
   - powershell: |
       Write-Host "Launching Cosmos DB Emulator"
