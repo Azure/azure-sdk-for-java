@@ -1,6 +1,6 @@
 package com.azure.test.aad.selenium;
 
-import com.azure.test.utils.AppRunner;
+import com.azure.spring.test.AppRunner;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -16,11 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static com.azure.test.aad.AADTestUtils.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.test.aad.AADTestUtils.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.test.aad.AADTestUtils.AAD_TENANT_ID_1;
-import static com.azure.test.aad.AADTestUtils.AAD_USER_NAME_1;
-import static com.azure.test.aad.AADTestUtils.AAD_USER_PASSWORD_1;
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_TENANT_ID_1;
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_NAME_1;
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_1;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class AADSeleniumITHelper {
@@ -32,9 +32,9 @@ public class AADSeleniumITHelper {
     private static final Map<String, String> DEFAULT_PROPERTIES = new HashMap<>();
 
     static {
-        DEFAULT_PROPERTIES.put("azure.activedirectory.tenant-id", System.getenv(AAD_TENANT_ID_1));
-        DEFAULT_PROPERTIES.put("azure.activedirectory.client-id", System.getenv(AAD_MULTI_TENANT_CLIENT_ID));
-        DEFAULT_PROPERTIES.put("azure.activedirectory.client-secret", System.getenv(AAD_MULTI_TENANT_CLIENT_SECRET));
+        DEFAULT_PROPERTIES.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
         DEFAULT_PROPERTIES.put("azure.activedirectory.user-group.allowed-groups", "group1");
         DEFAULT_PROPERTIES.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
 
@@ -69,8 +69,8 @@ public class AADSeleniumITHelper {
     }
 
     public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) throws InterruptedException {
-        username = System.getenv(AAD_USER_NAME_1);
-        password = System.getenv(AAD_USER_PASSWORD_1);
+        username = AAD_USER_NAME_1;
+        password = AAD_USER_PASSWORD_1;
         app = new AppRunner(appClass);
         DEFAULT_PROPERTIES.forEach(app::property);
         properties.forEach(app::property);

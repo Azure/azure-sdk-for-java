@@ -5,9 +5,11 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.ArrayList;
@@ -23,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Validated
 @ConfigurationProperties("azure.activedirectory")
-public class AADAuthenticationProperties {
+public class AADAuthenticationProperties implements InitializingBean {
 
     private static final long DEFAULT_JWK_SET_CACHE_LIFESPAN = TimeUnit.MINUTES.toMillis(5);
     private static final long DEFAULT_JWK_SET_CACHE_REFRESH_TIME = DEFAULT_JWK_SET_CACHE_LIFESPAN;
@@ -97,9 +99,11 @@ public class AADAuthenticationProperties {
      */
     private Boolean sessionStateless = false;
 
-    private String baseUri = "https://login.microsoftonline.com/";
+    private String baseUri;
 
-    private String graphMembershipUri = "https://graph.microsoft.com/v1.0/me/memberOf";
+    private String graphBaseUri;
+
+    private String graphMembershipUri;
 
     private Map<String, AuthorizationClientProperties> authorizationClients = new HashMap<>();
 
@@ -277,6 +281,14 @@ public class AADAuthenticationProperties {
         this.baseUri = baseUri;
     }
 
+    public String getGraphBaseUri() {
+        return graphBaseUri;
+    }
+
+    public void setGraphBaseUri(String graphBaseUri) {
+        this.graphBaseUri = graphBaseUri;
+    }
+
     public String getGraphMembershipUri() {
         return graphMembershipUri;
     }
@@ -298,5 +310,36 @@ public class AADAuthenticationProperties {
                        .map(UserGroupProperties::getAllowedGroups)
                        .orElseGet(Collections::emptyList)
                        .contains(group);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+
+        if (!StringUtils.hasText(baseUri)) {
+            baseUri = "https://login.microsoftonline.com/";
+        } else {
+            baseUri = addSlash(baseUri);
+        }
+
+        if (!StringUtils.hasText(graphBaseUri)) {
+            graphBaseUri = "https://graph.microsoft.com/";
+        } else {
+            graphBaseUri = addSlash(graphBaseUri);
+        }
+
+        if (!StringUtils.hasText(graphMembershipUri)) {
+            graphMembershipUri = graphBaseUri + "v1.0/me/memberOf";
+        }
+
+        if (!graphMembershipUri.startsWith(graphBaseUri)) {
+            throw new IllegalStateException("azure.activedirectory.graph-base-uri should be "
+                + "the prefix of azure.activedirectory.graph-membership-uri. "
+                + "azure.activedirectory.graph-base-uri = " + graphBaseUri + ", "
+                + "azure.activedirectory.graph-membership-uri = " + graphMembershipUri + ".");
+        }
+    }
+
+    private String addSlash(String uri) {
+        return uri.endsWith("/") ? uri : uri + "/";
     }
 }

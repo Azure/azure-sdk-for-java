@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.support;
 
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
@@ -17,6 +19,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
+
+import static com.azure.spring.data.cosmos.repository.support.IndexPolicyCompareService.policyNeedsUpdate;
 
 /**
  * Repository class for simple reactive Cosmos operation
@@ -40,6 +44,30 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         if (this.entityInformation.isAutoCreateContainer()) {
             createContainerIfNotExists();
         }
+
+        CosmosContainerProperties currentProperties = getContainerProperties();
+        if (currentProperties != null
+            && policyNeedsUpdate(currentProperties.getIndexingPolicy(), entityInformation.getIndexingPolicy())) {
+            currentProperties.setIndexingPolicy(entityInformation.getIndexingPolicy());
+            replaceContainerProperties(currentProperties);
+        }
+    }
+
+    private CosmosContainerProperties getContainerProperties() {
+        try {
+            return this.cosmosOperations.getContainerProperties(this.entityInformation.getContainerName()).block();
+        } catch (CosmosException ex) {
+            if (ex.getStatusCode() == 404) {
+                return null;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    private CosmosContainerProperties replaceContainerProperties(CosmosContainerProperties properties) {
+        return this.cosmosOperations.replaceContainerProperties(this.entityInformation.getContainerName(), properties)
+            .block();
     }
 
     private CosmosContainerResponse createContainerIfNotExists() {

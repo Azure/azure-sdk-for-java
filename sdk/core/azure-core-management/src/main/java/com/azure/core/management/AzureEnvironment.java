@@ -38,6 +38,7 @@ public final class AzureEnvironment {
             put("activeDirectoryEndpointUrl", "https://login.microsoftonline.com/");
             put("activeDirectoryResourceId", "https://management.core.windows.net/");
             put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
+            put("microsoftGraphResourceId", "https://graph.microsoft.com/");
             put("dataLakeEndpointResourceId", "https://datalake.azure.net/");
             put("activeDirectoryGraphApiVersion", "2013-04-05");
             put("storageEndpointSuffix", ".core.windows.net");
@@ -62,6 +63,7 @@ public final class AzureEnvironment {
             put("activeDirectoryEndpointUrl", "https://login.chinacloudapi.cn/");
             put("activeDirectoryResourceId", "https://management.core.chinacloudapi.cn/");
             put("activeDirectoryGraphResourceId", "https://graph.chinacloudapi.cn/");
+            put("microsoftGraphResourceId", "https://microsoftgraph.chinacloudapi.cn/");
             // TODO: add resource id for the china cloud for datalake once it is defined.
             put("dataLakeEndpointResourceId", "N/A");
             put("activeDirectoryGraphApiVersion", "2013-04-05");
@@ -89,6 +91,7 @@ public final class AzureEnvironment {
             put("activeDirectoryEndpointUrl", "https://login.microsoftonline.us/");
             put("activeDirectoryResourceId", "https://management.core.usgovcloudapi.net/");
             put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
+            put("microsoftGraphResourceId", "https://graph.microsoft.us/");
             // TODO: add resource id for the US government for datalake once it is defined.
             put("dataLakeEndpointResourceId", "N/A");
             put("activeDirectoryGraphApiVersion", "2013-04-05");
@@ -116,6 +119,7 @@ public final class AzureEnvironment {
             put("activeDirectoryEndpointUrl", "https://login.microsoftonline.de/");
             put("activeDirectoryResourceId", "https://management.core.cloudapi.de/");
             put("activeDirectoryGraphResourceId", "https://graph.cloudapi.de/");
+            put("microsoftGraphResourceId", "https://graph.microsoft.de/");
             // TODO: add resource id for the germany cloud for datalake once it is defined.
             put("dataLakeEndpointResourceId", "N/A");
             put("activeDirectoryGraphApiVersion", "2013-04-05");
@@ -214,6 +218,13 @@ public final class AzureEnvironment {
     }
 
     /**
+     * @return the Microsoft Graph resource ID.
+     */
+    public String getMicrosoftGraphEndpoint() {
+        return endpoints.get("microsoftGraphResourceId");
+    }
+
+    /**
      * @return the Data Lake resource ID.
      */
     public String getDataLakeEndpointResourceId() {
@@ -294,7 +305,9 @@ public final class AzureEnvironment {
         /** Azure Log Analytics endpoint. */
         LOG_ANALYTICS("azureLogAnalyticsResourceId"),
         /** Azure Application Insights. */
-        APPLICATION_INSIGHTS("azureApplicationInsightsResourceId");
+        APPLICATION_INSIGHTS("azureApplicationInsightsResourceId"),
+        /** Microsoft Graph APIs endpoint. */
+        MICROSOFT_GRAPH("microsoftGraphResourceId");
 
         private final String field;
 
