@@ -61,7 +61,7 @@ public final class ReplicasClientImpl implements ReplicasClient {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBForPostgreSQL"
-                + "/servers/{serverName}/Replicas")
+                + "/servers/{serverName}/replicas")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ServerListResult>> listByServer(
