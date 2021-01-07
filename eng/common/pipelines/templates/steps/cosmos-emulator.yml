@@ -10,6 +10,11 @@ steps:
       msiexec /a ${{ parameters.EmulatorMsiUrl }} TARGETDIR=$targetDir /qn | wait-process
     displayName: Download and Extract Public Cosmos DB Emulator
   - powershell: |
+      Write-Host "Deleting Cosmos DB Emulator data"
+      Import-Module "$env:temp\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
+      Remove-CosmosDbEmulatorData
+      displayName: Deleting Cosmos DB Emulator data
+  - powershell: |
       Write-Host "Launching Cosmos DB Emulator"
       Import-Module "$env:temp\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
       Start-CosmosDbEmulator -NoUI ${{ parameters.StartParameters }}
