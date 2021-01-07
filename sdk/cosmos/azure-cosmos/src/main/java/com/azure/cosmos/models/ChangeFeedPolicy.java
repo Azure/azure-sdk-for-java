@@ -150,7 +150,9 @@ public final class ChangeFeedPolicy {
      */
     ChangeFeedPolicy setFullFidelityRetentionDurationInMinutes(Integer retentionDurationInMinutes) {
         if (retentionDurationInMinutes == null || retentionDurationInMinutes <= 0) {
-            this.jsonSerializable.remove(Constants.Properties.LOG_RETENTION_DURATION);
+            this.jsonSerializable.set(
+                Constants.Properties.LOG_RETENTION_DURATION,
+                0);
         }
         else {
             this.jsonSerializable.set(

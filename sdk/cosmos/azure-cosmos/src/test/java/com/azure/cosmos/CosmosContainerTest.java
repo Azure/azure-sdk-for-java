@@ -7,6 +7,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -117,6 +118,53 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
             ThroughputProperties.createManualThroughput(throughput));
         validateContainerResponse(containerProperties, containerResponse);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void createContainer_withFullFidelityChangeFeedPolicy() throws Exception {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+        containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(8));
+        int throughput = 1000;
+
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
+            ThroughputProperties.createManualThroughput(throughput));
+        validateContainerResponse(containerProperties, containerResponse);
+        assertThat(containerResponse.getProperties()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDurationInMinutes())
+            .isEqualTo(8);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void createContainer_withIncrementalChangeFeedPolicy() throws Exception {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+        containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy());
+        int throughput = 1000;
+
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
+            ThroughputProperties.createManualThroughput(throughput));
+        validateContainerResponse(containerProperties, containerResponse);
+        assertThat(containerResponse.getProperties()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDurationInMinutes())
+            .isEqualTo(0);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void createContainer_withDefaultChangeFeedPolicy() throws Exception {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+        int throughput = 1000;
+
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
+            ThroughputProperties.createManualThroughput(throughput));
+        validateContainerResponse(containerProperties, containerResponse);
+        assertThat(containerResponse.getProperties()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDurationInMinutes())
+            .isEqualTo(0);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
@@ -248,6 +296,57 @@ public class CosmosContainerTest extends TestSuiteBase {
             .isEqualTo(IndexingMode.CONSISTENT);
         assertThat(replaceResponse.getProperties().getIndexingPolicy().isAutomatic())
             .isEqualTo(true);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void enableFullFidelityChangeFeedForExistingContainer() throws Exception {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        validateContainerResponse(containerProperties, containerResponse);
+        assertThat(containerResponse.getProperties()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDurationInMinutes())
+            .isEqualTo(0);
+
+        CosmosContainerResponse replaceResponse =
+            createdDatabase.getContainer(containerProperties.getId())
+                           .replace(containerResponse
+                                 .getProperties()
+                                 .setChangeFeedPolicy(
+                                     ChangeFeedPolicy.createFullFidelityPolicy(4)));
+        assertThat(containerResponse.getProperties()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDurationInMinutes())
+            .isEqualTo(4);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void changeFullFidelityChangeFeedRetentionDurationForExistingContainer() throws Exception {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+        containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(3));
+        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
+
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        validateContainerResponse(containerProperties, containerResponse);
+        assertThat(containerResponse.getProperties()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDurationInMinutes())
+            .isEqualTo(3);
+
+        CosmosContainerResponse replaceResponse =
+            createdDatabase.getContainer(containerProperties.getId())
+                           .replace(containerResponse
+                               .getProperties()
+                               .setChangeFeedPolicy(
+                                   ChangeFeedPolicy.createFullFidelityPolicy(6)));
+        assertThat(containerResponse.getProperties()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDurationInMinutes())
+            .isEqualTo(6);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)

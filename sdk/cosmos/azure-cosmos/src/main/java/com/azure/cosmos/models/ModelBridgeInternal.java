@@ -577,6 +577,8 @@ public final class ModelBridgeInternal {
             ((CompositePath) t).populatePropertyBag();
         } else if (t instanceof ConflictResolutionPolicy) {
             ((ConflictResolutionPolicy) t).populatePropertyBag();
+        } else if (t instanceof ChangeFeedPolicy) {
+            ((ChangeFeedPolicy) t).populatePropertyBag();
         } else if (t instanceof ExcludedPath) {
             ((ExcludedPath) t).populatePropertyBag();
         } else if (t instanceof IncludedPath) {
@@ -608,6 +610,8 @@ public final class ModelBridgeInternal {
             return ((CompositePath) t).getJsonSerializable();
         } else if (t instanceof ConflictResolutionPolicy) {
             return ((ConflictResolutionPolicy) t).getJsonSerializable();
+        } else if (t instanceof ChangeFeedPolicy) {
+            return ((ChangeFeedPolicy) t).getJsonSerializable();
         } else if (t instanceof ExcludedPath) {
             return ((ExcludedPath) t).getJsonSerializable();
         } else if (t instanceof IncludedPath) {
