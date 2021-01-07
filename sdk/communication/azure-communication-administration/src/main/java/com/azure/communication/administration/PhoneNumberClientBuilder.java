@@ -176,7 +176,13 @@ public final class PhoneNumberClientBuilder {
      * @return {@link PhoneNumberClient} instance
      */
     public PhoneNumberClient buildClient() {
-        return new PhoneNumberClient(this.buildAsyncClient());
+        this.validateRequiredFields();
+
+        if (this.version != null) {
+            logger.info("Build client for service version" + this.version.getVersion());
+        }
+
+        return new PhoneNumberClient(this.createPhoneNumberAdminClient());
     }
 
     /**

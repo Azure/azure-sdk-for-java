@@ -6,52 +6,94 @@ package com.azure.communication.administration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import java.time.OffsetDateTime;
 
 /** The AcquiredPhoneNumber model. */
 @Fluent
 public final class AcquiredPhoneNumber {
     /*
-     * String of the E.164 format of the phone number
+     * The id, this is the same as the phone number in E.164 format.
+     */
+    @JsonProperty(value = "id", required = true)
+    private String id;
+
+    /*
+     * The phoneNumber in E.164 format.
      */
     @JsonProperty(value = "phoneNumber", required = true)
     private String phoneNumber;
 
     /*
-     * The set of all acquired capabilities of the phone number.
+     * The ISO 3166-2 country code of the country that the phone number belongs
+     * to.
      */
-    @JsonProperty(value = "acquiredCapabilities", required = true)
-    private List<Capability> acquiredCapabilities;
+    @JsonProperty(value = "countryCode", required = true)
+    private String countryCode;
 
     /*
-     * The set of all available capabilities that can be acquired for this
-     * phone number.
+     * The type of the phone number.
      */
-    @JsonProperty(value = "availableCapabilities", required = true)
-    private List<Capability> availableCapabilities;
+    @JsonProperty(value = "phoneNumberType", required = true)
+    private PhoneNumberType phoneNumberType;
 
     /*
-     * The assignment status of the phone number. Conveys what type of entity
-     * the number is assigned to.
+     * The assignment type of the phone number, people or application.
      */
-    @JsonProperty(value = "assignmentStatus")
-    private AssignmentStatus assignmentStatus;
+    @JsonProperty(value = "assignmentType", required = true)
+    private PhoneNumberAssignmentType assignmentType;
 
     /*
-     * The name of the place of the phone number.
+     * The purchase date of the phone number.
      */
-    @JsonProperty(value = "placeName")
-    private String placeName;
+    @JsonProperty(value = "purchaseDate", required = true)
+    private OffsetDateTime purchaseDate;
 
     /*
-     * The activation state of the phone number. Can be "Activated",
-     * "AssignmentPending", "AssignmentFailed", "UpdatePending", "UpdateFailed"
+     * The phone number's capabilities.
      */
-    @JsonProperty(value = "activationState")
-    private ActivationState activationState;
+    @JsonProperty(value = "capabilities", required = true)
+    private PhoneNumberCapabilities capabilities;
+
+    /*
+     * The webhook for receiving incoming events.
+     */
+    @JsonProperty(value = "callbackUri", required = true)
+    private String callbackUri;
+
+    /*
+     * The application id the number has been assigned to.
+     */
+    @JsonProperty(value = "applicationId", required = true)
+    private String applicationId;
+
+    /*
+     * The monthly cost of the phone number.
+     */
+    @JsonProperty(value = "cost", required = true)
+    private PhoneNumberCost cost;
 
     /**
-     * Get the phoneNumber property: String of the E.164 format of the phone number.
+     * Get the id property: The id, this is the same as the phone number in E.164 format.
+     *
+     * @return the id value.
+     */
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: The id, this is the same as the phone number in E.164 format.
+     *
+     * @param id the id value to set.
+     * @return the AcquiredPhoneNumber object itself.
+     */
+    public AcquiredPhoneNumber setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the phoneNumber property: The phoneNumber in E.164 format.
      *
      * @return the phoneNumber value.
      */
@@ -60,7 +102,7 @@ public final class AcquiredPhoneNumber {
     }
 
     /**
-     * Set the phoneNumber property: String of the E.164 format of the phone number.
+     * Set the phoneNumber property: The phoneNumber in E.164 format.
      *
      * @param phoneNumber the phoneNumber value to set.
      * @return the AcquiredPhoneNumber object itself.
@@ -71,108 +113,162 @@ public final class AcquiredPhoneNumber {
     }
 
     /**
-     * Get the acquiredCapabilities property: The set of all acquired capabilities of the phone number.
+     * Get the countryCode property: The ISO 3166-2 country code of the country that the phone number belongs to.
      *
-     * @return the acquiredCapabilities value.
+     * @return the countryCode value.
      */
-    public List<Capability> getAcquiredCapabilities() {
-        return this.acquiredCapabilities;
+    public String getCountryCode() {
+        return this.countryCode;
     }
 
     /**
-     * Set the acquiredCapabilities property: The set of all acquired capabilities of the phone number.
+     * Set the countryCode property: The ISO 3166-2 country code of the country that the phone number belongs to.
      *
-     * @param acquiredCapabilities the acquiredCapabilities value to set.
+     * @param countryCode the countryCode value to set.
      * @return the AcquiredPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setAcquiredCapabilities(List<Capability> acquiredCapabilities) {
-        this.acquiredCapabilities = acquiredCapabilities;
+    public AcquiredPhoneNumber setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
         return this;
     }
 
     /**
-     * Get the availableCapabilities property: The set of all available capabilities that can be acquired for this phone
-     * number.
+     * Get the phoneNumberType property: The type of the phone number.
      *
-     * @return the availableCapabilities value.
+     * @return the phoneNumberType value.
      */
-    public List<Capability> getAvailableCapabilities() {
-        return this.availableCapabilities;
+    public PhoneNumberType getPhoneNumberType() {
+        return this.phoneNumberType;
     }
 
     /**
-     * Set the availableCapabilities property: The set of all available capabilities that can be acquired for this phone
-     * number.
+     * Set the phoneNumberType property: The type of the phone number.
      *
-     * @param availableCapabilities the availableCapabilities value to set.
+     * @param phoneNumberType the phoneNumberType value to set.
      * @return the AcquiredPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setAvailableCapabilities(List<Capability> availableCapabilities) {
-        this.availableCapabilities = availableCapabilities;
+    public AcquiredPhoneNumber setPhoneNumberType(PhoneNumberType phoneNumberType) {
+        this.phoneNumberType = phoneNumberType;
         return this;
     }
 
     /**
-     * Get the assignmentStatus property: The assignment status of the phone number. Conveys what type of entity the
-     * number is assigned to.
+     * Get the assignmentType property: The assignment type of the phone number, people or application.
      *
-     * @return the assignmentStatus value.
+     * @return the assignmentType value.
      */
-    public AssignmentStatus getAssignmentStatus() {
-        return this.assignmentStatus;
+    public PhoneNumberAssignmentType getAssignmentType() {
+        return this.assignmentType;
     }
 
     /**
-     * Set the assignmentStatus property: The assignment status of the phone number. Conveys what type of entity the
-     * number is assigned to.
+     * Set the assignmentType property: The assignment type of the phone number, people or application.
      *
-     * @param assignmentStatus the assignmentStatus value to set.
+     * @param assignmentType the assignmentType value to set.
      * @return the AcquiredPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setAssignmentStatus(AssignmentStatus assignmentStatus) {
-        this.assignmentStatus = assignmentStatus;
+    public AcquiredPhoneNumber setAssignmentType(PhoneNumberAssignmentType assignmentType) {
+        this.assignmentType = assignmentType;
         return this;
     }
 
     /**
-     * Get the placeName property: The name of the place of the phone number.
+     * Get the purchaseDate property: The purchase date of the phone number.
      *
-     * @return the placeName value.
+     * @return the purchaseDate value.
      */
-    public String getPlaceName() {
-        return this.placeName;
+    public OffsetDateTime getPurchaseDate() {
+        return this.purchaseDate;
     }
 
     /**
-     * Set the placeName property: The name of the place of the phone number.
+     * Set the purchaseDate property: The purchase date of the phone number.
      *
-     * @param placeName the placeName value to set.
+     * @param purchaseDate the purchaseDate value to set.
      * @return the AcquiredPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setPlaceName(String placeName) {
-        this.placeName = placeName;
+    public AcquiredPhoneNumber setPurchaseDate(OffsetDateTime purchaseDate) {
+        this.purchaseDate = purchaseDate;
         return this;
     }
 
     /**
-     * Get the activationState property: The activation state of the phone number. Can be "Activated",
-     * "AssignmentPending", "AssignmentFailed", "UpdatePending", "UpdateFailed".
+     * Get the capabilities property: The phone number's capabilities.
      *
-     * @return the activationState value.
+     * @return the capabilities value.
      */
-    public ActivationState getActivationState() {
-        return this.activationState;
+    public PhoneNumberCapabilities getCapabilities() {
+        return this.capabilities;
     }
 
     /**
-     * Set the activationState property: The activation state of the phone number. Can be "Activated",
-     * "AssignmentPending", "AssignmentFailed", "UpdatePending", "UpdateFailed".
+     * Set the capabilities property: The phone number's capabilities.
      *
-     * @param activationState the activationState value to set.
+     * @param capabilities the capabilities value to set.
      * @return the AcquiredPhoneNumber object itself.
      */
-    public AcquiredPhoneNumber setActivationState(ActivationState activationState) {
-        this.activationState = activationState;
+    public AcquiredPhoneNumber setCapabilities(PhoneNumberCapabilities capabilities) {
+        this.capabilities = capabilities;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property: The webhook for receiving incoming events.
+     *
+     * @return the callbackUri value.
+     */
+    public String getCallbackUri() {
+        return this.callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property: The webhook for receiving incoming events.
+     *
+     * @param callbackUri the callbackUri value to set.
+     * @return the AcquiredPhoneNumber object itself.
+     */
+    public AcquiredPhoneNumber setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
+        return this;
+    }
+
+    /**
+     * Get the applicationId property: The application id the number has been assigned to.
+     *
+     * @return the applicationId value.
+     */
+    public String getApplicationId() {
+        return this.applicationId;
+    }
+
+    /**
+     * Set the applicationId property: The application id the number has been assigned to.
+     *
+     * @param applicationId the applicationId value to set.
+     * @return the AcquiredPhoneNumber object itself.
+     */
+    public AcquiredPhoneNumber setApplicationId(String applicationId) {
+        this.applicationId = applicationId;
+        return this;
+    }
+
+    /**
+     * Get the cost property: The monthly cost of the phone number.
+     *
+     * @return the cost value.
+     */
+    public PhoneNumberCost getCost() {
+        return this.cost;
+    }
+
+    /**
+     * Set the cost property: The monthly cost of the phone number.
+     *
+     * @param cost the cost value to set.
+     * @return the AcquiredPhoneNumber object itself.
+     */
+    public AcquiredPhoneNumber setCost(PhoneNumberCost cost) {
+        this.cost = cost;
         return this;
     }
 }

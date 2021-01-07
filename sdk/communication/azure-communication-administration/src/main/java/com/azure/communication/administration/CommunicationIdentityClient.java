@@ -62,7 +62,7 @@ public final class CommunicationIdentityClient {
      * Deletes a CommunicationUser, revokes its tokens and deletes its data.
      *
      * @param communicationUser The user to be deleted.
-     * @param context the context of the request. Can also be null or Context.NONE.
+     * @param context A {@link Context} representing the request context.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
