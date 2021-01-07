@@ -148,7 +148,7 @@
             <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <argLine>
-                --add-opens com.microsoft.opentelemetry.exporter.azuremonitor/com.microsoft.opentelemetry.exporter.azuremonitor=ALL-UNNAMED
+                --add-opens com.azure.opentelemetry.exporter.azuremonitor/com.azure.opentelemetry.exporter.azuremonitor=ALL-UNNAMED
               </argLine>
             </configuration>
           </plugin>
