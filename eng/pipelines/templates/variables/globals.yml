@@ -13,3 +13,4 @@ variables:
   JavaBuildVersion: '1.11'
   # This is the default Java test version. It's the version used when running tests.
   JavaTestVersion: '1.11'
+  JAVA_HOME_11_X64: /usr/lib/jvm/adoptopenjdk-11-hotspot-amd64 # HACK: To work around image issue.
