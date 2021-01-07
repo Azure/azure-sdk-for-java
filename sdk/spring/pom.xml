@@ -187,6 +187,7 @@
         <module>azure-spring-boot-test-aad-resource-server</module>
         <module>azure-spring-boot-test-aad</module>
         <module>azure-spring-boot-test-application</module>
+        <module>azure-spring-boot-test-b2c</module>
         <module>azure-spring-boot-test-core</module>
         <module>azure-spring-boot-test-cosmos</module>
         <module>azure-spring-boot-test-keyvault</module>
