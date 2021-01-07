@@ -74,10 +74,6 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
         return null;
     }
 
-    private void cleanupSecurityContextAuthentication() {
-        SecurityContextHolder.getContext().setAuthentication(null);
-    }
-
     private OAuth2AuthorizationRequest getB2CAuthorizationRequest(@Nullable OAuth2AuthorizationRequest request,
                                                                   String userFlow) {
         Assert.hasText(userFlow, "User flow should contain text.");

@@ -124,7 +124,7 @@ public class AADB2CAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         public ClientRegistrationRepository clientRegistrationRepository() {
-            final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>();
+            final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(1);
             final List<ClientRegistration> otherRegistrations = new ArrayList<>();
 
 
