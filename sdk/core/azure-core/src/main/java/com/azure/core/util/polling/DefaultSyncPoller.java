@@ -58,7 +58,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
                              BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation,
                              Function<PollingContext<T>, Mono<U>> fetchResultOperation) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
-        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
+        if (pollInterval.isNegative() || pollInterval.isZero()) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
@@ -143,7 +143,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     @Override
     public PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor) {
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
-        if (timeout.toNanos() <= 0) {
+        if (timeout.isNegative() || timeout.isZero()) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for timeout is not allowed."));
         }
@@ -209,7 +209,7 @@ final class DefaultSyncPoller<T, U> implements SyncPoller<T, U> {
     @Override
     public SyncPoller<T, U> setPollInterval(Duration pollInterval) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
-        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
+        if (pollInterval.isNegative() || pollInterval.isZero()) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'pollInterval' is not allowed."));
         }

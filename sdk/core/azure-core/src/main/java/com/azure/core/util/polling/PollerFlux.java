@@ -146,7 +146,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                        Function<PollingContext<T>, Mono<U>> fetchResultOperation,
                        boolean ignored) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
-        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
+        if (pollInterval.isNegative() || pollInterval.isZero()) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'pollInterval' is not allowed."));
         }
@@ -190,7 +190,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      */
     public PollerFlux<T, U> setPollInterval(Duration pollInterval) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
-        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
+        if (pollInterval.isNegative() || pollInterval.isZero()) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'pollInterval' is not allowed."));
         }
