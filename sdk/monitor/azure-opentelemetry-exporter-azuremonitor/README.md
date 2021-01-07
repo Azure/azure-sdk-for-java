@@ -62,11 +62,13 @@ System.out.println(resultCode.isSuccess());
 
 ## Key concepts
 
-Some of the key concepts for the Azure monitor exporter include:
+Some of the key concepts for the Azure Monitor exporter include:
 
-* [Opentelemetry][opentelemtry_spec]: Opentelemetry is a set of libraries used to collect and export telemetry data (metrics, logs, and traces) for analysis in order to understand your software's performance and behavior.
+* [Opentelemetry][opentelemtry_spec]: OpenTelemetry is a set of libraries used to collect and export telemetry data
+ (metrics, logs, and traces) for analysis in order to understand your software's performance and behavior.
 
-* [Instrumentation][instrumentation_library]: The ability to call the opentelemetry API directly by any application is facilitated by instrumentaton. A library that enables OpenTelemetry observability for another library is called an Instrumentation Library.
+* [Instrumentation][instrumentation_library]: The ability to call the OpenTelemetry API directly by any application is
+ facilitated by instrumentaton. A library that enables OpenTelemetry observability for another library is called an Instrumentation Library.
 
 * [Trace][trace_concept]: Trace refers to distributed tracing. It can be thought of as a directed acyclic graph (DAG) of Spans, where the edges between Spans are defined as parent/child relationship.
 
@@ -130,8 +132,8 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/monitor
 [opentelemtry_spec]: https://opentelemetry.io/
 [instrumentation_library]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#instrumentation-libraries
-[tracer_provider]: https://opentelemetry-python.readthedocs.io/en/stable/api/trace.html?highlight=TracerProvider#opentelemetry.trace.TracerProvider
-[span_processor]: https://opentelemetry-python.readthedocs.io/en/stable/_modules/opentelemetry/sdk/trace.html?highlight=SpanProcessor#
+[tracer_provider]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/sdk.md#tracer-provider
+[span_processor]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/sdk.md#span-processor
 [sampler_ref]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/sdk.md#sampling
 [trace_concept]: https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/overview.md#trace
 
