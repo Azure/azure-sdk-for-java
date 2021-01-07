@@ -128,7 +128,7 @@ Previously, in `azure-servicebus`, you can create client as shown below.
         String connectionString = "Endpoint=sb://yournamespace.servicebus.windows.net/;SharedAccessKeyName=your-key-name;SharedAccessKey=your-key";
         QueueClient client = new QueueClient(new ConnectionStringBuilder(connectionString, "my-queue"), ReceiveMode.PEEKLOCK);
 ```
-Now in `azure-messaging-servicebus`, you start `ServiceBusClientBuilder` and create all the clients.
+Now in `azure-messaging-servicebus`, you start with `ServiceBusClientBuilder` and create all the clients.
 
 ```java
 // Create a sender client that will authenticate through Active Directory
@@ -400,4 +400,4 @@ ServiceBusReceiverClient receiverClient = sessionClient.acceptSession("my-sessio
 
 ## Additional samples
 
-More examples can be found at [Service Bus samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus)
+More examples can be found at [Service Bus samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus).
