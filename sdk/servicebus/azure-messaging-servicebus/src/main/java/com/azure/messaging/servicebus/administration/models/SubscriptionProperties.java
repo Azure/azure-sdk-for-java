@@ -5,6 +5,8 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.models.EntityAvailabilityStatus;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
@@ -16,7 +18,12 @@ import java.util.Objects;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimitive;
 
-/** The SubscriptionProperties model. */
+/**
+ * Properties on a subscription.
+ *
+ * @see ServiceBusAdministrationAsyncClient#getSubscription(String, String)
+ * @see ServiceBusAdministrationClient#getSubscription(String, String)
+ */
 @Fluent
 public final class SubscriptionProperties {
     private Duration lockDuration;
