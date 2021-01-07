@@ -1,6 +1,7 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.TypeReference;
@@ -11,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 public class EventParser {
     static final JsonSerializer DESERIALIZER = new JacksonJsonSerializerBuilder()
@@ -25,7 +27,7 @@ public class EventParser {
      *
      * @return all of the events in the payload parsed as CloudEvents.
      */
-    public static final List<EventGridEvent> parseEventGridEvent(String json) {
+    public static List<EventGridEvent> parseEventGridEvent(String json) {
         return Flux.fromArray(DESERIALIZER
             .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
                 TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class))
@@ -34,9 +36,7 @@ public class EventParser {
                 if (event.getData() == null) {
                     return new EventGridEvent(event);
                 }
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                DESERIALIZER.serialize(stream, event.getData());
-                return new EventGridEvent(event.setData(stream.toByteArray())); // use BinaryData instead?
+                return new EventGridEvent(event.setData(event.getData())); // use BinaryData instead?
             })
             .collectList()
             .block();
@@ -56,14 +56,35 @@ public class EventParser {
         )
             .map(event1 -> {
                 if (event1.getData() != null) {
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    DESERIALIZER.serialize(stream, event1.getData());
-                    return new CloudEvent(event1).setData(stream.toByteArray()); // use BinaryData instead?
+                    return new CloudEvent(event1).setData(event1.getData()); // use BinaryData instead?
                 } else { // both null, don't set data and keep null
                     return new CloudEvent(event1);
                 }
             })
             .collectList()
             .block();
+    }
+
+    static Object getSystemEventData(BinaryData data, String type) {
+        String eventType = SystemEventMappings.canonicalizeEventType(type);
+        if (SystemEventMappings.getSystemEventMappings().containsKey(eventType)) {
+            // system event
+            return Objects.requireNonNull(data)
+                .toObject(TypeReference.createInstance(SystemEventMappings.getSystemEventMappings().get(eventType)));
+        }
+        return null;
+    }
+
+    static BinaryData getData(Object data) {
+        if (data == null) {
+            return null;
+        }
+        if (data instanceof byte[]) {
+            return BinaryData.fromBytes((byte[]) data);
+        }
+        if (data instanceof String) {
+            return BinaryData.fromString((String) data);
+        }
+        return BinaryData.fromObject(data);
     }
 }

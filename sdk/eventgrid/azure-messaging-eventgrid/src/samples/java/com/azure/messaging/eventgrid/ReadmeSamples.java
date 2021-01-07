@@ -74,7 +74,7 @@ public class ReadmeSamples {
             } else if (data instanceof byte[]) {
                 // we can turn the data into the correct type by calling this method.
                 // since we set the data as a string when sending, we pass the String class in to get it back.
-                String stringData = event.getData(String.class);
+                String stringData = event.getData().toString();
                 System.out.println(stringData); // "Example Data"
             }
         }
@@ -95,7 +95,7 @@ public class ReadmeSamples {
             } else if (data instanceof byte[]) {
                 // we can turn the data into the correct type by calling this method.
                 // since we set the data as a string when sending, we pass the String class in to get it back.
-                String stringData = event.getData(String.class);
+                String stringData = event.getData().toString();
                 System.out.println(stringData); // "Example Data"
             }
         }
@@ -103,8 +103,8 @@ public class ReadmeSamples {
 
     public void createSharedAccessSignature() {
         OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
-        String credentialString = EventGridPublisherClient
-            .buildSas(endpoint, expiration, new AzureKeyCredential(key));
+        String credentialString = EventGridSasCreator
+            .createSas(endpoint, expiration, new AzureKeyCredential(key));
         AzureSasCredential signature = new AzureSasCredential(credentialString);
     }
 

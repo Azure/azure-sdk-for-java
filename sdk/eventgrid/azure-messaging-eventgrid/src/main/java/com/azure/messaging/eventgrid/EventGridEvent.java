@@ -5,6 +5,7 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -20,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -70,20 +72,7 @@ public final class EventGridEvent {
      * @return all of the events in the payload parsed as CloudEvents.
      */
     public static List<EventGridEvent> parse(String json) {
-        return Flux.fromArray(deserializer
-            .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
-                TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class))
-            )
-            .map(event -> {
-                if (event.getData() == null) {
-                    return new EventGridEvent(event);
-                }
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                deserializer.serialize(stream, event.getData());
-                return new EventGridEvent(event.setData(stream.toByteArray())); // use BinaryData instead?
-            })
-            .collectList()
-            .block();
+        return EventParser.parseEventGridEvent(json);
     }
 
 
@@ -136,6 +125,17 @@ public final class EventGridEvent {
         return this.event.getSubject();
     }
 
+    public Object getSystemEventData() {
+        if (!parsed) {
+            // data was set instead of parsed, throw error
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "This method should only be called on events created through the parse method"));
+        }
+        if (event.getData() == null) { // this means normal data is null
+            return null;
+        }
+        return EventParser.getSystemEventData(this.getData(), event.getEventType());
+    }
 
     /**
      * Get the data associated with this event. For use in a parsed event only.
@@ -144,79 +144,13 @@ public final class EventGridEvent {
      * data.
      * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
      */
-    public Object getData() {
+    public BinaryData getData() {
         if (!parsed) {
             // data was set instead of parsed, throw error
             throw logger.logExceptionAsError(new IllegalStateException(
                 "This method should only be called on events created through the parse method"));
         }
-        String eventType = SystemEventMappings.canonicalizeEventType(event.getEventType());
-        if (SystemEventMappings.getSystemEventMappings().containsKey(eventType)) {
-            // system event
-            return deserializer.deserialize(new ByteArrayInputStream((byte[]) this.event.getData()),
-                TypeReference.createInstance(SystemEventMappings.getSystemEventMappings().get(eventType)));
-        }
-        return event.getData();
-    }
-
-    /**
-     * Get the deserialized data property from the parsed event. The behavior is undefined if this method is called
-     * on an event that was not created through the parse method.
-     * @param clazz the class of the type to deserialize the data into.
-     * @param <T>   the type to deserialize the data into.
-     *
-     * @return the data deserialized into the given type using a default deserializer.
-     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
-     */
-    public <T> T getData(Class<T> clazz) {
-        return getDataAsync(clazz, deserializer).block();
-    }
-
-    /**
-     * Get the deserialized data property from the parsed event.
-     * @param clazz the class of the type to deserialize the data into.
-     * @param <T>   the type to deserialize the data into.
-     *
-     * @return the data deserialized into the given type using a default deserializer, delivered asynchronously through
-     * a {@link Mono}.
-     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
-     */
-    public <T> Mono<T> getDataAsync(Class<T> clazz) {
-        return getDataAsync(clazz, deserializer);
-    }
-
-    /**
-     * Get the deserialized data property from the parsed event.
-     * @param clazz            the class of the type to deserialize the data into.
-     * @param dataDeserializer the deserializer to use.
-     * @param <T>              the type to deserialize the data into.
-     *
-     * @return the data deserialized into the given type using the given deserializer.
-     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
-     */
-    public <T> T getData(Class<T> clazz, JsonSerializer dataDeserializer) {
-        return getDataAsync(clazz, dataDeserializer).block();
-    }
-
-    /**
-     * Get the deserialized data property from the parsed event.
-     * @param clazz            the class of the type to deserialize the data into.
-     * @param dataDeserializer the deserializer to use.
-     * @param <T>              the type to deserialize the data into.
-     *
-     * @return the data deserialized into the given type using the given deserializer, delivered asynchronously through
-     * a {@link Mono}.
-     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
-     */
-    public <T> Mono<T> getDataAsync(Class<T> clazz, JsonSerializer dataDeserializer) {
-        if (!parsed) {
-            // data was set instead of parsed, throw exception because we don't know how the data relates to clazz
-            return FluxUtil.monoError(logger, new IllegalStateException(
-                "This method should only be called on events created through the parse method"));
-        }
-
-        return dataDeserializer.deserializeAsync(new ByteArrayInputStream((byte[]) this.event.getData()),
-            TypeReference.createInstance(clazz));
+        return EventParser.getData(event.getData());
     }
 
     /**
