@@ -15,35 +15,36 @@ This repo is for Spring Boot Starters of Azure services. It helps Spring Boot de
 ## Key concepts
 ### Azure Spring Boot
 
-Below starters are available with latest release version. We recommend users to leverage latest version for bug fix and new features.
-You can find them in [Maven Central Repository][maven-central-repository].
-The first three starters are also available in [Spring Initializr][spring-initializr]. 
+Below starters are available with the latest release version. We recommend users to leverage the latest version for bug fix and new features.
+You can find them in [Maven Central Repository][maven-central-repository]. The starters of active directory, storage and keyvault secrets are also available in [Spring Initializr][spring-initializr]. 
+
+From Azure Spring Boot starters 3.0.0 onwards, we modified the group Id from `com.microsoft.azure` to `com.azure.spring`, and modified artifact Ids, too.
+
+Artifact Id | Version for Spring Boot 2.3.x and 2.2.x 
+---|:---:
+[azure-spring-boot-starter-active-directory][aad-starter-readme] | [![Maven Central][new-aad-starter-mvn-2.3.x-img]][new-aad-starter-mvn-2.3.x] | N/A | N/A | N/A
+[azure-spring-boot-starter-storage][storage-starter-readme] | [![Maven Central][new-storage-starter-mvn-2.3.x-img]][new-storage-starter-mvn-2.3.x] | N/A | N/A | N/A
+[azure-spring-boot-starter-keyvault-secrets][keyvault-starter-readme] | [![Maven Central][new-keyvault-starter-mvn-2.3.x-img]][new-keyvault-starter-mvn-2.3.x] | N/A | N/A | N/A
+[azure-spring-boot-starter-keyvault-certificates][keyvault-starter-certificates-readme] | N/A | N/A | N/A | N/A
+[azure-spring-boot-starter-active-directory-b2c][aad-b2c-starter-readme] | [![Maven Central][new-aad-b2c-starter-mvn-2.3.x-img]][new-aad-b2c-starter-mvn-2.3.x] | N/A | N/A | N/A
+[azure-spring-boot-starter-cosmos][cosmos-starter-readme] | [![Maven Central][new-cosmosdb-starter-mvn-2.3.x-img]][new-cosmosdb-starter-mvn-2.3.x] | N/A | N/A | N/A
+[azure-spring-boot-starter-servicebus-jms][jms-starter-readme] | [![Maven Central][new-jms-starter-mvn-2.3.x-img]][new-jms-starter-mvn-2.3.x] | N/A | N/A | N/A
+
+Below packages are Azure Spring Boot starters with original artifact Ids and group Id of `com.microsoft.azure`.
 
 Artifact Id | Version for Spring Boot 2.3.x | Version for Spring Boot 2.2.x | Version for Spring Boot 2.1.x | Version for Spring Boot 2.0.x
 ---|:---:|:---:|:---:|:---:
 azure-active-directory-spring-boot-starter | [![Maven Central][aad-starter-mvn-2.3.x-img]][aad-starter-mvn-2.3.x] | [![Maven Central][aad-starter-mvn-2.2.x-img]][aad-starter-mvn-2.2.x] | [![][aad-starter-mvn-2.1.x-img]][aad-starter-mvn-2.1.x] | [![][aad-starter-mvn-2.0.x-img]][aad-starter-mvn-2.0.x]
-[azure-spring-boot-starter-active-directory][aad-starter-readme] | [![Maven Central][new-aad-starter-mvn-2.3.x-img]][new-aad-starter-mvn-2.3.x] | N/A | N/A | N/A
 azure-storage-spring-boot-starter | [![Maven Central][storage-starter-mvn-2.3.x-img]][storage-starter-mvn-2.3.x] | [![Maven Central][storage-starter-mvn-2.2.x-img]][storage-starter-mvn-2.2.x] | [![][storage-starter-mvn-2.1.x-img]][storage-starter-mvn-2.1.x] | [![][storage-starter-mvn-2.0.x-img]][storage-starter-mvn-2.0.x]
-[azure-spring-boot-starter-storage][storage-starter-readme] | [![Maven Central][new-storage-starter-mvn-2.3.x-img]][new-storage-starter-mvn-2.3.x] | N/A | N/A | N/A
 spring-starter-azure-storage | [![Maven Central][spring-starter-storage-mvn-2.3.x-img]][spring-starter-storage-mvn-2.3.x] | N/A | N/A | N/A
-[azure-spring-starter-storage][spring-starter-storage-readme] | N/A | N/A | N/A | N/A
 azure-keyvault-secrets-spring-boot-starter | [![Maven Central][keyvault-starter-mvn-2.3.x-img]][keyvault-starter-mvn-2.3.x] | [![Maven Central][keyvault-starter-mvn-2.2.x-img]][keyvault-starter-mvn-2.2.x] | [![][keyvault-starter-mvn-2.1.x-img]][keyvault-starter-mvn-2.1.x] | [![][keyvault-starter-mvn-2.0.x-img]][keyvault-starter-mvn-2.0.x]
-[azure-spring-boot-starter-keyvault-secrets][keyvault-starter-readme] | [![Maven Central][new-keyvault-starter-mvn-2.3.x-img]][new-keyvault-starter-mvn-2.3.x] | N/A | N/A | N/A
-[azure-spring-boot-starter-keyvault-certificates][keyvault-starter-certificates-readme] | N/A | N/A | N/A | N/A
 azure-active-directory-b2c-spring-boot-starter | [![Maven Central][aad-b2c-starter-mvn-2.3.x-img]][aad-b2c-starter-mvn-2.3.x] | [![Maven Central][aad-b2c-starter-mvn-2.2.x-img]][aad-b2c-starter-mvn-2.2.x] | [![Maven Central][aad-b2c-starter-mvn-2.1.x-img]][aad-b2c-starter-mvn-2.1.x] | N/A
-[azure-spring-boot-starter-active-directory-b2c][aad-b2c-starter-readme] | [![Maven Central][new-aad-b2c-starter-mvn-2.3.x-img]][new-aad-b2c-starter-mvn-2.3.x] | N/A | N/A | N/A
 azure-cosmosdb-spring-boot-starter | [![Maven Central][cosmosdb-starter-mvn-2.3.x-img]][cosmosdb-starter-mvn-2.3.x] | [![Maven Central][cosmosdb-starter-mvn-2.2.x-img]][cosmosdb-starter-mvn-2.2.x] | [![][cosmosdb-starter-mvn-2.1.x-img]][cosmosdb-starter-mvn-2.1.x] | [![][cosmosdb-starter-mvn-2.0.x-img]][cosmosdb-starter-mvn-2.0.x]
-[azure-spring-boot-starter-cosmos][cosmos-starter-readme] | [![Maven Central][new-cosmosdb-starter-mvn-2.3.x-img]][new-cosmosdb-starter-mvn-2.3.x] | N/A | N/A | N/A
 azure-mediaservices-spring-boot-starter | N/A | [![Maven Central][mediaservices-starter-mvn-2.2.x-img]][mediaservices-starter-mvn-2.2.x] | [![][mediaservices-starter-mvn-2.1.x-img]][mediaservices-starter-mvn-2.1.x] | [![][mediaservices-starter-mvn-2.0.x-img]][mediaservices-starter-mvn-2.0.x]
-[azure-spring-boot-starter-mediaservices][mediaservices-starter-readme] | N/A | N/A | N/A | N/A
 azure-servicebus-spring-boot-starter | N/A | [![Maven Central][servicebus-starter-mvn-2.2.x-img]][servicebus-starter-mvn-2.2.x] | [![][servicebus-starter-mvn-2.1.x-img]][servicebus-starter-mvn-2.1.x] | [![][servicebus-starter-mvn-2.0.x-img]][servicebus-starter-mvn-2.0.x]
-[azure-spring-boot-starter-servicebus][servicebus-starter-readme] | N/A | N/A | N/A | N/A
 spring-data-gremlin-boot-starter | [![Maven Central][gremlin-starter-mvn-2.3.x-img]][gremlin-starter-mvn-2.3.x] | [![Maven Central][gremlin-starter-mvn-2.2.x-img]][gremlin-starter-mvn-2.2.x] | [![][gremlin-starter-mvn-2.1.x-img]][gremlin-starter-mvn-2.1.x] | [![][gremlin-starter-mvn-2.0.x-img]][gremlin-starter-mvn-2.0.x]
-[azure-spring-boot-starter-data-gremlin][gremlin-starter-readme] | N/A | N/A | N/A | N/A
 azure-spring-boot-metrics-starter | [![Maven Central][metrics-starter-mvn-2.3.x-img]][metrics-starter-mvn-2.3.x] | [![Maven Central][metrics-starter-mvn-2.2.x-img]][metrics-starter-mvn-2.2.x] | [![][metrics-starter-mvn-2.1.x-img]][metrics-starter-mvn-2.1.x] | [![][metrics-starter-mvn-2.0.x-img]][metrics-starter-mvn-2.0.x]
-[azure-spring-boot-starter-metrics][metrics-starter-readme] | N/A | N/A | N/A | N/A
 azure-servicebus-jms-spring-boot-starter | [![Maven Central][jms-starter-mvn-2.3.x-img]][jms-starter-mvn-2.3.x] | [![Maven Central][jms-starter-mvn-2.2.x-img]][jms-starter-mvn-2.2.x] | [![Maven Central][jms-starter-mvn-2.1.x-img]][jms-starter-mvn-2.1.x] | N/A
-[azure-spring-boot-starter-servicebus-jms][jms-starter-readme] | [![Maven Central][new-jms-starter-mvn-2.3.x-img]][new-jms-starter-mvn-2.3.x] | N/A | N/A | N/A
 
 ### Azure Spring Cloud
 
@@ -54,40 +55,40 @@ azure-servicebus-jms-spring-boot-starter | [![Maven Central][jms-starter-mvn-2.3
 Below packages are available with latest release version. **We recommend users to leverage latest version for bug fix and new features.**
 
 ##### [Spring Cloud Stream][spring-cloud-stream]
+From Azure Spring Cloud 2.0.0 onwards, we modified the group Id from `com.microsoft.azure` to `com.azure.spring`, and modified artifact Ids, too.
+
+Artifact Id | Version
+------ |---
+[azure-spring-cloud-stream-binder-eventhubs][azure-spring-cloud-stream-binder-eventhubs-readme] | [![Maven Central][azure-spring-cloud-stream-binder-eventhubs-mvn-2.x.x-img]][azure-spring-cloud-stream-binder-eventhubs-2.x.x] 
+[azure-spring-cloud-starter-eventhubs-kafka][azure-spring-cloud-starter-eventhubs-kafka-readme] | [![Maven Central][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.x.x-img]][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.x.x]
+[azure-spring-cloud-starter-eventhubs][azure-spring-cloud-starter-eventhubs-readme] | [![Maven Central][azure-spring-cloud-starter-eventhubs-mvn-2.x.x-img]][azure-spring-cloud-starter-eventhubs-mvn-2.x.x]
+[azure-spring-integration-eventhubs][azure-spring-integration-eventhubs-readme] | [![Maven Central][azure-spring-integration-eventhubs-mvn-2.x.x-img]][azure-spring-integration-eventhubs-mvn-2.x.x]
+[azure-spring-cloud-stream-binder-servicebus-topic][azure-spring-cloud-stream-binder-servicebus-topic-readme] | [![Maven Central][azure-spring-cloud-stream-binder-servicebus-topic-mvn-2.x.x-img]][azure-spring-cloud-stream-binder-servicebus-topic-mvn-2.x.x]
+[azure-spring-cloud-stream-binder-servicebus-queue][azure-spring-cloud-stream-binder-servicebus-queue-readme] | [![Maven Central][azure-spring-cloud-stream-binder-servicebus-queue-mvn-2.x.x-img]][azure-spring-cloud-stream-binder-servicebus-queue-mvn-2.x.x]
+[azure-spring-cloud-starter-servicebus][azure-spring-cloud-starter-servicebus-readme] | [![Maven Central][azure-spring-cloud-starter-servicebus-mvn-2.x.x-img]][azure-spring-cloud-starter-servicebus-mvn-2.x.x]
+[azure-spring-integration-servicebus][azure-spring-integration-servicebus-readme] | [![Maven Central][azure-spring-integration-servicebus-mvn-2.x.x-img]][azure-spring-integration-servicebus-mvn-2.x.x]
+[azure-spring-cloud-starter-storage-queue][azure-spring-cloud-starter-storage-queue-readme] | [![Maven Central][azure-spring-cloud-starter-storage-queue-mvn-2.x.x-img]][azure-spring-cloud-starter-storage-queue-mvn-2.x.x]
+[azure-spring-integration-storage-queue][azure-spring-integration-storage-queue-readme] | [![Maven Central][azure-spring-integration-servicebus-mvn-2.x.x-img]][azure-spring-integration-servicebus-mvn-2.x.x]
+[azure-spring-cloud-starter-cache][azure-spring-cloud-starter-cache-readme] | [![Maven Central][azure-spring-cloud-starter-cache-mvn-2.x.x-img]][azure-spring-cloud-starter-cache-mvn-2.x.x] 
+
+Below packages are Azure Spring Cloud packages with original artifact Ids and group Id of `com.microsoft.azure`.
 
 Artifact Id | Version
 ------ |---
 spring-cloud-azure-eventhubs-stream-binder  | [![Maven Central][spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x]
-[azure-spring-cloud-stream-binder-eventhubs][azure-spring-cloud-stream-binder-eventhubs-readme] | [![Maven Central][azure-spring-cloud-stream-binder-eventhubs-mvn-2.x.x-img]][azure-spring-cloud-stream-binder-eventhubs-2.x.x] 
 spring-cloud-starter-azure-eventhubs-kafka | [![Maven Central][spring-cloud-starter-azure-eventhubs-kafka-mvn-1.2.x-img]][spring-cloud-starter-azure-eventhubs-kafka-mvn-1.2.x]
-[azure-spring-cloud-starter-eventhubs-kafka][azure-spring-cloud-starter-eventhubs-kafka-readme] | [![Maven Central][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.x.x-img]][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.x.x]
-spring-cloud-azure-servicebus-topic-stream-binder | [![Maven Central][spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x]
-[azure-spring-cloud-stream-binder-servicebus-topic][azure-spring-cloud-stream-binder-servicebus-topic-readme] | [![Maven Central][azure-spring-cloud-stream-binder-servicebus-topic-mvn-2.x.x-img]][azure-spring-cloud-stream-binder-servicebus-topic-mvn-2.x.x]
-spring-cloud-azure-servicebus-queue-stream-binder | [![Maven Central][spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x]
-[azure-spring-cloud-stream-binder-servicebus-queue][azure-spring-cloud-stream-binder-servicebus-queue-readme] | [![Maven Central][azure-spring-cloud-stream-binder-servicebus-queue-mvn-2.x.x-img]][azure-spring-cloud-stream-binder-servicebus-queue-mvn-2.x.x]
 spring-cloud-starter-azure-eventhubs | [![Maven Central][spring-cloud-starter-azure-eventhubs-mvn-1.2.x-img]][spring-cloud-starter-azure-eventhubs-mvn-1.2.x]
-[azure-spring-cloud-starter-eventhubs][azure-spring-cloud-starter-eventhubs-readme] | [![Maven Central][azure-spring-cloud-starter-eventhubs-mvn-2.x.x-img]][azure-spring-cloud-starter-eventhubs-mvn-2.x.x]
-[azure-spring-integration-eventhubs][azure-spring-integration-eventhubs-readme] | [![Maven Central][azure-spring-integration-eventhubs-mvn-2.x.x-img]][azure-spring-integration-eventhubs-mvn-2.x.x]
+spring-cloud-azure-servicebus-topic-stream-binder | [![Maven Central][spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x]
+spring-cloud-azure-servicebus-queue-stream-binder | [![Maven Central][spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x]
 spring-cloud-starter-azure-servicebus | [![Maven Central][spring-cloud-starter-azure-servicebus-mvn-1.2.x-img]][spring-cloud-starter-azure-servicebus-mvn-1.2.x]
-[azure-spring-cloud-starter-servicebus][azure-spring-cloud-starter-servicebus-readme] | [![Maven Central][azure-spring-cloud-starter-servicebus-mvn-2.x.x-img]][azure-spring-cloud-starter-servicebus-mvn-2.x.x]
-[azure-spring-integration-servicebus][azure-spring-integration-servicebus-readme] | [![Maven Central][azure-spring-integration-servicebus-mvn-2.x.x-img]][azure-spring-integration-servicebus-mvn-2.x.x]
 spring-cloud-starter-azure-storage-queue | [![Maven Central][spring-cloud-starter-azure-storage-queue-mvn-1.2.x-img]][spring-cloud-starter-azure-storage-queue-mvn-1.2.x]
-[azure-spring-cloud-starter-storage-queue][azure-spring-cloud-starter-storage-queue-readme] | [![Maven Central][azure-spring-cloud-starter-storage-queue-mvn-2.x.x-img]][azure-spring-cloud-starter-storage-queue-mvn-2.x.x]
-[azure-spring-integration-storage-queue][azure-spring-integration-storage-queue-readme] | [![Maven Central][azure-spring-integration-servicebus-mvn-2.x.x-img]][azure-spring-integration-servicebus-mvn-2.x.x]
 spring-starter-azure-storage | [![Maven Central][azure-spring-starter-storage-mvn-1.2.x-img]][azure-spring-starter-storage-mvn-1.2.x]
-[azure-spring-starter-storage][azure-spring-starter-storage-readme] | N/A
 spring-starter-azure-cache | [![Maven Central][azure-spring-cloud-starter-cache-mvn-1.2.x-img]][azure-spring-cloud-starter-cache-mvn-1.2.x]
-[azure-spring-cloud-starter-cache][azure-spring-cloud-starter-cache-readme] | [![Maven Central][azure-spring-cloud-starter-cache-mvn-2.x.x-img]][azure-spring-cloud-starter-cache-mvn-2.x.x] 
 spring-cloud-azure-appconfiguration-config | [![Maven Central][azure-spring-cloud-appconfiguration-config-mvn-1.2.x-img]][azure-spring-cloud-appconfiguration-config-mvn-1.2.x] 
-[azure-spring-cloud-appconfiguration-config][azure-spring-cloud-appconfiguration-config-readme] | N/A 
 spring-cloud-azure-appconfiguration-config-web | [![Maven Central][spring-cloud-azure-appconfiguration-config-web-mvn-1.2.x-img]][spring-cloud-azure-appconfiguration-config-web-mvn-1.2.x] 
-[azure-spring-cloud-appconfiguration-config-web][spring-cloud-azure-appconfiguration-config-web-readme] | N/A 
 spring-cloud-starter-azure-appconfiguration-config | [![Maven Central][spring-cloud-starter-azure-appconfiguration-config-mvn-1.2.x-img]][spring-cloud-starter-azure-appconfiguration-config-mvn-1.2.x]
-[azure-spring-cloud-starter-appconfiguration-config][spring-cloud-starter-azure-appconfiguration-config-readme] | N/A 
 spring-cloud-azure-feature-management | [![Maven Central][azure-spring-cloud-feature-management-mvn-1.2.x-img]][azure-spring-cloud-feature-management-mvn-1.2.x]
-[azure-spring-cloud-feature-management][azure-spring-cloud-feature-management-readme] | N/A 
 spring-cloud-azure-feature-management-web | [![Maven Central][azure-spring-cloud-feature-management-web-mvn-1.2.x-img]][azure-spring-cloud-feature-management-web-mvn-1.2.x]
-[azure-spring-cloud-feature-management-web][azure-spring-cloud-feature-management-web-readme] | N/A 
 
 ### Snapshots  
 [![Nexus OSS][nexus-azure-spring-boot-mvn-img]][nexus-azure-spring-boot-mvn]
@@ -162,7 +163,7 @@ This project collects usage data and sends it to Microsoft to help improve our p
 
 [aad-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory
 [aad-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter.svg
-[aad-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-active-directory-spring-boot-starter%22
+[aad-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-active-directory-spring-boot-starter%22AND%20v:2.3.*
 [aad-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter/2.2.svg
 [aad-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-spring-boot-starter%20AND%20v:2.2.*
 [aad-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter/2.1.svg
@@ -184,7 +185,6 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [new-storage-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-boot-starter-storage.svg
 [new-storage-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.azure.spring%22%20AND%20a%3A%22azure-spring-boot-starter-storage%22
 
-[spring-starter-storage-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-starter-storage
 [spring-starter-storage-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-starter-azure-storage.svg
 [spring-starter-storage-mvn-2.3.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20%20a:spring-starter-azure-storage
 
