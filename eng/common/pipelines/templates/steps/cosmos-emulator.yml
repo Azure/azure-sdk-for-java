@@ -11,7 +11,7 @@ steps:
     displayName: Download and Extract Public Cosmos DB Emulator
   - powershell: |
       Write-Host "Deleting Cosmos DB Emulator data"
-      Remove-Item -Recurse -Force $Env:LOCALAPPDATA\CosmosDbEmulator
+      if (Test-Path $Env:LOCALAPPDATA\CosmosDbEmulator) { Remove-Item -Recurse -Force $Env:LOCALAPPDATA\CosmosDbEmulator }
       displayName: Deleting Cosmos DB Emulator data
   - powershell: |
       Write-Host "Launching Cosmos DB Emulator"
