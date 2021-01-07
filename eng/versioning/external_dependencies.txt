@@ -176,7 +176,7 @@ org.apache.maven:maven-embedder;3.6.2
 org.apache.maven.wagon:wagon-http;3.3.4
 org.apache.maven.wagon:wagon-provider-api;3.3.4
 org.assertj:assertj-core;3.16.1
-org.bouncycastle:bcprov-jdk15on;1.66
+org.bouncycastle:bcprov-jdk15on;1.68
 org.eclipse.aether:aether-connector-basic;1.1.0
 org.eclipse.aether:aether-transport-wagon;1.1.0
 org.eclipse.jetty:jetty-http;9.4.33.v20201020

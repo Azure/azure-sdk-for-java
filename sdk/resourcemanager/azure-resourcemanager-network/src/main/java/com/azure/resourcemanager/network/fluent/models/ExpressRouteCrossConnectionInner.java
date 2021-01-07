@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** ExpressRouteCrossConnection resource. */
 @JsonFlatten
@@ -48,13 +49,13 @@ public class ExpressRouteCrossConnectionInner extends Resource {
     /*
      * The peering location of the ExpressRoute circuit.
      */
-    @JsonProperty(value = "properties.peeringLocation")
+    @JsonProperty(value = "properties.peeringLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String peeringLocation;
 
     /*
      * The circuit bandwidth In Mbps.
      */
-    @JsonProperty(value = "properties.bandwidthInMbps")
+    @JsonProperty(value = "properties.bandwidthInMbps", access = JsonProperty.Access.WRITE_ONLY)
     private Integer bandwidthInMbps;
 
     /*
@@ -140,34 +141,12 @@ public class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Set the peeringLocation property: The peering location of the ExpressRoute circuit.
-     *
-     * @param peeringLocation the peeringLocation value to set.
-     * @return the ExpressRouteCrossConnectionInner object itself.
-     */
-    public ExpressRouteCrossConnectionInner withPeeringLocation(String peeringLocation) {
-        this.peeringLocation = peeringLocation;
-        return this;
-    }
-
-    /**
      * Get the bandwidthInMbps property: The circuit bandwidth In Mbps.
      *
      * @return the bandwidthInMbps value.
      */
     public Integer bandwidthInMbps() {
         return this.bandwidthInMbps;
-    }
-
-    /**
-     * Set the bandwidthInMbps property: The circuit bandwidth In Mbps.
-     *
-     * @param bandwidthInMbps the bandwidthInMbps value to set.
-     * @return the ExpressRouteCrossConnectionInner object itself.
-     */
-    public ExpressRouteCrossConnectionInner withBandwidthInMbps(Integer bandwidthInMbps) {
-        this.bandwidthInMbps = bandwidthInMbps;
-        return this;
     }
 
     /**
@@ -279,6 +258,20 @@ public class ExpressRouteCrossConnectionInner extends Resource {
      */
     public ExpressRouteCrossConnectionInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteCrossConnectionInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteCrossConnectionInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

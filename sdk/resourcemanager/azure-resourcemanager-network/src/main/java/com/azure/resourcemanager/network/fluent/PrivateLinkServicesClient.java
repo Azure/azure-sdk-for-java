@@ -772,6 +772,18 @@ public interface PrivateLinkServicesClient
      * Checks whether the subscription is visible to private link service.
      *
      * @param location The location of the domain name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(String location);
+
+    /**
+     * Checks whether the subscription is visible to private link service.
+     *
+     * @param location The location of the domain name.
      * @param privateLinkServiceAlias The alias of the private link service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -782,18 +794,6 @@ public interface PrivateLinkServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(
         String location, String privateLinkServiceAlias, Context context);
-
-    /**
-     * Checks whether the subscription is visible to private link service.
-     *
-     * @param location The location of the domain name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibility(String location);
 
     /**
      * Checks whether the subscription is visible to private link service in the specified resource group.
@@ -908,6 +908,20 @@ public interface PrivateLinkServicesClient
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for the CheckPrivateLinkServiceVisibility API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(
+        String location, String resourceGroupName);
+
+    /**
+     * Checks whether the subscription is visible to private link service in the specified resource group.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
      * @param privateLinkServiceAlias The alias of the private link service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -918,20 +932,6 @@ public interface PrivateLinkServicesClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(
         String location, String resourceGroupName, String privateLinkServiceAlias, Context context);
-
-    /**
-     * Checks whether the subscription is visible to private link service in the specified resource group.
-     *
-     * @param location The location of the domain name.
-     * @param resourceGroupName The name of the resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the CheckPrivateLinkServiceVisibility API service call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkServiceVisibilityInner checkPrivateLinkServiceVisibilityByResourceGroup(
-        String location, String resourceGroupName);
 
     /**
      * Returns all of the private link service ids that can be linked to a Private Endpoint with auto approved in this

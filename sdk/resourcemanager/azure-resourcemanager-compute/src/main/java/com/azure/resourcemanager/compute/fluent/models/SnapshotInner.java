@@ -9,14 +9,17 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CreationData;
+import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
+import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.SnapshotSku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** Snapshot resource. */
 @JsonFlatten
@@ -38,7 +41,7 @@ public class SnapshotInner extends Resource {
     private SnapshotSku sku;
 
     /*
-     * The time when the disk was created.
+     * The time when the snapshot was created.
      */
     @JsonProperty(value = "properties.timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
@@ -80,6 +83,12 @@ public class SnapshotInner extends Resource {
     private Long diskSizeBytes;
 
     /*
+     * The state of the snapshot.
+     */
+    @JsonProperty(value = "properties.diskState", access = JsonProperty.Access.WRITE_ONLY)
+    private DiskState diskState;
+
+    /*
      * Unique Guid identifying the resource.
      */
     @JsonProperty(value = "properties.uniqueId", access = JsonProperty.Access.WRITE_ONLY)
@@ -112,6 +121,18 @@ public class SnapshotInner extends Resource {
     @JsonProperty(value = "properties.encryption")
     private Encryption encryption;
 
+    /*
+     * Policy for accessing the disk via network.
+     */
+    @JsonProperty(value = "properties.networkAccessPolicy")
+    private NetworkAccessPolicy networkAccessPolicy;
+
+    /*
+     * ARM id of the DiskAccess resource for using private endpoints on disks.
+     */
+    @JsonProperty(value = "properties.diskAccessId")
+    private String diskAccessId;
+
     /**
      * Get the managedBy property: Unused. Always Null.
      *
@@ -142,7 +163,7 @@ public class SnapshotInner extends Resource {
     }
 
     /**
-     * Get the timeCreated property: The time when the disk was created.
+     * Get the timeCreated property: The time when the snapshot was created.
      *
      * @return the timeCreated value.
      */
@@ -248,6 +269,15 @@ public class SnapshotInner extends Resource {
     }
 
     /**
+     * Get the diskState property: The state of the snapshot.
+     *
+     * @return the diskState value.
+     */
+    public DiskState diskState() {
+        return this.diskState;
+    }
+
+    /**
      * Get the uniqueId property: Unique Guid identifying the resource.
      *
      * @return the uniqueId value.
@@ -328,6 +358,60 @@ public class SnapshotInner extends Resource {
      */
     public SnapshotInner withEncryption(Encryption encryption) {
         this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the networkAccessPolicy property: Policy for accessing the disk via network.
+     *
+     * @return the networkAccessPolicy value.
+     */
+    public NetworkAccessPolicy networkAccessPolicy() {
+        return this.networkAccessPolicy;
+    }
+
+    /**
+     * Set the networkAccessPolicy property: Policy for accessing the disk via network.
+     *
+     * @param networkAccessPolicy the networkAccessPolicy value to set.
+     * @return the SnapshotInner object itself.
+     */
+    public SnapshotInner withNetworkAccessPolicy(NetworkAccessPolicy networkAccessPolicy) {
+        this.networkAccessPolicy = networkAccessPolicy;
+        return this;
+    }
+
+    /**
+     * Get the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
+     *
+     * @return the diskAccessId value.
+     */
+    public String diskAccessId() {
+        return this.diskAccessId;
+    }
+
+    /**
+     * Set the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
+     *
+     * @param diskAccessId the diskAccessId value to set.
+     * @return the SnapshotInner object itself.
+     */
+    public SnapshotInner withDiskAccessId(String diskAccessId) {
+        this.diskAccessId = diskAccessId;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnapshotInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnapshotInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
