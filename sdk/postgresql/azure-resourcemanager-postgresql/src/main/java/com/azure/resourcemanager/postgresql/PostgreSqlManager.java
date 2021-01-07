@@ -233,7 +233,7 @@ public final class PostgreSqlManager {
                     new UserAgentPolicy(
                         null,
                         "com.azure.resourcemanager.postgresql",
-                        "1.0.0-beta.1",
+                        "1.0.0-beta.2",
                         Configuration.getGlobalConfiguration()));
             policies.add(new RequestIdPolicy());
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
