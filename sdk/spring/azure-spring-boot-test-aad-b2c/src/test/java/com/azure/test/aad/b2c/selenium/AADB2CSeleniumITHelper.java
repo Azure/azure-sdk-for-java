@@ -78,6 +78,7 @@ public class AADB2CSeleniumITHelper {
 
         this.app.start();
         Thread.sleep(5000);
+        signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
     }
 
     public void signIn(String userFlowName) throws InterruptedException {
@@ -102,7 +103,7 @@ public class AADB2CSeleniumITHelper {
         manualRedirection();
     }
 
-    public void logout() throws InterruptedException {
+    public String logoutAndGetSignInButtonText() throws InterruptedException {
         Thread.sleep(5000);
         driver.findElement(By.id("logout")).click();
         Thread.sleep(5000);
@@ -113,6 +114,7 @@ public class AADB2CSeleniumITHelper {
             By.cssSelector(
                 "a[href='/oauth2/authorization/" + AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN + "']")).click();
         Thread.sleep(5000);
+        return driver.findElement(By.cssSelector("button[type='submit']")).getText();
     }
 
     private void manualRedirection() throws InterruptedException {
@@ -147,10 +149,6 @@ public class AADB2CSeleniumITHelper {
             .findElement(By.xpath("tr[last()]"))
             .findElement(By.xpath("th[2]"))
             .getText();
-    }
-
-    public String getSignInButtonText() {
-        return driver.findElement(By.cssSelector("button[type='submit']")).getText();
     }
 
 }
