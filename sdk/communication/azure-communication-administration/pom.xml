@@ -20,8 +20,8 @@
 
   <name>Microsoft Azure client administration library for communication</name>
   <description>
-    This package contains APIs for application administration in Microsoft Azure Communication Services. 
-    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-administration/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-administration/CHANGELOG.md. 
+    This package contains APIs for application administration in Microsoft Azure Communication Services.
+    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-administration/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-administration/CHANGELOG.md.
     Microsoft Azure Communication Administration quickstart - https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java
   </description>
   <licenses>
@@ -115,7 +115,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->    
+      <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
