@@ -8,6 +8,8 @@ public class EnvironmentVariables {
     public static final String AAD_TENANT_ID_1 = System.getenv("AAD_TENANT_ID_1");
     public static final String AAD_USER_NAME_1 = System.getenv("AAD_USER_NAME_1");
     public static final String AAD_USER_PASSWORD_1 = System.getenv("AAD_USER_PASSWORD_1");
+    public static final String AAD_USER_NAME_2 = System.getenv("AAD_USER_NAME_2");
+    public static final String AAD_USER_PASSWORD_2 = System.getenv("AAD_USER_PASSWORD_2");
     public static final String AAD_SINGLE_TENANT_CLIENT_ID = System.getenv("AAD_SINGLE_TENANT_CLIENT_ID");
     public static final String AAD_SINGLE_TENANT_CLIENT_SECRET = System.getenv("AAD_SINGLE_TENANT_CLIENT_SECRET");
     public static final String AAD_MULTI_TENANT_CLIENT_ID = System.getenv("AAD_MULTI_TENANT_CLIENT_ID");
