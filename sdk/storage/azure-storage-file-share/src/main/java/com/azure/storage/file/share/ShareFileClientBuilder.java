@@ -95,7 +95,7 @@ public class ShareFileClientBuilder {
     private String resourcePath;
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
-    private AzureSasCredential sasTokenCredential;
+    private AzureSasCredential azureSasCredential;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -127,8 +127,8 @@ public class ShareFileClientBuilder {
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {
                 return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
-            } else if (sasTokenCredential != null) {
-                return new AzureSasCredentialPolicy(sasTokenCredential, false);
+            } else if (azureSasCredential != null) {
+                return new AzureSasCredentialPolicy(azureSasCredential, false);
             } else {
                 throw logger.logExceptionAsError(
                     new IllegalArgumentException("Credentials are required for authorization"));
@@ -319,7 +319,7 @@ public class ShareFileClientBuilder {
      */
     public ShareFileClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.sasTokenCredential = null;
+        this.azureSasCredential = null;
         return this;
     }
 
@@ -343,7 +343,7 @@ public class ShareFileClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public ShareFileClientBuilder sasToken(AzureSasCredential credential) {
-        this.sasTokenCredential = Objects.requireNonNull(credential,
+        this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
         return this;

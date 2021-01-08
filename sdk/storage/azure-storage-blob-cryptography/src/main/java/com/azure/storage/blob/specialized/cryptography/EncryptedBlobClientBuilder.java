@@ -97,7 +97,7 @@ public final class EncryptedBlobClientBuilder {
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
-    private AzureSasCredential sasTokenCredential;
+    private AzureSasCredential azureSasCredential;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -222,8 +222,8 @@ public final class EncryptedBlobClientBuilder {
         } else if (tokenCredential != null) {
             BuilderHelper.httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE));
-        } else if (sasTokenCredential != null) {
-            policies.add(new AzureSasCredentialPolicy(sasTokenCredential, false));
+        } else if (azureSasCredential != null) {
+            policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
         }
 
         policies.addAll(perRetryPolicies);
@@ -292,7 +292,7 @@ public final class EncryptedBlobClientBuilder {
     public EncryptedBlobClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.azureSasCredential = null;
         return this;
     }
 
@@ -306,7 +306,7 @@ public final class EncryptedBlobClientBuilder {
     public EncryptedBlobClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
-        this.sasTokenCredential = null;
+        this.azureSasCredential = null;
         return this;
     }
 
@@ -330,7 +330,7 @@ public final class EncryptedBlobClientBuilder {
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     public EncryptedBlobClientBuilder sasToken(AzureSasCredential credential) {
-        this.sasTokenCredential = Objects.requireNonNull(credential,
+        this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
@@ -347,7 +347,7 @@ public final class EncryptedBlobClientBuilder {
     public EncryptedBlobClientBuilder setAnonymousAccess() {
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.azureSasCredential = null;
         return this;
     }
 

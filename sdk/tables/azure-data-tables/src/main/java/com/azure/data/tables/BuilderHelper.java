@@ -40,7 +40,7 @@ final class BuilderHelper {
     private static final String SDK_VERSION = "version";
 
     static HttpPipeline buildPipeline(TablesSharedKeyCredential tablesSharedKeyCredential,
-                                      TokenCredential tokenCredential, AzureSasCredential sasTokenCredential,
+                                      TokenCredential tokenCredential, AzureSasCredential azureSasCredential,
                                       String endpoint, RequestRetryOptions retryOptions, HttpLogOptions logOptions,
                                       HttpClient httpClient, List<HttpPipelinePolicy> additionalPolicies,
                                       Configuration configuration, ClientLogger logger) {
@@ -69,8 +69,8 @@ final class BuilderHelper {
                     "HTTPS is required when using a %s credential.", tokenCredential.getClass().getName())));
             }
             credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, getBearerTokenScope(endpointParts));
-        } else if (sasTokenCredential != null) {
-            credentialPolicy = new AzureSasCredentialPolicy(sasTokenCredential, false);
+        } else if (azureSasCredential != null) {
+            credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
         } else {
             credentialPolicy = null;
         }

@@ -54,7 +54,7 @@ public final class BuilderHelper {
      *
      * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
      * @param tokenCredential {@link TokenCredential} if present.
-     * @param sasTokenCredential {@link AzureSasCredential} if present.
+     * @param azureSasCredential {@link AzureSasCredential} if present.
      * @param endpoint The endpoint for the client.
      * @param retryOptions Retry options to set in the retry policy.
      * @param logOptions Logging options to set in the logging policy.
@@ -68,7 +68,7 @@ public final class BuilderHelper {
      */
     public static HttpPipeline buildPipeline(
         StorageSharedKeyCredential storageSharedKeyCredential,
-        TokenCredential tokenCredential, AzureSasCredential sasTokenCredential, String endpoint,
+        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String endpoint,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
         Configuration configuration, ClientLogger logger) {
@@ -100,8 +100,8 @@ public final class BuilderHelper {
         } else if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE);
-        } else if (sasTokenCredential != null) {
-            credentialPolicy =  new AzureSasCredentialPolicy(sasTokenCredential, false);
+        } else if (azureSasCredential != null) {
+            credentialPolicy =  new AzureSasCredentialPolicy(azureSasCredential, false);
         } else {
             credentialPolicy =  null;
         }
