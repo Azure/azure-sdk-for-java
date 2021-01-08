@@ -8,14 +8,14 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 /** Exception thrown for an invalid response with StorageError information. */
-public final class StorageErrorException extends HttpResponseException {
+public final class QueueStorageException extends HttpResponseException {
     /**
      * Initializes a new instance of the StorageErrorException class.
      *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
-    public StorageErrorException(String message, HttpResponse response) {
+    public QueueStorageException(String message, HttpResponse response) {
         super(message, response);
     }
 
@@ -26,7 +26,7 @@ public final class StorageErrorException extends HttpResponseException {
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public StorageErrorException(String message, HttpResponse response, StorageError value) {
+    public QueueStorageException(String message, HttpResponse response, StorageError value) {
         super(message, response, value);
     }
 

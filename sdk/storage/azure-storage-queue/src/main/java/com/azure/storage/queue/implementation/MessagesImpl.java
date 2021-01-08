@@ -25,7 +25,7 @@ import com.azure.storage.queue.implementation.models.MessagesDequeueResponse;
 import com.azure.storage.queue.implementation.models.MessagesEnqueueResponse;
 import com.azure.storage.queue.implementation.models.MessagesPeekResponse;
 import com.azure.storage.queue.implementation.models.QueueMessage;
-import com.azure.storage.queue.implementation.models.StorageErrorException;
+import com.azure.storage.queue.implementation.models.QueueStorageException;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Messages. */
@@ -55,7 +55,7 @@ public final class MessagesImpl {
     private interface MessagesService {
         @Get("/{queueName}/messages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<MessagesDequeueResponse> dequeue(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
@@ -68,7 +68,7 @@ public final class MessagesImpl {
 
         @Delete("/{queueName}/messages")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<MessagesClearResponse> clear(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
@@ -79,7 +79,7 @@ public final class MessagesImpl {
 
         @Post("/{queueName}/messages")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<MessagesEnqueueResponse> enqueue(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
@@ -93,7 +93,7 @@ public final class MessagesImpl {
 
         @Get("/{queueName}/messages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<MessagesPeekResponse> peek(
                 @HostParam("url") String url,
                 @QueryParam("peekonly") String peekonly,
@@ -123,7 +123,7 @@ public final class MessagesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Get Messages on a Queue.
      */
@@ -157,7 +157,7 @@ public final class MessagesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -191,7 +191,7 @@ public final class MessagesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Put Message on a Queue.
      */
@@ -231,7 +231,7 @@ public final class MessagesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling Peek Messages on a Queue.
      */

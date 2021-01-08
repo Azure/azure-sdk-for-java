@@ -23,17 +23,16 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.storage.queue.implementation.models.QueueStorageException;
 import com.azure.storage.queue.implementation.models.ServicesGetPropertiesResponse;
 import com.azure.storage.queue.implementation.models.ServicesGetStatisticsResponse;
 import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentNextResponse;
 import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentResponse;
 import com.azure.storage.queue.implementation.models.ServicesSetPropertiesResponse;
-import com.azure.storage.queue.implementation.models.StorageErrorException;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Services. */
 public final class ServicesImpl {
@@ -62,7 +61,7 @@ public final class ServicesImpl {
     private interface ServicesService {
         @Put("/")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<ServicesSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -75,7 +74,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -87,7 +86,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<ServicesGetStatisticsResponse> getStatistics(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
@@ -99,7 +98,7 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<ServicesListQueuesSegmentResponse> listQueuesSegment(
                 @HostParam("url") String url,
                 @QueryParam("comp") String comp,
@@ -114,7 +113,7 @@ public final class ServicesImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
+        @UnexpectedResponseExceptionType(QueueStorageException.class)
         Mono<ServicesListQueuesSegmentNextResponse> listQueuesSegmentNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url,
@@ -135,7 +134,7 @@ public final class ServicesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -159,7 +158,7 @@ public final class ServicesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's Queue service, including properties for Storage Analytics and CORS
      *     (Cross-Origin Resource Sharing) rules.
@@ -184,7 +183,7 @@ public final class ServicesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return statistics for the storage service.
      */
@@ -220,7 +219,7 @@ public final class ServicesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling List Queues on a Queue Service.
      */
@@ -266,7 +265,7 @@ public final class ServicesImpl {
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws StorageErrorException thrown if the request is rejected by server.
+     * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the object returned when calling List Queues on a Queue Service.
      */
