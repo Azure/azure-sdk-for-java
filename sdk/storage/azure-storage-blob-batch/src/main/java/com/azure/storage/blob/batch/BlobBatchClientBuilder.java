@@ -51,8 +51,9 @@ public final class BlobBatchClientBuilder {
     }
 
     /**
-     * Constructs the {@link BlobBatchClientBuilder} using the {@link BlobContainerClient#getBlobContainerUrl()} () container URL} and
-     * {@link BlobContainerClient#getHttpPipeline() HttpPipeline} properties of the passed {@link BlobContainerClient}.
+     * Constructs the {@link BlobBatchClientBuilder} using the {@link BlobContainerClient#getBlobContainerUrl()
+     * container URL} and {@link BlobContainerClient#getHttpPipeline() HttpPipeline} properties of the passed
+     * {@link BlobContainerClient}.
      *
      * @param client {@link BlobContainerClient} whose properties are used to configure the builder.
      */
@@ -64,9 +65,9 @@ public final class BlobBatchClientBuilder {
     }
 
     /**
-     * Constructs the {@link BlobBatchClientBuilder} using the {@link BlobContainerAsyncClient#getBlobContainerUrl()} () container
-     * URL} and {@link BlobContainerAsyncClient#getHttpPipeline() HttpPipeline} properties of the passed {@link
-     * BlobContainerAsyncClient}.
+     * Constructs the {@link BlobBatchClientBuilder} using the {@link BlobContainerAsyncClient#getBlobContainerUrl()
+     * container URL} and {@link BlobContainerAsyncClient#getHttpPipeline() HttpPipeline} properties of the
+     * passed {@link BlobContainerAsyncClient}.
      *
      * @param client {@link BlobContainerAsyncClient} whose properties are used to configure the builder.
      */
