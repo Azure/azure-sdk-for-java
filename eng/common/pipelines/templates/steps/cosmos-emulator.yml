@@ -5,9 +5,13 @@ parameters:
 steps:
   - powershell: |
       $targetDir = $env:temp
+      $logFile=$targetDir + "\" + [guid]::NewGuid().ToString("N") + ".log"
       Write-Host "Downloading and extracting Cosmos DB Emulator - ${{ parameters.EmulatorMsiUrl }}"
       Write-Host "Target Dir: $targetDir"
-      msiexec /a ${{ parameters.EmulatorMsiUrl }} TARGETDIR=$targetDir /qn | wait-process
+      msiexec /a ${{ parameters.EmulatorMsiUrl }} TARGETDIR=$targetDir /qn /l* $logFile | wait-process
+      Write-Host "Log File: $logFile"
+      $logFileText = Get-Content $logFile
+      $logFileText | ForEach-Object {Write-Host  $_ }
     displayName: Download and Extract Public Cosmos DB Emulator
   - powershell: |
       Write-Host "Deleting Cosmos DB Emulator data"
