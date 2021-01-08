@@ -300,7 +300,6 @@ public class CosmosContainerTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    @Ignore("// TODO fabianm re-enable")
     public void enableFullFidelityChangeFeedForExistingContainer() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
