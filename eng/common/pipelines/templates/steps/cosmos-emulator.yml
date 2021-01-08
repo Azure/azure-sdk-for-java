@@ -1,32 +1,32 @@
 parameters:
   EmulatorMsiUrl: "https://aka.ms/cosmosdb-emulator"
-  StartParameters: ''
+  StartParameters: '-EnablePreview'
 
 steps:
   - powershell: |
       $targetDir = $env:temp
-      $DataStamp = get-date -Format yyyyMMddTHHmmss
-      $logFile = '{0}\CosmosEmulator-{1}_install.log' -f $targetDir,$DataStamp
       Write-Host "Downloading and extracting Cosmos DB Emulator - ${{ parameters.EmulatorMsiUrl }}"
       Write-Host "Target Dir: $targetDir"
-
-      $argumentList = , "/a"
-      $argumentList += , "${{ parameters.EmulatorMsiUrl }}"
-      $argumentList += , "TARGETDIR=$targetDir"
-      $argumentList += , "/qn"
-      $argumentList += , "/l*"
-      $argumentList += $logFile
-      Write-Host "Starting installation: msiexec.exe $argumentList"
-      Start-Process "msiexec.exe" -ArgumentList $argumentList -ErrorAction Stop -Wait
-
-      Write-Host "Log File: $logFile"
-      $logFileText = Get-Content $logFile
-      $logFileText | ForEach-Object {Write-Host  $_ }
+      msiexec /a ${{ parameters.EmulatorMsiUrl }} TARGETDIR=$targetDir /qn | wait-process
     displayName: Download and Extract Public Cosmos DB Emulator
   - powershell: |
       Write-Host "Deleting Cosmos DB Emulator data"
       if (Test-Path $Env:LOCALAPPDATA\CosmosDbEmulator) { Remove-Item -Recurse -Force $Env:LOCALAPPDATA\CosmosDbEmulator }
     displayName: Delete Cosmos DB Emulator data
+  - powershell: |
+      Write-Host "Overriding Cosmos DB Emulator install location"
+      Set-Variable ProductName -Option Constant -Value "Azure Cosmos DB Emulator"
+      $targetDir = $env:temp
+      $cosmosEmulatorRegistryKeys = Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*" | Where-Object { $_.DisplayName -eq $ProductName } | Select-Object -First 1
+      if ($cosmosEmulatorRegistryKeys) {
+        Write-Host "Before changing install location"
+        Write-Host $cosmosEmulatorRegistryKeys
+        Set-ItemProperty -Path $cosmosEmulatorRegistryKeys.PSPath -Name "InstallLocation" -Value ((Join-Path $targetDir $ProductName) + "\")
+        $cosmosEmulatorRegistryKeys = Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*" | Where-Object { $_.DisplayName -eq $ProductName } | Select-Object -First 1
+        Write-Host "After changing install location"
+        Write-Host $cosmosEmulatorRegistryKeys
+      }
+    displayName: Override Cosmos DB Emulator install location
   - powershell: |
       Write-Host "Getting Cosmos DB Emulator Version"
       $ProductName = "Azure Cosmos DB Emulator"
@@ -36,78 +36,6 @@ steps:
     displayName: Get Cosmos DB Emulator Version
   - powershell: |
       Write-Host "Launching Cosmos DB Emulator"
-      $ProductName = "Azure Cosmos DB Emulator"
-      $Emulator = (Join-Path $env:temp (Join-Path $ProductName "CosmosDB.Emulator.exe"))
-      if (!(Test-Path $Emulator)) {
-        Write-Error "The emulator is not installed where expected at '$Emulator'"
-        return
-      }
-
-      $process = Start-Process $Emulator -ArgumentList "/getstatus" -PassThru -Wait
-
-      switch ($process.ExitCode) {
-        1 {
-          Write-Host "The emulator is already starting"
-          return
-        }
-        2 {
-          Write-Host "The emulator is already running"
-          return
-        }
-        3 {
-          Write-Host "The emulator is stopped"
-        }
-        default {
-          Write-Host "Unrecognized exit code $process.ExitCode"
-          return
-        }
-      }
-
-      $argumentList = , "/noexplorer"
-      $argumentList += , "/enablepreview"
-      #$argumentList += , "/noui"
-      $argumentList += "/disableratelimiting"
-
-      Write-Host "Starting emulator process: $Emulator $argumentList"
-      $process=(Start-Process $Emulator -ArgumentList $argumentList -ErrorAction Stop -PassThru)
-      Write-Host "Emulator process started: $($process.Name), $($process.FileVersion)"
-      $Timeout = 240
-      $result="NotYetStarted"
-      $complete = if ($Timeout -gt 0) {
-        $start = [DateTimeOffset]::Now
-        $stop = $start.AddSeconds($Timeout)
-        {
-          $result -eq "Running" -or [DateTimeOffset]::Now -ge $stop
-        }
-      }
-      else {
-        {
-          $result -eq "Running"
-        }
-      }
-
-      do {
-        $process = Start-Process $Emulator -ArgumentList "/getstatus" -PassThru -Wait
-
-        switch ($process.ExitCode) {
-          1 {
-            Write-Host "The emulator is starting"
-          }
-          2 {
-            Write-Host "The emulator is running"
-            $result="Running"
-          }
-          3 {
-            Write-Host "The emulator is stopped"
-          }
-          default {
-            Write-Host "Unrecognized exit code $process.ExitCode"
-          }
-        }
-
-        Start-Sleep -Seconds 1
-      }
-      until ($complete.Invoke())
-
-      Write-Host "The emulator failed to reach Running status within ${Timeout} seconds"
+      Import-Module "$env:temp\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
+      Start-CosmosDbEmulator -NoUI ${{ parameters.StartParameters }}
     displayName: Start Cosmos DB Emulator
