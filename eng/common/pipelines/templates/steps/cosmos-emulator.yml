@@ -50,11 +50,12 @@ steps:
       }
 
       $argumentList = , "/noexplorer"
+      $argumentList += , "/noui"
       $argumentList += , "/enablepreview"
       $argumentList += "/disableratelimiting"
 
       Write-Host "Starting emulator process: $Emulator $argumentList"
-      $process=(Start-Process $Emulator -ArgumentList $argumentList -ErrorAction Stop -PassThru)
+      $process=Start-Process $Emulator -ArgumentList $argumentList -ErrorAction Stop -PassThru
       Write-Host "Emulator process started: $($process.Name), $($process.FileVersion)"
       $Timeout = 600
       $result="NotYetStarted"
@@ -95,5 +96,5 @@ steps:
       }
       until ($complete.Invoke())
 
-      Write-Host "The emulator failed to reach Running status within ${Timeout} seconds"
+      Write-Error "The emulator failed to reach Running status within ${Timeout} seconds"
     displayName: Start Cosmos DB Emulator
