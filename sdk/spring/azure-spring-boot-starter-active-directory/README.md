@@ -157,8 +157,6 @@ Resource server accesses other resource servers which are protected by Azure AD.
 ## Examples
 Refer to different samples for different authentication ways. 
 
-**Note**: `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter` will be deprecated. [Click here](https://github.com/Azure/azure-sdk-for-java/issues/17860) to replace it.
-
 ### [Web APP] Authenticate in web app
 Please refer to [azure-spring-boot-sample-active-directory-webapp] for authenticate in web apps.
 
@@ -195,7 +193,7 @@ To customize scope configurations of multiple resources, developers need to conf
 ```yaml
 azure:
   activedirectory:
-    authorization:
+    authorization-clients:
       graph:
         scopes: https://graph.microsoft.com/Analytics.Read, email
       {registration-id}:
@@ -207,7 +205,7 @@ To configure the authorization of certain resource as on-demand, developers need
 ```yaml
 azure:
   activedirectory:
-    authorization:
+    authorization-clients:
       {registration-id}:
         on-demand: true
         scopes: {scope1}, {scope2}
@@ -215,24 +213,6 @@ azure:
 
 ### [Web API] Protect the resource APIs in resource server
 Please refer to [azure-spring-boot-sample-active-directory-resource-server] for access resource APIs.
-
-#### Include the package
-```xml
-  <dependencies>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-oauth2-resource-server</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-oauth2-jose</artifactId>
-    </dependency>
-  </dependencies>
-```
 
 #### Using `AADOAuth2ResourceServerSecurityConfig` to extends `WebSecurityConfigurerAdapter`:
 ```java
@@ -253,44 +233,15 @@ public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurer
 ### [Web API] OAuth 2.0 On-Behalf-Of flow
 Please refer [azure-spring-boot-sample-active-directory-resource-server-obo] to for access On-Behalf-Of flow.
 
-#### Include the package
-```xml
-  <dependencies>
-   <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-   </dependency>
-   <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-oauth2-resource-server</artifactId>
-   </dependency>
-   <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-oauth2-client</artifactId>
-   </dependency>
-   <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>msal4j</artifactId>
-   </dependency>
-   <dependency>
-      <groupId>org.springframework.security</groupId>
-      <artifactId>spring-security-oauth2-jose</artifactId>
-   </dependency>
-</dependencies>
-```
-
 #### Configure application.yml:
 ```yaml
 azure:
    activedirectory:
-      resource-server:
-         obo:
-            enabled: true
       client-id: <Web-API-A-client-id>
       client-secret: <Web-API-A-client-secret>
       tenant-id: <Tenant-id-registered-by-application>
       app-id-uri: <Web-API-A-app-id-url>
-      authorization:
+      authorization-clients:
          graph:
             scopes:
                - https://graph.microsoft.com/User.Read
@@ -307,7 +258,7 @@ azure:
      return callMicrosoftGraphMeEndpoint(graph);
  }
  
- @PreAuthorize("hasAuthority('SCOPE_Obo.Custom.Read')")
+ @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
  @GetMapping("call-custom")
  public String callCustom(@RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
      return callCustomEndpoint(custom);

@@ -37,12 +37,12 @@ public class SampleController {
     private OAuth2AuthorizedClientRepository oAuth2AuthorizedClientRepository;
 
     /**
-     * Call the graph resource only, return user information
+     * Call the graph resource, return user information
      * @return Response with graph data
      */
-    @GetMapping("call-graph-only")
     @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
-    public String callGraphOnly() {
+    @GetMapping("call-graph-with-repository")
+    public String callGraphWithRepository() {
         Authentication principal = SecurityContextHolder.getContext().getAuthentication();
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         ServletRequestAttributes sra = (ServletRequestAttributes) requestAttributes;
@@ -52,13 +52,13 @@ public class SampleController {
     }
 
     /**
-     * Call the graph resource only with annotation, return user information
+     * Call the graph resource with annotation, return user information
      * @param graph authorized client for Graph
      * @return Response with graph data
      */
-    @GetMapping("call-graph-only-with-annotation")
     @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
-    public String callGraphOnlyWithAnnotation(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
+    @GetMapping("call-graph")
+    public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
         return callMicrosoftGraphMeEndpoint(graph);
     }
 
@@ -67,9 +67,9 @@ public class SampleController {
      * @param custom authorized client for Custom
      * @return Response Graph and Custom data.
      */
-    @GetMapping("call-custom-resources")
     @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
-    public String callCustomResources(
+    @GetMapping("call-custom")
+    public String callCustom(
         @RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
         return callCustomLocalFileEndpoint(custom);
     }
