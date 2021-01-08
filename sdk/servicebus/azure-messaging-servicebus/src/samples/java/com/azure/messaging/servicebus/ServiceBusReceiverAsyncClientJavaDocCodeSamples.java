@@ -66,8 +66,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .queueName("<< QUEUE NAME >>")
             .buildAsyncClient();
-        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode
 
+        // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode
         // Keep a reference to `subscription`. When the program is finished receiving messages, call
         // subscription.dispose(). This will stop fetching messages from the Service Bus.
         Disposable subscription = receiver.receiveMessages()
@@ -190,8 +190,8 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             message -> System.out.printf("Received Sequence #: %s. Contents: %s%n",
                 message.getSequenceNumber(), message.getBody()),
             error -> System.err.print(error));
-
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation#sessionId
+
         subscription.dispose();
         sessionReceiver.close();
     }
@@ -221,6 +221,7 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             return operations.flatMap(transactionOperations -> receiver.commitTransaction(transaction));
         });
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.committransaction#servicebustransactioncontext
+
         receiver.close();
     }
 }

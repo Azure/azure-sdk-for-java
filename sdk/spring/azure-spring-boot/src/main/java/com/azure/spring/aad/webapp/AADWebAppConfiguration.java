@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +44,7 @@ import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_
 @Configuration
 @ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
 @ConditionalOnClass(ClientRegistrationRepository.class)
+@ConditionalOnProperty("azure.activedirectory.client-id")
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
 public class AADWebAppConfiguration {
 
@@ -79,14 +81,16 @@ public class AADWebAppConfiguration {
             // AAD server will return error if:
             // 1. authorizationCodeScopes have more than one resource server.
             // 2. accessTokenScopes have no resource server
-            accessTokenScopes.add("https://graph.microsoft.com/User.Read");
+            accessTokenScopes.add(properties.getGraphBaseUri() + "User.Read");
         }
         return new AzureClientRegistration(client, accessTokenScopes);
     }
 
-    private int resourceServerCount(Set<String> scopes) {
+    public static int resourceServerCount(Set<String> scopes) {
         return (int) scopes.stream()
-                           .filter(scope -> scope.startsWith("http"))
+                           .filter(scope -> scope.contains("/"))
+                           .map(scope -> scope.substring(0, scope.lastIndexOf('/')))
+                           .distinct()
                            .count();
     }
 
@@ -111,8 +115,8 @@ public class AADWebAppConfiguration {
         result.addAll(openidScopes());
         if (properties.allowedGroupsConfigured()) {
             // The 2 scopes are need to get group name from graph.
-            result.add("https://graph.microsoft.com/User.Read");
-            result.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
+            result.add(properties.getGraphBaseUri() + "User.Read");
+            result.add(properties.getGraphBaseUri() + "Directory.AccessAsUser.All");
         }
         return result;
     }

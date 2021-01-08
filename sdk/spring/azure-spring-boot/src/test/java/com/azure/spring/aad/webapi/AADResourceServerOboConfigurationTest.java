@@ -3,10 +3,12 @@
 
 package com.azure.spring.aad.webapi;
 
+import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
@@ -25,13 +27,34 @@ public class AADResourceServerOboConfigurationTest {
             "azure.activedirectory.client-secret=fake-client-secret");
 
     @Test
+    public void testWithoutAnyPropertiesSet() {
+        new WebApplicationContextRunner()
+            .withUserConfiguration(AADResourceServerOboConfiguration.class)
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(AADAuthenticationProperties.class);
+                assertThat(context).doesNotHaveBean(ClientRegistrationRepository.class);
+                assertThat(context).doesNotHaveBean(OAuth2AuthorizedClientRepository.class);
+            });
+    }
+
+    @Test
+    public void testWithRequiredPropertiesSet() {
+        new WebApplicationContextRunner()
+            .withUserConfiguration(AADResourceServerOboConfiguration.class)
+            .withPropertyValues("azure.activedirectory.client-id=fake-client-id")
+            .run(context -> {
+                assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
+                assertThat(context).hasSingleBean(ClientRegistrationRepository.class);
+                assertThat(context).hasSingleBean(OAuth2AuthorizedClientRepository.class);
+            });
+    }
+
+    @Test
     public void testNotExistBearerTokenAuthenticationToken() {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-            .run(context -> {
-                assertThat(context).doesNotHaveBean("AADOAuth2OboAuthorizedClientRepository");
-            });
+            .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2OboAuthorizedClientRepository.class));
     }
 
     @Test
@@ -39,9 +62,7 @@ public class AADResourceServerOboConfigurationTest {
         this.contextRunner
             .withUserConfiguration(AADResourceServerOboConfiguration.class)
             .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
-            .run(context -> {
-                assertThat(context).doesNotHaveBean("AADOAuth2OboAuthorizedClientRepository");
-            });
+            .run(context -> assertThat(context).doesNotHaveBean(AADOAuth2OboAuthorizedClientRepository.class));
     }
 
     @Test

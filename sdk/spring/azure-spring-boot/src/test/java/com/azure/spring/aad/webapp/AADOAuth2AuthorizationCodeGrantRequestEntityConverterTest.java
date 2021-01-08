@@ -29,8 +29,8 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
     private ClientRegistration azure;
     private ClientRegistration arm;
 
-    private final WebApplicationContextRunner contextRunner = PropertiesUtils
-        .getContextRunner().withPropertyValues(
+    private final WebApplicationContextRunner contextRunner = WebApplicationContextRunnerUtils
+        .getContextRunnerWithRequiredProperties().withPropertyValues(
             "azure.activedirectory.base-uri = fake-uri",
             "azure.activedirectory.authorization-clients.arm.scopes = Calendars.Read",
             "azure.activedirectory.authorization-clients.arm.on-demand=true");
@@ -47,8 +47,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
             getBeans(context);
             MultiValueMap<String, String> body = convertedBodyOf(createCodeGrantRequest(azure));
             assertEquals(
-                "openid profile offline_access https://graph.microsoft.com/User.Read "
-                    + "https://graph.microsoft.com/Directory.AccessAsUser.All",
+                "openid profile offline_access",
                 body.getFirst("scope")
             );
         });
@@ -105,7 +104,7 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
         AADOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
             new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(clientRepo.getAzureClient());
         RequestEntity<?> entity = converter.convert(request);
-        return PropertiesUtils.toMultiValueMap(entity);
+        return WebApplicationContextRunnerUtils.toMultiValueMap(entity);
     }
 
     private OAuth2AuthorizationCodeGrantRequest createCodeGrantRequest(ClientRegistration client) {
