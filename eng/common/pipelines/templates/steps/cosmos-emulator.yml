@@ -7,8 +7,6 @@ steps:
       $id=Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*" | Where-Object { $_.DisplayName -eq $ProductName } | Select-Object -First 1 -Property PSChildName
       if ($id) {
         Write-Host "Uninstalling previously installed version of Cosmos DB Emulator..."
-        $uninstallcmd = {param($ProductId) msiexec /x $ProductId /qn}
-        $uninstalljob = Start-Job $uninstallcmd -Arg $id.PSChildName
         $DataStamp = get-date -Format yyyyMMddTHHmmss
         $logFile = 'CosmosEmulator-{0}_uninstall.log' -f $DataStamp
         $MSIArgs = @(
