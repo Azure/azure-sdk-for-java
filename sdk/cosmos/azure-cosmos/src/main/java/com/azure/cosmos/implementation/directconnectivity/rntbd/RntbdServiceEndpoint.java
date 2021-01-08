@@ -555,7 +555,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         }
 
         private void evict(final RntbdEndpoint endpoint) {
-            if (this.endpoints.remove(endpoint.remoteAddress().toString()) != null) {
+            if (this.endpoints.remove(endpoint.serverKey().getAuthority()) != null) {
                 this.evictions.incrementAndGet();
             }
         }
