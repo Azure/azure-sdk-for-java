@@ -225,14 +225,14 @@ public final class DataLakePathClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param credential The SAS token to use for authenticating requests.
      * @return the updated DataLakePathClientBuilder
-     * @throws NullPointerException If {@code sasToken} is {@code null}.
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public DataLakePathClientBuilder sasToken(AzureSasCredential sasToken) {
-        blobClientBuilder.sasToken(sasToken);
-        this.sasTokenCredential = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
+    public DataLakePathClientBuilder sasToken(AzureSasCredential credential) {
+        blobClientBuilder.sasToken(credential);
+        this.sasTokenCredential = Objects.requireNonNull(credential,
+            "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;

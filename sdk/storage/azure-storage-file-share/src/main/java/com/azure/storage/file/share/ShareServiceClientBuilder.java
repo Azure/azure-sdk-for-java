@@ -216,13 +216,13 @@ public final class ShareServiceClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param credential The SAS token to use for authenticating requests.
      * @return the updated ShareServiceClientBuilder
-     * @throws NullPointerException If {@code sasToken} is {@code null}.
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public ShareServiceClientBuilder sasToken(AzureSasCredential sasToken) {
-        this.sasTokenCredential = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
+    public ShareServiceClientBuilder sasToken(AzureSasCredential credential) {
+        this.sasTokenCredential = Objects.requireNonNull(credential,
+            "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
         return this;
     }

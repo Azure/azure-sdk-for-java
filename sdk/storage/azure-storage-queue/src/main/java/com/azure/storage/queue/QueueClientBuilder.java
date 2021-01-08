@@ -234,13 +234,13 @@ public final class QueueClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param credential The SAS token to use for authenticating requests.
      * @return the updated QueueClientBuilder
-     * @throws NullPointerException If {@code sasToken} is {@code null}.
+     * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public QueueClientBuilder sasToken(AzureSasCredential sasToken) {
-        this.sasTokenCredential = Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.");
+    public QueueClientBuilder sasToken(AzureSasCredential credential) {
+        this.sasTokenCredential = Objects.requireNonNull(credential,
+            "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;

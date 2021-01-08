@@ -168,12 +168,12 @@ public class TableServiceClientBuilder {
     /**
      * Sets the SAS token used to authorize requests sent to the service.
      *
-     * @param sasToken The SAS token to use for authenticating requests.
+     * @param credential The SAS token to use for authenticating requests.
      * @return The updated {@code TableServiceClientBuilder}.
-     * @throws NullPointerException if {@code sasToken} is {@code null}.
+     * @throws NullPointerException if {@code credential} is {@code null}.
      */
-    public TableServiceClientBuilder sasToken(AzureSasCredential sasToken) {
-        this.sasTokenCredential = Objects.requireNonNull(sasToken,
+    public TableServiceClientBuilder sasToken(AzureSasCredential credential) {
+        this.sasTokenCredential = Objects.requireNonNull(credential,
             "'sasToken' cannot be null.");
         this.tablesSharedKeyCredential = null;
         this.tokenCredential = null;
