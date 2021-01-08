@@ -10,9 +10,7 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.storage.queue.models.QueueMessageItem;
 import java.util.List;
 
-/**
- * Contains all response data for the dequeue operation.
- */
+/** Contains all response data for the dequeue operation. */
 public final class MessagesDequeueResponse extends ResponseBase<MessagesDequeueHeaders, List<QueueMessageItem>> {
     /**
      * Creates an instance of MessagesDequeueResponse.
@@ -23,13 +21,16 @@ public final class MessagesDequeueResponse extends ResponseBase<MessagesDequeueH
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public MessagesDequeueResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, List<QueueMessageItem> value, MessagesDequeueHeaders headers) {
+    public MessagesDequeueResponse(
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            List<QueueMessageItem> value,
+            MessagesDequeueHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public List<QueueMessageItem> getValue() {
         return super.getValue();

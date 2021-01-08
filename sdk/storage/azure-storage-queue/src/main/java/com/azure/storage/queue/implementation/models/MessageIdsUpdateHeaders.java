@@ -10,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The MessagesPeekHeaders model. */
+/** The MessageIdsUpdateHeaders model. */
 @JacksonXmlRootElement(localName = "null")
 @Fluent
-public final class MessagesPeekHeaders {
+public final class MessageIdsUpdateHeaders {
     /*
      * The x-ms-version property.
      */
@@ -21,10 +21,22 @@ public final class MessagesPeekHeaders {
     private String xMsVersion;
 
     /*
+     * The x-ms-time-next-visible property.
+     */
+    @JsonProperty(value = "x-ms-time-next-visible")
+    private DateTimeRfc1123 xMsTimeNextVisible;
+
+    /*
      * The x-ms-request-id property.
      */
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
+
+    /*
+     * The x-ms-popreceipt property.
+     */
+    @JsonProperty(value = "x-ms-popreceipt")
+    private String xMsPopreceipt;
 
     /*
      * The Date property.
@@ -45,10 +57,37 @@ public final class MessagesPeekHeaders {
      * Set the xMsVersion property: The x-ms-version property.
      *
      * @param xMsVersion the xMsVersion value to set.
-     * @return the MessagesPeekHeaders object itself.
+     * @return the MessageIdsUpdateHeaders object itself.
      */
-    public MessagesPeekHeaders setXMsVersion(String xMsVersion) {
+    public MessageIdsUpdateHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the xMsTimeNextVisible property: The x-ms-time-next-visible property.
+     *
+     * @return the xMsTimeNextVisible value.
+     */
+    public OffsetDateTime getXMsTimeNextVisible() {
+        if (this.xMsTimeNextVisible == null) {
+            return null;
+        }
+        return this.xMsTimeNextVisible.getDateTime();
+    }
+
+    /**
+     * Set the xMsTimeNextVisible property: The x-ms-time-next-visible property.
+     *
+     * @param xMsTimeNextVisible the xMsTimeNextVisible value to set.
+     * @return the MessageIdsUpdateHeaders object itself.
+     */
+    public MessageIdsUpdateHeaders setXMsTimeNextVisible(OffsetDateTime xMsTimeNextVisible) {
+        if (xMsTimeNextVisible == null) {
+            this.xMsTimeNextVisible = null;
+        } else {
+            this.xMsTimeNextVisible = new DateTimeRfc1123(xMsTimeNextVisible);
+        }
         return this;
     }
 
@@ -65,10 +104,30 @@ public final class MessagesPeekHeaders {
      * Set the xMsRequestId property: The x-ms-request-id property.
      *
      * @param xMsRequestId the xMsRequestId value to set.
-     * @return the MessagesPeekHeaders object itself.
+     * @return the MessageIdsUpdateHeaders object itself.
      */
-    public MessagesPeekHeaders setXMsRequestId(String xMsRequestId) {
+    public MessageIdsUpdateHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
+        return this;
+    }
+
+    /**
+     * Get the xMsPopreceipt property: The x-ms-popreceipt property.
+     *
+     * @return the xMsPopreceipt value.
+     */
+    public String getXMsPopreceipt() {
+        return this.xMsPopreceipt;
+    }
+
+    /**
+     * Set the xMsPopreceipt property: The x-ms-popreceipt property.
+     *
+     * @param xMsPopreceipt the xMsPopreceipt value to set.
+     * @return the MessageIdsUpdateHeaders object itself.
+     */
+    public MessageIdsUpdateHeaders setXMsPopreceipt(String xMsPopreceipt) {
+        this.xMsPopreceipt = xMsPopreceipt;
         return this;
     }
 
@@ -88,9 +147,9 @@ public final class MessagesPeekHeaders {
      * Set the dateProperty property: The Date property.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the MessagesPeekHeaders object itself.
+     * @return the MessageIdsUpdateHeaders object itself.
      */
-    public MessagesPeekHeaders setDateProperty(OffsetDateTime dateProperty) {
+    public MessageIdsUpdateHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {

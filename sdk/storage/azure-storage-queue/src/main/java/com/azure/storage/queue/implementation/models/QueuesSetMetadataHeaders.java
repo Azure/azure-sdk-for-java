@@ -10,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The MessagesPeekHeaders model. */
+/** The QueuesSetMetadataHeaders model. */
 @JacksonXmlRootElement(localName = "null")
 @Fluent
-public final class MessagesPeekHeaders {
+public final class QueuesSetMetadataHeaders {
     /*
      * The x-ms-version property.
      */
@@ -45,9 +45,9 @@ public final class MessagesPeekHeaders {
      * Set the xMsVersion property: The x-ms-version property.
      *
      * @param xMsVersion the xMsVersion value to set.
-     * @return the MessagesPeekHeaders object itself.
+     * @return the QueuesSetMetadataHeaders object itself.
      */
-    public MessagesPeekHeaders setXMsVersion(String xMsVersion) {
+    public QueuesSetMetadataHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -65,9 +65,9 @@ public final class MessagesPeekHeaders {
      * Set the xMsRequestId property: The x-ms-request-id property.
      *
      * @param xMsRequestId the xMsRequestId value to set.
-     * @return the MessagesPeekHeaders object itself.
+     * @return the QueuesSetMetadataHeaders object itself.
      */
-    public MessagesPeekHeaders setXMsRequestId(String xMsRequestId) {
+    public QueuesSetMetadataHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -88,9 +88,9 @@ public final class MessagesPeekHeaders {
      * Set the dateProperty property: The Date property.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the MessagesPeekHeaders object itself.
+     * @return the QueuesSetMetadataHeaders object itself.
      */
-    public MessagesPeekHeaders setDateProperty(OffsetDateTime dateProperty) {
+    public QueuesSetMetadataHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {

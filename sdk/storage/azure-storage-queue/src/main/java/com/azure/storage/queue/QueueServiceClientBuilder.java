@@ -19,9 +19,9 @@ import com.azure.storage.common.implementation.connectionstring.StorageConnectio
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 
+import com.azure.storage.queue.implementation.AzureQueueStorageImplBuilder;
 import com.azure.storage.queue.implementation.util.BuilderHelper;
 import java.util.ArrayList;
 import java.util.List;
@@ -119,11 +119,10 @@ public final class QueueServiceClientBuilder {
             storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
-        AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageBuilder()
+        AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageImplBuilder()
             .url(endpoint)
             .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
 
         return new QueueServiceAsyncClient(azureQueueStorage, accountName, serviceVersion);
     }

@@ -10,15 +10,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The MessagesPeekHeaders model. */
+/** The QueuesGetPropertiesHeaders model. */
 @JacksonXmlRootElement(localName = "null")
 @Fluent
-public final class MessagesPeekHeaders {
+public final class QueuesGetPropertiesHeaders {
     /*
      * The x-ms-version property.
      */
     @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
+
+    /*
+     * The x-ms-approximate-messages-count property.
+     */
+    @JsonProperty(value = "x-ms-approximate-messages-count")
+    private Integer xMsApproximateMessagesCount;
+
+    /*
+     * The x-ms-meta property.
+     */
+    @JsonProperty(value = "x-ms-meta")
+    private String xMsMeta;
 
     /*
      * The x-ms-request-id property.
@@ -45,10 +57,50 @@ public final class MessagesPeekHeaders {
      * Set the xMsVersion property: The x-ms-version property.
      *
      * @param xMsVersion the xMsVersion value to set.
-     * @return the MessagesPeekHeaders object itself.
+     * @return the QueuesGetPropertiesHeaders object itself.
      */
-    public MessagesPeekHeaders setXMsVersion(String xMsVersion) {
+    public QueuesGetPropertiesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the xMsApproximateMessagesCount property: The x-ms-approximate-messages-count property.
+     *
+     * @return the xMsApproximateMessagesCount value.
+     */
+    public Integer getXMsApproximateMessagesCount() {
+        return this.xMsApproximateMessagesCount;
+    }
+
+    /**
+     * Set the xMsApproximateMessagesCount property: The x-ms-approximate-messages-count property.
+     *
+     * @param xMsApproximateMessagesCount the xMsApproximateMessagesCount value to set.
+     * @return the QueuesGetPropertiesHeaders object itself.
+     */
+    public QueuesGetPropertiesHeaders setXMsApproximateMessagesCount(Integer xMsApproximateMessagesCount) {
+        this.xMsApproximateMessagesCount = xMsApproximateMessagesCount;
+        return this;
+    }
+
+    /**
+     * Get the xMsMeta property: The x-ms-meta property.
+     *
+     * @return the xMsMeta value.
+     */
+    public String getXMsMeta() {
+        return this.xMsMeta;
+    }
+
+    /**
+     * Set the xMsMeta property: The x-ms-meta property.
+     *
+     * @param xMsMeta the xMsMeta value to set.
+     * @return the QueuesGetPropertiesHeaders object itself.
+     */
+    public QueuesGetPropertiesHeaders setXMsMeta(String xMsMeta) {
+        this.xMsMeta = xMsMeta;
         return this;
     }
 
@@ -65,9 +117,9 @@ public final class MessagesPeekHeaders {
      * Set the xMsRequestId property: The x-ms-request-id property.
      *
      * @param xMsRequestId the xMsRequestId value to set.
-     * @return the MessagesPeekHeaders object itself.
+     * @return the QueuesGetPropertiesHeaders object itself.
      */
-    public MessagesPeekHeaders setXMsRequestId(String xMsRequestId) {
+    public QueuesGetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
         return this;
     }
@@ -88,9 +140,9 @@ public final class MessagesPeekHeaders {
      * Set the dateProperty property: The Date property.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the MessagesPeekHeaders object itself.
+     * @return the QueuesGetPropertiesHeaders object itself.
      */
-    public MessagesPeekHeaders setDateProperty(OffsetDateTime dateProperty) {
+    public QueuesGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {

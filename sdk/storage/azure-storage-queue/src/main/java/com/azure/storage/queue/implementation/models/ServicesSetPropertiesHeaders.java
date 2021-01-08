@@ -5,15 +5,13 @@
 package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-import java.time.OffsetDateTime;
 
-/** The MessagesPeekHeaders model. */
+/** The ServicesSetPropertiesHeaders model. */
 @JacksonXmlRootElement(localName = "null")
 @Fluent
-public final class MessagesPeekHeaders {
+public final class ServicesSetPropertiesHeaders {
     /*
      * The x-ms-version property.
      */
@@ -25,12 +23,6 @@ public final class MessagesPeekHeaders {
      */
     @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
-
-    /*
-     * The Date property.
-     */
-    @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
@@ -45,9 +37,9 @@ public final class MessagesPeekHeaders {
      * Set the xMsVersion property: The x-ms-version property.
      *
      * @param xMsVersion the xMsVersion value to set.
-     * @return the MessagesPeekHeaders object itself.
+     * @return the ServicesSetPropertiesHeaders object itself.
      */
-    public MessagesPeekHeaders setXMsVersion(String xMsVersion) {
+    public ServicesSetPropertiesHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
         return this;
     }
@@ -65,37 +57,10 @@ public final class MessagesPeekHeaders {
      * Set the xMsRequestId property: The x-ms-request-id property.
      *
      * @param xMsRequestId the xMsRequestId value to set.
-     * @return the MessagesPeekHeaders object itself.
+     * @return the ServicesSetPropertiesHeaders object itself.
      */
-    public MessagesPeekHeaders setXMsRequestId(String xMsRequestId) {
+    public ServicesSetPropertiesHeaders setXMsRequestId(String xMsRequestId) {
         this.xMsRequestId = xMsRequestId;
-        return this;
-    }
-
-    /**
-     * Get the dateProperty property: The Date property.
-     *
-     * @return the dateProperty value.
-     */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
-            return null;
-        }
-        return this.dateProperty.getDateTime();
-    }
-
-    /**
-     * Set the dateProperty property: The Date property.
-     *
-     * @param dateProperty the dateProperty value to set.
-     * @return the MessagesPeekHeaders object itself.
-     */
-    public MessagesPeekHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
-        } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
-        }
         return this;
     }
 }

@@ -5,12 +5,11 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.queue.implementation.models.GeoReplication;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Statistics for the storage service.
- */
+/** Statistics for the storage service. */
 @JacksonXmlRootElement(localName = "StorageServiceStats")
 @Fluent
 public final class QueueServiceStatistics {
@@ -21,8 +20,7 @@ public final class QueueServiceStatistics {
     private GeoReplication geoReplication;
 
     /**
-     * Get the geoReplication property: Geo-Replication information for the
-     * Secondary Storage Service.
+     * Get the geoReplication property: Geo-Replication information for the Secondary Storage Service.
      *
      * @return the geoReplication value.
      */
@@ -31,8 +29,7 @@ public final class QueueServiceStatistics {
     }
 
     /**
-     * Set the geoReplication property: Geo-Replication information for the
-     * Secondary Storage Service.
+     * Set the geoReplication property: Geo-Replication information for the Secondary Storage Service.
      *
      * @param geoReplication the geoReplication value to set.
      * @return the QueueServiceStatistics object itself.
