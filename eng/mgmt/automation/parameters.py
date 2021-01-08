@@ -69,12 +69,58 @@ POM_FORMAT = '''\
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-{0}-service</artifactId>
+  <artifactId>azure-{service}-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-  </modules>
+
+  <profiles>
+    <profile>
+      <id>coverage</id>
+      <modules>
+        <module>{artifact_id}</module>
+      </modules>
+
+      <dependencies>
+        <dependency>
+          <groupId>{group_id}</groupId>
+          <artifactId>{artifact_id}</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {{x-version-update;{group_id}:{artifact_id};current}} -->
+        </dependency>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.5</version> <!-- {{x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency}} -->
+            <executions>
+              <execution>
+                <id>report-aggregate</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>report-aggregate</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${{project.reporting.outputDirectory}}/test-coverage</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>{artifact_id}</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
 '''
 
-POM_MODULE_FORMAT = '    <module>{0}</module>\n'
+POM_MODULE_FORMAT = '<module>{0}</module>\n'
