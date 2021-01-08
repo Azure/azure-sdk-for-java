@@ -4,8 +4,33 @@ parameters:
 
 steps:
   - powershell: |
+      $id=Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*" | Where-Object { $_.DisplayName -eq $ProductName } | Select-Object -First 1 -Property PSChildName
+      if ($id) {
+        Write-Host "Uninstalling previously installed version of Cosmos DB Emulator..."
+        $uninstallcmd = {param($ProductId) msiexec /x $ProductId /qn}
+        $uninstalljob = Start-Job $uninstallcmd -Arg $id.PSChildName
+        $DataStamp = get-date -Format yyyyMMddTHHmmss
+        $logFile = 'CosmosEmulator-{0}_uninstall.log' -f $DataStamp
+        $MSIArgs = @(
+            "/x"
+            $id.PSChildName
+            "/qn"
+            "/L*"
+            $logFile
+        )
+        Start-Process "msiexec.exe" -ArgumentList $MSIArgs -Wait -NoNewWindow
+        Write-Host "Log File: $logFile"
+        $logFileText = Get-Content $logFile
+        $logFileText | ForEach-Object {Write-Host  $_ }
+        Write-Host "Uninstalled previous version of the emulator successfully."
+      } else {
+        Write-Host "No previous version of the emulator installed."
+      }
+    displayName: Uninstall any previously installed version of Cosmos DB Emulator
+  - powershell: |
       $targetDir = $env:temp
-      $logFile=$targetDir + "\" + [guid]::NewGuid().ToString("N") + ".log"
+      $DataStamp = get-date -Format yyyyMMddTHHmmss
+      $logFile = '$targetDir\CosmosEmulator-{0}_install.log' -f $DataStamp
       Write-Host "Downloading and extracting Cosmos DB Emulator - ${{ parameters.EmulatorMsiUrl }}"
       Write-Host "Target Dir: $targetDir"
       msiexec /a ${{ parameters.EmulatorMsiUrl }} TARGETDIR=$targetDir /qn /l* $logFile | wait-process
