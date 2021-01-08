@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -90,6 +92,7 @@ public final class QueueClient {
      *
      * @throws QueueStorageException If a queue with the same name already exists in the queue service.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void create() {
         createWithResponse(null, null, Context.NONE);
     }
@@ -116,6 +119,7 @@ public final class QueueClient {
      * service.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.createWithResponse(metadata, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -135,6 +139,7 @@ public final class QueueClient {
      *
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete() {
         deleteWithResponse(null, Context.NONE);
     }
@@ -158,6 +163,7 @@ public final class QueueClient {
      * @throws QueueStorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteWithResponse(context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -179,6 +185,7 @@ public final class QueueClient {
      * messages count of the queue.
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueProperties getProperties() {
         return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
@@ -203,6 +210,7 @@ public final class QueueClient {
      * @throws QueueStorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<QueueProperties>> response = client.getPropertiesWithResponse(context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -229,6 +237,7 @@ public final class QueueClient {
      * @param metadata Metadata to set on the queue
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void setMetadata(Map<String, String> metadata) {
         setMetadataWithResponse(metadata, null, Context.NONE);
     }
@@ -259,6 +268,7 @@ public final class QueueClient {
      * @throws QueueStorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.setMetadataWithResponse(metadata, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -279,6 +289,7 @@ public final class QueueClient {
      * @return The stored access policies specified on the queue.
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueSignedIdentifier> getAccessPolicy() {
         return new PagedIterable<>(client.getAccessPolicy());
     }
@@ -299,6 +310,7 @@ public final class QueueClient {
      * @throws QueueStorageException If the queue doesn't exist, a stored access policy doesn't have all fields filled
      * out, or the queue will have more than five policies.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void setAccessPolicy(List<QueueSignedIdentifier> permissions) {
         setAccessPolicyWithResponse(permissions, null, Context.NONE);
     }
@@ -324,6 +336,7 @@ public final class QueueClient {
      * out, or the queue will have more than five policies.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setAccessPolicyWithResponse(List<QueueSignedIdentifier> permissions, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = client.setAccessPolicyWithResponse(permissions, context);
@@ -344,6 +357,7 @@ public final class QueueClient {
      *
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void clearMessages() {
         clearMessagesWithResponse(null, Context.NONE);
     }
@@ -367,6 +381,7 @@ public final class QueueClient {
      * @throws QueueStorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> clearMessagesWithResponse(Duration timeout, Context context) {
         Mono<Response<Void>> response = client.clearMessagesWithResponse(context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -390,6 +405,7 @@ public final class QueueClient {
      * and other metadata about the enqueued message.
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public SendMessageResult sendMessage(String messageText) {
         return sendMessageWithResponse(messageText, null, null, null, Context.NONE).getValue();
     }
@@ -427,6 +443,7 @@ public final class QueueClient {
      * are outside of the allowed limits.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SendMessageResult> sendMessageWithResponse(String messageText, Duration visibilityTimeout,
         Duration timeToLive, Duration timeout, Context context) {
         Mono<Response<SendMessageResult>> response = client.sendMessageWithResponse(messageText,
@@ -452,6 +469,7 @@ public final class QueueClient {
      * additionally it contains other metadata about the message.
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueMessageItem receiveMessage() {
         return client.receiveMessage().block();
     }
@@ -478,6 +496,7 @@ public final class QueueClient {
      * used to interact with the message and other metadata about the message.
      * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueMessageItem> receiveMessages(Integer maxMessages) {
         return receiveMessages(maxMessages, Duration.ofSeconds(30), null, Context.NONE);
     }
@@ -511,6 +530,7 @@ public final class QueueClient {
      * outside of the allowed bounds
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueMessageItem> receiveMessages(Integer maxMessages, Duration visibilityTimeout,
         Duration timeout, Context context) {
         return new PagedIterable<>(
@@ -534,6 +554,7 @@ public final class QueueClient {
      *
      * @return A {@link PeekedMessageItem} that contains metadata about the message.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public PeekedMessageItem peekMessage() {
         return client.peekMessage().block();
     }
@@ -564,6 +585,7 @@ public final class QueueClient {
      * @throws QueueStorageException If the queue doesn't exist or {@code maxMessages} is outside of the allowed bounds
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PeekedMessageItem> peekMessages(Integer maxMessages, Duration timeout, Context context) {
         return new PagedIterable<>(client.peekMessagesWithOptionalTimeout(maxMessages, timeout, context));
     }
@@ -591,6 +613,7 @@ public final class QueueClient {
      * @throws QueueStorageException If the queue or messageId don't exist, the popReceipt doesn't match on the message,
      * or the {@code visibilityTimeout} is outside the allowed bounds.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateMessageResult updateMessage(String messageId, String popReceipt, String messageText,
                                              Duration visibilityTimeout) {
         return updateMessageWithResponse(messageId, popReceipt,  messageText, visibilityTimeout, null, Context.NONE)
@@ -624,6 +647,7 @@ public final class QueueClient {
      * or the {@code visibilityTimeout} is outside the allowed bounds.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpdateMessageResult> updateMessageWithResponse(String messageId, String popReceipt,
         String messageText, Duration visibilityTimeout, Duration timeout, Context context) {
         Mono<Response<UpdateMessageResult>> response = client.updateMessageWithResponse(messageId,
@@ -648,6 +672,7 @@ public final class QueueClient {
      * @throws QueueStorageException If the queue or messageId don't exist or the popReceipt doesn't match on the
      * message.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteMessage(String messageId, String popReceipt) {
         deleteMessageWithResponse(messageId, popReceipt, null, Context.NONE);
     }
@@ -674,6 +699,7 @@ public final class QueueClient {
      * message.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteMessageWithResponse(String messageId, String popReceipt, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = client.deleteMessageWithResponse(messageId, popReceipt, context);

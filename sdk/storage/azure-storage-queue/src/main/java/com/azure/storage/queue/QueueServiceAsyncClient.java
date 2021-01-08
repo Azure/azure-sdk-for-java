@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -115,6 +117,7 @@ public final class QueueServiceAsyncClient {
      * @return The {@link QueueAsyncClient QueueAsyncClient}
      * @throws QueueStorageException If a queue with the same name and different metadata already exists
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueAsyncClient> createQueue(String queueName) {
         try {
             return createQueueWithResponse(queueName, null).flatMap(FluxUtil::toMono);
@@ -139,6 +142,7 @@ public final class QueueServiceAsyncClient {
      * @return A response containing the {@link QueueAsyncClient QueueAsyncClient} and the status of creating the queue
      * @throws QueueStorageException If a queue with the same name and different metadata already exists
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueAsyncClient>> createQueueWithResponse(String queueName, Map<String, String> metadata) {
         try {
             Objects.requireNonNull(queueName, "'queueName' cannot be null.");
@@ -169,6 +173,7 @@ public final class QueueServiceAsyncClient {
      * @return An empty response
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteQueue(String queueName) {
         try {
             return deleteQueueWithResponse(queueName).flatMap(FluxUtil::toMono);
@@ -190,6 +195,7 @@ public final class QueueServiceAsyncClient {
      * @return A response that only contains headers and response status code
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteQueueWithResponse(String queueName) {
         try {
             return withContext(context -> deleteQueueWithResponse(queueName, context));
@@ -216,6 +222,7 @@ public final class QueueServiceAsyncClient {
      *
      * @return {@link QueueItem Queues} in the storage account
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueueItem> listQueues() {
         try {
             return listQueuesWithOptionalTimeout(null, null, null, Context.NONE);
@@ -242,6 +249,7 @@ public final class QueueServiceAsyncClient {
      * @param options Options for listing queues
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<QueueItem> listQueues(QueuesSegmentOptions options) {
         try {
             return listQueuesWithOptionalTimeout(null, options, null, Context.NONE);
@@ -299,6 +307,7 @@ public final class QueueServiceAsyncClient {
      *
      * @return Storage account {@link QueueServiceProperties Queue service properties}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueServiceProperties> getProperties() {
         try {
             return getPropertiesWithResponse().flatMap(FluxUtil::toMono);
@@ -323,6 +332,7 @@ public final class QueueServiceAsyncClient {
      *
      * @return A response containing the Storage account {@link QueueServiceProperties Queue service properties}
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueServiceProperties>> getPropertiesWithResponse() {
         try {
             return withContext(this::getPropertiesWithResponse);
@@ -375,6 +385,7 @@ public final class QueueServiceAsyncClient {
      * PUT</li>
      * </ul>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setProperties(QueueServiceProperties properties) {
         try {
             return setPropertiesWithResponse(properties).flatMap(FluxUtil::toMono);
@@ -420,6 +431,7 @@ public final class QueueServiceAsyncClient {
      * PUT</li>
      * </ul>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesWithResponse(QueueServiceProperties properties) {
         try {
             return withContext(context -> setPropertiesWithResponse(properties, context));
@@ -449,6 +461,7 @@ public final class QueueServiceAsyncClient {
      *
      * @return The geo replication information about the Queue service
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<QueueServiceStatistics> getStatistics() {
         try {
             return getStatisticsWithResponse().flatMap(FluxUtil::toMono);
@@ -471,6 +484,7 @@ public final class QueueServiceAsyncClient {
      *
      * @return A response containing the geo replication information about the Queue service
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueueServiceStatistics>> getStatisticsWithResponse() {
         try {
             return withContext(this::getStatisticsWithResponse);

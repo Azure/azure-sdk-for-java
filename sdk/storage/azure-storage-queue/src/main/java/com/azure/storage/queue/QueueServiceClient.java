@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.storage.queue;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -91,6 +93,7 @@ public final class QueueServiceClient {
      * @return A response containing the QueueClient and the status of creating the queue
      * @throws QueueStorageException If a queue with the same name and different metadata already exists
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueClient createQueue(String queueName) {
         return createQueueWithResponse(queueName, null, null, Context.NONE).getValue();
     }
@@ -115,6 +118,7 @@ public final class QueueServiceClient {
      * @throws QueueStorageException If a queue with the same name and different metadata already exists
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueClient> createQueueWithResponse(String queueName, Map<String, String> metadata,
         Duration timeout, Context context) {
 
@@ -135,6 +139,7 @@ public final class QueueServiceClient {
      * @param queueName Name of the queue
      * @throws QueueStorageException If the queue doesn't exist
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteQueue(String queueName) {
         deleteQueueWithResponse(queueName, null, Context.NONE);
     }
@@ -156,6 +161,7 @@ public final class QueueServiceClient {
      * @throws QueueStorageException If the queue doesn't exist
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String queueName, Duration timeout, Context context) {
         Mono<Response<Void>> response = client.deleteQueueWithResponse(queueName, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -175,6 +181,7 @@ public final class QueueServiceClient {
      *
      * @return {@link QueueItem Queues} in the storage account
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueItem> listQueues() {
         return listQueues(null, null, Context.NONE);
     }
@@ -201,6 +208,7 @@ public final class QueueServiceClient {
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueItem> listQueues(QueuesSegmentOptions options, Duration timeout, Context context) {
         return listQueues(null, options, timeout, context);
     }
@@ -240,6 +248,7 @@ public final class QueueServiceClient {
      *
      * @return Storage account Queue service properties
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueServiceProperties getProperties() {
         return getPropertiesWithResponse(null, Context.NONE).getValue();
     }
@@ -264,6 +273,7 @@ public final class QueueServiceClient {
      * @return A response containing the Storage account Queue service properties
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
         Mono<Response<QueueServiceProperties>> response = client.getPropertiesWithResponse(context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
@@ -306,6 +316,7 @@ public final class QueueServiceClient {
      * PUT</li>
      * </ul>
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(QueueServiceProperties properties) {
         setPropertiesWithResponse(properties, null, Context.NONE);
     }
@@ -351,6 +362,7 @@ public final class QueueServiceClient {
      * </ul>
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(QueueServiceProperties properties, Duration timeout,
         Context context) {
         Mono<Response<Void>> response = client.setPropertiesWithResponse(properties, context);
@@ -371,6 +383,7 @@ public final class QueueServiceClient {
      *
      * @return The geo replication information about the Queue service
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueServiceStatistics getStatistics() {
         return getStatisticsWithResponse(null, Context.NONE).getValue();
     }
@@ -393,6 +406,7 @@ public final class QueueServiceClient {
      * @return A response containing the geo replication information about the Queue service
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
         Mono<Response<QueueServiceStatistics>> response = client.getStatisticsWithResponse(context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
