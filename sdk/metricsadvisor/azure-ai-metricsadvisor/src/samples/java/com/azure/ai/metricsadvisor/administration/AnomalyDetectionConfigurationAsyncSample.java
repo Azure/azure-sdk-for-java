@@ -168,23 +168,29 @@ public class AnomalyDetectionConfigurationAsyncSample {
                 .getSuppressCondition().getMinRatio());
 
         System.out.printf("- Hard Threshold Condition:%n");
-        System.out.printf(" - Lower bound: %s%n",
-            wholeSeriesDetectionCondition.getHardThresholdCondition() == null ? null :
-                wholeSeriesDetectionCondition.getHardThresholdCondition().getLowerBound() == null ? null :
-                    wholeSeriesDetectionCondition.getHardThresholdCondition().getLowerBound());
-
-        System.out.printf(" - Upper bound: %s%n",
-            wholeSeriesDetectionCondition.getHardThresholdCondition() == null ? null :
-            wholeSeriesDetectionCondition.getHardThresholdCondition().getUpperBound() == null ? null :
-                wholeSeriesDetectionCondition.getHardThresholdCondition().getUpperBound());
-
-        System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
-            wholeSeriesDetectionCondition.getHardThresholdCondition() == null ? null :
-                wholeSeriesDetectionCondition.getHardThresholdCondition().getSuppressCondition() == null ? null :
-                    wholeSeriesDetectionCondition.getHardThresholdCondition().getSuppressCondition().getMinNumber(),
-            wholeSeriesDetectionCondition.getHardThresholdCondition() == null ? null :
-                wholeSeriesDetectionCondition.getHardThresholdCondition().getSuppressCondition() == null ? null :
-                    wholeSeriesDetectionCondition.getHardThresholdCondition().getSuppressCondition().getMinRatio());
+        if ( wholeSeriesDetectionCondition.getHardThresholdCondition() != null ) {
+            System.out.printf(" - Lower bound: %s%n",
+                wholeSeriesDetectionCondition.getHardThresholdCondition()
+                    .getLowerBound());
+            System.out.printf(" - Upper bound: %s%n",
+                wholeSeriesDetectionCondition.getHardThresholdCondition()
+                    .getUpperBound());
+            if ( wholeSeriesDetectionCondition.getHardThresholdCondition().getSuppressCondition() != null ) {
+                System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
+                    wholeSeriesDetectionCondition.getHardThresholdCondition()
+                        .getSuppressCondition().getMinNumber(),
+                    wholeSeriesDetectionCondition.getHardThresholdCondition()
+                        .getSuppressCondition().getMinRatio());
+            } else {
+                System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
+                    null,null);
+            }
+        } else {
+            System.out.printf(" - Lower bound: %s%n",null);
+            System.out.printf(" - Upper bound: %s%n",null);
+            System.out.printf(" - Suppress conditions: minimum number: %s; minimum ratio: %s%n",
+                null,null);
+        }
 
         System.out.printf("- Change Threshold Condition:%n");
         System.out.printf(" - Change percentage: %s%n",
