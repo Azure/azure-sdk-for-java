@@ -53,6 +53,11 @@ config = {
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )
         },
+        'sdk/spring/azure-spring-boot-test-aad-b2c/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
+            )
+        },
         'sdk/spring/azure-spring-boot-test-cosmos/pom.xml': {
             VERSION_UPDATE_ITEMS: (
                 VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
