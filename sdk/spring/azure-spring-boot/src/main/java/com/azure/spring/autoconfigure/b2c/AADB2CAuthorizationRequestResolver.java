@@ -94,7 +94,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
                 .ifPresent(additionalParameters::putAll);
         additionalParameters.put("p", userFlow);
         additionalParameters.put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);
-
+        additionalParameters.putAll(request.getAdditionalParameters());
         return OAuth2AuthorizationRequest.from(request).additionalParameters(additionalParameters).build();
     }
 
