@@ -2,16 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import java.sql.Date
+import com.fasterxml.jackson.databind.ObjectMapper
+
+import java.sql.{Date, Timestamp}
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
-import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType, Decimal, DecimalType, DoubleType,
-    FloatType, IntegerType, LongType, MapType, NullType, StringType, StructField, StructType}
+import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType, Decimal, DecimalType, DoubleType, FloatType, IntegerType, LongType, MapType, NullType, StringType, StructField, StructType, TimestampType}
 import org.assertj.core.api.Assertions.assertThat
 
 class CosmosRowConverterSpec extends UnitSpec {
   //scalastyle:off null
   //scalastyle:off multiple.string.literals
+
+  val objectMapper = new ObjectMapper();
 
   "basic spark row" should "translate to ObjectNode" in {
 
@@ -94,15 +97,18 @@ class CosmosRowConverterSpec extends UnitSpec {
 
   "date and time in spark row" should "translate to ObjectNode" in {
     val colName1 = "testCol1"
+    val colName2 = "testCol2"
     val currentMillis = System.currentTimeMillis()
     val colVal1 = new Date(currentMillis)
+    val colVal2 = new Timestamp(colVal1.getTime())
 
     val row = new GenericRowWithSchema(
-        Array(colVal1),
-        StructType(Seq(StructField(colName1, DateType))))
+        Array(colVal1, colVal2),
+        StructType(Seq(StructField(colName1, DateType), StructField(colName2, TimestampType))))
 
     val objectNode = CosmosRowConverter.rowToObjectNode(row)
     assertThat(objectNode.get(colName1).asLong()).isEqualTo(currentMillis)
+    assertThat(objectNode.get(colName2).asLong()).isEqualTo(currentMillis)
   }
 
   "numeric types in spark row" should "translate to ObjectNode" in {
@@ -129,6 +135,7 @@ class CosmosRowConverterSpec extends UnitSpec {
     assertThat(col4AsDecimal.compareTo(colVal4)).isEqualTo(0)
   }
 
+  // TODO: Currently RowConverter.scala only works with MapType if the row is RowInternal
   "map in spark row" should "translate to ObjectNode" ignore {
     val colName1 = "testCol1"
 
@@ -161,7 +168,85 @@ class CosmosRowConverterSpec extends UnitSpec {
     assertThat(nestedNode.get(structCol1Name).asText()).isEqualTo(structCol1Val)
   }
 
+  "basic ObjectNode" should "translate to InternalRow" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colVal1 = 8
+    val colVal2 = "strVal"
+
+    val schema = StructType(Seq(StructField(colName1, IntegerType), StructField(colName2, StringType)))
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    objectNode.put(colName2, colVal2)
+    val internalRow = CosmosRowConverter.toInternalRow(schema, objectNode)
+    assertThat(internalRow.getInt(0)).isEqualTo(colVal1)
+    assertThat(internalRow.getString(1)).isEqualTo(colVal2)
+  }
+
+  "null type in ObjectNode" should "translate to InternalRow" in {
+
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colVal1 : String = null
+    val colVal2 = "strVal"
+
+    val schema = StructType(Seq(StructField(colName1, NullType), StructField(colName2, StringType)))
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    objectNode.put(colName2, colVal2)
+
+    val internalRow = CosmosRowConverter.toInternalRow(schema, objectNode)
+    assertThat(internalRow.isNullAt(0)).isTrue
+    assertThat(internalRow.getString(1)).isEqualTo(colVal2)
+  }
+
+  // TODO: RowConverter.scala currently does not work with ArrayType, it always returns null
+  "array in ObjectNode" should "translate to InternalRow" ignore {
+    val colName1 = "testCol1"
+    val colVal1 : Array[String] = Array("element1", "element2")
+
+    val schema = StructType(Seq(StructField(colName1, ArrayType(StringType, false))))
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val arrayObjectNode = objectMapper.createArrayNode()
+    colVal1.foreach(elem => arrayObjectNode.add(elem))
+    objectNode.set(colName1, arrayObjectNode)
+
+    val internalRow = CosmosRowConverter.toInternalRow(schema, objectNode)
+    val arrayNode = internalRow.getArray(0)
+    assertThat(arrayNode.numElements()).isEqualTo(colVal1.length)
+    for (i <- 0 until colVal1.length)
+        assertThat(arrayNode.array(i)).isEqualTo(colVal1(i))
+  }
+
+  "binary in ObjectNode" should "translate to InternalRow" in {
+    val colName1 = "testCol1"
+    val colVal1 = "strVal".getBytes()
+
+    val schema = StructType(Seq(StructField(colName1, BinaryType)))
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val arrayObjectNode = objectMapper.createArrayNode()
+    colVal1.foreach(elem => arrayObjectNode.add(elem))
+    objectNode.set(colName1, arrayObjectNode)
+
+    val internalRow = CosmosRowConverter.toInternalRow(schema, objectNode)
+    val nodeAsBinary = internalRow.getBinary(0)
+    for (i <- 0 until colVal1.length)
+        assertThat(nodeAsBinary(i)).isEqualTo(colVal1(i))
+  }
+
+  "date and time in ObjectNode" should "translate to InternalRow" in {
+    val colName1 = "testCol1"
+    val colVal1 = System.currentTimeMillis()
+    val colVal1AsTime = new Timestamp(colVal1)
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    objectNode.put(colName1, colVal1)
+    val schema = StructType(Seq(StructField(colName1, TimestampType)))
+    val internalRow = CosmosRowConverter.toInternalRow(schema, objectNode)
+    val asTime = new Timestamp(internalRow.getLong(0))
+    assertThat(asTime.compareTo(colVal1AsTime)).isEqualTo(0)
+  }
+
   //scalastyle:on null
   //scalastyle:on multiple.string.literals
-  // TODO moderakh add more tests for all primitive types, Map, List, Nested Type, ...
 }
