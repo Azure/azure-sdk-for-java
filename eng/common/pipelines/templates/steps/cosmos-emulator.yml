@@ -14,6 +14,14 @@ steps:
       if (Test-Path $Env:LOCALAPPDATA\CosmosDbEmulator) { Remove-Item -Recurse -Force $Env:LOCALAPPDATA\CosmosDbEmulator }
     displayName: Deleting Cosmos DB Emulator data
   - powershell: |
+      Write-Host "Getting Cosmos DB Emulator Version"
+      Set-Variable ProductName -Option Constant -Value "Azure Cosmos DB Emulator"
+      Set-Variable InstallLocation -Option ReadOnly -Value (Get-ItemProperty "HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*" | Where-Object { $_.DisplayName -eq $ProductName } | Select-Object -First 1 -Property InstallLocation).InstallLocation
+      Set-Variable Emulator -Option ReadOnly -Value (Join-Path $InstallLocation "CosmosDB.Emulator.exe")
+      $fileVersion = Get-ChildItem $Emulator
+      Write-Host $Emulator $fileVersion.VersionInfo
+    displayName: Getting Cosmos DB EMulator Version
+  - powershell: |
       Write-Host "Launching Cosmos DB Emulator"
       Import-Module "$env:temp\Azure Cosmos DB Emulator\PSModules\Microsoft.Azure.CosmosDB.Emulator"
       Start-CosmosDbEmulator -NoUI ${{ parameters.StartParameters }}
