@@ -72,6 +72,7 @@ steps:
       $process=(Start-Process $Emulator -ArgumentList $argumentList -ErrorAction Stop -PassThru)
       Write-Host "Emulator process started: $($process.Name), $($process.FileVersion)"
       $Timeout = 240
+      $result="NotYetStarted"
       $complete = if ($Timeout -gt 0) {
         $start = [DateTimeOffset]::Now
         $stop = $start.AddSeconds($Timeout)
@@ -94,14 +95,13 @@ steps:
           }
           2 {
             Write-Host "The emulator is running"
-            return
+            $result="Running"
           }
           3 {
             Write-Host "The emulator is stopped"
           }
           default {
             Write-Host "Unrecognized exit code $process.ExitCode"
-            return
           }
         }
 
@@ -109,5 +109,5 @@ steps:
       }
       until ($complete.Invoke())
 
-      Write-Error "The emulator failed to reach Running status within ${Timeout} seconds"
+      Write-Host "The emulator failed to reach Running status within ${Timeout} seconds"
     displayName: Start Cosmos DB Emulator
