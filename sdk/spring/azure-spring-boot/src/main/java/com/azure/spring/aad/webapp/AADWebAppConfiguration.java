@@ -81,7 +81,7 @@ public class AADWebAppConfiguration {
             // AAD server will return error if:
             // 1. authorizationCodeScopes have more than one resource server.
             // 2. accessTokenScopes have no resource server
-            accessTokenScopes.add("https://graph.microsoft.com/User.Read");
+            accessTokenScopes.add(properties.getGraphBaseUri() + "User.Read");
         }
         return new AzureClientRegistration(client, accessTokenScopes);
     }
@@ -115,8 +115,8 @@ public class AADWebAppConfiguration {
         result.addAll(openidScopes());
         if (properties.allowedGroupsConfigured()) {
             // The 2 scopes are need to get group name from graph.
-            result.add("https://graph.microsoft.com/User.Read");
-            result.add("https://graph.microsoft.com/Directory.AccessAsUser.All");
+            result.add(properties.getGraphBaseUri() + "User.Read");
+            result.add(properties.getGraphBaseUri() + "Directory.AccessAsUser.All");
         }
         return result;
     }
