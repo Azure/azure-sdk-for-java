@@ -29,8 +29,8 @@ steps:
     displayName: Delete Cosmos DB Emulator data
   - powershell: |
       Write-Host "Getting Cosmos DB Emulator Version"
-      Set-Variable ProductName -Option Constant -Value "Azure Cosmos DB Emulator"
-      Set-Variable Emulator -Option ReadOnly -Value (Join-Path $env:temp ProductName "CosmosDB.Emulator.exe")
+      $ProductName = "Azure Cosmos DB Emulator"
+      $Emulator = (Join-Path $env:temp (Join-Path $ProductName "CosmosDB.Emulator.exe"))
       $fileVersion = Get-ChildItem $Emulator
       Write-Host $Emulator $fileVersion.VersionInfo
     displayName: Get Cosmos DB Emulator Version
