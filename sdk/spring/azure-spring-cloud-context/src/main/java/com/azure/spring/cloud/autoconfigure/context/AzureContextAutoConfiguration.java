@@ -3,28 +3,21 @@
 
 package com.azure.spring.cloud.autoconfigure.context;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.spring.cloud.autoconfigure.telemetry.SubscriptionSupplier;
 import com.azure.spring.cloud.context.core.api.CredentialsProvider;
-import com.azure.spring.cloud.context.core.api.ResourceManagerProvider;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
-import com.azure.spring.cloud.context.core.impl.AzureResourceManagerProvider;
-import com.azure.spring.cloud.context.core.impl.DefaultCredentialsProvider;
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.AzureResponseBuilder;
-import com.microsoft.azure.credentials.AzureTokenCredentials;
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
-import com.microsoft.azure.serializer.AzureJacksonAdapter;
-import com.microsoft.rest.RestClient;
+import com.azure.spring.identity.DefaultSpringCredentialBuilder;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import java.io.IOException;
-import java.util.Optional;
+import org.springframework.core.env.Environment;
 
 /**
  * Auto-config to provide default {@link CredentialsProvider} for all Azure services
@@ -33,49 +26,50 @@ import java.util.Optional;
  */
 @Configuration
 @EnableConfigurationProperties(AzureProperties.class)
-@ConditionalOnClass(Azure.class)
+@ConditionalOnClass(AzureResourceManager.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure", value = { "resource-group" })
 public class AzureContextAutoConfiguration {
 
-    private static final String PROJECT_VERSION =
-        AzureContextAutoConfiguration.class.getPackage().getImplementationVersion();
+    private static final String PROJECT_VERSION = AzureContextAutoConfiguration.class.getPackage()
+                                                                                     .getImplementationVersion();
     private static final String SPRING_CLOUD_USER_AGENT = "spring-cloud-azure/" + PROJECT_VERSION;
 
-    @Bean
-    @ConditionalOnMissingBean
-    public ResourceManagerProvider resourceManagerProvider(Azure azure, AzureProperties azureProperties) {
-        return new AzureResourceManagerProvider(azure, azureProperties);
-    }
 
     /**
-     * Create an {@link Azure} bean.
-     * @param credentials The credential to connect to Azure.
-     * @param azureProperties The configured Azure properties.
-     * @return An Azure object.
-     * @throws IOException When IOException happens.
+     * Create an {@link AzureResourceManager} bean.
+     *
+     * @param credential The credential to connect to Azure.
+     * @param profile The azure profile.
+     * @return An AzureResourceManager object.
      */
     @Bean
     @ConditionalOnMissingBean
-    public Azure azure(AzureTokenCredentials credentials, AzureProperties azureProperties) throws IOException {
-        RestClient restClient = new RestClient.Builder()
-            .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-            .withCredentials(credentials).withSerializerAdapter(new AzureJacksonAdapter())
-            .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-            .withInterceptor(new ProviderRegistrationInterceptor(credentials))
-            .withInterceptor(new ResourceManagerThrottlingInterceptor()).withUserAgent(SPRING_CLOUD_USER_AGENT)
-            .build();
-
-        String subscriptionId = Optional.ofNullable(azureProperties.getSubscriptionId())
-                                        .orElseGet(credentials::defaultSubscriptionId);
-        return Azure.authenticate(restClient, credentials.domain())
-                    .withSubscription(subscriptionId);
+    public AzureResourceManager azureResourceManager(TokenCredential credential, AzureProfile profile) {
+        // TODO (xiada) Do we need to pass our User-Agent to with the management sdk?
+        return AzureResourceManager.configure()
+                                   .authenticate(credential, profile)
+                                   .withDefaultSubscription();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public AzureTokenCredentials credentials(AzureProperties azureProperties) {
-        CredentialsProvider credentialsProvider = new DefaultCredentialsProvider(azureProperties);
-        return credentialsProvider.getCredentials();
+    public AzureProfile azureProfile(AzureProperties azureProperties) {
+        return new AzureProfile(azureProperties.getTenantId(), azureProperties.getSubscriptionId(),
+            azureProperties.getEnvironment().getAzureEnvironment());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public TokenCredential credential(Environment environment) {
+        return new DefaultSpringCredentialBuilder().environment(environment)
+                                                   .alternativePrefix(AzureProperties.PREFIX)
+                                                   .build();
+    }
+
+    @Bean
+    @ConditionalOnBean(AzureResourceManager.class)
+    public SubscriptionSupplier subscriptionSupplier(AzureResourceManager azureResourceManager) {
+        return azureResourceManager::subscriptionId;
     }
 
 }

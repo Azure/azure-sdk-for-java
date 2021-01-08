@@ -38,11 +38,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <!-- SchemaRegistrySkip temporarily relaxing code coverage -->
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -95,7 +90,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

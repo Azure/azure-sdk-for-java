@@ -13,8 +13,8 @@ OUTPUT_FOLDER_FORMAT = None
 
 # Constant parameters
 SDK_ROOT = '../../../'  # related to file dir
-AUTOREST_CORE_VERSION = '3.0.6327'
-AUTOREST_JAVA = '@autorest/java@4.0.5'
+AUTOREST_CORE_VERSION = '3.0.6350'
+AUTOREST_JAVA = '@autorest/java@4.0.8'
 DEFAULT_VERSION = '1.0.0-beta.1'
 GROUP_ID = 'com.azure.resourcemanager'
 API_SPECS_FILE = 'api-specs.yaml'
@@ -23,7 +23,7 @@ CI_FILE_FORMAT = 'sdk/{0}/ci.yml'
 POM_FILE_FORMAT = 'sdk/{0}/pom.xml'
 README_FORMAT = 'specification/{0}/resource-manager/readme.md'
 
-MODELERFOUR_ARGUMENTS = '--pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true --pipeline.modelerfour.flatten-payloads=false'
+MODELERFOUR_ARGUMENTS = '--pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true'
 FLUENTLITE_ARGUMENTS = '--java {0} --azure-arm --verbose --sdk-integration --fluent=lite --java.fluent=lite --java.license-header=MICROSOFT_MIT_SMALL'.format(
     MODELERFOUR_ARGUMENTS)
 
