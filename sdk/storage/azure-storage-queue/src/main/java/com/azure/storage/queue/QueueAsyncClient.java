@@ -150,7 +150,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.createWithResponse#map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to associate with the queue. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
@@ -188,7 +188,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.delete}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
      *
      * @return An empty response
      * @throws QueueStorageException If the queue doesn't exist
@@ -212,7 +212,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.deleteWithResponse}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-queue3">Azure Docs</a>.</p>
      *
      * @return A response that only contains headers and response status code
      * @throws QueueStorageException If the queue doesn't exist
@@ -243,7 +243,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.getProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
      *
      * @return A response containing a {@link QueueProperties} value which contains the metadata and approximate
      * messages count of the queue.
@@ -268,7 +268,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.getPropertiesWithResponse}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-metadata">Azure Docs</a>.</p>
      *
      * @return A response containing a {@link QueueProperties} value which contains the metadata and approximate
      * messages count of the queue.
@@ -306,7 +306,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.clearMetadata#map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to set on the queue
      * @return A response that only contains headers and response status code
@@ -337,7 +337,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.clearMetadataWithResponse#map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-metadata">Azure Docs</a>.</p>
      *
      * @param metadata Metadata to set on the queue
      * @return A response that only contains headers and response status code
@@ -375,7 +375,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.getAccessPolicy}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-acl">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-acl">Azure Docs</a>.</p>
      *
      * @return The stored access policies specified on the queue.
      * @throws QueueStorageException If the queue doesn't exist
@@ -409,7 +409,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.setAccessPolicy#Iterable}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
      * @return An empty response
@@ -435,7 +435,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.setAccessPolicyWithResponse#Iterable}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-acl">Azure Docs</a>.</p>
      *
      * @param permissions Access policies to set on the queue
      * @return A response that only contains headers and response status code
@@ -491,7 +491,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.clearMessages}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
      *
      * @return An empty response
      * @throws QueueStorageException If the queue doesn't exist
@@ -515,7 +515,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.clearMessagesWithResponse}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/clear-messages">Azure Docs</a>.</p>
      *
      * @return A response that only contains headers and response status code
      * @throws QueueStorageException If the queue doesn't exist
@@ -546,7 +546,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.sendMessage#string}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
      *
      * @param messageText Message text
      * @return A {@link SendMessageResult} value that contains the {@link SendMessageResult#getMessageId() messageId}
@@ -577,7 +577,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.sendMessageWithResponse-liveTime#String-Duration-Duration}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/put-message">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-message">Azure Docs</a>.</p>
      *
      * @param messageText Message text
      * @param visibilityTimeout Optional. The timeout period for how long the message is invisible in the queue. If
@@ -625,7 +625,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.receiveMessage}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
      *
      * @return The first {@link QueueMessageItem} in the queue, it contains {@link QueueMessageItem#getMessageId()
      * messageId} and {@link QueueMessageItem#getPopReceipt() popReceipt} used to interact with the message,
@@ -652,7 +652,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.receiveMessages#integer}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
      *
      * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue
      * than requested all the messages will be returned. If left empty only 1 message will be retrieved, the allowed
@@ -683,7 +683,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.receiveMessages#integer-duration}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-messages">Azure Docs</a>.</p>
      *
      * @param maxMessages Optional. Maximum number of messages to get, if there are less messages exist in the queue
      * than requested all the messages will be returned. If left empty only 1 message will be retrieved, the allowed
@@ -736,7 +736,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.peekMessage}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
      *
      * @return A {@link PeekedMessageItem} that contains metadata about the message.
      */
@@ -762,7 +762,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.queueAsyncClient.peekMessages#integer}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/peek-messages">Azure Docs</a>.</p>
      *
      * @param maxMessages Optional. Maximum number of messages to peek, if there are less messages exist in the queue
      * than requested all the messages will be peeked. If left empty only 1 message will be peeked, the allowed range is
@@ -805,7 +805,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.updateMessage#String-String-String-Duration}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/update-message">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/update-message">Azure Docs</a>.</p>
      *
      * @param messageId Id of the message to update
      * @param popReceipt Unique identifier that must match for the message to be updated
@@ -839,7 +839,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.updateMessageWithResponse#String-String-String-Duration}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/update-message">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/update-message">Azure Docs</a>.</p>
      *
      * @param messageId Id of the message to update
      * @param popReceipt Unique identifier that must match for the message to be updated
@@ -884,7 +884,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.deleteMessage#String-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
      *
      * @param messageId Id of the message to deleted
      * @param popReceipt Unique identifier that must match for the message to be deleted
@@ -911,7 +911,7 @@ public final class QueueAsyncClient {
      * {@codesnippet com.azure.storage.queue.QueueAsyncClient.deleteMessageWithResponse#String-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-message2">Azure Docs</a>.</p>
      *
      * @param messageId Id of the message to deleted
      * @param popReceipt Unique identifier that must match for the message to be deleted

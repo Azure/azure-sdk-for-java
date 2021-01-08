@@ -177,7 +177,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
      *
      * @return {@link QueueItem Queues} in the storage account
      */
@@ -199,7 +199,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.listQueues#queueSergmentOptions-duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/list-queues1">Azure Docs</a>.</p>
      *
      * @param options Options for listing queues
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -243,7 +243,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.getProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @return Storage account Queue service properties
@@ -264,7 +264,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.getPropertiesWithResponse#duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-properties">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
@@ -298,7 +298,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesEnableMetrics#QueueServiceProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
@@ -340,7 +340,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.setPropertiesWithResponseEnableMetrics#QueueServiceProperties-duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-queue-service-properties">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-queue-service-properties">Azure
      * Docs</a>.</p>
      *
      * @param properties Storage account Queue service properties
@@ -379,7 +379,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.getStatistics}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
      *
      * @return The geo replication information about the Queue service
      */
@@ -398,7 +398,7 @@ public final class QueueServiceClient {
      * {@codesnippet com.azure.storage.queue.queueServiceClient.getStatisticsWithResponse#duration-context}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-queue-service-stats">Azure Docs</a>.</p>
      *
      * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
      * concludes a {@link RuntimeException} will be thrown.
