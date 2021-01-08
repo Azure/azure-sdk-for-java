@@ -16,7 +16,13 @@ jobs:
     pool:
       vmImage: 'ubuntu-18.04'
     steps:
-
+    - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@2
+      displayName: 'Run CredScan'
+      inputs:
+        toolMajorVersion: V2
+        outputFormat: csv
+        debugMode: false
+      timeoutInMinutes: 360
     - template: ../common/pipelines/templates/steps/verify-links.yml
       parameters:
         Directory: ""
