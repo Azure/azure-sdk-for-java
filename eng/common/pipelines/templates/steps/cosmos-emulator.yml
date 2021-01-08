@@ -6,10 +6,19 @@ steps:
   - powershell: |
       $targetDir = $env:temp
       $DataStamp = get-date -Format yyyyMMddTHHmmss
-      $logFile = '$targetDir\CosmosEmulator-{0}_install.log' -f $DataStamp
+      $logFile = '{0}\CosmosEmulator-{1}_install.log' -f $targetDir,$DataStamp
       Write-Host "Downloading and extracting Cosmos DB Emulator - ${{ parameters.EmulatorMsiUrl }}"
       Write-Host "Target Dir: $targetDir"
-      msiexec /a ${{ parameters.EmulatorMsiUrl }} TARGETDIR=$targetDir /qn /l* $logFile | wait-process
+
+      $argumentList = , "/a"
+      $argumentList += , "${{ parameters.EmulatorMsiUrl }}"
+      $argumentList += , "TARGETDIR=$targetDir"
+      $argumentList += , "/qn"
+      $argumentList += , "/l*"
+      $argumentList += $logFile
+      Write-Host "Starting installation: msiexec.exe $argumentList"
+      Start-Process "msiexec.exe" -ArgumentList $argumentList -ErrorAction Stop -Wait
+
       Write-Host "Log File: $logFile"
       $logFileText = Get-Content $logFile
       $logFileText | ForEach-Object {Write-Host  $_ }
