@@ -11,9 +11,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.implementation.models.ContainersSubmitBatchResponse;
-import com.azure.storage.blob.implementation.models.ServicesSubmitBatchResponse;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -59,7 +58,7 @@ class BlobBatchHelper {
          * Content-Type will contain the boundary for each batch response. The expected format is:
          * "Content-Type: multipart/mixed; boundary=batchresponse_66925647-d0cb-4109-b6d3-28efe3e1e5ed"
          */
-        String contentType = rawResponse.getHeaders().getValue("Content-Type");
+        String contentType = rawResponse.getHeaders().getValue(Constants.HeaderConstants.CONTENT_TYPE);
 
         // Split on the boundary [ "multipart/mixed; boundary", "batchresponse_66925647-d0cb-4109-b6d3-28efe3e1e5ed"]
         String[] boundaryPieces = contentType.split("=", 2);
@@ -81,7 +80,8 @@ class BlobBatchHelper {
                     int statusCode = getStatusCode(exceptionSections[1], logger);
                     HttpHeaders headers = getHttpHeaders(exceptionSections[1]);
 
-                    throw logger.logExceptionAsError(new BlobStorageException(headers.getValue("x-ms-error-code"),
+                    throw logger.logExceptionAsError(new BlobStorageException(
+                        headers.getValue(Constants.HeaderConstants.ERROR_CODE),
                         createHttpResponse(rawResponse.getRequest(), statusCode, headers, body), body));
                 }
 

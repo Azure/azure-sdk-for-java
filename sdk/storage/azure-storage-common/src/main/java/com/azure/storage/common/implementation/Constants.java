@@ -210,6 +210,8 @@ public final class Constants {
          */
         public static final String CONTENT_ENCODING = "Content-Encoding";
 
+        public static final String CONTENT_TYPE = "Content-Type";
+
         public static final String CLIENT_REQUEST_ID = "x-ms-client-request-id";
 
         public static final String ENCRYPTION_KEY = "x-ms-encryption-key";
