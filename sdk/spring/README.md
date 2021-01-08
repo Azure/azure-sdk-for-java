@@ -18,7 +18,7 @@ This repo is for Spring Boot Starters of Azure services. It helps Spring Boot de
 Below starters are available with the latest release version. We recommend users to leverage the latest version for bug fix and new features.
 You can find them in [Maven Central Repository][maven-central-repository]. The starters of active directory, storage and keyvault secrets are also available in [Spring Initializr][spring-initializr]. 
 
-> 💡 From Azure Spring Boot starters 3.0.0 onwards, we changed the groupId from `com.microsoft.azure` to `com.azure.spring`, and modified artifactIds, too.
+> ❗ From Azure Spring Boot starters 3.0.0 onwards, we changed the groupId from `com.microsoft.azure` to `com.azure.spring`, and changed artifactIds, too.
 
 Artifact Id | Version for Spring Boot 2.3.x and 2.2.x 
 ---|:---:
@@ -54,7 +54,7 @@ spring-data-gremlin-boot-starter | [![Maven Central][gremlin-starter-mvn-2.3.x-i
 Below packages are available with latest release version. **We recommend users to leverage latest version for bug fix and new features.**
 
 ##### [Spring Cloud Stream][spring-cloud-stream]
-> 💡 From Azure Spring Cloud 2.0.0 onwards, we changed the groupId from `com.microsoft.azure` to `com.azure.spring`, and modified artifactIds, too.
+> ❗ From Azure Spring Cloud 2.0.0 onwards, we changed the groupId from `com.microsoft.azure` to `com.azure.spring`, and changed artifactIds, too.
 
 Artifact Id | Version
 ------ |---
