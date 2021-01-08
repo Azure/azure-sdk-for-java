@@ -1,6 +1,6 @@
 # Guide for migrating to com.azure:azure-messaging-servicebus from com.microsoft.azure:azure-servicebus
 
-This guide is intended to assist in the migration to version 7 of the Service Bus client library
+This guide is intended to assist in the migration to
 [`com.azure:azure-messaging-servicebus`](https://search.maven.org/artifact/com.azure/azure-messaging-servicebus) from
 version 3 of
 [`com.microsoft.azure:azure-servicebus`](https://search.maven.org/artifact/com.microsoft.azure/azure-servicebus/). It
@@ -54,8 +54,12 @@ for those interested.
 
 The new Service Bus library `azure-messaging-servicebus` provides the ability to share in some of the cross-service
 improvements made to the Azure development experience, such as 
+
  - Using the new `azure-identity` library to share a single authentication between clients. 
+ - Dedicated clients for sync and async operations with the client.
+ - Use of builders to build the client.
  - A unified diagnostics pipeline offering a common view of the activities across each of the client libraries.
+ 
 
 While we believe that there is significant benefit to adopting the new Service Bus library `azure-messaging-servicebus`,
 it is important to be aware that the previous version `azure-servicebus` have not been officially deprecated. They will
@@ -66,6 +70,7 @@ future they will not be under active development and new features are unlikely t
 
 - Ability to create a batch of messages with the smarter `ServiceBusSenderClient.createMessageBatch()` and 
 `ServiceBusMessageBatch.tryAddMessage()` APIs. This will help manage the messages to be sent in the most optimal way.
+- The clients created using one `ServiceBusClientBuilder` instance shares AMQP connection implicitly.
 
 ## Important changes
 
