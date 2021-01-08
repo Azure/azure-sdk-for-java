@@ -22,17 +22,17 @@ public class AADB2CSeleniumITHelper {
     private static final Map<String, String> DEFAULT_PROPERTIES = new HashMap<>();
 
     static {
-        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.tenant", System.getenv(AADB2CTestUtils.AAD_B2C_TENANT));
-        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.client-id", System.getenv(AADB2CTestUtils.AAD_B2C_CLIENT_ID));
-        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.client-secret", System.getenv(
-            AADB2CTestUtils.AAD_B2C_CLIENT_SECRET));
-        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.reply-url", System.getenv(AADB2CTestUtils.AAD_B2C_REPLY_URL));
+        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.tenant", AADB2CTestUtils.AAD_B2C_TENANT);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.client-id", AADB2CTestUtils.AAD_B2C_CLIENT_ID);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.client-secret",
+            AADB2CTestUtils.AAD_B2C_CLIENT_SECRET);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.reply-url", AADB2CTestUtils.AAD_B2C_REPLY_URL);
         DEFAULT_PROPERTIES
-            .put("azure.activedirectory.b2c.user-flows.sign-up-or-sign-in", System.getenv(
-                AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN));
+            .put("azure.activedirectory.b2c.user-flows.sign-up-or-sign-in",
+                AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
         DEFAULT_PROPERTIES
             .put("azure.activedirectory.b2c.user-flows.profile-edit",
-                System.getenv(AADB2CTestUtils.AAD_B2C_PROFILE_EDIT));
+                AADB2CTestUtils.AAD_B2C_PROFILE_EDIT);
 
         final String directory = "src/test/resources/driver/";
         final String chromedriverLinux = "chromedriver_linux64";
@@ -65,8 +65,8 @@ public class AADB2CSeleniumITHelper {
     }
 
     public AADB2CSeleniumITHelper(Class<?> appClass, Map<String, String> properties) throws InterruptedException {
-        userEmail = System.getenv(AADB2CTestUtils.AAD_B2C_USER_EMAIL);
-        userPassword = System.getenv(AADB2CTestUtils.AAD_B2C_USER_PASSWORD);
+        userEmail = AADB2CTestUtils.AAD_B2C_USER_EMAIL;
+        userPassword = AADB2CTestUtils.AAD_B2C_USER_PASSWORD;
         app = new AppRunner(appClass);
         DEFAULT_PROPERTIES.forEach(app::property);
         properties.forEach(app::property);
@@ -111,8 +111,7 @@ public class AADB2CSeleniumITHelper {
         manualRedirection();
         driver.findElement(
             By.cssSelector(
-                "a[href='/oauth2/authorization/" + System.getenv(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN) + "']"))
-            .click();
+                "a[href='/oauth2/authorization/" + AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN + "']")).click();
         Thread.sleep(5000);
     }
 
