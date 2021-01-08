@@ -48,7 +48,7 @@ public final class CosmosChangeFeedRequestOptions {
         this.startFromInternal = startFromInternal;
         this.continuationState = continuationState;
 
-        if (mode != ChangeFeedMode.INCREMENTAL) {
+        if (mode != ChangeFeedMode.INCREMENTAL && mode != ChangeFeedMode.FULL_FIDELITY) {
             throw new IllegalArgumentException(
                 String.format(
                     "Argument 'mode' has unsupported change feed mode %s",

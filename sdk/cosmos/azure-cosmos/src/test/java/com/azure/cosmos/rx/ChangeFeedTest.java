@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeExtractorImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -34,6 +35,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import org.testng.xml.dom.Tag;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -45,6 +47,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static org.assertj.core.api.Assertions.assertThat;
 
 //TODO: change to use external TestSuiteBase
@@ -63,7 +66,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         return TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollection.getId());
     }
 
-    static protected DocumentCollection getCollectionDefinition() {
+    static protected DocumentCollection getCollectionDefinition(boolean enableFullFidelity) {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/" + PartitionKeyFieldName);
@@ -72,6 +75,10 @@ public class ChangeFeedTest extends TestSuiteBase {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
         collectionDefinition.setPartitionKey(partitionKeyDef);
+
+        if (enableFullFidelity) {
+            collectionDefinition.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(10));
+        }
 
         return collectionDefinition;
     }
@@ -176,8 +183,7 @@ public class ChangeFeedTest extends TestSuiteBase {
             getContinuationToken()).as("Response continuation should not be null").isNotNull();
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void changeFeed_fullFidelity_fromNow() throws Exception {
+    private void changeFeed_withUpdatesAndDelete(boolean enableFullFidelityChangeFeedMode) {
 
         // READ change feed from current.
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
@@ -185,8 +191,11 @@ public class ChangeFeedTest extends TestSuiteBase {
             ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(partitionKey)));
         CosmosChangeFeedRequestOptions changeFeedOption =
             CosmosChangeFeedRequestOptions
-                .createForProcessingFromNow(feedRange)
-                .withFullFidelity();
+                .createForProcessingFromNow(feedRange);
+
+        if (enableFullFidelityChangeFeedMode) {
+            changeFeedOption = changeFeedOption.withFullFidelity();
+        }
 
         List<FeedResponse<Document>> changeFeedResultsList = client
             .queryDocumentChangeFeed(getCollectionLink(), changeFeedOption)
@@ -194,7 +203,10 @@ public class ChangeFeedTest extends TestSuiteBase {
             .block();
 
         FeedResponseListValidator<Document> validator =
-            new FeedResponseListValidator.Builder<Document>().totalSize(0).build();
+            new FeedResponseListValidator
+                .Builder<Document>()
+                .totalSize(0)
+                .build();
         validator.validate(changeFeedResultsList);
         assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
             getContinuationToken()).as("Response continuation should not be null").isNotNull();
@@ -203,7 +215,32 @@ public class ChangeFeedTest extends TestSuiteBase {
             .get(changeFeedResultsList.size() - 1)
             .getContinuationToken();
 
-        Document docToBeUpdated = partitionKeyToDocuments.get(partitionKey).stream().findFirst().get();
+        Document docToBeDeleted = partitionKeyToDocuments.get(partitionKey).stream().findFirst().get();
+        deleteDocument(client, docToBeDeleted.getSelfLink(), new PartitionKey(partitionKey));
+
+        CosmosChangeFeedRequestOptions changeFeedOptionForContinuationAfterDeletes =
+            CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(continuationToken);
+
+        List<FeedResponse<Document>> changeFeedResultsListAfterDeletes = client
+            .queryDocumentChangeFeed(getCollectionLink(), changeFeedOptionForContinuationAfterDeletes)
+            .collectList()
+            .block();
+
+        FeedResponseListValidator<Document> validatorAfterDeletes =
+            new FeedResponseListValidator
+                .Builder<Document>()
+                .totalSize(enableFullFidelityChangeFeedMode ? 1: 0)
+                .build();
+        validatorAfterDeletes.validate(changeFeedResultsListAfterDeletes);
+        assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
+            getContinuationToken()).as("Response continuation should not be null").isNotNull();
+
+        continuationToken = changeFeedResultsListAfterDeletes
+            .get(changeFeedResultsList.size() - 1)
+            .getContinuationToken();
+
+        Document docToBeUpdated = partitionKeyToDocuments.get(partitionKey).stream().skip(1).findFirst().get();
         updateDocument(client, docToBeUpdated);
         updateDocument(client, docToBeUpdated);
         updateDocument(client, docToBeUpdated);
@@ -218,10 +255,33 @@ public class ChangeFeedTest extends TestSuiteBase {
             .block();
 
         FeedResponseListValidator<Document> validatorAfterUpdates =
-            new FeedResponseListValidator.Builder<Document>().totalSize(3).build();
-        validator.validate(changeFeedResultsList);
+            new FeedResponseListValidator
+                .Builder<Document>()
+                .totalSize(enableFullFidelityChangeFeedMode ? 3: 1)
+                .build();
+
+        validatorAfterUpdates.validate(changeFeedResultsListAfterUpdates);
         assertThat(changeFeedResultsList.get(changeFeedResultsList.size() -1 ).
             getContinuationToken()).as("Response continuation should not be null").isNotNull();
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Tag(name = "EnableFullFidelity")
+    public void changeFeed_fullFidelity_fromNow() throws Exception {
+        changeFeed_withUpdatesAndDelete(true);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Tag(name = "EnableFullFidelity")
+    @Ignore("TODO fabianm - re-enable when bug in emulator always using FF change feed on conatiners with retention is fixed")
+    public void changeFeed_incrementalOnFullFidelityContainer_fromNow() throws Exception {
+        changeFeed_withUpdatesAndDelete(false);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Tag(name = "DisableFullFidelity")
+    public void changeFeed_incremental_fromNow() throws Exception {
+        changeFeed_withUpdatesAndDelete(false);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -393,7 +453,7 @@ public class ChangeFeedTest extends TestSuiteBase {
         BridgeInternal.setProperty(originalDocument, "prop", uuid);
 
         return client
-            .replaceDocument(getCollectionLink(), originalDocument, null)
+            .replaceDocument(originalDocument.getSelfLink(), originalDocument, null)
             .block()
             .getResource();
     }
@@ -422,14 +482,30 @@ public class ChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @BeforeMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeMethod(groups = { "simple", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void populateDocuments(Method method) {
+
+        checkNotNull(method, "Argument method must not be null.");
+
+        Tag tag = (Tag)method.getDeclaredAnnotation(Tag.class);
+        if (tag != null && "EnableFullFidelity".equalsIgnoreCase(tag.name())) {
+            populateDocumentsInternal(method, true);
+        } else {
+            populateDocumentsInternal(method, false);
+        }
+    }
+
+    void populateDocumentsInternal(Method method, boolean enableFullFidelity) {
 
         partitionKeyToDocuments.clear();
 
         RequestOptions options = new RequestOptions();
         options.setOfferThroughput(10100);
-        createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition(), options);
+        createdCollection = createCollection(
+            client,
+            createdDatabase.getId(),
+            getCollectionDefinition(enableFullFidelity),
+            options);
 
         List<Document> docs = new ArrayList<>();
 
