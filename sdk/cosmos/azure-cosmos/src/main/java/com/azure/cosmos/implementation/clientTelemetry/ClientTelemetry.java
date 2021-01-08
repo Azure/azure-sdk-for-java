@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation.clientTelemetry;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -59,7 +58,7 @@ public class ClientTelemetry {
     private HttpClient httpClient;
     private final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1, new DaemonThreadFactory());
     private final Scheduler scheduler = Schedulers.fromExecutor(scheduledExecutorService);
-    private static final Logger logger = LoggerFactory.getLogger(GlobalEndpointManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClientTelemetry.class);
     private volatile boolean isClosed;
     private volatile boolean isClientTelemetryEnabled;
     private static String AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
