@@ -236,11 +236,20 @@ public class GlobalEndpointManager implements AutoCloseable {
         logger.debug("registering a refresh in [{}] ms", this.backgroundRefreshLocationTimeIntervalInMS);
         LocalDateTime now = LocalDateTime.now();
 
-        int delayInMillis = initialization ? 0: this.backgroundRefreshLocationTimeIntervalInMS;
+        int delayInMillis = initialization ? 0 : this.backgroundRefreshLocationTimeIntervalInMS;
 
         this.refreshInBackground.set(true);
 
-        return Mono.delay(Duration.ofMillis(delayInMillis))
+        /*
+         * If there is no delay use a Mono.just of 0L to trigger execution immediately instead of scheduling initial
+         * execution through Scheduler.parallel that will trigger immediately. This removes the need to involve and
+         * switch between threads.
+         */
+        Mono<Long> initialMono = (delayInMillis == 0)
+            ? Mono.just(0L)
+            : Mono.delay(Duration.ofMillis(delayInMillis));
+
+        return initialMono
                 .flatMap(
                         t -> {
                             if (this.isClosed) {

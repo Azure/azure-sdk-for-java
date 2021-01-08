@@ -42,6 +42,7 @@ function getArtifacts() {
     for (var i in artifacts) {
       readMetadata(artifacts[i]);
     }
+    artiRegEx.lastIndex = 0;
   });
 }
 
@@ -58,6 +59,7 @@ function readMetadata(artifact) {
     for (var i in versions) {
       readPom(artifact, versions[i]);
     }
+    verRegEx.lastIndex = 0;
   });
 }
 
@@ -79,6 +81,7 @@ function readPom(artifact, version) {
       }
       data[service][tag].push(version);
     }
+    pkgRegEx.lastIndex = 0;
     if (startCnt == endCnt) {
       // update file for listing all latest releases of the packages
       var content = '# Single-Service Packages Latest Releases\n\n' +
