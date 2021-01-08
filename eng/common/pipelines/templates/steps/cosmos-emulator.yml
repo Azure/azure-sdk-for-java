@@ -16,7 +16,7 @@ steps:
             "/L*"
             $logFile
         )
-        Start-Process "msiexec.exe" -ArgumentList $MSIArgs -Wait -NoNewWindow
+        Start-Process -FilePath "msiexec.exe" -ArgumentList $MSIArgs -Verb RunAs -Wait
         Write-Host "Log File: $logFile"
         $logFileText = Get-Content $logFile
         $logFileText | ForEach-Object {Write-Host  $_ }
