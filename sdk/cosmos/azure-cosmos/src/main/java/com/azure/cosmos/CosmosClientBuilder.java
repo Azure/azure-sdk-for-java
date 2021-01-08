@@ -725,7 +725,8 @@ public class CosmosClientBuilder {
      * @return flag to allow query plan to be cached during query execution
      */
     boolean isQueryPlanCachingEnabled() {
-        return this.configs.isQueryPlanCachingEnabled();
+        // Used while initializing the client.
+        return Configs.isQueryPlanCachingEnabled();
     }
 
     /**
