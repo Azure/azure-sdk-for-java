@@ -487,7 +487,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
         checkNotNull(method, "Argument method must not be null.");
 
-        Tag tag = (Tag)method.getDeclaredAnnotation(Tag.class);
+        Tag tag = method.getDeclaredAnnotation(Tag.class);
         if (tag != null && "EnableFullFidelity".equalsIgnoreCase(tag.name())) {
             populateDocumentsInternal(method, true);
         } else {
