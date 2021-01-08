@@ -187,19 +187,19 @@ public class DataLakeFileSystemClientBuilder {
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public DataLakeFileSystemClientBuilder sasToken(String sasToken) {
-        return this.sasToken(new AzureSasCredential(Objects.requireNonNull(sasToken,
+        return this.credential(new AzureSasCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null.")));
     }
 
     /**
-     * Sets the SAS token used to authorize requests sent to the service.
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
      *
-     * @param credential The SAS token to use for authenticating requests.
+     * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
      * @return the updated DataLakeFileSystemClientBuilder
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
-    public DataLakeFileSystemClientBuilder sasToken(AzureSasCredential credential) {
-        blobContainerClientBuilder.sasToken(credential);
+    public DataLakeFileSystemClientBuilder credential(AzureSasCredential credential) {
+        blobContainerClientBuilder.credential(credential);
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;

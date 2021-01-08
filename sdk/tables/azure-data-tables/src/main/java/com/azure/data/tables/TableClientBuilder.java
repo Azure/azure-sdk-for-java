@@ -164,18 +164,18 @@ public class TableClientBuilder {
      * @throws NullPointerException if {@code sasToken} is {@code null}.
      */
     public TableClientBuilder sasToken(String sasToken) {
-        return this.sasToken(new AzureSasCredential(Objects.requireNonNull(sasToken,
+        return this.credential(new AzureSasCredential(Objects.requireNonNull(sasToken,
             "'sasToken' cannot be null.")));
     }
 
     /**
-     * Sets the SAS token used to authorize requests sent to the service.
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
      *
-     * @param credential The SAS token to use for authenticating requests.
+     * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
      * @return The updated {@code TableClientBuilder}.
      * @throws NullPointerException if {@code credential} is {@code null}.
      */
-    public TableClientBuilder sasToken(AzureSasCredential credential) {
+    public TableClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
         this.tablesSharedKeyCredential = null;
