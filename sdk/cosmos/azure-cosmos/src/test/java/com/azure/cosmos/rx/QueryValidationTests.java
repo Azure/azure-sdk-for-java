@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -64,12 +65,24 @@ public class QueryValidationTests extends TestSuiteBase {
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
-        client = this.getClientBuilder().queryPlanCachingEnabled(true).buildAsyncClient();
+        System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "true");
+        client = this.getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdContainer);
 
         createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
+    }
+
+    @Test(groups = {"unit"}, priority = 1)
+    public void queryPlanCacheEnabledFlag() {
+        System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "false");
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder();
+        assertThat(BridgeInternal.isQueryPlanCachingEnabled(cosmosClientBuilder)).isFalse();
+        System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "true");
+        assertThat(BridgeInternal.isQueryPlanCachingEnabled(cosmosClientBuilder)).isTrue();
+        System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "false");
+        assertThat(BridgeInternal.isQueryPlanCachingEnabled(cosmosClientBuilder)).isFalse();
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -242,7 +255,7 @@ public class QueryValidationTests extends TestSuiteBase {
         options.setPartitionKey(new PartitionKey(pk2));
 
         // As we are enabling caching on this client, the query might be cached on other tests using same client so
-        // diabling below check
+        // disabling below check
         // assertThat(contextClient.getQueryPlanCache().containsKey(query)).isFalse();
         List<TestObject> values1 = queryAndGetResults(new SqlQuerySpec(query), options, TestObject.class);
         List<String> ids1 = values1.stream().map(TestObject::getId).collect(Collectors.toList());

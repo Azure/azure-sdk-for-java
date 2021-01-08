@@ -622,23 +622,6 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Sets whether to allow the query plan to be cached when possible, during query execution. Caching query plan
-     * improves the latency/throughput of the query execution when same queries are executed again. It is recommended
-     * to use parameterized queries when trying to cache query plan.
-     * <p>
-     * DEFAULT value is false
-     * </p>
-     *
-     * @param queryPlanCachingEnabled flag to enable query plan cache
-     * @return current CosmosClientBuilder
-     */
-    @Beta(Beta.SinceVersion.V4_9_0)
-    public CosmosClientBuilder queryPlanCachingEnabled(boolean queryPlanCachingEnabled) {
-        this.queryPlanCachingEnabled = queryPlanCachingEnabled;
-        return this;
-    }
-
-    /**
      * Gets the GATEWAY connection configuration to be used.
      *
      * @return gateway connection config
@@ -742,7 +725,7 @@ public class CosmosClientBuilder {
      * @return flag to allow query plan to be cached during query execution
      */
     boolean isQueryPlanCachingEnabled() {
-        return this.queryPlanCachingEnabled;
+        return this.configs.isQueryPlanCachingEnabled();
     }
 
     /**

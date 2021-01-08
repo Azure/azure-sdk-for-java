@@ -724,4 +724,9 @@ public final class BridgeInternal {
 
         transactionalBatchResponse.addAll(transactionalBatchOperationResults);
     }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static boolean isQueryPlanCachingEnabled(CosmosClientBuilder builder) {
+        return builder.isQueryPlanCachingEnabled();
+    }
 }
