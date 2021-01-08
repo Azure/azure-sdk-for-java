@@ -239,7 +239,7 @@ public final class CosmosPatchOperations {
      * For the above JSON, we can have something like this:
      * <code>
      *     CosmosPatchOperations cosmosPatch = CosmosPatchOperations.create();
-     *     cosmosPatch.increment("/b/d", 3.5); // will add 1 to "/b/d" resulting in 7.5.
+     *     cosmosPatch.increment("/b/d", 3.5); // will add 3.5 to "/b/d" resulting in 7.5.
      * </code>
      *
      * This is not idempotent as multiple execution will increase the value by the given increment. For multi-region
