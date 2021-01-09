@@ -238,6 +238,8 @@
                 --add-opens com.azure.core/com.azure.core.util.serializer=ALL-UNNAMED
 
                 --add-reads com.azure.core=ALL-UNNAMED
+
+                ${surefireJvmXmx}
                 ${heapDumpOnOom}
               </argLine>
             </configuration>
