@@ -26,7 +26,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 models-subpackage: implementation.models
-custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType
+custom-types: StorageErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType
 custom-types-subpackage: models
 customization-jar-path: target/azure-storage-queue-customization-1.0.0-beta.1.jar
 customization-class: com.azure.storage.queue.customization.QueueStorageCustomization
@@ -180,15 +180,6 @@ directive:
     $["x-ms-enum"].name = "GeoReplicationStatus";
 ```
 
-### QueueErrorCode
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.ErrorCode
-  transform: >
-    $["x-ms-enum"].name = "QueueErrorCode";
-```
-
 ### QueueServiceProperties, QueueAnalyticsLogging, QueueMetrics, QueueCorsRule, and QueueRetentionPolicy
 ``` yaml
 directive:
@@ -307,69 +298,5 @@ directive:
     }
     $.QueueSignedIdentifier.properties.AccessPolicy["$ref"] = "#/definitions/QueueAccessPolicy";
 ```
-
-### QueueServiceProperties Annotation Fix
-``` yaml
-directive:
-- from: QueueServiceProperties.java
-  where: $
-  transform: >
-    return $.replace('@JsonProperty(value = "Metrics")\n    private QueueMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private QueueMetrics hourMetrics;').
-      replace('@JsonProperty(value = "Metrics")\n    private QueueMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private QueueMetrics minuteMetrics;');
-```
-
-### Change StorageErrorException to StorageException
-``` yaml
-directive:
-- from: ServicesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.queue.implementation.models.StorageErrorException",
-        "com.azure.storage.queue.models.QueueStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
-      );
-- from: QueuesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.queue.implementation.models.StorageErrorException",
-        "com.azure.storage.queue.models.QueueStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
-      );
-- from: MessagesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.queue.implementation.models.StorageErrorException",
-        "com.azure.storage.queue.models.QueueStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
-      );
-- from: MessageIdsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.queue.implementation.models.StorageErrorException",
-        "com.azure.storage.queue.models.QueueStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(QueueStorageException.class)"
-      );
-```
-
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-queue%2Fswagger%2FREADME.png)

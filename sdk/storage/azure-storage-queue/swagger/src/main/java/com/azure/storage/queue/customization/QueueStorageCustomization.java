@@ -11,21 +11,36 @@ import com.azure.autorest.customization.PackageCustomization;
 public class QueueStorageCustomization extends Customization {
     @Override
     public void customize(LibraryCustomization customization) {
-        PackageCustomization models = customization.getPackage("com.azure.storage.queue.implementation.models");
-        // Rename StorageErrorException to QueueStorageException
-        ClassCustomization exception = models.getClass("StorageErrorException")
-            .rename("QueueStorageException");
-//        exception.getJavadoc().setDescription("A {@code StorageException} is thrown whenever Azure Storage successfully returns an error code that is not 200-level. "
-//            + "Users can inspect the status code and error code to determine the cause of the error response. The exception message "
-//            + "may also contain more detailed information depending on the type of error. The user may also inspect the raw HTTP "
-//            + "response or call toString to get the full payload of the error response if present. "
-//            + "Note that even some expected \"errors\" will be thrown as a {@code StorageException}. For example, some users may "
-//            + "perform a getProperties request on an entity to determine whether it exists or not. If it does not exists, an "
-//            + "exception will be thrown even though this may be considered an expected indication of absence in this case. "
-//            + "<p><strong>Sample Code</strong></p>"
-//            + "<p>For more samples, please see the <a href=\"https://github.com/Azure/azure-storage-java/blob/master/src/test/java/com/microsoft/azure/storage/Samples.java\">sample file</a></p>");
+        PackageCustomization impl = customization.getPackage("com.azure.storage.queue.implementation");
 
+        ClassCustomization queuesImpl = impl.getClass("QueuesImpl");
+        queuesImpl.getMethod("create").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        queuesImpl.getMethod("delete").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        queuesImpl.getMethod("getProperties").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        queuesImpl.getMethod("setMetadata").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        queuesImpl.getMethod("getAccessPolicy").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        queuesImpl.getMethod("setAccessPolicy").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
 
+        ClassCustomization messageIdsImpl = impl.getClass("MessageIdsImpl");
+        messageIdsImpl.getMethod("update").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        messageIdsImpl.getMethod("delete").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+
+        ClassCustomization messagesImpl = impl.getClass("MessagesImpl");
+        messagesImpl.getMethod("dequeue").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        messagesImpl.getMethod("clear").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        messagesImpl.getMethod("enqueue").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        messagesImpl.getMethod("peek").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+
+        ClassCustomization servicesImpl = impl.getClass("ServicesImpl");
+        servicesImpl.getMethod("setProperties").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        servicesImpl.getMethod("getProperties").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        servicesImpl.getMethod("getStatistics").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        servicesImpl.getMethod("listQueuesSegment").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+        servicesImpl.getMethod("listQueuesSegmentNext").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
+
+        PackageCustomization models = customization.getPackage("com.azure.storage.queue.models");
+        models.getClass("StorageErrorCode").rename("QueueErrorCode");
+//        queueServiceProperties.getProperty("hourMetrics").
 
     }
 }
