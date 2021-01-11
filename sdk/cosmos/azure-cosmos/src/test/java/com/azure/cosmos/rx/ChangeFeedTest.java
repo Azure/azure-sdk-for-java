@@ -475,7 +475,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                    .map(ResourceResponse::getResource).collectList().block();
     }
 
-    @AfterMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @AfterMethod(groups = { "simple", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void removeCollection() {
         if (createdCollection != null) {
             deleteCollection(client, getCollectionLink());
@@ -522,14 +522,14 @@ public class ChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "simple", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_ChangeFeedTest() throws Exception {
         // set up the client
         client = clientBuilder().build();
         createdDatabase = SHARED_DATABASE;
     }
 
-    @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "simple", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
