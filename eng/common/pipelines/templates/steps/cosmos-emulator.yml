@@ -1,6 +1,6 @@
 parameters:
   EmulatorMsiUrl: "https://aka.ms/cosmosdb-emulator"
-  StartParameters: '-EnablePreview'
+  StartParameters: ''
 
 steps:
   - powershell: |
@@ -50,6 +50,9 @@ steps:
       }
 
       $argumentList = , "/noexplorer"
+      if (-not [string]::IsNullOrEmpty("${{ parameters.StartParameters }}")) {
+          $argumentList += , "${{ parameters.StartParameters }}"
+      }
       $argumentList += , "/noui"
       $argumentList += , "/enablepreview"
       $argumentList += "/disableratelimiting"
