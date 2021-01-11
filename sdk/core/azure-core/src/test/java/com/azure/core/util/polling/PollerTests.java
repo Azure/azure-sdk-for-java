@@ -3,9 +3,12 @@
 
 package com.azure.core.util.polling;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -861,6 +864,32 @@ public class PollerTests {
         Assertions.assertThrows(IllegalArgumentException.class, () -> pollerFlux.getSyncPoller());
     }
 
+    @BeforeAll
+    static void beforeAll() {
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+    }
+
+    @AfterAll
+    static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
+
+    @Test
+    public void testUpdatePollingIntervalWithoutVirtualTimer() {
+        PollerFlux<String, String> pollerFlux = PollerFlux.create(Duration.ofMillis(10),
+            context -> Mono.just(new PollResponse<>(IN_PROGRESS, "Activation")),
+            context -> Mono.just(new PollResponse<>(IN_PROGRESS, "PollOperation")),
+            (context, response) -> Mono.just("Cancel"),
+            context -> Mono.just("FinalResult"));
+
+        pollerFlux.setPollInterval(Duration.ofMillis(200));
+        StepVerifier.create(pollerFlux.take(5))
+            .thenAwait(Duration.ofSeconds(1))
+            .expectNextCount(5)
+            .verifyComplete();
+    }
+
+    @Disabled("Parallel test execution when at least one test uses StepVerifier.withVirtualTime is not supported - https://github.com/reactor/reactor-core/issues/1098")
     @Test
     public void testUpdatePollingInterval() {
         PollerFlux<String, String> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
@@ -874,9 +903,9 @@ public class PollerTests {
             .expectNextCount(5)
             .verifyComplete();
 
-        pollerFlux.setPollInterval(Duration.ofSeconds(5));
+        pollerFlux.setPollInterval(Duration.ofSeconds(2));
         StepVerifier.withVirtualTime(() -> pollerFlux.take(5))
-            .thenAwait(Duration.ofSeconds(25))
+            .thenAwait(Duration.ofSeconds(10))
             .expectNextCount(5)
             .verifyComplete();
 
