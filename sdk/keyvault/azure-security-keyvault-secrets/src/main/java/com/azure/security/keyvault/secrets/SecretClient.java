@@ -242,7 +242,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
-    @ServiceMethod(returns = ReturnType.POLLER)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedSecret, Void> beginDeleteSecret(String name) {
         return client.beginDeleteSecret(name).getSyncPoller();
     }
@@ -264,7 +264,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
-    @ServiceMethod(returns = ReturnType.POLLER)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedSecret, Void> beginDeleteSecret(String name, Duration pollingInterval) {
         return client.beginDeleteSecret(name, pollingInterval).getSyncPoller();
     }
@@ -358,7 +358,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
-    @ServiceMethod(returns = ReturnType.POLLER)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name) {
         return client.beginRecoverDeletedSecret(name).getSyncPoller();
     }
@@ -378,7 +378,7 @@ public final class SecretClient {
      * @throws ResourceNotFoundException when a secret with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a secret with {@code name} is empty string.
      */
-    @ServiceMethod(returns = ReturnType.POLLER)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultSecret, Void> beginRecoverDeletedSecret(String name, Duration pollingInterval) {
         return client.beginRecoverDeletedSecret(name, pollingInterval).getSyncPoller();
     }

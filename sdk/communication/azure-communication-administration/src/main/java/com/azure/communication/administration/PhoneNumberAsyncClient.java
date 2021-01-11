@@ -771,7 +771,7 @@ public final class PhoneNumberAsyncClient {
      * until it gets a result from the server
      * @return A {@link PollerFlux} object with the reservation result
      */
-    @ServiceMethod(returns = ReturnType.POLLER)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberReservation, PhoneNumberReservation> beginCreateReservation(
         CreateReservationOptions options, Duration pollInterval) {
         Objects.requireNonNull(options, "'options' cannot be null.");
@@ -848,7 +848,7 @@ public final class PhoneNumberAsyncClient {
      * @return A {@link PollerFlux} object.
      */
 
-    @ServiceMethod(returns = ReturnType.POLLER)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<Void, Void> beginPurchaseReservation(String reservationId, Duration pollInterval) {
         Objects.requireNonNull(reservationId, "'ReservationId' can not be null.");
 
@@ -907,7 +907,7 @@ public final class PhoneNumberAsyncClient {
      * until it gets a result from the server
      * @return A {@link PollerFlux} object with the release entity
      */
-    @ServiceMethod(returns = ReturnType.POLLER)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberRelease, PhoneNumberRelease>
         beginReleasePhoneNumbers(List<PhoneNumberIdentifier> phoneNumbers, Duration pollInterval) {
         Objects.requireNonNull(phoneNumbers, "'phoneNumbers' cannot be null.");

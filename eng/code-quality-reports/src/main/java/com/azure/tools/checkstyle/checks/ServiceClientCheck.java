@@ -8,17 +8,12 @@ import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
-import com.puppycrawl.tools.checkstyle.checks.naming.AccessModifierOption;
 import com.puppycrawl.tools.checkstyle.utils.CheckUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * Verify the classes with annotation @ServiceClient should have following rules:
@@ -64,9 +59,8 @@ public class ServiceClientCheck extends AbstractCheck {
 
     private static final String COLLECTION_RETURN_TYPE = "ReturnType.COLLECTION";
     private static final String SINGLE_RETURN_TYPE = "ReturnType.SINGLE";
-    private static final String POLLER_RETURN_TYPE = "ReturnType.POLLER";
+    private static final String LONG_RUNNING_OPERATION_RETURN_TYPE = "ReturnType.LONG_RUNNING_OPERATION";
 
-    private static final String JAVA_SPEC_LINK = "https://azure.github.io/azure-sdk/java_introduction.html";
     private static final String PAGED_FLUX = "PagedFlux";
     private static final String POLLER_FLUX = "PollerFlux";
     private static final String SYNC_POLLER = "SyncPoller";
@@ -329,13 +323,14 @@ public class ServiceClientCheck extends AbstractCheck {
                 // If value of 'returns' is COLLECTION, and then log error if the return type of the method is not
                 // If value of 'returns' is COLLECTION, and then log error if the return type of the method is not
                 // start with {@code PagedFlux<T>} or *PagedFlux
-                if (!returnType.startsWith(PAGED_FLUX_BRACKET) && !returnType.contains(PAGED_FLUX)) {
+                if (!returnType.contains(PAGED_FLUX)) {
                     log(methodDefToken, String.format(RETURN_TYPE_ERROR, "Asynchronous", COLLECTION_RETURN_TYPE,
                         PAGED_FLUX));
                 }
-            } else if (POLLER_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
-                if (!returnType.startsWith(POLLER_FLUX_BRACKET)) {
-                    log(methodDefToken, String.format(RETURN_TYPE_ERROR, "Asynchronous", POLLER_RETURN_TYPE,
+            } else if (LONG_RUNNING_OPERATION_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
+                if (!returnType.contains(POLLER_FLUX_BRACKET)) {
+                    log(methodDefToken, String.format(RETURN_TYPE_ERROR, "Asynchronous",
+                        LONG_RUNNING_OPERATION_RETURN_TYPE,
                         POLLER_FLUX));
                 }
             }
@@ -351,13 +346,14 @@ public class ServiceClientCheck extends AbstractCheck {
             } else if (COLLECTION_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
                 // If value of 'returns' is COLLECTION, and then log error if the return type of the method is not
                 // start with {@code PagedIterable<T>} or *PagedIterable
-                if (!returnType.startsWith(PAGED_ITERABLE_BRACKET) && !returnType.contains(PAGED_ITERABLE)) {
+                if (!returnType.contains(PAGED_ITERABLE)) {
                     log(methodDefToken, String.format(RETURN_TYPE_ERROR, "Synchronous", COLLECTION_RETURN_TYPE,
                         PAGED_ITERABLE));
                 }
-            } else if (POLLER_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
-                if (!returnType.startsWith(SYNC_POLLER_BRACKET)) {
-                    log(methodDefToken, String.format(RETURN_TYPE_ERROR, "Synchronous", POLLER_RETURN_TYPE,
+            } else if (LONG_RUNNING_OPERATION_RETURN_TYPE.equals(returnsAnnotationMemberValue)) {
+                if (!returnType.contains(SYNC_POLLER_BRACKET)) {
+                    log(methodDefToken, String.format(RETURN_TYPE_ERROR, "Synchronous",
+                        LONG_RUNNING_OPERATION_RETURN_TYPE,
                         SYNC_POLLER));
                 }
             }
