@@ -11,6 +11,8 @@ import com.google.common.base.Preconditions;
 
 /**
  * Factory for initializing an Async client for all CosmosDB operations
+ *
+ * TODO: Configure the client according to how it's done
  */
 public class AsyncClientFactory {
 

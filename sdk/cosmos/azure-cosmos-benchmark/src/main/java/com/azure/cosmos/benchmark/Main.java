@@ -205,5 +205,6 @@ public class Main {
             Optional.ofNullable(workload)
                 .ifPresent(com.azure.cosmos.benchmark.linkedin.CtlWorkload::shutdown);
         }
+        LOGGER.info("Completed LinkedIn ctl workload execution");
     }
 }

@@ -8,6 +8,7 @@ import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.google.common.base.Preconditions;
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -17,7 +18,8 @@ import static com.azure.cosmos.models.ThroughputProperties.*;
 
 
 public class ResourceManager {
-    private final static Logger LOGGER = LoggerFactory.getLogger(ResourceManager.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResourceManager.class);
+    private static final Duration RESOURCE_CRUD_WAIT_TIME = Duration.ofSeconds(30);
 
     private final Configuration _configuration;
     private final CosmosAsyncClient _client;
@@ -40,7 +42,9 @@ public class ResourceManager {
      */
     public void initializeDatabase() throws CosmosException {
         try {
-            _client.createDatabaseIfNotExists(_configuration.getDatabaseId()).block();
+            LOGGER.info("Creating database {} for the ctl workload", _configuration.getDatabaseId());
+            _client.createDatabaseIfNotExists(_configuration.getDatabaseId())
+                .block(RESOURCE_CRUD_WAIT_TIME);
         } catch (CosmosException e) {
             LOGGER.error("Exception while creating database {}", _configuration.getDatabaseId(), e);
             throw e;
@@ -50,31 +54,23 @@ public class ResourceManager {
     }
 
     /**
-     * Create desired containers for the test
+     * Create desired container/collection for the test
      *
-     * @throws CosmosException if any container could not be created
+     * @throws CosmosException if the container could not be created
      */
     public void createContainers() throws CosmosException {
-
-        final String collectionId = _configuration.getCollectionId();
-        int numberOfCollection = _configuration.getNumberOfCollectionForCtl();
-        if (numberOfCollection < 1) {
-            numberOfCollection = 1;
-        }
-
+        final String containerName = _configuration.getCollectionId();
         final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
         final ThroughputProperties containerThroughput = createManualThroughput(_configuration.getThroughput());
-        for (int i = 1; i <= numberOfCollection; i++) {
-            final String containerName = collectionId + "_" + i;
-            try {
-                final CosmosContainerProperties containerProperties =
-                    new CosmosContainerProperties(containerName, Constants.PARTITION_KEY_PATH);
-                database.createContainerIfNotExists(containerProperties, containerThroughput);
-
-            } catch (CosmosException e) {
-                LOGGER.error("Exception while creating container {}", containerName, e);
-                throw e;
-            }
+        try {
+            LOGGER.info("Creating container {} in the database {}", containerName, database.getId());
+            final CosmosContainerProperties containerProperties =
+                new CosmosContainerProperties(containerName, Constants.PARTITION_KEY_PATH);
+            database.createContainerIfNotExists(containerProperties, containerThroughput)
+                .block(RESOURCE_CRUD_WAIT_TIME);
+        } catch (CosmosException e) {
+            LOGGER.error("Exception while creating container {}", containerName, e);
+            throw e;
         }
     }
 
@@ -89,11 +85,13 @@ public class ResourceManager {
         final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
         try {
             LOGGER.info("Deleting the main database {} used in this test", _configuration.getDatabaseId());
-            database.delete().block();
+            database.delete()
+                .block(RESOURCE_CRUD_WAIT_TIME);
         } catch (CosmosException e) {
             LOGGER.error("Exception while deleting the database {}", _configuration.getDatabaseId(), e);
             throw e;
         }
+        LOGGER.info("Resource cleanup completed");
     }
 
     private void deleteExistingContainers() {
@@ -110,7 +108,8 @@ public class ResourceManager {
         for (CosmosAsyncContainer cosmosAsyncContainer : cosmosAsyncContainers) {
             LOGGER.info("Deleting container {} in the Database {}", cosmosAsyncContainer.getId(), _configuration.getDatabaseId());
             try {
-                cosmosAsyncContainer.delete().block();
+                cosmosAsyncContainer.delete()
+                    .block(RESOURCE_CRUD_WAIT_TIME);
             } catch (CosmosException e) {
                 LOGGER.error("Error deleting container {} in the Database {}",
                     cosmosAsyncContainer.getId(), _configuration.getDatabaseId(), e);
