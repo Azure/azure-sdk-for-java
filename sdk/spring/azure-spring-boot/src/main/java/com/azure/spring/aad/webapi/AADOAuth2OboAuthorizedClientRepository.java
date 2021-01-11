@@ -3,15 +3,18 @@
 
 package com.azure.spring.aad.webapi;
 
+import com.azure.spring.autoconfigure.aad.Constants;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IClientSecret;
+import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.UserAssertion;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
@@ -19,12 +22,17 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.server.resource.authentication.AbstractOAuth2TokenAuthenticationToken;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * <p>
@@ -87,6 +95,28 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
             return (T) oAuth2AuthorizedClient;
         } catch (Throwable throwable) {
+            String claims = Optional.of(throwable)
+                                    .map(Throwable::getCause)
+                                    .filter(e -> e instanceof MsalInteractionRequiredException)
+                                    .map(e -> (MsalInteractionRequiredException) e)
+                                    .map(MsalInteractionRequiredException::claims)
+                                    .orElse(null);
+
+            if (claims != null) {
+                ServletRequestAttributes attr =
+                    (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+                HttpServletResponse response = attr.getResponse();
+                response.setStatus(HttpStatus.FORBIDDEN.value());
+                try {
+                    ServletOutputStream outputStream = response.getOutputStream();
+                    String result =
+                        Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS + claims + Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS;
+                    outputStream.write(result.getBytes());
+                    outputStream.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
             LOGGER.error("Failed to load authorized client.", throwable);
         }
         return null;

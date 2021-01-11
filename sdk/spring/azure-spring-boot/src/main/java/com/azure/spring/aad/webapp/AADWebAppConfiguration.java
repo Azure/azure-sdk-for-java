@@ -5,6 +5,7 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import com.azure.spring.autoconfigure.aad.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -17,14 +18,28 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -121,6 +136,21 @@ public class AADWebAppConfiguration {
         return result;
     }
 
+    @ControllerAdvice
+    public class GlobalExceptionAdvice {
+        @ExceptionHandler(AADConditionalAccessException.class)
+        public void handleUserNotFound(HttpServletRequest request, HttpServletResponse response, Exception e) throws IOException {
+            if(e instanceof AADConditionalAccessException){
+                response.setStatus(302);
+                SecurityContextHolder.clearContext();
+                AADConditionalAccessException conditionalAccessException =  (AADConditionalAccessException)e;
+                request.getSession().setAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS, conditionalAccessException.getClaims());
+                String redirectUrl = request.getRequestURL().toString();
+                response.sendRedirect(redirectUrl);
+            }
+        }
+    }
+
     private Set<String> openidScopes() {
         Set<String> result = new HashSet<>();
         result.add("openid");
@@ -196,4 +226,76 @@ public class AADWebAppConfiguration {
         }
     }
 
+
+    @Bean
+    public OAuth2AuthorizedClientManager authorizedClientManager(
+        ClientRegistrationRepository clientRegistrationRepository,
+        OAuth2AuthorizedClientRepository authorizedClientRepository) {
+
+        OAuth2AuthorizedClientProvider authorizedClientProvider =
+            OAuth2AuthorizedClientProviderBuilder.builder()
+                                                 .authorizationCode()
+                                                 .refreshToken()
+                                                 .clientCredentials()
+                                                 .password()
+                                                 .build();
+
+        DefaultOAuth2AuthorizedClientManager authorizedClientManager =
+            new DefaultOAuth2AuthorizedClientManager(
+                clientRegistrationRepository, authorizedClientRepository);
+        authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
+
+        return authorizedClientManager;
+    }
+
+    @Bean
+    public static WebClient webClient(OAuth2AuthorizedClientManager authorizedClientManager) {
+        ServletOAuth2AuthorizedClientExchangeFilterFunction oauth2Client =
+            new ServletOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
+        return WebClient.builder()
+                        .apply(oauth2Client.oauth2Configuration())
+                        .filter(errorHandlingFilter())
+                        .build();
+    }
+
+
+    private static ExchangeFilterFunction errorHandlingFilter() {
+        return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
+                if (clientResponse.statusCode().is4xxClientError()) {
+                    return clientResponse.bodyToMono(String.class)
+                                         .flatMap(errorBody -> {
+                                             if (isConditionalAccessError(errorBody)) {
+                                                 return Mono.error(convertToException(errorBody));
+                                             }
+                                             return Mono.just(clientResponse);
+                                         });
+                }
+                return Mono.just(clientResponse);
+            }
+        );
+    }
+
+
+    private static boolean isConditionalAccessError(String body) {
+        return body.startsWith(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
+    }
+
+    private static AADConditionalAccessException convertToException(String body) {
+        String claims = body.split(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS)[1];
+        return new AADConditionalAccessException(claims);
+    }
+
+    protected static class AADConditionalAccessException extends RuntimeException{
+        String claims;
+        protected AADConditionalAccessException(String claims){
+            this.claims = claims;
+        }
+        public String getClaims() {
+            return claims;
+        }
+
+        public void setClaims(String claims) {
+            this.claims = claims;
+        }
+    }
 }

@@ -94,7 +94,7 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     }
 
     /**
-     * Used to fix custom failureHandler with no error info.
+     * Fix the default error info not displayed when the setting failureHandler in configure
      */
     private final static class AADHttpConfigurer extends AbstractHttpConfigurer<AADHttpConfigurer, HttpSecurity>{
         @Override
