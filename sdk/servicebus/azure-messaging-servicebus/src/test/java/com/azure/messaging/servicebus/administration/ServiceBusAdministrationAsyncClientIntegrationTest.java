@@ -807,7 +807,30 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     @MethodSource("createHttpClients")
     void getSubscriptionRuntimePropertiesUnauthorizedClient(HttpClient httpClient) {
         // Arrange
-        final ServiceBusAdministrationAsyncClient client = createClient(httpClient, true);
+        final String connectionString = interceptorManager.isPlaybackMode()
+            ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
+            : TestUtils.getConnectionString();
+
+        final String connectionStringUpdated = connectionString.replace("SharedAccessKey=",
+            "SharedAccessKey=fake-key-");
+
+        final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .connectionString(connectionStringUpdated);
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (interceptorManager.isLiveMode()) {
+            builder.httpClient(httpClient)
+                .addPolicy(new RetryPolicy());
+        } else {
+            builder.httpClient(httpClient)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new RetryPolicy());
+        }
+
+        final ServiceBusAdministrationAsyncClient client = builder.buildAsyncClient();
+
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-1"
             : getEntityName(getTopicBaseName(), 1);
@@ -945,22 +968,13 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     }
 
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {
-        return createClient(httpClient, false);
-    }
-
-    private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient, boolean isUnauthorizedClient) {
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
             : TestUtils.getConnectionString();
 
-        final String connectionStringUpdated = isUnauthorizedClient
-            ? connectionString.replace("SharedAccessKey=", "SharedAccessKey=fake-key-")
-            : connectionString;
-
-
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .connectionString(connectionStringUpdated);
+            .connectionString(connectionString);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());

@@ -352,19 +352,19 @@ class ServiceBusAdministrationAsyncClientTest {
      */
     @ParameterizedTest
     @MethodSource
-    void getSubscriptionRuntimePropertiesUnauthorised(String errorMessae, ServiceBusManagementError managementError) {
+    void getSubscriptionRuntimePropertiesUnauthorised(String errorMessage, ServiceBusManagementError managementError) {
         // Arrange
         final String topicName = "topicName";
         final String subscriptionName = "subscriptionName";
         final HttpResponse response = mock(HttpResponse.class);
         when(subscriptions.getWithResponseAsync(eq(topicName), eq(subscriptionName), eq(true), any(Context.class)))
-            .thenReturn(Mono.error(new ServiceBusManagementErrorException(errorMessae, response, managementError)));
+            .thenReturn(Mono.error(new ServiceBusManagementErrorException(errorMessage, response, managementError)));
         when(response.getStatusCode()).thenReturn(HttpStatus.SC_UNAUTHORIZED);
 
         // Act & Assert
         StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
             .verifyErrorMatches(error -> error instanceof ClientAuthenticationException
-                && error.getMessage().equals(errorMessae));
+                && error.getMessage().equals(errorMessage));
     }
 
     /**
