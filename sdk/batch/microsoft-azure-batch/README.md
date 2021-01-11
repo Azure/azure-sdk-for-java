@@ -62,7 +62,7 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-batch</artifactId>
-    <version>8.0.0</version>
+    <version>8.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

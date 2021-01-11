@@ -35,14 +35,16 @@
     "credcheck_privatedns": "node credcheck.js --path=./azure-resourcemanager-privatedns/src/test/resources/session-records/",
     "credcheck_resources": "node credcheck.js --path=./azure-resourcemanager-resources/src/test/resources/session-records/",
     "credcheck_redis": "node credcheck.js --path=./azure-resourcemanager-redis/src/test/resources/session-records/",
+    "credcheck_search": "node credcheck.js --path=./azure-resourcemanager-search/src/test/resources/session-records/",
     "credcheck_servicebus": "node credcheck.js --path=./azure-resourcemanager-servicebus/src/test/resources/session-records/",
     "credcheck_sql": "node credcheck.js --path=./azure-resourcemanager-sql/src/test/resources/session-records/",
     "credcheck_storage": "node credcheck.js --path=./azure-resourcemanager-storage/src/test/resources/session-records/",
     "credcheck_trafficmanager": "node credcheck.js --path=./azure-resourcemanager-trafficmanager/src/test/resources/session-records/",
     "credcheck_azure": "node credcheck.js --path=./azure-resourcemanager/src/test/resources/session-records/",
     "credcheck_samples": "node credcheck.js --path=./azure-resourcemanager-samples/src/test/resources/session-records/",
-    "credcheck_all": "run-s credcheck_appservice credcheck_authorization credcheck_compute credcheck_containerregistry credcheck_containerservice credcheck_cosmos credcheck_dns credcheck_keyvault credcheck_msi credcheck_monitor credcheck_network credcheck_resources credcheck_sql credcheck_storage credcheck_appplatform credcheck_redis credcheck_eventhubs credcheck_trafficmanager credcheck_cdn credcheck_containerinstance credcheck_privatedns credcheck_servicebus credcheck_azure credcheck_samples",
-    "servcheck": "node servcheck.js"
+    "credcheck_all": "run-s credcheck_appservice credcheck_authorization credcheck_compute credcheck_containerregistry credcheck_containerservice credcheck_cosmos credcheck_dns credcheck_keyvault credcheck_msi credcheck_monitor credcheck_network credcheck_resources credcheck_sql credcheck_storage credcheck_appplatform credcheck_redis credcheck_eventhubs credcheck_trafficmanager credcheck_cdn credcheck_containerinstance credcheck_privatedns credcheck_search credcheck_servicebus credcheck_azure credcheck_samples",
+    "servcheck": "node servcheck.js",
+    "autocent": "node autocent.js"
   },
   "devDependencies": {
     "colors": "1.1.2",
@@ -55,6 +57,7 @@
     "p-all": "^1.0.0",
     "yargs": "3.31.0",
     "npm-run-all": "4.1.5",
-    "pom-parser": "1.2.0"
+    "pom-parser": "1.2.0",
+    "request": "2.88.2"
   }
 }

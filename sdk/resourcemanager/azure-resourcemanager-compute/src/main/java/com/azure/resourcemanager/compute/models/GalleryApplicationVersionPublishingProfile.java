@@ -8,6 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
+import java.util.List;
 
 /** The publishing profile of a gallery Image Version. */
 @Fluent
@@ -92,6 +94,41 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
      */
     public GalleryApplicationVersionPublishingProfile withEnableHealthCheck(Boolean enableHealthCheck) {
         this.enableHealthCheck = enableHealthCheck;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withTargetRegions(List<TargetRegion> targetRegions) {
+        super.withTargetRegions(targetRegions);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withReplicaCount(Integer replicaCount) {
+        super.withReplicaCount(replicaCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withExcludeFromLatest(Boolean excludeFromLatest) {
+        super.withExcludeFromLatest(excludeFromLatest);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
+        super.withEndOfLifeDate(endOfLifeDate);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationVersionPublishingProfile withStorageAccountType(StorageAccountType storageAccountType) {
+        super.withStorageAccountType(storageAccountType);
         return this;
     }
 

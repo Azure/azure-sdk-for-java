@@ -45,10 +45,9 @@ Security.addProvider(provider);
 KeyStore ks = KeyStore.getInstance("AzureKeyVault");
 KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
     System.getProperty("azure.keyvault.uri"),
-    System.getProperty("azure.keyvault.aadAuthenticationUrl"),
-    System.getProperty("azure.tenant.id"),
-    System.getProperty("azure.client.id"),
-    System.getProperty("azure.client.secret"));
+    System.getProperty("azure.keyvault.tenant-id"),
+    System.getProperty("azure.keyvault.client-id"),
+    System.getProperty("azure.keyvault.client-secret"));
 ks.load(parameter);
 
 KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
@@ -72,11 +71,10 @@ Security.addProvider(provider);
 
 KeyStore ks = KeyStore.getInstance("AzureKeyVault");
 KeyVaultLoadStoreParameter parameter = new KeyVaultLoadStoreParameter(
-    System.getProperty("azure.keyvault.uri"),
-    System.getProperty("azure.keyvault.aadAuthenticationUrl"),
-    System.getProperty("azure.tenant.id"),
-    System.getProperty("azure.client.id"),
-    System.getProperty("azure.client.secret"));
+        System.getProperty("azure.keyvault.uri"),
+        System.getProperty("azure.keyvault.tenant-id"),
+        System.getProperty("azure.keyvault.client-id"),
+        System.getProperty("azure.keyvault.client-secret"));
 ks.load(parameter);
 
 SSLContext sslContext = SSLContexts

@@ -20,7 +20,7 @@ import org.junit.jupiter.api.Test;
 public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
     @Test
     public void canListEventsAndMetrics() throws Exception {
-        OffsetDateTime recordDateTime = OffsetDateTime.parse("2020-06-22T21:44:57.424+08:00").minusDays(40);
+        OffsetDateTime recordDateTime = OffsetDateTime.parse("2020-12-28T21:44:57.424+08:00").minusDays(40);
         VirtualMachine vm = computeManager.virtualMachines().list().iterator().next();
 
         // Metric Definition

@@ -27,6 +27,9 @@ extends:
   parameters:
     ServiceDirectory: spring
     Artifacts:
+      - name: azure-identity-spring
+        groupId: com.azure.spring
+        safeName: azureidentityspring
       - name: azure-spring-data-gremlin
         groupId: com.azure.spring
         safeName: azurespringdatagremlin
@@ -137,15 +140,15 @@ extends:
     AdditionalModules:
       - name: azure-spring-boot-sample-active-directory-resource-server
         groupId: com.azure.spring
+      - name: azure-spring-boot-sample-active-directory-resource-server-by-filter
+        groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-b2c-oidc
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-backend
+      - name: azure-spring-boot-sample-active-directory-webapp
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-active-directory-resource-server-obo
         groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-backend-v2
-        groupId: com.azure.spring
-      - name: azure-spring-boot-sample-active-directory-resource-server-stateless
+      - name: azure-spring-boot-sample-active-directory-resource-server-by-filter-stateless
         groupId: com.azure.spring
       - name: azure-spring-boot-sample-cosmos
         groupId: com.azure.spring

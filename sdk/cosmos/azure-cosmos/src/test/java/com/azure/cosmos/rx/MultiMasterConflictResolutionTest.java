@@ -82,7 +82,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
             // when (e.StatusCode == HttpStatusCode.BadRequest)
             CosmosException dce = Utils.as(e, CosmosException.class);
             if (dce != null && dce.getStatusCode() == 400) {
-                assertThat(dce.getMessage()).contains("Invalid path '\\\\\\/a\\\\\\/b' for last writer wins conflict resolution");
+                assertThat(dce.getMessage()).contains("Invalid path '\\\\/a\\\\/b' for last writer wins conflict resolution");
             } else {
                 throw e;
             }

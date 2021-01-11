@@ -3,14 +3,20 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
-import com.microsoft.azure.management.eventhub.AuthorizationRule;
-import com.microsoft.azure.management.eventhub.EventHubAuthorizationKey;
-import com.microsoft.azure.management.eventhub.EventHubNamespace;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.eventhubs.models.AuthorizationRule;
+import com.azure.resourcemanager.eventhubs.models.EventHubAuthorizationKey;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespace;
+import com.azure.resourcemanager.eventhubs.models.EventHubNamespaceAuthorizationRule;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
-import com.azure.spring.cloud.context.core.api.ResourceManagerProvider;
+import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.context.core.impl.EventHubNamespaceManager;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
+import com.azure.spring.integration.eventhub.factory.EventHubConnectionStringProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -21,6 +27,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
+
 
 /**
  * An auto-configuration for Event Hub, which provides {@link KafkaProperties}
@@ -36,9 +43,8 @@ public class AzureEventHubKafkaAutoConfiguration {
     private static final String SECURITY_PROTOCOL = "security.protocol";
     private static final String SASL_SSL = "SASL_SSL";
     private static final String SASL_JAAS_CONFIG = "sasl.jaas.config";
-    private static final String SASL_CONFIG_VALUE =
-        "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" "
-            + "password=\"%s\";%n";
+    private static final String SASL_CONFIG_VALUE = "org.apache.kafka.common.security.plain.PlainLoginModule required"
+        + " username=\"$ConnectionString\" " + "password=\"%s\";%n";
     private static final String SASL_MECHANISM = "sasl.mechanism";
     private static final String SASL_MECHANISM_PLAIN = "PLAIN";
     private static final int PORT = 9093;
@@ -52,15 +58,13 @@ public class AzureEventHubKafkaAutoConfiguration {
     @SuppressWarnings("rawtypes")
     @Primary
     @Bean
-    public KafkaProperties kafkaProperties(ResourceManagerProvider resourceManagerProvider,
+    public KafkaProperties kafkaProperties(EventHubNamespaceManager eventHubNamespaceManager,
                                            AzureEventHubProperties eventHubProperties) {
         KafkaProperties kafkaProperties = new KafkaProperties();
-        EventHubNamespace namespace =
-            resourceManagerProvider.getEventHubNamespaceManager().getOrCreate(eventHubProperties.getNamespace());
-        String connectionString =
-            namespace.listAuthorizationRules().stream().findFirst().map(AuthorizationRule::getKeys)
-                .map(EventHubAuthorizationKey::primaryConnectionString).orElseThrow(() -> new RuntimeException(
-                String.format("Failed to fetch connection string of namespace '%s'", namespace), null));
+
+        final EventHubNamespace namespace = eventHubNamespaceManager.getOrCreate(eventHubProperties.getNamespace());
+        final String connectionString = toConnectionString(namespace);
+
         String endpoint = namespace.serviceBusEndpoint();
         String endpointHost = endpoint.substring("https://".length(), endpoint.lastIndexOf(':'));
         kafkaProperties.setBootstrapServers(Arrays.asList(endpointHost + ":" + PORT));
@@ -70,4 +74,32 @@ public class AzureEventHubKafkaAutoConfiguration {
             String.format(SASL_CONFIG_VALUE, connectionString, System.getProperty("line.separator")));
         return kafkaProperties;
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnBean(AzureResourceManager.class)
+    public EventHubNamespaceManager eventHubNamespaceManager(AzureResourceManager azureResourceManager,
+                                                             AzureProperties azureProperties) {
+        return new EventHubNamespaceManager(azureResourceManager, azureProperties);
+    }
+
+
+    /**
+     * The reason why not to use the {@link EventHubConnectionStringProvider} here is azure-spring-integration-eventhubs
+     * is not included in the azure-spring-cloud-starter-eventhubs-kafka. Otherwise it will throw NoClassDefFoundError.
+     *
+     * @param eventHubNamespace the Event Hub namespace.
+     * @return the connection string.
+     */
+    private static String toConnectionString(EventHubNamespace eventHubNamespace) {
+        return eventHubNamespace.listAuthorizationRules()
+                                .stream()
+                                .findFirst()
+                                .map(AuthorizationRule<EventHubNamespaceAuthorizationRule>::getKeys)
+                                .map(EventHubAuthorizationKey::primaryConnectionString)
+                                .orElseThrow(() -> new IllegalStateException(
+                                    String.format("Failed to fetch connection string of namespace '%s'",
+                                        eventHubNamespace.name()), null));
+    }
+
 }
