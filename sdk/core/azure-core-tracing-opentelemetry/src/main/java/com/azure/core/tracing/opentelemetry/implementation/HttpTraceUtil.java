@@ -181,6 +181,9 @@ public final class HttpTraceUtil {
                 break;
         }
 
+        if (message == null) {
+            return span.setStatus(openTelemetryStatusCode);
+        }
         return span.setStatus(openTelemetryStatusCode, message);
     }
 }

@@ -1,8 +1,8 @@
 # Release History
 
 ## 1.0.0-beta.7 (Unreleased)
-
-
+- Support `opentelemetry-api` latest `0.13.1` version.
+For more detailed information, look [here](https://github.com/open-telemetry/opentelemetry-java/blob/master/CHANGELOG.md#version-0130---2020-12-17)
 ## 1.0.0-beta.6 (2020-08-07)
 - Update `opentelemetry-api` dependency version to `0.6.0` and included `io.grpc:grpc-context[1.30.0]` external
  dependency .

@@ -10,14 +10,17 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.SpanBuilder;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.api.trace.TracerProvider;
 
 import java.util.Objects;
 import java.util.Optional;
+
+import static io.opentelemetry.api.trace.attributes.SemanticAttributes.MESSAGING_DESTINATION;
+import static io.opentelemetry.api.trace.attributes.SemanticAttributes.PEER_SERVICE;
 
 /**
  * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process
@@ -28,12 +31,9 @@ import java.util.Optional;
  * requests.
  */
 public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
-    private static final Tracer TRACER = TracerProvider.getDefault().get("Azure-OpenTelemetry");
-
+    private static final Tracer TRACER = GlobalOpenTelemetry.getTracer("Azure-OpenTelemetry");
     // standard attributes with AMQP request
     static final String AZ_NAMESPACE_KEY = "az.namespace";
-    static final String MESSAGE_BUS_DESTINATION = "message_bus.destination";
-    static final String PEER_ENDPOINT = "peer.address";
 
     private final ClientLogger logger = new ClientLogger(OpenTelemetryTracer.class);
 
@@ -228,7 +228,8 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
      */
     private static Span startSpanWithRemoteParent(String spanName, SpanContext spanContext) {
         SpanBuilder spanBuilder = TRACER.spanBuilder(spanName)
-            .setParent(io.opentelemetry.context.Context.current().with(Span.wrap(spanContext)));
+            .setParent(io.opentelemetry.context.Context.root().with(Span.wrap(spanContext)));
+        // current?
         spanBuilder.setSpanKind(Span.Kind.CONSUMER);
         return spanBuilder.startSpan();
     }
@@ -258,11 +259,11 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
         Objects.requireNonNull(span, "'span' cannot be null.");
         String entityPath = getOrDefault(context, ENTITY_PATH_KEY, null, String.class);
         if (entityPath != null) {
-            span.setAttribute(MESSAGE_BUS_DESTINATION,entityPath);
+            span.setAttribute(MESSAGING_DESTINATION, entityPath);
         }
         String hostName = getOrDefault(context, HOST_NAME_KEY, null, String.class);
         if (hostName != null) {
-            span.setAttribute(PEER_ENDPOINT, hostName);
+            span.setAttribute(PEER_SERVICE, hostName);
         }
         Long messageEnqueuedTime = getOrDefault(context, MESSAGE_ENQUEUED_TIME, null, Long.class);
         if (messageEnqueuedTime != null) {

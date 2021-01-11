@@ -27,6 +27,9 @@ public final class AmqpTraceUtil {
             // No error.
             return span.setStatus(StatusCode.OK);
         }
+        if (statusMessage == null) {
+            return span.setStatus(StatusCode.UNSET);
+        }
         // return status with custom error condition message
         return span.setStatus(StatusCode.UNSET, statusMessage);
     }

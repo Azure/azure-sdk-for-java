@@ -16,6 +16,7 @@ import io.opentelemetry.api.trace.TraceFlags;
 import io.opentelemetry.api.trace.TraceId;
 import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.api.trace.attributes.SemanticAttributes;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.ReadableSpan;
@@ -26,13 +27,12 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.AZ_NAMESPACE_KEY;
-import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_BUS_DESTINATION;
 import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.MESSAGE_ENQUEUED_TIME;
-import static com.azure.core.tracing.opentelemetry.OpenTelemetryTracer.PEER_ENDPOINT;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
@@ -43,6 +43,8 @@ import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.USER_SPAN_NAME_KEY;
 import static io.opentelemetry.api.trace.StatusCode.UNSET;
+import static io.opentelemetry.api.trace.attributes.SemanticAttributes.MESSAGING_DESTINATION;
+import static io.opentelemetry.api.trace.attributes.SemanticAttributes.PEER_SERVICE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -65,10 +67,16 @@ public class OpenTelemetryTracerTest {
     private Context tracingContext;
     private Span parentSpan;
     private Scope scope;
+    private HashMap<String, Object> expectedAttributeMap = new HashMap<String, Object>() {
+        {
+            put(MESSAGING_DESTINATION.getKey(), ENTITY_PATH_VALUE);
+            put(PEER_SERVICE.getKey(), HOSTNAME_VALUE);
+            put(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+        }
+    };
 
     @BeforeEach
     public void setUp() {
-        System.out.println("Running: setUp");
         openTelemetryTracer = new OpenTelemetryTracer();
         // Get the global singleton Tracer object.
         tracer = OpenTelemetrySdk.builder().build().getTracer("TracerSdkTest");
@@ -81,7 +89,6 @@ public class OpenTelemetryTracerTest {
 
     @AfterEach
     public void tearDown() {
-        System.out.println("Running: tearDown");
         // Clear out tracer and tracingContext objects
         scope.close();
         tracer = null;
@@ -158,13 +165,7 @@ public class OpenTelemetryTracerTest {
 
         // verify span attributes
         final Attributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
-        HashMap<String, Object> expectedAttributeMap = new HashMap<String, Object>() {
-            {
-                put(MESSAGE_BUS_DESTINATION, ENTITY_PATH_VALUE);
-                put(PEER_ENDPOINT, HOSTNAME_VALUE);
-                put(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
-            }
-        };
+
         verifySpanAttributes(attributeMap, expectedAttributeMap);
     }
 
@@ -188,13 +189,6 @@ public class OpenTelemetryTracerTest {
         assertNotNull(updatedContext.getData(DIAGNOSTIC_ID_KEY).get());
 
         final Attributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
-        HashMap<String, Object> expectedAttributeMap = new HashMap<String, Object>() {
-            {
-                put(MESSAGE_BUS_DESTINATION, ENTITY_PATH_VALUE);
-                put(PEER_ENDPOINT, HOSTNAME_VALUE);
-                put(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
-            }
-        };
         verifySpanAttributes(attributeMap, expectedAttributeMap);
     }
 
@@ -225,14 +219,11 @@ public class OpenTelemetryTracerTest {
 
         // verify span attributes
         final Attributes attributeMap = recordEventsSpan.toSpanData().getAttributes();
-        HashMap<String, Object> expectedAttributeMap = new HashMap<String, Object>() {
-            {
-                put(MESSAGE_BUS_DESTINATION, ENTITY_PATH_VALUE);
-                put(PEER_ENDPOINT, HOSTNAME_VALUE);
-                put(MESSAGE_ENQUEUED_TIME, MESSAGE_ENQUEUED_VALUE);
-                put(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
-            }
-        };
+
+        // additional only in process spans.
+        expectedAttributeMap.put(MESSAGE_ENQUEUED_TIME, MESSAGE_ENQUEUED_VALUE);
+        expectedAttributeMap.put(AZ_NAMESPACE_KEY, AZ_NAMESPACE_VALUE);
+
         verifySpanAttributes(attributeMap, expectedAttributeMap);
     }
 
@@ -348,8 +339,11 @@ public class OpenTelemetryTracerTest {
 
         // Assert
         assertEquals(StatusCode.ERROR, recordEventsSpan.toSpanData().getStatus().getStatusCode());
-        // assertEquals(throwableMessage, recordEventsSpan.toSpanData().getStatus().getDescription());
-        // verify custom message with exception events
+        List<SpanData.Event> events = recordEventsSpan.toSpanData().getEvents();
+        assertEquals(1, events.size());
+        SpanData.Event event = events.get(0);
+        assertEquals("exception", event.getName());
+        assertEquals("custom error message", event.getAttributes().get(SemanticAttributes.EXCEPTION_MESSAGE));
     }
 
     @Test
@@ -364,10 +358,10 @@ public class OpenTelemetryTracerTest {
         assertEquals(StatusCode.ERROR, recordEventsSpan.toSpanData().getStatus().getStatusCode());
         assertEquals("Not Found", recordEventsSpan.toSpanData().getStatus().getDescription());
 
-        // List<Event> events = span.toSpanData().getEvents();
-        // assertThat(events).hasSize(1);
-        // Event event = events.get(0);
-        // assertThat(event.getName()).isEqualTo("exception");
+        List<SpanData.Event> events = recordEventsSpan.toSpanData().getEvents();
+        assertEquals(1, events.size());
+        SpanData.Event event = events.get(0);
+        assertEquals("exception", event.getName());
     }
 
     @Test
