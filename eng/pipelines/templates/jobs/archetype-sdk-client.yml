@@ -6,7 +6,7 @@ parameters:
     type: string
     default: 'not-specified' # Set a default that breaks in obvious ways.
   - name: TestPipeline
-    type: string
+    type: boolean
     default: false
   - name: Artifacts
     type: object
