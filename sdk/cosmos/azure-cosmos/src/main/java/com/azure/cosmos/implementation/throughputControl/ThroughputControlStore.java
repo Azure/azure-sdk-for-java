@@ -8,7 +8,6 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.implementation.Exceptions;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
@@ -36,7 +35,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 /**
  * This is the entrance class for the whole throughput control work flow pipeline.
- * The pipeline will consist of controllers which is implementation of {@link IThroughputController} and {@link ThroughputRequestAuthorizer}.
+ * The pipeline will consist of controllers which is implementation of {@link IThroughputController} and {@link ThroughputRequestThrottler}.
  *
  * Following is a high-level diagram of the pipeline:
  *
@@ -71,7 +70,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  *                  |                            /                     \
  *                  |                           /                       \
  *       +------------------+        +------------------+            +------------------+
- *       |Request authorizer|        |Request authorizer|            |Request authorizer|
+ *       |Request throttler |        |Request throttler |            |Request throttler |
  *       +------------------+        +------------------+  ...       +------------------+
  *
  *

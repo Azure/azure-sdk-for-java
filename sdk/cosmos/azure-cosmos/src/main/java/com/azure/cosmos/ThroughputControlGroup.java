@@ -111,10 +111,8 @@ public class ThroughputControlGroup {
      * @param targetThroughput the target throughput for the throughput control group.
      * @return the {@link ThroughputControlGroup}.
      */
-    public ThroughputControlGroup targetThroughput(Integer targetThroughput) {
-        checkArgument(
-            targetThroughput != null && targetThroughput > 0,
-            "Target throughput should not be null and should be larger than 0");
+    public ThroughputControlGroup targetThroughput(int targetThroughput) {
+        checkArgument(targetThroughput > 0, "Target throughput should be larger than 0");
         this.targetThroughput = targetThroughput;
         return this;
     }
@@ -135,10 +133,8 @@ public class ThroughputControlGroup {
      *
      * @return the {@link ThroughputControlGroup}.
      */
-    public ThroughputControlGroup targetThroughputThreshold(Double targetThroughputThreshold) {
-        checkArgument(
-            targetThroughputThreshold != null && targetThroughputThreshold > 0,
-            "Target throughput threshold should not be null and should be larger than 0");
+    public ThroughputControlGroup targetThroughputThreshold(double targetThroughputThreshold) {
+        checkArgument(targetThroughputThreshold > 0, "Target throughput threshold should be larger than 0");
 
         this.targetThroughputThreshold = targetThroughputThreshold;
         return this;

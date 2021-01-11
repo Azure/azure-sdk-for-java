@@ -17,6 +17,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,7 +50,11 @@ public class ThroughputControlTests extends TestSuiteBase {
                 .targetThroughput(1)
                 .localControlMode();
 
-        this.client.enableThroughputControl(group1, group2);
+        List<ThroughputControlGroup> groups = new ArrayList<>();
+        groups.add(group1);
+        groups.add(group2);
+
+        this.client.enableThroughputControl(groups);
         TestItem docDefinition = getDocumentDefinition();
         container.createItem(docDefinition).block(); // since not group is defined, this will fall into the default control group
 

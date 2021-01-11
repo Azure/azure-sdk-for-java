@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.implementation.throughputControl.ThroughputRequestAuthorizer;
+import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -25,7 +25,7 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey, true, false);
 
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
-    private final ConcurrentHashMap<String, ThroughputRequestAuthorizer> requestAuthorizerMap;
+    private final ConcurrentHashMap<String, ThroughputRequestThrottler> requestThrottlerMap;
     private final String targetContainerRid;
     private final double initialScheduledThroughput;
 
@@ -38,16 +38,16 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         checkArgument(StringUtils.isNotEmpty(targetContainerRid), "Target container rid can not be null nor empty");
 
         this.partitionKeyRangeCache = partitionKeyRangeCache;
-        this.requestAuthorizerMap = new ConcurrentHashMap<>();
+        this.requestThrottlerMap = new ConcurrentHashMap<>();
         this.targetContainerRid = targetContainerRid;
         this.initialScheduledThroughput = initialScheduledThroughput;
     }
 
     @Override
     public Mono<Void> renewThroughputUsageCycle(double scheduledThroughput) {
-        double throughputPerPkRange = this.calculateThroughputPerPkRange(scheduledThroughput, this.requestAuthorizerMap.size());
-        return Flux.fromIterable(this.requestAuthorizerMap.values())
-            .flatMap(requestAuthorizer -> requestAuthorizer.renewThroughputUsageCycle(throughputPerPkRange))
+        double throughputPerPkRange = this.calculateThroughputPerPkRange(scheduledThroughput, this.requestThrottlerMap.size());
+        return Flux.fromIterable(this.requestThrottlerMap.values())
+            .flatMap(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughputPerPkRange))
             .then();
     }
 
@@ -55,7 +55,7 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
     public boolean canHandleRequest(RxDocumentServiceRequest request) {
         PartitionKeyRange resolvedPkRange = request.requestContext.resolvedPartitionKeyRange;
         if (resolvedPkRange != null) {
-            return this.requestAuthorizerMap.containsKey(resolvedPkRange.getId());
+            return this.requestThrottlerMap.containsKey(resolvedPkRange.getId());
         }
 
         return false;
@@ -78,16 +78,16 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
                 double throughputPerPkRange = this.calculateThroughputPerPkRange(this.initialScheduledThroughput, pkRanges.size());
                 return Flux.fromIterable(pkRanges)
                     .flatMap(pkRange -> {
-                        return this.createAndInitializeRequestAuthorizer(throughputPerPkRange)
-                            .doOnSuccess(requestAuthorizer -> this.requestAuthorizerMap.put(pkRange.getId(), requestAuthorizer));
+                        return this.createAndInitializeRequestThrottler(throughputPerPkRange)
+                            .doOnSuccess(requestThrottler -> this.requestThrottlerMap.put(pkRange.getId(), requestThrottler));
                     });
             })
             .then(Mono.just((T)this));
     }
 
-    private Mono<ThroughputRequestAuthorizer> createAndInitializeRequestAuthorizer(double throughputPerPkRange) {
-        return Mono.just(new ThroughputRequestAuthorizer(throughputPerPkRange))
-            .flatMap(requestAuthorizer -> requestAuthorizer.init());
+    private Mono<ThroughputRequestThrottler> createAndInitializeRequestThrottler(double throughputPerPkRange) {
+        return Mono.just(new ThroughputRequestThrottler(throughputPerPkRange))
+            .flatMap(requestThrottler -> requestThrottler.init());
     }
 
     @Override
@@ -95,10 +95,10 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
         PartitionKeyRange resolvedPkRange = request.requestContext.resolvedPartitionKeyRange;
 
         // If we reach here, it means we should find the mapping pkRange
-        return Mono.just(this.requestAuthorizerMap.get(resolvedPkRange.getId()))
-            .flatMap(requestAuthorizer -> {
-                if (requestAuthorizer != null) {
-                    return requestAuthorizer.authorize(request, nextRequestMono);
+        return Mono.just(this.requestThrottlerMap.get(resolvedPkRange.getId()))
+            .flatMap(requestThrottler -> {
+                if (requestThrottler != null) {
+                    return requestThrottler.processRequest(request, nextRequestMono);
                 } else {
                     return nextRequestMono;
                 }

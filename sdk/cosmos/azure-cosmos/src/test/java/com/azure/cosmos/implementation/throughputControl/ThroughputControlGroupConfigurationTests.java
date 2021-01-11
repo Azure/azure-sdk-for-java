@@ -13,6 +13,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -30,7 +33,6 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
     public Object[][] invalidThroughputControlGroup() {
         return new Object[][]{
             // group name, container, targetThroughput, targetThroughputThreshold, exception
-            {"group", container, null, null, IllegalArgumentException.class},
             {"group", container, -1, null, IllegalArgumentException.class},
             {"group", container, null, -0.2, IllegalArgumentException.class},
             {"group", null, 10, null, IllegalArgumentException.class},
@@ -51,11 +53,20 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
         try {
             ThroughputControlGroup group = new ThroughputControlGroup()
                 .groupName(groupName)
-                .targetContainer(container)
-                .targetThroughput(targetThroughput)
-                .targetThroughputThreshold(targetThroughputThreshold);
+                .targetContainer(container);
 
-            client.enableThroughputControl(group);
+            if (targetThroughput != null) {
+                group.targetThroughput(targetThroughput);
+            }
+
+            if (targetThroughputThreshold != null) {
+                group.targetThroughputThreshold(targetThroughputThreshold);
+            }
+
+            List<ThroughputControlGroup> groups = new ArrayList<>();
+            groups.add(group);
+
+            client.enableThroughputControl(groups);
         } catch (Exception exception) {
             if (exceptionType != null) {
                 assertThat(exception).isInstanceOf(exceptionType);
@@ -75,7 +86,11 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
             .targetContainer(container)
             .targetThroughputThreshold(0.2);
 
-        assertThatThrownBy(() -> client.enableThroughputControl(group1, group2))
+        List<ThroughputControlGroup> groups = new ArrayList<>();
+        groups.add(group1);
+        groups.add(group2);
+
+        assertThatThrownBy(() -> client.enableThroughputControl(groups))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -94,7 +109,10 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
             .targetThroughputThreshold(0.2)
             .useByDefault();
 
-        assertThatThrownBy(() -> client.enableThroughputControl(group1, group2))
+        List<ThroughputControlGroup> groups = new ArrayList<>();
+        groups.add(group1);
+        groups.add(group2);
+        assertThatThrownBy(() -> client.enableThroughputControl(groups))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Only at most one group can be set as default");
     }

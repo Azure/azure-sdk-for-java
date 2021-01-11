@@ -472,13 +472,13 @@ public final class CosmosAsyncClient implements Closeable {
      * Enable throughput control by providing the throughput control groups.
      * Each cosmos client can only enable throughput control once.
      *
-     * @param groupConfigs The throughput control group configurations.
+     * @param groupList The throughput control group configuration list.
      */
     @Beta(value = Beta.SinceVersion.V4_10_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void enableThroughputControl(ThroughputControlGroup... groupConfigs) {
+    public void enableThroughputControl(List<ThroughputControlGroup> groupList) {
         // Validate no duplicate group definition.
         Set<ThroughputControlGroup> groupConfigSet = new HashSet<>();
-        for (ThroughputControlGroup group : groupConfigs) {
+        for (ThroughputControlGroup group : groupList) {
             checkArgument(group != null, "Throughput control group config cannot be null");
             group.validate();
             if (!groupConfigSet.add(group)) {

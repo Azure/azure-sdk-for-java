@@ -21,22 +21,22 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * This is the place where we tracking the RU usage, and make decision whether we should block the request.
  */
-public class ThroughputRequestAuthorizer {
-    private static final Logger logger = LoggerFactory.getLogger(ThroughputRequestAuthorizer.class);
+public class ThroughputRequestThrottler {
+    private static final Logger logger = LoggerFactory.getLogger(ThroughputRequestThrottler.class);
 
     private final AtomicReference<Double> availableThroughput;
     private final AtomicReference<Double> scheduledThroughput;
     private final AtomicInteger rejectedRequests;
     private final AtomicInteger totalRequests;
 
-    public ThroughputRequestAuthorizer(double scheduledThroughput) {
+    public ThroughputRequestThrottler(double scheduledThroughput) {
         this.availableThroughput = new AtomicReference<>(0d);
         this.scheduledThroughput = new AtomicReference<>(scheduledThroughput);
         this.rejectedRequests = new AtomicInteger(0);
         this.totalRequests = new AtomicInteger(0);
     }
 
-    public Mono<ThroughputRequestAuthorizer> init() {
+    public Mono<ThroughputRequestThrottler> init() {
         // No-overflow: the availableThroughput will never be larger than scheduled throughput
         // But if RU is over used in one cycle, the over used RU will be rolled over to the next cycle
         this.updateAvailableThroughput();
@@ -53,7 +53,7 @@ public class ThroughputRequestAuthorizer {
         this.availableThroughput.getAndAccumulate(this.scheduledThroughput.get(), (available, refill) -> Math.min(available,0) + refill);
     }
 
-    public <T> Mono<T> authorize(RxDocumentServiceRequest request, Mono<T> nextRequestMono) {
+    public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> nextRequestMono) {
         if (this.availableThroughput.get() > 0) {
             return nextRequestMono
                 .doOnSuccess(response -> {
