@@ -396,9 +396,9 @@ ServiceBusSessionReceiverClient sessionClient = new ServiceBusClientBuilder()
 ServiceBusReceiverClient receiverClient = sessionClient.acceptSession("my-session-id");
 ```
 ## Upcoming features
- - [Cross entity transactions](https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via) 
+ - [Cross entity transactions](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via) 
  to support transaction across different entities.
- - [Different AMQP body section](http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-amqp-sequence) 
+ - [Different AMQP body section](https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-amqp-sequence) 
  support for 'Amqp Sequence' and 'Amqp Value'. 
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fservice-bus%2FMIGRATIONGUIDE.png)
