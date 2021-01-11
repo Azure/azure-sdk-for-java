@@ -140,7 +140,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a key
 Create a key to be stored in the Azure Key Vault.
-- `setKey` creates a new key in the Azure Key Vault. If a key with the same name already exists then a new version of the key is created.
+- `createKey` creates a new key in the key vault. If a key with the same name already exists then a new version of the key is created.
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -262,7 +262,7 @@ The following sections provide several code snippets covering some of the most c
 
 ### Create a key asynchronously
 Create a key to be stored in the Azure Key Vault.
-- `setKey` creates a new key in the Azure Key Vault. If a key with the same name already exists then a new version of the key is created.
+- `createKey` creates a new key in the key vault. If a key with the same name already exists then a new version of the key is created.
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
