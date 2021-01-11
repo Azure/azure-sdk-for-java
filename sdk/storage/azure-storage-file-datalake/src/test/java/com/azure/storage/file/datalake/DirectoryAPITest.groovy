@@ -3001,23 +3001,28 @@ class DirectoryAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
-    def "Get file client"() {
-        expect:
-        dc.getFileClient(path + generatePathName())
+    @Unroll
+    def "Get file and subdirectory client"() {
+        setup:
+        dc = fsc.getDirectoryClient(resourcePrefix +  generatePathName())
+
+        when:
+        dc.getFileClient(subResourcePrefix + generatePathName())
+
+        then:
+        notThrown(IllegalArgumentException)
+
+        when:
+        dc.getSubdirectoryClient(subResourcePrefix + generatePathName())
+
+        then:
+        notThrown(IllegalArgumentException)
 
         where:
-        path                    || _
-        ""                      || _
-        Utility.urlEncode("%")  || _
-    }
-
-    def "Get sub directory client"() {
-        expect:
-        dc.getSubdirectoryClient(path + generatePathName())
-
-        where:
-        path                    || _
-        ""                      || _
-        Utility.urlEncode("%")  || _
+        resourcePrefix          | subResourcePrefix         || _
+        ""                      | ""                        || _
+        Utility.urlEncode("%")  | ""                        || _ // Resource has special character
+        ""                      | Utility.urlEncode("%")    || _ // Sub resource has special character
+        Utility.urlEncode("%")  | Utility.urlEncode("%")    || _
     }
 }
