@@ -5,6 +5,9 @@ package com.azure.messaging.servicebus.administration.models;
 
 /**
  * Matches none the messages arriving to be selected for the subscription.
+ *
+ * @see CreateRuleOptions#setFilter(RuleFilter)
+ * @see RuleProperties#setFilter(RuleFilter)
  */
 public final class FalseRuleFilter extends SqlRuleFilter {
     private static final FalseRuleFilter INSTANCE = new FalseRuleFilter();

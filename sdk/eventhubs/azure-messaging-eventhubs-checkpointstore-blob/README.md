@@ -14,7 +14,7 @@ documentation][event_hubs_product_docs] | [Samples][sample_examples]
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 - [Maven][maven]
 - Microsoft Azure subscription
-    - You can create a free account at: https://azure.microsoft.com
+    - You can create a free account at: [https://azure.microsoft.com](https://azure.microsoft.com)
 - Azure Event Hubs instance
     - Step-by-step guide for [creating an Event Hub using the Azure Portal][event_hubs_create]
 - Azure Storage account
@@ -81,8 +81,8 @@ BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuild
 
 ### Consume events using an Event Processor Client
 
-To consume events for all partitions of an Event Hub, you'll create an 
-[`EventProcessorClient`][source_eventprocessorclient] for a specific consumer group. When an Event Hub is created, it 
+To consume events for all partitions of an Event Hub, you'll create an
+[`EventProcessorClient`][source_eventprocessorclient] for a specific consumer group. When an Event Hub is created, it
 provides a default consumer group that can be used to get started.
 
 The [`EventProcessorClient`][source_eventprocessorclient] will delegate processing of events to a callback function that you

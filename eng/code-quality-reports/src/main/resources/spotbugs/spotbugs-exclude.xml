@@ -2264,12 +2264,17 @@
   <!-- SIC_INNER_SHOULD_BE_STATIC_ANON - Known issue in autorest of inner Enumeration for InputStream response -->
   <!-- UPM_UNCALLED_PRIVATE_METHOD - Known issue in autorest to generate method that might not be called -->
   <!-- SKIPPED_CLASS_TOO_BIG - Nothing we can do about this -->
+  <!-- PZLA_PREFER_ZERO_LENGTH_ARRAYS - byte array will return null by generator -->
   <Match>
     <Or>
       <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.fluent\.([^.]+)Client"/>
       <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.([^.]+)ClientImpl"/>
     </Or>
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SKIPPED_CLASS_TOO_BIG,UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+  <Match>
+    <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.fluent(\.[^.]+)*"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
   <Match>
     <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.([^.]+)ClientImpl([^.]*)"/>
@@ -2291,6 +2296,7 @@
     <Or>
       <Class name="com.azure.spring.utils.GetHashMac"/> <!-- false positive -->
       <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
+      <Class name="com.azure.spring.cloud.telemetry.GetHashMac"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   NP_LOAD_OF_KNOWN_NULL_VALUE,

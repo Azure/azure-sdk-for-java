@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -68,7 +69,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface VirtualHubIpConfigurationsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}/ipConfigurations/{ipConfigName}")
@@ -81,9 +82,10 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             @PathParam("virtualHubName") String virtualHubName,
             @PathParam("ipConfigName") String ipConfigName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}/ipConfigurations/{ipConfigName}")
@@ -97,9 +99,10 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             @PathParam("ipConfigName") String ipConfigName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") HubIpConfigurationInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}/ipConfigurations/{ipConfigName}")
@@ -112,9 +115,10 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             @PathParam("virtualHubName") String virtualHubName,
             @PathParam("ipConfigName") String ipConfigName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}/ipConfigurations")
@@ -126,14 +130,18 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualHubName") String virtualHubName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVirtualHubIpConfigurationResults>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -172,7 +180,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (ipConfigName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipConfigName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -184,6 +193,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
                             virtualHubName,
                             ipConfigName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -225,7 +235,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (ipConfigName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipConfigName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -235,6 +246,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
                 virtualHubName,
                 ipConfigName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -340,7 +352,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -353,6 +366,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
                             ipConfigName,
                             apiVersion,
                             parameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -405,7 +419,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -416,6 +431,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
                 ipConfigName,
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -651,7 +667,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (ipConfigName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipConfigName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -663,6 +680,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
                             virtualHubName,
                             ipConfigName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -704,7 +722,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (ipConfigName == null) {
             return Mono.error(new IllegalArgumentException("Parameter ipConfigName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -714,6 +733,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
                 virtualHubName,
                 ipConfigName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -897,7 +917,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -908,6 +929,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
                             resourceGroupName,
                             virtualHubName,
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<HubIpConfigurationInner>>map(
                 res ->
@@ -954,7 +976,8 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -963,6 +986,7 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
                 resourceGroupName,
                 virtualHubName,
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -1057,8 +1081,15 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<HubIpConfigurationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1086,9 +1117,16 @@ public final class VirtualHubIpConfigurationsClientImpl implements VirtualHubIpC
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

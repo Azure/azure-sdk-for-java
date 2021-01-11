@@ -22,11 +22,18 @@ jobs:
         Directory: ""
         CheckLinkGuidance: $true
 
+    # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
+    # reports. This means it is available as part of that, but also so that this is not documented in the project report.
+    - template: templates/steps/install-reporting-tools.yml
+      parameters:
+        Options: --batch-mode
+        MavenOptions: $(MemoryOptions) $(LoggingOptions)
+
     - task: Maven@3
       displayName: 'Build All Libraries'
       inputs:
         mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true'
+        options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Djacoco.skip=true -Drevapi.skip=true -Paggregatereports'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
@@ -39,12 +46,12 @@ jobs:
       # builds should be sufficient.
       condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
       displayName: 'Component Detection'
-        
+
     - task: Maven@3
       displayName: 'Generate Reports'
       inputs:
         mavenPomFile: pom.xml
-        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Ddependency-checker -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl com.azure:jacoco-test-coverage -am'
+        options: '$(DefaultOptions) -Dinclude-non-shipping-modules -Dgpg.skip -Paggregatereports'
         mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
         javaHomeOption: 'JDKVersion'
         jdkVersionOption: $(JavaBuildVersion)
@@ -63,9 +70,9 @@ jobs:
     - task: PublishCodeCoverageResults@1
       inputs:
         codeCoverageTool: JaCoCo
-        summaryFileLocation: eng/jacoco-test-coverage/target/site/test-coverage/jacoco.xml
-        reportDirectory: eng/jacoco-test-coverage/target/site/test-coverage/
-        failIfCoverageEmpty: true
+        summaryFileLocation: target/site/test-coverage/jacoco.xml
+        reportDirectory: target/site/test-coverage/
+        failIfCoverageEmpty: false
 
     # Publish code coverage to an artifact so it can be uploaded to the Maven site.
     # Do this for track 2 modules only. Code coverage from previous step is only published for Linux + Java LTS.
@@ -73,15 +80,14 @@ jobs:
       displayName: 'Publish coverage artifact'
       inputs:
         artifactName: coverage
-        targetPath: eng/jacoco-test-coverage/target/site/
+        targetPath: target/site/
 
     - pwsh: |
         $(Build.SourcesDirectory)/eng/DependencyGraph/gen-dep-graph-data.ps1
       displayName: Generate Interdependency Report Data
 
     - pwsh: |
-        Copy-Item eng/jacoco-test-coverage/target/staging $(Build.ArtifactStagingDirectory) -Recurse
-        Copy-Item eng/jacoco-test-coverage/target/dependency-allowlist.json $(Build.ArtifactStagingDirectory)/staging
+        Copy-Item target/staging $(Build.ArtifactStagingDirectory) -Recurse
         Copy-Item eng/code-quality-reports/src/main/resources/index.html $(Build.ArtifactStagingDirectory)
         Copy-Item eng/code-quality-reports/src/main/resources/dependency-allowlist.html $(Build.ArtifactStagingDirectory)/staging
 
@@ -96,10 +102,3 @@ jobs:
       condition: succeededOrFailed()
       displayName: 'Publish Report Artifacts'
       artifact: reports
-
-    - task: PowerShell@2
-      displayName: "Verify Repository Resource Refs"
-      inputs:
-        pwsh: true
-        workingDirectory: $(Build.SourcesDirectory)
-        filePath: eng/common/scripts/Verify-Resource-Ref.ps1
