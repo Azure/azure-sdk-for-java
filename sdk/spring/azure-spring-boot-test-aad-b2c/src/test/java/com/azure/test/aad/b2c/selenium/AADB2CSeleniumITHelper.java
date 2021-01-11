@@ -77,7 +77,11 @@ public class AADB2CSeleniumITHelper {
     }
 
     public void quitDriver() {
-        this.driver.quit();
+        try {
+            this.driver.quit();
+        }catch (Exception e){
+            this.driver = null;
+        }
     }
 
     private void setDriver() {
@@ -86,7 +90,7 @@ public class AADB2CSeleniumITHelper {
             options.addArguments("--headless");
             options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
             this.driver = new ChromeDriver(options);
-            wait = new WebDriverWait(driver, 5000);
+            wait = new WebDriverWait(driver, 5);
         }
     }
 

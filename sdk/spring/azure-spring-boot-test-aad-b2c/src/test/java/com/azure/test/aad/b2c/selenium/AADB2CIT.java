@@ -28,8 +28,7 @@ public class AADB2CIT {
 
     @Test
     public void testSignIn() throws InterruptedException {
-        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
-            Collections.emptyMap());
+        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
         aadB2CSeleniumITHelper.signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
         String name = aadB2CSeleniumITHelper.getName();
         String userFlowName = aadB2CSeleniumITHelper.getUserFlowName();
@@ -68,11 +67,7 @@ public class AADB2CIT {
 
     @After
     public void quitDriver() {
-        try {
-            aadB2CSeleniumITHelper.quitDriver();
-        }catch (Exception e){
-            aadB2CSeleniumITHelper = null;
-        }
+        aadB2CSeleniumITHelper.quitDriver();
     }
 
     @EnableWebSecurity
