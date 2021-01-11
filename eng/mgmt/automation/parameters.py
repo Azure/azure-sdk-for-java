@@ -77,15 +77,9 @@ POM_FORMAT = '''\
     <profile>
       <id>coverage</id>
       <modules>
-        <module>{artifact_id}</module>
       </modules>
 
       <dependencies>
-        <dependency>
-          <groupId>{group_id}</groupId>
-          <artifactId>{artifact_id}</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {{x-version-update;{group_id}:{artifact_id};current}} -->
-        </dependency>
       </dependencies>
 
       <build>
