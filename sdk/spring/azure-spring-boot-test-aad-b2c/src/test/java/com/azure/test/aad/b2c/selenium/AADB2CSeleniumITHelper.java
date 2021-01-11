@@ -74,12 +74,13 @@ public class AADB2CSeleniumITHelper {
         DEFAULT_PROPERTIES.forEach(app::property);
         properties.forEach(app::property);
         this.app.start();
+        setDriver();
     }
 
     public void quitDriver() {
         try {
             this.driver.quit();
-        }catch (Exception e){
+        } catch (Exception e) {
             this.driver = null;
         }
     }
@@ -95,7 +96,6 @@ public class AADB2CSeleniumITHelper {
     }
 
     public void signIn(String userFlowName) throws InterruptedException {
-        setDriver();
         driver.get(app.root());
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']")));
         driver.findElement(By.id("email")).sendKeys(userEmail);

@@ -40,8 +40,7 @@ public class AADB2CIT {
 
     @Test
     public void testProfileEdit() throws InterruptedException {
-        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
-            Collections.emptyMap());
+        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
         aadB2CSeleniumITHelper.signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
         String currentJobTitle = aadB2CSeleniumITHelper.getJobTitle();
         String newJobTitle = JOB_TITLE_A_WORKER.equals(currentJobTitle) ? JOB_TITLE_WORKER : JOB_TITLE_A_WORKER;
@@ -58,8 +57,7 @@ public class AADB2CIT {
 
     @Test
     public void testLogOut() throws InterruptedException {
-        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
-            Collections.emptyMap());
+        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
         aadB2CSeleniumITHelper.signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
         String signInButtonText = aadB2CSeleniumITHelper.logoutAndGetSignInButtonText();
         Assert.assertEquals("Sign in", signInButtonText);
