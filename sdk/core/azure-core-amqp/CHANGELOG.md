@@ -4,7 +4,7 @@
 
 ### New Features
 
-- Changed connections from sharing the global `Schedulers.single()` to having a `Scheduler.newSingle()` per connection.
+- Changed connections from sharing the global `Schedulers.single()` to having a `Scheduler.newSingle()` per connection to improve performance.
 
 ## 2.0.0 (2020-11-30)
 ### New Features
