@@ -98,15 +98,33 @@ public class PagedIterableBaseJavaDocCodeSnippets {
     CustomPagedFlux<String> createCustomInstance() {
 
         // A supplier that fetches the first page of data from source/service
-        Supplier<Mono<PagedResponse<String>>> firstPageRetriever = () -> null;
+        Supplier<Mono<PagedResponse<String>>> firstPageRetriever = () -> getFirstPage();
 
         // A function that fetches subsequent pages of data from source/service given a continuation token
         Function<String, Mono<PagedResponse<String>>> nextPageRetriever =
-            continuationToken -> null;
+            continuationToken -> getNextPage(continuationToken);
 
         CustomPagedFlux<String> pagedFlux = new CustomPagedFlux<>(firstPageRetriever,
             nextPageRetriever);
         return pagedFlux;
     }
 
+     /**
+     * Implementation not provided
+     *
+     * @param continuationToken Token to fetch the next page
+     * @return A {@link Mono} of {@link PagedResponse} containing items of type {@code Integer}
+     */
+    private Mono<PagedResponse<String>> getNextPage(String continuationToken) {
+        return null;
+    }
+
+    /**
+     * Implementation not provided
+     *
+     * @return A {@link Mono} of {@link PagedResponse} containing items of type {@code Integer}
+     */
+    private Mono<PagedResponse<String>> getFirstPage() {
+        return null;
+    }
 }

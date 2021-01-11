@@ -92,7 +92,7 @@ class ActiveDirectoryGroupImpl
                             jsonString, MicrosoftGraphGroupInner.class, SerializerEncoding.JSON);
                         return new ActiveDirectoryGroupImpl(groupInner, manager());
 
-                    } else if (odataType.endsWith("#microsoft.graph.servicePrincipal")) {
+                    } else if (odataType.endsWith("#microsoft.graph.serviceprincipal")) {
                         MicrosoftGraphServicePrincipalInner servicePrincipalInner = serializerAdapter.deserialize(
                             jsonString, MicrosoftGraphServicePrincipalInner.class, SerializerEncoding.JSON);
                         return new ServicePrincipalImpl(servicePrincipalInner, manager());

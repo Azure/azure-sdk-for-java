@@ -88,6 +88,10 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
         additionalParameters.put("p", userFlow);
         additionalParameters.put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);
 
+        // OAuth2AuthorizationRequest.Builder.additionalParameters() in spring-security-oauth2-core 5.2.7.RELEASE
+        // and 5.3.5.RELEASE implementation way is different, so we to compatible with them.
+        additionalParameters.putAll(request.getAdditionalParameters());
+
         return OAuth2AuthorizationRequest.from(request).additionalParameters(additionalParameters).build();
     }
 
