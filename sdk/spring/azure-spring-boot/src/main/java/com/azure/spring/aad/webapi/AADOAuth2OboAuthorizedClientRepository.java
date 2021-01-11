@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
@@ -106,12 +107,13 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                 ServletRequestAttributes attr =
                     (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
                 HttpServletResponse response = attr.getResponse();
+                assert response != null;
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 try {
                     ServletOutputStream outputStream = response.getOutputStream();
-                    String result =
-                        Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS + claims + Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS;
-                    outputStream.write(result.getBytes());
+                    String result = Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS
+                        + claims + Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS;
+                    outputStream.write(result.getBytes(StandardCharsets.UTF_8));
                     outputStream.flush();
                 } catch (IOException e) {
                     e.printStackTrace();

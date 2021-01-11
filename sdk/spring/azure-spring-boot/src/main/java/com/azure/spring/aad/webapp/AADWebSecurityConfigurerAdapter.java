@@ -28,8 +28,8 @@ import java.net.URI;
 import java.util.Arrays;
 
 /**
- * Abstract configuration class, used to make AzureClientRegistrationRepository
- * and AuthzCodeGrantRequestEntityConverter take effect.
+ * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
+ * take effect.
  */
 public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
@@ -96,10 +96,11 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     /**
      * Fix the default error info not displayed when the setting failureHandler in configure
      */
-    private final static class AADHttpConfigurer extends AbstractHttpConfigurer<AADHttpConfigurer, HttpSecurity>{
+    private static final class AADHttpConfigurer extends AbstractHttpConfigurer<AADHttpConfigurer, HttpSecurity> {
         @Override
         public void init(HttpSecurity http) {
-            DefaultLoginPageGeneratingFilter sharedObject = http.getSharedObject(DefaultLoginPageGeneratingFilter.class);
+            DefaultLoginPageGeneratingFilter sharedObject =
+                http.getSharedObject(DefaultLoginPageGeneratingFilter.class);
             sharedObject.setFailureUrl(DEFAULT_FAILURE_URL);
         }
     }
