@@ -1018,6 +1018,32 @@ public final class TextAnalyticsAsyncClient {
         return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents, options);
     }
 
+    /**
+     * Analyze healthcare entities, entity linking, and entity relations in a list of
+     * {@link String document} with provided request options.
+     *
+     * Note: In order to use this functionality, request to access public preview is required.
+     * Azure Active Directory (AAD) is not currently supported. For more information see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview">this</a>.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link AnalyzeHealthcareEntitiesOptions options} that may be passed
+     * when analyzing healthcare task.
+     *
+     * @return A {@link PollerFlux} that polls the analyze healthcare operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AnalyzeHealthcareEntitiesResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PollerFlux<AnalyzeHealthcareEntitiesOperationResult, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
     beginAnalyzeHealthcareEntities(Iterable<String> documents, String language,
@@ -1066,6 +1092,41 @@ public final class TextAnalyticsAsyncClient {
         return analyzeHealthcareAsyncClient.beginAnalyzeHealthcare(documents, options, Context.NONE);
     }
 
+
+    /**
+     * Analyze tasks, such as, entity recognition, PII entity recognition and key phrases extraction in a list of
+     * {@link String document} with provided request options.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param tasks
+     * @param options The additional configurable {@link AnalyzeBatchOptions options} that may be passed when
+     * analyzing a collection of tasks.
+     *
+     * @return A {@link PollerFlux} that polls the analyze a collection of tasks operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
+     * {@link AnalyzeBatchResult}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PollerFlux<AnalyzeBatchOperationResult, PagedFlux<AnalyzeBatchResult>> beginAnalyzeBatchTasks(
+        Iterable<String> documents, String language, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options) {
+        return beginAnalyzeBatchTasks(
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), tasks, options);
+    }
+
     /**
      * Analyze tasks, such as, entity recognition, PII entity recognition and key phrases extraction in a list of
      * {@link TextDocumentInput document} with provided request options.
@@ -1092,16 +1153,5 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<AnalyzeBatchOperationResult, PagedFlux<AnalyzeBatchResult>> beginAnalyzeBatchTasks(
         Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options) {
         return analyzeTasksAsyncClient.beginAnalyzeTasks(documents, tasks, options, Context.NONE);
-    }
-
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeBatchOperationResult, PagedFlux<AnalyzeBatchResult>> beginAnalyzeBatchTasks(
-        Iterable<String> documents, String language, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options) {
-        return beginAnalyzeBatchTasks(
-            mapByIndex(documents, (index, value) -> {
-                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
-                textDocumentInput.setLanguage(language);
-                return textDocumentInput;
-            }), tasks, options);
     }
 }

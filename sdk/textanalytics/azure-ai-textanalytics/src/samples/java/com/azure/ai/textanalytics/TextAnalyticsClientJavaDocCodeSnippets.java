@@ -15,12 +15,12 @@ import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.CategorizedEntitiesRecognition;
+import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityDataSource;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationResult;
-import com.azure.ai.textanalytics.models.KeyPhrasesExtraction;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -875,7 +875,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
                         healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getConfidenceScore());
 
                     IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources =
-                        healthcareEntity.getHealthcareEntityDataSources();
+                        healthcareEntity.getDataSources();
                     if (healthcareEntityDataSources != null) {
                         healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
                             "\t\tHealthcare data source ID: %s, data source: %s.%n",
@@ -925,21 +925,21 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             textAnalyticsClient.beginAnalyzeBatchTasks(
                 documents,
                 new AnalyzeBatchTasks()
-                   .setCategorizedEntitiesRecognitions(new CategorizedEntitiesRecognition())
-                   .setKeyPhrasesExtractions(new KeyPhrasesExtraction()),
+                   .setRecognizeEntityOptions(new RecognizeEntityOptions())
+                   .setExtractKeyPhraseOptions(new ExtractKeyPhrasesOptions()),
                 new AnalyzeBatchOptions()
-                    .setDisplayName("{tasks_display_name}"),
+                    .setName("{tasks_display_name}"),
                 Context.NONE);
         syncPoller.waitForCompletion();
         PagedIterable<AnalyzeBatchResult> result = syncPoller.getFinalResult();
         result.forEach(analyzeJobState -> {
-            analyzeJobState.getCategorizedEntitiesRecognitionTasksResult().forEach(taskResult ->
+            analyzeJobState.getEntitiesRecognitionResults().forEach(taskResult ->
                 taskResult.forEach(entitiesResult ->
                     entitiesResult.getEntities().forEach(entity -> System.out.printf(
                         "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
                         entity.getText(), entity.getCategory(), entity.getSubcategory(),
                         entity.getConfidenceScore()))));
-            analyzeJobState.getKeyPhrasesExtractionTasksResult().forEach(taskResult ->
+            analyzeJobState.getKeyPhrasesExtractionResults().forEach(taskResult ->
                 taskResult.forEach(extractKeyPhraseResult -> {
                     System.out.println("Extracted phrases:");
                     extractKeyPhraseResult.getKeyPhrases()

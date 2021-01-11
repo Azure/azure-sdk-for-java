@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  */
 public final class AnalyzeBatchOperationResult {
     private String operationId;
-    private String displayName;
+    private String name;
     private int failedTasksCount;
     private int inProgressTaskCount;
     private int successfullyCompletedTasksCount;
@@ -30,8 +30,8 @@ public final class AnalyzeBatchOperationResult {
                 }
 
                 @Override
-                public void setDisplayName(AnalyzeBatchOperationResult operationResult, String displayName) {
-                    operationResult.setDisplayName(displayName);
+                public void setName(AnalyzeBatchOperationResult operationResult, String name) {
+                    operationResult.setName(name);
                 }
 
                 @Override
@@ -91,8 +91,8 @@ public final class AnalyzeBatchOperationResult {
      *
      * @return the displayName property of the {@link AnalyzeBatchOperationResult}.
      */
-    public String getDisplayName() {
-        return displayName;
+    public String getName() {
+        return name;
     }
 
     /**
@@ -162,8 +162,8 @@ public final class AnalyzeBatchOperationResult {
         this.operationId = operationId;
     }
 
-    private void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    private void setName(String name) {
+        this.name = name;
     }
 
     private void setFailedTasksCount(int failedTasksCount) {

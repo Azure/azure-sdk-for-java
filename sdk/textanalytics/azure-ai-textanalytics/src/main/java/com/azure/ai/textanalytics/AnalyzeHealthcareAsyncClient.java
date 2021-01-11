@@ -37,11 +37,9 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -169,34 +167,6 @@ class AnalyzeHealthcareAsyncClient {
         }
     }
 
-    PollerFlux<AnalyzeHealthcareEntitiesOperationResult, Void> beginCancelAnalyzeHealthcare(String healthTaskId,
-        Duration pollInterval, Context context) {
-        try {
-            Objects.requireNonNull(healthTaskId, "'healthTaskId' is required and cannot be null.");
-            return new PollerFlux<>(
-                pollInterval == null ? DEFAULT_POLL_INTERVAL : pollInterval,
-                activationOperation(service.cancelHealthJobWithResponseAsync(UUID.fromString(healthTaskId),
-                    context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE)).map(
-                        healthResponse -> {
-                            final AnalyzeHealthcareEntitiesOperationResult textAnalyticsOperationResult =
-                                new AnalyzeHealthcareEntitiesOperationResult();
-                            AnalyzeHealthcareEntitiesOperationResultPropertiesHelper.setOperationId(
-                                textAnalyticsOperationResult,
-                                parseModelId(healthResponse.getDeserializedHeaders().getOperationLocation()));
-                            return textAnalyticsOperationResult;
-                        })),
-                pollingOperation(resultId -> service.healthStatusWithResponseAsync(
-                    resultId, null, null, null, context)),
-                (activationResponse, pollingContext) ->
-
-                    monoError(logger, new RuntimeException("Cancellation of healthcare task cancellation is not supported.")),
-                (resultId) -> Mono.empty()
-            );
-        } catch (RuntimeException ex) {
-            return PollerFlux.error(ex);
-        }
-    }
-
     private PagedResponse<AnalyzeHealthcareEntitiesResultCollection> toTextAnalyticsPagedResponse(
         Response<HealthcareJobState> response) {
         final HealthcareJobState healthcareJobState = response.getValue();
@@ -236,10 +206,11 @@ class AnalyzeHealthcareAsyncClient {
 
         final List<TextAnalyticsError> errors = healthcareJobState.getErrors();
         if (errors != null) {
-            AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setErrors(
-                analyzeHealthcareEntitiesResultCollection,
-                IterableStream.of(errors.stream().map(
-                    error -> toTextAnalyticsError(error)).collect(Collectors.toList())));
+            // TODO: throw the error
+//            AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setErrors(
+//                analyzeHealthcareEntitiesResultCollection,
+//                IterableStream.of(errors.stream().map(
+//                    error -> toTextAnalyticsError(error)).collect(Collectors.toList())));
         }
 
         return new PagedResponseBase<Void, AnalyzeHealthcareEntitiesResultCollection>(

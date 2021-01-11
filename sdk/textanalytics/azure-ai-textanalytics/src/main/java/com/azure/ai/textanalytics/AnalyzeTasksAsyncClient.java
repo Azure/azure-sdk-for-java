@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.AnalyzeBatchOperationResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeBatchResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.TextAnalyticsExceptionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeBatchInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeJobState;
@@ -28,9 +27,6 @@ import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
 import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
 import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
-import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
@@ -90,7 +86,7 @@ class AnalyzeTasksAsyncClient {
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
                     .setTasks(getJobManifestTasks(tasks));
-            analyzeBatchInput.setDisplayName(options.getDisplayName()); // setDisplayName() returns JobDescriptor
+            analyzeBatchInput.setDisplayName(options.getName()); // setDisplayName() returns JobDescriptor
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL, // TODO: after poller has the poll interval, change it back to it.
@@ -128,7 +124,7 @@ class AnalyzeTasksAsyncClient {
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
                     .setTasks(getJobManifestTasks(tasks));
-            analyzeBatchInput.setDisplayName(options.getDisplayName()); // setDisplayName() returns JobDescriptor
+            analyzeBatchInput.setDisplayName(options.getName()); // setDisplayName() returns JobDescriptor
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL, // TODO: after poller has the poll interval, change it back to it.
@@ -156,19 +152,23 @@ class AnalyzeTasksAsyncClient {
 
     private JobManifestTasks getJobManifestTasks(AnalyzeBatchTasks tasks) {
         return new JobManifestTasks()
-            .setEntityRecognitionTasks(tasks.getCategorizedEntitiesRecognitions() == null ? null
-                : StreamSupport.stream(tasks.getCategorizedEntitiesRecognitions().spliterator(), false).map(
+            .setEntityRecognitionTasks(tasks.getRecognizeEntityOptions() == null ? null
+                : StreamSupport.stream(tasks.getRecognizeEntityOptions().spliterator(), false).map(
                     entitiesTask -> {
                         if (entitiesTask == null) {
                             return null;
                         }
                         final EntitiesTask entitiesTaskImpl = new EntitiesTask();
                         entitiesTaskImpl.setParameters(
-                            new EntitiesTaskParameters().setModelVersion(entitiesTask.getModelVersion()));
+                            // TODO: currently, service does not set their default values for model version, we
+                            // temporally set the default value to 'latest' until service correct it.
+                            // https://github.com/Azure/azure-sdk-for-java/issues/17625
+                            new EntitiesTaskParameters().setModelVersion(
+                                entitiesTask.getModelVersion() == null ? "latest" : entitiesTask.getModelVersion()));
                         return entitiesTaskImpl;
                     }).collect(Collectors.toList()))
-            .setEntityRecognitionPiiTasks(tasks.getPiiEntitiesRecognitions() == null ? null
-                : StreamSupport.stream(tasks.getPiiEntitiesRecognitions().spliterator(), false).map(
+            .setEntityRecognitionPiiTasks(tasks.getRecognizePiiEntityOptions() == null ? null
+                : StreamSupport.stream(tasks.getRecognizePiiEntityOptions().spliterator(), false).map(
                     piiEntitiesTask -> {
                         if (piiEntitiesTask == null) {
                             return null;
@@ -176,21 +176,30 @@ class AnalyzeTasksAsyncClient {
                         final PiiTask piiTaskImpl = new PiiTask();
                         piiTaskImpl.setParameters(
                             new PiiTaskParameters()
-                                .setModelVersion(piiEntitiesTask.getModelVersion())
+                                // TODO: currently, service does not set their default values for model version, we
+                                // temporally set the default value to 'latest' until service correct it.
+                                // https://github.com/Azure/azure-sdk-for-java/issues/17625
+                                .setModelVersion(piiEntitiesTask.getModelVersion() == null ?
+                                                     "latest" : piiEntitiesTask.getModelVersion())
                                 .setDomain(PiiTaskParametersDomain.fromString(
                                     piiEntitiesTask.getDomainFilter() == null ? null
                                         : piiEntitiesTask.getDomainFilter().toString())));
                         return piiTaskImpl;
                     }).collect(Collectors.toList()))
-            .setKeyPhraseExtractionTasks(tasks.getKeyPhrasesExtractions() == null ? null
-                : StreamSupport.stream(tasks.getKeyPhrasesExtractions().spliterator(), false).map(
+            .setKeyPhraseExtractionTasks(tasks.getExtractKeyPhraseOptions() == null ? null
+                : StreamSupport.stream(tasks.getExtractKeyPhraseOptions().spliterator(), false).map(
                     keyPhrasesTask -> {
                         if (keyPhrasesTask == null) {
                             return null;
                         }
                         final KeyPhrasesTask keyPhrasesTaskImpl = new KeyPhrasesTask();
                         keyPhrasesTaskImpl.setParameters(
-                            new KeyPhrasesTaskParameters().setModelVersion(keyPhrasesTask.getModelVersion()));
+                            // TODO: currently, service does not set their default values for model version, we
+                            // temporally set the default value to 'latest' until service correct it.
+                            // https://github.com/Azure/azure-sdk-for-java/issues/17625
+                            new KeyPhrasesTaskParameters()
+                                .setModelVersion(keyPhrasesTask.getModelVersion() == null
+                                                     ? "latest" : keyPhrasesTask.getModelVersion()));
                         return keyPhrasesTaskImpl;
                     }).collect(Collectors.toList()));
     }
@@ -316,11 +325,12 @@ class AnalyzeTasksAsyncClient {
                 .collect(Collectors.toList()));
         }
         final AnalyzeBatchResult analyzeBatchResult = new AnalyzeBatchResult();
-        AnalyzeBatchResultPropertiesHelper.setErrors(analyzeBatchResult,
-            IterableStream.of(analyzeJobState.getErrors()
-                                  .stream()
-                                  .map(Utility::toTextAnalyticsError)
-                                  .collect(Collectors.toList())));
+        // TODO: throw errors
+//        AnalyzeBatchResultPropertiesHelper.setErrors(analyzeBatchResult,
+//            IterableStream.of(analyzeJobState.getErrors()
+//                                  .stream()
+//                                  .map(Utility::toTextAnalyticsError)
+//                                  .collect(Collectors.toList())));
 
         final RequestStatistics requestStatistics = analyzeJobState.getStatistics();
         TextDocumentBatchStatistics batchStatistics = null;
@@ -332,11 +342,11 @@ class AnalyzeTasksAsyncClient {
         }
 
         AnalyzeBatchResultPropertiesHelper.setStatistics(analyzeBatchResult, batchStatistics);
-        AnalyzeBatchResultPropertiesHelper.setCategorizedEntityRecognitionTasksResult(analyzeBatchResult,
+        AnalyzeBatchResultPropertiesHelper.setEntityRecognitionResults(analyzeBatchResult,
             entitiesResultCollections);
-        AnalyzeBatchResultPropertiesHelper.setPiiEntityRecognitionTasksResult(analyzeBatchResult,
+        AnalyzeBatchResultPropertiesHelper.setPiiEntityRecognitionResults(analyzeBatchResult,
             piiEntitiesResultCollections);
-        AnalyzeBatchResultPropertiesHelper.setKeyPhraseExtractionTasksResult(analyzeBatchResult,
+        AnalyzeBatchResultPropertiesHelper.setKeyPhraseExtractionResults(analyzeBatchResult,
             keyPhrasesResultCollections);
         return analyzeBatchResult;
     }

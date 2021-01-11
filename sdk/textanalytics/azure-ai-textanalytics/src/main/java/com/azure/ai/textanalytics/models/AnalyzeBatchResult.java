@@ -14,10 +14,9 @@ import com.azure.core.util.IterableStream;
  */
 public final class AnalyzeBatchResult {
     private TextDocumentBatchStatistics statistics;
-    private IterableStream<TextAnalyticsError> taskErrors;
-    private IterableStream<RecognizeEntitiesResultCollection> categorizedEntitiesRecognitionTasksResult;
-    private IterableStream<RecognizePiiEntitiesResultCollection> piiEntitiesRecognitionTasksResult;
-    private IterableStream<ExtractKeyPhrasesResultCollection> keyPhrasesExtractionTasksResult;
+    private IterableStream<RecognizeEntitiesResultCollection> entitiesRecognitionResults;
+    private IterableStream<RecognizePiiEntitiesResultCollection> piiEntitiesRecognitionResults;
+    private IterableStream<ExtractKeyPhrasesResultCollection> keyPhrasesExtractionResults;
 
     static {
         AnalyzeBatchResultPropertiesHelper.setAccessor(
@@ -29,28 +28,22 @@ public final class AnalyzeBatchResult {
                 }
 
                 @Override
-                public void setErrors(AnalyzeBatchResult analyzeBatchResult,
-                    IterableStream<TextAnalyticsError> taskErrors) {
-                    analyzeBatchResult.setErrors(taskErrors);
+                public void setEntitiesRecognitionResults(AnalyzeBatchResult analyzeBatchResult,
+                    IterableStream<RecognizeEntitiesResultCollection> entitiesRecognitionResults) {
+                    analyzeBatchResult.setEntitiesRecognitionResults(
+                        entitiesRecognitionResults);
                 }
 
                 @Override
-                public void setCategorizedEntitiesRecognitionTasksResult(AnalyzeBatchResult analyzeBatchResult,
-                    IterableStream<RecognizeEntitiesResultCollection> categorizedEntitiesRecognitionTasksResult) {
-                    analyzeBatchResult.setCategorizedEntitiesRecognitionTasksResult(
-                        categorizedEntitiesRecognitionTasksResult);
+                public void setPiiEntitiesRecognitionResults(AnalyzeBatchResult analyzeBatchResult,
+                    IterableStream<RecognizePiiEntitiesResultCollection> piiEntitiesRecognitionResults) {
+                    analyzeBatchResult.setPiiEntitiesRecognitionResults(piiEntitiesRecognitionResults);
                 }
 
                 @Override
-                public void setPiiEntitiesRecognitionTasksResult(AnalyzeBatchResult analyzeBatchResult,
-                    IterableStream<RecognizePiiEntitiesResultCollection> piiEntitiesRecognitionTasksResult) {
-                    analyzeBatchResult.setPiiEntitiesRecognitionTasksResult(piiEntitiesRecognitionTasksResult);
-                }
-
-                @Override
-                public void setKeyPhrasesExtractionTasksResult(AnalyzeBatchResult analyzeBatchResult,
-                    IterableStream<ExtractKeyPhrasesResultCollection> keyPhrasesExtractionTasksResult) {
-                    analyzeBatchResult.setKeyPhrasesExtractionTasksResult(keyPhrasesExtractionTasksResult);
+                public void setKeyPhrasesExtractionResults(AnalyzeBatchResult analyzeBatchResult,
+                    IterableStream<ExtractKeyPhrasesResultCollection> keyPhrasesExtractionResults) {
+                    analyzeBatchResult.setKeyPhrasesExtractionResults(keyPhrasesExtractionResults);
                 }
             });
     }
@@ -65,62 +58,49 @@ public final class AnalyzeBatchResult {
     }
 
     /**
-     * Get an {@link IterableStream} of {@link TextAnalyticsError} for analyzing multiple tasks if operation failed.
-     *
-     * @return {@link IterableStream} of {@link TextAnalyticsError}.
-     */
-    public IterableStream<TextAnalyticsError> getErrors() {
-        return this.taskErrors;
-    }
-
-    /**
-     * Get the categorizedEntitiesRecognitionTasksResult property: The categorized entities recognition tasks result
+     * Get the entitiesRecognitionResults property: The categorized entities recognition tasks result
      * property.
      *
-     * @return the categorizedEntitiesRecognitionTasksResult value.
+     * @return the entitiesRecognitionResults value.
      */
-    public IterableStream<RecognizeEntitiesResultCollection> getCategorizedEntitiesRecognitionTasksResult() {
-        return this.categorizedEntitiesRecognitionTasksResult;
+    public IterableStream<RecognizeEntitiesResultCollection> getEntitiesRecognitionResults() {
+        return this.entitiesRecognitionResults;
     }
 
     /**
-     * Get the piiEntitiesRecognitionTasksResult property: The PII entities recognition tasks result property.
+     * Get the piiEntitiesRecognitionResults property: The PII entities recognition tasks result property.
      *
-     * @return the piiEntitiesRecognitionTasksResult value.
+     * @return the piiEntitiesRecognitionResults value.
      */
-    public IterableStream<RecognizePiiEntitiesResultCollection> getPiiEntitiesRecognitionTasksResult() {
-        return this.piiEntitiesRecognitionTasksResult;
+    public IterableStream<RecognizePiiEntitiesResultCollection> getPiiEntitiesRecognitionResults() {
+        return this.piiEntitiesRecognitionResults;
     }
 
     /**
-     * Get the keyPhrasesExtractionTasksResult property: The key phrases extraction tasks result property.
+     * Get the keyPhrasesExtractionResults property: The key phrases extraction tasks result property.
      *
-     * @return the keyPhrasesExtractionTasksResult value.
+     * @return the keyPhrasesExtractionResults value.
      */
-    public IterableStream<ExtractKeyPhrasesResultCollection> getKeyPhrasesExtractionTasksResult() {
-        return this.keyPhrasesExtractionTasksResult;
+    public IterableStream<ExtractKeyPhrasesResultCollection> getKeyPhrasesExtractionResults() {
+        return this.keyPhrasesExtractionResults;
     }
 
     private void setStatistics(TextDocumentBatchStatistics statistics) {
         this.statistics = statistics;
     }
 
-    private void setErrors(IterableStream<TextAnalyticsError> taskErrors) {
-        this.taskErrors = taskErrors;
+    private void setEntitiesRecognitionResults(
+        IterableStream<RecognizeEntitiesResultCollection> entitiesRecognitionResults) {
+        this.entitiesRecognitionResults = entitiesRecognitionResults;
     }
 
-    private void setCategorizedEntitiesRecognitionTasksResult(
-        IterableStream<RecognizeEntitiesResultCollection> categorizedEntitiesRecognitionTasksResult) {
-        this.categorizedEntitiesRecognitionTasksResult = categorizedEntitiesRecognitionTasksResult;
+    private void setPiiEntitiesRecognitionResults(
+        IterableStream<RecognizePiiEntitiesResultCollection> piiEntitiesRecognitionResults) {
+        this.piiEntitiesRecognitionResults = piiEntitiesRecognitionResults;
     }
 
-    private void setPiiEntitiesRecognitionTasksResult(
-        IterableStream<RecognizePiiEntitiesResultCollection> piiEntitiesRecognitionTasksResult) {
-        this.piiEntitiesRecognitionTasksResult = piiEntitiesRecognitionTasksResult;
-    }
-
-    private void setKeyPhrasesExtractionTasksResult(
-        IterableStream<ExtractKeyPhrasesResultCollection> keyPhrasesExtractionTasksResult) {
-        this.keyPhrasesExtractionTasksResult = keyPhrasesExtractionTasksResult;
+    private void setKeyPhrasesExtractionResults(
+        IterableStream<ExtractKeyPhrasesResultCollection> keyPhrasesExtractionResults) {
+        this.keyPhrasesExtractionResults = keyPhrasesExtractionResults;
     }
 }

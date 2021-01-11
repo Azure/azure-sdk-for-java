@@ -5,7 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
 import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
-import com.azure.ai.textanalytics.models.CategorizedEntitiesRecognition;
+import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
@@ -37,7 +37,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -1606,7 +1605,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         analyzeTasksLroRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>> syncPoller =
                 client.beginAnalyzeBatchTasks(documents, tasks,
-                    new AnalyzeBatchOptions().setDisplayName("Test1").setIncludeStatistics(false),
+                    new AnalyzeBatchOptions().setName("Test1").setIncludeStatistics(false),
                     Context.NONE);
             syncPoller.waitForCompletion();
             PagedIterable<AnalyzeBatchResult> result = syncPoller.getFinalResult();
@@ -1626,7 +1625,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         analyzeTasksPaginationRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>>
                 syncPoller = client.beginAnalyzeBatchTasks(documents, tasks,
-                new AnalyzeBatchOptions().setDisplayName("Test1")
+                new AnalyzeBatchOptions().setName("Test1")
                     .setIncludeStatistics(false),
                 Context.NONE);
             syncPoller.waitForCompletion();
@@ -1644,7 +1643,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         emptyListRunner((documents, errorMessage) -> {
             final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> client.beginAnalyzeBatchTasks(documents,
-                    new AnalyzeBatchTasks().setCategorizedEntitiesRecognitions(new CategorizedEntitiesRecognition()),
+                    new AnalyzeBatchTasks().setRecognizeEntityOptions(new RecognizeEntityOptions()),
                     null, Context.NONE)
                     .getFinalResult());
             assertEquals(errorMessage, exception.getMessage());

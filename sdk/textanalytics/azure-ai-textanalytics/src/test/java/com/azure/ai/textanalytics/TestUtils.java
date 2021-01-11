@@ -521,7 +521,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity2, 29);
         HealthcareEntityPropertiesHelper.setNegated(healthcareEntity2, false);
         // there are too many healthcare entity data sources, we can just assert it is not null.
-        HealthcareEntityPropertiesHelper.setHealthcareEntityDataSources(healthcareEntity2,
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity2,
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "progressive");
@@ -536,7 +536,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 69);
         HealthcareEntityPropertiesHelper.setNegated(healthcareEntity4, false);
         // there are too many healthcare entity data sources, we can just assert it is not null.
-        HealthcareEntityPropertiesHelper.setHealthcareEntityDataSources(healthcareEntity4,
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity4,
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "past several months");
@@ -594,7 +594,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 108);
         HealthcareEntityPropertiesHelper.setNegated(healthcareEntity4, false);
         // there are too many healthcare entity data sources, we can just assert it is not null.
-        HealthcareEntityPropertiesHelper.setHealthcareEntityDataSources(healthcareEntity4,
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity4,
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "wrist pain");
@@ -603,7 +603,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity5, 120);
         HealthcareEntityPropertiesHelper.setNegated(healthcareEntity5, false);
         // there are too many healthcare entity data sources, we can just assert it is not null.
-        HealthcareEntityPropertiesHelper.setHealthcareEntityDataSources(healthcareEntity5,
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity5,
             IterableStream.of(Collections.emptyList()));
         final HealthcareEntity healthcareEntity6 = new HealthcareEntity();
         HealthcareEntityPropertiesHelper.setText(healthcareEntity6, "anginal equivalent");
@@ -612,7 +612,7 @@ final class TestUtils {
         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity6, 137);
         HealthcareEntityPropertiesHelper.setNegated(healthcareEntity6, false);
         // there are too many entity links, we can just assert it is not null.
-        HealthcareEntityPropertiesHelper.setHealthcareEntityDataSources(healthcareEntity6,
+        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity6,
             IterableStream.of(Collections.emptyList()));
 
         // HealthcareEntityRelation
@@ -705,9 +705,9 @@ final class TestUtils {
         final AnalyzeBatchResult analyzeBatchResult = new AnalyzeBatchResult();
         AnalyzeBatchResultPropertiesHelper.setStatistics(analyzeBatchResult,
             new TextDocumentBatchStatistics(1, 1, 0, 1));
-        AnalyzeBatchResultPropertiesHelper.setCategorizedEntityRecognitionTasksResult(analyzeBatchResult, recognizeEntitiesResults);
-        AnalyzeBatchResultPropertiesHelper.setPiiEntityRecognitionTasksResult(analyzeBatchResult, recognizePiiEntitiesResults);
-        AnalyzeBatchResultPropertiesHelper.setKeyPhraseExtractionTasksResult(analyzeBatchResult, extractKeyPhraseResults);
+        AnalyzeBatchResultPropertiesHelper.setEntityRecognitionResults(analyzeBatchResult, recognizeEntitiesResults);
+        AnalyzeBatchResultPropertiesHelper.setPiiEntityRecognitionResults(analyzeBatchResult, recognizePiiEntitiesResults);
+        AnalyzeBatchResultPropertiesHelper.setKeyPhraseExtractionResults(analyzeBatchResult, extractKeyPhraseResults);
         return analyzeBatchResult;
     }
 

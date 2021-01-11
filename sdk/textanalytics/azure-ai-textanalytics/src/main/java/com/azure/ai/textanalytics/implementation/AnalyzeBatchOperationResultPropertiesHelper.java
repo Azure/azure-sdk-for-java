@@ -4,7 +4,6 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
-import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
 
 import java.time.OffsetDateTime;
 
@@ -20,7 +19,7 @@ public final class AnalyzeBatchOperationResultPropertiesHelper {
      */
     public interface AnalyzeTasksOperationResultAccessor {
         void setOperationId(AnalyzeBatchOperationResult operationResult, String operationId);
-        void setDisplayName(AnalyzeBatchOperationResult operationResult, String displayName);
+        void setName(AnalyzeBatchOperationResult operationResult, String name);
         void setFailedTasksCount(AnalyzeBatchOperationResult operationResult, int failedTasksCount);
         void setInProgressTaskCount(AnalyzeBatchOperationResult operationResult, int inProgressTaskCount);
         void setSuccessfullyCompletedTasksCount(AnalyzeBatchOperationResult operationResult,
@@ -47,7 +46,7 @@ public final class AnalyzeBatchOperationResultPropertiesHelper {
     }
 
     public static void setDisplayName(AnalyzeBatchOperationResult operationResult, String displayName) {
-        accessor.setDisplayName(operationResult, displayName);
+        accessor.setName(operationResult, displayName);
     }
 
     public static void setFailedTasksCount(AnalyzeBatchOperationResult operationResult, int failedTasksCount) {

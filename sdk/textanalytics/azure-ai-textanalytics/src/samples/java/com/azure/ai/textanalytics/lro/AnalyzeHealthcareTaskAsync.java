@@ -55,42 +55,45 @@ public class AnalyzeHealthcareTaskAsync {
                     operationResult.getCreatedAt(), operationResult.getExpiresAt());
                 return pollResult.getFinalResult();
             })
-            .subscribe(healthcareTaskResultPagedFlux ->
-                healthcareTaskResultPagedFlux.subscribe(
-                    healthcareTaskResult -> {
-                        // Model version
-                        System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
-                            healthcareTaskResult.getModelVersion());
-
-                        TextDocumentBatchStatistics healthcareTaskStatistics = healthcareTaskResult.getStatistics();
-                        // Batch statistics
-                        System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
-                            healthcareTaskStatistics.getDocumentCount(), healthcareTaskStatistics.getInvalidDocumentCount(),
-                            healthcareTaskStatistics.getTransactionCount(), healthcareTaskStatistics.getValidDocumentCount());
-
-                        healthcareTaskResult.forEach(healthcareEntitiesResult -> {
-                            System.out.println("Document id = " + healthcareEntitiesResult.getId());
-                            System.out.println("Document entities: ");
-                            AtomicInteger ct = new AtomicInteger();
-                            healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
-                                System.out.printf("\ti = %d, Text: %s, category: %s, confidence score: %f.%n",
-                                    ct.getAndIncrement(),
-                                    healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getConfidenceScore());
-                                IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources = healthcareEntity.getHealthcareEntityDataSources();
-                                if (healthcareEntityDataSources != null) {
-                                    healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
-                                        "\t\tHealthcare data source ID: %s, data source: %s.%n",
-                                        healthcareEntityLink.getDataSourceId(), healthcareEntityLink.getDataSource()));
-                                }
-                                Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities = healthcareEntity.getRelatedHealthcareEntities();
-                                if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
-                                    relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
-                                        "\t\tRelated entity: %s, relation type: %s.%n", relatedHealthcareEntity.getText(), entityRelationType));
-                                }
-                            });
+            .subscribe(healthcareTaskResultPagedFlux -> healthcareTaskResultPagedFlux.subscribe(
+                healthcareEntitiesResultCollection -> {
+                    // Model version
+                    System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
+                        healthcareEntitiesResultCollection.getModelVersion());
+                    // Batch statistics
+                    TextDocumentBatchStatistics batchStatistics = healthcareEntitiesResultCollection.getStatistics();
+                    System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
+                        batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(),
+                        batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+                    // Healthcare entities collection
+                    healthcareEntitiesResultCollection.forEach(healthcareEntitiesResult -> {
+                        System.out.println("Document id = " + healthcareEntitiesResult.getId());
+                        System.out.println("Document entities: ");
+                        AtomicInteger ct = new AtomicInteger();
+                        // Healthcare entities
+                        healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
+                            System.out.printf("\ti = %d, Text: %s, category: %s, confidence score: %f.%n",
+                                ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
+                                healthcareEntity.getConfidenceScore());
+                            // Data sources
+                            IterableStream<HealthcareEntityDataSource> dataSources = healthcareEntity.getDataSources();
+                            if (dataSources != null) {
+                                dataSources.forEach(dataSource -> System.out.printf(
+                                    "\t\tHealthcare data source ID: %s, data source: %s.%n",
+                                    dataSource.getDataSourceId(), dataSource.getDataSource()));
+                            }
+                            // Entities relationship
+                            Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
+                                healthcareEntity.getRelatedHealthcareEntities();
+                            if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
+                                relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
+                                    "\t\tRelated entity: %s, relation type: %s.%n",
+                                    relatedHealthcareEntity.getText(), entityRelationType));
+                            }
                         });
-                    }
-                ));
+                    });
+                }
+            ));
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

@@ -448,7 +448,7 @@ public final class Utility {
                             entity.getConfidenceScore());
                         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity, entity.getOffset());
                         HealthcareEntityPropertiesHelper.setNegated(healthcareEntity, entity.isNegated());
-                        HealthcareEntityPropertiesHelper.setHealthcareEntityDataSources(healthcareEntity,
+                        HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity,
                             entity.getLinks() == null ? null : IterableStream.of(entity.getLinks().stream()
                                 .map(healthcareEntityLink -> {
                                     final HealthcareEntityDataSource healthcareEntityDataSourceOrigin =

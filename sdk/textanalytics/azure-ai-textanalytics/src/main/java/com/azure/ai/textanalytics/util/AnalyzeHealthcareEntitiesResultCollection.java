@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics.util;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.util.IterableStream;
 
@@ -14,7 +13,6 @@ import com.azure.core.util.IterableStream;
  */
 public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStream<AnalyzeHealthcareEntitiesResult> {
     private TextDocumentBatchStatistics statistics;
-    private IterableStream<TextAnalyticsError> taskErrors;
     private String modelVersion;
 
     static {
@@ -27,12 +25,6 @@ public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStr
                 }
 
                 @Override
-                public void setErrors(AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection,
-                    IterableStream<TextAnalyticsError> taskErrors) {
-                    analyzeHealthcareEntitiesResultCollection.setErrors(taskErrors);
-                }
-
-                @Override
                 public void setStatistics(AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection,
                     TextDocumentBatchStatistics statistics) {
                     analyzeHealthcareEntitiesResultCollection.setStatistics(statistics);
@@ -40,6 +32,12 @@ public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStr
             });
     }
 
+    /**
+     * Create a {@link AnalyzeHealthcareEntitiesResultCollection} model that maintains a list of
+     * {@link AnalyzeHealthcareEntitiesResult} along with model version and batch's statistics.
+     *
+     * @param documentResults A list of {@link AnalyzeHealthcareEntitiesResult}.
+     */
     public AnalyzeHealthcareEntitiesResultCollection(Iterable<AnalyzeHealthcareEntitiesResult> documentResults) {
         super(documentResults);
     }
@@ -62,21 +60,8 @@ public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStr
         return statistics;
     }
 
-    /**
-     * Get an {@link IterableStream} of {@link TextAnalyticsError} for Healthcare tasks if operation failed.
-     *
-     * @return {@link IterableStream} of {@link TextAnalyticsError}.
-     */
-    public IterableStream<TextAnalyticsError> getErrors() {
-        return this.taskErrors;
-    }
-
     private void setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
-    }
-
-    private void setErrors(IterableStream<TextAnalyticsError> taskErrors) {
-        this.taskErrors = taskErrors;
     }
 
     private void setStatistics(TextDocumentBatchStatistics statistics) {

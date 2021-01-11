@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
 import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
@@ -16,9 +17,8 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityDataSource;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationResult;
-import com.azure.ai.textanalytics.models.KeyPhrasesExtraction;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
-import com.azure.ai.textanalytics.models.PiiEntitiesRecognition;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -31,11 +31,9 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -220,7 +218,7 @@ public class ReadmeSamples {
                         ct.getAndIncrement(),
                         healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getConfidenceScore());
                     IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources =
-                        healthcareEntity.getHealthcareEntityDataSources();
+                        healthcareEntity.getDataSources();
                     if (healthcareEntityDataSources != null) {
                         healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
                             "\t\tHealthcare data source ID: %s, data source: %s.%n",
@@ -266,13 +264,13 @@ public class ReadmeSamples {
         SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>> syncPoller =
             textAnalyticsClient.beginAnalyzeBatchTasks(documents,
                 new AnalyzeBatchTasks()
-                    .setKeyPhrasesExtractions(new KeyPhrasesExtraction())
-                    .setPiiEntitiesRecognitions(new PiiEntitiesRecognition()),
-                new AnalyzeBatchOptions().setDisplayName("{tasks_display_name}"),
+                    .setExtractKeyPhraseOptions(new ExtractKeyPhrasesOptions())
+                    .setRecognizePiiEntityOptions(new RecognizePiiEntityOptions()),
+                new AnalyzeBatchOptions().setName("{tasks_display_name}"),
                 Context.NONE);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(analyzeJobState -> {
-            analyzeJobState.getKeyPhrasesExtractionTasksResult().forEach(taskResult -> {
+            analyzeJobState.getKeyPhrasesExtractionResults().forEach(taskResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 for (ExtractKeyPhraseResult extractKeyPhraseResult : taskResult) {
                     System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
@@ -281,7 +279,7 @@ public class ReadmeSamples {
                         .forEach(keyPhrases -> System.out.printf("\t%s.%n", keyPhrases));
                 }
             });
-            analyzeJobState.getPiiEntitiesRecognitionTasksResult().forEach(taskResult -> {
+            analyzeJobState.getPiiEntitiesRecognitionResults().forEach(taskResult -> {
                 AtomicInteger counter = new AtomicInteger();
                 for (RecognizePiiEntitiesResult entitiesResult : taskResult) {
                     System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));

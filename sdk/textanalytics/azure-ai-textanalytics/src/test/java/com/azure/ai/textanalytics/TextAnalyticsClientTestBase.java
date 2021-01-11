@@ -8,19 +8,18 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
-import com.azure.ai.textanalytics.models.CategorizedEntitiesRecognition;
+import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityDataSource;
-import com.azure.ai.textanalytics.models.KeyPhrasesExtraction;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.MinedOpinion;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
-import com.azure.ai.textanalytics.models.PiiEntitiesRecognition;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
@@ -687,9 +686,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
             new AnalyzeBatchTasks()
-                .setCategorizedEntitiesRecognitions(new CategorizedEntitiesRecognition())
-                .setKeyPhrasesExtractions(new KeyPhrasesExtraction())
-                .setPiiEntitiesRecognitions(new PiiEntitiesRecognition()));
+                .setRecognizeEntityOptions(new RecognizeEntityOptions())
+                .setExtractKeyPhraseOptions(new ExtractKeyPhrasesOptions())
+                .setRecognizePiiEntityOptions(new RecognizePiiEntityOptions()));
     }
 
     void analyzeTasksPaginationRunner(BiConsumer<List<TextDocumentInput>, AnalyzeBatchTasks> testRunner,
@@ -700,9 +699,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         }
         testRunner.accept(documents,
             new AnalyzeBatchTasks()
-            .setCategorizedEntitiesRecognitions(new CategorizedEntitiesRecognition())
-            .setKeyPhrasesExtractions(new KeyPhrasesExtraction())
-            .setPiiEntitiesRecognitions(new PiiEntitiesRecognition()));
+            .setRecognizeEntityOptions(new RecognizeEntityOptions())
+            .setExtractKeyPhraseOptions(new ExtractKeyPhrasesOptions())
+            .setRecognizePiiEntityOptions(new RecognizePiiEntityOptions()));
     }
 
     String getEndpoint() {
@@ -1076,7 +1075,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expected.getCategory(), actual.getCategory());
         assertEquals(expected.getText(), actual.getText());
         assertEquals(expected.getOffset(), actual.getOffset());
-        validateHealthcareEntityLinkList(expected.getHealthcareEntityDataSources(), actual.getHealthcareEntityDataSources());
+        validateHealthcareEntityLinkList(expected.getDataSources(), actual.getDataSources());
     }
 
     static void validateHealthcareEntityLinkList(IterableStream<HealthcareEntityDataSource> expected,
@@ -1128,14 +1127,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             actualOperationStatistics.getTransactionCount());
 
         validateEntityRecognitionTasks(showStatistics,
-            expected.getCategorizedEntitiesRecognitionTasksResult().stream().collect(Collectors.toList()),
-            actual.getCategorizedEntitiesRecognitionTasksResult().stream().collect(Collectors.toList()));
+            expected.getEntitiesRecognitionResults().stream().collect(Collectors.toList()),
+            actual.getEntitiesRecognitionResults().stream().collect(Collectors.toList()));
         validateEntityRecognitionPiiTasks(showStatistics,
-            expected.getPiiEntitiesRecognitionTasksResult().stream().collect(Collectors.toList()),
-            actual.getPiiEntitiesRecognitionTasksResult().stream().collect(Collectors.toList()));
+            expected.getPiiEntitiesRecognitionResults().stream().collect(Collectors.toList()),
+            actual.getPiiEntitiesRecognitionResults().stream().collect(Collectors.toList()));
         validateKeyPhrasesExtractionTasks(showStatistics,
-            expected.getKeyPhrasesExtractionTasksResult().stream().collect(Collectors.toList()),
-            actual.getKeyPhrasesExtractionTasksResult().stream().collect(Collectors.toList()));
+            expected.getKeyPhrasesExtractionResults().stream().collect(Collectors.toList()),
+            actual.getKeyPhrasesExtractionResults().stream().collect(Collectors.toList()));
     }
 
     static void validateEntityRecognitionTasks(boolean showStatistics,

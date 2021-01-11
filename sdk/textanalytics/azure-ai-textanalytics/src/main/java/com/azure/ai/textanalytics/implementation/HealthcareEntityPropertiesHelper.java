@@ -28,8 +28,7 @@ public final class HealthcareEntityPropertiesHelper {
         void setConfidenceScore(HealthcareEntity healthcareEntity, double confidenceScore);
         void setOffset(HealthcareEntity healthcareEntity, int offset);
         void setNegated(HealthcareEntity healthcareEntity, boolean negated);
-        void setHealthcareEntityDataSources(HealthcareEntity healthcareEntity,
-            IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources);
+        void setDataSources(HealthcareEntity healthcareEntity, IterableStream<HealthcareEntityDataSource> dataSources);
         void setRelatedHealthcareEntities(HealthcareEntity healthcareEntity,
             Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities);
     }
@@ -63,9 +62,9 @@ public final class HealthcareEntityPropertiesHelper {
         accessor.setNegated(healthcareEntity, negated);
     }
 
-    public static void setHealthcareEntityDataSources(HealthcareEntity healthcareEntity,
-        IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources) {
-        accessor.setHealthcareEntityDataSources(healthcareEntity, healthcareEntityDataSources);
+    public static void setDataSources(HealthcareEntity healthcareEntity,
+        IterableStream<HealthcareEntityDataSource> dataSources) {
+        accessor.setDataSources(healthcareEntity, dataSources);
     }
 
     public static void setRelatedHealthcareEntities(HealthcareEntity healthcareEntity,

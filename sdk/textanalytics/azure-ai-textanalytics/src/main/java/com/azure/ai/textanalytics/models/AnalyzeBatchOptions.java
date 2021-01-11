@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class AnalyzeBatchOptions {
-    private String displayName;
+    private String name;
     private boolean includeStatistics;
 
     /**
@@ -41,19 +41,19 @@ public final class AnalyzeBatchOptions {
      *
      * @return the name of analyze tasks.
      */
-    public String getDisplayName() {
-        return displayName;
+    public String getName() {
+        return name;
     }
 
     /**
      * Set the custom name for the analyze tasks.
      *
-     * @param displayName the display name of analyze tasks.
+     * @param name the display name of analyze tasks.
      *
      * @return the {@link AnalyzeBatchOptions} object itself.
      */
-    public AnalyzeBatchOptions setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public AnalyzeBatchOptions setName(String name) {
+        this.name = name;
         return this;
     }
 }

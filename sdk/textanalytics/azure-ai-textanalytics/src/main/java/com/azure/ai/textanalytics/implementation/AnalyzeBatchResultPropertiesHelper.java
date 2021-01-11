@@ -4,7 +4,6 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -25,13 +24,12 @@ public final class AnalyzeBatchResultPropertiesHelper {
     public interface AnalyzeTasksResultAccessor {
         void setStatistics(AnalyzeBatchResult analyzeBatchResult,
             TextDocumentBatchStatistics operationStatistics);
-        void setErrors(AnalyzeBatchResult analyzeBatchResult, IterableStream<TextAnalyticsError> taskErrors);
-        void setCategorizedEntitiesRecognitionTasksResult(AnalyzeBatchResult analyzeBatchResult,
-            IterableStream<RecognizeEntitiesResultCollection> categorizedEntitiesRecognitionTasksResult);
-        void setPiiEntitiesRecognitionTasksResult(AnalyzeBatchResult analyzeBatchResult,
-            IterableStream<RecognizePiiEntitiesResultCollection> piiEntitiesRecognitionTasksResult);
-        void setKeyPhrasesExtractionTasksResult(AnalyzeBatchResult analyzeBatchResult,
-            IterableStream<ExtractKeyPhrasesResultCollection> keyPhrasesExtractionTasksResult);
+        void setEntitiesRecognitionResults(AnalyzeBatchResult analyzeBatchResult,
+            IterableStream<RecognizeEntitiesResultCollection> entitiesRecognitionResults);
+        void setPiiEntitiesRecognitionResults(AnalyzeBatchResult analyzeBatchResult,
+            IterableStream<RecognizePiiEntitiesResultCollection> piiEntitiesRecognitionResults);
+        void setKeyPhrasesExtractionResults(AnalyzeBatchResult analyzeBatchResult,
+            IterableStream<ExtractKeyPhrasesResultCollection> keyPhrasesExtractionResults);
     }
 
     /**
@@ -48,23 +46,18 @@ public final class AnalyzeBatchResultPropertiesHelper {
         accessor.setStatistics(analyzeBatchResult, operationStatistics);
     }
 
-    public static void setErrors(AnalyzeBatchResult analyzeBatchResult,
-        IterableStream<TextAnalyticsError> taskErrors) {
-        accessor.setErrors(analyzeBatchResult, taskErrors);
+    public static void setEntityRecognitionResults(AnalyzeBatchResult analyzeBatchResult,
+        IterableStream<RecognizeEntitiesResultCollection> entityRecognitionResults) {
+        accessor.setEntitiesRecognitionResults(analyzeBatchResult, entityRecognitionResults);
     }
 
-    public static void setCategorizedEntityRecognitionTasksResult(AnalyzeBatchResult analyzeBatchResult,
-        IterableStream<RecognizeEntitiesResultCollection> entityRecognitionTasks) {
-        accessor.setCategorizedEntitiesRecognitionTasksResult(analyzeBatchResult, entityRecognitionTasks);
+    public static void setPiiEntityRecognitionResults(AnalyzeBatchResult analyzeBatchResult,
+        IterableStream<RecognizePiiEntitiesResultCollection> piiEntityRecognitionResults) {
+        accessor.setPiiEntitiesRecognitionResults(analyzeBatchResult, piiEntityRecognitionResults);
     }
 
-    public static void setPiiEntityRecognitionTasksResult(AnalyzeBatchResult analyzeBatchResult,
-        IterableStream<RecognizePiiEntitiesResultCollection> entityRecognitionPiiTasks) {
-        accessor.setPiiEntitiesRecognitionTasksResult(analyzeBatchResult, entityRecognitionPiiTasks);
-    }
-
-    public static void setKeyPhraseExtractionTasksResult(AnalyzeBatchResult analyzeBatchResult,
-        IterableStream<ExtractKeyPhrasesResultCollection> keyPhraseExtractionTasks) {
-        accessor.setKeyPhrasesExtractionTasksResult(analyzeBatchResult, keyPhraseExtractionTasks);
+    public static void setKeyPhraseExtractionResults(AnalyzeBatchResult analyzeBatchResult,
+        IterableStream<ExtractKeyPhrasesResultCollection> keyPhraseExtractionResults) {
+        accessor.setKeyPhrasesExtractionResults(analyzeBatchResult, keyPhraseExtractionResults);
     }
 }

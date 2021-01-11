@@ -11,13 +11,13 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.CategorizedEntitiesRecognition;
+import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityDataSource;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationResult;
-import com.azure.ai.textanalytics.models.KeyPhrasesExtraction;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
@@ -848,7 +848,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                     healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getConfidenceScore());
 
                                 IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources =
-                                    healthcareEntity.getHealthcareEntityDataSources();
+                                    healthcareEntity.getDataSources();
                                 if (healthcareEntityDataSources != null) {
                                     healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
                                         "\t\tHealthcare data source ID: %s, data source: %s.%n",
@@ -895,20 +895,20 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "My SSN is 859-98-0987").setLanguage("en")
         );
         textAnalyticsAsyncClient.beginAnalyzeBatchTasks(documents,
-            new AnalyzeBatchTasks().setCategorizedEntitiesRecognitions(new CategorizedEntitiesRecognition())
-                .setKeyPhrasesExtractions(new KeyPhrasesExtraction()),
-            new AnalyzeBatchOptions().setDisplayName("{tasks_display_name}"))
+            new AnalyzeBatchTasks().setRecognizeEntityOptions(new RecognizeEntityOptions())
+                .setExtractKeyPhraseOptions(new ExtractKeyPhrasesOptions()),
+            new AnalyzeBatchOptions().setName("{tasks_display_name}"))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeTasksResultPagedFlux ->
                 analyzeTasksResultPagedFlux.subscribe(analyzeTasksResult -> {
-                    analyzeTasksResult.getCategorizedEntitiesRecognitionTasksResult().forEach(taskResult ->
+                    analyzeTasksResult.getEntitiesRecognitionResults().forEach(taskResult ->
                         taskResult.forEach(entitiesResult ->
                             entitiesResult.getEntities().forEach(entity -> System.out.printf(
                                 "Recognized entity: %s, entity category: %s, entity subcategory: %s, "
                                     + "confidence score: %f.%n",
                                 entity.getText(), entity.getCategory(), entity.getSubcategory(),
                                 entity.getConfidenceScore()))));
-                    analyzeTasksResult.getKeyPhrasesExtractionTasksResult().forEach(taskResult ->
+                    analyzeTasksResult.getKeyPhrasesExtractionResults().forEach(taskResult ->
                         taskResult.forEach(extractKeyPhraseResult -> {
                             System.out.println("Extracted phrases:");
                             extractKeyPhraseResult.getKeyPhrases()

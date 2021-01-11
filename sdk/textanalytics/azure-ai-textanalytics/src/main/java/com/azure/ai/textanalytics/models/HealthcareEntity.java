@@ -18,7 +18,7 @@ public final class HealthcareEntity {
     private double confidenceScore;
     private int offset;
     private boolean negated;
-    private IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources;
+    private IterableStream<HealthcareEntityDataSource> dataSources;
     private Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities;
 
     static {
@@ -49,9 +49,9 @@ public final class HealthcareEntity {
             }
 
             @Override
-            public void setHealthcareEntityDataSources(HealthcareEntity healthcareEntity,
-                IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources) {
-                healthcareEntity.setHealthcareEntityDataSources(healthcareEntityDataSources);
+            public void setDataSources(HealthcareEntity healthcareEntity,
+                IterableStream<HealthcareEntityDataSource> dataSources) {
+                healthcareEntity.setDataSources(dataSources);
             }
 
             @Override
@@ -111,10 +111,10 @@ public final class HealthcareEntity {
     /**
      * Get the healthcare entity data sources property: Entity references in known data sources.
      *
-     * @return the healthcareEntityDataSources value.
+     * @return the dataSources value.
      */
-    public IterableStream<HealthcareEntityDataSource> getHealthcareEntityDataSources() {
-        return this.healthcareEntityDataSources;
+    public IterableStream<HealthcareEntityDataSource> getDataSources() {
+        return this.dataSources;
     }
 
     /**
@@ -146,9 +146,8 @@ public final class HealthcareEntity {
         this.negated = negated;
     }
 
-    private void setHealthcareEntityDataSources(
-        IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources) {
-        this.healthcareEntityDataSources = healthcareEntityDataSources;
+    private void setDataSources(IterableStream<HealthcareEntityDataSource> dataSources) {
+        this.dataSources = dataSources;
     }
 
     private void setRelatedHealthcareEntities(

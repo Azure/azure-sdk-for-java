@@ -46,8 +46,7 @@ public class AnalyzeHealthcareTask {
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i),
-                "The patient is a 54-year-old gentleman electro with a history of progressive angina over the past several months. " +
-                    "The patient could have Parkinson's Disease (PD)."
+                "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months."
             ));
         }
 
@@ -71,32 +70,35 @@ public class AnalyzeHealthcareTask {
         for (PagedResponse<AnalyzeHealthcareEntitiesResultCollection> page : pagedResults) {
             System.out.println("Response code: " + page.getStatusCode());
             System.out.println("Continuation Token: " + page.getContinuationToken());
-            page.getElements().forEach(healthcareTaskResult -> {
+            page.getElements().forEach(healthcareEntitiesResultCollection -> {
                 // Model version
                 System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
-                    healthcareTaskResult.getModelVersion());
-
-                TextDocumentBatchStatistics healthcareTaskStatistics = healthcareTaskResult.getStatistics();
+                    healthcareEntitiesResultCollection.getModelVersion());
                 // Batch statistics
+                TextDocumentBatchStatistics batchStatistics = healthcareEntitiesResultCollection.getStatistics();
                 System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
-                    healthcareTaskStatistics.getDocumentCount(), healthcareTaskStatistics.getInvalidDocumentCount(),
-                    healthcareTaskStatistics.getTransactionCount(), healthcareTaskStatistics.getValidDocumentCount());
-
-                healthcareTaskResult.forEach(healthcareEntitiesResult -> {
+                    batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(),
+                    batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+                // Healthcare entities collection
+                healthcareEntitiesResultCollection.forEach(healthcareEntitiesResult -> {
                     System.out.println("Document id = " + healthcareEntitiesResult.getId());
                     System.out.println("Document entities: ");
                     AtomicInteger ct = new AtomicInteger();
+                    // Healthcare entities
                     healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
                         System.out.printf("\ti = %d, Text: %s, category: %s, confidence score: %f.%n",
-                            ct.getAndIncrement(),
-                            healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getConfidenceScore());
-                        IterableStream<HealthcareEntityDataSource> healthcareEntityDataSources = healthcareEntity.getHealthcareEntityDataSources();
-                        if (healthcareEntityDataSources != null) {
-                            healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
+                            ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
+                            healthcareEntity.getConfidenceScore());
+                        // Data sources
+                        IterableStream<HealthcareEntityDataSource> dataSources = healthcareEntity.getDataSources();
+                        if (dataSources != null) {
+                            dataSources.forEach(dataSource -> System.out.printf(
                                 "\t\tHealthcare data source ID: %s, data source: %s.%n",
-                                healthcareEntityLink.getDataSourceId(), healthcareEntityLink.getDataSource()));
+                                dataSource.getDataSourceId(), dataSource.getDataSource()));
                         }
-                        Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities = healthcareEntity.getRelatedHealthcareEntities();
+                        // Entities relationship
+                        Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
+                            healthcareEntity.getRelatedHealthcareEntities();
                         if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
                             relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
                                 "\t\tRelated entity: %s, relation type: %s.%n",
@@ -106,6 +108,5 @@ public class AnalyzeHealthcareTask {
                 });
             });
         }
-        System.out.printf("Poller status: %s.%n", syncPoller.poll().getStatus());
     }
 }

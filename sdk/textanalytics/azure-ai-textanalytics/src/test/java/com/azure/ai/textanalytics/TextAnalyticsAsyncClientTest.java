@@ -5,7 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
 import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
-import com.azure.ai.textanalytics.models.CategorizedEntitiesRecognition;
+import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
@@ -1669,7 +1669,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         analyzeTasksLroRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchOperationResult, PagedFlux<AnalyzeBatchResult>> syncPoller =
                 client.beginAnalyzeBatchTasks(documents, tasks,
-                    new AnalyzeBatchOptions().setDisplayName("Test1")
+                    new AnalyzeBatchOptions().setName("Test1")
                         .setIncludeStatistics(false)).getSyncPoller();
             syncPoller.waitForCompletion();
             PagedFlux<AnalyzeBatchResult> result = syncPoller.getFinalResult();
@@ -1689,7 +1689,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         analyzeTasksPaginationRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchOperationResult, PagedFlux<AnalyzeBatchResult>>
                 syncPoller = client.beginAnalyzeBatchTasks(documents, tasks,
-                new AnalyzeBatchOptions().setDisplayName("Test1").setIncludeStatistics(false)).getSyncPoller();
+                new AnalyzeBatchOptions().setName("Test1").setIncludeStatistics(false)).getSyncPoller();
             syncPoller.waitForCompletion();
             PagedFlux<AnalyzeBatchResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(false,
@@ -1705,7 +1705,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         emptyListRunner((documents, errorMessage) ->
             StepVerifier.create(client.beginAnalyzeBatchTasks(documents,
                 new AnalyzeBatchTasks()
-                    .setCategorizedEntitiesRecognitions(new CategorizedEntitiesRecognition()), null))
+                    .setRecognizeEntityOptions(new RecognizeEntityOptions()), null))
                 .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                     && errorMessage.equals(throwable.getMessage()))
                 .verify());

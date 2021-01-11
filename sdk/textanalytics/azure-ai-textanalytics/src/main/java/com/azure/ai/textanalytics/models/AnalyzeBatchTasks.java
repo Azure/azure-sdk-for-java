@@ -12,71 +12,71 @@ import java.util.Arrays;
  */
 @Fluent
 public final class AnalyzeBatchTasks {
-    private Iterable<CategorizedEntitiesRecognition> categorizedEntitiesRecognitions;
-    private Iterable<PiiEntitiesRecognition> piiEntitiesRecognitions;
-    private Iterable<KeyPhrasesExtraction> keyPhrasesExtractions;
+    private Iterable<RecognizeEntityOptions> recognizeEntityOptions;
+    private Iterable<RecognizePiiEntityOptions> recognizePiiEntityOptions;
+    private Iterable<ExtractKeyPhrasesOptions> extractKeyPhraseOptions;
 
     /**
-     * Get the list of {@link CategorizedEntitiesRecognition} to be analyzed.
+     * Get the list of {@link RecognizeEntityOptions} to be analyzed.
      *
      * @return the categorizedEntitiesRecognitionTasks value.
      */
-    public Iterable<CategorizedEntitiesRecognition> getCategorizedEntitiesRecognitions() {
-        return this.categorizedEntitiesRecognitions;
+    public Iterable<RecognizeEntityOptions> getRecognizeEntityOptions() {
+        return this.recognizeEntityOptions;
     }
 
     /**
-     * Set the list of {@link CategorizedEntitiesRecognition} to be analyzed.
+     * Set the list of {@link RecognizeEntityOptions} to be analyzed.
      *
-     * @param categorizedEntitiesRecognitions the list of {@link CategorizedEntitiesRecognition} to be analyzed.
+     * @param recognizeEntityOptions the list of {@link RecognizeEntityOptions} to be analyzed.
      *
      * @return the AnalyzeTasksOptions object itself.
      */
-    public AnalyzeBatchTasks setCategorizedEntitiesRecognitions(
-        CategorizedEntitiesRecognition... categorizedEntitiesRecognitions) {
-        this.categorizedEntitiesRecognitions = Arrays.asList(categorizedEntitiesRecognitions);
+    public AnalyzeBatchTasks setRecognizeEntityOptions(
+        RecognizeEntityOptions... recognizeEntityOptions) {
+        this.recognizeEntityOptions = Arrays.asList(recognizeEntityOptions);
         return this;
     }
 
     /**
-     * Get the list of {@link PiiEntitiesRecognition} to be analyzed.
+     * Get the list of {@link RecognizePiiEntityOptions} to be analyzed.
      *
-     * @return the list of {@link PiiEntitiesRecognition} to be analyzed.
+     * @return the list of {@link RecognizePiiEntityOptions} to be analyzed.
      */
-    public Iterable<PiiEntitiesRecognition> getPiiEntitiesRecognitions() {
-        return this.piiEntitiesRecognitions;
+    public Iterable<RecognizePiiEntityOptions> getRecognizePiiEntityOptions() {
+        return this.recognizePiiEntityOptions;
     }
 
     /**
-     * Set the list of {@link PiiEntitiesRecognition} to be analyzed.
+     * Set the list of {@link RecognizePiiEntityOptions} to be analyzed.
      *
-     * @param piiEntitiesRecognitions the list of {@link PiiEntitiesRecognition} to be analyzed.
+     * @param recognizePiiEntityOptions the list of {@link RecognizePiiEntityOptions} to be analyzed.
      *
      * @return the AnalyzeTasksOptions object itself.
      */
-    public AnalyzeBatchTasks setPiiEntitiesRecognitions(PiiEntitiesRecognition... piiEntitiesRecognitions) {
-        this.piiEntitiesRecognitions = Arrays.asList(piiEntitiesRecognitions);
+    public AnalyzeBatchTasks setRecognizePiiEntityOptions(RecognizePiiEntityOptions... recognizePiiEntityOptions) {
+        this.recognizePiiEntityOptions = Arrays.asList(recognizePiiEntityOptions);
         return this;
     }
 
     /**
-     * Get the list of {@link KeyPhrasesExtraction} to be analyzed.
+     * Get the list of {@link ExtractKeyPhrasesOptions} to be analyzed.
      *
-     * @return the list of {@link KeyPhrasesExtraction} to be analyzed.
+     * @return the list of {@link ExtractKeyPhrasesOptions} to be analyzed.
      */
-    public Iterable<KeyPhrasesExtraction> getKeyPhrasesExtractions() {
-        return this.keyPhrasesExtractions;
+    public Iterable<ExtractKeyPhrasesOptions> getExtractKeyPhraseOptions() {
+        return this.extractKeyPhraseOptions;
     }
 
     /**
-     * Set the list of {@link KeyPhrasesExtraction} to be analyzed.
+     * Set the list of {@link ExtractKeyPhrasesOptions} to be analyzed.
      *
-     * @param keyPhrasesExtractions the list of {@link KeyPhrasesExtraction} to be analyzed.
+     * @param extractKeyPhraseOptions the list of {@link ExtractKeyPhrasesOptions} to be analyzed.
      *
      * @return the AnalyzeTasksOptions object itself.
      */
-    public AnalyzeBatchTasks setKeyPhrasesExtractions(KeyPhrasesExtraction... keyPhrasesExtractions) {
-        this.keyPhrasesExtractions = Arrays.asList(keyPhrasesExtractions);
+    public AnalyzeBatchTasks setExtractKeyPhraseOptions(ExtractKeyPhrasesOptions... extractKeyPhraseOptions) {
+        this.extractKeyPhraseOptions = Arrays.asList(extractKeyPhraseOptions);
         return this;
     }
 }

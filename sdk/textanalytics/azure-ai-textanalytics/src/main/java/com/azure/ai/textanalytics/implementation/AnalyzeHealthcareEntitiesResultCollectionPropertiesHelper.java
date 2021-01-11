@@ -23,8 +23,6 @@ public final class AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper {
     public interface AnalyzeHealthcareEntitiesResultCollectionAccessor {
         void setModelVersion(AnalyzeHealthcareEntitiesResultCollection healthcareEntitiesResultCollection,
             String modelVersion);
-        void setErrors(AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection,
-            IterableStream<TextAnalyticsError> taskErrors);
         void setStatistics(AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection,
             TextDocumentBatchStatistics statistics);
     }
@@ -41,16 +39,6 @@ public final class AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper {
     public static void setModelVersion(AnalyzeHealthcareEntitiesResultCollection healthcareEntitiesResultCollection,
         String modelVersion) {
         accessor.setModelVersion(healthcareEntitiesResultCollection, modelVersion);
-    }
-
-//    public static void setHealthcareEntitiesResults(RecognizeHealthcareEntitiesResultCollection recognizeHealthcareEntitiesResultCollection,
-//        IterableStream<RecognizeHealthcareEntitiesResult> healthcareEntitiesResults) {
-//        accessor.setHealthcareEntitiesResults(recognizeHealthcareEntitiesResultCollection, healthcareEntitiesResults);
-//    }
-
-    public static void setErrors(AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection,
-        IterableStream<TextAnalyticsError> taskErrors) {
-        accessor.setErrors(analyzeHealthcareEntitiesResultCollection, taskErrors);
     }
 
     public static void setStatistics(AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection,
