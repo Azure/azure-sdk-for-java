@@ -376,17 +376,17 @@ class ServiceBusAdministrationAsyncClientTest {
     void getSubscriptionRuntimePropertiesWithNoStatusCode() {
         // Arrange
         final String topicName = "topicName";
-        final String SubscriptionName = "subscriptionName";
+        final String subscriptionName = "subscriptionName";
         final String message = "Unauthorized access";
         final HttpResponse response = mock(HttpResponse.class);
         final ServiceBusManagementError managementError = new ServiceBusManagementError();
         managementError.setDetail(message);
 
-        when(subscriptions.getWithResponseAsync(eq(topicName), eq(SubscriptionName), eq(true), any(Context.class)))
+        when(subscriptions.getWithResponseAsync(eq(topicName), eq(subscriptionName), eq(true), any(Context.class)))
             .thenReturn(Mono.error(new ServiceBusManagementErrorException(message, response, managementError)));
 
         // Act & Assert
-        StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, SubscriptionName))
+        StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
             .verifyErrorMatches(error -> error instanceof HttpResponseException);
     }
 
