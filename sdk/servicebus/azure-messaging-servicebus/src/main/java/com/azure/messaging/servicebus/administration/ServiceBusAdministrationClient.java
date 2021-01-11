@@ -422,7 +422,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSubscription(String topicName, String subscriptionName) {
-        asyncClient.deleteSubscription(topicName, subscriptionName);
+        asyncClient.deleteSubscription(topicName, subscriptionName).block();
     }
 
     /**
