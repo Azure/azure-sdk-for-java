@@ -3,37 +3,66 @@
 
 package com.azure.resourcemanager.msi;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.msi.models.Identity;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
+import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-public class MSIIdentityManagementTests extends TestBase {
+public class MSIIdentityManagementTests extends ResourceManagerTestBase {
     private String rgName = "";
     private Region region = Region.fromName("West Central US");
 
-    private MSIManager msiManager;
+    private MsiManager msiManager;
     private ResourceManager resourceManager;
 
     @Override
-    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) throws IOException {
-        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
+    }
+
+    @Override
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
+        this.msiManager = buildManager(MsiManager.class, httpPipeline, profile);
         this.resourceManager = msiManager.resourceManager();
+        setInternalContext(internalContext, msiManager);
     }
 
     @Override
@@ -57,7 +86,7 @@ public class MSIIdentityManagementTests extends TestBase {
                 .create();
 
         Assertions.assertNotNull(identity);
-        Assertions.assertNotNull(identity.inner());
+        Assertions.assertNotNull(identity.innerModel());
         Assertions.assertTrue(identityName.equalsIgnoreCase(identity.name()), String.format("%s == %s", identityName, identity.name()));
         Assertions.assertTrue(rgName.equalsIgnoreCase(identity.resourceGroupName()), String.format("%s == %s", rgName, identity.resourceGroupName()));
 
@@ -69,7 +98,7 @@ public class MSIIdentityManagementTests extends TestBase {
         identity = msiManager.identities().getById(identity.id());
 
         Assertions.assertNotNull(identity);
-        Assertions.assertNotNull(identity.inner());
+        Assertions.assertNotNull(identity.innerModel());
 
         PagedIterable<Identity> identities = msiManager.identities()
                 .listByResourceGroup(rgName);
@@ -79,7 +108,7 @@ public class MSIIdentityManagementTests extends TestBase {
         boolean found = false;
         for (Identity id : identities) {
             Assertions.assertNotNull(id);
-            Assertions.assertNotNull(id.inner());
+            Assertions.assertNotNull(id.innerModel());
             if (id.name().equalsIgnoreCase(identityName)) {
                 found = true;
             }
@@ -114,7 +143,7 @@ public class MSIIdentityManagementTests extends TestBase {
         // Ensure role assigned
         //
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().getByName(identity.resourceGroupName());
-        PagedIterable<RoleAssignment> roleAssignments = this.msiManager.graphRbacManager().roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> roleAssignments = this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
         boolean found = false;
         for (RoleAssignment roleAssignment : roleAssignments) {
             if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
@@ -128,11 +157,11 @@ public class MSIIdentityManagementTests extends TestBase {
                 .withoutAccessTo(resourceGroup.id(), BuiltInRole.READER)
                 .apply();
 
-        SdkContext.sleep(30 * 1000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(30));
 
         // Ensure role assignment removed
         //
-        roleAssignments = this.msiManager.graphRbacManager().roleAssignments().listByScope(resourceGroup.id());
+        roleAssignments = this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
         boolean notFound = true;
         for (RoleAssignment roleAssignment : roleAssignments) {
             if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
@@ -163,43 +192,21 @@ public class MSIIdentityManagementTests extends TestBase {
                 .define(rgName)
                 .withRegion(region);
 
-        final List<Indexable> createdResosurces = new ArrayList<Indexable>();
-
-        msiManager.identities()
+        Identity identity = msiManager.identities()
                 .define(identityName)
                 .withRegion(region)
                 .withNewResourceGroup(creatableRG)
                 .withAccessToCurrentResourceGroup(BuiltInRole.READER)
                 .withAccessTo(anotherResourceGroup, BuiltInRole.CONTRIBUTOR)
                 .createAsync()
-                .doOnNext(indexable -> createdResosurces.add(indexable))
-                .blockLast();
+                .block();
 
-        int roleAssignmentResourcesCount = 0;
-        int identityResourcesCount = 0;
-        int resourceGroupResourcesCount = 0;
-        Identity identity = null;
-
-        for (Indexable resource : createdResosurces) {
-            if (resource instanceof ResourceGroup) {
-                resourceGroupResourcesCount++;
-            } else if (resource instanceof RoleAssignment) {
-                roleAssignmentResourcesCount++;
-            } else if (resource instanceof Identity) {
-                identityResourcesCount++;
-                identity = (Identity) resource;
-            }
-        }
-
-        Assertions.assertEquals(1, resourceGroupResourcesCount);
-        Assertions.assertEquals(2, roleAssignmentResourcesCount);
-        Assertions.assertEquals(2, identityResourcesCount); // Identity resource will be emitted twice - before & after post-run, will be fixed in graph
         Assertions.assertNotNull(identity);
 
         // Ensure roles are assigned
         //
         ResourceGroup resourceGroup = this.resourceManager.resourceGroups().getByName(identity.resourceGroupName());
-        PagedIterable<RoleAssignment> roleAssignments = this.msiManager.graphRbacManager().roleAssignments().listByScope(resourceGroup.id());
+        PagedIterable<RoleAssignment> roleAssignments = this.msiManager.authorizationManager().roleAssignments().listByScope(resourceGroup.id());
         boolean found = false;
         for (RoleAssignment roleAssignment : roleAssignments) {
             if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {
@@ -209,7 +216,7 @@ public class MSIIdentityManagementTests extends TestBase {
         }
         Assertions.assertTrue(found, "Expected role assignment not found for the resource group that identity belongs to");
 
-        roleAssignments = this.msiManager.graphRbacManager().roleAssignments().listByScope(anotherResourceGroup.id());
+        roleAssignments = this.msiManager.authorizationManager().roleAssignments().listByScope(anotherResourceGroup.id());
         found = false;
         for (RoleAssignment roleAssignment : roleAssignments) {
             if (roleAssignment.principalId() != null && roleAssignment.principalId().equalsIgnoreCase(identity.principalId())) {

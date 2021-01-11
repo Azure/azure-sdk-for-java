@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetNetworkProfile model. */
+/** Describes a virtual machine scale set network profile. */
 @Fluent
 public final class VirtualMachineScaleSetNetworkProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetNetworkProfile.class);

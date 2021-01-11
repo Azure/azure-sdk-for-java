@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceMoveDefinition model. */
+/** Contains the information necessary to perform a resource move (rename). */
 @Fluent
 public final class ResourceMoveDefinition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMoveDefinition.class);

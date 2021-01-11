@@ -8,12 +8,15 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.SnowballTokenFilterLanguage;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The SnowballTokenFilter model. */
+/**
+ * A filter that stems words using a Snowball-generated stemmer. This token filter is implemented using Apache Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.SnowballTokenFilter")
 @JsonFlatten
@@ -25,11 +28,16 @@ public class SnowballTokenFilter extends TokenFilter {
     @JsonProperty(value = "language", required = true)
     private SnowballTokenFilterLanguage language;
 
-    /** Creates an instance of SnowballTokenFilter class. */
+    /**
+     * Creates an instance of SnowballTokenFilter class.
+     *
+     * @param name the name value to set.
+     * @param language the language value to set.
+     */
     @JsonCreator
     public SnowballTokenFilter(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "language") SnowballTokenFilterLanguage language) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "language", required = true) SnowballTokenFilterLanguage language) {
         super(name);
         this.language = language;
     }
@@ -41,24 +49,5 @@ public class SnowballTokenFilter extends TokenFilter {
      */
     public SnowballTokenFilterLanguage getLanguage() {
         return this.language;
-    }
-
-    /**
-     * Set the language property: The language to use.
-     *
-     * @param language the language value to set.
-     * @return the SnowballTokenFilter object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getLanguage() == null) {
-            throw new IllegalArgumentException("Missing required property language in model SnowballTokenFilter");
-        }
     }
 }

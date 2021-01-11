@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ConnectionMonitorTestConfiguration model. */
+/** Describes a connection monitor test configuration. */
 @Fluent
 public final class ConnectionMonitorTestConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorTestConfiguration.class);

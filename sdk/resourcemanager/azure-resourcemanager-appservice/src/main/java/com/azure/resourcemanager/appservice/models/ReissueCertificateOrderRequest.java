@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ReissueCertificateOrderRequest model. */
+/** Class representing certificate reissue request. */
 @JsonFlatten
 @Fluent
 public class ReissueCertificateOrderRequest extends ProxyOnlyResource {

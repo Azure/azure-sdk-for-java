@@ -21,6 +21,7 @@ import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transaction.Declared;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Sender;
@@ -29,7 +30,6 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.ReplayProcessor;
 
@@ -51,6 +51,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;
+import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 import static com.azure.core.amqp.implementation.ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -74,9 +75,7 @@ class ReactorSender implements AmqpSendLink {
     private final PriorityQueue<WeightedDeliveryTag> pendingSendsQueue =
         new PriorityQueue<>(1000, new DeliveryTagComparator());
     private final ClientLogger logger = new ClientLogger(ReactorSender.class);
-    private final ReplayProcessor<AmqpEndpointState> endpointStates =
-        ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED);
-    private FluxSink<AmqpEndpointState> endpointStateSink = endpointStates.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final ReplayProcessor<AmqpEndpointState> endpointStates;
 
     private final TokenManager tokenManager;
     private final MessageSerializer messageSerializer;
@@ -101,43 +100,34 @@ class ReactorSender implements AmqpSendLink {
         this.retry = retry;
         this.timeout = timeout;
 
+        this.endpointStates = this.handler.getEndpointStates()
+            .map(state -> {
+                logger.verbose("connectionId[{}], path[{}], linkName[{}]: State {}", handler.getConnectionId(),
+                    entityPath, getLinkName(), state);
+                this.hasConnected.set(state == EndpointState.ACTIVE);
+                return AmqpEndpointStateUtil.getConnectionState(state);
+            }).subscribeWith(ReplayProcessor.cacheLastOrDefault(AmqpEndpointState.UNINITIALIZED));
+
         this.subscriptions = Disposables.composite(
             this.handler.getDeliveredMessages().subscribe(this::processDeliveredMessage),
 
             this.handler.getLinkCredits().subscribe(credit -> {
-                logger.verbose("Credits on link: {}", credit);
+                logger.verbose("connectionId[{}], entityPath[{}], linkName[{}]: Credits on link: {}",
+                    handler.getConnectionId(), entityPath, getLinkName(), credit);
                 this.scheduleWorkOnDispatcher();
-            }),
-
-            this.handler.getEndpointStates().subscribe(
-                state -> {
-                    logger.verbose("[{}] Connection state: {}", entityPath, state);
-                    this.hasConnected.set(state == EndpointState.ACTIVE);
-                    endpointStateSink.next(AmqpEndpointStateUtil.getConnectionState(state));
-                }, error -> {
-                    logger.error("[{}] Error occurred in sender endpoint handler.", entityPath, error);
-                    endpointStateSink.error(error);
-                }, () -> {
-                    endpointStateSink.next(AmqpEndpointState.CLOSED);
-                    endpointStateSink.complete();
-                    hasConnected.set(false);
-                }),
-
-            this.handler.getErrors().subscribe(error -> {
-                logger.error("[{}] Error occurred in sender error handler.", entityPath, error);
-                endpointStateSink.error(error);
             })
         );
 
         if (tokenManager != null) {
             this.subscriptions.add(this.tokenManager.getAuthorizationResults().subscribe(
                 response -> {
-                    logger.verbose("Token refreshed: {}", response);
+                    logger.verbose("connectionId[{}], entityPath[{}], linkName[{}]: Token refreshed: {}",
+                        handler.getConnectionId(), entityPath, getLinkName(), response);
                     hasAuthorized.set(true);
                 },
                 error -> {
-                    logger.info("clientId[{}], path[{}], linkName[{}] - tokenRenewalFailure[{}]",
-                        handler.getConnectionId(), this.entityPath, getLinkName(), error.getMessage());
+                    logger.info("connectionId[{}], entityPath[{}], linkName[{}]: tokenRenewalFailure[{}]",
+                        handler.getConnectionId(), entityPath, getLinkName(), error.getMessage());
                     hasAuthorized.set(false);
                 }, () -> hasAuthorized.set(false)));
         }
@@ -293,13 +283,35 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public void dispose() {
+        dispose(null);
+    }
+
+    /**
+     * Disposes of the sender when an exception is encountered.
+     *
+     * @param errorCondition Error condition associated with close operation.
+     */
+    void dispose(ErrorCondition errorCondition) {
         if (isDisposed.getAndSet(true)) {
             return;
         }
 
         subscriptions.dispose();
-        endpointStateSink.complete();
         tokenManager.close();
+
+        if (sender.getLocalState() == EndpointState.CLOSED) {
+            return;
+        }
+
+        logger.verbose("connectionId[{}], path[{}], linkName[{}]: setting error condition {}",
+            handler.getConnectionId(), entityPath, getLinkName(),
+            errorCondition != null ? errorCondition : NOT_APPLICABLE);
+
+        if (errorCondition != null && sender.getCondition() == null) {
+            sender.setCondition(errorCondition);
+        }
+
+        sender.close();
     }
 
     @Override
@@ -311,15 +323,9 @@ class ReactorSender implements AmqpSendLink {
     }
 
     private Mono<Void> validateEndpoint() {
-        return Mono.defer(() -> {
-            if (hasConnected.get()) {
-                return Mono.empty();
-            } else {
-                return RetryUtil.withRetry(
-                    handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
-                    .then();
-            }
-        });
+        return Mono.defer(() -> RetryUtil.withRetry(
+            handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
+            .then());
     }
 
     /**

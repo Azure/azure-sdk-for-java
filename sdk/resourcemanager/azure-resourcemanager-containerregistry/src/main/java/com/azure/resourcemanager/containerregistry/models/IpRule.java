@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IpRule model. */
+/** IP rule with specific IP or IP range in CIDR format. */
 @Fluent
 public final class IpRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IpRule.class);

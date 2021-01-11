@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualApplication model. */
+/** Virtual application in an app. */
 @Fluent
 public final class VirtualApplication {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualApplication.class);

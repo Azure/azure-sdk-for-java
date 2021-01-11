@@ -22,4 +22,11 @@ public @interface ServiceClientBuilder {
      * @return An array of all classnames that this builder can create an instance of.
      */
     Class<?>[] serviceClients();
+
+    /**
+     * The {@link ServiceClientProtocol protocol} clients created from this builder will use to interact with the
+     * service.
+     * @return The {@link ServiceClientProtocol}.
+     */
+    ServiceClientProtocol protocol() default ServiceClientProtocol.HTTP;
 }

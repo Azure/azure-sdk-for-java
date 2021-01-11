@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerGroupDiagnostics model. */
+/** Container group diagnostic information. */
 @Fluent
 public final class ContainerGroupDiagnostics {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupDiagnostics.class);

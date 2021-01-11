@@ -6,16 +6,16 @@ package com.azure.resourcemanager.authorization.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.authorization.fluent.GroupsGroupsClient;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphGroupInner;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroup;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryGroups;
-import com.azure.resourcemanager.authorization.fluent.inner.ADGroupInner;
-import com.azure.resourcemanager.authorization.fluent.GroupsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Users and its parent interfaces. */
 public class ActiveDirectoryGroupsImpl
-    extends CreatableWrappersImpl<ActiveDirectoryGroup, ActiveDirectoryGroupImpl, ADGroupInner>
+    extends CreatableWrappersImpl<ActiveDirectoryGroup, ActiveDirectoryGroupImpl, MicrosoftGraphGroupInner>
     implements ActiveDirectoryGroups {
     private final AuthorizationManager manager;
 
@@ -25,11 +25,11 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     public PagedIterable<ActiveDirectoryGroup> list() {
-        return wrapList(this.manager.inner().getGroups().list(null));
+        return new PagedIterable<>(listAsync());
     }
 
     @Override
-    protected ActiveDirectoryGroupImpl wrapModel(ADGroupInner groupInner) {
+    protected ActiveDirectoryGroupImpl wrapModel(MicrosoftGraphGroupInner groupInner) {
         if (groupInner == null) {
             return null;
         }
@@ -43,26 +43,19 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     public Mono<ActiveDirectoryGroup> getByIdAsync(String id) {
-        return manager
-            .inner()
-            .getGroups()
-            .getAsync(id)
+        return inner().getGroupAsync(id)
             .map(groupInner -> new ActiveDirectoryGroupImpl(groupInner, manager()));
     }
 
     @Override
     public PagedFlux<ActiveDirectoryGroup> listAsync() {
-        return wrapPageAsync(manager().inner().getGroups().listAsync(null));
+        return wrapPageAsync(inner().listGroupAsync());
     }
 
     @Override
     public Mono<ActiveDirectoryGroup> getByNameAsync(String name) {
-        return manager()
-            .inner()
-            .getGroups()
-            .listAsync(String.format("displayName eq '%s'", name))
-            .singleOrEmpty()
-            .map(adGroupInner -> new ActiveDirectoryGroupImpl(adGroupInner, manager()));
+        return listByFilterAsync(String.format("displayName eq '%s'", name))
+            .singleOrEmpty();
     }
 
     @Override
@@ -77,12 +70,12 @@ public class ActiveDirectoryGroupsImpl
 
     @Override
     protected ActiveDirectoryGroupImpl wrapModel(String name) {
-        return wrapModel(new ADGroupInner().withDisplayName(name));
+        return wrapModel(new MicrosoftGraphGroupInner().withDisplayName(name));
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return manager().inner().getGroups().deleteAsync(id);
+        return inner().deleteGroupAsync(id);
     }
 
     @Override
@@ -90,8 +83,18 @@ public class ActiveDirectoryGroupsImpl
         return this.manager;
     }
 
+    public GroupsGroupsClient inner() {
+        return manager().serviceClient().getGroupsGroups();
+    }
+
     @Override
-    public GroupsClient inner() {
-        return manager().inner().getGroups();
+    public PagedIterable<ActiveDirectoryGroup> listByFilter(String filter) {
+        return new PagedIterable<>(listByFilterAsync(filter));
+    }
+
+    @Override
+    public PagedFlux<ActiveDirectoryGroup> listByFilterAsync(String filter) {
+        return inner().listGroupAsync(null, null, null, null, filter, null, null, null, null)
+            .mapPage(this::wrapModel);
     }
 }

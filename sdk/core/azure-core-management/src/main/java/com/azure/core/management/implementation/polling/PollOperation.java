@@ -3,6 +3,7 @@
 
 package com.azure.core.management.implementation.polling;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
@@ -133,7 +134,7 @@ public final class PollOperation {
                                                                                Error error) {
         PollResult<T> pollResult = new PollResult<>(new PollResult.Error(error.getMessage(),
             error.getResponseStatusCode(),
-            error.getResponseHeaders(),
+            new HttpHeaders(error.getResponseHeaders()),
             error.getResponseBody()));
         return Mono.just(new PollResponse<>(opStatus, pollResult));
     }

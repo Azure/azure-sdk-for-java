@@ -7,18 +7,17 @@ package com.azure.resourcemanager.sql.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.samples.Utils;
-import com.azure.resourcemanager.sql.models.DatabaseEdition;
 import com.azure.resourcemanager.sql.models.ElasticPoolActivity;
 import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
-import com.azure.resourcemanager.sql.models.ElasticPoolEdition;
-import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
+import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
+import com.azure.resourcemanager.sql.models.SqlElasticPoolBasicEDTUs;
 import com.azure.resourcemanager.sql.models.SqlServer;
 
 /**
@@ -37,12 +36,12 @@ import com.azure.resourcemanager.sql.models.SqlServer;
 public final class ManageSqlDatabaseInElasticPool {
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String sqlServerName = azure.sdkContext().randomResourceName("sqlserver", 20);
-        final String rgName = azure.sdkContext().randomResourceName("rgRSSDEP", 20);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String sqlServerName = Utils.randomResourceName(azureResourceManager, "sqlserver", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgRSSDEP", 20);
         final String elasticPoolName = "myElasticPool";
         final String elasticPool2Name = "secondElasticPool";
         final String administratorLogin = "sqladmin3423";
@@ -50,18 +49,19 @@ public final class ManageSqlDatabaseInElasticPool {
         final String database1Name = "myDatabase1";
         final String database2Name = "myDatabase2";
         final String anotherDatabaseName = "myAnotherDatabase";
-        final ElasticPoolEdition elasticPoolEdition = ElasticPoolEdition.STANDARD;
 
         try {
             // ============================================================
             // Create a SQL Server, with 2 firewall rules.
 
-            SqlServer sqlServer = azure.sqlServers().define(sqlServerName)
+            SqlServer sqlServer = azureResourceManager.sqlServers().define(sqlServerName)
                     .withRegion(Region.US_EAST)
                     .withNewResourceGroup(rgName)
                     .withAdministratorLogin(administratorLogin)
                     .withAdministratorPassword(administratorPassword)
-                    .withNewElasticPool(elasticPoolName, elasticPoolEdition, database1Name, database2Name)
+                    .defineElasticPool(elasticPoolName).withStandardPool().attach()
+                    .defineDatabase(database1Name).withExistingElasticPool(elasticPoolName).attach()
+                    .defineDatabase(database2Name).withExistingElasticPool(elasticPoolName).attach()
                     .create();
 
             Utils.print(sqlServer);
@@ -80,10 +80,10 @@ public final class ManageSqlDatabaseInElasticPool {
             // ============================================================
             // Change DTUs in the elastic pools.
             elasticPool = elasticPool.update()
-                    .withDtu(200)
+                    .withReservedDtu(SqlElasticPoolBasicEDTUs.eDTU_200)
                     .withStorageCapacity(204800 * 1024 * 1024L)
-                    .withDatabaseDtuMin(10)
-                    .withDatabaseDtuMax(50)
+                    .withDatabaseMinCapacity(10)
+                    .withDatabaseMaxCapacity(50)
                     .apply();
 
             Utils.print(elasticPool);
@@ -139,8 +139,7 @@ public final class ManageSqlDatabaseInElasticPool {
             System.out.println("Remove the database from the pool.");
             anotherDatabase = anotherDatabase.update()
                     .withoutElasticPool()
-                    .withEdition(DatabaseEdition.STANDARD)
-                    .withServiceObjective(ServiceObjectiveName.S3)
+                    .withStandardEdition(SqlDatabaseStandardServiceObjective.S3)
                     .withMaxSizeBytes(1024 * 1024 * 1024 * 20)
                     .apply();
             Utils.print(anotherDatabase);
@@ -184,7 +183,7 @@ public final class ManageSqlDatabaseInElasticPool {
             // Create another elastic pool in SQL Server
             System.out.println("Create ElasticPool in existing SQL Server");
             SqlElasticPool elasticPool2 = sqlServer.elasticPools().define(elasticPool2Name)
-                    .withEdition(elasticPoolEdition)
+                    .withStandardPool()
                     .create();
 
             Utils.print(elasticPool2);
@@ -198,21 +197,17 @@ public final class ManageSqlDatabaseInElasticPool {
             // ============================================================
             // Delete the SQL Server.
             System.out.println("Deleting a Sql Server");
-            azure.sqlServers().deleteById(sqlServer.id());
+            azureResourceManager.sqlServers().deleteById(sqlServer.id());
             return true;
-        } catch (Exception f) {
-            System.out.println(f.getMessage());
-            f.printStackTrace();
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (Exception e) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
-        return false;
     }
 
     /**
@@ -223,18 +218,19 @@ public final class ManageSqlDatabaseInElasticPool {
         try {
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RedisLinkedServerProperties model. */
+/** Properties of a linked server to be returned in get/put response. */
 @Immutable
 public final class RedisLinkedServerProperties extends RedisLinkedServerCreateProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisLinkedServerProperties.class);

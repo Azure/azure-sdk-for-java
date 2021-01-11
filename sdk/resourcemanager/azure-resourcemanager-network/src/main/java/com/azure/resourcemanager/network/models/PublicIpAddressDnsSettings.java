@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PublicIpAddressDnsSettings model. */
+/** Contains FQDN of the DNS record associated with the public IP address. */
 @Fluent
 public final class PublicIpAddressDnsSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressDnsSettings.class);

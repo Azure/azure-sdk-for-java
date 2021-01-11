@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExportRequest model. */
+/** Export database parameters. */
 @Fluent
 public class ExportRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportRequest.class);

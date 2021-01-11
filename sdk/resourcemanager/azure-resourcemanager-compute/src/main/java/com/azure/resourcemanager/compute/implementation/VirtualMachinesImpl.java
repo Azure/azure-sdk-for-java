@@ -16,7 +16,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
 import com.azure.resourcemanager.compute.models.VirtualMachineSizes;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.network.NetworkManager;
@@ -51,11 +51,11 @@ public class VirtualMachinesImpl
         StorageManager storageManager,
         NetworkManager networkManager,
         AuthorizationManager authorizationManager) {
-        super(computeManager.inner().getVirtualMachines(), computeManager);
+        super(computeManager.serviceClient().getVirtualMachines(), computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.authorizationManager = authorizationManager;
-        this.vmSizes = new VirtualMachineSizesImpl(computeManager.inner().getVirtualMachineSizes());
+        this.vmSizes = new VirtualMachineSizesImpl(computeManager.serviceClient().getVirtualMachineSizes());
     }
 
     // Actions
@@ -210,13 +210,55 @@ public class VirtualMachinesImpl
 
     @Override
     public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name) {
-        return AcceptedImpl.newAccepted(logger,
-            () -> this.inner().deleteWithResponseAsync(resourceGroupName, name).block(),
-            Function.identity(),
-            manager().inner().getSerializerAdapter(),
-            manager().inner().getHttpPipeline(),
-            Void.class,
-            null);
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
+                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, null).block(),
+                Function.identity(),
+                Void.class,
+                null);
+    }
+
+    @Override
+    public void deleteById(String id, boolean forceDeletion) {
+        deleteByIdAsync(id, forceDeletion).block();
+    }
+
+    @Override
+    public Mono<Void> deleteByIdAsync(String id, boolean forceDeletion) {
+        return deleteByResourceGroupAsync(
+            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), forceDeletion);
+    }
+
+    @Override
+    public void deleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion) {
+        deleteByResourceGroupAsync(resourceGroupName, name, forceDeletion).block();
+    }
+
+    @Override
+    public Mono<Void> deleteByResourceGroupAsync(String resourceGroupName, String name, boolean forceDeletion) {
+        return this.inner().deleteAsync(resourceGroupName, name, forceDeletion);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteById(String id, boolean forceDeletion) {
+        return beginDeleteByResourceGroup(
+            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), forceDeletion);
+    }
+
+    @Override
+    public Accepted<Void> beginDeleteByResourceGroup(String resourceGroupName, String name, boolean forceDeletion) {
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
+                () -> this.inner().deleteWithResponseAsync(resourceGroupName, name, forceDeletion).block(),
+                Function.identity(),
+                Void.class,
+                null);
     }
 
     // Getters

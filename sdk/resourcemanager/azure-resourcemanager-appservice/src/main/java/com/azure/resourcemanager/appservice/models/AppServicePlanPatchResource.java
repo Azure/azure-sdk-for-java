@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The AppServicePlanPatchResource model. */
+/** ARM resource for a app service plan. */
 @JsonFlatten
 @Fluent
 public class AppServicePlanPatchResource extends ProxyOnlyResource {

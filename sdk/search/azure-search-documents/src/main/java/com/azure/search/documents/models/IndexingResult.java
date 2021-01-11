@@ -4,6 +4,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.implementation.converters.IndexingResultHelper;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -44,6 +45,15 @@ public final class IndexingResult implements Serializable {
      */
     @JsonProperty(value = "statusCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private int statusCode;
+
+    static {
+        IndexingResultHelper.setAccessor(new IndexingResultHelper.IndexingResultAccessor() {
+            @Override
+            public void setErrorMessage(IndexingResult indexingResult, String errorMessage) {
+                indexingResult.setErrorMessage(errorMessage);
+            }
+        });
+    }
 
     /**
      * Constructor of {@link IndexingResult}.
@@ -110,5 +120,15 @@ public final class IndexingResult implements Serializable {
      */
     public int getStatusCode() {
         return this.statusCode;
+    }
+
+    /**
+     * The private setter to set the errorMessage property
+     * via {@link IndexingResultHelper.IndexingResultAccessor}.
+     *
+     * @param errorMessage The reason for indexing operation failure.
+     */
+    private void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }

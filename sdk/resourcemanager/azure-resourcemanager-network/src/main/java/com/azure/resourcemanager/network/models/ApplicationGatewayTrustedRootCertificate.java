@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationGatewayTrustedRootCertificate model. */
+/** Trusted Root certificates of an application gateway. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayTrustedRootCertificate extends SubResource {
@@ -142,6 +142,13 @@ public class ApplicationGatewayTrustedRootCertificate extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayTrustedRootCertificate withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**

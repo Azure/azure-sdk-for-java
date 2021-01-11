@@ -537,6 +537,19 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listConfigurationSettings(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+
+        SettingSelector settingSelector = new SettingSelector();
+        settingSelector.setKeyFilter("prodDBConnection");
+        com.azure.core.util.Context context = new com.azure.core.util.Context(SettingFields.KEY, SettingFields.VALUE);
+
+        StepVerifier.create(client.listConfigurationSettings(null, context))
+            .verifyError();
+    }
+
     /**
      * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
      * from the service when filtering by their labels.
@@ -708,6 +721,17 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> validateListRevisions(updated, response))
                 .assertNext(response -> validateListRevisions(original, response))
                 .verifyComplete();
+
+        SettingSelector settingSelector = new SettingSelector();
+        settingSelector.setKeyFilter("prodDBConnection");
+        com.azure.core.util.Context context = new com.azure.core.util.Context("key", "value");
+
+        StepVerifier.create(client.listRevisions(settingSelector, context))
+            .verifyError();
+
+        StepVerifier.create(client.listRevisionsFirstPage(null, context).then(client.listRevisionsNextPage(connectionString, context)))
+            .verifyError();
+
     }
 
     /**

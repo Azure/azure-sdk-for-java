@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AutoHealTriggers model. */
+/** Triggers for auto-heal. */
 @Fluent
 public final class AutoHealTriggers {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoHealTriggers.class);

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AvailableProvidersListCity model. */
+/** City or town details. */
 @Fluent
 public final class AvailableProvidersListCity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListCity.class);

@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Sku model. */
+/**
+ * Describes a virtual machine scale set sku. NOTE: If the new VM SKU is not supported on the hardware the scale set is
+ * currently on, you need to deallocate the VMs in the scale set before you modify the SKU name.
+ */
 @Fluent
 public final class Sku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);

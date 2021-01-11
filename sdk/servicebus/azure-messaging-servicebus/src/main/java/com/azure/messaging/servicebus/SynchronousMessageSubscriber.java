@@ -21,12 +21,12 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 /**
  * Subscriber that listens to events and publishes them downstream and publishes events to them in the order received.
  */
-class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessageContext> {
+class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
     private final ClientLogger logger = new ClientLogger(SynchronousMessageSubscriber.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicInteger wip = new AtomicInteger();
     private final Queue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
-    private final Queue<ServiceBusReceivedMessageContext> bufferMessages = new ConcurrentLinkedQueue<>();
+    private final Queue<ServiceBusReceivedMessage> bufferMessages = new ConcurrentLinkedQueue<>();
     private final AtomicLong remaining = new AtomicLong();
 
     private final long requested;
@@ -57,8 +57,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
         if (Operators.setOnce(UPSTREAM, this, subscription)) {
             this.subscription = subscription;
-            remaining.addAndGet(requested);
-            subscription.request(requested);
             subscriberInitialized = true;
             drain();
         } else {
@@ -72,7 +70,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      * @param message Event to publish.
      */
     @Override
-    protected void hookOnNext(ServiceBusReceivedMessageContext message) {
+    protected void hookOnNext(ServiceBusReceivedMessage message) {
         bufferMessages.add(message);
         drain();
     }
@@ -140,7 +138,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
             while ((currentWork = workQueue.peek()) != null
                 && (!currentWork.isProcessingStarted() || bufferMessages.size() > 0)) {
-
                 // Additional check for safety, but normally this work should never be terminal
                 if (currentWork.isTerminal()) {
                     // This work already finished by either timeout or no more messages to send, process next work.
@@ -155,6 +152,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     // timer to complete the currentWork in case of timeout trigger
                     currentTimeoutOperation = getTimeoutOperation(currentWork);
                     currentWork.startedProcessing();
+                    final long calculatedRequest = currentWork.getNumberOfEvents() - remaining.get();
+                    remaining.addAndGet(calculatedRequest);
+                    subscription.request(calculatedRequest);
                 }
 
                 // Send messages to currentWork from buffer
@@ -174,15 +174,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                         currentTimeoutOperation.dispose();
                     }
                     logger.verbose("The work [{}] is complete.", currentWork.getId());
-                } else {
-                    // Since this work is not complete, find out how much we should request from upstream
-                    long creditToAdd = currentWork.getRemaining() - (remaining.get() + bufferMessages.size());
-                    if (creditToAdd > 0) {
-                        remaining.addAndGet(creditToAdd);
-                        subscription.request(creditToAdd);
-                        logger.verbose("Requesting [{}] from upstream for work [{}].", creditToAdd,
-                            currentWork.getId());
-                    }
                 }
             }
         }

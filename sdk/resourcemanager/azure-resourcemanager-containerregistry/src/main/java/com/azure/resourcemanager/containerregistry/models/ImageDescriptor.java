@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ImageDescriptor model. */
+/** Properties for a registry image. */
 @Fluent
 public final class ImageDescriptor {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageDescriptor.class);

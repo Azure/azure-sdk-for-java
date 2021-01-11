@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.RouteNextHopType;
 import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.network.models.Subnet;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.List;
@@ -26,11 +26,11 @@ public class TestRouteTables {
 
         @Override
         public RouteTable createResource(RouteTables routeTables) throws Exception {
-            netName = routeTables.manager().sdkContext().randomResourceName("net", 10);
-            final String newName = routeTables.manager().sdkContext().randomResourceName("rt", 10);
+            netName = routeTables.manager().resourceManager().internalContext().randomResourceName("net", 10);
+            final String newName = routeTables.manager().resourceManager().internalContext().randomResourceName("rt", 10);
 
             Region region = Region.US_WEST;
-            String groupName = routeTables.manager().sdkContext().randomResourceName("rg", 10);
+            String groupName = routeTables.manager().resourceManager().internalContext().randomResourceName("rg", 10);
 
             final String route1AddressPrefix = "10.0.1.0/29";
             final String route2AddressPrefix = "10.0.0.0/29";

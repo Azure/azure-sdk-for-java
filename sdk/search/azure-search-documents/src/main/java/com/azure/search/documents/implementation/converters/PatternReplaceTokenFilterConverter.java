@@ -30,11 +30,9 @@ public final class PatternReplaceTokenFilterConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.PatternReplaceTokenFilter patternReplaceTokenFilter =
-            new com.azure.search.documents.indexes.implementation.models.PatternReplaceTokenFilter(obj.getName(),
-                obj.getPattern(), obj.getReplacement());
-        patternReplaceTokenFilter.validate();
-        return patternReplaceTokenFilter;
+
+        return new com.azure.search.documents.indexes.implementation.models.PatternReplaceTokenFilter(obj.getName(),
+            obj.getPattern(), obj.getReplacement());
     }
 
     private PatternReplaceTokenFilterConverter() {

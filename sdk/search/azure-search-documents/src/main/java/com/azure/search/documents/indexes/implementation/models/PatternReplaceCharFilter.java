@@ -13,7 +13,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The PatternReplaceCharFilter model. */
+/**
+ * A character filter that replaces characters in the input string. It uses a regular expression to identify character
+ * sequences to preserve and a replacement pattern to identify characters to replace. For example, given the input text
+ * "aa bb aa bb", pattern "(aa)\s+(bb)", and replacement "$1#$2", the result would be "aa#bb aa#bb". This character
+ * filter is implemented using Apache Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternReplaceCharFilter")
 @JsonFlatten
@@ -31,12 +36,18 @@ public class PatternReplaceCharFilter extends CharFilter {
     @JsonProperty(value = "replacement", required = true)
     private String replacement;
 
-    /** Creates an instance of PatternReplaceCharFilter class. */
+    /**
+     * Creates an instance of PatternReplaceCharFilter class.
+     *
+     * @param name the name value to set.
+     * @param pattern the pattern value to set.
+     * @param replacement the replacement value to set.
+     */
     @JsonCreator
     public PatternReplaceCharFilter(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "pattern") String pattern,
-            @JsonProperty(value = "replacement") String replacement) {
+            @JsonProperty(value = "name", required = true) String name,
+            @JsonProperty(value = "pattern", required = true) String pattern,
+            @JsonProperty(value = "replacement", required = true) String replacement) {
         super(name);
         this.pattern = pattern;
         this.replacement = replacement;
@@ -52,40 +63,11 @@ public class PatternReplaceCharFilter extends CharFilter {
     }
 
     /**
-     * Set the pattern property: A regular expression pattern.
-     *
-     * @param pattern the pattern value to set.
-     * @return the PatternReplaceCharFilter object itself.
-     */
-    /**
      * Get the replacement property: The replacement text.
      *
      * @return the replacement value.
      */
     public String getReplacement() {
         return this.replacement;
-    }
-
-    /**
-     * Set the replacement property: The replacement text.
-     *
-     * @param replacement the replacement value to set.
-     * @return the PatternReplaceCharFilter object itself.
-     */
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
-        if (getPattern() == null) {
-            throw new IllegalArgumentException("Missing required property pattern in model PatternReplaceCharFilter");
-        }
-        if (getReplacement() == null) {
-            throw new IllegalArgumentException(
-                    "Missing required property replacement in model PatternReplaceCharFilter");
-        }
     }
 }

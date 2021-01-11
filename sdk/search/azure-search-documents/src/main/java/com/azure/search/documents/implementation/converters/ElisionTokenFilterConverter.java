@@ -44,7 +44,7 @@ public final class ElisionTokenFilterConverter {
             List<String> articles = new ArrayList<>(obj.getArticles());
             elisionTokenFilter.setArticles(articles);
         }
-        elisionTokenFilter.validate();
+
         return elisionTokenFilter;
     }
 

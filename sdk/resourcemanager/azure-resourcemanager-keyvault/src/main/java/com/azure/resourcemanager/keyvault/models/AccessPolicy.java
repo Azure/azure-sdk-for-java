@@ -9,13 +9,13 @@ import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.List;
 
 /** An immutable client-side representation of a key vault access policy. */
 @Fluent
-public interface AccessPolicy extends ChildResource<Vault>, HasInner<AccessPolicyEntry> {
+public interface AccessPolicy extends ChildResource<Vault>, HasInnerModel<AccessPolicyEntry> {
     /**
      * @return The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
      */

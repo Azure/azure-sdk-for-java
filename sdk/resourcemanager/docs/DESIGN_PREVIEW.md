@@ -17,31 +17,35 @@ Azure Management Libraries supports fine control over the polling for certain im
 
 Here is sample code for Deployment.
 
+<!-- embedme ../azure-resourcemanager/src/samples/java/com/azure/resourcemanager/DesignPreviewSamples.java#L62-L89 -->
 ```java
+Duration defaultDelay = Duration.ofSeconds(10);
 // begin provision
 Accepted<Deployment> acceptedDeployment = azure.deployments()
-    .define(name)
-    ...
+    .define("deployment")
+    .withNewResourceGroup(rgName, Region.US_WEST)
+    .withTemplateLink(templateUri, contentVersion)
+    .withParametersLink(parametersUri, contentVersion)
+    .withMode(DeploymentMode.COMPLETE)
     .beginCreate();
+// get deployment before provision complete
 Deployment provisioningDeployment = acceptedDeployment.getActivationResponse().getValue();
-
+// get status of activation response
 LongRunningOperationStatus pollStatus = acceptedDeployment.getActivationResponse().getStatus();
-int delayInMills = acceptedDeployment.getActivationResponse().getRetryAfter() == null
-    ? 0
-    : (int) acceptedDeployment.getActivationResponse().getRetryAfter().toMillis();
+Duration delay = acceptedDeployment.getActivationResponse().getRetryAfter() == null
+    ? defaultDelay
+    : acceptedDeployment.getActivationResponse().getRetryAfter();
 while (!pollStatus.isComplete()) {
-    Thread.sleep(delayInMills);
-
-    // poll
+    Thread.sleep(delay.toMillis());
+    // poll and get status
     PollResponse<?> pollResponse = acceptedDeployment.getSyncPoller().poll();
     pollStatus = pollResponse.getStatus();
-    delayInMills = pollResponse.getRetryAfter() == null
-        ? DEFAULT_DELAY_IN_MILLIS
-        : (int) pollResponse.getRetryAfter().toMillis();
+    delay = pollResponse.getRetryAfter() == null
+        ? defaultDelay
+        : pollResponse.getRetryAfter();
 }
 // pollStatus == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, if successful
-
-// final result
+// get final result
 Deployment deployment = acceptedDeployment.getFinalResult();
 ```
 
@@ -54,4 +58,4 @@ Supported Azure resources:
 - `create` and `delete` for `NetworkInterface`
 - `create` and `delete` for `PublicIpAddress`
 
-[lro]: https://docs.microsoft.com/en-us/azure/architecture/patterns/async-request-reply
+[lro]: https://docs.microsoft.com/azure/architecture/patterns/async-request-reply

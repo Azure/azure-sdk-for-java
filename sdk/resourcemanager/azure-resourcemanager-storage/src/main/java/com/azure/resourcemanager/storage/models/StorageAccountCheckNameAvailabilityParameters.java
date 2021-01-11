@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StorageAccountCheckNameAvailabilityParameters model. */
+/** The parameters used to check the availability of the storage account name. */
 @Fluent
 public final class StorageAccountCheckNameAvailabilityParameters {
     @JsonIgnore

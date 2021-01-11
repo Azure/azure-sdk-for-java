@@ -5,6 +5,8 @@ package com.azure.resourcemanager.containerregistry;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.containerregistry.fluent.ContainerRegistryManagementClient;
+import com.azure.resourcemanager.containerregistry.implementation.ContainerRegistryManagementClientBuilder;
 import com.azure.resourcemanager.containerregistry.implementation.RegistriesImpl;
 import com.azure.resourcemanager.containerregistry.implementation.RegistryTaskRunsImpl;
 import com.azure.resourcemanager.containerregistry.implementation.RegistryTasksImpl;
@@ -13,15 +15,14 @@ import com.azure.resourcemanager.containerregistry.models.RegistryTaskRuns;
 import com.azure.resourcemanager.containerregistry.models.RegistryTasks;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.storage.StorageManager;
 
 /** Entry point to Azure container registry management. */
 public final class ContainerRegistryManager
-    extends Manager<ContainerRegistryManager, ContainerRegistryManagementClient> {
+    extends Manager<ContainerRegistryManagementClient> {
     // The service managers
     private RegistriesImpl registries;
     private final StorageManager storageManager;
@@ -55,21 +56,8 @@ public final class ContainerRegistryManager
      * @param profile the profile to use
      * @return the ContainerRegistryManager
      */
-    public static ContainerRegistryManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return authenticate(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of ContainerRegistryManager that exposes Registry resource management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the ContainerRegistryManager
-     */
-    public static ContainerRegistryManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new ContainerRegistryManager(httpPipeline, profile, sdkContext);
+    private static ContainerRegistryManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return new ContainerRegistryManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -97,19 +85,18 @@ public final class ContainerRegistryManager
      *
      * @param httpPipeline the HttpPipeline used to authenticate through ContainerRegistryManager.
      * @param profile the profile to use
-     * @param sdkContext the sdk context
      */
-    private ContainerRegistryManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private ContainerRegistryManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
             new ContainerRegistryManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .endpoint(profile.environment().getResourceManagerEndpoint())
-                .subscriptionId(profile.subscriptionId())
-                .buildClient(),
-            sdkContext);
-        this.storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
+        this.storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
+            .authenticate(null, profile);
     }
 
     /** @return the availability set resource management API entry point */

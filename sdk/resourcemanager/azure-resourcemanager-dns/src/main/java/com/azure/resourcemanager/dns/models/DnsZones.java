@@ -4,7 +4,6 @@ package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.dns.DnsZoneManager;
-import com.azure.resourcemanager.dns.fluent.ZonesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point to DNS zone management API in Azure. */
@@ -30,8 +28,7 @@ public interface DnsZones
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<DnsZone>,
         SupportsBatchDeletion,
-        HasManager<DnsZoneManager>,
-        HasInner<ZonesClient> {
+        HasManager<DnsZoneManager> {
     /**
      * Asynchronously deletes the zone from Azure, identifying it by its name and its resource group.
      *

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.appservice.models.AppServiceDomain;
 import com.azure.resourcemanager.appservice.models.AppServiceDomains;
 import com.azure.resourcemanager.appservice.models.DomainLegalAgreement;
 import com.azure.resourcemanager.appservice.models.TopLevelDomainAgreementOption;
-import com.azure.resourcemanager.appservice.fluent.inner.DomainInner;
+import com.azure.resourcemanager.appservice.fluent.models.DomainInner;
 import com.azure.resourcemanager.appservice.fluent.DomainsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
@@ -20,7 +20,7 @@ public class AppServiceDomainsImpl
     implements AppServiceDomains {
 
     public AppServiceDomainsImpl(AppServiceManager manager) {
-        super(manager.inner().getDomains(), manager);
+        super(manager.serviceClient().getDomains(), manager);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class AppServiceDomainsImpl
     public PagedIterable<DomainLegalAgreement> listAgreements(String topLevelExtension) {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getTopLevelDomains()
             .listAgreements(topLevelExtension, new TopLevelDomainAgreementOption())
             .mapPage(DomainLegalAgreementImpl::new);

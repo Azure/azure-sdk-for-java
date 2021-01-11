@@ -25,6 +25,8 @@ public class ManagedIdentityCredentialLiveTest {
     private static final String AZURE_VAULT_URL = "AZURE_VAULT_URL";
     private static final String VAULT_SECRET_NAME = "secret";
     private static final Configuration CONFIGURATION = Configuration.getGlobalConfiguration().clone();
+    private static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
+    private static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
 
     @Test
     public void testMSIEndpointWithSystemAssigned() throws Exception {
@@ -34,6 +36,8 @@ public class ManagedIdentityCredentialLiveTest {
 
         IdentityClient client = new IdentityClientBuilder().build();
         StepVerifier.create(client.authenticateToManagedIdentityEndpoint(
+            CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
+            CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default")))
@@ -70,6 +74,8 @@ public class ManagedIdentityCredentialLiveTest {
             .clientId(CONFIGURATION.get(Configuration.PROPERTY_AZURE_CLIENT_ID))
             .build();
         StepVerifier.create(client.authenticateToManagedIdentityEndpoint(
+            CONFIGURATION.get(PROPERTY_IDENTITY_ENDPOINT),
+            CONFIGURATION.get(PROPERTY_IDENTITY_HEADER),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_ENDPOINT),
             CONFIGURATION.get(Configuration.PROPERTY_MSI_SECRET),
             new TokenRequestContext().addScopes("https://management.azure.com/.default")))

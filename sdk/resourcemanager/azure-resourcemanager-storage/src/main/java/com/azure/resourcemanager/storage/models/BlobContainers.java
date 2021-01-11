@@ -5,7 +5,7 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.resourcemanager.storage.fluent.inner.ListContainerItemInner;
+import com.azure.resourcemanager.storage.fluent.models.ListContainerItemInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 

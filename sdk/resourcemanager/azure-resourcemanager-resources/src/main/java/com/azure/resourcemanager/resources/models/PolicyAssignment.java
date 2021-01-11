@@ -7,10 +7,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.resources.fluent.inner.PolicyAssignmentInner;
+import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
 
 /**
  * An immutable client-side representation of an Azure policy assignment.
@@ -21,7 +21,7 @@ public interface PolicyAssignment extends
         HasId,
         Indexable,
         Refreshable<PolicyAssignment>,
-        HasInner<PolicyAssignmentInner> {
+        HasInnerModel<PolicyAssignmentInner> {
 
     /**
      * @return the policy assignment display name

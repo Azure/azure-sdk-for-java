@@ -7,13 +7,12 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildRe
 import com.azure.resourcemanager.resources.fluentcore.dag.FunctionalTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.dag.IndexableTaskItem;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
+import com.azure.resourcemanager.resources.fluentcore.exception.AggregatedManagementException;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
@@ -316,26 +315,30 @@ public abstract class ExternalChildResourceImpl<FluentModelT extends Indexable,
     }
 
     @Override
-    public Flux<Indexable> createAsync() {
-        return taskGroup().invokeAsync(this.taskGroup().newInvocationContext());
+    public Mono<FluentModelT> createAsync() {
+        return createOrUpdateAsync();
     }
 
     @Override
     public FluentModelT create() {
-        return Utils.<FluentModelT>rootResource(createAsync().last()).block();
+        return createAsync().block();
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Mono<FluentModelT> applyAsync() {
-        return taskGroup().invokeAsync(this.taskGroup().newInvocationContext())
-                .last()
-                .map(indexable -> (FluentModelT) indexable);
+        return createOrUpdateAsync();
     }
 
     @Override
     public FluentModelT apply() {
         return applyAsync().block();
+    }
+
+    @SuppressWarnings("unchecked")
+    private Mono<FluentModelT> createOrUpdateAsync() {
+        return taskGroup().invokeAsync()
+            .map(indexable -> (FluentModelT) indexable)
+            .onErrorMap(AggregatedManagementException::convertToManagementException);
     }
 
     protected abstract Mono<InnerModelT> getInnerAsync();

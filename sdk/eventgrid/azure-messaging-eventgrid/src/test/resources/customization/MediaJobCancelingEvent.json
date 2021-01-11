@@ -1,0 +1,16 @@
+[
+  {
+    "topic": "/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}",
+    "subject": "transforms/VideoAnalyzerTransform/jobs/job-7a8215f9-0f8d-48a6-82ed-1ead772bc221",
+    "eventType": "Microsoft.Media.JobCanceling",
+    "eventTime": "2018-10-12T15:41:50.5513295Z",
+    "id": "1f9a488b-abe3-4fca-80b8-aae59bf7f123",
+    "data": {
+      "previousState": "Processing",
+      "state": "Canceling",
+      "correlationData": {}
+    },
+    "dataVersion": "1.0",
+    "metadataVersion": "1"
+  }
+]

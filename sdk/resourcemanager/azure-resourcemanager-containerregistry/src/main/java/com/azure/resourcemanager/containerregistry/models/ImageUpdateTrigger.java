@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The ImageUpdateTrigger model. */
+/** The image update trigger that caused a build. */
 @Fluent
 public final class ImageUpdateTrigger {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageUpdateTrigger.class);

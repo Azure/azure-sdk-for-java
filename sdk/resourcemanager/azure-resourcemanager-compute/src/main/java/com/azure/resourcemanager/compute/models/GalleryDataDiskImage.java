@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GalleryDataDiskImage model. */
+/** This is the data disk image. */
 @Fluent
 public final class GalleryDataDiskImage extends GalleryDiskImage {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryDataDiskImage.class);
@@ -44,6 +44,20 @@ public final class GalleryDataDiskImage extends GalleryDiskImage {
      */
     public GalleryDataDiskImage withLun(int lun) {
         this.lun = lun;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryDataDiskImage withHostCaching(HostCaching hostCaching) {
+        super.withHostCaching(hostCaching);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryDataDiskImage withSource(GalleryArtifactVersionSource source) {
+        super.withSource(source);
         return this;
     }
 

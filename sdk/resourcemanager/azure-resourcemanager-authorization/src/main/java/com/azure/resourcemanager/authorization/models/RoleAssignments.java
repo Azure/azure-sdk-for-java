@@ -7,13 +7,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.fluent.RoleAssignmentsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point to role assignment management API. */
@@ -23,8 +21,7 @@ public interface RoleAssignments
         SupportsCreating<RoleAssignment.DefinitionStages.Blank>,
         SupportsBatchCreation<RoleAssignment>,
         SupportsDeletingById,
-        HasManager<AuthorizationManager>,
-        HasInner<RoleAssignmentsClient> {
+        HasManager<AuthorizationManager> {
     /**
      * Gets the information about a role assignment based on scope and name.
      *

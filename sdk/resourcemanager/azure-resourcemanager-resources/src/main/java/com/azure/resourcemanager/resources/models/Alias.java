@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Alias model. */
+/** The alias type. */
 @Fluent
 public final class Alias {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Alias.class);

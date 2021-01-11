@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Error model. */
+/** Error definition. */
 @Fluent
 public final class Error {
     /*
@@ -84,5 +84,19 @@ public final class Error {
     public Error setInnererror(InnerError innererror) {
         this.innererror = innererror;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getDetails() != null) {
+            getDetails().forEach(e -> e.validate());
+        }
+        if (getInnererror() != null) {
+            getInnererror().validate();
+        }
     }
 }

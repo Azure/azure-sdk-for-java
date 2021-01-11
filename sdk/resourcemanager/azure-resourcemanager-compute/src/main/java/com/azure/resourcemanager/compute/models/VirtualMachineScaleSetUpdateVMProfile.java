@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineScaleSetUpdateVMProfile model. */
+/** Describes a virtual machine scale set virtual machine profile. */
 @Fluent
 public final class VirtualMachineScaleSetUpdateVMProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateVMProfile.class);
@@ -31,6 +31,12 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
      */
     @JsonProperty(value = "networkProfile")
     private VirtualMachineScaleSetUpdateNetworkProfile networkProfile;
+
+    /*
+     * The virtual machine scale set Security profile
+     */
+    @JsonProperty(value = "securityProfile")
+    private SecurityProfile securityProfile;
 
     /*
      * The virtual machine scale set diagnostics profile.
@@ -122,6 +128,26 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
     public VirtualMachineScaleSetUpdateVMProfile withNetworkProfile(
         VirtualMachineScaleSetUpdateNetworkProfile networkProfile) {
         this.networkProfile = networkProfile;
+        return this;
+    }
+
+    /**
+     * Get the securityProfile property: The virtual machine scale set Security profile.
+     *
+     * @return the securityProfile value.
+     */
+    public SecurityProfile securityProfile() {
+        return this.securityProfile;
+    }
+
+    /**
+     * Set the securityProfile property: The virtual machine scale set Security profile.
+     *
+     * @param securityProfile the securityProfile value to set.
+     * @return the VirtualMachineScaleSetUpdateVMProfile object itself.
+     */
+    public VirtualMachineScaleSetUpdateVMProfile withSecurityProfile(SecurityProfile securityProfile) {
+        this.securityProfile = securityProfile;
         return this;
     }
 
@@ -243,6 +269,9 @@ public final class VirtualMachineScaleSetUpdateVMProfile {
         }
         if (networkProfile() != null) {
             networkProfile().validate();
+        }
+        if (securityProfile() != null) {
+            securityProfile().validate();
         }
         if (diagnosticsProfile() != null) {
             diagnosticsProfile().validate();

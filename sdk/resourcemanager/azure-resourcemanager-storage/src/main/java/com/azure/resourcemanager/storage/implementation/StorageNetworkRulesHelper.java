@@ -11,7 +11,7 @@ import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.StorageAccountCreateParameters;
 import com.azure.resourcemanager.storage.models.StorageAccountUpdateParameters;
 import com.azure.resourcemanager.storage.models.VirtualNetworkRule;
-import com.azure.resourcemanager.storage.fluent.inner.StorageAccountInner;
+import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

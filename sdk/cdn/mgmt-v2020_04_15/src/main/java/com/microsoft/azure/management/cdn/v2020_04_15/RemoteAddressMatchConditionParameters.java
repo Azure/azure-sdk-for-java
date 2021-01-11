@@ -39,7 +39,7 @@ public class RemoteAddressMatchConditionParameters {
      * here with OR semantics. If any of them match the variable with the given
      * operator this match condition is considered a match.
      */
-    @JsonProperty(value = "matchValues", required = true)
+    @JsonProperty(value = "matchValues")
     private List<String> matchValues;
 
     /**
@@ -51,7 +51,6 @@ public class RemoteAddressMatchConditionParameters {
     /**
      * Creates an instance of RemoteAddressMatchConditionParameters class.
      * @param operator describes operator to be matched. Possible values include: 'Any', 'IPMatch', 'GeoMatch'.
-     * @param matchValues match values to match against. The operator will apply to each value in here with OR semantics. If any of them match the variable with the given operator this match condition is considered a match.
      */
     public RemoteAddressMatchConditionParameters() {
         odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRemoteAddressConditionParameters";

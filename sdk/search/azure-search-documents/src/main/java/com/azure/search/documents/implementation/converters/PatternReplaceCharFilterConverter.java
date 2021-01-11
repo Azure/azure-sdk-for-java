@@ -33,7 +33,7 @@ public final class PatternReplaceCharFilterConverter {
         com.azure.search.documents.indexes.implementation.models.PatternReplaceCharFilter patternReplaceCharFilter =
             new com.azure.search.documents.indexes.implementation.models.PatternReplaceCharFilter(obj.getName(),
                 obj.getPattern(), obj.getReplacement());
-        patternReplaceCharFilter.validate();
+
         return patternReplaceCharFilter;
     }
 

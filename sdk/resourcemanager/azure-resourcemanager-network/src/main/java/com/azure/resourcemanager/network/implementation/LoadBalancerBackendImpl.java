@@ -8,9 +8,9 @@ import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerBackend;
 import com.azure.resourcemanager.network.models.LoadBalancingRule;
 import com.azure.resourcemanager.network.models.NetworkInterface;
-import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
+import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.Arrays;
@@ -39,8 +39,8 @@ class LoadBalancerBackendImpl extends ChildResourceImpl<BackendAddressPoolInner,
         // This assumes a NIC can only have one IP config associated with the backend of an LB,
         // which is correct at the time of this implementation and seems unlikely to ever change
         final Map<String, String> ipConfigNames = new TreeMap<>();
-        if (this.inner().backendIpConfigurations() != null) {
-            for (NetworkInterfaceIpConfigurationInner inner : this.inner().backendIpConfigurations()) {
+        if (this.innerModel().backendIpConfigurations() != null) {
+            for (NetworkInterfaceIpConfigurationInner inner : this.innerModel().backendIpConfigurations()) {
                 String nicId = ResourceUtils.parentResourceIdFromResourceId(inner.id());
                 String ipConfigName = ResourceUtils.nameFromResourceId(inner.id());
                 ipConfigNames.put(nicId, ipConfigName);
@@ -53,8 +53,8 @@ class LoadBalancerBackendImpl extends ChildResourceImpl<BackendAddressPoolInner,
     @Override
     public Map<String, LoadBalancingRule> loadBalancingRules() {
         final Map<String, LoadBalancingRule> rules = new TreeMap<>();
-        if (this.inner().loadBalancingRules() != null) {
-            for (SubResource inner : this.inner().loadBalancingRules()) {
+        if (this.innerModel().loadBalancingRules() != null) {
+            for (SubResource inner : this.innerModel().loadBalancingRules()) {
                 String name = ResourceUtils.nameFromResourceId(inner.id());
                 LoadBalancingRule rule = this.parent().loadBalancingRules().get(name);
                 if (rule != null) {
@@ -68,7 +68,7 @@ class LoadBalancerBackendImpl extends ChildResourceImpl<BackendAddressPoolInner,
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override

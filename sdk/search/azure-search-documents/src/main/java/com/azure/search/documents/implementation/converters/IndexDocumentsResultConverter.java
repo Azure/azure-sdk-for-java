@@ -28,24 +28,6 @@ public final class IndexDocumentsResultConverter {
         return new IndexDocumentsResult(results);
     }
 
-    /**
-     * Maps from {@link IndexDocumentsResult} to
-     * {@link com.azure.search.documents.implementation.models.IndexDocumentsResult}.
-     */
-    public static com.azure.search.documents.implementation.models.IndexDocumentsResult map(IndexDocumentsResult obj) {
-        if (obj == null) {
-            return null;
-        }
-
-        List<com.azure.search.documents.implementation.models.IndexingResult> results = obj.getResults() == null
-            ? null : obj.getResults().stream().map(IndexingResultConverter::map).collect(Collectors.toList());
-        com.azure.search.documents.implementation.models.IndexDocumentsResult indexDocumentsResult =
-            new com.azure.search.documents.implementation.models.IndexDocumentsResult(results);
-
-        indexDocumentsResult.validate();
-        return indexDocumentsResult;
-    }
-
     private IndexDocumentsResultConverter() {
     }
 }

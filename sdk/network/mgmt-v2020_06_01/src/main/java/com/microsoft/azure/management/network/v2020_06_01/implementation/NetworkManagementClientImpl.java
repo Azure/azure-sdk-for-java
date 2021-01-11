@@ -814,6 +814,19 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The InboundSecurityRuleOperationsInner object to access its operations.
+     */
+    private InboundSecurityRuleOperationsInner inboundSecurityRuleOperations;
+
+    /**
+     * Gets the InboundSecurityRuleOperationsInner object to access its operations.
+     * @return the InboundSecurityRuleOperationsInner object.
+     */
+    public InboundSecurityRuleOperationsInner inboundSecurityRuleOperations() {
+        return this.inboundSecurityRuleOperations;
+    }
+
+    /**
      * The NetworkWatchersInner object to access its operations.
      */
     private NetworkWatchersInner networkWatchers;
@@ -1574,6 +1587,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         this.networkVirtualAppliances = new NetworkVirtualAppliancesInner(restClient().retrofit(), this);
         this.virtualApplianceSites = new VirtualApplianceSitesInner(restClient().retrofit(), this);
         this.virtualApplianceSkus = new VirtualApplianceSkusInner(restClient().retrofit(), this);
+        this.inboundSecurityRuleOperations = new InboundSecurityRuleOperationsInner(restClient().retrofit(), this);
         this.networkWatchers = new NetworkWatchersInner(restClient().retrofit(), this);
         this.packetCaptures = new PacketCapturesInner(restClient().retrofit(), this);
         this.connectionMonitors = new ConnectionMonitorsInner(restClient().retrofit(), this);

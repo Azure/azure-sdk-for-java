@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CreationData model. */
+/** Data used when creating a disk. */
 @Fluent
 public final class CreationData {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CreationData.class);
@@ -71,6 +71,13 @@ public final class CreationData {
      */
     @JsonProperty(value = "uploadSizeBytes")
     private Long uploadSizeBytes;
+
+    /*
+     * Logical sector size in bytes for Ultra disks. Supported values are 512
+     * ad 4096. 4096 is the default.
+     */
+    @JsonProperty(value = "logicalSectorSize")
+    private Integer logicalSectorSize;
 
     /**
      * Get the createOption property: This enumerates the possible sources of a disk's creation.
@@ -229,6 +236,28 @@ public final class CreationData {
      */
     public CreationData withUploadSizeBytes(Long uploadSizeBytes) {
         this.uploadSizeBytes = uploadSizeBytes;
+        return this;
+    }
+
+    /**
+     * Get the logicalSectorSize property: Logical sector size in bytes for Ultra disks. Supported values are 512 ad
+     * 4096. 4096 is the default.
+     *
+     * @return the logicalSectorSize value.
+     */
+    public Integer logicalSectorSize() {
+        return this.logicalSectorSize;
+    }
+
+    /**
+     * Set the logicalSectorSize property: Logical sector size in bytes for Ultra disks. Supported values are 512 ad
+     * 4096. 4096 is the default.
+     *
+     * @param logicalSectorSize the logicalSectorSize value to set.
+     * @return the CreationData object itself.
+     */
+    public CreationData withLogicalSectorSize(Integer logicalSectorSize) {
+        this.logicalSectorSize = logicalSectorSize;
         return this;
     }
 

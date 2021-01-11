@@ -49,7 +49,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
      * @param client {@link BlobAsyncClient} The blob client.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      * @return {@link BlobOutputStream} associated with the blob.
@@ -66,7 +67,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
      * @param client {@link BlobAsyncClient} The blob client.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -224,8 +226,12 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
                 .setTags(tags).setTier(tier).setRequestConditions(requestConditions))
                 // This allows the operation to continue while maintaining the error that occurred.
-                .onErrorResume(BlobStorageException.class, e -> {
-                    this.lastError = new IOException(e);
+                .onErrorResume(e -> {
+                    if (e instanceof IOException) {
+                        this.lastError = (IOException) e;
+                    } else {
+                        this.lastError = new IOException(e);
+                    }
                     return Mono.empty();
                 })
                 .doOnTerminate(() -> {

@@ -10,8 +10,12 @@ import java.util.ServiceLoader;
  * This class is a proxy for using a {@link JsonSerializerProvider} loaded from the classpath.
  */
 public final class JsonSerializerProviders {
-    private static final String CANNOT_FIND_JSON_SERIALIZER_PROVIDER =
-        "Cannot find any JSON serializer provider on the classpath.";
+    private static final String CANNOT_FIND_JSON_SERIALIZER_PROVIDER = "A request was made to load the default JSON "
+        + "serializer provider but one could not be found on the classpath. If you are using a dependency manager, "
+        + "consider including a dependency on azure-core-serializer-json-jackson or azure-core-serializer-json-gson. "
+        + "Depending on your existing dependencies, you have the choice of Jackson or GSON implementations. "
+        + "Additionally, refer to https://aka.ms/azsdk/java/docs/custom-jsonserializer to learn about writing your own "
+        + "implementation.";
 
     private static JsonSerializerProvider defaultProvider;
     private static boolean attemptedLoad;

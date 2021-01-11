@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IpRule model. */
+/** A rule governing the accessibility of a vault from a specific ip address or ip range. */
 @Fluent
 public final class IpRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IpRule.class);

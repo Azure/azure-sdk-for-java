@@ -10,8 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** The GalleryApplicationUpdate model. */
+/** Specifies information about the gallery Application Definition that you want to update. */
 @JsonFlatten
 @Fluent
 public class GalleryApplicationUpdate extends UpdateResourceDefinition {
@@ -183,6 +184,13 @@ public class GalleryApplicationUpdate extends UpdateResourceDefinition {
      */
     public GalleryApplicationUpdate withSupportedOSType(OperatingSystemTypes supportedOSType) {
         this.supportedOSType = supportedOSType;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

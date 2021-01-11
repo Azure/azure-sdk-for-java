@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LoadBalancerSku model. */
+/** SKU of a load balancer. */
 @Fluent
 public final class LoadBalancerSku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerSku.class);
@@ -19,6 +19,12 @@ public final class LoadBalancerSku {
      */
     @JsonProperty(value = "name")
     private LoadBalancerSkuName name;
+
+    /*
+     * Tier of a load balancer SKU.
+     */
+    @JsonProperty(value = "tier")
+    private LoadBalancerSkuTier tier;
 
     /**
      * Get the name property: Name of a load balancer SKU.
@@ -37,6 +43,26 @@ public final class LoadBalancerSku {
      */
     public LoadBalancerSku withName(LoadBalancerSkuName name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the tier property: Tier of a load balancer SKU.
+     *
+     * @return the tier value.
+     */
+    public LoadBalancerSkuTier tier() {
+        return this.tier;
+    }
+
+    /**
+     * Set the tier property: Tier of a load balancer SKU.
+     *
+     * @param tier the tier value to set.
+     * @return the LoadBalancerSku object itself.
+     */
+    public LoadBalancerSku withTier(LoadBalancerSkuTier tier) {
+        this.tier = tier;
         return this;
     }
 

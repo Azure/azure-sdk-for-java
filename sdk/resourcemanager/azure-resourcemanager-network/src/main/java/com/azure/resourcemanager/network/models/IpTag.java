@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IpTag model. */
+/** Contains the IpTag associated with the object. */
 @Fluent
 public final class IpTag {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(IpTag.class);

@@ -1,6 +1,7 @@
 parameters:
   SDKType: client
   ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
+  TestPipeline: false
   Artifacts: []
   AdditionalModules: []
   PreTestSteps: []
@@ -53,6 +54,16 @@ jobs:
           ArtifactName: 'packages'
 
     steps:
+      - ${{if eq(parameters.TestPipeline, 'true')}}:
+        - task: PowerShell@2
+          displayName: Prep template pipeline for release
+          condition: succeeded()
+          inputs:
+            pwsh: true
+            workingDirectory: $(Build.SourcesDirectory)
+            filePath: eng/scripts/SetTestPipelineVersion.ps1
+            arguments: '-BuildID $(Build.BuildId)'
+
       - script: |
           echo "##vso[build.addbuildtag]Scheduled"
         displayName: 'Tag scheduled builds'
@@ -68,13 +79,13 @@ jobs:
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
             python3 --version
-            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier dev.$(Build.BuildNumber) --artifact-id ${{artifact.name}} --group-id ${{artifact.groupId}}
+            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber) --artifact-id ${{artifact.name}} --group-id ${{artifact.groupId}}
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
           displayName: Append dev package version suffix for ${{artifact.name}}
 
       - script: |
           python3 --version
-          python3 eng/versioning/set_versions.py --set-dev-zero-version --build-type ${{parameters.SDKType}} --build-qualifier dev.$(Build.BuildNumber)
+          python3 eng/versioning/set_versions.py --set-dev-zero-version --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber)
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Set zero-dev-version for packages
 
@@ -89,13 +100,6 @@ jobs:
         displayName: 'pip install markdown2 and BeautifulSoup4'
 
       - template: ../steps/cache-maven-repository.yml
-
-      - template: /eng/common/pipelines/templates/steps/replace-relative-links.yml
-        parameters:
-          TargetFolder: $(Build.SourcesDirectory)
-          RootFolder: $(Build.SourcesDirectory)
-          BuildSHA: $(Build.SourceVersion)
-          RepoId: 'Azure/azure-sdk-for-java'
 
       - template: ../steps/generate-project-list.yml
         parameters:
@@ -129,10 +133,11 @@ jobs:
         displayName: 'Publish Artifacts $(ArtifactName)'
         artifact: '$(ArtifactName)'
 
-      - publish: $(System.DefaultWorkingDirectory)
-        condition: and(eq(variables['CaptureRepositoryOnFailure'], 'true'), failed())
-        displayName: 'Capture repo state for analysis'
-        artifact: repository
+      - template: ../steps/upload-repository-on-failure.yml
+
+      - template: /eng/pipelines/templates/steps/create-apireview.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
 
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
@@ -140,7 +145,7 @@ jobs:
     variables:
       - template: ../variables/globals.yml
       - name: OSVmImage
-        value: 'windows-2019'
+        value: 'ubuntu-18.04'
 
     pool:
       vmImage: $(OSVmImage)
@@ -161,16 +166,28 @@ jobs:
           ward scan -d $(Build.SourcesDirectory) -c $(Build.SourcesDirectory)/eng/.docsettings.yml
         displayName: 'Verify Readmes'
 
-      - template: ../../../common/pipelines/templates/steps/verify-links.yml
+      - template: /eng/common/pipelines/templates/steps/verify-links.yml
         parameters:
-          Directory: sdk/${{ parameters.ServiceDirectory }}
+          ${{ if eq(variables['Build.Reason'], 'PullRequest') }}:
+            Directory: ''
+            Urls: (eng/common/scripts/get-markdown-files-from-changed-files.ps1)
+          ${{ if ne(variables['Build.Reason'], 'PullRequest') }}:
+            Directory: sdk/${{ parameters.ServiceDirectory }}
+          CheckLinkGuidance: $true
 
-      - ${{ each artifact in parameters.Artifacts }}:
-        - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-          parameters:
-            PackageName: ${{artifact.name}}
-            ServiceName: ${{parameters.ServiceDirectory}}
-            ForRelease: false
+      # Use BasePathLength of 38 instead of the default 49 as some GA'd files fail when the number is higher.
+      - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
+        parameters:
+          SourceDirectory: $(Build.SourcesDirectory)
+          BasePathLength: 38
+
+      - ${{if ne(parameters.SDKType, 'data')}}:
+        - ${{ each artifact in parameters.Artifacts }}:
+          - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+            parameters:
+              PackageName: ${{artifact.name}}
+              ServiceName: ${{parameters.ServiceDirectory}}
+              ForRelease: false
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
@@ -190,30 +207,26 @@ jobs:
         inputs:
           mavenPomFile: pom.xml
           goals: 'install'
-          options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+          options: '$(DefaultOptions) -T 1C -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
 
-      - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-        # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
-        # builds should be sufficient.
-        condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
-        displayName: 'Component Detection'
-
       - task: Maven@3
         displayName: 'Run SpotBugs, Checkstyle, RevApi, and Javadoc'
         inputs:
           mavenPomFile: pom.xml
-          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme-windows -pl $(ProjectList)'
+          options: '$(DefaultOptions) --no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -pl $(ProjectList)'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaBuildVersion)
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'verify'
+
+      - template: ../steps/upload-repository-on-failure.yml
 
   - job: 'Test'
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
@@ -222,7 +235,12 @@ jobs:
       - template: ../variables/globals.yml
 
     strategy:
-      matrix: ${{ parameters.TestMatrix }}
+      matrix:
+        ${{ each matrixEntry in parameters.TestMatrix }}:
+          # Skip TestFromSource jobs for SDKType data
+          ${{ if not(and(eq(matrixEntry.value.TestFromSource, 'true'), eq(parameters.SDKType, 'data'))) }}:
+            ${{ matrixEntry.key }}:
+              ${{ insert }}: ${{ matrixEntry.value }}
 
     pool:
       vmImage: $(OSVmImage)
@@ -293,6 +311,20 @@ jobs:
         condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
 
       - task: Maven@3
+        displayName: 'Generate aggregate code coverage report'
+        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
+        inputs:
+          mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
+          options: -Pcoverage
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          goals: jacoco:report-aggregate
+          # we want to run this when TestFromSource isn't true
+          condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
+
+      - task: Maven@3
         displayName: 'Build for From Source run'
         inputs:
           mavenPomFile: ClientAggregatePom.xml
@@ -331,8 +363,20 @@ jobs:
           goals: 'surefire:test'
         condition: and(succeeded(), and(eq(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
 
+      - template: ../steps/upload-repository-on-failure.yml
+
       - task: PublishTestResults@2
         condition: and(always(), or(ne(variables['TestFromSource'],'true'), eq(variables['ShouldRunSourceTests'],'true')))
         inputs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
+
+      # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
+      # Code coverage reporting is setup only for Track 2 modules.
+      - task: PublishCodeCoverageResults@1
+        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
+        inputs:
+          codeCoverageTool: JaCoCo
+          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/jacoco.xml
+          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/
+          failIfCoverageEmpty: false

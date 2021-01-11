@@ -3,6 +3,7 @@
 
 package com.azure.search.documents.indexes.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.MemberNameConverterProviders;
@@ -14,7 +15,8 @@ import java.util.Objects;
 /**
  * Additional parameters to build {@link SearchField}.
  */
-public class FieldBuilderOptions {
+@Fluent
+public final class FieldBuilderOptions {
     private JsonSerializer jsonSerializer;
 
     /**
@@ -41,8 +43,8 @@ public class FieldBuilderOptions {
      * @param jsonSerializer The custom serializer.
      * @return The updated FieldBuilderOptions object.
      */
-    public FieldBuilderOptions setConverter(JsonSerializer jsonSerializer) {
-        this.jsonSerializer = Objects.requireNonNull(jsonSerializer, "The JsonSerializer cannot be null");
+    public FieldBuilderOptions setJsonSerializer(JsonSerializer jsonSerializer) {
+        this.jsonSerializer = Objects.requireNonNull(jsonSerializer, "'jsonSerializer' cannot be null");
         return this;
     }
 

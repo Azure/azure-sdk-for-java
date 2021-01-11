@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Argument model. */
+/** The properties of a run argument. */
 @Fluent
 public final class Argument {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Argument.class);

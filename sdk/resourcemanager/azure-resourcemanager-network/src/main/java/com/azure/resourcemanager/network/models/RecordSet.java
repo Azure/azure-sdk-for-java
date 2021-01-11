@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RecordSet model. */
+/** A collective group of information about the record set information. */
 @Fluent
 public final class RecordSet {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RecordSet.class);

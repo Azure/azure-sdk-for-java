@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DataTableResponseObject model. */
+/** Data Table which defines columns and raw row values. */
 @Fluent
 public final class DataTableResponseObject {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DataTableResponseObject.class);

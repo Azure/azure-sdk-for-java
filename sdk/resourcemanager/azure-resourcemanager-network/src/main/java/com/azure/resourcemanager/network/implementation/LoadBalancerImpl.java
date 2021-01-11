@@ -21,13 +21,13 @@ import com.azure.resourcemanager.network.models.LoadBalancingRule;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
-import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
-import com.azure.resourcemanager.network.fluent.inner.FrontendIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
+import com.azure.resourcemanager.network.fluent.models.FrontendIpConfigurationInner;
 import com.azure.resourcemanager.network.models.HasNetworkInterfaces;
-import com.azure.resourcemanager.network.fluent.inner.InboundNatRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.LoadBalancerInner;
-import com.azure.resourcemanager.network.fluent.inner.LoadBalancingRuleInner;
-import com.azure.resourcemanager.network.fluent.inner.ProbeInner;
+import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
+import com.azure.resourcemanager.network.fluent.models.LoadBalancingRuleInner;
+import com.azure.resourcemanager.network.fluent.models.ProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import java.util.ArrayList;
@@ -82,14 +82,18 @@ class LoadBalancerImpl
     protected Mono<LoadBalancerInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getLoadBalancers()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     protected Mono<LoadBalancerInner> applyTagsToInnerAsync() {
-        return this.manager().inner().getLoadBalancers().updateTagsAsync(resourceGroupName(), name(), inner().tags());
+        return this
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .updateTagsAsync(resourceGroupName(), name(), innerModel().tags());
     }
 
     // Helpers
@@ -105,7 +109,7 @@ class LoadBalancerImpl
     }
 
     protected LoadBalancerBackendImpl ensureUniqueBackend() {
-        String name = this.manager().sdkContext().randomResourceName("backend", 20);
+        String name = this.manager().resourceManager().internalContext().randomResourceName("backend", 20);
         LoadBalancerBackendImpl backend = this.defineBackend(name);
         backend.attach();
         return backend;
@@ -126,7 +130,7 @@ class LoadBalancerImpl
     }
 
     protected LoadBalancerFrontendImpl ensureUniqueFrontend() {
-        String name = this.manager().sdkContext().randomResourceName("frontend", 20);
+        String name = this.manager().resourceManager().internalContext().randomResourceName("frontend", 20);
         LoadBalancerFrontendImpl frontend = this.defineFrontend(name);
         frontend.attach();
         return frontend;
@@ -199,34 +203,34 @@ class LoadBalancerImpl
         if (innerProbes == null) {
             innerProbes = new ArrayList<>();
         }
-        this.inner().withProbes(innerProbes);
+        this.innerModel().withProbes(innerProbes);
 
         // Reset and update backends
         List<BackendAddressPoolInner> innerBackends = innersFromWrappers(this.backends.values());
         if (null == innerBackends) {
             innerBackends = new ArrayList<>();
         }
-        this.inner().withBackendAddressPools(innerBackends);
+        this.innerModel().withBackendAddressPools(innerBackends);
 
         // Reset and update frontends
         List<FrontendIpConfigurationInner> innerFrontends = innersFromWrappers(this.frontends.values());
         if (null == innerFrontends) {
             innerFrontends = new ArrayList<>();
         }
-        this.inner().withFrontendIpConfigurations(innerFrontends);
+        this.innerModel().withFrontendIpConfigurations(innerFrontends);
 
         // Reset and update inbound NAT rules
         List<InboundNatRuleInner> innerNatRules = innersFromWrappers(this.inboundNatRules.values());
         if (null == innerNatRules) {
             innerNatRules = new ArrayList<>();
         }
-        this.inner().withInboundNatRules(innerNatRules);
+        this.innerModel().withInboundNatRules(innerNatRules);
 
         for (LoadBalancerInboundNatRule natRule : this.inboundNatRules.values()) {
             // Clear deleted frontend references
-            SubResource ref = natRule.inner().frontendIpConfiguration();
+            SubResource ref = natRule.innerModel().frontendIpConfiguration();
             if (ref != null && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                natRule.inner().withFrontendIpConfiguration(null);
+                natRule.innerModel().withFrontendIpConfiguration(null);
             }
         }
 
@@ -235,12 +239,12 @@ class LoadBalancerImpl
         if (null == innerNatPools) {
             innerNatPools = new ArrayList<>();
         }
-        this.inner().withInboundNatPools(innerNatPools);
+        this.innerModel().withInboundNatPools(innerNatPools);
         for (LoadBalancerInboundNatPool natPool : this.inboundNatPools.values()) {
             // Clear deleted frontend references
-            SubResource ref = natPool.inner().frontendIpConfiguration();
+            SubResource ref = natPool.innerModel().frontendIpConfiguration();
             if (ref != null && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                natPool.inner().withFrontendIpConfiguration(null);
+                natPool.innerModel().withFrontendIpConfiguration(null);
             }
         }
 
@@ -249,29 +253,29 @@ class LoadBalancerImpl
         if (innerRules == null) {
             innerRules = new ArrayList<>();
         }
-        this.inner().withLoadBalancingRules(innerRules);
+        this.innerModel().withLoadBalancingRules(innerRules);
         for (LoadBalancingRule lbRule : this.loadBalancingRules.values()) {
             SubResource ref;
 
             // Clear deleted frontend references
-            ref = lbRule.inner().frontendIpConfiguration();
+            ref = lbRule.innerModel().frontendIpConfiguration();
             if (ref != null && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                lbRule.inner().withFrontendIpConfiguration(null);
+                lbRule.innerModel().withFrontendIpConfiguration(null);
             }
 
             // Clear deleted backend references
-            ref = lbRule.inner().backendAddressPool();
+            ref = lbRule.innerModel().backendAddressPool();
             if (ref != null && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                lbRule.inner().withBackendAddressPool(null);
+                lbRule.innerModel().withBackendAddressPool(null);
             }
 
             // Clear deleted probe references
-            ref = lbRule.inner().probe();
+            ref = lbRule.innerModel().probe();
             if (ref != null
                 && !this.httpProbes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))
                 && !this.httpsProbes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))
                 && !this.tcpProbes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
-                lbRule.inner().withProbe(null);
+                lbRule.innerModel().withProbe(null);
             }
         }
     }
@@ -325,9 +329,9 @@ class LoadBalancerImpl
     protected Mono<LoadBalancerInner> createInner() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getLoadBalancers()
-            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel());
     }
 
     @Override
@@ -344,7 +348,7 @@ class LoadBalancerImpl
 
     private void initializeFrontendsFromInner() {
         this.frontends = new TreeMap<>();
-        List<FrontendIpConfigurationInner> frontendsInner = this.inner().frontendIpConfigurations();
+        List<FrontendIpConfigurationInner> frontendsInner = this.innerModel().frontendIpConfigurations();
         if (frontendsInner != null) {
             for (FrontendIpConfigurationInner frontendInner : frontendsInner) {
                 LoadBalancerFrontendImpl frontend = new LoadBalancerFrontendImpl(frontendInner, this);
@@ -355,7 +359,7 @@ class LoadBalancerImpl
 
     private void initializeBackendsFromInner() {
         this.backends = new TreeMap<>();
-        List<BackendAddressPoolInner> backendsInner = this.inner().backendAddressPools();
+        List<BackendAddressPoolInner> backendsInner = this.innerModel().backendAddressPools();
         if (backendsInner != null) {
             for (BackendAddressPoolInner backendInner : backendsInner) {
                 LoadBalancerBackendImpl backend = new LoadBalancerBackendImpl(backendInner, this);
@@ -368,8 +372,8 @@ class LoadBalancerImpl
         this.httpProbes = new TreeMap<>();
         this.httpsProbes = new TreeMap<>();
         this.tcpProbes = new TreeMap<>();
-        if (this.inner().probes() != null) {
-            for (ProbeInner probeInner : this.inner().probes()) {
+        if (this.innerModel().probes() != null) {
+            for (ProbeInner probeInner : this.innerModel().probes()) {
                 LoadBalancerProbeImpl probe = new LoadBalancerProbeImpl(probeInner, this);
                 if (probeInner.protocol().equals(ProbeProtocol.TCP)) {
                     this.tcpProbes.put(probeInner.name(), probe);
@@ -384,7 +388,7 @@ class LoadBalancerImpl
 
     private void initializeLoadBalancingRulesFromInner() {
         this.loadBalancingRules = new TreeMap<>();
-        List<LoadBalancingRuleInner> rulesInner = this.inner().loadBalancingRules();
+        List<LoadBalancingRuleInner> rulesInner = this.innerModel().loadBalancingRules();
         if (rulesInner != null) {
             for (LoadBalancingRuleInner ruleInner : rulesInner) {
                 LoadBalancingRuleImpl rule = new LoadBalancingRuleImpl(ruleInner, this);
@@ -395,7 +399,7 @@ class LoadBalancerImpl
 
     private void initializeInboundNatPoolsFromInner() {
         this.inboundNatPools = new TreeMap<>();
-        List<InboundNatPool> inners = this.inner().inboundNatPools();
+        List<InboundNatPool> inners = this.innerModel().inboundNatPools();
         if (inners != null) {
             for (InboundNatPool inner : inners) {
                 LoadBalancerInboundNatPoolImpl wrapper = new LoadBalancerInboundNatPoolImpl(inner, this);
@@ -406,7 +410,7 @@ class LoadBalancerImpl
 
     private void initializeInboundNatRulesFromInner() {
         this.inboundNatRules = new TreeMap<>();
-        List<InboundNatRuleInner> rulesInner = this.inner().inboundNatRules();
+        List<InboundNatRuleInner> rulesInner = this.innerModel().inboundNatRules();
         if (rulesInner != null) {
             for (InboundNatRuleInner ruleInner : rulesInner) {
                 LoadBalancerInboundNatRuleImpl rule = new LoadBalancerInboundNatRuleImpl(ruleInner, this);
@@ -503,8 +507,9 @@ class LoadBalancerImpl
             this.creatablePIPKeys.put(this.addDependency(creatablePip), frontendName);
         } else if (!existingPipFrontendName.equalsIgnoreCase(frontendName)) {
             // Existing PIP definition already in use but under a different frontend, so error
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "This public IP address definition is already associated with a frontend under a different name."));
+            String exceptionMessage =
+                "This public IP address definition is already associated with a frontend under a different name.";
+            throw logger.logExceptionAsError(new IllegalArgumentException(exceptionMessage));
         }
 
         return this;
@@ -635,7 +640,7 @@ class LoadBalancerImpl
         // Service return `SkuCannotBeChangedOnUpdate` upon attempt to change it.
         // Service default is LoadBalancerSkuType.BASIC
         //
-        this.inner().withSku(skuType.sku());
+        this.innerModel().withSku(skuType.sku());
         return this;
     }
 
@@ -740,7 +745,7 @@ class LoadBalancerImpl
 
     @Override
     public LoadBalancerSkuType sku() {
-        return LoadBalancerSkuType.fromSku(this.inner().sku());
+        return LoadBalancerSkuType.fromSku(this.innerModel().sku());
     }
 
     @Override

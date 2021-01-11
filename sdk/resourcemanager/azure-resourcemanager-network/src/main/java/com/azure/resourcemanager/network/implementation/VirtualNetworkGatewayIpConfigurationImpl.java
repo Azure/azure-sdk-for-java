@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayIpConfiguration;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayIpConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -29,13 +29,13 @@ class VirtualNetworkGatewayIpConfigurationImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String publicIpAddressId() {
-        if (this.inner().publicIpAddress() != null) {
-            return this.inner().publicIpAddress().id();
+        if (this.innerModel().publicIpAddress() != null) {
+            return this.innerModel().publicIpAddress().id();
         } else {
             return null;
         }
@@ -43,7 +43,7 @@ class VirtualNetworkGatewayIpConfigurationImpl
 
     @Override
     public String networkId() {
-        SubResource subnetRef = this.inner().subnet();
+        SubResource subnetRef = this.innerModel().subnet();
         if (subnetRef != null) {
             return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
         } else {
@@ -53,7 +53,7 @@ class VirtualNetworkGatewayIpConfigurationImpl
 
     @Override
     public String subnetName() {
-        SubResource subnetRef = this.inner().subnet();
+        SubResource subnetRef = this.innerModel().subnet();
         if (subnetRef != null) {
             return ResourceUtils.nameFromResourceId(subnetRef.id());
         } else {
@@ -63,18 +63,18 @@ class VirtualNetworkGatewayIpConfigurationImpl
 
     @Override
     public IpAllocationMethod privateIpAllocationMethod() {
-        return inner().privateIpAllocationMethod();
+        return innerModel().privateIpAllocationMethod();
     }
 
     @Override
     public Subnet getSubnet() {
-        return Utils.getAssociatedSubnet(this.parent().manager(), this.inner().subnet());
+        return Utils.getAssociatedSubnet(this.parent().manager(), this.innerModel().subnet());
     }
 
     @Override
     public VirtualNetworkGatewayIpConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
         SubResource subnetRef = new SubResource().withId(networkId + "/subnets/" + subnetName);
-        this.inner().withSubnet(subnetRef);
+        this.innerModel().withSubnet(subnetRef);
         return this;
     }
 
@@ -101,7 +101,7 @@ class VirtualNetworkGatewayIpConfigurationImpl
     @Override
     public VirtualNetworkGatewayIpConfigurationImpl withExistingPublicIpAddress(String resourceId) {
         SubResource pipRef = new SubResource().withId(resourceId);
-        this.inner().withPublicIpAddress(pipRef);
+        this.innerModel().withPublicIpAddress(pipRef);
         return this;
     }
 }

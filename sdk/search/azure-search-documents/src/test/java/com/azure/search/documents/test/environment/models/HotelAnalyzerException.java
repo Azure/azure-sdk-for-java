@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.indexes.SearchableFieldProperty;
+import com.azure.search.documents.indexes.SearchableField;
 
 public class HotelAnalyzerException {
     private String tag;
@@ -13,7 +13,7 @@ public class HotelAnalyzerException {
      *
      * @return The tag of hotel.
      */
-    @SearchableFieldProperty(analyzerName = "en.microsoft", indexAnalyzerName = "whitespce")
+    @SearchableField(analyzerName = "en.microsoft", indexAnalyzerName = "whitespce")
     public String getTag() {
         return tag;
     }

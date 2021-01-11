@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The WinRMConfiguration model. */
+/** Describes Windows Remote Management configuration of the VM. */
 @Fluent
 public final class WinRMConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WinRMConfiguration.class);

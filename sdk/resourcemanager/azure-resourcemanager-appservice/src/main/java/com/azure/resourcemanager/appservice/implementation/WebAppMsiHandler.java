@@ -7,11 +7,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityUserAssignedIdentities;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteInner;
-import com.azure.resourcemanager.appservice.fluent.inner.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
+import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -69,7 +69,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
      * @return WebAppMsiHandler
      */
     WebAppMsiHandler<FluentT, FluentImplT> withoutLocalManagedServiceIdentity() {
-        SiteInner siteInner = this.webAppBase.inner();
+        SiteInner siteInner = this.webAppBase.innerModel();
 
         if (siteInner.identity() == null
             || siteInner.identity().type() == null
@@ -78,7 +78,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
             return this;
         } else if (siteInner.identity().type().equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED)) {
             siteInner.identity().withType(ManagedServiceIdentityType.NONE);
-        } else if (siteInner.identity().type().equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
+        } else if (siteInner.identity().type().equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
             siteInner.identity().withType(ManagedServiceIdentityType.USER_ASSIGNED);
         }
         return this;
@@ -137,7 +137,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     void handleExternalIdentities() {
-        SiteInner siteInner = this.webAppBase.inner();
+        SiteInner siteInner = this.webAppBase.innerModel();
         if (!this.userAssignedIdentities.isEmpty()) {
             siteInner.identity().withUserAssignedIdentities(this.userAssignedIdentities);
         }
@@ -160,7 +160,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
             // 4. User want to add and remove (all or subset) some identities in 'Site.Identity.userAssignedIdentities'
             //      [this.userAssignedIdentities.empty() == false and this.webAppBase.inner().identity() != null]
             //
-            SiteInner siteInner = this.webAppBase.inner();
+            SiteInner siteInner = this.webAppBase.innerModel();
             ManagedServiceIdentity currentIdentity = siteInner.identity();
             siteUpdate.withIdentity(currentIdentity);
             if (!this.userAssignedIdentities.isEmpty()) {
@@ -190,7 +190,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
      * @return true if user indented to remove all the identities.
      */
     private boolean handleRemoveAllExternalIdentitiesCase(SitePatchResourceInner siteUpdate) {
-        SiteInner siteInner = this.webAppBase.inner();
+        SiteInner siteInner = this.webAppBase.innerModel();
         if (!this.userAssignedIdentities.isEmpty()) {
             int rmCount = 0;
             for (ManagedServiceIdentityUserAssignedIdentities v : this.userAssignedIdentities.values()) {
@@ -227,7 +227,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
                         siteUpdate.withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE));
                     } else if (currentIdentity
                         .type()
-                        .equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
+                        .equals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
                         siteUpdate.withIdentity(currentIdentity);
                         siteUpdate.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED);
                     } else if (currentIdentity.type().equals(ManagedServiceIdentityType.USER_ASSIGNED)) {
@@ -263,7 +263,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
 
-        SiteInner siteInner = this.webAppBase.inner();
+        SiteInner siteInner = this.webAppBase.innerModel();
         if (siteInner.identity() == null) {
             siteInner.withIdentity(new ManagedServiceIdentity());
         }
@@ -272,7 +272,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
             || siteInner.identity().type().equals(identityType)) {
             siteInner.identity().withType(identityType);
         } else {
-            siteInner.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
+            siteInner.identity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
         }
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GpuResource model. */
+/** The GPU resource. */
 @Fluent
 public final class GpuResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GpuResource.class);

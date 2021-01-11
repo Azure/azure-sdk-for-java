@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VpnDeviceScriptParameters model. */
+/** Vpn device configuration script generation parameters. */
 @Fluent
 public final class VpnDeviceScriptParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnDeviceScriptParameters.class);

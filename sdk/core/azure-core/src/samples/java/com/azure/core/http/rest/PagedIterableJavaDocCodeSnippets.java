@@ -3,11 +3,18 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
 import reactor.core.publisher.Mono;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Code snippets for {@link PagedIterable}
@@ -91,28 +98,51 @@ public class PagedIterableJavaDocCodeSnippets {
         Function<String, Mono<PagedResponse<Integer>>> nextPageRetriever =
             continuationToken -> getNextPage(continuationToken);
 
-        PagedFlux<Integer> pagedFlux = new PagedFlux<>(firstPageRetriever,
-            nextPageRetriever);
-        return pagedFlux;
+        return new PagedFlux<>(firstPageRetriever, nextPageRetriever);
     }
 
 
     /**
-     * Implementation not provided
+     * Retrieves the next page from a paged API.
      *
      * @param continuationToken Token to fetch the next page
      * @return A {@link Mono} of {@link PagedResponse} containing items of type {@code Integer}
      */
     private Mono<PagedResponse<Integer>> getNextPage(String continuationToken) {
-        return null;
+        return getPage(continuationToken);
     }
 
     /**
-     * Implementation not provided
+     * Retrieves the initial page from a paged API.
      *
      * @return A {@link Mono} of {@link PagedResponse} containing items of type {@code Integer}
      */
     private Mono<PagedResponse<Integer>> getFirstPage() {
-        return null;
+        return getPage(null);
+    }
+
+    /**
+     * Retrieves a page from a paged API.
+     *
+     * @param continuationToken Token to fetch the next page, if {@code null} the first page is retrieved.
+     * @return A {@link Mono} of {@link PagedResponse} containing items of type {@code Integer}
+     */
+    private Mono<PagedResponse<Integer>> getPage(String continuationToken) {
+        // Given this isn't calling an actual API we will arbitrarily generate a continuation token or end paging.
+        boolean lastPage = Math.random() > 0.5;
+
+        // If it is the last page there should be no additional continuation tokens returned.
+        String nextContinuationToken = lastPage ? null : UUID.randomUUID().toString();
+
+        // Arbitrarily begin the next page of integers.
+        int elementCount = (int) Math.ceil(Math.random() * 15);
+        List<Integer> elements = IntStream.range(elementCount, elementCount + elementCount)
+            .map(val -> (int) (Math.random() * val))
+            .boxed()
+            .collect(Collectors.toList());
+
+        // This is a rough approximation of a service response.
+        return Mono.just(new PagedResponseBase<Void, Integer>(new HttpRequest(HttpMethod.GET, "https://requestUrl.com"),
+            200, new HttpHeaders(), elements, nextContinuationToken, null));
     }
 }

@@ -3,17 +3,24 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
+import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
@@ -25,8 +32,10 @@ import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.polling.SyncPoller;
 
 import java.util.Objects;
 
@@ -94,7 +103,7 @@ public final class TextAnalyticsClient {
      *
      * @return The {@link DetectedLanguage detected language} of the document.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectedLanguage detectLanguage(String document) {
@@ -118,7 +127,7 @@ public final class TextAnalyticsClient {
      *
      * @return The {@link DetectedLanguage detected language} of the document.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DetectedLanguage detectLanguage(String document, String countryHint) {
@@ -143,7 +152,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link DetectLanguageResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -170,7 +179,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} that contains a {@link DetectLanguageResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -201,7 +210,7 @@ public final class TextAnalyticsClient {
      * @return A {@link CategorizedEntityCollection} contains a list of
      * {@link CategorizedEntity recognized categorized entities} and warnings.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -227,12 +236,11 @@ public final class TextAnalyticsClient {
      * @return The {@link CategorizedEntityCollection} contains a list of
      * {@link CategorizedEntity recognized categorized entities} and warnings.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CategorizedEntityCollection recognizeEntities(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
         return client.recognizeEntities(document, language).block();
     }
 
@@ -253,7 +261,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link RecognizeEntitiesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -281,7 +289,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} that contains a {@link RecognizeEntitiesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -343,8 +351,38 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
         return client.recognizePiiEntities(document, language).block();
+    }
+
+    /**
+     * Returns a list of Personally Identifiable Information(PII) entities in the provided document
+     * with provided language code.
+     *
+     * For a list of supported entity types, check: <a href="https://aka.ms/tanerpii">this</a>
+     * For a list of enabled languages, check: <a href="https://aka.ms/talangs">this</a>
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Recognizes the PII entities details in a document with a provided language code and
+     * RecognizePiiEntityOptions.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntities#String-String-RecognizePiiEntityOptions}
+     *
+     * @param document The document to recognize PII entities details for.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
+     *
+     * @return The {@link PiiEntityCollection recognized PII entities collection}.
+     *
+     * @throws NullPointerException if {@code document} is null.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PiiEntityCollection recognizePiiEntities(String document, String language,
+        RecognizePiiEntityOptions options) {
+        return client.recognizePiiEntities(document, language, options).block();
     }
 
     /**
@@ -355,14 +393,14 @@ public final class TextAnalyticsClient {
      * <p>Recognizes the PII entities details in a list of documents with a provided language code
      * and request options.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-TextAnalyticsRequestOptions}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-String-RecognizePiiEntityOptions}
      *
      * @param documents A list of documents to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
-     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     * and show statistics.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
      *
      * @return A {@link RecognizePiiEntitiesResultCollection}.
      *
@@ -371,7 +409,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizePiiEntitiesResultCollection recognizePiiEntitiesBatch(
-        Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
+        Iterable<String> documents, String language, RecognizePiiEntityOptions options) {
         return client.recognizePiiEntitiesBatch(documents, language, options).block();
     }
 
@@ -383,13 +421,13 @@ public final class TextAnalyticsClient {
      * <p>Recognizes the PII entities details with http response in a list of {@link TextDocumentInput document}
      * with provided request options.</p>
      *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context}
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.recognizePiiEntitiesBatch#Iterable-RecognizePiiEntityOptions-Context}
      *
      * @param documents A list of {@link TextDocumentInput documents} to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
-     * and show statistics.
+     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * recognizing PII entities.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link Response} that contains a {@link RecognizePiiEntitiesResultCollection}.
@@ -399,7 +437,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatchWithResponse(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options, Context context) {
         return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesBatchWithContext(documents, options,
             context).block();
     }
@@ -423,7 +461,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link LinkedEntityCollection} contains a list of {@link LinkedEntity recognized linked entities}.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -449,7 +487,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link LinkedEntityCollection} contains a list of {@link LinkedEntity recognized linked entities}.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -479,7 +517,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link RecognizeLinkedEntitiesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -509,7 +547,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} that contains a {@link RecognizeLinkedEntitiesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -539,7 +577,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link KeyPhrasesCollection} contains a list of extracted key phrases.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -563,7 +601,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link KeyPhrasesCollection} contains a list of extracted key phrases.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -592,7 +630,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link ExtractKeyPhrasesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -621,7 +659,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} that contains a {@link ExtractKeyPhrasesResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -635,7 +673,7 @@ public final class TextAnalyticsClient {
     // Sentiment
     /**
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label
-     * (Positive, Negative, and Neutral) for the document and each sentence within i
+     * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * This method will use the default language that can be set by using method
      * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
@@ -643,6 +681,7 @@ public final class TextAnalyticsClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments of documents</p>
+     *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String}
      *
      * @param document The document to be analyzed.
@@ -651,7 +690,7 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link DocumentSentiment analyzed document sentiment} of the document.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -661,10 +700,11 @@ public final class TextAnalyticsClient {
 
     /**
      * Returns a sentiment prediction, as well as confidence scores for each sentiment label
-     * (Positive, Negative, and Neutral) for the document and each sentence within i
+     * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Analyze the sentiments in a document with a provided language representation.</p>
+     *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String}
      *
      * @param document The document to be analyzed.
@@ -675,13 +715,43 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link DocumentSentiment analyzed document sentiment} of the document.
      *
-     * @throws NullPointerException if {@code document} is {@code null}.
+     * @throws NullPointerException if {@code document} is null.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DocumentSentiment analyzeSentiment(String document, String language) {
-        Objects.requireNonNull(document, "'document' cannot be null.");
         return client.analyzeSentiment(document, language).block();
+    }
+
+    /**
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
+     * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining results. It mines the
+     * opinions of a sentence and conducts more granular analysis around the aspects in the text
+     * (also known as aspect-based sentiment analysis).
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiment and mine the opinions for each sentence in a document with a provided language
+     * representation and {@link AnalyzeSentimentOptions} options.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentiment#String-String-AnalyzeSentimentOptions}
+     *
+     * @param document The document to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
+     *
+     * @return A {@link DocumentSentiment analyzed document sentiment} of the document.
+     *
+     * @throws NullPointerException if {@code document} is null.
+     * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DocumentSentiment analyzeSentiment(String document, String language, AnalyzeSentimentOptions options) {
+        return client.analyzeSentiment(document, language, options).block();
     }
 
     /**
@@ -702,13 +772,44 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link AnalyzeSentimentResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AnalyzeSentimentResultCollection analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
-        inputDocumentsValidation(documents);
+        return client.analyzeSentimentBatch(documents, language, options).block();
+    }
+
+    /**
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
+     * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining results. It mines the
+     * opinions of a sentence and conducts more granular analysis around the aspects in the text
+     * (also known as aspect-based sentiment analysis).
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze the sentiments and mine the opinions for each sentence in a list of documents with a provided language
+     * representation and {@link AnalyzeSentimentOptions} options.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-String-AnalyzeSentimentOptions}
+     *
+     * @param documents A list of documents to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
+     * English as default.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
+     *
+     * @return A {@link AnalyzeSentimentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AnalyzeSentimentResultCollection analyzeSentimentBatch(Iterable<String> documents,
+        String language, AnalyzeSentimentOptions options) {
         return client.analyzeSentimentBatch(documents, language, options).block();
     }
 
@@ -717,8 +818,8 @@ public final class TextAnalyticsClient {
      * (Positive, Negative, and Neutral) for the document and each sentence within it.
      *
      * <p><strong>Code Sample</strong></p>
-     * <p>Analyze the sentiments with http response in a list of {@link TextDocumentInput documents} with request
-     * options.</p>
+     * <p>Analyze sentiment in a list of {@link TextDocumentInput document} with provided request options.</p>
+     *
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-TextAnalyticsRequestOptions-Context}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
@@ -730,13 +831,138 @@ public final class TextAnalyticsClient {
      *
      * @return A {@link Response} that contains a {@link AnalyzeSentimentResultCollection}.
      *
-     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
-        inputDocumentsValidation(documents);
+        return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents,
+            new AnalyzeSentimentOptions()
+                .setIncludeStatistics(options == null ? false : options.isIncludeStatistics())
+                .setModelVersion(options == null ? null : options.getModelVersion()), context).block();
+    }
+
+    /**
+     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
+     * Neutral) for the document and each sentence within it. If the {@code includeOpinionMining} of
+     * {@link AnalyzeSentimentOptions} set to true, the output will include the opinion mining results. It mines the
+     * opinions of a sentence and conducts more granular analysis around the aspects in the text
+     * (also known as aspect-based sentiment analysis).
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze sentiment and mine the opinions for each sentence in a list of
+     * {@link TextDocumentInput document} with provided {@link AnalyzeSentimentOptions} options.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-AnalyzeSentimentOptions-Context}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * For text length limits, maximum batch size, and supported text encoding, see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param options The additional configurable {@link AnalyzeSentimentOptions options} that may be passed when
+     * analyzing sentiments.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link Response} that contains a {@link AnalyzeSentimentResultCollection}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AnalyzeSentimentResultCollection> analyzeSentimentBatchWithResponse(
+        Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
         return client.analyzeSentimentAsyncClient.analyzeSentimentBatchWithContext(documents, options, context).block();
+    }
+
+    /**
+     * Analyze healthcare entities, entity linking, and entity relations in a list of
+     * {@link TextDocumentInput document} with provided request options.
+     *
+     * Note: In order to use this functionality, request to access public preview is required.
+     * Azure Active Directory (AAD) is not currently supported. For more information see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview">this</a>.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * <p>Analyze healthcare entities, entity linking, and entity relations in a list of
+     * {@link TextDocumentInput document} and provided request options to
+     * show statistics.</p>
+     *
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcare#Iterable-RecognizeHealthcareEntityOptions-Context}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * @param options The additional configurable {@link RecognizeHealthcareEntityOptions options} that may be passed
+     * when analyzing healthcare task.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the analyze healthcare operation until it has completed, has failed,
+     * or has been cancelled. The completed operation returns a {@link PagedIterable} of {@link HealthcareTaskResult}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> beginAnalyzeHealthcare(
+        Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options, Context context) {
+        return client.analyzeHealthcareAsyncClient.beginAnalyzeHealthcarePagedIterable(documents, options, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Cancel a long-running operation healthcare task by given a healthcare task identification number.
+     *
+     * Note: In order to use this functionality, request to access public preview is required.
+     * Azure Active Directory (AAD) is not currently supported. For more information see
+     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview">this</a>.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelHealthcareTask#String-RecognizeHealthcareEntityOptions-Context}
+     *
+     * @param healthcareTaskId The healthcare task identification number.
+     * @param options The additional configurable {@link RecognizeHealthcareEntityOptions options} that may be passed
+     * when cancelling healthcare task.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the analyze healthcare operation until it has completed, has failed,
+     * or has been cancelled.
+     *
+     * @throws NullPointerException If {@code healthcareTaskId} is null.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<TextAnalyticsOperationResult, Void> beginCancelHealthcareTask(String healthcareTaskId,
+        RecognizeHealthcareEntityOptions options, Context context) {
+        return client.analyzeHealthcareAsyncClient.beginCancelAnalyzeHealthcare(healthcareTaskId, options, context)
+                   .getSyncPoller();
+    }
+
+    /**
+     * Analyze tasks, such as, entity recognition, PII entity recognition and key phrases extraction in a list of
+     * {@link TextDocumentInput document} with provided request options.
+     *
+     * See <a href="https://aka.ms/talangs">this</a> supported languages in Text Analytics API.
+     *
+     * <p><strong>Code Sample</strong></p>
+     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeTasks#Iterable-AnalyzeTasksOptions-Context}
+     *
+     * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
+     * @param options The additional configurable {@link AnalyzeTasksOptions options} that may be passed when
+     * analyzing a collection of tasks.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
+     * @return A {@link SyncPoller} that polls the analyze a collection of tasks operation until it has completed,
+     * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
+     * {@link AnalyzeTasksResult}.
+     *
+     * @throws NullPointerException if {@code documents} is null.
+     * @throws IllegalArgumentException if {@code documents} is empty.
+     * @throws TextAnalyticsException If analyze operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyzeTasks(
+        Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
+        return client.analyzeTasksAsyncClient.beginAnalyzeTasksIterable(documents, options, context).getSyncPoller();
     }
 }

@@ -67,4 +67,14 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
             throw new IllegalStateException("Unable to serialize partition query execution info internal.");
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

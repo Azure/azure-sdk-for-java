@@ -8,7 +8,7 @@ import com.azure.resourcemanager.monitor.models.EventLevel;
 import com.azure.resourcemanager.monitor.models.HttpRequestInfo;
 import com.azure.resourcemanager.monitor.models.LocalizableString;
 import com.azure.resourcemanager.monitor.models.SenderAuthorization;
-import com.azure.resourcemanager.monitor.fluent.inner.EventDataInner;
+import com.azure.resourcemanager.monitor.fluent.models.EventDataInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -25,50 +25,53 @@ class EventDataImpl extends WrapperImpl<EventDataInner> implements EventData {
 
     EventDataImpl(EventDataInner innerObject) {
         super(innerObject);
-        this.eventName = (inner().eventName() == null) ? null : new LocalizableStringImpl(inner().eventName());
-        this.category = (inner().category() == null) ? null : new LocalizableStringImpl(inner().category());
-        this.resourceProviderName =
-            (inner().resourceProviderName() == null) ? null : new LocalizableStringImpl(inner().resourceProviderName());
-        this.resourceType = (inner().resourceType() == null) ? null : new LocalizableStringImpl(inner().resourceType());
+        this.eventName =
+            (innerModel().eventName() == null) ? null : new LocalizableStringImpl(innerModel().eventName());
+        this.category = (innerModel().category() == null) ? null : new LocalizableStringImpl(innerModel().category());
+        this.resourceProviderName = (innerModel().resourceProviderName() == null)
+            ? null : new LocalizableStringImpl(innerModel().resourceProviderName());
+        this.resourceType =
+            (innerModel().resourceType() == null) ? null : new LocalizableStringImpl(innerModel().resourceType());
         this.operationName =
-            (inner().operationName() == null) ? null : new LocalizableStringImpl(inner().operationName());
-        this.status = (inner().status() == null) ? null : new LocalizableStringImpl(inner().status());
-        this.subStatus = (inner().subStatus() == null) ? null : new LocalizableStringImpl(inner().subStatus());
+            (innerModel().operationName() == null) ? null : new LocalizableStringImpl(innerModel().operationName());
+        this.status = (innerModel().status() == null) ? null : new LocalizableStringImpl(innerModel().status());
+        this.subStatus =
+            (innerModel().subStatus() == null) ? null : new LocalizableStringImpl(innerModel().subStatus());
     }
 
     @Override
     public SenderAuthorization authorization() {
-        return this.inner().authorization();
+        return this.innerModel().authorization();
     }
 
     @Override
     public Map<String, String> claims() {
-        return this.inner().claims();
+        return this.innerModel().claims();
     }
 
     @Override
     public String caller() {
-        return this.inner().caller();
+        return this.innerModel().caller();
     }
 
     @Override
     public String description() {
-        return this.inner().description();
+        return this.innerModel().description();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public String eventDataId() {
-        return this.inner().eventDataId();
+        return this.innerModel().eventDataId();
     }
 
     @Override
     public String correlationId() {
-        return this.inner().correlationId();
+        return this.innerModel().correlationId();
     }
 
     @Override
@@ -83,17 +86,17 @@ class EventDataImpl extends WrapperImpl<EventDataInner> implements EventData {
 
     @Override
     public HttpRequestInfo httpRequest() {
-        return this.inner().httpRequest();
+        return this.innerModel().httpRequest();
     }
 
     @Override
     public EventLevel level() {
-        return this.inner().level();
+        return this.innerModel().level();
     }
 
     @Override
     public String resourceGroupName() {
-        return this.inner().resourceGroupName();
+        return this.innerModel().resourceGroupName();
     }
 
     @Override
@@ -103,7 +106,7 @@ class EventDataImpl extends WrapperImpl<EventDataInner> implements EventData {
 
     @Override
     public String resourceId() {
-        return this.inner().resourceId();
+        return this.innerModel().resourceId();
     }
 
     @Override
@@ -113,7 +116,7 @@ class EventDataImpl extends WrapperImpl<EventDataInner> implements EventData {
 
     @Override
     public String operationId() {
-        return this.inner().operationId();
+        return this.innerModel().operationId();
     }
 
     @Override
@@ -123,7 +126,7 @@ class EventDataImpl extends WrapperImpl<EventDataInner> implements EventData {
 
     @Override
     public Map<String, String> properties() {
-        return this.inner().properties();
+        return this.innerModel().properties();
     }
 
     @Override
@@ -138,21 +141,21 @@ class EventDataImpl extends WrapperImpl<EventDataInner> implements EventData {
 
     @Override
     public OffsetDateTime eventTimestamp() {
-        return this.inner().eventTimestamp();
+        return this.innerModel().eventTimestamp();
     }
 
     @Override
     public OffsetDateTime submissionTimestamp() {
-        return this.inner().submissionTimestamp();
+        return this.innerModel().submissionTimestamp();
     }
 
     @Override
     public String subscriptionId() {
-        return this.inner().subscriptionId();
+        return this.innerModel().subscriptionId();
     }
 
     @Override
     public String tenantId() {
-        return this.inner().tenantId();
+        return this.innerModel().tenantId();
     }
 }

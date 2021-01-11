@@ -1,0 +1,54 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/fileapitestscreatefile4tbfileapitestscreatefile4tb8ef880214?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "45af89da-d55a-4ee7-8ffb-60b273275b92"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D858DC918ECF1E",
+      "Last-Modified" : "Mon, 14 Sep 2020 18:32:43 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "1f6c0e57-601a-0017-1bc5-8a212a000000",
+      "Date" : "Mon, 14 Sep 2020 18:32:42 GMT",
+      "x-ms-client-request-id" : "45af89da-d55a-4ee7-8ffb-60b273275b92"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/fileapitestscreatefile4tbfileapitestscreatefile4tb8ef880214/fileapitestscreatefile4tbfileapitestscreatefile4tb8ef93470e",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "73fb118e-6e43-4a3e-930f-bdbfff311c3b"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-02-10",
+      "x-ms-file-permission-key" : "990002565778260641*11897905858180131375",
+      "x-ms-file-id" : "13835128424026341376",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-file-creation-time" : "2020-09-14T18:32:43.5174284Z",
+      "Last-Modified" : "Mon, 14 Sep 2020 18:32:43 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Mon, 14 Sep 2020 18:32:43 GMT",
+      "ETag" : "0x8D858DC91CE0B8C",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-change-time" : "2020-09-14T18:32:43.5174284Z",
+      "x-ms-file-parent-id" : "0",
+      "x-ms-request-id" : "1f6c0e5a-601a-0017-1cc5-8a212a000000",
+      "x-ms-client-request-id" : "73fb118e-6e43-4a3e-930f-bdbfff311c3b",
+      "x-ms-file-last-write-time" : "2020-09-14T18:32:43.5174284Z"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileapitestscreatefile4tbfileapitestscreatefile4tb8ef880214", "fileapitestscreatefile4tbfileapitestscreatefile4tb8ef93470e" ]
+}

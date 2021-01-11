@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EndpointDetail model. */
+/** Current TCP connectivity information from the App Service Environment to a single endpoint. */
 @Fluent
 public final class EndpointDetail {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointDetail.class);

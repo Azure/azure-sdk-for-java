@@ -4,8 +4,8 @@
 package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.implementation.RoleAssignmentHelper;
-import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerGroupInner;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerGroupInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.containerinstance.models.ResourceIdentityType;
@@ -43,7 +43,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
 
     void handleExternalIdentities() {
         if (!this.userAssignedIdentities.isEmpty()) {
-            this.containerGroup.inner().identity().withUserAssignedIdentities(this.userAssignedIdentities);
+            this.containerGroup.innerModel().identity().withUserAssignedIdentities(this.userAssignedIdentities);
         }
     }
 
@@ -101,7 +101,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
             throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
 
-        ContainerGroupInner containerGroupInner = this.containerGroup.inner();
+        ContainerGroupInner containerGroupInner = this.containerGroup.innerModel();
         if (containerGroupInner.identity() == null) {
             containerGroupInner.withIdentity(new ContainerGroupIdentity());
         }
@@ -110,7 +110,7 @@ class ContainerGroupMsiHandler extends RoleAssignmentHelper {
             || containerGroupInner.identity().type().equals(identityType)) {
             containerGroupInner.identity().withType(identityType);
         } else {
-            containerGroupInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
+            containerGroupInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
         }
     }
 }

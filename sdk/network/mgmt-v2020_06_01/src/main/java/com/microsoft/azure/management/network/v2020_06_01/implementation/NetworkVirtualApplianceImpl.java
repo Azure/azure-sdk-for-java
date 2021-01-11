@@ -80,6 +80,11 @@ class NetworkVirtualApplianceImpl extends GroupableResourceCoreImpl<NetworkVirtu
     }
 
     @Override
+    public List<SubResource> inboundSecurityRules() {
+        return this.inner().inboundSecurityRules();
+    }
+
+    @Override
     public VirtualApplianceSkuProperties nvaSku() {
         return this.inner().nvaSku();
     }

@@ -41,11 +41,9 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import io.opentelemetry.context.Scope;
-io.opentelemetry.exporters.logging.LoggingSpanExporter;
+import io.opentelemetry.exporters.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.trace.TracerSdkProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import io.opentelemetry.trace.Span;
@@ -72,7 +70,7 @@ public class Sample {
 
     private static Tracer configureOpenTelemetryAndLoggingExporter() {
         LoggingSpanExporter exporter = new LoggingSpanExporter();
-        TracerSdkProvider tracerSdkProvider = OpenTelemetry.getTracerProvider();
+        TracerSdkProvider tracerSdkProvider = OpenTelemetrySdk.getTracerProvider();
         tracerSdkProvider.addSpanProcessor(SimpleSpanProcessor.newBuilder(exporter).build());
         return tracerSdkProvider.get("Sample");
     }

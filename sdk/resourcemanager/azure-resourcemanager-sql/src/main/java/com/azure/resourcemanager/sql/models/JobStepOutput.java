@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The JobStepOutput model. */
+/** The output configuration of a job step. */
 @Fluent
 public final class JobStepOutput {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStepOutput.class);

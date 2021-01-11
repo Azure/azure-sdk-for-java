@@ -5,10 +5,13 @@ package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.RequestConditions;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.ProgressReceiver;
 import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobItemInternal;
 import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.azure.storage.blob.implementation.models.BlobTag;
+import com.azure.storage.blob.implementation.models.BlobTags;
+import com.azure.storage.blob.implementation.models.FilterBlobItem;
 import com.azure.storage.blob.models.PageBlobCopyIncrementalRequestConditions;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobItemProperties;
@@ -18,11 +21,13 @@ import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationRule;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.common.implementation.Constants;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,6 +88,39 @@ public class ModelHelper {
     }
 
     /**
+     * Fills in default values for a ParallelTransferOptions where no value has been set. This will construct a new
+     * object for safety.
+     *
+     * @param other The options to fill in defaults.
+     * @return An object with defaults filled in for null values in the original.
+     */
+    public static com.azure.storage.common.ParallelTransferOptions populateAndApplyDefaults(
+        com.azure.storage.common.ParallelTransferOptions other) {
+        other = other == null ? new com.azure.storage.common.ParallelTransferOptions() : other;
+
+        Long blockSize = other.getBlockSizeLong();
+        if (blockSize == null) {
+            blockSize = (long) BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
+        }
+
+        Integer maxConcurrency = other.getMaxConcurrency();
+        if (maxConcurrency == null) {
+            maxConcurrency = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
+        }
+
+        Long maxSingleUploadSize = other.getMaxSingleUploadSizeLong();
+        if (maxSingleUploadSize == null) {
+            maxSingleUploadSize = BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE;
+        }
+
+        return new com.azure.storage.common.ParallelTransferOptions()
+            .setBlockSizeLong(blockSize)
+            .setMaxConcurrency(maxConcurrency)
+            .setProgressReceiver(other.getProgressReceiver())
+            .setMaxSingleUploadSizeLong(maxSingleUploadSize);
+    }
+
+    /**
      * Transforms a blob type into a common type.
      * @param blobOptions {@link ParallelTransferOptions}
      * @return {@link com.azure.storage.common.ParallelTransferOptions}
@@ -101,6 +139,17 @@ public class ModelHelper {
             .setMaxConcurrency(maxConcurrency)
             .setProgressReceiver(wrappedReceiver)
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
+    }
+
+
+    /**
+     * Transforms a common type into a blob type.
+     * @param commonProgressReceiver {@link com.azure.storage.common.ProgressReceiver}
+     * @return {@link ProgressReceiver}
+     */
+    public static ProgressReceiver wrapCommonReceiver(
+        com.azure.storage.common.ProgressReceiver commonProgressReceiver) {
+        return commonProgressReceiver == null ? null : commonProgressReceiver::reportProgress;
     }
 
     /**
@@ -178,6 +227,7 @@ public class ModelHelper {
         }
         headers.setObjectReplicationSourcePolicies(objectReplicationSourcePolicies);
         headers.setSealed(internalHeaders.isSealed());
+        headers.setLastAccessedTime(internalHeaders.getLastAccessed());
 
         return headers;
     }
@@ -199,18 +249,29 @@ public class ModelHelper {
         blobItem.setCurrentVersion(blobItemInternal.isCurrentVersion());
         blobItem.setIsPrefix(blobItemInternal.isPrefix());
 
-        Map<String, String> tags = new HashMap<>();
-        if (blobItemInternal.getBlobTags() != null && blobItemInternal.getBlobTags().getBlobTagSet() != null) {
-            for (BlobTag tag : blobItemInternal.getBlobTags().getBlobTagSet()) {
-                tags.put(tag.getKey(), tag.getValue());
-            }
-        }
-        blobItem.setTags(tags);
+        blobItem.setTags(tagMapFromBlobTags(blobItemInternal.getBlobTags()));
 
         blobItem.setObjectReplicationSourcePolicies(
             transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata()));
 
         return blobItem;
+    }
+
+    public static TaggedBlobItem populateTaggedBlobItem(FilterBlobItem filterBlobItem) {
+        return new TaggedBlobItem(filterBlobItem.getContainerName(), filterBlobItem.getName(),
+            tagMapFromBlobTags(filterBlobItem.getTags()));
+    }
+
+    private static Map<String, String> tagMapFromBlobTags(BlobTags blobTags) {
+        if (blobTags == null || blobTags.getBlobTagSet() == null || blobTags.getBlobTagSet().isEmpty()) {
+            return Collections.emptyMap();
+        } else {
+            Map<String, String> tags = new HashMap<>();
+            for (BlobTag tag : blobTags.getBlobTagSet()) {
+                tags.put(tag.getKey(), tag.getValue());
+            }
+            return tags;
+        }
     }
 
     /**
@@ -256,6 +317,7 @@ public class ModelHelper {
         blobItemProperties.setTagCount(blobItemPropertiesInternal.getTagCount());
         blobItemProperties.setRehydratePriority(blobItemPropertiesInternal.getRehydratePriority());
         blobItemProperties.setSealed(blobItemPropertiesInternal.isSealed());
+        blobItemProperties.setLastAccessedTime(blobItemPropertiesInternal.getLastAccessedOn());
 
         return blobItemProperties;
     }
@@ -345,5 +407,34 @@ public class ModelHelper {
             .setIfModifiedSince(requestConditions.getIfModifiedSince())
             .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince())
             .setTagsConditions(null);
+    }
+
+    public static String getObjectReplicationDestinationPolicyId(Map<String, String> objectReplicationStatus) {
+        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
+        return objectReplicationStatus.getOrDefault("policy-id", null);
+    }
+
+    public static List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies(
+        Map<String, String> objectReplicationStatus) {
+        Map<String, List<ObjectReplicationRule>> internalSourcePolicies = new HashMap<>();
+        objectReplicationStatus = objectReplicationStatus == null ? new HashMap<>() : objectReplicationStatus;
+        if (getObjectReplicationDestinationPolicyId(objectReplicationStatus) == null) {
+            for (Map.Entry<String, String> entry : objectReplicationStatus.entrySet()) {
+                String[] split = entry.getKey().split("_");
+                String policyId = split[0];
+                String ruleId = split[1];
+                ObjectReplicationRule rule = new ObjectReplicationRule(ruleId,
+                    ObjectReplicationStatus.fromString(entry.getValue()));
+                if (!internalSourcePolicies.containsKey(policyId)) {
+                    internalSourcePolicies.put(policyId, new ArrayList<>());
+                }
+                internalSourcePolicies.get(policyId).add(rule);
+            }
+        }
+        List<ObjectReplicationPolicy> objectReplicationSourcePolicies = new ArrayList<>();
+        for (Map.Entry<String, List<ObjectReplicationRule>> entry : internalSourcePolicies.entrySet()) {
+            objectReplicationSourcePolicies.add(new ObjectReplicationPolicy(entry.getKey(), entry.getValue()));
+        }
+        return objectReplicationSourcePolicies;
     }
 }

@@ -24,9 +24,8 @@ public class MetricDefinitionsImpl implements MetricDefinitions {
         return this.myManager;
     }
 
-    @Override
     public MetricDefinitionsClient inner() {
-        return this.myManager.inner().getMetricDefinitions();
+        return this.myManager.serviceClient().getMetricDefinitions();
     }
 
     @Override

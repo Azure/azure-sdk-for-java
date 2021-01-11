@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FlowLogFormatParameters model. */
+/** Parameters that define the flow log format. */
 @Fluent
 public final class FlowLogFormatParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowLogFormatParameters.class);

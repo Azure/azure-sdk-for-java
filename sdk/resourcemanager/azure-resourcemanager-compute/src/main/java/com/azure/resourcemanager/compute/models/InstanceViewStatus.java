@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The InstanceViewStatus model. */
+/** Instance view status. */
 @Fluent
 public final class InstanceViewStatus {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(InstanceViewStatus.class);

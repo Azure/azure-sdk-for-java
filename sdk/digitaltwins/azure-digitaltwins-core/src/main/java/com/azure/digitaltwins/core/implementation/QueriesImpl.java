@@ -6,6 +6,7 @@ package com.azure.digitaltwins.core.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Post;
@@ -16,10 +17,10 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
 import com.azure.digitaltwins.core.implementation.models.QueriesQueryTwinsResponse;
 import com.azure.digitaltwins.core.implementation.models.QuerySpecification;
+import com.azure.digitaltwins.core.implementation.models.QueryTwinsOptions;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Queries. */
@@ -52,27 +53,66 @@ public final class QueriesImpl {
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<QueriesQueryTwinsResponse> queryTwins(
                 @HostParam("$host") String host,
+                @HeaderParam("traceparent") String traceparent,
+                @HeaderParam("tracestate") String tracestate,
+                @HeaderParam("max-items-per-page") Integer maxItemsPerPage,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") QuerySpecification querySpecification,
                 Context context);
     }
 
     /**
-     * Executes a query that allows traversing relationships and filtering by property values. Status codes: 200 (OK):
-     * Success. 400 (Bad Request): The request is invalid.
+     * Executes a query that allows traversing relationships and filtering by property values. Status codes: * 200 OK *
+     * 400 Bad Request * BadRequest - The continuation token is invalid. * SqlQueryError - The query contains some
+     * errors. * 429 Too Many Requests * QuotaReachedError - The maximum query rate limit has been reached.
      *
      * @param querySpecification A query specification containing either a query statement or a continuation token from
      *     a previous query result.
+     * @param queryTwinsOptions Parameter group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the results of a query operation and an optional continuation token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<QueriesQueryTwinsResponse> queryTwinsWithResponseAsync(QuerySpecification querySpecification) {
-        return FluxUtil.withContext(
-                context ->
-                        service.queryTwins(
-                                this.client.getHost(), this.client.getApiVersion(), querySpecification, context));
+    public Mono<QueriesQueryTwinsResponse> queryTwinsWithResponseAsync(
+            QuerySpecification querySpecification, QueryTwinsOptions queryTwinsOptions, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (querySpecification == null) {
+            return Mono.error(
+                    new IllegalArgumentException("Parameter querySpecification is required and cannot be null."));
+        } else {
+            querySpecification.validate();
+        }
+        if (queryTwinsOptions != null) {
+            queryTwinsOptions.validate();
+        }
+        String traceparentInternal = null;
+        if (queryTwinsOptions != null) {
+            traceparentInternal = queryTwinsOptions.getTraceparent();
+        }
+        String traceparent = traceparentInternal;
+        String tracestateInternal = null;
+        if (queryTwinsOptions != null) {
+            tracestateInternal = queryTwinsOptions.getTracestate();
+        }
+        String tracestate = tracestateInternal;
+        Integer maxItemsPerPageInternal = null;
+        if (queryTwinsOptions != null) {
+            maxItemsPerPageInternal = queryTwinsOptions.getMaxItemsPerPage();
+        }
+        Integer maxItemsPerPage = maxItemsPerPageInternal;
+        return service.queryTwins(
+                this.client.getHost(),
+                traceparent,
+                tracestate,
+                maxItemsPerPage,
+                this.client.getApiVersion(),
+                querySpecification,
+                context);
     }
 }

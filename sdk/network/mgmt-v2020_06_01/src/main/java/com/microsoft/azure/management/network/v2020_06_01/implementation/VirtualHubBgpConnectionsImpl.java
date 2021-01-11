@@ -15,6 +15,7 @@ import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.network.v2020_06_01.PeerRouteList;
 import com.microsoft.azure.management.network.v2020_06_01.BgpConnection;
 
 class VirtualHubBgpConnectionsImpl extends WrapperImpl<VirtualHubBgpConnectionsInner> implements VirtualHubBgpConnections {
@@ -40,6 +41,30 @@ class VirtualHubBgpConnectionsImpl extends WrapperImpl<VirtualHubBgpConnectionsI
 
     private BgpConnectionImpl wrapModel(String name) {
         return new BgpConnectionImpl(name, this.manager());
+    }
+
+    @Override
+    public Observable<PeerRouteList> listLearnedRoutesAsync(String resourceGroupName, String hubName, String connectionName) {
+        VirtualHubBgpConnectionsInner client = this.inner();
+        return client.listLearnedRoutesAsync(resourceGroupName, hubName, connectionName)
+        .map(new Func1<PeerRouteListInner, PeerRouteList>() {
+            @Override
+            public PeerRouteList call(PeerRouteListInner inner) {
+                return new PeerRouteListImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<PeerRouteList> listAdvertisedRoutesAsync(String resourceGroupName, String hubName, String connectionName) {
+        VirtualHubBgpConnectionsInner client = this.inner();
+        return client.listAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName)
+        .map(new Func1<PeerRouteListInner, PeerRouteList>() {
+            @Override
+            public PeerRouteList call(PeerRouteListInner inner) {
+                return new PeerRouteListImpl(inner, manager());
+            }
+        });
     }
 
     @Override

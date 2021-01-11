@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ResourceGroupPatchable model. */
+/** Resource group information. */
 @Fluent
 public final class ResourceGroupPatchable {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGroupPatchable.class);

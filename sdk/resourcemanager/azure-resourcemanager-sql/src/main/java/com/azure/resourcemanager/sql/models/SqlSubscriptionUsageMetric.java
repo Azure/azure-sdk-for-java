@@ -5,14 +5,14 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.sql.fluent.inner.SubscriptionUsageInner;
+import com.azure.resourcemanager.sql.fluent.models.SubscriptionUsageInner;
 
 /** The result of SQL server usages per current subscription. */
 @Fluent
 public interface SqlSubscriptionUsageMetric
-    extends Refreshable<SqlSubscriptionUsageMetric>, HasId, HasName, HasInner<SubscriptionUsageInner> {
+    extends Refreshable<SqlSubscriptionUsageMetric>, HasId, HasName, HasInnerModel<SubscriptionUsageInner> {
 
     /** @return a user-readable name of the metric */
     String displayName();

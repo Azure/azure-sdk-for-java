@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DeploymentWhatIfSettings model. */
+/** Deployment What-If operation settings. */
 @Fluent
 public final class DeploymentWhatIfSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentWhatIfSettings.class);

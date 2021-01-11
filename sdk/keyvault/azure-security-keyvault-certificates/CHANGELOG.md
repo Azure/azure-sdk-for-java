@@ -1,7 +1,55 @@
 # Release History
 
-## 4.2.0-beta.1 (Unreleased)
+## 4.2.0-beta.3 (Unreleased)
 
+
+## 4.1.3 (2020-11-12)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.10.0`
+- Upgraded `azure-core-http-netty` dependency to `1.6.3`
+- Upgraded `azure-core-http-okhttp` dependency to `1.3.3`
+- Upgraded `azure-core-test` dependency to `1.5.1`
+- Upgraded `azure-identity` dependency to `1.2.0`
+
+## 4.2.0-beta.2 (2020-10-09)
+
+### New Features
+- Added `KeyVaultCertificateIdentifier`. Use its [`parse`](https://github.com/Azure/azure-sdk-for-java/blob/ff52067a3772a430e5913b898f2806078aec8ef2/sdk/keyvault/azure-security-keyvault-certificates/src/main/java/com/azure/security/keyvault/certificates/models/KeyVaultCertificateIdentifier.java#L79) method to parse the different elements of a given certificate identifier.
+- Added API overloads that allow for passing specific polling intervals for long-running operations:
+    - `CertificateAsyncClient`
+        - `beginCreateCertificate(String, CertificatePolicy, Boolean, Map<String, String>, Duration)`
+        - `getCertificateOperation(String, Duration)`
+        - `beginDeleteCertificate(String, Duration)`
+        - `beginRecoverDeletedCertificate(String, Duration)`
+    - `CertificateClient`
+        - `beginCreateCertificate(String, CertificatePolicy, Boolean, Map<String, String>, Duration)`
+        - `getCertificateOperation(String, Duration)`
+        - `beginDeleteCertificate(String, Duration)`
+        - `beginRecoverDeletedCertificate(String, Duration)`
+- Added support for `com.azure.core.util.ClientOptions` in client builders.
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.9.0`
+- Upgraded `azure-core-http-netty` dependency to `1.6.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.3.2`
+- Upgraded `azure-core-test` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.1.3`
+
+## 4.1.2 (2020-10-08)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to `1.9.0`
+- Upgraded `azure-core-http-netty` dependency to `1.6.2`
+- Upgraded `azure-core-http-okhttp` dependency to `1.3.2`
+- Upgraded `azure-core-test` dependency to `1.5.0`
+- Upgraded `azure-identity` dependency to `1.1.3`
+
+## 4.2.0-beta.1 (2020-09-11)
+- Updated versions for azure-core and azure-identity.
+
+## 4.1.1 (2020-09-10)
+- Updated versions for azure-core and azure-identity.
 
 ## 4.1.0 (2020-08-12)
 - Added support for service version `7.1`.
@@ -11,12 +59,27 @@
 ## 4.1.0-beta.4 (2020-07-08)
 - Updated versions for azure-core, azure-identity.
 
+## 4.0.5 (2020-07-08)
+- Updated versions for azure-core and azure-identity.
+
 ## 4.1.0-beta.3 (2020-06-10)
 - Updated version for azure-core, azure-identity and external dependencies.
+
+## 4.0.4 (2020-06-10)
+- Updated version for azure-core, azure-identity and external dependencies.
+
+## 4.0.3 (2020-05-06)
+- Update azure-core dependency to version 1.5.0.
+
+## 4.0.2 (2020-04-07)
+- Update azure-core dependency to version 1.4.0.
 
 ## 4.1.0-beta.2 (2020-04-09)
 - Added `retryPolicy` setter in `CertificateClientBuilder`
 - Update azure-core dependency to version 1.4.0.
+
+## 4.0.1 (2020-03-25)
+- Update azure-core dependency to version 1.3.0.
 
 ## 4.1.0-beta.1 (2020-03-10)
 - Added `recoverableDays` property to `CertificateProperties`.

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VaultSecretGroup model. */
+/** Describes a set of certificates which are all in the same Key Vault. */
 @Fluent
 public final class VaultSecretGroup {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultSecretGroup.class);

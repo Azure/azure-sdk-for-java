@@ -7,7 +7,7 @@ package com.azure.digitaltwins.core.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The QuerySpecification model. */
+/** A query specification containing either a query statement or a continuation token from a previous query result. */
 @Fluent
 public final class QuerySpecification {
     /*
@@ -65,4 +65,11 @@ public final class QuerySpecification {
         this.continuationToken = continuationToken;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

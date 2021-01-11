@@ -169,6 +169,7 @@ public final class Constants {
       //Authorization
         public static final String MASTER_TOKEN = "master";
         public static final String RESOURCE_TOKEN = "resource";
+        public static final String AAD_TOKEN = "aad";
         public static final String TOKEN_VERSION = "1.0";
         public static final String AUTH_SCHEMA_TYPE = "type";
         public static final String AUTH_VERSION = "ver";
@@ -199,6 +200,11 @@ public final class Constants {
         public static final String  KeyWrapMetadataType = "type";
         public static final String  KeyWrapMetadataValue = "value";
         public static final String  EncryptedInfo = "_ei";
+
+        // Feed Ranges
+        public static final String RANGE = "Range";
+        public static final String FEED_RANGE_PARTITION_KEY = "PartitionKey";
+        public static final String FEED_RANGE_PARTITION_KEY_RANGE_ID = "PKRangeId";
 
     }
 

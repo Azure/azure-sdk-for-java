@@ -5,9 +5,11 @@ package com.azure.cosmos.encryption;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.implementation.encryption.AzureKeyVaultKeyWrapProvider;
 import com.azure.cosmos.implementation.encryption.CosmosDataEncryptionKeyProvider;
 import com.azure.cosmos.implementation.encryption.CosmosEncryptor;
 import com.azure.cosmos.implementation.encryption.DataEncryptionKeyContainer;
+import com.azure.cosmos.implementation.encryption.UserProvidedTokenCredentialFactory;
 import reactor.core.publisher.Mono;
 
 /**
@@ -69,22 +71,22 @@ public class AzureKeyVaultCosmosEncryptor implements Encryptor {
     }
 
     @Override
-    public Mono<byte[]> encryptAsync(
+    public Mono<byte[]> encrypt(
         byte[] plainText,
         String dataEncryptionKeyId,
         String encryptionAlgorithm) {
-        return this.cosmosEncryptor.encryptAsync(
+        return this.cosmosEncryptor.encrypt(
             plainText,
             dataEncryptionKeyId,
             encryptionAlgorithm);
     }
 
     @Override
-    public Mono<byte[]> decryptAsync(
+    public Mono<byte[]> decrypt(
         byte[] cipherText,
         String dataEncryptionKeyId,
         String encryptionAlgorithm) {
-        return this.cosmosEncryptor.decryptAsync(
+        return this.cosmosEncryptor.decrypt(
             cipherText,
             dataEncryptionKeyId,
             encryptionAlgorithm);

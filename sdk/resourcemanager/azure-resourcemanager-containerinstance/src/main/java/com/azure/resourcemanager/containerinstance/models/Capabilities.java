@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Capabilities model. */
+/** The regional capabilities. */
 @Immutable
 public final class Capabilities {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Capabilities.class);

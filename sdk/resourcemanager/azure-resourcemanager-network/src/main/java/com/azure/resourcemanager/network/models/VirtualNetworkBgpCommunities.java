@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualNetworkBgpCommunities model. */
+/** Bgp Communities sent over ExpressRoute with each route corresponding to a prefix in this VNET. */
 @Fluent
 public final class VirtualNetworkBgpCommunities {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkBgpCommunities.class);

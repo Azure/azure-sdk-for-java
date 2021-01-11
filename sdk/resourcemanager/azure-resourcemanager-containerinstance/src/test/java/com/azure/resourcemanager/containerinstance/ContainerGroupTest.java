@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.containerinstance;
 
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

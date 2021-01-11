@@ -18,6 +18,10 @@ public class TransformUtils {
             return BlobServiceVersion.V2019_07_07;
         } else if (DataLakeServiceVersion.V2019_02_02.ordinal() == version.ordinal()) {
             return BlobServiceVersion.V2019_02_02;
+        } else if (DataLakeServiceVersion.V2020_02_10.ordinal() == version.ordinal()) {
+            return BlobServiceVersion.V2020_02_10;
+        } else if (DataLakeServiceVersion.V2020_04_08.ordinal() == version.ordinal()) {
+            return BlobServiceVersion.V2020_04_08;
         }
         return null;
     }

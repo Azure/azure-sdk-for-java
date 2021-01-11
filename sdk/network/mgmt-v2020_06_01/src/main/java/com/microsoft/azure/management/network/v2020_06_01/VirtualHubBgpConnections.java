@@ -19,6 +19,28 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface VirtualHubBgpConnections extends SupportsCreating<BgpConnection.DefinitionStages.Blank>, HasInner<VirtualHubBgpConnectionsInner> {
     /**
+     * Retrieves a list of routes the virtual hub bgp connection has learned.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<PeerRouteList> listLearnedRoutesAsync(String resourceGroupName, String hubName, String connectionName);
+
+    /**
+     * Retrieves a list of routes the virtual hub bgp connection is advertising to the specified peer.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the virtual hub.
+     * @param connectionName The name of the virtual hub bgp connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<PeerRouteList> listAdvertisedRoutesAsync(String resourceGroupName, String hubName, String connectionName);
+
+    /**
      * Retrieves the details of a Virtual Hub Bgp Connection.
      *
      * @param resourceGroupName The resource group name of the VirtualHub.

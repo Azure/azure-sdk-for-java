@@ -1,7 +1,46 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.7.1 (2021-01-11)
 
+### Bug Fixes
+
+- Fixed a bug where environment proxy configurations were not sanitizing the non-proxy host string into a valid `Pattern` format. [#18156](https://github.com/Azure/azure-sdk-for-java/issues/18156)
+
+### Dependency Updates
+
+- Upgraded Netty from `4.1.53.Final` to `4.1.54.Final`.
+- Upgraded `reactor-netty` from `0.9.13.RELEASE` to `0.9.15.RELEASE`.
+
+## 1.7.0 (2020-11-24)
+
+### New Features
+
+- Added functionality to eagerly read HTTP response bodies into memory when they will be deserialized into a POJO.
+
+### Bug Fixes
+
+- Fixed a bug where a connection would remain active when timed out instead of being closed.
+
+## 1.6.3 (2020-10-29)
+
+### Dependency Updates
+
+- Updated `azure-core` to `1.10.0`.
+
+## 1.6.2 (2020-10-01)
+
+- Updated `azure-core` version.
+
+## 1.6.1 (2020-09-08)
+
+- Updated `azure-core` version to pickup bug fix.
+
+## 1.6.0 (2020-09-03)
+
+- Added new APIs to configure request write timeout, response timeout, and response body read timeout.
+- Changed default timeouts from infinite to 60 seconds.
+- Updated `reactor-core` version to `3.3.9.RELEASE`.
+- Updated `reactor-netty` version to `0.9.11.RELEASE`.
 
 ## 1.5.4 (2020-08-07)
 

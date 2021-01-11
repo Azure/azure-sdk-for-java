@@ -3,13 +3,29 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
+import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
+import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
+import com.azure.ai.textanalytics.models.EntitiesTask;
+import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityLink;
+import com.azure.ai.textanalytics.models.HealthcareTaskResult;
+import com.azure.ai.textanalytics.models.KeyPhrasesTask;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.MinedOpinion;
+import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
+import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.PiiEntityDomainType;
+import com.azure.ai.textanalytics.models.PiiTask;
+import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -21,6 +37,7 @@ import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
@@ -32,9 +49,10 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
@@ -47,6 +65,7 @@ import java.util.stream.Collectors;
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
+import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
@@ -54,18 +73,33 @@ import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.TOO_LONG_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.getDuplicateTextDocumentInputs;
 import static com.azure.ai.textanalytics.TestUtils.getWarningsTextDocumentInputs;
+import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
+import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class TextAnalyticsClientTestBase extends TestBase {
-    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when %s returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
-    static final String INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE = "Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code. ErrorCodeValue: {invalidCountryHint}";
+    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when %s returned with an error: Document text is empty. ErrorCodeValue: {InvalidDocument}";
     static final String INVALID_DOCUMENT_BATCH_NPE_MESSAGE = "'documents' cannot be null.";
     static final String INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE = "'documents' cannot be empty.";
-    static final String INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE = "Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
     static final String WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE = "The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.";
+
+    Duration durationTestMode;
+
+    /**
+     * Use duration of nearly zero value for PLAYBACK test mode, otherwise, use default duration value for LIVE mode.
+     */
+    @Override
+    protected void beforeTest() {
+        if (interceptorManager.isPlaybackMode()) {
+            durationTestMode = Duration.ofNanos(1);
+        } else {
+            durationTestMode = DEFAULT_POLL_INTERVAL;
+        }
+    }
 
     // Detect Language
     @Test
@@ -154,6 +188,15 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void recognizePiiEntitiesBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
+    @Test
+    abstract void recognizePiiEntitiesForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizePiiEntitiesForBatchInputStringForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizePiiEntitiesForBatchInputForDomainFilter(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
     // Linked Entities
     @Test
     abstract void recognizeLinkedEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
@@ -221,6 +264,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeSentimentForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
+    abstract void analyzeSentimentForTextInputWithDefaultLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentForTextInputWithOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
     abstract void analyzeSentimentForEmptyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -233,19 +282,70 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeSentimentEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentForListStringWithLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentForListStringShowStatisticsExcludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentForListStringNotShowStatisticsButIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentForListStringShowStatisticsAndIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentForBatchInputWithNullRequestOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeSentimentForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForBatchInputWithNullAnalyzeSentimentOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void analyzeSentimentForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+    abstract void analyzeSentimentForBatchInputShowStatisticsExcludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentForBatchInputNotShowStatisticsButIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeSentimentForBatchInputShowStatisticsAndIncludeOpinionMining(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzeSentimentBatchTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    // Healthcare LRO
+    @Test
+    abstract void healthcareLroWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void healthcareLroPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void healthcareLroPaginationWithTopAndSkip(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void healthcareLroEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    // Healthcare LRO - Cancellation
+    @Test
+    abstract void cancelHealthcareLro(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    // Analyze LRO
+    @Test
+    abstract void analyzeTasksWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeTasksPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeTasksPaginationWithTopAndSkip(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeTasksEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
@@ -339,6 +439,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(PII_ENTITY_INPUTS.get(0));
     }
 
+    void recognizePiiDomainFilterRunner(BiConsumer<String, RecognizePiiEntityOptions> testRunner) {
+        testRunner.accept(PII_ENTITY_INPUTS.get(0),
+            new RecognizePiiEntityOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION));
+    }
+
     void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS, "en");
     }
@@ -361,16 +466,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     void recognizeBatchPiiEntitiesShowStatsRunner(
-        BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
+        BiConsumer<List<TextDocumentInput>, RecognizePiiEntityOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(PII_ENTITY_INPUTS);
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
+        RecognizePiiEntityOptions options = new RecognizePiiEntityOptions().setIncludeStatistics(true);
 
         testRunner.accept(textDocumentInputs, options);
     }
 
     void recognizeStringBatchPiiEntitiesShowStatsRunner(
-        BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(PII_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
+        BiConsumer<List<String>, RecognizePiiEntityOptions> testRunner) {
+        testRunner.accept(PII_ENTITY_INPUTS, new RecognizePiiEntityOptions().setIncludeStatistics(true));
     }
 
     // Linked Entity runner
@@ -409,7 +514,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     // Key Phrases runner
     void extractKeyPhrasesForSingleTextInputRunner(Consumer<String> testRunner) {
         testRunner.accept(KEY_PHRASE_INPUTS.get(1));
-    };
+    }
 
     void extractBatchStringKeyPhrasesShowStatsRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(KEY_PHRASE_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
@@ -447,6 +552,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Sentiment Runner
+    void analyzeSentimentForSingleTextInputRunner(Consumer<String> testRunner) {
+        testRunner.accept(SENTIMENT_INPUTS.get(0));
+    }
+
+    void analyzeSentimentForTextInputWithOpinionMiningRunner(BiConsumer<String, AnalyzeSentimentOptions> testRunner) {
+        testRunner.accept(SENTIMENT_INPUTS.get(0), new AnalyzeSentimentOptions().setIncludeOpinionMining(true));
+    }
+
     void analyzeSentimentLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
         testRunner.accept(SENTIMENT_INPUTS, "en");
     }
@@ -463,16 +576,20 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(getDuplicateTextDocumentInputs());
     }
 
-    void analyzeBatchStringSentimentShowStatsRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
-        testRunner.accept(SENTIMENT_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
+    void analyzeBatchStringSentimentShowStatsAndIncludeOpinionMiningRunner(BiConsumer<List<String>, AnalyzeSentimentOptions> testRunner) {
+        testRunner.accept(SENTIMENT_INPUTS,
+            new AnalyzeSentimentOptions().setIncludeStatistics(true).setIncludeOpinionMining(true));
     }
 
-    void analyzeBatchSentimentShowStatsRunner(
-        BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
+    void analyzeBatchSentimentShowStatsRunner(BiConsumer<List<TextDocumentInput>, TextAnalyticsRequestOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(SENTIMENT_INPUTS);
+        testRunner.accept(textDocumentInputs, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
+    }
 
-        TextAnalyticsRequestOptions options = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
-        testRunner.accept(textDocumentInputs, options);
+    void analyzeBatchSentimentOpinionMining(BiConsumer<List<TextDocumentInput>, AnalyzeSentimentOptions> testRunner) {
+        final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(SENTIMENT_INPUTS);
+        testRunner.accept(textDocumentInputs, new AnalyzeSentimentOptions().setIncludeOpinionMining(true)
+            .setIncludeStatistics(true));
     }
 
     // other Runners
@@ -480,25 +597,120 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept("");
     }
 
+    void emptyListRunner(BiConsumer<List<TextDocumentInput>, String> testRunner) {
+        testRunner.accept(new ArrayList<>(), "'documents' cannot be empty.");
+    }
+
     void faultyTextRunner(Consumer<String> testRunner) {
         testRunner.accept("!@#%%");
     }
 
     void detectLanguageInputEmptyIdRunner(Consumer<List<DetectLanguageInput>> testRunner) {
-        testRunner.accept(Arrays.asList(new DetectLanguageInput("", DETECT_LANGUAGE_INPUTS.get(0))));
+        testRunner.accept(asList(new DetectLanguageInput("", DETECT_LANGUAGE_INPUTS.get(0))));
     }
 
     void textAnalyticsInputEmptyIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
-        testRunner.accept(Arrays.asList(new TextDocumentInput("", CATEGORIZED_ENTITY_INPUTS.get(0))));
+        testRunner.accept(asList(new TextDocumentInput("", CATEGORIZED_ENTITY_INPUTS.get(0))));
     }
 
-    void tooManyDocumentsRunner(
-        Consumer<List<String>> testRunner) {
+    void tooManyDocumentsRunner(Consumer<List<String>> testRunner) {
         final String documentInput = CATEGORIZED_ENTITY_INPUTS.get(0);
         // max num of document size is 10
-        testRunner.accept(Arrays.asList(
+        testRunner.accept(asList(
             documentInput, documentInput, documentInput, documentInput, documentInput, documentInput,
             documentInput, documentInput, documentInput, documentInput, documentInput, documentInput));
+    }
+
+    // offset runners
+    void emojiRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("👩 " + text); // count as 3 units
+    }
+
+    void emojiWithSkinToneModifierRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("👩🏻 " + text); // count as 5 units
+    }
+
+    void emojiFamilyRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("👩‍👩‍👧‍👧 " + text); // count as 12 units
+    }
+
+    void emojiFamilyWithSkinToneModifierRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("👩🏻‍👩🏽‍👧🏾‍👦🏿 " + text); // count as 20 units
+    }
+
+    void diacriticsNfcRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("año " + text); // count as 4 units
+    }
+
+    void diacriticsNfdRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("año " + text); // count as 5 units
+    }
+
+    void koreanNfcRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("아가 " + text); // count as 3 units
+    }
+
+    void koreanNfdRunner(Consumer<String> testRunner, String text) {
+        testRunner.accept("아가 " + text); // count as 3 units
+    }
+
+    void zalgoTextRunner(Consumer<String> testRunner, String text) {
+        // count as 116 units
+        testRunner.accept("ơ̵̧̧̢̳̘̘͕͔͕̭̟̙͎͈̞͔̈̇̒̃͋̇̅͛̋͛̎́͑̄̐̂̎͗͝m̵͍͉̗̄̏͌̂̑̽̕͝͠g̵̢̡̢̡̨̡̧̛͉̞̯̠̤̣͕̟̫̫̼̰͓̦͖̣̣͎̋͒̈́̓̒̈̍̌̓̅͑̒̓̅̅͒̿̏́͗̀̇͛̏̀̈́̀̊̾̀̔͜͠͝ͅ " + text);
+    }
+
+    // Healthcare LRO runner
+    void healthcareLroRunner(BiConsumer<List<TextDocumentInput>, RecognizeHealthcareEntityOptions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", HEALTHCARE_INPUTS.get(0)),
+                new TextDocumentInput("1", HEALTHCARE_INPUTS.get(1))),
+            new RecognizeHealthcareEntityOptions().setIncludeStatistics(true).setPollInterval(durationTestMode));
+    }
+
+    void healthcareLroPaginationRunner(
+        BiConsumer<List<TextDocumentInput>, RecognizeHealthcareEntityOptions> testRunner, int totalDocuments) {
+        List<TextDocumentInput> documents = new ArrayList<>();
+        // Service has 10 as the default size per page. So there will be 2 remaining page in the next page link
+        for (int i = 0; i < totalDocuments; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i), HEALTHCARE_INPUTS.get(0)));
+        }
+        testRunner.accept(documents,
+            new RecognizeHealthcareEntityOptions().setIncludeStatistics(true).setPollInterval(durationTestMode));
+    }
+
+    // Healthcare LRO runner- Cancellation
+    void cancelHealthcareLroRunner(BiConsumer<List<TextDocumentInput>, RecognizeHealthcareEntityOptions> testRunner) {
+        List<TextDocumentInput> documents = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i), HEALTHCARE_INPUTS.get(0)));
+        }
+        testRunner.accept(documents, new RecognizeHealthcareEntityOptions().setPollInterval(durationTestMode));
+    }
+
+    // Analyze LRO
+    void analyzeTasksLroRunner(BiConsumer<List<TextDocumentInput>, AnalyzeTasksOptions> testRunner) {
+        testRunner.accept(
+            asList(
+                new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
+                new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
+            new AnalyzeTasksOptions().setDisplayName("Test1").setIncludeStatistics(false).setPollInterval(durationTestMode)
+                .setEntitiesRecognitionTasks(Arrays.asList(new EntitiesTask()))
+                .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))
+                .setPiiEntitiesRecognitionTasks(Arrays.asList(new PiiTask())));
+    }
+
+    void analyzeTasksPaginationRunner(BiConsumer<List<TextDocumentInput>, AnalyzeTasksOptions> testRunner,
+        int totalDocument) {
+        List<TextDocumentInput> documents = new ArrayList<>();
+        for (int i = 0; i < totalDocument; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i), PII_ENTITY_INPUTS.get(0)));
+        }
+        testRunner.accept(documents, new AnalyzeTasksOptions().setDisplayName("Test1")
+            .setIncludeStatistics(false).setPollInterval(durationTestMode)
+            .setEntitiesRecognitionTasks(Arrays.asList(new EntitiesTask()))
+            .setKeyPhrasesExtractionTasks(Arrays.asList(new KeyPhrasesTask()))
+            .setPiiEntitiesRecognitionTasks(Arrays.asList(new PiiTask())));
     }
 
     String getEndpoint() {
@@ -520,7 +732,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(FAKE_API_KEY));
         } else {
-            builder.credential(new DefaultAzureCredentialBuilder().build());
+            builder.credential(new AzureKeyCredential(
+                Configuration.getGlobalConfiguration().get("AZURE_TEXT_ANALYTICS_API_KEY")));
         }
         return builder;
     }
@@ -565,10 +778,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     static void validatePiiEntitiesResultCollection(boolean showStatistics,
         RecognizePiiEntitiesResultCollection expected, RecognizePiiEntitiesResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
+        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
+            final PiiEntityCollection expectedPiiEntityCollection = expectedItem.getEntities();
+            final PiiEntityCollection actualPiiEntityCollection = actualItem.getEntities();
+            assertEquals(expectedPiiEntityCollection.getRedactedText(), actualPiiEntityCollection.getRedactedText());
             validatePiiEntities(
-                expectedItem.getEntities().stream().collect(Collectors.toList()),
-                actualItem.getEntities().stream().collect(Collectors.toList())));
+                expectedPiiEntityCollection.stream().collect(Collectors.toList()),
+                actualPiiEntityCollection.stream().collect(Collectors.toList()));
+        });
     }
 
     static void validateLinkedEntitiesResultCollectionWithResponse(boolean showStatistics,
@@ -603,18 +820,26 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 actualItem.getKeyPhrases().stream().collect(Collectors.toList())));
     }
 
-    static void validateSentimentResultCollectionWithResponse(boolean showStatistics,
-        AnalyzeSentimentResultCollection expected, int expectedStatusCode,
-        Response<AnalyzeSentimentResultCollection> response) {
+    static void validateSentimentResultCollectionWithResponse(boolean showStatistics, boolean includeOpinionMining,
+        AnalyzeSentimentResultCollection expected,
+        int expectedStatusCode, Response<AnalyzeSentimentResultCollection> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
-        validateSentimentResultCollection(showStatistics, expected, response.getValue());
+        validateSentimentResultCollection(showStatistics, includeOpinionMining, expected, response.getValue());
     }
 
-    static void validateSentimentResultCollection(boolean showStatistics,
+    static void validateSentimentResultCollection(boolean showStatistics, boolean includeOpinionMining,
         AnalyzeSentimentResultCollection expected, AnalyzeSentimentResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
-            validateAnalyzedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment()));
+            validateAnalyzedSentiment(includeOpinionMining, expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment()));
+    }
+
+    static void validateRecognizeHealthcareEntitiesResultCollection(boolean showStatistics,
+        RecognizeHealthcareEntitiesResultCollection expected, RecognizeHealthcareEntitiesResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual,
+            (expectedItem, actualItem) -> validateHealthcareEntities(
+                expectedItem.getEntities().stream().collect(Collectors.toList()),
+                actualItem.getEntities().stream().collect(Collectors.toList())));
     }
 
     /**
@@ -641,7 +866,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedCategorizedEntity.getSubcategory(), actualCategorizedEntity.getSubcategory());
         assertEquals(expectedCategorizedEntity.getText(), actualCategorizedEntity.getText());
         assertEquals(expectedCategorizedEntity.getOffset(), actualCategorizedEntity.getOffset());
-        assertEquals(expectedCategorizedEntity.getLength(), actualCategorizedEntity.getLength());
         assertEquals(expectedCategorizedEntity.getCategory(), actualCategorizedEntity.getCategory());
         assertNotNull(actualCategorizedEntity.getConfidenceScore());
     }
@@ -653,7 +877,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualPiiEntity PiiEntity returned by the API.
      */
     static void validatePiiEntity(PiiEntity expectedPiiEntity, PiiEntity actualPiiEntity) {
-        assertEquals(expectedPiiEntity.getLength() > 0, actualPiiEntity.getLength() > 0);
         assertEquals(expectedPiiEntity.getOffset(), actualPiiEntity.getOffset());
         assertEquals(expectedPiiEntity.getSubcategory(), actualPiiEntity.getSubcategory());
         assertEquals(expectedPiiEntity.getText(), actualPiiEntity.getText());
@@ -673,6 +896,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expectedLinkedEntity.getLanguage(), actualLinkedEntity.getLanguage());
         assertEquals(expectedLinkedEntity.getUrl(), actualLinkedEntity.getUrl());
         assertEquals(expectedLinkedEntity.getDataSourceEntityId(), actualLinkedEntity.getDataSourceEntityId());
+        assertEquals(expectedLinkedEntity.getBingEntitySearchApiId(), actualLinkedEntity.getBingEntitySearchApiId());
         validateLinkedEntityMatches(expectedLinkedEntity.getMatches().stream().collect(Collectors.toList()),
             actualLinkedEntity.getMatches().stream().collect(Collectors.toList()));
     }
@@ -755,12 +979,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentimentList a list of analyzed sentence sentiment returned by the service.
      * @param actualSentimentList a list of analyzed sentence sentiment returned by the API.
      */
-    static void validateAnalyzedSentenceSentiment(List<SentenceSentiment> expectedSentimentList,
+    static void validateAnalyzedSentenceSentiment(boolean includeOpinionMining, List<SentenceSentiment> expectedSentimentList,
         List<SentenceSentiment> actualSentimentList) {
 
         assertEquals(expectedSentimentList.size(), actualSentimentList.size());
         for (int i = 0; i < expectedSentimentList.size(); i++) {
-            validateSentenceSentiment(expectedSentimentList.get(i), actualSentimentList.get(i));
+            validateSentenceSentiment(includeOpinionMining, expectedSentimentList.get(i), actualSentimentList.get(i));
         }
     }
 
@@ -771,8 +995,73 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentiment analyzed sentence sentiment returned by the service.
      * @param actualSentiment analyzed sentence sentiment returned by the API.
      */
-    static void validateSentenceSentiment(SentenceSentiment expectedSentiment, SentenceSentiment actualSentiment) {
+    static void validateSentenceSentiment(boolean includeOpinionMining, SentenceSentiment expectedSentiment, SentenceSentiment actualSentiment) {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
+        assertEquals(expectedSentiment.getText(), actualSentiment.getText());
+        assertEquals(expectedSentiment.getOffset(), actualSentiment.getOffset());
+
+        if (includeOpinionMining) {
+            validateSentenceMinedOpinions(expectedSentiment.getMinedOpinions().stream().collect(Collectors.toList()),
+                actualSentiment.getMinedOpinions().stream().collect(Collectors.toList()));
+        } else {
+            assertNull(actualSentiment.getMinedOpinions());
+        }
+    }
+
+    /**
+     * Helper method to validate sentence's mined opinions.
+     *
+     * @param expectedMinedOpinions a list of mined opinions returned by the service.
+     * @param actualMinedOpinions a list of mined opinions returned by the API.
+     */
+    static void validateSentenceMinedOpinions(List<MinedOpinion> expectedMinedOpinions,
+        List<MinedOpinion> actualMinedOpinions) {
+        assertEquals(expectedMinedOpinions.size(), actualMinedOpinions.size());
+        for (int i = 0; i < actualMinedOpinions.size(); i++) {
+            final MinedOpinion expectedMinedOpinion = expectedMinedOpinions.get(i);
+            final MinedOpinion actualMinedOpinion = actualMinedOpinions.get(i);
+            validateAspectSentiment(expectedMinedOpinion.getAspect(), actualMinedOpinion.getAspect());
+            validateAspectOpinionList(expectedMinedOpinion.getOpinions().stream().collect(Collectors.toList()),
+                actualMinedOpinion.getOpinions().stream().collect(Collectors.toList()));
+        }
+    }
+
+    /**
+     * Helper method to validate aspect sentiment.
+     *
+     * @param expectedAspectSentiment An expected aspect sentiment.
+     * @param actualAspectSentiment An actual aspect sentiment.
+     */
+    static void validateAspectSentiment(AspectSentiment expectedAspectSentiment, AspectSentiment actualAspectSentiment) {
+        assertEquals(expectedAspectSentiment.getSentiment(), actualAspectSentiment.getSentiment());
+        assertEquals(expectedAspectSentiment.getText(), actualAspectSentiment.getText());
+        assertEquals(expectedAspectSentiment.getOffset(), actualAspectSentiment.getOffset());
+    }
+
+    /**
+     * Helper method to validate a list of {@link OpinionSentiment}.
+     *
+     * @param expectedOpinionSentiments A list of expected opinion sentiments.
+     * @param actualOpinionSentiments A list of actual opinion sentiments.
+     */
+    static void validateAspectOpinionList(List<OpinionSentiment> expectedOpinionSentiments, List<OpinionSentiment> actualOpinionSentiments) {
+        assertEquals(expectedOpinionSentiments.size(), actualOpinionSentiments.size());
+        for (int i = 0; i < expectedOpinionSentiments.size(); i++) {
+            validateAspectOpinion(expectedOpinionSentiments.get(i), actualOpinionSentiments.get(i));
+        }
+    }
+
+    /**
+     * Helper method to validate opinion sentiment.
+     *
+     * @param expectedAspectOpinion An expected opinion sentiment.
+     * @param actualAspectOpinion An actual opinion sentiment.
+     */
+    static void validateAspectOpinion(OpinionSentiment expectedAspectOpinion, OpinionSentiment actualAspectOpinion) {
+        assertEquals(expectedAspectOpinion.getSentiment(), actualAspectOpinion.getSentiment());
+        assertEquals(expectedAspectOpinion.getText(), actualAspectOpinion.getText());
+        assertEquals(expectedAspectOpinion.isNegated(), actualAspectOpinion.isNegated());
+        assertEquals(expectedAspectOpinion.getOffset(), actualAspectOpinion.getOffset());
     }
 
     /**
@@ -782,10 +1071,95 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param expectedSentiment analyzed document sentiment returned by the service.
      * @param actualSentiment analyzed document sentiment returned by the API.
      */
-    static void validateAnalyzedSentiment(DocumentSentiment expectedSentiment, DocumentSentiment actualSentiment) {
+    static void validateAnalyzedSentiment(boolean includeOpinionMining, DocumentSentiment expectedSentiment,
+        DocumentSentiment actualSentiment) {
         assertEquals(expectedSentiment.getSentiment(), actualSentiment.getSentiment());
-        validateAnalyzedSentenceSentiment(expectedSentiment.getSentences().stream().collect(Collectors.toList()),
-            expectedSentiment.getSentences().stream().collect(Collectors.toList()));
+        validateAnalyzedSentenceSentiment(includeOpinionMining,
+            expectedSentiment.getSentences().stream().collect(Collectors.toList()),
+            actualSentiment.getSentences().stream().collect(Collectors.toList()));
+    }
+
+    // Healthcare task
+    static void validateHealthcareEntity(HealthcareEntity expected, HealthcareEntity actual) {
+        assertEquals(expected.getCategory(), actual.getCategory());
+        assertEquals(expected.getSubcategory(), expected.getSubcategory());
+        assertEquals(expected.getText(), actual.getText());
+        assertEquals(expected.getOffset(), actual.getOffset());
+        validateHealthcareEntityLinkList(expected.getDataSourceEntityLinks(), actual.getDataSourceEntityLinks());
+    }
+
+    static void validateHealthcareEntityLinkList(List<HealthcareEntityLink> expected,
+        List<HealthcareEntityLink> actual) {
+        if (expected == actual) {
+            return;
+        } else if (expected == null || actual == null) {
+            assertTrue(false);
+        }
+    }
+
+    static void validateHealthcareEntities(List<HealthcareEntity> expected, List<HealthcareEntity> actual) {
+        assertEquals(expected.size(), actual.size());
+        expected.sort(Comparator.comparing(HealthcareEntity::getText));
+        actual.sort(Comparator.comparing(HealthcareEntity::getText));
+        for (int i = 0; i < expected.size(); i++) {
+            validateHealthcareEntity(expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateHealthcareTaskResult(boolean showStatistics, List<HealthcareTaskResult> expected,
+        List<HealthcareTaskResult> actual) {
+        assertEquals(expected.size(), actual.size());
+
+        for (int i = 0; i < actual.size(); i++) {
+            validateRecognizeHealthcareEntitiesResultCollection(showStatistics,
+                expected.get(i).getResult(), actual.get(i).getResult());
+        }
+    }
+
+    // Analyze tasks
+    static void validateAnalyzeTasksResultList(boolean showStatistics, List<AnalyzeTasksResult> expected,
+        List<AnalyzeTasksResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateAnalyzeTasksResult(showStatistics, expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateAnalyzeTasksResult(boolean showStatistics, AnalyzeTasksResult expected,
+        AnalyzeTasksResult actual) {
+        assertEquals(expected.getCompleted(), actual.getCompleted());
+        assertEquals(expected.getFailed(), actual.getFailed());
+        assertEquals(expected.getInProgress(), actual.getInProgress());
+        assertEquals(expected.getTotal(), actual.getTotal());
+        assertEquals(expected.getDisplayName(), actual.getDisplayName());
+
+        validateEntityRecognitionTasks(showStatistics, expected.getEntityRecognitionTasks(), actual.getEntityRecognitionTasks());
+        validateEntityRecognitionPiiTasks(showStatistics, expected.getEntityRecognitionPiiTasks(), actual.getEntityRecognitionPiiTasks());
+        validateKeyPhrasesExtractionTasks(showStatistics, expected.getKeyPhraseExtractionTasks(), actual.getKeyPhraseExtractionTasks());
+    }
+
+    static void validateEntityRecognitionTasks(boolean showStatistics,
+        List<RecognizeEntitiesResultCollection> expected, List<RecognizeEntitiesResultCollection> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateCategorizedEntitiesResultCollection(showStatistics, expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateEntityRecognitionPiiTasks(boolean showStatistics,
+        List<RecognizePiiEntitiesResultCollection> expected, List<RecognizePiiEntitiesResultCollection> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validatePiiEntitiesResultCollection(showStatistics, expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateKeyPhrasesExtractionTasks(boolean showStatistics,
+        List<ExtractKeyPhrasesResultCollection> expected, List<ExtractKeyPhrasesResultCollection> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateExtractKeyPhrasesResultCollection(showStatistics, expected.get(i), actual.get(i));
+        }
     }
 
     /**
@@ -817,6 +1191,21 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             } else if (expectedResults instanceof RecognizeLinkedEntitiesResultCollection) {
                 validateBatchStatistics(((RecognizeLinkedEntitiesResultCollection) expectedResults).getStatistics(),
                     ((RecognizeLinkedEntitiesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizeHealthcareEntitiesResultCollection) {
+                validateBatchStatistics(((RecognizeHealthcareEntitiesResultCollection) expectedResults).getStatistics(),
+                    ((RecognizeHealthcareEntitiesResultCollection) actualResults).getStatistics());
+            }
+        } else {
+            if (expectedResults instanceof AnalyzeSentimentResultCollection) {
+                assertNull(((AnalyzeSentimentResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof DetectLanguageResultCollection) {
+                assertNull(((DetectLanguageResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof ExtractKeyPhrasesResultCollection) {
+                assertNull(((ExtractKeyPhrasesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizeEntitiesResultCollection) {
+                assertNull(((RecognizeEntitiesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizeLinkedEntitiesResultCollection) {
+                assertNull(((RecognizeLinkedEntitiesResultCollection) actualResults).getStatistics());
             }
         }
 
@@ -883,7 +1272,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             LinkedEntityMatch actualLinkedEntity = actualLinkedEntityMatches.get(i);
             assertEquals(expectedLinkedEntity.getText(), actualLinkedEntity.getText());
             assertEquals(expectedLinkedEntity.getOffset(), actualLinkedEntity.getOffset());
-            assertEquals(expectedLinkedEntity.getLength(), actualLinkedEntity.getLength());
             assertNotNull(actualLinkedEntity.getConfidenceScore());
         }
     }

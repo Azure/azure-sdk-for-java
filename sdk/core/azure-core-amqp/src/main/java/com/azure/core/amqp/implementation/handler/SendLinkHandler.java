@@ -18,16 +18,22 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SendLinkHandler extends LinkHandler {
-    private final String senderName;
+    private final String linkName;
+    private final String entityPath;
     private final AtomicBoolean isFirstFlow = new AtomicBoolean(true);
     private final UnicastProcessor<Integer> creditProcessor = UnicastProcessor.create();
     private final DirectProcessor<Delivery> deliveryProcessor = DirectProcessor.create();
     private final FluxSink<Integer> creditSink = creditProcessor.sink();
     private final FluxSink<Delivery> deliverySink = deliveryProcessor.sink();
 
-    public SendLinkHandler(String connectionId, String hostname, String senderName, String entityPath) {
+    public SendLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(SendLinkHandler.class));
-        this.senderName = senderName;
+        this.linkName = linkName;
+        this.entityPath = entityPath;
+    }
+
+    public String getLinkName() {
+        return linkName;
     }
 
     public Flux<Integer> getLinkCredits() {
@@ -49,27 +55,29 @@ public class SendLinkHandler extends LinkHandler {
     public void onLinkLocalOpen(Event event) {
         final Link link = event.getLink();
         if (link instanceof Sender) {
-            logger.verbose("onLinkLocalOpen connectionId[{}], linkName[{}], localTarget[{}]",
-                getConnectionId(), link.getName(), link.getTarget());
+            logger.verbose("onLinkLocalOpen connectionId[{}], entityPath[{}], linkName[{}], localTarget[{}]",
+                getConnectionId(), entityPath, link.getName(), link.getTarget());
         }
     }
 
     @Override
     public void onLinkRemoteOpen(Event event) {
         final Link link = event.getLink();
-        if (link instanceof Sender) {
-            if (link.getRemoteTarget() != null) {
-                logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteTarget[{}]",
-                    getConnectionId(), link.getName(), link.getRemoteTarget());
+        if (!(link instanceof Sender)) {
+            return;
+        }
 
-                if (isFirstFlow.getAndSet(false)) {
-                    onNext(EndpointState.ACTIVE);
-                }
-            } else {
-                logger.info("onLinkRemoteOpen connectionId[{}], linkName[{}], remoteTarget[null], remoteSource[null], "
-                        + "action[waitingForError]",
-                    getConnectionId(), link.getName());
+        if (link.getRemoteTarget() != null) {
+            logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], remoteTarget[{}]",
+                getConnectionId(), entityPath, link.getName(), link.getRemoteTarget());
+
+            if (isFirstFlow.getAndSet(false)) {
+                onNext(EndpointState.ACTIVE);
             }
+        } else {
+            logger.info("onLinkRemoteOpen connectionId[{}], entityPath[{}], linkName[{}], remoteTarget[null],"
+                    + " remoteSource[null], action[waitingForError]",
+                getConnectionId(), entityPath, link.getName());
         }
     }
 
@@ -82,8 +90,8 @@ public class SendLinkHandler extends LinkHandler {
         final Sender sender = event.getSender();
         creditSink.next(sender.getRemoteCredit());
 
-        logger.verbose("onLinkFlow connectionId[{}], linkName[{}], unsettled[{}], credit[{}]",
-            getConnectionId(), sender.getName(), sender.getUnsettled(), sender.getCredit());
+        logger.verbose("onLinkFlow connectionId[{}], entityPath[{}], linkName[{}], unsettled[{}], credit[{}]",
+            getConnectionId(), entityPath, sender.getName(), sender.getUnsettled(), sender.getCredit());
     }
 
     @Override
@@ -93,9 +101,9 @@ public class SendLinkHandler extends LinkHandler {
         while (delivery != null) {
             Sender sender = (Sender) delivery.getLink();
 
-            logger.verbose("onDelivery connectionId[{}], linkName[{}], unsettled[{}], credit[{}], deliveryState[{}], "
-                    + "delivery.isBuffered[{}], delivery.id[{}]",
-                getConnectionId(), sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(),
+            logger.verbose("onDelivery connectionId[{}], entityPath[{}], linkName[{}], unsettled[{}], credit[{}],"
+                    + " deliveryState[{}], delivery.isBuffered[{}], delivery.id[{}]",
+                getConnectionId(), entityPath, sender.getName(), sender.getUnsettled(), sender.getRemoteCredit(),
                 delivery.getRemoteState(), delivery.isBuffered(), new String(delivery.getTag(),
                     StandardCharsets.UTF_8));
 

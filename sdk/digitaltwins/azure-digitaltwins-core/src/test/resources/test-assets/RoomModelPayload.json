@@ -1,0 +1,34 @@
+{
+  "@id": "ROOM_MODEL_ID",
+  "@type": "Interface",
+  "displayName": "Room",
+  "description": "An enclosure inside a building.",
+  "contents": [
+    {
+      "@type": "Relationship",
+      "name": "containedIn",
+      "target": "FLOOR_MODEL_ID"
+    },
+    {
+      "@type": "Property",
+      "name": "Temperature",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "Humidity",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "IsOccupied",
+      "schema": "boolean"
+    },
+    {
+      "@type": "Property",
+      "name": "EmployeeId",
+      "schema": "string"
+    }
+  ],
+  "@context": ["dtmi:dtdl:context;2"]
+}

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.containerregistry.implementation;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.RegistryPassword;
-import com.azure.resourcemanager.containerregistry.fluent.inner.RegistryListCredentialsResultInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.RegistryListCredentialsResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,8 +20,8 @@ public class RegistryCredentialsImpl extends WrapperImpl<RegistryListCredentials
         super(innerObject);
 
         this.accessKeys = new HashMap<>();
-        if (this.inner().passwords() != null) {
-            for (RegistryPassword registryPassword : this.inner().passwords()) {
+        if (this.innerModel().passwords() != null) {
+            for (RegistryPassword registryPassword : this.innerModel().passwords()) {
                 switch (registryPassword.name()) {
                     case PASSWORD:
                         this.accessKeys.put(AccessKeyType.PRIMARY, registryPassword.value());
@@ -43,6 +43,6 @@ public class RegistryCredentialsImpl extends WrapperImpl<RegistryListCredentials
 
     @Override
     public String username() {
-        return this.inner().username();
+        return this.innerModel().username();
     }
 }

@@ -17,6 +17,8 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,24 +56,31 @@ public final class CertificateUtil {
     }
 
     /**
-     * Extracts the X509Certificate certificate from a PEM certificate.
+     * Extracts the X509Certificate certificate/certificate-chain from a PEM certificate.
      * @param pem the contents of a PEM certificate.
-     * @return the X509Certificate certificate
+     * @return the {@link List} of X509Certificate certificate
      */
-    public static X509Certificate publicKeyFromPem(byte[] pem) {
-        Pattern pattern = Pattern.compile("(?s)-----BEGIN CERTIFICATE-----.*-----END CERTIFICATE-----");
+    public static List<X509Certificate> publicKeyFromPem(byte[] pem) {
+        Pattern pattern = Pattern.compile("(?s)-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----");
         Matcher matcher = pattern.matcher(new String(pem, StandardCharsets.UTF_8));
-        if (!matcher.find()) {
+
+        List<X509Certificate> x509CertificateList = new ArrayList<>();
+        while (matcher.find()) {
+            try {
+                CertificateFactory factory = CertificateFactory.getInstance("X.509");
+                InputStream stream = new ByteArrayInputStream(matcher.group().getBytes(StandardCharsets.UTF_8));
+                x509CertificateList.add((X509Certificate) factory.generateCertificate(stream));
+            } catch (CertificateException e) {
+                throw LOGGER.logExceptionAsError(new IllegalStateException(e));
+            }
+        }
+
+        if (x509CertificateList.size() == 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "PEM certificate provided does not contain -----BEGIN CERTIFICATE-----END CERTIFICATE----- block"));
         }
-        try {
-            CertificateFactory factory = CertificateFactory.getInstance("X.509");
-            InputStream stream = new ByteArrayInputStream(matcher.group().getBytes(StandardCharsets.UTF_8));
-            return (X509Certificate) factory.generateCertificate(stream);
-        } catch (CertificateException e) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(e));
-        }
+
+        return x509CertificateList;
     }
 
     private CertificateUtil() { }

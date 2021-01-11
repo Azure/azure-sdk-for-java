@@ -5,13 +5,13 @@ package com.azure.resourcemanager.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.model.Executable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 
 /** An immutable client-side representation of an Azure SQL Database import operation request. */
 @Fluent
 public interface SqlDatabaseImportRequest
-    extends HasInner<ImportExtensionRequest>, Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
+    extends HasInnerModel<ImportExtensionRequest>, Executable<SqlDatabaseImportExportResponse>, HasParent<SqlDatabase> {
 
     /** The entirety of database import operation definition. */
     interface SqlDatabaseImportRequestDefinition

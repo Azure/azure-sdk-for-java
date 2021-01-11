@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureReachabilityReportLocation model. */
+/** Parameters that define a geographic location. */
 @Fluent
 public final class AzureReachabilityReportLocation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureReachabilityReportLocation.class);

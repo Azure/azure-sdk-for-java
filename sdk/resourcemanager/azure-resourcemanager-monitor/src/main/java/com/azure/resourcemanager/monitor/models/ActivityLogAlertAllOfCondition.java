@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ActivityLogAlertAllOfCondition model. */
+/** An Activity Log alert condition that is met when all its member conditions are met. */
 @Fluent
 public final class ActivityLogAlertAllOfCondition {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertAllOfCondition.class);

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ErrorAdditionalInfo model. */
+/** The resource management error additional info. */
 @Immutable
 public final class ErrorAdditionalInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorAdditionalInfo.class);

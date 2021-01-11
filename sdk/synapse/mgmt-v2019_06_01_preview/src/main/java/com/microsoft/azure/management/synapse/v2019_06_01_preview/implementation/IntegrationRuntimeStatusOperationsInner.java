@@ -62,7 +62,7 @@ public class IntegrationRuntimeStatusOperationsInner {
      * Get the integration runtime status.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -78,7 +78,7 @@ public class IntegrationRuntimeStatusOperationsInner {
      * Get the integration runtime status.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -93,7 +93,7 @@ public class IntegrationRuntimeStatusOperationsInner {
      * Get the integration runtime status.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IntegrationRuntimeStatusResponseInner object
@@ -112,7 +112,7 @@ public class IntegrationRuntimeStatusOperationsInner {
      * Get the integration runtime status.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IntegrationRuntimeStatusResponseInner object

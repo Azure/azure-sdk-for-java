@@ -21,15 +21,18 @@ public class Person {
     private String lastName;
     private List<String> hobbies;
     private List<Address> shippingAddresses;
+    private Integer age;
     @Version
     private String _etag;
 
-    public Person(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
+    public Person(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses,
+                  Integer age) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.hobbies = hobbies;
         this.shippingAddresses = shippingAddresses;
+        this.age = age;
     }
 
     public Person() {
@@ -83,6 +86,14 @@ public class Person {
         this._etag = _etag;
     }
 
+    public Integer getAge() {
+        return this.age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -96,12 +107,13 @@ public class Person {
             && Objects.equals(firstName, person.firstName)
             && Objects.equals(lastName, person.lastName)
             && Objects.equals(hobbies, person.hobbies)
-            && Objects.equals(shippingAddresses, person.shippingAddresses);
+            && Objects.equals(shippingAddresses, person.shippingAddresses)
+            && Objects.equals(age, person.age);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, hobbies, shippingAddresses);
+        return Objects.hash(id, firstName, lastName, hobbies, shippingAddresses, age);
     }
 
     @Override
@@ -116,6 +128,8 @@ public class Person {
             + ", lastName='"
             + lastName
             + '\''
+            + ", age="
+            + age
             + ", hobbies="
             + hobbies
             + ", shippingAddresses="

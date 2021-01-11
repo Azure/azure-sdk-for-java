@@ -3,15 +3,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.RouteInner;
+import com.azure.resourcemanager.network.fluent.models.RouteInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** An immutable client-side representation of a route of a route table. */
 @Fluent()
-public interface Route extends HasInner<RouteInner>, ChildResource<RouteTable> {
+public interface Route extends HasInnerModel<RouteInner>, ChildResource<RouteTable> {
 
     /** @return the destination address prefix, expressed using the CIDR notation, to which the route applies */
     String destinationAddressPrefix();

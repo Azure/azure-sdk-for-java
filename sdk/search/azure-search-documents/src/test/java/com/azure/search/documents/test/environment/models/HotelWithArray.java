@@ -4,19 +4,19 @@
 package com.azure.search.documents.test.environment.models;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.search.documents.indexes.SearchableFieldProperty;
-import com.azure.search.documents.indexes.SimpleFieldProperty;
+import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.SimpleField;
 
 public class HotelWithArray {
     private String hotelId;
     private String[] tags;
 
-    @SimpleFieldProperty(isKey = true, isSortable = true)
+    @SimpleField(isKey = true, isSortable = true)
     public String getHotelId() {
         return hotelId;
     }
 
-    @SearchableFieldProperty
+    @SearchableField
     public String[] getTags() {
         return CoreUtils.clone(tags);
     }

@@ -5,19 +5,17 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnectionsClient;
-import com.azure.resourcemanager.network.fluent.inner.VirtualNetworkGatewayConnectionInner;
+import com.azure.resourcemanager.network.fluent.models.ConnectionSharedKeyInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionInner;
 import com.azure.resourcemanager.network.models.VirtualNetworkGateway;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnection;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnections;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.azure.resourcemanager.resources.models.ResourceGroup;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
-
-import java.util.Iterator;
-import java.util.function.Function;
 
 /** The implementation of VirtualNetworkGatewayConnections. */
 class VirtualNetworkGatewayConnectionsImpl
@@ -25,14 +23,14 @@ class VirtualNetworkGatewayConnectionsImpl
         VirtualNetworkGatewayConnection,
         VirtualNetworkGatewayConnectionImpl,
         VirtualNetworkGatewayConnectionInner,
-    VirtualNetworkGatewayConnectionsClient,
-    NetworkManager>
+        VirtualNetworkGatewayConnectionsClient,
+        NetworkManager>
     implements VirtualNetworkGatewayConnections {
 
     private final VirtualNetworkGatewayImpl parent;
 
     VirtualNetworkGatewayConnectionsImpl(final VirtualNetworkGatewayImpl parent) {
-        super(parent.manager().inner().getVirtualNetworkGatewayConnections(), parent.manager());
+        super(parent.manager().serviceClient().getVirtualNetworkGatewayConnections(), parent.manager());
         this.parent = parent;
     }
 
@@ -76,7 +74,7 @@ class VirtualNetworkGatewayConnectionsImpl
         VirtualNetworkGatewayConnectionInner inner =
             this
                 .manager()
-                .inner()
+                .serviceClient()
                 .getVirtualNetworkGatewayConnections()
                 .getByResourceGroup(this.parent().resourceGroupName(), name);
         return new VirtualNetworkGatewayConnectionImpl(name, parent, inner);
@@ -89,25 +87,8 @@ class VirtualNetworkGatewayConnectionsImpl
 
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listAsync() {
-        PagedIterable<ResourceGroup> resources =
-            new PagedIterable<>(this.manager().resourceManager().resourceGroups().listAsync());
-        Iterator<ResourceGroup> iterator = resources.iterator();
-
-        Function<String, Mono<PagedResponse<VirtualNetworkGatewayConnectionInner>>> fetcher =
-            (continuation) -> {
-                if (continuation == null) {
-                    if (iterator.hasNext()) {
-                        return inner().listByResourceGroupSinglePageAsync(iterator.next().name());
-                    } else {
-                        return Mono.empty();
-                    }
-                } else {
-                    return inner().listByResourceGroupSinglePageAsync(continuation);
-                }
-            };
-
-        return new PagedFlux<>(() -> fetcher.apply(null), (continuation) -> fetcher.apply(continuation))
-            .mapPage(inner -> wrapModel(inner));
+        return PagedConverter.mergePagedFlux(this.manager().resourceManager().resourceGroups().listAsync(), rg ->
+            inner().listByResourceGroupAsync(rg.name())).mapPage(this::wrapModel);
     }
 
     @Override
@@ -122,6 +103,39 @@ class VirtualNetworkGatewayConnectionsImpl
 
     @Override
     public Mono<VirtualNetworkGatewayConnection> getByNameAsync(String name) {
-        return inner().getByResourceGroupAsync(parent.resourceGroupName(), name).map(inner -> wrapModel(inner));
+        return inner().getByResourceGroupAsync(parent.resourceGroupName(), name).map(this::wrapModel);
+    }
+
+    @Override
+    public String getSharedKeyById(String id) {
+        return getSharedKeyByIdAsync(id).block();
+    }
+
+    @Override
+    public Mono<String> getSharedKeyByIdAsync(String id) {
+        return inner().getSharedKeyAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id))
+            .map(ConnectionSharedKeyInner::value);
+    }
+
+    @Override
+    public String setSharedKeyById(String id, String sharedKey) {
+        return setSharedKeyByIdAsync(id, sharedKey).block();
+    }
+
+    @Override
+    public Mono<String> setSharedKeyByIdAsync(String id, String sharedKey) {
+        return setSharedKeyByNameAsync(ResourceUtils.nameFromResourceId(id), sharedKey);
+    }
+
+    @Override
+    public String setSharedKeyByName(String name, String sharedKey) {
+        return setSharedKeyByNameAsync(name, sharedKey).block();
+    }
+
+    @Override
+    public Mono<String> setSharedKeyByNameAsync(String name, String sharedKey) {
+        return inner().setSharedKeyAsync(
+            this.parent().resourceGroupName(), name, new ConnectionSharedKeyInner().withValue(sharedKey))
+            .map(ConnectionSharedKeyInner::value);
     }
 }

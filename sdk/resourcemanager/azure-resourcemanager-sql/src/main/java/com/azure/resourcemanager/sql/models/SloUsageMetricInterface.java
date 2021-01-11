@@ -4,12 +4,12 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.UUID;
 
 /** An immutable client-side representation of an Azure SQL database's SloUsageMetric. */
 @Fluent
-public interface SloUsageMetricInterface extends HasInner<SloUsageMetric> {
+public interface SloUsageMetricInterface extends HasInnerModel<SloUsageMetric> {
     /** @return the serviceLevelObjective for SLO usage metric. */
     ServiceObjectiveName serviceLevelObjective();
 

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.privatedns.implementation;
 
-import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.CnameRecord;
 import com.azure.resourcemanager.privatedns.models.CnameRecordSet;
 import com.azure.resourcemanager.privatedns.models.RecordType;
@@ -19,10 +19,10 @@ class CnameRecordSetImpl extends PrivateDnsRecordSetImpl implements CnameRecordS
 
     @Override
     public String canonicalName() {
-        if (inner().cnameRecord() == null) {
+        if (innerModel().cnameRecord() == null) {
             return null;
         }
-        return inner().cnameRecord().cname();
+        return innerModel().cnameRecord().cname();
     }
 
     @Override

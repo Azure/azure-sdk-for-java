@@ -80,6 +80,12 @@ public class NetworkVirtualApplianceInner extends Resource {
     private List<SubResource> virtualApplianceSites;
 
     /**
+     * List of references to InboundSecurityRules.
+     */
+    @JsonProperty(value = "properties.inboundSecurityRules", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> inboundSecurityRules;
+
+    /**
      * The provisioning state of the resource. Possible values include:
      * 'Succeeded', 'Updating', 'Deleting', 'Failed'.
      */
@@ -250,6 +256,15 @@ public class NetworkVirtualApplianceInner extends Resource {
      */
     public List<SubResource> virtualApplianceSites() {
         return this.virtualApplianceSites;
+    }
+
+    /**
+     * Get list of references to InboundSecurityRules.
+     *
+     * @return the inboundSecurityRules value
+     */
+    public List<SubResource> inboundSecurityRules() {
+        return this.inboundSecurityRules;
     }
 
     /**

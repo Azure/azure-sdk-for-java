@@ -56,6 +56,8 @@ public class Utils {
     private static final ZoneId GMT_ZONE_ID = ZoneId.of("GMT");
     public static final Base64.Encoder Base64Encoder = Base64.getEncoder();
     public static final Base64.Decoder Base64Decoder = Base64.getDecoder();
+    public static final Base64.Encoder Base64UrlEncoder = Base64.getUrlEncoder();
+    public static final Base64.Decoder Base64UrlDecoder = Base64.getUrlDecoder();
 
     private static final ObjectMapper simpleObjectMapper = new ObjectMapper();
     private static final TimeBasedGenerator TIME_BASED_GENERATOR =
@@ -114,6 +116,15 @@ public class Utils {
             logger.warn("Error while decoding input string", e);
             return inputString;
         }
+    }
+
+    public static String encodeUrlBase64String(byte[] binaryData) {
+        String encodedString = Base64UrlEncoder.withoutPadding().encodeToString(binaryData);
+
+        if (encodedString.endsWith("\r\n")) {
+            encodedString = encodedString.substring(0, encodedString.length() - 2);
+        }
+        return encodedString;
     }
 
     /**
@@ -340,7 +351,7 @@ public class Utils {
 
     public static boolean isWriteOperation(OperationType operationType) {
         return operationType == OperationType.Create || operationType == OperationType.Upsert || operationType == OperationType.Delete || operationType == OperationType.Replace
-                || operationType == OperationType.ExecuteJavaScript;
+                || operationType == OperationType.ExecuteJavaScript || operationType == OperationType.Batch;
     }
 
     public static boolean isFeedRequest(OperationType requestOperationType) {

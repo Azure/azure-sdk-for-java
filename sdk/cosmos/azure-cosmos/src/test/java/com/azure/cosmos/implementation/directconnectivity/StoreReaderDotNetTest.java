@@ -5,24 +5,24 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.InvalidPartitionException;
-import com.azure.cosmos.implementation.RequestVerb;
-import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DocumentServiceRequestContext;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
+import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestChargeTracker;
+import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.SessionContainer;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Strings;
@@ -44,6 +44,7 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class StoreReaderDotNetTest {
@@ -51,7 +52,7 @@ public class StoreReaderDotNetTest {
     @Test(groups = "unit")
     public void addressCache() {
         // create a real document service request
-        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
 
         // setup mocks for address information
         AddressInformation[] addressInformation = new AddressInformation[3];
@@ -76,7 +77,7 @@ public class StoreReaderDotNetTest {
     @Test(groups = "unit")
     public void transportClient() {
         // create a real document service request
-        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
 
         // setup mocks for address information
         AddressInformation[] addressInformation = new AddressInformation[3];
@@ -436,7 +437,7 @@ public class StoreReaderDotNetTest {
     @Test(groups = "unit")
     public void storeReaderBarrier() {
         // create a real document service request
-        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
 
         // set request charge tracker -  this is referenced in store reader (ReadMultipleReplicaAsync)
         DocumentServiceRequestContext requestContext = new DocumentServiceRequestContext();
@@ -563,7 +564,7 @@ public class StoreReaderDotNetTest {
     @SuppressWarnings("unchecked")
     public void storeClient() throws URISyntaxException {
         // create a real document service request (with auth token level = god)
-        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         entity.authorizationTokenType = AuthorizationTokenType.PrimaryMasterKey;
 
         // set request charge tracker -  this is referenced in store reader (ReadMultipleReplicaAsync)
@@ -625,7 +626,7 @@ public class StoreReaderDotNetTest {
         Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(replicationPolicy);
 
         try {
-            StoreClient storeClient = new StoreClient(new Configs(),mockAddressCache, sessionContainer, mockServiceConfigReader, mockAuthorizationTokenProvider, mockTransportClient, false);
+            StoreClient storeClient = new StoreClient(mockDiagnosticsClientContext(), new Configs(),mockAddressCache, sessionContainer, mockServiceConfigReader, mockAuthorizationTokenProvider, mockTransportClient, false);
 
             ServerStoreModel storeModel = new ServerStoreModel(storeClient);
             Mono<RxDocumentServiceResponse> result = storeModel.processMessage(entity).single();
@@ -651,7 +652,7 @@ public class StoreReaderDotNetTest {
     @SuppressWarnings("unchecked")
     public void globalStrongConsistentWrite() {
         // create a real document service request (with auth token level = god)
-        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(OperationType.Create, ResourceType.Document);
+        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document);
         entity.authorizationTokenType = AuthorizationTokenType.PrimaryMasterKey;
 
         // set request charge tracker -  this is referenced in store reader (ReadMultipleReplicaAsync)
@@ -696,13 +697,13 @@ public class StoreReaderDotNetTest {
         for (int i = 0; i < addressInformations.length; i++) {
             TransportClient mockTransportClient = getMockTransportClientForGlobalStrongWrites(addressInformations, i, false, false, false);
             StoreReader storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
-            ConsistencyWriter consistencyWriter = new ConsistencyWriter(addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false);
+            ConsistencyWriter consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false);
             StoreResponse response = consistencyWriter.writeAsync(entity, new TimeoutHelper(Duration.ofSeconds(30)), false).block();
             assertThat(response.getLSN()).isEqualTo(100);
 
             //globalCommittedLsn never catches up in this case
             mockTransportClient = getMockTransportClientForGlobalStrongWrites(addressInformations, i, true, false, false);
-            consistencyWriter = new ConsistencyWriter(addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false);
+            consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false);
             try {
                 response = consistencyWriter.writeAsync(entity, new TimeoutHelper(Duration.ofSeconds(30)), false).block();
                 // fail("it should throw exception");
@@ -711,20 +712,20 @@ public class StoreReaderDotNetTest {
 
             mockTransportClient = getMockTransportClientForGlobalStrongWrites(addressInformations, i, false, true, false);
             storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
-            consistencyWriter = new ConsistencyWriter(addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false);
+            consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false);
             response = consistencyWriter.writeAsync(entity, new TimeoutHelper(Duration.ofSeconds(30)), false).block();
             assertThat(response.getLSN()).isEqualTo(100);
 
             mockTransportClient = getMockTransportClientForGlobalStrongWrites(addressInformations, i, false, true, true);
             storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
-            consistencyWriter = new ConsistencyWriter(addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false);
+            consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false);
             response = consistencyWriter.writeAsync(entity, new TimeoutHelper(Duration.ofSeconds(30)), false).block();
             assertThat(response.getLSN()).isEqualTo(100);
 
 
             mockTransportClient = getMockTransportClientForGlobalStrongWrites(addressInformations, i, false, false, true);
             storeReader = new StoreReader(mockTransportClient, addressSelector, sessionContainer);
-            consistencyWriter = new ConsistencyWriter(addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false);
+            consistencyWriter = new ConsistencyWriter(mockDiagnosticsClientContext(), addressSelector, sessionContainer, mockTransportClient, mockAuthorizationTokenProvider, serviceConfigurationReader, false);
             response = consistencyWriter.writeAsync(entity, new TimeoutHelper(Duration.ofSeconds(30)), false).block();
             assertThat(response.getLSN()).isEqualTo(100);
 
@@ -738,7 +739,7 @@ public class StoreReaderDotNetTest {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void globalStrongConsistency() {
         // create a real document service request (with auth token level = god)
-        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(OperationType.Read, ResourceType.Document);
+        RxDocumentServiceRequest entity = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read, ResourceType.Document);
         entity.authorizationTokenType = AuthorizationTokenType.PrimaryMasterKey;
 
         // set request charge tracker -  this is referenced in store reader (ReadMultipleReplicaAsync)
@@ -792,11 +793,11 @@ public class StoreReaderDotNetTest {
             GatewayServiceConfigurationReader mockServiceConfigReader = Mockito.mock(GatewayServiceConfigurationReader.class);
             Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(replicationPolicy);
 
-            QuorumReader reader = new QuorumReader(new Configs(),mockTransportClient, addressSelector, storeReader, mockServiceConfigReader, mockAuthorizationTokenProvider);
+            QuorumReader reader = new QuorumReader(mockDiagnosticsClientContext(), new Configs(),mockTransportClient, addressSelector, storeReader, mockServiceConfigReader, mockAuthorizationTokenProvider);
 
             entity.requestContext.originalRequestConsistencyLevel = ConsistencyLevel.STRONG;
 
-            StoreResponse result = reader.readStrongAsync(entity, 2, ReadMode.Strong).block();
+            StoreResponse result = reader.readStrongAsync(mockDiagnosticsClientContext(), entity, 2, ReadMode.Strong).block();
             assertThat(result.getLSN()).isEqualTo(100);
 
             String globalCommitedLSN = result.getHeaderValue(WFConstants.BackendHeaders.GLOBAL_COMMITTED_LSN);
@@ -828,12 +829,12 @@ public class StoreReaderDotNetTest {
             Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(replicationPolicy);
             Mockito.when(mockServiceConfigReader.getDefaultConsistencyLevel()).thenReturn(ConsistencyLevel.STRONG);
 
-            QuorumReader reader = new QuorumReader(new Configs(), mockTransportClient, addressSelector, storeReader, mockServiceConfigReader, mockAuthorizationTokenProvider);
+            QuorumReader reader = new QuorumReader(mockDiagnosticsClientContext(), new Configs(), mockTransportClient, addressSelector, storeReader, mockServiceConfigReader, mockAuthorizationTokenProvider);
             entity.requestContext.originalRequestConsistencyLevel = ConsistencyLevel.STRONG;
             entity.requestContext.quorumSelectedLSN = -1;
             entity.requestContext.globalCommittedSelectedLSN = -1;
             try {
-                StoreResponse result = reader.readStrongAsync(entity, 2, ReadMode.Strong).block();
+                StoreResponse result = reader.readStrongAsync(mockDiagnosticsClientContext(), entity, 2, ReadMode.Strong).block();
                 assertThat(false).isTrue();
             } catch (Exception ex) {
                 if (ex.getCause() instanceof GoneException) {
@@ -870,11 +871,11 @@ public class StoreReaderDotNetTest {
             Mockito.when(mockServiceConfigReader.getUserReplicationPolicy()).thenReturn(replicationPolicy);
             Mockito.when(mockServiceConfigReader.getDefaultConsistencyLevel()).thenReturn(ConsistencyLevel.STRONG);
 
-            QuorumReader reader = new QuorumReader(new Configs(), mockTransportClient, addressSelector, storeReader, mockServiceConfigReader, mockAuthorizationTokenProvider);
+            QuorumReader reader = new QuorumReader(mockDiagnosticsClientContext(), new Configs(), mockTransportClient, addressSelector, storeReader, mockServiceConfigReader, mockAuthorizationTokenProvider);
             entity.requestContext.originalRequestConsistencyLevel = ConsistencyLevel.STRONG;
             entity.requestContext.performLocalRefreshOnGoneException = true;
 
-            StoreResponse result = reader.readStrongAsync(entity, 2, ReadMode.Strong).block();
+            StoreResponse result = reader.readStrongAsync(mockDiagnosticsClientContext(), entity, 2, ReadMode.Strong).block();
             assertThat(result.getLSN()).isEqualTo(100);
 
             String globalCommitedLSN;

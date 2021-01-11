@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.indexes.models.StopwordsList;
 import com.azure.search.documents.indexes.models.StopwordsTokenFilter;
 
 import java.util.ArrayList;
@@ -36,8 +35,7 @@ public final class StopwordsTokenFilterConverter {
         }
 
         if (obj.getStopwordsList() != null) {
-            StopwordsList stopwordsList = StopwordsListConverter.map(obj.getStopwordsList());
-            stopwordsTokenFilter.setStopwordsList(stopwordsList);
+            stopwordsTokenFilter.setStopwordsList(obj.getStopwordsList());
         }
         return stopwordsTokenFilter;
     }
@@ -66,11 +64,9 @@ public final class StopwordsTokenFilterConverter {
         }
 
         if (obj.getStopwordsList() != null) {
-            com.azure.search.documents.indexes.implementation.models.StopwordsList stopwordsList =
-                StopwordsListConverter.map(obj.getStopwordsList());
-            stopwordsTokenFilter.setStopwordsList(stopwordsList);
+            stopwordsTokenFilter.setStopwordsList(obj.getStopwordsList());
         }
-        stopwordsTokenFilter.validate();
+
         return stopwordsTokenFilter;
     }
 

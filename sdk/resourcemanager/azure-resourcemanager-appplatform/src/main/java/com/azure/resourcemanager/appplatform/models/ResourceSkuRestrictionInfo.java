@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceSkuRestrictionInfo model. */
+/** Information about the restriction where the SKU cannot be used. */
 @Fluent
 public final class ResourceSkuRestrictionInfo {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuRestrictionInfo.class);

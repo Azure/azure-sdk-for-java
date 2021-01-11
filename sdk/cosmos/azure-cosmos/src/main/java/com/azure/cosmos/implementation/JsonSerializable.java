@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents a base resource that can be serialized to JSON in the Azure Cosmos DB database service.
@@ -706,5 +707,22 @@ public class JsonSerializable {
             || SqlQuerySpec.class.equals(c)
             || UniqueKey.class.equals(c)
             || UniqueKeyPolicy.class.equals(c);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        JsonSerializable that = (JsonSerializable) o;
+        return Objects.equals(propertyBag, that.propertyBag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(propertyBag);
     }
 }

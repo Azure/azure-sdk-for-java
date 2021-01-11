@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsgetpropertiesleaseerror87068143b15a80?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9c24b32a-f150-4ee7-918a-f0cf5a81f85f"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D86726E155AA2C",
+      "Last-Modified" : "Fri, 02 Oct 2020 22:59:55 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "996574e3-c01a-0021-5b0f-99b5f9000000",
+      "Date" : "Fri, 02 Oct 2020 22:59:55 GMT",
+      "x-ms-client-request-id" : "9c24b32a-f150-4ee7-918a-f0cf5a81f85f"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsgetpropertiesleaseerror87068143b15a80?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2e9914b3-c7e7-4d58-9702-269a5c1c9063"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "LeaseNotPresentWithContainerOperation",
+      "retry-after" : "0",
+      "Content-Length" : "252",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "996574e5-c01a-0021-5c0f-99b5f9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the file share.\nRequestId:996574e5-c01a-0021-5c0f-99b5f9000000\nTime:2020-10-02T22:59:56.0771744Z</Message></Error>",
+      "Date" : "Fri, 02 Oct 2020 22:59:55 GMT",
+      "x-ms-client-request-id" : "2e9914b3-c7e7-4d58-9702-269a5c1c9063",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestsgetpropertiesleaseerror87068143b15a80" ]
+}

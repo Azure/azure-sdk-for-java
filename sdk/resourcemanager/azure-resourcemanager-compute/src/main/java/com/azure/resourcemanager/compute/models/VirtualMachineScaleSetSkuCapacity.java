@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineScaleSetSkuCapacity model. */
+/** Describes scaling information of a sku. */
 @Immutable
 public final class VirtualMachineScaleSetSkuCapacity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetSkuCapacity.class);

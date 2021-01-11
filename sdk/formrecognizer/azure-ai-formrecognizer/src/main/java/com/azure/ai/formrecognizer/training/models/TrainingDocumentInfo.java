@@ -3,8 +3,8 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
+import com.azure.ai.formrecognizer.implementation.TrainingDocumentInfoHelper;
 import com.azure.ai.formrecognizer.models.FormRecognizerError;
-import com.azure.core.annotation.Immutable;
 
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * The TrainingDocumentInfo model.
  */
-@Immutable
 public final class TrainingDocumentInfo {
 
     /*
@@ -35,6 +34,17 @@ public final class TrainingDocumentInfo {
      */
     private final List<FormRecognizerError> errors;
 
+    private String modelId;
+
+    static {
+        TrainingDocumentInfoHelper.setAccessor(new TrainingDocumentInfoHelper.TrainingDocumentInfoAccessor() {
+            @Override
+            public void setModelId(TrainingDocumentInfo documentInfo, String modelId) {
+                documentInfo.setModelId(modelId);
+            }
+        });
+    }
+
     /**
      * Constructs a TrainingDocumentInfo object.
      *
@@ -48,8 +58,7 @@ public final class TrainingDocumentInfo {
         this.name = name;
         this.status = status;
         this.pageCount = pageCount;
-        this.errors = errors == null ? null
-            : Collections.unmodifiableList(errors);
+        this.errors = errors == null ? null : Collections.unmodifiableList(errors);
     }
 
     /**
@@ -86,5 +95,24 @@ public final class TrainingDocumentInfo {
      */
     public List<FormRecognizerError> getErrors() {
         return this.errors;
+    }
+
+    /**
+     * Get the Model identifier.
+     *
+     * @return the {@code modelId} value.
+     */
+    public String getModelId() {
+        return this.modelId;
+    }
+
+    /**
+     * The private setter to set the modelId property
+     * via {@link TrainingDocumentInfoHelper.TrainingDocumentInfoAccessor}.
+     *
+     * @param modelId The the unique identifier of the model.
+     */
+    private void setModelId(String modelId) {
+        this.modelId = modelId;
     }
 }

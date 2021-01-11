@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureBlobStorageHttpLogsConfig model. */
+/** Http logs to azure blob storage configuration. */
 @Fluent
 public final class AzureBlobStorageHttpLogsConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobStorageHttpLogsConfig.class);

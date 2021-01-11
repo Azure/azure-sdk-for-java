@@ -1,0 +1,25 @@
+[
+  {
+    "topic": "/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}",
+    "subject": "liveEvent/liveevent-ec9d26a8",
+    "eventType": "Microsoft.Media.LiveEventIngestHeartbeat",
+    "eventTime": "2018-10-12T15:52:37.3710102Z",
+    "id": "d84727e2-d9c0-4a21-a66b-8d23f06b3e06",
+    "data": {
+      "trackType": "video",
+      "trackName": "video",
+      "bitrate": 2500000,
+      "incomingBitrate": 500726,
+      "lastTimestamp": "11999",
+      "timescale": "1000",
+      "overlapCount": 0,
+      "discontinuityCount": 0,
+      "nonincreasingCount": 0,
+      "unexpectedBitrate": true,
+      "state": "Running",
+      "healthy": false
+    },
+    "dataVersion": "1.0",
+    "metadataVersion": "1"
+  }
+]

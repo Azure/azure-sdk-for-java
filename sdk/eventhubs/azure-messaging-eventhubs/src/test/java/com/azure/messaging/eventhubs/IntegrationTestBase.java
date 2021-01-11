@@ -61,6 +61,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
     private static final String PROXY_AUTHENTICATION_TYPE = "PROXY_AUTHENTICATION_TYPE";
     private static final String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "AZURE_EVENTHUBS_CONNECTION_STRING";
+    private static final String EVENT_HUB_CONNECTION_STRING_WITH_SAS = "AZURE_EVENTHUBS_CONNECTION_STRING_WITH_SAS";
 
     private static final String AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME = "AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME";
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
@@ -122,7 +123,14 @@ public abstract class IntegrationTestBase extends TestBase {
         return CoreUtils.isNullOrEmpty(getConnectionString()) ? TestMode.PLAYBACK : TestMode.RECORD;
     }
 
-    protected static String getConnectionString() {
+    static String getConnectionString() {
+        return getConnectionString(false);
+    }
+
+    static String getConnectionString(boolean withSas) {
+        if (withSas) {
+            return System.getenv(EVENT_HUB_CONNECTION_STRING_WITH_SAS);
+        }
         return System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
     }
 

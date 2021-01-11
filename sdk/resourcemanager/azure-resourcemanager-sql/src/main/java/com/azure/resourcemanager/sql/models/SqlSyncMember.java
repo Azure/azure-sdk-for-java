@@ -8,17 +8,17 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.fluent.inner.SyncMemberInner;
+import com.azure.resourcemanager.sql.fluent.models.SyncMemberInner;
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL Server Sync Member. */
 @Fluent
 public interface SqlSyncMember
     extends ExternalChildResource<SqlSyncMember, SqlSyncGroup>,
-        HasInner<SyncMemberInner>,
+        HasInnerModel<SyncMemberInner>,
         HasResourceGroup,
         Refreshable<SqlSyncMember>,
         Updatable<SqlSyncMember.Update> {

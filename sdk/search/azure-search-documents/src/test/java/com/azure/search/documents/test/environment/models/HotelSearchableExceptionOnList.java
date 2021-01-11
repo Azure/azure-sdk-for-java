@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.indexes.SearchableFieldProperty;
+import com.azure.search.documents.indexes.SearchableField;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class HotelSearchableExceptionOnList {
      * Gets passcode.
      * @return the passcode of hotel.
      */
-    @SearchableFieldProperty
+    @SearchableField
     public List<Integer> getPasscode() {
         return passcode;
     }

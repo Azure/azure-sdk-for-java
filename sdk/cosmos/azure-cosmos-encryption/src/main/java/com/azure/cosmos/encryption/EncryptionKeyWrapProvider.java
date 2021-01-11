@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.encryption;
 
+import reactor.core.publisher.Mono;
+
 /**
  * Interface for interacting with a provider that can be used to wrap (encrypt) and unwrap (decrypt) data encryption
  * keys for envelope based encryption. Implementations are expected to ensure that master keys are highly available and
@@ -32,7 +34,7 @@ public interface EncryptionKeyWrapProvider {
      * @param metadata Metadata for the wrap provider that should be used to wrap / unwrap the key.
      * @return Wrapped (i.e. encrypted) version of data encryption key passed in possibly with updated metadata.
      */
-    EncryptionKeyWrapResult wrapKey(byte[] key, EncryptionKeyWrapMetadata metadata);
+    Mono<EncryptionKeyWrapResult> wrapKey(byte[] key, EncryptionKeyWrapMetadata metadata);
 
     /**
      * Unwraps (i.e. decrypts) the provided wrapped data encryption key.
@@ -42,6 +44,5 @@ public interface EncryptionKeyWrapProvider {
      * @return unwrapped (i.e. unencrypted) version of data encryption key passed in and how long the raw data
      * encryption key can be cached on the client.
      */
-    EncryptionKeyUnwrapResult unwrapKey(byte[] wrappedKey, EncryptionKeyWrapMetadata metadata);
+    Mono<EncryptionKeyUnwrapResult> unwrapKey(byte[] wrappedKey, EncryptionKeyWrapMetadata metadata);
 }
-// TODO: @moderakh look into if this class needs to be async

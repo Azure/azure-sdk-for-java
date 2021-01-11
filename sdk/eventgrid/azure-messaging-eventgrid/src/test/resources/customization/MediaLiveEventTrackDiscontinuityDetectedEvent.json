@@ -1,0 +1,20 @@
+[
+  {
+    "topic": "/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}",
+    "subject": "liveEvent/liveevent-ec9d26a8",
+    "eventType": "Microsoft.Media.LiveEventTrackDiscontinuityDetected",
+    "eventTime": "2018-10-12T15:52:37.3710102Z",
+    "id": "d84727e2-d9c0-4a21-a66b-8d23f06b3e06",
+    "data": {
+      "trackType": "video",
+      "trackName": "video",
+      "bitrate": 2500000,
+      "previousTimestamp": "10999",
+      "newTimestamp": "14999",
+      "timescale": "1000",
+      "discontinuityGap": 4000
+    },
+    "dataVersion": "1.0",
+    "metadataVersion": "1"
+  }
+]

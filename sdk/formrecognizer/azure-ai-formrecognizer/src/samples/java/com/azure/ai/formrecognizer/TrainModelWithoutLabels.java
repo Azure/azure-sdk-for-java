@@ -7,7 +7,9 @@ import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
+import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
 /**
@@ -35,13 +37,19 @@ public class TrainModelWithoutLabels {
         // Train custom model
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
-        SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller = client.beginTraining(trainingFilesUrl, false);
+        SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+            = client.beginTraining(trainingFilesUrl,
+            false,
+            new TrainingOptions()
+                .setModelName("composed model name"),
+            Context.NONE);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();
 
         // Model Info
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
+        System.out.printf("Model name: %s%n", customFormModel.getModelName());
         System.out.printf("Training started on: %s%n", customFormModel.getTrainingStartedOn());
         System.out.printf("Training completed on: %s%n%n", customFormModel.getTrainingCompletedOn());
 
@@ -50,7 +58,8 @@ public class TrainModelWithoutLabels {
         // Since the given training documents are unlabeled, we still group them but they do not have a label.
         customFormModel.getSubmodels().forEach(customFormSubmodel -> {
             // Since the training data is unlabeled, we are unable to return the accuracy of this model
-            System.out.printf("The subModel has form type %s%n", customFormSubmodel.getFormType());
+            System.out.printf("Submodel Id: %s%n", customFormSubmodel.getModelId());
+            System.out.printf("The submodel has form type %s%n", customFormSubmodel.getFormType());
             customFormSubmodel.getFields().forEach((field, customFormModelField) ->
                 System.out.printf("The model found field '%s' with label: %s%n",
                     field, customFormModelField.getLabel()));

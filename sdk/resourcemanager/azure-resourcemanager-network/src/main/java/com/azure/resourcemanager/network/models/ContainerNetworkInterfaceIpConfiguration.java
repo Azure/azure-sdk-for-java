@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerNetworkInterfaceIpConfiguration model. */
+/** The ip configuration for a container network interface. */
 @JsonFlatten
 @Fluent
 public class ContainerNetworkInterfaceIpConfiguration {

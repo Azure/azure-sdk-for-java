@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SiteLimits model. */
+/** Metric limits set on an app. */
 @Fluent
 public final class SiteLimits {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteLimits.class);

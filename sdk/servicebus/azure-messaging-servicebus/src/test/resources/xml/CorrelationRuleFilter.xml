@@ -1,0 +1,18 @@
+<entry xmlns="http://www.w3.org/2005/Atom">
+  <id>sb://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/correl?api-version=2017-04&amp;enrich=false</id>
+  <title type="text">correlation-test</title>
+  <published>2020-08-28T04:32:50Z</published>
+  <updated>2020-08-28T04:34:50Z</updated>
+  <link rel="self" href="sb://sb-java-conniey-3.servicebus.windows.net/topic-10/Subscriptions/subscription/Rules/correl?api-version=2017-04&amp;enrich=false"/>
+  <content type="application/xml">
+    <RuleDescription xmlns="http://schemas.microsoft.com/netservices/2010/10/servicebus/connect" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+      <Filter i:type="CorrelationFilter">
+        <Label>matching-label</Label>
+        <Properties/>
+      </Filter>
+      <Action i:type="EmptyRuleAction"/>
+      <CreatedAt>2020-08-28T04:32:50.7697024Z</CreatedAt>
+      <Name>correlation-test</Name>
+    </RuleDescription>
+  </content>
+</entry>

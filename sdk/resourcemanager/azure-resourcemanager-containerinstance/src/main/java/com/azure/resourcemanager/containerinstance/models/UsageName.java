@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The UsageName model. */
+/** The name object of the resource. */
 @Immutable
 public final class UsageName {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageName.class);

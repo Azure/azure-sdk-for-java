@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SourceRegistryCredentials model. */
+/** Describes the credential parameters for accessing the source registry. */
 @Fluent
 public final class SourceRegistryCredentials {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceRegistryCredentials.class);

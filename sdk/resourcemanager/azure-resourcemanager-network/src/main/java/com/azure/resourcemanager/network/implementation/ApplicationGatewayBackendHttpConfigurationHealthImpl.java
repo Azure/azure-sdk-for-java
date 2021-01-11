@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthH
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpConfigurationHealth;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendServerHealth;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayBackendHealthServerInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayBackendHealthServerInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import java.util.Collections;
 import java.util.Map;
@@ -27,7 +27,7 @@ public class ApplicationGatewayBackendHttpConfigurationHealthImpl
         this.backendHealth = backendHealth;
 
         if (inner.servers() != null) {
-            for (ApplicationGatewayBackendHealthServerInner serverHealthInner : this.inner().servers()) {
+            for (ApplicationGatewayBackendHealthServerInner serverHealthInner : this.innerModel().servers()) {
                 ApplicationGatewayBackendServerHealth serverHealth =
                     new ApplicationGatewayBackendServerHealthImpl(serverHealthInner, this);
                 this.serverHealths.put(serverHealth.ipAddress(), serverHealth);
@@ -36,7 +36,7 @@ public class ApplicationGatewayBackendHttpConfigurationHealthImpl
     }
 
     @Override
-    public ApplicationGatewayBackendHealthHttpSettings inner() {
+    public ApplicationGatewayBackendHealthHttpSettings innerModel() {
         return this.inner;
     }
 

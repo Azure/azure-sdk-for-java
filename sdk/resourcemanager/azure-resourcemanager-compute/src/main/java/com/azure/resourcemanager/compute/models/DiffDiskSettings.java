@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DiffDiskSettings model. */
+/**
+ * Describes the parameters of ephemeral disk settings that can be specified for operating system disk.
+ * &lt;br&gt;&lt;br&gt; NOTE: The ephemeral disk settings can only be specified for managed disk.
+ */
 @Fluent
 public final class DiffDiskSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiffDiskSettings.class);

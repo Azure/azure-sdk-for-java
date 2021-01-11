@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20200618.4
+      ref: refs/tags/azure-sdk-build-tools_20200916.1
 
 parameters:
 - name: Artifacts
@@ -129,7 +129,7 @@ stages:
         PreRunSteps:
         - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
           parameters:
-            StartParameters: '-PartitionCount 50 -Consistency Strong -Timeout 600'
+            StartParameters: '-EnableAadAuthentication -PartitionCount 50 -Consistency Strong -Timeout 600'
         - powershell: |
             $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
             $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
@@ -153,11 +153,11 @@ stages:
           - script: |
               python --version
               python -m pip install setuptools termcolor in_place
-              python sdk/spring/scripts/replace_artifact.py --module cosmos --log debug --color false
-            condition: eq(variables['DisplayName'], 'Spring Emulator only Integration Tests')
-            displayName: 'Run replace_artifact.py'
+              python sdk/spring/scripts/replace_util.py --module cosmos --log debug --color false
+            condition: and(succeededOrFailed(), eq(variables['DisplayName'], 'Spring Emulator only Integration Tests'))
+            displayName: 'Run replace_util.py'
           - task: Maven@3
-            condition: eq(variables['DisplayName'], 'Spring Emulator only Integration Tests')
+            condition: and(succeededOrFailed(), eq(variables['DisplayName'], 'Spring Emulator only Integration Tests'))
             displayName: 'Run tests again: $(DisplayName)'
             inputs:
               mavenPomFile: pom.xml

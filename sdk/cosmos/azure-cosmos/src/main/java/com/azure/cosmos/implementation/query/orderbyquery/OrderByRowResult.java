@@ -66,4 +66,14 @@ public final class OrderByRowResult<T> extends Document {
     public String toJson() {
         return super.toJson();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

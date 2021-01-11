@@ -84,6 +84,11 @@ public class Main {
                     benchmark = new SyncReadBenchmark(cfg);
                     break;
 
+                case WriteLatency:
+                case WriteThroughput:
+                    benchmark = new SyncWriteBenchmark(cfg);
+                    break;
+
                 default:
                     throw new RuntimeException(cfg.getOperationType() + " is not supported");
             }

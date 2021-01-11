@@ -4,9 +4,7 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.TextTranslationSkill;
-import com.azure.search.documents.indexes.models.TextTranslationSkillLanguage;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,16 +23,11 @@ public final class TextTranslationSkillConverter {
             return null;
         }
 
-        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null
-            : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
         List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null
             : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        TextTranslationSkillLanguage defaultToLanguageCode = obj.getDefaultToLanguageCode() == null ? null
-            : TextTranslationSkillLanguageConverter.map(obj.getDefaultToLanguageCode());
-
-        TextTranslationSkill textTranslationSkill = new TextTranslationSkill(inputs, outputs, defaultToLanguageCode);
+        TextTranslationSkill textTranslationSkill = new TextTranslationSkill(inputs, obj.getOutputs(),
+            obj.getDefaultToLanguageCode());
 
         String name = obj.getName();
         textTranslationSkill.setName(name);
@@ -46,15 +39,11 @@ public final class TextTranslationSkillConverter {
         textTranslationSkill.setDescription(description);
 
         if (obj.getDefaultFromLanguageCode() != null) {
-            TextTranslationSkillLanguage defaultFromLanguageCode =
-                TextTranslationSkillLanguageConverter.map(obj.getDefaultFromLanguageCode());
-            textTranslationSkill.setDefaultFromLanguageCode(defaultFromLanguageCode);
+            textTranslationSkill.setDefaultFromLanguageCode(obj.getDefaultFromLanguageCode());
         }
 
         if (obj.getSuggestedFrom() != null) {
-            TextTranslationSkillLanguage suggestedFrom =
-                TextTranslationSkillLanguageConverter.map(obj.getSuggestedFrom());
-            textTranslationSkill.setSuggestedFrom(suggestedFrom);
+            textTranslationSkill.setSuggestedFrom(obj.getSuggestedFrom());
         }
         return textTranslationSkill;
     }
@@ -67,20 +56,14 @@ public final class TextTranslationSkillConverter {
         if (obj == null) {
             return null;
         }
-        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-            obj.getOutputs() == null ? null
-                : obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
         List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
             obj.getOutputs() == null ? null
                 : obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
 
-        com.azure.search.documents.indexes.implementation.models.TextTranslationSkillLanguage defaultToLanguageCode =
-            obj.getDefaultToLanguageCode() == null ? null
-                : TextTranslationSkillLanguageConverter.map(obj.getDefaultToLanguageCode());
         com.azure.search.documents.indexes.implementation.models.TextTranslationSkill textTranslationSkill =
-            new com.azure.search.documents.indexes.implementation.models.TextTranslationSkill(inputs, outputs,
-                defaultToLanguageCode);
+            new com.azure.search.documents.indexes.implementation.models.TextTranslationSkill(inputs, obj.getOutputs(),
+                obj.getDefaultToLanguageCode());
 
         String name = obj.getName();
         textTranslationSkill.setName(name);
@@ -92,17 +75,13 @@ public final class TextTranslationSkillConverter {
         textTranslationSkill.setDescription(description);
 
         if (obj.getDefaultFromLanguageCode() != null) {
-            com.azure.search.documents.indexes.implementation.models.TextTranslationSkillLanguage defaultFromLanguageCode =
-                TextTranslationSkillLanguageConverter.map(obj.getDefaultFromLanguageCode());
-            textTranslationSkill.setDefaultFromLanguageCode(defaultFromLanguageCode);
+            textTranslationSkill.setDefaultFromLanguageCode(obj.getDefaultFromLanguageCode());
         }
 
         if (obj.getSuggestedFrom() != null) {
-            com.azure.search.documents.indexes.implementation.models.TextTranslationSkillLanguage suggestedFrom =
-                TextTranslationSkillLanguageConverter.map(obj.getSuggestedFrom());
-            textTranslationSkill.setSuggestedFrom(suggestedFrom);
+            textTranslationSkill.setSuggestedFrom(obj.getSuggestedFrom());
         }
-        textTranslationSkill.validate();
+
         return textTranslationSkill;
     }
 

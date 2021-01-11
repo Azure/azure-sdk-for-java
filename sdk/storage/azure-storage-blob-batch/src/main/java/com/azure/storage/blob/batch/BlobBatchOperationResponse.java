@@ -107,7 +107,7 @@ final class BlobBatchOperationResponse<T> implements Response<T> {
         }
 
         if (!expectedStatusCodes.contains(statusCode)) {
-            throw logger.logExceptionAsError(exception);
+            throw exception;
         }
     }
 }

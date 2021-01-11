@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ScopedDeployment model. */
+/** Deployment operation parameters. */
 @Fluent
 public final class ScopedDeployment {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScopedDeployment.class);

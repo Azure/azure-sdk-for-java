@@ -3,13 +3,14 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -20,6 +21,7 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -270,6 +272,34 @@ public class CosmosContainer {
         }
     }
 
+    private TransactionalBatchResponse blockBatchResponse(Mono<TransactionalBatchResponse> batchResponseMono) {
+        try {
+            return batchResponseMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    private <TContext> List<CosmosBulkOperationResponse<TContext>> blockBulkResponse(
+        Flux<CosmosBulkOperationResponse<TContext>> bulkResponse) {
+
+        try {
+            return bulkResponse.collectList().block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
     /**
      * Read all items as {@link CosmosPagedIterable} in the current container.
      *
@@ -312,36 +342,36 @@ public class CosmosContainer {
      * Reads many documents.
      *
      * @param <T> the type parameter
-     * @param itemKeyList document id and partition key pair that needs to be read
+     * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
+    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> FeedResponse<T> readMany(
-        List<Pair<String, PartitionKey>> itemKeyList,
+        List<CosmosItemIdentity> itemIdentityList,
         Class<T> classType) {
 
-        return this.readMany(itemKeyList, null, classType);
+        return this.readMany(itemIdentityList, null, classType);
     }
 
     /**
      * Reads many documents.
      *
      * @param <T> the type parameter
-     * @param itemKeyList document id and partition key pair that needs to be read
+     * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param sessionToken the optional Session token - null if the read can be made without specific session token
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
+    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> FeedResponse<T> readMany(
-        List<Pair<String, PartitionKey>> itemKeyList,
+        List<CosmosItemIdentity> itemIdentityList,
         String sessionToken,
         Class<T> classType) {
 
         return this.blockFeedResponse(
             this.asyncContainer.readMany(
-                itemKeyList,
+                itemIdentityList,
                 sessionToken,
                 classType));
     }
@@ -354,7 +384,6 @@ public class CosmosContainer {
      * @param classType the class type.
      * @return the {@link CosmosPagedIterable}.
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
     public <T> CosmosPagedIterable<T> readAllItems(
         PartitionKey partitionKey,
         Class<T> classType) {
@@ -372,7 +401,6 @@ public class CosmosContainer {
      * @param classType the class type.
      * @return the {@link CosmosPagedIterable}.
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
     public <T> CosmosPagedIterable<T> readAllItems(
         PartitionKey partitionKey,
         CosmosQueryRequestOptions options,
@@ -456,6 +484,136 @@ public class CosmosContainer {
     }
 
     /**
+     * Executes the transactional batch.
+     *
+     * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
+     *
+     * @return A TransactionalBatchResponse which contains details of execution of the transactional batch.
+     * <p>
+     * If the transactional batch executes successfully, the value returned by {@link
+     * TransactionalBatchResponse#getStatusCode} on the response returned will be set to 200}.
+     * <p>
+     * If an operation within the transactional batch fails during execution, no changes from the batch will be
+     * committed and the status of the failing operation is made available by {@link
+     * TransactionalBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
+     * that failed in case of some user error like conflict, not found etc, the response can be enumerated.
+     * This returns {@link TransactionalBatchOperationResult} instances corresponding to each operation in the
+     * transactional batch in the order they were added to the transactional batch.
+     * For a result corresponding to an operation within the transactional batch, use
+     * {@link TransactionalBatchOperationResult#getStatusCode}
+     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
+     * another operation within the transactional batch, the value of this field will be 424;
+     * for the operation that caused the batch to abort, the value of this field
+     * will indicate the cause of failure.
+     * <p>
+     * If there are issues such as request timeouts, Gone, session not available, network failure
+     * or if the service somehow returns 5xx then this will throw an exception instead of returning a TransactionalBatchResponse.
+     * <p>
+     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * transactional batch succeeded.
+     */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public TransactionalBatchResponse executeTransactionalBatch(TransactionalBatch transactionalBatch) {
+        return this.blockBatchResponse(asyncContainer.executeTransactionalBatch(transactionalBatch));
+    }
+
+    /**
+     * Executes the transactional batch.
+     *
+     * @param transactionalBatch Batch having list of operation and partition key which will be executed by this container.
+     * @param requestOptions Options that apply specifically to batch request.
+     *
+     * @return A TransactionalBatchResponse which contains details of execution of the transactional batch.
+     * <p>
+     * If the transactional batch executes successfully, the value returned by {@link
+     * TransactionalBatchResponse#getStatusCode} on the response returned will be set to 200}.
+     * <p>
+     * If an operation within the transactional batch fails during execution, no changes from the batch will be
+     * committed and the status of the failing operation is made available by {@link
+     * TransactionalBatchResponse#getStatusCode} or by the exception. To obtain information about the operations
+     * that failed in case of some user error like conflict, not found etc, the response can be enumerated.
+     * This returns {@link TransactionalBatchOperationResult} instances corresponding to each operation in the
+     * transactional batch in the order they were added to the transactional batch.
+     * For a result corresponding to an operation within the transactional batch, use
+     * {@link TransactionalBatchOperationResult#getStatusCode}
+     * to access the status of the operation. If the operation was not executed or it was aborted due to the failure of
+     * another operation within the transactional batch, the value of this field will be 424;
+     * for the operation that caused the batch to abort, the value of this field
+     * will indicate the cause of failure.
+     * <p>
+     * If there are issues such as request timeouts, Gone, session not available, network failure
+     * or if the service somehow returns 5xx then this will throw an exception instead of returning a TransactionalBatchResponse.
+     * <p>
+     * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
+     * transactional batch succeeded.
+     */
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public TransactionalBatchResponse executeTransactionalBatch(
+        TransactionalBatch transactionalBatch,
+        TransactionalBatchRequestOptions requestOptions) {
+
+        return this.blockBatchResponse(asyncContainer.executeTransactionalBatch(transactionalBatch, requestOptions));
+    }
+
+    /**
+     * Executes list of operations in Bulk.
+     *
+     * @param <TContext> The context for the bulk processing.
+     * @param operations list of operation which will be executed by this container.
+     *
+     * @return A list of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
+     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
+        Iterable<CosmosItemOperation> operations) {
+
+        return this.blockBulkResponse(asyncContainer.processBulkOperations(Flux.fromIterable(operations)));
+    }
+
+    /**
+     * Executes list of operations in Bulk.
+     *
+     * @param <TContext> The context for the bulk processing.
+     *
+     * @param operations list of operation which will be executed by this container.
+     * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
+     *                    concurrency, batching size, interval and context.
+     *
+     * @return A list of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link BulkOperations}. For eg.
+     *     for a upsert operation use {@link BulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
+        Iterable<CosmosItemOperation> operations,
+        BulkProcessingOptions<TContext> bulkOptions) {
+
+        return this.blockBulkResponse(asyncContainer.processBulkOperations(Flux.fromIterable(operations), bulkOptions));
+    }
+
+    /**
      * Gets the Cosmos scripts using the current container as context.
      *
      * @return the Cosmos sync scripts.
@@ -473,4 +631,23 @@ public class CosmosContainer {
         return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
     }
 
+    /**
+     * Obtains a list of {@link FeedRange} that can be used to parallelize Feed
+     * operations.
+     *
+     * @return An unmodifiable list of {@link FeedRange}
+     */
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public List<FeedRange> getFeedRanges() {
+        try {
+            return asyncContainer.getFeedRanges().block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
 }

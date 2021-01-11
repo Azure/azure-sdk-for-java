@@ -3,8 +3,8 @@
 package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.resourcemanager.compute.models.VirtualMachineSize;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineSizeInner;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineSizeInner;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /** The implementation for {@link VirtualMachineSize}. */
 class VirtualMachineSizeImpl implements VirtualMachineSize {
@@ -21,26 +21,26 @@ class VirtualMachineSizeImpl implements VirtualMachineSize {
 
     @Override
     public int numberOfCores() {
-        return Utils.toPrimitiveInt(innerModel.numberOfCores());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel.numberOfCores());
     }
 
     @Override
     public int osDiskSizeInMB() {
-        return Utils.toPrimitiveInt(innerModel.osDiskSizeInMB());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel.osDiskSizeInMB());
     }
 
     @Override
     public int resourceDiskSizeInMB() {
-        return Utils.toPrimitiveInt(innerModel.resourceDiskSizeInMB());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel.resourceDiskSizeInMB());
     }
 
     @Override
     public int memoryInMB() {
-        return Utils.toPrimitiveInt(innerModel.memoryInMB());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel.memoryInMB());
     }
 
     @Override
     public int maxDataDiskCount() {
-        return Utils.toPrimitiveInt(innerModel.maxDataDiskCount());
+        return ResourceManagerUtils.toPrimitiveInt(innerModel.maxDataDiskCount());
     }
 }

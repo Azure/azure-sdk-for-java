@@ -8,8 +8,8 @@ import com.azure.core.util.serializer.MemberNameConverter;
 import com.azure.core.util.serializer.MemberNameConverterProviders;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.search.documents.indexes.FieldBuilderIgnore;
-import com.azure.search.documents.indexes.SearchableFieldProperty;
-import com.azure.search.documents.indexes.SimpleFieldProperty;
+import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -248,22 +248,22 @@ public final class FieldBuilder {
     }
 
     private static SearchField enrichWithAnnotation(SearchField searchField, Member member) {
-        SimpleFieldProperty simpleFieldProperty = getDeclaredAnnotation(member, SimpleFieldProperty.class);
-        SearchableFieldProperty searchableFieldProperty = getDeclaredAnnotation(member, SearchableFieldProperty.class);
+        SimpleField simpleField = getDeclaredAnnotation(member, SimpleField.class);
+        SearchableField searchableField = getDeclaredAnnotation(member, SearchableField.class);
 
-        if (simpleFieldProperty != null && searchableFieldProperty != null) {
+        if (simpleField != null && searchableField != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("@SimpleFieldProperty and @SearchableFieldProperty cannot be present simultaneously "
                     + "for %s", member.getName())));
         }
-        if (simpleFieldProperty != null) {
+        if (simpleField != null) {
             searchField.setSearchable(false)
-                .setSortable(simpleFieldProperty.isSortable())
-                .setFilterable(simpleFieldProperty.isFilterable())
-                .setFacetable(simpleFieldProperty.isFacetable())
-                .setKey(simpleFieldProperty.isKey())
-                .setHidden(simpleFieldProperty.isHidden());
-        } else if (searchableFieldProperty != null) {
+                .setSortable(simpleField.isSortable())
+                .setFilterable(simpleField.isFilterable())
+                .setFacetable(simpleField.isFacetable())
+                .setKey(simpleField.isKey())
+                .setHidden(simpleField.isHidden());
+        } else if (searchableField != null) {
             if (!searchField.getType().equals(SearchFieldDataType.STRING)
                 && !searchField.getType().equals(SearchFieldDataType.collection(SearchFieldDataType.STRING))) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(String.format("SearchFieldProperty can only"
@@ -272,32 +272,32 @@ public final class FieldBuilder {
             }
 
             searchField.setSearchable(true)
-                .setSortable(searchableFieldProperty.isSortable())
-                .setFilterable(searchableFieldProperty.isFilterable())
-                .setFacetable(searchableFieldProperty.isFacetable())
-                .setKey(searchableFieldProperty.isKey())
-                .setHidden(searchableFieldProperty.isHidden());
-            String analyzer = searchableFieldProperty.analyzerName();
-            String searchAnalyzer = searchableFieldProperty.searchAnalyzerName();
-            String indexAnalyzer = searchableFieldProperty.indexAnalyzerName();
+                .setSortable(searchableField.isSortable())
+                .setFilterable(searchableField.isFilterable())
+                .setFacetable(searchableField.isFacetable())
+                .setKey(searchableField.isKey())
+                .setHidden(searchableField.isHidden());
+            String analyzer = searchableField.analyzerName();
+            String searchAnalyzer = searchableField.searchAnalyzerName();
+            String indexAnalyzer = searchableField.indexAnalyzerName();
             if (!analyzer.isEmpty() && (!searchAnalyzer.isEmpty() || !indexAnalyzer.isEmpty())) {
                 throw LOGGER.logExceptionAsError(new RuntimeException(
                     "Please specify either analyzer or both searchAnalyzer and indexAnalyzer."));
             }
-            if (!searchableFieldProperty.analyzerName().isEmpty()) {
+            if (!searchableField.analyzerName().isEmpty()) {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
-                    searchableFieldProperty.analyzerName()));
+                    searchableField.analyzerName()));
             }
-            if (!searchableFieldProperty.searchAnalyzerName().isEmpty()) {
+            if (!searchableField.searchAnalyzerName().isEmpty()) {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
-                    searchableFieldProperty.searchAnalyzerName()));
+                    searchableField.searchAnalyzerName()));
             }
-            if (!searchableFieldProperty.indexAnalyzerName().isEmpty()) {
+            if (!searchableField.indexAnalyzerName().isEmpty()) {
                 searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
-                    searchableFieldProperty.indexAnalyzerName()));
+                    searchableField.indexAnalyzerName()));
             }
-            if (searchableFieldProperty.synonymMapNames().length != 0) {
-                List<String> synonymMaps = Arrays.stream(searchableFieldProperty.synonymMapNames())
+            if (searchableField.synonymMapNames().length != 0) {
+                List<String> synonymMaps = Arrays.stream(searchableField.synonymMapNames())
                     .filter(synonym -> !synonym.trim().isEmpty()).collect(Collectors.toList());
                 searchField.setSynonymMapNames(synonymMaps);
             }

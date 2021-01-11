@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AutomaticTuningOptions model. */
+/** Automatic tuning properties for individual advisors. */
 @Fluent
 public final class AutomaticTuningOptions {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomaticTuningOptions.class);

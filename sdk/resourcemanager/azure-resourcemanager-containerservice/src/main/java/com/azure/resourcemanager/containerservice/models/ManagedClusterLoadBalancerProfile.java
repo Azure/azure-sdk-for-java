@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagedClusterLoadBalancerProfile model. */
+/** Profile of the managed cluster load balancer. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterLoadBalancerProfile.class);

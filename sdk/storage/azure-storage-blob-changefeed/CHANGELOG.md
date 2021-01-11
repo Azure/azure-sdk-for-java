@@ -1,7 +1,15 @@
 # Release History
 
-## 12.0.0-beta.3 (Unreleased)
+## 12.0.0-beta.5 (Unreleased)
 
+
+## 12.0.0-beta.4 (2020-11-11)
+### Dependency updates
+
+- Updated blob dependency to 12.9.0
+
+## 12.0.0-beta.3 (2020-10-01)
+- Added support to specify context in the sync methods.
 
 ## 12.0.0-beta.2 (2020-08-13)
 - Added the ability to read to the current hour

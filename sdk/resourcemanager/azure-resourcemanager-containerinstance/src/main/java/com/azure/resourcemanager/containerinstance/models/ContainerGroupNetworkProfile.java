@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerGroupNetworkProfile model. */
+/** Container group network profile information. */
 @Fluent
 public final class ContainerGroupNetworkProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupNetworkProfile.class);

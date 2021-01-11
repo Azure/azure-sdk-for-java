@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CustomDomainProperties model. */
+/** Custom domain of app resource payload. */
 @Fluent
 public final class CustomDomainProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomainProperties.class);

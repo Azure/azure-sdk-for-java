@@ -14,10 +14,12 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  */
 public class TestContextManager {
     private final String testName;
+    private final String className;
     private final TestMode testMode;
     private final boolean doNotRecord;
-    private final boolean skipInPlayback;
     private final boolean testRan;
+
+    private Integer testIteration;
 
     /**
      * Constructs a {@link TestContextManager} based on the test method.
@@ -27,15 +29,17 @@ public class TestContextManager {
      */
     public TestContextManager(Method testMethod, TestMode testMode) {
         this.testName = testMethod.getName();
+        this.className = testMethod.getDeclaringClass().getSimpleName();
         this.testMode = testMode;
 
         DoNotRecord doNotRecordAnnotation = testMethod.getAnnotation(DoNotRecord.class);
+        boolean skipInPlayback;
         if (doNotRecordAnnotation != null) {
             this.doNotRecord = true;
-            this.skipInPlayback = doNotRecordAnnotation.skipInPlayback();
+            skipInPlayback = doNotRecordAnnotation.skipInPlayback();
         } else {
             this.doNotRecord = false;
-            this.skipInPlayback = false;
+            skipInPlayback = false;
         }
 
         this.testRan = !(skipInPlayback && testMode == TestMode.PLAYBACK);
@@ -49,6 +53,25 @@ public class TestContextManager {
      */
     public String getTestName() {
         return testName;
+    }
+
+    /**
+     * Returns the name of the playback record for the test being ran.
+     *
+     * @return The playback record name.
+     */
+    public String getTestPlaybackRecordingName() {
+        StringBuilder builder = new StringBuilder(className)
+            .append(".")
+            .append(testName);
+
+        if (testIteration != null) {
+            builder.append("[")
+                .append(testIteration)
+                .append("]");
+        }
+
+        return builder.toString();
     }
 
     /**
@@ -77,5 +100,14 @@ public class TestContextManager {
      */
     public boolean didTestRun() {
         return testRan;
+    }
+
+    /**
+     * Sets the test iteration for parameterized tests.
+     *
+     * @param testIteration Test iteration.
+     */
+    void setTestIteration(Integer testIteration) {
+        this.testIteration = testIteration;
     }
 }

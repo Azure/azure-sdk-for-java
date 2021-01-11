@@ -8,6 +8,8 @@ import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsy
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DEFAULT_DUPLICATE_DETECTION_DURATION;
@@ -23,7 +25,9 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  * @see ServiceBusAdministrationClient#createQueue(String, CreateQueueOptions)
  */
 @Fluent
-public class CreateQueueOptions {
+public final class CreateQueueOptions {
+    private final List<AuthorizationRule> authorizationRules;
+
     private Duration autoDeleteOnIdle;
     private Duration defaultMessageTimeToLive;
     private boolean deadLetteringOnMessageExpiration;
@@ -49,12 +53,12 @@ public class CreateQueueOptions {
      *     <li>{@link #setDefaultMessageTimeToLive(Duration)} is max duration value.</li>
      *     <li>{@link #setDuplicateDetectionHistoryTimeWindow(Duration)} is max duration value, but duplication
      *     detection is disabled.</li>
-     *     <li>{@link #setRequiresDuplicateDetection(boolean)} is false.</li>
-     *     <li>{@link #setEnableBatchedOperations(boolean)} is true.</li>
+     *     <li>{@link #setDuplicateDetectionRequired(boolean)} is false.</li>
+     *     <li>{@link #setBatchedOperationsEnabled(boolean)} is true.</li>
      *     <li>{@link #setLockDuration(Duration)} is 1 minute.</li>
      *     <li>{@link #setMaxDeliveryCount(int)} is 10.</li>
      *     <li>{@link #setMaxSizeInMegabytes(int)} is 1024MB.</li>
-     *     <li>{@link #setRequiresSession(boolean)} is false.</li>
+     *     <li>{@link #setSessionRequired(boolean)} is false.</li>
      *     <li>{@link #setStatus(EntityStatus)} is {@link EntityStatus#ACTIVE}.</li>
      * </ul>
      *
@@ -62,6 +66,7 @@ public class CreateQueueOptions {
      * @throws IllegalArgumentException if {@code queueName} is an empty string.
      */
     public CreateQueueOptions() {
+        this.authorizationRules = new ArrayList<>();
         this.autoDeleteOnIdle = MAX_DURATION;
         this.defaultMessageTimeToLive = MAX_DURATION;
         this.duplicateDetectionHistoryTimeWindow = DEFAULT_DUPLICATE_DETECTION_DURATION;
@@ -85,6 +90,7 @@ public class CreateQueueOptions {
     public CreateQueueOptions(QueueProperties queue) {
         Objects.requireNonNull(queue, "'queue' cannot be null.");
 
+        this.authorizationRules = new ArrayList<>(queue.getAuthorizationRules());
         this.autoDeleteOnIdle = queue.getAutoDeleteOnIdle();
         this.defaultMessageTimeToLive = queue.getDefaultMessageTimeToLive();
 
@@ -92,18 +98,27 @@ public class CreateQueueOptions {
         this.duplicateDetectionHistoryTimeWindow = queue.getDuplicateDetectionHistoryTimeWindow() != null
             ? queue.getDuplicateDetectionHistoryTimeWindow()
             : DEFAULT_DUPLICATE_DETECTION_DURATION;
-        this.enableBatchedOperations = queue.enableBatchedOperations();
-        this.enablePartitioning = queue.enablePartitioning();
+        this.enableBatchedOperations = queue.isBatchedOperationsEnabled();
+        this.enablePartitioning = queue.isPartitioningEnabled();
         this.forwardTo = queue.getForwardTo();
         this.forwardDeadLetteredMessagesTo = queue.getForwardDeadLetteredMessagesTo();
         this.lockDuration = queue.getLockDuration();
 
         this.maxDeliveryCount = queue.getMaxDeliveryCount();
         this.maxSizeInMegabytes = queue.getMaxSizeInMegabytes();
-        this.requiresDuplicateDetection = queue.requiresDuplicateDetection();
-        this.requiresSession = queue.requiresSession();
+        this.requiresDuplicateDetection = queue.isDuplicateDetectionRequired();
+        this.requiresSession = queue.isSessionRequired();
         this.status = queue.getStatus();
         this.userMetadata = queue.getUserMetadata();
+    }
+
+    /**
+     * Gets the authorization rules to control user access at entity level.
+     *
+     * @return The authorization rules to control user access at entity level.
+     */
+    public List<AuthorizationRule> getAuthorizationRules() {
+        return authorizationRules;
     }
 
     /**
@@ -160,7 +175,7 @@ public class CreateQueueOptions {
      *
      * @return the deadLetteringOnMessageExpiration value.
      */
-    public boolean deadLetteringOnMessageExpiration() {
+    public boolean isDeadLetteringOnMessageExpiration() {
         return this.deadLetteringOnMessageExpiration;
     }
 
@@ -206,7 +221,7 @@ public class CreateQueueOptions {
      *
      * @return the enableBatchedOperations value.
      */
-    public boolean enableBatchedOperations() {
+    public boolean isBatchedOperationsEnabled() {
         return this.enableBatchedOperations;
     }
 
@@ -218,7 +233,7 @@ public class CreateQueueOptions {
      *
      * @return the CreateQueueOptions object itself.
      */
-    public CreateQueueOptions setEnableBatchedOperations(boolean enableBatchedOperations) {
+    public CreateQueueOptions setBatchedOperationsEnabled(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }
@@ -229,7 +244,7 @@ public class CreateQueueOptions {
      *
      * @return the enablePartitioning value.
      */
-    public boolean enablePartitioning() {
+    public boolean isPartitioningEnabled() {
         return this.enablePartitioning;
     }
 
@@ -241,7 +256,7 @@ public class CreateQueueOptions {
      *
      * @return the CreateQueueOptions object itself.
      */
-    public CreateQueueOptions setEnablePartitioning(boolean enablePartitioning) {
+    public CreateQueueOptions setPartitioningEnabled(boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
         return this;
     }
@@ -368,7 +383,7 @@ public class CreateQueueOptions {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public boolean requiresDuplicateDetection() {
+    public boolean isDuplicateDetectionRequired() {
         return this.requiresDuplicateDetection;
     }
 
@@ -379,7 +394,7 @@ public class CreateQueueOptions {
      *
      * @return the CreateQueueOptions object itself.
      */
-    public CreateQueueOptions setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
+    public CreateQueueOptions setDuplicateDetectionRequired(boolean requiresDuplicateDetection) {
         this.requiresDuplicateDetection = requiresDuplicateDetection;
         return this;
     }
@@ -389,7 +404,7 @@ public class CreateQueueOptions {
      *
      * @return the requiresSession value.
      */
-    public boolean requiresSession() {
+    public boolean isSessionRequired() {
         return this.requiresSession;
     }
 
@@ -400,7 +415,7 @@ public class CreateQueueOptions {
      *
      * @return the CreateQueueOptions object itself.
      */
-    public CreateQueueOptions setRequiresSession(boolean requiresSession) {
+    public CreateQueueOptions setSessionRequired(boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }

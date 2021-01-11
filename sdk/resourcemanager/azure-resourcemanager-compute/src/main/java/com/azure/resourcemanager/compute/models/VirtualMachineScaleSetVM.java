@@ -6,12 +6,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetVMInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetVMInner;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.util.List;
@@ -25,7 +25,7 @@ public interface VirtualMachineScaleSetVM
         ChildResource<VirtualMachineScaleSet>,
         Refreshable<VirtualMachineScaleSetVM>,
         Updatable<VirtualMachineScaleSetVM.Update>,
-        HasInner<VirtualMachineScaleSetVMInner> {
+        HasInnerModel<VirtualMachineScaleSetVMInner> {
     /** @return the instance ID assigned to this virtual machine instance */
     String instanceId();
 

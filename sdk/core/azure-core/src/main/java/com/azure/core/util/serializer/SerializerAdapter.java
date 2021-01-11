@@ -64,28 +64,28 @@ public interface SerializerAdapter {
     String serializeList(List<?> list, CollectionFormat format);
 
     /**
-     * Deserializes a string into a {@code U} object.
+     * Deserializes a string into a {@code T} object.
      *
      * @param value the string value to deserialize
-     * @param <U> the type of the deserialized object
+     * @param <T> the type of the deserialized object
      * @param type the type to deserialize
      * @param encoding the encoding used in the serialized value
      * @return the deserialized object
      * @throws IOException exception from deserialization
      */
-    <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException;
+    <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException;
 
     /**
-     * Deserializes a byte[] into a {@code U} object.
+     * Deserializes a byte[] into a {@code T} object.
      *
      * @param inputStream The {@link InputStream} containing the serialized object data to deserialize.
      * @param type The type to deserialize.
      * @param encoding The encoding used to serialize value.
-     * @param <U> The type of the deserialized object.
+     * @param <T> The type of the deserialized object.
      * @return The deserialized object, or null if it cannot be deserialized.
      * @throws IOException exception from deserialization
      */
-    default <U> U deserialize(final InputStream inputStream, final Type type, final SerializerEncoding encoding)
+    default <T> T deserialize(final InputStream inputStream, final Type type, final SerializerEncoding encoding)
         throws IOException {
         if (inputStream == null) {
             return deserialize((String) null, type, encoding);
@@ -137,11 +137,11 @@ public interface SerializerAdapter {
      * {@code headers}.
      *
      * @param headers the REST API returned headers
-     * @param <U> the type of the deserialized object
+     * @param <T> the type of the deserialized object
      * @param type the type to deserialize
      * @return instance of header entity type created based on provided {@code headers}, if header entity model does not
      * not exists then return null
      * @throws IOException If an I/O error occurs
      */
-    <U> U deserialize(HttpHeaders headers, Type type) throws IOException;
+    <T> T deserialize(HttpHeaders headers, Type type) throws IOException;
 }

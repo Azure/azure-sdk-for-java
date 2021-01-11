@@ -39,6 +39,30 @@ public class CognitiveServicesAccountApiProperties {
     private String storageAccountConnectionString;
 
     /**
+     * (Metrics Advisor Only) The Azure AD Client Id (Application Id).
+     */
+    @JsonProperty(value = "aadClientId")
+    private String aadClientId;
+
+    /**
+     * (Metrics Advisor Only) The Azure AD Tenant Id.
+     */
+    @JsonProperty(value = "aadTenantId")
+    private String aadTenantId;
+
+    /**
+     * (Metrics Advisor Only) The super user of Metrics Advisor.
+     */
+    @JsonProperty(value = "superUser")
+    private String superUser;
+
+    /**
+     * (Metrics Advisor Only) The website name of Metrics Advisor.
+     */
+    @JsonProperty(value = "websiteName")
+    private String websiteName;
+
+    /**
      * Get (QnAMaker Only) The runtime endpoint of QnAMaker.
      *
      * @return the qnaRuntimeEndpoint value
@@ -115,6 +139,86 @@ public class CognitiveServicesAccountApiProperties {
      */
     public CognitiveServicesAccountApiProperties withStorageAccountConnectionString(String storageAccountConnectionString) {
         this.storageAccountConnectionString = storageAccountConnectionString;
+        return this;
+    }
+
+    /**
+     * Get (Metrics Advisor Only) The Azure AD Client Id (Application Id).
+     *
+     * @return the aadClientId value
+     */
+    public String aadClientId() {
+        return this.aadClientId;
+    }
+
+    /**
+     * Set (Metrics Advisor Only) The Azure AD Client Id (Application Id).
+     *
+     * @param aadClientId the aadClientId value to set
+     * @return the CognitiveServicesAccountApiProperties object itself.
+     */
+    public CognitiveServicesAccountApiProperties withAadClientId(String aadClientId) {
+        this.aadClientId = aadClientId;
+        return this;
+    }
+
+    /**
+     * Get (Metrics Advisor Only) The Azure AD Tenant Id.
+     *
+     * @return the aadTenantId value
+     */
+    public String aadTenantId() {
+        return this.aadTenantId;
+    }
+
+    /**
+     * Set (Metrics Advisor Only) The Azure AD Tenant Id.
+     *
+     * @param aadTenantId the aadTenantId value to set
+     * @return the CognitiveServicesAccountApiProperties object itself.
+     */
+    public CognitiveServicesAccountApiProperties withAadTenantId(String aadTenantId) {
+        this.aadTenantId = aadTenantId;
+        return this;
+    }
+
+    /**
+     * Get (Metrics Advisor Only) The super user of Metrics Advisor.
+     *
+     * @return the superUser value
+     */
+    public String superUser() {
+        return this.superUser;
+    }
+
+    /**
+     * Set (Metrics Advisor Only) The super user of Metrics Advisor.
+     *
+     * @param superUser the superUser value to set
+     * @return the CognitiveServicesAccountApiProperties object itself.
+     */
+    public CognitiveServicesAccountApiProperties withSuperUser(String superUser) {
+        this.superUser = superUser;
+        return this;
+    }
+
+    /**
+     * Get (Metrics Advisor Only) The website name of Metrics Advisor.
+     *
+     * @return the websiteName value
+     */
+    public String websiteName() {
+        return this.websiteName;
+    }
+
+    /**
+     * Set (Metrics Advisor Only) The website name of Metrics Advisor.
+     *
+     * @param websiteName the websiteName value to set
+     * @return the CognitiveServicesAccountApiProperties object itself.
+     */
+    public CognitiveServicesAccountApiProperties withWebsiteName(String websiteName) {
+        this.websiteName = websiteName;
         return this;
     }
 

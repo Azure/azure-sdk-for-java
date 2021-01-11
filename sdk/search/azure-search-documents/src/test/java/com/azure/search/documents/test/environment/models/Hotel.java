@@ -3,8 +3,8 @@
 package com.azure.search.documents.test.environment.models;
 
 import com.azure.search.documents.indexes.FieldBuilderIgnore;
-import com.azure.search.documents.indexes.SearchableFieldProperty;
-import com.azure.search.documents.indexes.SimpleFieldProperty;
+import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,15 +14,15 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Hotel {
-    @SimpleFieldProperty(isKey = true, isSortable = true)
+    @SimpleField(isKey = true, isSortable = true)
     @JsonProperty(value = "HotelId")
     private String hotelId;
 
-    @SearchableFieldProperty(isSortable = true, analyzerName = "en.lucene")
+    @SearchableField(isSortable = true, analyzerName = "en.lucene")
     @JsonProperty(value = "HotelName")
     private String hotelName;
 
-    @SimpleFieldProperty
+    @SimpleField
     @JsonProperty(value = "Description")
     private String description;
 
@@ -30,11 +30,11 @@ public class Hotel {
     @JsonProperty(value = "Description_fr")
     private String descriptionFr;
 
-    @SimpleFieldProperty
+    @SimpleField
     @JsonProperty(value = "Category")
     private String category;
 
-    @SearchableFieldProperty
+    @SearchableField
     @JsonProperty(value = "Tags")
     private List<String> tags;
 

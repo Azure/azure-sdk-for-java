@@ -31,7 +31,8 @@ public final class BufferedHttpResponse extends HttpResponse {
         this.cachedBody = FluxUtil.collectBytesInByteBufferStream(innerHttpResponse.getBody())
             .map(ByteBuffer::wrap)
             .flux()
-            .cache();
+            .cache()
+            .map(ByteBuffer::duplicate);
     }
 
     @Override
@@ -67,8 +68,7 @@ public final class BufferedHttpResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return getBodyAsByteArray()
-                .map(bytes -> bytes == null ? null : new String(bytes, charset));
+        return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
     }
 
     @Override

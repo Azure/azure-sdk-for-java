@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.redis.implementation;
 
-import com.azure.resourcemanager.redis.fluent.inner.RedisPatchScheduleInner;
+import com.azure.resourcemanager.redis.fluent.models.RedisPatchScheduleInner;
 import com.azure.resourcemanager.redis.models.RedisCache;
 import com.azure.resourcemanager.redis.models.RedisPatchSchedule;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
@@ -82,7 +82,7 @@ class RedisPatchSchedulesImpl
         return this
             .getParent()
             .manager()
-            .inner()
+            .serviceClient()
             .getPatchSchedules()
             .listByRedisResourceAsync(this.getParent().resourceGroupName(), this.getParent().name())
             .map(

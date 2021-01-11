@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CustomDomain model. */
+/** The custom domain assigned to this storage account. This can be set via Update. */
 @Fluent
 public final class CustomDomain {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomDomain.class);

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.io.File;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.Map;
 /** A client-side representation of an application gateway's backend HTTP configuration. */
 @Fluent()
 public interface ApplicationGatewayBackendHttpConfiguration
-    extends HasInner<ApplicationGatewayBackendHttpSettings>,
+    extends HasInnerModel<ApplicationGatewayBackendHttpSettings>,
         ChildResource<ApplicationGateway>,
         HasProtocol<ApplicationGatewayProtocol>,
         HasPort {
@@ -80,16 +80,6 @@ public interface ApplicationGatewayBackendHttpConfiguration
          *     definition
          */
         interface WithProtocol<ReturnT> {
-            /**
-             * Specifies the transport protocol.
-             *
-             * @param protocol a transport protocol
-             * @return the next stage of the definition
-             * @deprecated use {@link #withHttps()} instead (HTTP is the default)
-             */
-            @Deprecated
-            WithAttach<ReturnT> withProtocol(ApplicationGatewayProtocol protocol);
-
             /**
              * Specifies HTTPS as the protocol.
              *
@@ -348,16 +338,6 @@ public interface ApplicationGatewayBackendHttpConfiguration
 
         /** The stage of an application gateway backend HTTP configuration allowing to specify the protocol. */
         interface WithProtocol {
-            /**
-             * Specifies the transport protocol.
-             *
-             * @param protocol a transport protocol
-             * @return the next stage of the update
-             * @deprecated use {@link #withHttp()} or {@link #withHttps()} instead
-             */
-            @Deprecated
-            Update withProtocol(ApplicationGatewayProtocol protocol);
-
             /**
              * Specifies HTTPS as the protocol.
              *
@@ -694,16 +674,6 @@ public interface ApplicationGatewayBackendHttpConfiguration
          *     definition
          */
         interface WithProtocol<ReturnT> {
-            /**
-             * Specifies the transport protocol.
-             *
-             * @param protocol a transport protocol
-             * @return the next stage of the definition
-             * @deprecated use {@link #withHttps()} instead (HTTP is the default)
-             */
-            @Deprecated
-            WithAttach<ReturnT> withProtocol(ApplicationGatewayProtocol protocol);
-
             /**
              * Specifies HTTPS as the protocol.
              *

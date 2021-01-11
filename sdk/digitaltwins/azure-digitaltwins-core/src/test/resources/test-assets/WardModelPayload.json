@@ -1,0 +1,23 @@
+{
+  "@id": "WARD_MODEL_ID",
+  "@type": "Interface",
+  "displayName": "Ward",
+  "description": "A separate partition in a building, made of rooms and hallways.",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "VisitorCount",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "HandWashPercentage",
+      "schema": "double"
+    },
+    {
+      "@type": "Relationship",
+      "name": "managedRooms"
+    }
+  ],
+  "@context": ["dtmi:dtdl:context;2"]
+}

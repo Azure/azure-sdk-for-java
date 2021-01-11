@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RedisCreateProperties model. */
+/** Properties supplied to Create Redis operation. */
 @Fluent
 public class RedisCreateProperties extends RedisCommonProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisCreateProperties.class);

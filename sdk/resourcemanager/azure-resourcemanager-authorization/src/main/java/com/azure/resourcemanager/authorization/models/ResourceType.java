@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceType model. */
+/** Resource Type. */
 @Fluent
 public final class ResourceType {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceType.class);

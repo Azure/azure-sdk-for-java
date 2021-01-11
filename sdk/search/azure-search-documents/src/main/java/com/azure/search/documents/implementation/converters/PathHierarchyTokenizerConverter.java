@@ -62,7 +62,7 @@ public final class PathHierarchyTokenizerConverter {
 
         Character replacement = obj.getReplacement();
         pathHierarchyTokenizerV2.setReplacement(replacement);
-        pathHierarchyTokenizerV2.validate();
+
         return pathHierarchyTokenizerV2;
     }
 

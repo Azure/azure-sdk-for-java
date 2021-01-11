@@ -3,39 +3,64 @@
 
 package com.azure.resourcemanager.dns;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.dns.models.ARecordSet;
 import com.azure.resourcemanager.dns.models.AaaaRecordSet;
-import com.azure.resourcemanager.dns.models.CNameRecordSet;
+import com.azure.resourcemanager.dns.models.CnameRecordSet;
 import com.azure.resourcemanager.dns.models.CaaRecordSet;
 import com.azure.resourcemanager.dns.models.DnsZone;
 import com.azure.resourcemanager.dns.models.ZoneType;
-import com.azure.resourcemanager.resources.core.TestBase;
-import com.azure.resourcemanager.resources.core.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.test.utils.TestUtilities;
+import com.azure.core.management.Region;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DnsZoneRecordSetETagTests extends TestBase {
-    private String rgName = "";
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
-    public DnsZoneRecordSetETagTests() {
-        super(TestBase.RunCondition.BOTH);
-    }
+public class DnsZoneRecordSetETagTests extends ResourceManagerTestBase {
+    private String rgName = "";
 
     protected ResourceManager resourceManager;
     protected DnsZoneManager zoneManager;
 
     @Override
+    protected HttpPipeline buildHttpPipeline(
+        TokenCredential credential,
+        AzureProfile profile,
+        HttpLogOptions httpLogOptions,
+        List<HttpPipelinePolicy> policies,
+        HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(
+            credential,
+            profile,
+            null,
+            httpLogOptions,
+            null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
+            policies,
+            httpClient);
+    }
+
+    @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
-        zoneManager = DnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        zoneManager = buildManager(DnsZoneManager.class, httpPipeline, profile);
+        resourceManager = zoneManager.resourceManager();
         rgName = generateRandomResourceName("dnsetagtest", 15);
     }
 
@@ -94,9 +119,6 @@ public class DnsZoneRecordSetETagTests extends TestBase {
 
     @Test
     public void canCreateRecordSetsWithDefaultETag() throws Exception {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
@@ -143,7 +165,7 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         Assertions.assertTrue(aaaaRecordSet1.ipv6Addresses().size() == 2);
 
         // Check CNAME records
-        PagedIterable<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
+        PagedIterable<CnameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
         Assertions.assertTrue(TestUtilities.getSize(cnameRecordSets) == 2);
 
         // Check Caa records

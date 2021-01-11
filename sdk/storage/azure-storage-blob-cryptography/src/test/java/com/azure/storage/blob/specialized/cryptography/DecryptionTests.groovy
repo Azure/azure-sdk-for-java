@@ -30,7 +30,7 @@ class DecryptionTests extends APISpec {
         keyId = "keyId"
         fakeKey = new FakeKey(keyId, getRandomByteArray(256))
 
-        blobDecryptionPolicy = new BlobDecryptionPolicy(fakeKey, null)
+        blobDecryptionPolicy = new BlobDecryptionPolicy(fakeKey, null, false)
 
         blobName = generateBlobName()
     }

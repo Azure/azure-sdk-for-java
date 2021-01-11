@@ -3,24 +3,24 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.fluent.inner.DatabaseSecurityAlertPolicyInner;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
 
 /** A representation of the Azure SQL Database threat detection policy. */
 @Fluent
 public interface SqlDatabaseThreatDetectionPolicy
     extends ExternalChildResource<SqlDatabaseThreatDetectionPolicy, SqlDatabase>,
         HasParent<SqlDatabase>,
-        HasInner<DatabaseSecurityAlertPolicyInner>,
+        HasInnerModel<DatabaseSecurityAlertPolicyInner>,
         HasResourceGroup,
         Refreshable<SqlDatabaseThreatDetectionPolicy>,
         Updatable<SqlDatabaseThreatDetectionPolicy.Update> {

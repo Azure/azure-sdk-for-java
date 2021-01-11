@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetUpdateOSProfile model. */
+/** Describes a virtual machine scale set OS profile. */
 @Fluent
 public final class VirtualMachineScaleSetUpdateOSProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateOSProfile.class);

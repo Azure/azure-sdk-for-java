@@ -310,6 +310,18 @@ public class AmqpChannelProcessor<T> extends Mono<T> implements Processor<T, T>,
     }
 
     /**
+     * Checks the current state of the channel for this channel and returns true if the channel is null or if this
+     * processor is disposed.
+     *
+     * @return true if the current channel in the processor is null or if the processor is disposed
+     */
+    public boolean isChannelClosed() {
+        synchronized (lock) {
+            return currentChannel == null || isDisposed();
+        }
+    }
+
+    /**
      * Represents a subscriber, waiting for an AMQP connection.
      */
     private static final class ChannelSubscriber<T> extends Operators.MonoSubscriber<T, T> {

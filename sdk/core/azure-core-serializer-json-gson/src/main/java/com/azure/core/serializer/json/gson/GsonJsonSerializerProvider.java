@@ -9,7 +9,7 @@ import com.azure.core.util.serializer.MemberNameConverterProvider;
 /**
  * Implementation of {@link JsonSerializerProvider}.
  */
-public class GsonJsonSerializerProvider implements MemberNameConverterProvider, JsonSerializerProvider {
+public final class GsonJsonSerializerProvider implements JsonSerializerProvider, MemberNameConverterProvider {
     @Override
     public GsonJsonSerializer createInstance() {
         return new GsonJsonSerializerBuilder().build();

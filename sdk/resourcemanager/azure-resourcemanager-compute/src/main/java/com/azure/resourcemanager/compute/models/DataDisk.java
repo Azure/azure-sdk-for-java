@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DataDisk model. */
+/** Describes a data disk. */
 @Fluent
 public final class DataDisk {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDisk.class);

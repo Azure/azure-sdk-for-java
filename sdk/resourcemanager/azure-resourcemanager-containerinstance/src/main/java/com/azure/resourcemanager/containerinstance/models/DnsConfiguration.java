@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The DnsConfiguration model. */
+/** DNS configuration for the container group. */
 @Fluent
 public final class DnsConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsConfiguration.class);

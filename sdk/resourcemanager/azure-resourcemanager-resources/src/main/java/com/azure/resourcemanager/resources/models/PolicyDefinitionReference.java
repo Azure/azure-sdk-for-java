@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The PolicyDefinitionReference model. */
+/** The policy definition reference. */
 @Fluent
 public final class PolicyDefinitionReference {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyDefinitionReference.class);

@@ -29,12 +29,9 @@ public final class GetIndexStatisticsResultConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult getIndexStatisticsResult =
-            new com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult(
-                obj.getDocumentCount(), obj.getStorageSize());
 
-        getIndexStatisticsResult.validate();
-        return getIndexStatisticsResult;
+        return new com.azure.search.documents.indexes.implementation.models.GetIndexStatisticsResult(
+            obj.getDocumentCount(), obj.getStorageSize());
     }
 
     private GetIndexStatisticsResultConverter() {

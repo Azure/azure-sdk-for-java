@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//alert/anomaly/configurations/204a211a-c5f4-45f3-a30e-512fb25d1d2c/alerts/175434e3400/incidents?$top=10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "89e53bf1-475f-4295-b331-cb509e6c6e9a"
+    },
+    "Response" : {
+      "x-request-id" : "fc7cd31c-6423-4369-9a9a-4f60b7dd3c86",
+      "x-envoy-upstream-service-time" : "431",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "fc7cd31c-6423-4369-9a9a-4f60b7dd3c86",
+      "retry-after" : "0",
+      "Content-Length" : "788",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"anomalyDetectionConfigurationId\":\"fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c\",\"incidentId\":\"51d849d03277901eadfa9a0e7665b4ad-175434e3400\",\"startTime\":\"2020-10-20T00:00:00Z\",\"lastTime\":\"2020-10-20T00:00:00Z\",\"rootNode\":{\"dimension\":{\"city\":\"Delhi\",\"category\":\"Shoes Handbags & Sunglasses\"}},\"property\":{\"incidentStatus\":\"Resolved\"}},{\"metricId\":\"27e3015f-04fd-44ba-a20b-bc529a0aebae\",\"anomalyDetectionConfigurationId\":\"fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c\",\"incidentId\":\"daceb039d9ec34d28f04654dd61aee57-175434e3400\",\"startTime\":\"2020-10-20T00:00:00Z\",\"lastTime\":\"2020-10-20T00:00:00Z\",\"rootNode\":{\"dimension\":{\"city\":\"Karachi\",\"category\":\"Handmade\"}},\"property\":{\"maxSeverity\":\"Medium\",\"incidentStatus\":\"Active\"}}],\"@nextLink\":null}",
+      "Date" : "Thu, 29 Oct 2020 23:15:23 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

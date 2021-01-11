@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PrivateLinkServiceConnection model. */
+/** PrivateLinkServiceConnection resource. */
 @JsonFlatten
 @Fluent
 public class PrivateLinkServiceConnection extends SubResource {
@@ -203,6 +203,13 @@ public class PrivateLinkServiceConnection extends SubResource {
     public PrivateLinkServiceConnection withPrivateLinkServiceConnectionState(
         PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PrivateLinkServiceConnection withId(String id) {
+        super.withId(id);
         return this;
     }
 

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LogSpecification model. */
+/** Specifications of the Log for Azure Monitoring. */
 @Fluent
 public final class LogSpecification {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LogSpecification.class);

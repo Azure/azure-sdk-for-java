@@ -24,11 +24,6 @@ import java.util.List;
  */
 public interface DataExport extends HasInner<DataExportInner>, Indexable, Refreshable<DataExport>, Updatable<DataExport.Update>, HasManager<LogAnalyticsManager> {
     /**
-     * @return the allTables value.
-     */
-    Boolean allTables();
-
-    /**
      * @return the createdDate value.
      */
     String createdDate();
@@ -125,18 +120,6 @@ public interface DataExport extends HasInner<DataExportInner>, Indexable, Refres
         }
 
         /**
-         * The stage of the dataexport definition allowing to specify AllTables.
-         */
-        interface WithAllTables {
-            /**
-             * Specifies allTables.
-             * @param allTables When ‘true’, all workspace's tables are exported
-             * @return the next definition stage
-             */
-            WithCreate withAllTables(Boolean allTables);
-        }
-
-        /**
          * The stage of the dataexport definition allowing to specify CreatedDate.
          */
         interface WithCreatedDate {
@@ -213,31 +196,19 @@ public interface DataExport extends HasInner<DataExportInner>, Indexable, Refres
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<DataExport>, DefinitionStages.WithAllTables, DefinitionStages.WithCreatedDate, DefinitionStages.WithDataExportId, DefinitionStages.WithEnable, DefinitionStages.WithEventHubName, DefinitionStages.WithLastModifiedDate, DefinitionStages.WithTableNames {
+        interface WithCreate extends Creatable<DataExport>, DefinitionStages.WithCreatedDate, DefinitionStages.WithDataExportId, DefinitionStages.WithEnable, DefinitionStages.WithEventHubName, DefinitionStages.WithLastModifiedDate, DefinitionStages.WithTableNames {
         }
     }
     /**
      * The template for a DataExport update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<DataExport>, UpdateStages.WithAllTables, UpdateStages.WithCreatedDate, UpdateStages.WithDataExportId, UpdateStages.WithEnable, UpdateStages.WithEventHubName, UpdateStages.WithLastModifiedDate, UpdateStages.WithTableNames {
+    interface Update extends Appliable<DataExport>, UpdateStages.WithCreatedDate, UpdateStages.WithDataExportId, UpdateStages.WithEnable, UpdateStages.WithEventHubName, UpdateStages.WithLastModifiedDate, UpdateStages.WithTableNames {
     }
 
     /**
      * Grouping of DataExport update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the dataexport update allowing to specify AllTables.
-         */
-        interface WithAllTables {
-            /**
-             * Specifies allTables.
-             * @param allTables When ‘true’, all workspace's tables are exported
-             * @return the next update stage
-             */
-            Update withAllTables(Boolean allTables);
-        }
-
         /**
          * The stage of the dataexport update allowing to specify CreatedDate.
          */

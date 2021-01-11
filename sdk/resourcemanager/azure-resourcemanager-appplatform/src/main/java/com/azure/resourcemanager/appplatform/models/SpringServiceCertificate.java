@@ -3,14 +3,14 @@
 
 package com.azure.resourcemanager.appplatform.models;
 
-import com.azure.resourcemanager.appplatform.fluent.inner.CertificateResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.CertificateResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An immutable client-side representation of an Azure Spring Service Certificate. */
 public interface SpringServiceCertificate
     extends ExternalChildResource<SpringServiceCertificate, SpringService>,
-    HasInner<CertificateResourceInner> {
+        HasInnerModel<CertificateResourceInner> {
     /** @return the properties of the service binding */
     CertificateProperties properties();
 }

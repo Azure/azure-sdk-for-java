@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The StackMajorVersion model. */
+/** Application stack major version. */
 @Fluent
 public final class StackMajorVersion {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StackMajorVersion.class);

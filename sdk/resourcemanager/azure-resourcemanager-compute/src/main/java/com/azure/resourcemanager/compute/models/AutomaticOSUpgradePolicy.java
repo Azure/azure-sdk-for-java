@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AutomaticOSUpgradePolicy model. */
+/** The configuration parameters used for performing automatic OS upgrade. */
 @Fluent
 public final class AutomaticOSUpgradePolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomaticOSUpgradePolicy.class);

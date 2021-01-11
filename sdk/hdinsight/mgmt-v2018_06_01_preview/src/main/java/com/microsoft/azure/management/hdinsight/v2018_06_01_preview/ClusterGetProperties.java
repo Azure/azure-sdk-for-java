@@ -35,6 +35,12 @@ public class ClusterGetProperties {
     private Tier tier;
 
     /**
+     * The cluster id.
+     */
+    @JsonProperty(value = "clusterId")
+    private String clusterId;
+
+    /**
      * The cluster definition.
      */
     @JsonProperty(value = "clusterDefinition", required = true)
@@ -115,10 +121,10 @@ public class ClusterGetProperties {
     private String minSupportedTlsVersion;
 
     /**
-     * The network settings.
+     * The network properties.
      */
-    @JsonProperty(value = "networkSettings")
-    private NetworkSettings networkSettings;
+    @JsonProperty(value = "networkProperties")
+    private NetworkProperties networkProperties;
 
     /**
      * Get the version of the cluster.
@@ -177,6 +183,26 @@ public class ClusterGetProperties {
      */
     public ClusterGetProperties withTier(Tier tier) {
         this.tier = tier;
+        return this;
+    }
+
+    /**
+     * Get the cluster id.
+     *
+     * @return the clusterId value
+     */
+    public String clusterId() {
+        return this.clusterId;
+    }
+
+    /**
+     * Set the cluster id.
+     *
+     * @param clusterId the clusterId value to set
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withClusterId(String clusterId) {
+        this.clusterId = clusterId;
         return this;
     }
 
@@ -441,22 +467,22 @@ public class ClusterGetProperties {
     }
 
     /**
-     * Get the network settings.
+     * Get the network properties.
      *
-     * @return the networkSettings value
+     * @return the networkProperties value
      */
-    public NetworkSettings networkSettings() {
-        return this.networkSettings;
+    public NetworkProperties networkProperties() {
+        return this.networkProperties;
     }
 
     /**
-     * Set the network settings.
+     * Set the network properties.
      *
-     * @param networkSettings the networkSettings value to set
+     * @param networkProperties the networkProperties value to set
      * @return the ClusterGetProperties object itself.
      */
-    public ClusterGetProperties withNetworkSettings(NetworkSettings networkSettings) {
-        this.networkSettings = networkSettings;
+    public ClusterGetProperties withNetworkProperties(NetworkProperties networkProperties) {
+        this.networkProperties = networkProperties;
         return this;
     }
 

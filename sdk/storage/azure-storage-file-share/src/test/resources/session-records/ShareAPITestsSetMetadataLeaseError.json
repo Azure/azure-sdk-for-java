@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestssetmetadataleaseerror723598bdd1c8760?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c47fbaec-4a7e-4dfe-9187-3c2b8f84bcb4"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D86726E5D94532",
+      "Last-Modified" : "Fri, 02 Oct 2020 23:00:03 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "99657531-c01a-0021-0d0f-99b5f9000000",
+      "Date" : "Fri, 02 Oct 2020 23:00:02 GMT",
+      "x-ms-client-request-id" : "c47fbaec-4a7e-4dfe-9187-3c2b8f84bcb4"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestssetmetadataleaseerror723598bdd1c8760?restype=share&comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "47426095-4ac8-46cc-b58c-a7d75880cdfd"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "LeaseNotPresentWithContainerOperation",
+      "retry-after" : "0",
+      "Content-Length" : "252",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "99657533-c01a-0021-0e0f-99b5f9000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the file share.\nRequestId:99657533-c01a-0021-0e0f-99b5f9000000\nTime:2020-10-02T23:00:03.6395448Z</Message></Error>",
+      "Date" : "Fri, 02 Oct 2020 23:00:02 GMT",
+      "x-ms-client-request-id" : "47426095-4ac8-46cc-b58c-a7d75880cdfd",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestssetmetadataleaseerror723598bdd1c8760" ]
+}

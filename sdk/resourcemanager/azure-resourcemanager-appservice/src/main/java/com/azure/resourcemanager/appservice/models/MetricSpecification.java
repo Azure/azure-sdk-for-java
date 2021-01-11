@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MetricSpecification model. */
+/** Definition of a single resource metric. */
 @Fluent
 public final class MetricSpecification {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecification.class);

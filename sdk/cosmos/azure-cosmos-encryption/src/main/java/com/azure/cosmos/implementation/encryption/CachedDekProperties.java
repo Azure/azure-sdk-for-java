@@ -13,7 +13,8 @@ class CachedDekProperties {
         DataEncryptionKeyProperties serverProperties,
         Instant serverPropertiesExpiryUtc) {
         assert(serverProperties != null);
-
+        // TODO: when contentResponseOnWriteEnabled = false we fail with NPE.
+        // TODO: consider the above scenario / add NPE validation
         this.serverProperties = serverProperties;
         this.serverPropertiesExpiryUtc = serverPropertiesExpiryUtc;
     }

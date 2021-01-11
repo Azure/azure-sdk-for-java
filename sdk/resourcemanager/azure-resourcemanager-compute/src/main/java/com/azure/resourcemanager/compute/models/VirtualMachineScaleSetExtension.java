@@ -4,10 +4,10 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineScaleSetExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +15,7 @@ import java.util.Map;
 /** An immutable client-side representation of an extension associated with virtual machines in a scale set. */
 @Fluent
 public interface VirtualMachineScaleSetExtension
-    extends HasInner<VirtualMachineScaleSetExtensionInner>, ChildResource<VirtualMachineScaleSet> {
+    extends HasInnerModel<VirtualMachineScaleSetExtensionInner>, ChildResource<VirtualMachineScaleSet> {
     /** @return the publisher name of the virtual machine scale set extension image this extension is created from */
     String publisherName();
 

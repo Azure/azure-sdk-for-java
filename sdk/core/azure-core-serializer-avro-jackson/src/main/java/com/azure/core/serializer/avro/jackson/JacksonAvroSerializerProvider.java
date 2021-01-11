@@ -17,6 +17,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Implementation of {@link AvroSerializerProvider}.
  */
 public class JacksonAvroSerializerProvider implements AvroSerializerProvider {
+    private static final Schema NULL_SCHEMA;
+    private static final Schema BYTE_BUFFER_SCHEMA;
     private static final Map<Class<?>, Schema> CLASS_SCHEMA_CACHE;
 
     private static final ClientLogger LOGGER = new ClientLogger(JacksonAvroSerializerProvider.class);
@@ -24,17 +26,17 @@ public class JacksonAvroSerializerProvider implements AvroSerializerProvider {
         + "Boolean, Integer, Long, Float, Double, String, byte[] and IndexedRecord";
 
     static {
+        NULL_SCHEMA = Schema.create(Schema.Type.NULL);
+        BYTE_BUFFER_SCHEMA = Schema.create(Schema.Type.BYTES);
         CLASS_SCHEMA_CACHE = new ConcurrentHashMap<>();
 
-        Schema.Parser parser = new Schema.Parser();
-        addPrimitiveSchema("null", parser, (Class<?>) null);
-        addPrimitiveSchema("boolean", parser, boolean.class, Boolean.class);
-        addPrimitiveSchema("int", parser, int.class, Integer.class);
-        addPrimitiveSchema("long", parser, long.class, Long.class);
-        addPrimitiveSchema("float", parser, float.class, Float.class);
-        addPrimitiveSchema("double", parser, double.class, Double.class);
-        addPrimitiveSchema("string", parser, CharSequence.class, String.class);
-        addPrimitiveSchema("bytes", parser, byte[].class, ByteBuffer.class);
+        addPrimitiveSchema(Schema.create(Schema.Type.BOOLEAN), boolean.class, Boolean.class);
+        addPrimitiveSchema(Schema.create(Schema.Type.INT), int.class, Integer.class);
+        addPrimitiveSchema(Schema.create(Schema.Type.LONG), long.class, Long.class);
+        addPrimitiveSchema(Schema.create(Schema.Type.FLOAT), float.class, Float.class);
+        addPrimitiveSchema(Schema.create(Schema.Type.DOUBLE), double.class, Double.class);
+        addPrimitiveSchema(Schema.create(Schema.Type.STRING), CharSequence.class, String.class);
+        addPrimitiveSchema(Schema.create(Schema.Type.BYTES), byte[].class);
     }
 
     @Override
@@ -55,9 +57,15 @@ public class JacksonAvroSerializerProvider implements AvroSerializerProvider {
     }
 
     private static Schema computeOrGet(Object object) {
-        Class<?> key = (object == null) ? null : object.getClass();
+        if (object == null) {
+            return NULL_SCHEMA;
+        }
 
-        return CLASS_SCHEMA_CACHE.computeIfAbsent(key, k -> {
+        if (ByteBuffer.class.isAssignableFrom(object.getClass())) {
+            return BYTE_BUFFER_SCHEMA;
+        }
+
+        return CLASS_SCHEMA_CACHE.computeIfAbsent(object.getClass(), k -> {
             if (GenericContainer.class.isAssignableFrom(k)) {
                 return ((GenericContainer) object).getSchema();
             }
@@ -65,11 +73,9 @@ public class JacksonAvroSerializerProvider implements AvroSerializerProvider {
         });
     }
 
-    private static void addPrimitiveSchema(String type, Schema.Parser parser, Class<?>... associatedClasses) {
-        Schema schema = parser.parse(String.format("{\"type\" : \"%s\"}", type));
-
+    private static void addPrimitiveSchema(Schema primitiveSchema, Class<?>... associatedClasses) {
         for (Class<?> associatedClass : associatedClasses) {
-            CLASS_SCHEMA_CACHE.put(associatedClass, schema);
+            CLASS_SCHEMA_CACHE.put(associatedClass, primitiveSchema);
         }
     }
 }

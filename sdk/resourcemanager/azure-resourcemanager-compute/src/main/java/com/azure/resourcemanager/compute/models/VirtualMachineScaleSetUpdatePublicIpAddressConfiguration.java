@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineScaleSetUpdatePublicIpAddressConfiguration model. */
+/** Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration. */
 @JsonFlatten
 @Fluent
 public class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {

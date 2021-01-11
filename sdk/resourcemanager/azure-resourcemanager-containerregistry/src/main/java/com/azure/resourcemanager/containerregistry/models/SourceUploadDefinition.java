@@ -3,12 +3,12 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.containerregistry.fluent.inner.SourceUploadDefinitionInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.SourceUploadDefinitionInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** The source repository properties for a build task. */
 @Fluent
-public interface SourceUploadDefinition extends HasInner<SourceUploadDefinitionInner> {
+public interface SourceUploadDefinition extends HasInnerModel<SourceUploadDefinitionInner> {
     /** @return the URL where the client can upload the source */
     String uploadUrl();
 

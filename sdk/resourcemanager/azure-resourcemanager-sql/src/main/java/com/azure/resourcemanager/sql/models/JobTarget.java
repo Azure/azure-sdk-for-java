@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The JobTarget model. */
+/** A job target, for example a specific database or a container of databases that is evaluated during job execution. */
 @Fluent
 public final class JobTarget {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JobTarget.class);

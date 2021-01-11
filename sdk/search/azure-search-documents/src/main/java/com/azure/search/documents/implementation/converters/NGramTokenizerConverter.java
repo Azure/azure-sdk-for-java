@@ -5,9 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.NGramTokenizer;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * A converter between {@link com.azure.search.documents.indexes.implementation.models.NGramTokenizer} and
  * {@link NGramTokenizer}.
@@ -26,9 +23,7 @@ public final class NGramTokenizerConverter {
         nGramTokenizer.setMaxGram(maxGram);
 
         if (obj.getTokenChars() != null) {
-            nGramTokenizer.setTokenChars(obj.getTokenChars().stream()
-                .map(TokenCharacterKindConverter::map)
-                .collect(Collectors.toList()));
+            nGramTokenizer.setTokenChars(obj.getTokenChars());
         }
 
         Integer minGram = obj.getMinGram();
@@ -50,14 +45,12 @@ public final class NGramTokenizerConverter {
         nGramTokenizer.setMaxGram(maxGram);
 
         if (obj.getTokenChars() != null) {
-            List<com.azure.search.documents.indexes.implementation.models.TokenCharacterKind> tokenChars =
-                obj.getTokenChars().stream().map(TokenCharacterKindConverter::map).collect(Collectors.toList());
-            nGramTokenizer.setTokenChars(tokenChars);
+            nGramTokenizer.setTokenChars(obj.getTokenChars());
         }
 
         Integer minGram = obj.getMinGram();
         nGramTokenizer.setMinGram(minGram);
-        nGramTokenizer.validate();
+
         return nGramTokenizer;
     }
 

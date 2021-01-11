@@ -10,7 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
-import com.azure.messaging.servicebus.administration.models.QueueRuntimeInfo;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
@@ -240,7 +240,7 @@ class ServiceBusAdministrationAsyncClientTest {
     }
 
     @Test
-    void getQueueRuntimeInfo() throws IOException {
+    void getQueueRuntimeProperties() throws IOException {
         // Arrange
         final String contents = getContents("QueueDescriptionEntry.xml");
         final ServiceBusManagementSerializer managementSerializer = new ServiceBusManagementSerializer();
@@ -265,7 +265,7 @@ class ServiceBusAdministrationAsyncClientTest {
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(entry);
 
         // Act & Assert
-        StepVerifier.create(client.getQueueRuntimeInfo(queueName))
+        StepVerifier.create(client.getQueueRuntimeProperties(queueName))
             .assertNext(info -> {
                 assertEquals(name, info.getName());
                 assertEquals(messageCount, info.getTotalMessageCount());
@@ -284,7 +284,7 @@ class ServiceBusAdministrationAsyncClientTest {
     }
 
     @Test
-    void getQueueRuntimeInfoWithResponse() throws IOException {
+    void getQueueRuntimePropertiesWithResponse() throws IOException {
         // Arrange
         final String contents = getContents("QueueDescriptionEntry.xml");
         final ServiceBusManagementSerializer managementSerializer = new ServiceBusManagementSerializer();
@@ -309,11 +309,11 @@ class ServiceBusAdministrationAsyncClientTest {
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(entry);
 
         // Act & Assert
-        StepVerifier.create(client.getQueueRuntimeInfoWithResponse(queueName))
+        StepVerifier.create(client.getQueueRuntimePropertiesWithResponse(queueName))
             .assertNext(response -> {
                 assertResponse(objectResponse, response);
 
-                final QueueRuntimeInfo info = response.getValue();
+                final QueueRuntimeProperties info = response.getValue();
                 assertEquals(name, info.getName());
                 assertEquals(messageCount, info.getTotalMessageCount());
                 assertEquals(sizeInBytes, info.getSizeInBytes());
@@ -505,18 +505,18 @@ class ServiceBusAdministrationAsyncClientTest {
 
         return equals(expected.getAutoDeleteOnIdle(), properties.getAutoDeleteOnIdle())
             && equals(expected.getDefaultMessageTimeToLive(), properties.getDefaultMessageTimeToLive())
-            && equals(expected.deadLetteringOnMessageExpiration(), properties.isDeadLetteringOnMessageExpiration())
+            && equals(expected.isDeadLetteringOnMessageExpiration(), properties.isDeadLetteringOnMessageExpiration())
             && equals(expected.getDuplicateDetectionHistoryTimeWindow(),
             properties.getDuplicateDetectionHistoryTimeWindow())
-            && equals(expected.enableBatchedOperations(), properties.isEnableBatchedOperations())
-            && equals(expected.enablePartitioning(), properties.isEnablePartitioning())
+            && equals(expected.isBatchedOperationsEnabled(), properties.isEnableBatchedOperations())
+            && equals(expected.isPartitioningEnabled(), properties.isEnablePartitioning())
             && equals(expected.getForwardTo(), properties.getForwardTo())
             && equals(expected.getForwardDeadLetteredMessagesTo(), properties.getForwardDeadLetteredMessagesTo())
             && equals(expected.getLockDuration(), properties.getLockDuration())
             && equals(expected.getMaxDeliveryCount(), properties.getMaxDeliveryCount())
             && equals(expected.getMaxSizeInMegabytes(), properties.getMaxSizeInMegabytes())
-            && equals(expected.requiresDuplicateDetection(), properties.isRequiresDuplicateDetection())
-            && equals(expected.requiresSession(), properties.isRequiresSession())
+            && equals(expected.isDuplicateDetectionRequired(), properties.isRequiresDuplicateDetection())
+            && equals(expected.isSessionRequired(), properties.isRequiresSession())
             && equals(expected.getUserMetadata(), properties.getUserMetadata())
             && "application/xml".equals(content.getType());
     }

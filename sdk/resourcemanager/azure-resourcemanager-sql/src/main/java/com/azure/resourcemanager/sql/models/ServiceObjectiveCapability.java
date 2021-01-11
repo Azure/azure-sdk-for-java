@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/** The ServiceObjectiveCapability model. */
+/** The service objectives capability. */
 @Fluent
 public final class ServiceObjectiveCapability {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceObjectiveCapability.class);

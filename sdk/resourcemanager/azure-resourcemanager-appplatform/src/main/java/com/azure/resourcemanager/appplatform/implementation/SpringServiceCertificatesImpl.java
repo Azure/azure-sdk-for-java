@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appplatform.AppPlatformManager;
 import com.azure.resourcemanager.appplatform.fluent.CertificatesClient;
-import com.azure.resourcemanager.appplatform.fluent.inner.CertificateResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.CertificateResourceInner;
 import com.azure.resourcemanager.appplatform.models.CertificateProperties;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.appplatform.models.SpringServiceCertificate;
@@ -89,9 +89,8 @@ public class SpringServiceCertificatesImpl
         return inner().listAsync(parent().resourceGroupName(), parent().name()).mapPage(this::wrapModel);
     }
 
-    @Override
     public CertificatesClient inner() {
-        return manager().inner().getCertificates();
+        return manager().serviceClient().getCertificates();
     }
 
     SpringServiceCertificate prepareCreateOrUpdate(String name, CertificateProperties properties) {

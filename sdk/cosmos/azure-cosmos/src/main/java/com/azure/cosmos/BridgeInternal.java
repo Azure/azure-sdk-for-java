@@ -3,10 +3,12 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DatabaseAccount;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.InternalObjectNode;
@@ -14,21 +16,26 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
+import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoredProcedureResponse;
+import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
@@ -60,6 +67,31 @@ import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 public final class BridgeInternal {
 
     private BridgeInternal() {}
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
+        return new CosmosDiagnostics(diagnosticsClientContext);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static Set<URI> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
+        return cosmosDiagnostics.clientSideRequestStatistics().getRegionsContacted();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static AsyncDocumentClient getContextClient(CosmosAsyncClient cosmosAsyncClient) {
+        return cosmosAsyncClient.getContextClient();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static String getServiceEndpoint(CosmosAsyncClient cosmosAsyncClient) {
+        return cosmosAsyncClient.getServiceEndpoint();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static boolean isClientTelemetryEnabled(CosmosAsyncClient cosmosAsyncClient) {
+        return cosmosAsyncClient.isClientTelemetryEnabled();
+    }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
@@ -134,9 +166,87 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRequestTimeline(E e, RequestTimeline requestTimeline) {
+        e.setRequestTimeline(requestTimeline);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> RequestTimeline getRequestTimeline(E e) {
+        return e.getRequestTimeline();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setChannelTaskQueueSize(E e, int value) {
+        e.setRntbdChannelTaskQueueSize(value);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdPendingRequestQueueSize(E e) {
+        return e.getRntbdPendingRequestQueueSize();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdPendingRequestQueueSize(E e, int value) {
+        e.setRntbdPendingRequestQueueSize(value);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getChannelTaskQueueSize(E e) {
+        return e.getRntbdChannelTaskQueueSize();
+    }
+
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdRequestLength(E e, int requestLen) {
+        e.setRntbdRequestLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdRequestLength(E e) {
+        return e.getRntbdRequestLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRequestBodyLength(E e, int requestLen) {
+        e.setRequestPayloadLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRequestBodyLength(E e) {
+        return e.getRequestPayloadLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setRntbdResponseLength(E e, int requestLen) {
+        e.setRntbdResponseLength(requestLen);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> int getRntbdResponseLength(E e) {
+        return e.getRntbdResponseLength();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> E setResourceAddress(E e, String resourceAddress) {
         e.setResourceAddress(resourceAddress);
         return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> E setServiceEndpointStatistics(E e, RntbdEndpointStatistics rntbdEndpointStatistics) {
+        e.setRntbdServiceEndpointStatistics(rntbdEndpointStatistics);
+        return e;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> RntbdEndpointStatistics getServiceEndpointStatistics(E e) {
+        return e.getRntbdServiceEndpointStatistics();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -167,6 +277,16 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> boolean hasSendingRequestStarted(E e) {
+        return e.hasSendingRequestStarted();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <E extends CosmosException> void setSendingRequestStarted(E e, boolean hasSendingRequestStarted) {
+        e.setSendingRequestHasStarted(hasSendingRequestStarted);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static boolean isEnableMultipleWriteLocations(DatabaseAccount account) {
         return account.getEnableMultipleWriteLocations();
     }
@@ -180,6 +300,11 @@ public final class BridgeInternal {
     public static <E extends CosmosException> void setRequestHeaders(CosmosException cosmosException,
                                                                      Map<String, String> requestHeaders) {
         cosmosException.requestHeaders = requestHeaders;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void setSubStatusCode(CosmosException documentClientException, int subStatusCode) {
+        documentClientException.setSubStatusCode(subStatusCode);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -285,14 +410,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosException createCosmosException(int statusCode, Exception innerException) {
-        return new CosmosException(statusCode, null, null, innerException);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosException createCosmosException(int statusCode, CosmosError cosmosErrorResource,
-                                                        Map<String, String> responseHeaders) {
-        return new CosmosException(/* resourceAddress */ null, statusCode, cosmosErrorResource, responseHeaders);
+    public static CosmosException createCosmosException(String resourceAddress, int statusCode, Exception innerException) {
+        return new CosmosException(resourceAddress, statusCode, null, null, innerException);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -355,11 +474,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDiagnostics createCosmosDiagnostics() {
-        return new CosmosDiagnostics();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setTransportClientRequestTimelineOnDiagnostics(CosmosDiagnostics cosmosDiagnostics,
                                                                       RequestTimeline requestTimeline) {
         cosmosDiagnostics.clientSideRequestStatistics().setTransportClientRequestTimeline(requestTimeline);
@@ -411,8 +525,9 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void recordAddressResolutionEnd(CosmosDiagnostics cosmosDiagnostics,
-                                                  String identifier) {
-        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier);
+                                                  String identifier,
+                                                  String errorMessage) {
+        cosmosDiagnostics.clientSideRequestStatistics().recordAddressResolutionEnd(identifier, errorMessage);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -487,6 +602,11 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static TracerProvider getTracerProvider(CosmosAsyncClient client) {
+        return client.getTracerProvider();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosUser createCosmosUser(CosmosAsyncUser asyncUser, CosmosDatabase database, String id) {
         return new CosmosUser(asyncUser, database, id);
     }
@@ -509,5 +629,99 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Duration getRequestTimeoutFromGatewayConnectionConfig(GatewayConnectionConfig gatewayConnectionConfig) {
         return gatewayConnectionConfig.getRequestTimeout();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static String getOperationValueForCosmosItemOperationType(CosmosItemOperationType cosmosItemOperationType) {
+        return cosmosItemOperationType.getOperationValue();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static RequestOptions toRequestOptions(TransactionalBatchRequestOptions transactionalBatchRequestOptions) {
+        return transactionalBatchRequestOptions.toRequestOptions();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static TransactionalBatchOperationResult createTransactionBatchResult(
+        String eTag,
+        double requestCharge,
+        ObjectNode resourceObject,
+        int statusCode,
+        Duration retryAfter,
+        int subStatusCode,
+        CosmosItemOperation cosmosItemOperation) {
+
+        return new TransactionalBatchOperationResult(
+            eTag,
+            requestCharge,
+            resourceObject,
+            statusCode,
+            retryAfter,
+            subStatusCode,
+            cosmosItemOperation);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosBulkItemResponse createCosmosBulkItemResponse(
+        TransactionalBatchOperationResult result,
+        TransactionalBatchResponse response) {
+
+        return new CosmosBulkItemResponse(
+            result.getETag(),
+            result.getRequestCharge(),
+            result.getResourceObject(),
+            result.getStatusCode(),
+            result.getRetryAfterDuration(),
+            result.getSubStatusCode(),
+            response.getResponseHeaders(),
+            response.getDiagnostics());
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <TContext> CosmosBulkOperationResponse<TContext> createCosmosBulkOperationResponse(
+        CosmosItemOperation operation,
+        CosmosBulkItemResponse response,
+        TContext batchContext) {
+
+        return new CosmosBulkOperationResponse<>(
+            operation,
+            response,
+            batchContext);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static <TContext> CosmosBulkOperationResponse<TContext> createCosmosBulkOperationResponse(
+        CosmosItemOperation operation,
+        Exception exception,
+        TContext batchContext) {
+
+        return new CosmosBulkOperationResponse<>(
+            operation,
+            exception,
+            batchContext);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static TransactionalBatchResponse createTransactionBatchResponse(
+        int responseStatusCode,
+        int responseSubStatusCode,
+        String errorMessage,
+        Map<String, String> responseHeaders,
+        CosmosDiagnostics cosmosDiagnostics) {
+
+        return new TransactionalBatchResponse(
+            responseStatusCode,
+            responseSubStatusCode,
+            errorMessage,
+            responseHeaders,
+            cosmosDiagnostics);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void addTransactionBatchResultInResponse(
+        TransactionalBatchResponse transactionalBatchResponse,
+        List<TransactionalBatchOperationResult> transactionalBatchOperationResults) {
+
+        transactionalBatchResponse.addAll(transactionalBatchOperationResults);
     }
 }

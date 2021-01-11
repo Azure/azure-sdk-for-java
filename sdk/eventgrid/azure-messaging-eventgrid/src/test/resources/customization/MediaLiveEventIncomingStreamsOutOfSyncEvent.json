@@ -1,0 +1,19 @@
+[
+  {
+    "topic": "/subscriptions/{subscription id}/resourceGroups/{resource group}/providers/Microsoft.Media/mediaservices/{account name}",
+    "subject": "liveEvent/liveevent-ec9d26a8",
+    "eventType": "Microsoft.Media.LiveEventIncomingStreamsOutOfSync",
+    "eventTime": "2018-10-12T15:52:37.3710102Z",
+    "id": "d84727e2-d9c0-4a21-a66b-8d23f06b3e06",
+    "data": {
+      "minLastTimestamp": "10999",
+      "typeOfStreamWithMinLastTimestamp": "video",
+      "maxLastTimestamp": "100999",
+      "typeOfStreamWithMaxLastTimestamp": "audio",
+      "timescaleOfMinLastTimestamp": "1000",
+      "timescaleOfMaxLastTimestamp": "1000"
+    },
+    "dataVersion": "1.0",
+    "metadataVersion": "1"
+  }
+]

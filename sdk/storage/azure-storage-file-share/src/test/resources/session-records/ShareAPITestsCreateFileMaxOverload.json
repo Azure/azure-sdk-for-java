@@ -1,54 +1,54 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestscreatefilemaxoverload889275183e15d6a?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestscreatefilemaxoverload92094f65bc86a8f?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "b302bdad-dc7f-4a1a-b5a0-d4888ec7a2ba"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "104278c5-b933-494a-976c-6b3ba100b94f"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D77911FF6468C3",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:30:50 GMT",
+      "ETag" : "0x8D8448C97A82AFD",
+      "Last-Modified" : "Wed, 19 Aug 2020 22:09:50 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9ba99f32-201a-0011-3afa-aa088f000000",
-      "Date" : "Wed, 04 Dec 2019 23:30:49 GMT",
-      "x-ms-client-request-id" : "b302bdad-dc7f-4a1a-b5a0-d4888ec7a2ba"
+      "x-ms-request-id" : "8c89f95f-601a-0022-5275-761fdd000000",
+      "Date" : "Wed, 19 Aug 2020 22:09:50 GMT",
+      "x-ms-client-request-id" : "104278c5-b933-494a-976c-6b3ba100b94f"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestscreatefilemaxoverload889275183e15d6a/testCreateFile",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestscreatefilemaxoverload92094f65bc86a8f/testCreateFile",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "a5fd8273-1199-492b-9a2b-11fc37ac4f90"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "43ec2170-4365-4ac9-ab67-065a35f3f13b"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
-      "x-ms-file-permission-key" : "10431655103412740186*8280205063999649007",
+      "x-ms-version" : "2020-02-10",
+      "x-ms-file-permission-key" : "9019159817152516874*11459378189709739967",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-12-04T23:30:50.2466068Z",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:30:50 GMT",
+      "x-ms-file-creation-time" : "2020-08-19T22:09:50.4525419Z",
+      "Last-Modified" : "Wed, 19 Aug 2020 22:09:50 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Dec 2019 23:30:49 GMT",
-      "ETag" : "0x8D77911FF659214",
+      "Date" : "Wed, 19 Aug 2020 22:09:50 GMT",
+      "ETag" : "0x8D8448C97B9186B",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2019-12-04T23:30:50.2466068Z",
+      "x-ms-file-change-time" : "2020-08-19T22:09:50.4525419Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "9ba99f35-201a-0011-3bfa-aa088f000000",
-      "x-ms-client-request-id" : "a5fd8273-1199-492b-9a2b-11fc37ac4f90",
-      "x-ms-file-last-write-time" : "2019-12-04T23:30:50.2466068Z"
+      "x-ms-request-id" : "8c89f961-601a-0022-5375-761fdd000000",
+      "x-ms-client-request-id" : "43ec2170-4365-4ac9-ab67-065a35f3f13b",
+      "x-ms-file-last-write-time" : "2020-08-19T22:09:50.4525419Z"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatefilemaxoverload889275183e15d6a", "2019-12-04T23:30:50.246606800Z", "2019-12-04T23:30:50.246606800Z" ]
+  "variables" : [ "shareapitestscreatefilemaxoverload92094f65bc86a8f", "2020-08-19T22:09:50.452541900Z", "2020-08-19T22:09:50.452541900Z" ]
 }

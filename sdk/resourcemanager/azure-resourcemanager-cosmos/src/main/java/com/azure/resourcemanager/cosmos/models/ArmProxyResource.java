@@ -9,7 +9,10 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The ArmProxyResource model. */
+/**
+ * The resource model definition for a ARM proxy resource. It will have everything other than required location and
+ * tags.
+ */
 @Immutable
 public class ArmProxyResource extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmProxyResource.class);

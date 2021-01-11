@@ -263,7 +263,7 @@ expired lease and take ownership. Again, this can result in unbalanced distribut
 ## Running Tests
 
 Event Processor Host comes with a suite of JUnit-based tests. To run these tests, you will need an event hub and an Azure Storage account.
-You can create both through the Azure Portal at [portal.azure.com](http://portal.azure.com/). Once you have done that, get the
+You can create both through the Azure Portal at [portal.azure.com](https://portal.azure.com/). Once you have done that, get the
 connection strings for both and place them in environment variables:
 
 * `EVENT_HUB_CONNECTION_STRING` is the event hub connection string. The connection string needs to include a SAS rule which has send and listen permissions.

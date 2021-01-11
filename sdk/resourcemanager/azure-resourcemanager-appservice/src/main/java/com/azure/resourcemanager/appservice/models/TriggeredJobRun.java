@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The TriggeredJobRun model. */
+/** Triggered Web Job Run Information. */
 @JsonFlatten
 @Fluent
 public class TriggeredJobRun extends ProxyOnlyResource {

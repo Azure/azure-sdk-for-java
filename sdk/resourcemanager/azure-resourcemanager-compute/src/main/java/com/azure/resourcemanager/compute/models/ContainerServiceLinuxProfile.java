@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerServiceLinuxProfile model. */
+/** Profile for Linux VMs in the container service cluster. */
 @Fluent
 public final class ContainerServiceLinuxProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceLinuxProfile.class);

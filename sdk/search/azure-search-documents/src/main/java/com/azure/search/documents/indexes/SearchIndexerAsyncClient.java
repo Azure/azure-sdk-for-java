@@ -766,8 +766,7 @@ public class SearchIndexerAsyncClient {
         try {
             return restClient.getIndexers()
                 .getStatusWithResponseAsync(indexerName, null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingIndexerStatus);
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

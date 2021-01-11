@@ -798,8 +798,7 @@ public final class SearchIndexAsyncClient {
     Mono<Response<SearchServiceStatistics>> getServiceStatisticsWithResponse(Context context) {
         try {
             return restClient.getServiceStatisticsWithResponseAsync(null, context)
-                .onErrorMap(MappingUtils::exceptionMapper)
-                .map(MappingUtils::mappingExternalServiceStatistics);
+                .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

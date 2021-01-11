@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The BlobRestoreParameters model. */
+/** Blob restore parameters. */
 @Fluent
 public final class BlobRestoreParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobRestoreParameters.class);

@@ -16,21 +16,33 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Operations;
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Clusters;
-import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Configurations;
 import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Namespaces;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.PrivateEndpointConnections;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.PrivateLinkResources;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Configurations;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.DisasterRecoveryConfigs;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.EventHubs;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.ConsumerGroups;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Operations;
+import com.microsoft.azure.management.eventhubs.v2018_01_01_preview.Regions;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
 /**
  * Entry point to Azure EventHubs resource management.
  */
-public final class EventHubsManager extends ManagerCore<EventHubsManager, EventHub2018PreviewManagementClientImpl> {
-    private Operations operations;
+public final class EventHubsManager extends ManagerCore<EventHubsManager, EventHubManagementClientImpl> {
     private Clusters clusters;
-    private Configurations configurations;
     private Namespaces namespaces;
+    private PrivateEndpointConnections privateEndpointConnections;
+    private PrivateLinkResources privateLinkResources;
+    private Configurations configurations;
+    private DisasterRecoveryConfigs disasterRecoveryConfigs;
+    private EventHubs eventHubs;
+    private ConsumerGroups consumerGroups;
+    private Operations operations;
+    private Regions regions;
     /**
     * Get a Configurable instance that can be used to create EventHubsManager with optional configuration.
     *
@@ -79,16 +91,6 @@ public final class EventHubsManager extends ManagerCore<EventHubsManager, EventH
     }
 
     /**
-     * @return Entry point to manage Operations.
-     */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(this);
-        }
-        return this.operations;
-    }
-
-    /**
      * @return Entry point to manage Clusters.
      */
     public Clusters clusters() {
@@ -96,6 +98,36 @@ public final class EventHubsManager extends ManagerCore<EventHubsManager, EventH
             this.clusters = new ClustersImpl(this);
         }
         return this.clusters;
+    }
+
+    /**
+     * @return Entry point to manage Namespaces.
+     */
+    public Namespaces namespaces() {
+        if (this.namespaces == null) {
+            this.namespaces = new NamespacesImpl(this);
+        }
+        return this.namespaces;
+    }
+
+    /**
+     * @return Entry point to manage PrivateEndpointConnections.
+     */
+    public PrivateEndpointConnections privateEndpointConnections() {
+        if (this.privateEndpointConnections == null) {
+            this.privateEndpointConnections = new PrivateEndpointConnectionsImpl(this);
+        }
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * @return Entry point to manage PrivateLinkResources.
+     */
+    public PrivateLinkResources privateLinkResources() {
+        if (this.privateLinkResources == null) {
+            this.privateLinkResources = new PrivateLinkResourcesImpl(this);
+        }
+        return this.privateLinkResources;
     }
 
     /**
@@ -109,13 +141,53 @@ public final class EventHubsManager extends ManagerCore<EventHubsManager, EventH
     }
 
     /**
-     * @return Entry point to manage Namespaces.
+     * @return Entry point to manage DisasterRecoveryConfigs.
      */
-    public Namespaces namespaces() {
-        if (this.namespaces == null) {
-            this.namespaces = new NamespacesImpl(this);
+    public DisasterRecoveryConfigs disasterRecoveryConfigs() {
+        if (this.disasterRecoveryConfigs == null) {
+            this.disasterRecoveryConfigs = new DisasterRecoveryConfigsImpl(this);
         }
-        return this.namespaces;
+        return this.disasterRecoveryConfigs;
+    }
+
+    /**
+     * @return Entry point to manage EventHubs.
+     */
+    public EventHubs eventHubs() {
+        if (this.eventHubs == null) {
+            this.eventHubs = new EventHubsImpl(this);
+        }
+        return this.eventHubs;
+    }
+
+    /**
+     * @return Entry point to manage ConsumerGroups.
+     */
+    public ConsumerGroups consumerGroups() {
+        if (this.consumerGroups == null) {
+            this.consumerGroups = new ConsumerGroupsImpl(this);
+        }
+        return this.consumerGroups;
+    }
+
+    /**
+     * @return Entry point to manage Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(this);
+        }
+        return this.operations;
+    }
+
+    /**
+     * @return Entry point to manage Regions.
+     */
+    public Regions regions() {
+        if (this.regions == null) {
+            this.regions = new RegionsImpl(this);
+        }
+        return this.regions;
     }
 
     /**
@@ -130,6 +202,6 @@ public final class EventHubsManager extends ManagerCore<EventHubsManager, EventH
         super(
             restClient,
             subscriptionId,
-            new EventHub2018PreviewManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
+            new EventHubManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
     }
 }

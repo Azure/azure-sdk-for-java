@@ -1,0 +1,15 @@
+{
+  "$metadata": {
+    "$model": "ROOM_WITH_WIFI_MODEL_ID"
+  },
+  "Temperature": 80,
+  "Humidity": 25,
+  "IsOccupied": true,
+  "EmployeeId": "Employee1",
+  "WIFI_COMPONENT_NAME": {
+    "$metadata": {
+    },
+    "RouterName": "Cisco1",
+    "Network": "Room1"
+  }
+}

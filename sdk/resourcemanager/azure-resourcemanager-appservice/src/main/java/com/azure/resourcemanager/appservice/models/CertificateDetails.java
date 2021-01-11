@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The CertificateDetails model. */
+/** SSL certificate details. */
 @Immutable
 public final class CertificateDetails {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateDetails.class);

@@ -11,31 +11,33 @@ import com.azure.resourcemanager.monitor.samples.WebAppPerformanceMonitoringAler
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 public class MonitorTests extends SamplesTestBase {
 
     @Test
-    public void testQueryMetricsAndActivityLogs() {
+    public void testQueryMetricsAndActivityLogs() throws IOException {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(QueryMetricsAndActivityLogs.runSample(azure));
+            Assertions.assertTrue(QueryMetricsAndActivityLogs.runSample(azureResourceManager));
         }
     }
 
     @Test
     public void testSecurityBreachOrRiskActivityLogAlerts() {
-        Assertions.assertTrue(SecurityBreachOrRiskActivityLogAlerts.runSample(azure));
+        Assertions.assertTrue(SecurityBreachOrRiskActivityLogAlerts.runSample(azureResourceManager));
     }
 
     @Test
     public void testWebAppPerformanceMonitoringAlerts() {
-        Assertions.assertTrue(WebAppPerformanceMonitoringAlerts.runSample(azure));
+        Assertions.assertTrue(WebAppPerformanceMonitoringAlerts.runSample(azureResourceManager));
     }
 
     @Test
     public void testAutoscaleSettingsBasedOnPerformanceOrSchedule() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(AutoscaleSettingsBasedOnPerformanceOrSchedule.runSample(azure));
+            Assertions.assertTrue(AutoscaleSettingsBasedOnPerformanceOrSchedule.runSample(azureResourceManager));
         }
     }
 }

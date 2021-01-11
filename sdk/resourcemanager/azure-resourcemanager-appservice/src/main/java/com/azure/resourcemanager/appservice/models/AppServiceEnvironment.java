@@ -6,12 +6,12 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.appservice.fluent.inner.StampCapacityInner;
+import com.azure.resourcemanager.appservice.fluent.models.StampCapacityInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AppServiceEnvironment model. */
+/** Description of an App Service Environment. */
 @Fluent
 public final class AppServiceEnvironment {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceEnvironment.class);

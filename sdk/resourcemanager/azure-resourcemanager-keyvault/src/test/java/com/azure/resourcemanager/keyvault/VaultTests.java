@@ -13,19 +13,21 @@ import com.azure.resourcemanager.keyvault.models.KeyPermissions;
 import com.azure.resourcemanager.keyvault.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.keyvault.models.SecretPermissions;
 import com.azure.resourcemanager.keyvault.models.Vault;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 public class VaultTests extends KeyVaultManagementTest {
     @Test
     public void canCRUDVault() throws Exception {
         // Create user service principal
-        String sp = sdkContext.randomResourceName("sp", 20);
-        String us = sdkContext.randomResourceName("us", 20);
+        String sp = generateRandomResourceName("sp", 20);
+        String us = generateRandomResourceName("us", 20);
         ServicePrincipal servicePrincipal =
-            authorizationManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
+            authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
 
         ActiveDirectoryUser user =
             authorizationManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
@@ -39,7 +41,7 @@ public class VaultTests extends KeyVaultManagementTest {
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .defineAccessPolicy()
-                    .forServicePrincipal("http://" + sp)
+                    .forServicePrincipal(sp)
                     .allowKeyPermissions(KeyPermissions.LIST)
                     .allowSecretAllPermissions()
                     .allowCertificatePermissions(CertificatePermissions.GET)
@@ -110,7 +112,7 @@ public class VaultTests extends KeyVaultManagementTest {
 
             // DELETE
             keyVaultManager.vaults().deleteById(vault.id());
-            SdkContext.sleep(20000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(20));
             assertVaultDeleted(vaultName, Region.US_WEST.toString());
         } finally {
             authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
@@ -121,10 +123,10 @@ public class VaultTests extends KeyVaultManagementTest {
     @Test
     public void canCRUDVaultAsync() throws Exception {
         // Create user service principal
-        String sp = sdkContext.randomResourceName("sp", 20);
-        String us = sdkContext.randomResourceName("us", 20);
+        String sp = generateRandomResourceName("sp", 20);
+        String us = generateRandomResourceName("us", 20);
         ServicePrincipal servicePrincipal =
-            authorizationManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
+            authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
 
         ActiveDirectoryUser user =
             authorizationManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
@@ -138,7 +140,7 @@ public class VaultTests extends KeyVaultManagementTest {
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .defineAccessPolicy()
-                    .forServicePrincipal("http://" + sp)
+                    .forServicePrincipal(sp)
                     .allowKeyPermissions(KeyPermissions.LIST)
                     .allowSecretAllPermissions()
                     .allowCertificatePermissions(CertificatePermissions.GET)
@@ -205,7 +207,7 @@ public class VaultTests extends KeyVaultManagementTest {
 
             // DELETE
             keyVaultManager.vaults().deleteByIdAsync(vault.id()).block();
-            SdkContext.sleep(20000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(20));
             assertVaultDeleted(vaultName, Region.US_WEST.toString());
         } finally {
             authorizationManager.servicePrincipals().deleteById(servicePrincipal.id());
@@ -216,11 +218,11 @@ public class VaultTests extends KeyVaultManagementTest {
     @Test
     public void canEnableSoftDeleteAndPurge() throws InterruptedException {
         String otherVaultName = vaultName + "other";
-        String sp = sdkContext.randomResourceName("sp", 20);
-        String us = sdkContext.randomResourceName("us", 20);
+        String sp = generateRandomResourceName("sp", 20);
+        String us = generateRandomResourceName("us", 20);
 
         ServicePrincipal servicePrincipal =
-            authorizationManager.servicePrincipals().define(sp).withNewApplication("http://" + sp).create();
+            authorizationManager.servicePrincipals().define(sp).withNewApplication().create();
 
         ActiveDirectoryUser user =
             authorizationManager.users().define(us).withEmailAlias(us).withPassword("P@$$w0rd").create();
@@ -233,7 +235,7 @@ public class VaultTests extends KeyVaultManagementTest {
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .defineAccessPolicy()
-                    .forServicePrincipal("http://" + sp)
+                    .forServicePrincipal(sp)
                     .allowKeyPermissions(KeyPermissions.LIST)
                     .allowSecretAllPermissions()
                     .allowCertificatePermissions(CertificatePermissions.GET)
@@ -251,12 +253,12 @@ public class VaultTests extends KeyVaultManagementTest {
 
             keyVaultManager.vaults().deleteByResourceGroup(rgName, otherVaultName);
 
-            SdkContext.sleep(20000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(20));
             // Can still see deleted vault.
             Assertions.assertNotNull(keyVaultManager.vaults().getDeleted(otherVaultName, Region.US_WEST.toString()));
 
             keyVaultManager.vaults().purgeDeleted(otherVaultName, Region.US_WEST.toString());
-            SdkContext.sleep(20000);
+            ResourceManagerUtils.sleep(Duration.ofSeconds(20));
             // Vault is purged
             assertVaultDeleted(otherVaultName, Region.US_WEST.toString());
         } finally {

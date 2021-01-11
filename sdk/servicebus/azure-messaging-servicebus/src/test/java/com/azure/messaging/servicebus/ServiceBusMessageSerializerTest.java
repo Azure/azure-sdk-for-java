@@ -5,8 +5,11 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
+import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
+import org.apache.qpid.proton.amqp.messaging.Footer;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -82,34 +85,51 @@ class ServiceBusMessageSerializerTest {
         message.setReplyToGroupId("reply-to-session-id-property");
         message.setGroupId("session-id-as-a-group-id");
 
+        // Message Annotations
+        Map<Symbol, Object> expectedMessageAnnotations = message.getMessageAnnotations().getValue();
+        expectedMessageAnnotations.put(Symbol.valueOf("A"), "A value");
+
+        // Message Annotations
+        Map<Symbol, Object> expectedDeliveryAnnotations = new HashMap<>();
+        expectedDeliveryAnnotations.put(Symbol.valueOf("D"), "D value");
+        message.setDeliveryAnnotations(new DeliveryAnnotations(expectedDeliveryAnnotations));
+
+        Map<Symbol, Object> expectedFooterValues = new HashMap<>();
+        expectedFooterValues.put(Symbol.valueOf("footer1"), "footer value");
+        message.setFooter(new Footer(expectedFooterValues));
+
         // Act
-        final ServiceBusReceivedMessage serviceBusMessage = serializer.deserialize(message, ServiceBusReceivedMessage.class);
+        final ServiceBusReceivedMessage actualMessage = serializer.deserialize(message, ServiceBusReceivedMessage.class);
 
         // Assert
         // Verifying all our system properties were properly deserialized.
-        assertNotNull(serviceBusMessage.getEnqueuedTime());
-        assertEquals(SEQUENCE_NUMBER, serviceBusMessage.getSequenceNumber());
+        assertNotNull(actualMessage.getEnqueuedTime());
+        assertEquals(SEQUENCE_NUMBER, actualMessage.getSequenceNumber());
 
         // Verifying that all our properties are set.
-        assertEquals(message.getTtl(), serviceBusMessage.getTimeToLive().toMillis());
-        assertEquals(message.getSubject(), serviceBusMessage.getLabel());
-        assertEquals(message.getReplyTo(), serviceBusMessage.getReplyTo());
-        assertEquals(message.getDeliveryCount(), serviceBusMessage.getDeliveryCount());
-        assertEquals(message.getProperties().getTo(), serviceBusMessage.getTo());
-        assertEquals(message.getReplyToGroupId(), serviceBusMessage.getReplyToSessionId());
-        assertEquals(message.getGroupId(), serviceBusMessage.getSessionId());
-        assertEquals(message.getContentType(), serviceBusMessage.getContentType());
-        assertEquals(message.getCorrelationId(), serviceBusMessage.getCorrelationId());
+        assertEquals(message.getTtl(), actualMessage.getTimeToLive().toMillis());
+        assertEquals(message.getSubject(), actualMessage.getSubject());
+        assertEquals(message.getReplyTo(), actualMessage.getReplyTo());
+        assertEquals(message.getDeliveryCount(), actualMessage.getDeliveryCount());
+        assertEquals(message.getProperties().getTo(), actualMessage.getTo());
+        assertEquals(message.getReplyToGroupId(), actualMessage.getReplyToSessionId());
+        assertEquals(message.getGroupId(), actualMessage.getSessionId());
+        assertEquals(message.getContentType(), actualMessage.getContentType());
+        assertEquals(message.getCorrelationId(), actualMessage.getCorrelationId());
+
+        assertValues(expectedMessageAnnotations, actualMessage.getRawAmqpMessage().getMessageAnnotations());
+        assertValues(expectedDeliveryAnnotations, actualMessage.getRawAmqpMessage().getDeliveryAnnotations());
+        assertValues(expectedFooterValues, actualMessage.getRawAmqpMessage().getFooter());
 
         // Verifying our application properties are the same.
-        assertEquals(APPLICATION_PROPERTIES.size(), serviceBusMessage.getProperties().size());
+        assertEquals(APPLICATION_PROPERTIES.size(), actualMessage.getApplicationProperties().size());
         APPLICATION_PROPERTIES.forEach((key, value) -> {
-            Assertions.assertTrue(serviceBusMessage.getProperties().containsKey(key));
-            assertEquals(value, serviceBusMessage.getProperties().get(key));
+            Assertions.assertTrue(actualMessage.getApplicationProperties().containsKey(key));
+            assertEquals(value, actualMessage.getApplicationProperties().get(key));
         });
 
         // Verifying the contents of our message is the same.
-        assertEquals(payload, new String(serviceBusMessage.getBody(), UTF_8));
+        assertEquals(payload, actualMessage.getBody().toString());
     }
 
     /**
@@ -131,5 +151,12 @@ class ServiceBusMessageSerializerTest {
         // Assert
         Assertions.assertNotNull(actual);
         Assertions.assertTrue(actual.isEmpty());
+    }
+
+    private void assertValues(Map<Symbol, Object> expected, Map<String, Object> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (Map.Entry<Symbol, Object> expectedEntry : expected.entrySet()) {
+            assertEquals(expectedEntry.getValue(), actual.get(expectedEntry.getKey().toString()));
+        }
     }
 }

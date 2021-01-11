@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The UpdateResource model. */
+/** The Update Resource model definition. */
 @Fluent
 public class UpdateResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateResource.class);

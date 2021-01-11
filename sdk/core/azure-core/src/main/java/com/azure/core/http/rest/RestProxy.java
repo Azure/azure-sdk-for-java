@@ -52,6 +52,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.azure.core.implementation.serializer.HttpResponseBodyDecoder.isReturnTypeDecodable;
+
 /**
  * Type to create a proxy implementation for an interface describing REST API methods.
  *
@@ -120,7 +122,8 @@ public final class RestProxy implements InvocationHandler {
             final SwaggerMethodParser methodParser = getMethodParser(method);
             final HttpRequest request = createHttpRequest(methodParser, args);
             Context context = methodParser.setContext(args)
-                .addData("caller-method", methodParser.getFullyQualifiedMethodName());
+                .addData("caller-method", methodParser.getFullyQualifiedMethodName())
+                .addData("azure-eagerly-read-response", isReturnTypeDecodable(methodParser.getReturnType()));
             context = startTracingSpan(method, context);
 
             if (request.getBody() != null) {
@@ -183,7 +186,7 @@ public final class RestProxy implements InvocationHandler {
      * @return The updated context containing the span context.
      */
     private Context startTracingSpan(Method method, Context context) {
-        if (!TracerProxy.isEnabled()) {
+        if (!TracerProxy.isTracingEnabled()) {
             return context;
         }
         String spanName = String.format("%s.%s", interfaceParser.getServiceName(), method.getName());
@@ -279,7 +282,7 @@ public final class RestProxy implements InvocationHandler {
                 serializer.serialize(bodyContentObject, SerializerEncoding.JSON, stream);
 
                 request.setHeader("Content-Length", String.valueOf(stream.size()));
-                request.setBody(Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size())));
+                request.setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size()))));
             } else if (FluxUtil.isFluxByteBuffer(methodParser.getBodyJavaType())) {
                 // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a
                 // Flowable<byte[]> is given for the body.
@@ -298,7 +301,7 @@ public final class RestProxy implements InvocationHandler {
                 serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.getHeaders()), stream);
 
                 request.setHeader("Content-Length", String.valueOf(stream.size()));
-                request.setBody(Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size())));
+                request.setBody(Flux.defer(() -> Flux.just(ByteBuffer.wrap(stream.toByteArray(), 0, stream.size()))));
             }
         }
 
@@ -530,7 +533,7 @@ public final class RestProxy implements InvocationHandler {
     // This handles each onX for the response mono.
     // The signal indicates the status and contains the metadata we need to end the tracing span.
     private static void endTracingSpan(Signal<HttpDecodedResponse> signal) {
-        if (!TracerProxy.isEnabled()) {
+        if (!TracerProxy.isTracingEnabled()) {
             return;
         }
 

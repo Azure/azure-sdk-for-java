@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.caches;
 
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.apachecommons.collections.CollectionUtils;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.InMemoryCollectionRoutingMap;
@@ -43,13 +45,15 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     private final Logger logger = LoggerFactory.getLogger(RxPartitionKeyRangeCache.class);
 
     private final AsyncCache<String, CollectionRoutingMap> routingMapCache;
-    private final AsyncDocumentClient client;
+    private final RxDocumentClientImpl client;
     private final RxCollectionCache collectionCache;
+    private final DiagnosticsClientContext clientContext;
 
-    public RxPartitionKeyRangeCache(AsyncDocumentClient client, RxCollectionCache collectionCache) {
+    public RxPartitionKeyRangeCache(RxDocumentClientImpl client, RxCollectionCache collectionCache) {
         this.routingMapCache = new AsyncCache<>();
         this.client = client;
         this.collectionCache = collectionCache;
+        this.clientContext = client;
     }
 
     /* (non-Javadoc)
@@ -210,7 +214,7 @@ public class RxPartitionKeyRangeCache implements IPartitionKeyRangeCache {
     }
 
     private Mono<List<PartitionKeyRange>> getPartitionKeyRange(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, boolean forceRefresh, Map<String, Object> properties) {
-        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this.clientContext,
                 OperationType.ReadFeed,
                 collectionRid,
                 ResourceType.PartitionKeyRange,

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SqlUserDefinedFunctionResource model. */
+/** Cosmos DB SQL userDefinedFunction resource object. */
 @Fluent
 public class SqlUserDefinedFunctionResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlUserDefinedFunctionResource.class);

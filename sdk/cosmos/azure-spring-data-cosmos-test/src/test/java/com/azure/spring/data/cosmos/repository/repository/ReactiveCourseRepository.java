@@ -3,7 +3,10 @@
 package com.azure.spring.data.cosmos.repository.repository;
 
 import com.azure.spring.data.cosmos.domain.Course;
+import com.azure.spring.data.cosmos.repository.Query;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.springframework.data.repository.query.Param;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,6 +30,17 @@ public interface ReactiveCourseRepository extends ReactiveCosmosRepository<Cours
      * @return Course list
      */
     Flux<Course> findByNameAndDepartmentAllIgnoreCase(String name, String department);
+    
+    /**
+     * Find Course list by (name and department) or (name2 and department2)
+     * @param name name
+     * @param department department
+     * @param name2 name2
+     * @param department2 department2
+     * @return Course list
+     */
+    Flux<Course> findByNameAndDepartmentOrNameAndDepartment(String name,
+        String department, String name2, String department2);
 
     /**
      * Find Course list by name or department without case sensitive
@@ -42,5 +56,11 @@ public interface ReactiveCourseRepository extends ReactiveCosmosRepository<Cours
      * @return Course list
      */
     Mono<Course> findOneByName(String name);
+
+    @Query(value = "select * from c where c.name = @name and c.department = @department")
+    Flux<Course> getCoursesWithNameDepartment(@Param("name") String name, @Param("department") String department);
+
+    @Query(value = "select count(c.id) as num_ids, c.department from c group by c.department")
+    Flux<ObjectNode> getCoursesGroupByDepartment();
 
 }

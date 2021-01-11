@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkRuleSet model. */
+/** A set of rules governing the network accessibility of a vault. */
 @Fluent
 public final class NetworkRuleSet {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSet.class);

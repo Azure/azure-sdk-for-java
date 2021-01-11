@@ -458,6 +458,23 @@ class QueueAPITests extends APISpec {
         messageText == peekMsgIter.getMessageText()
     }
 
+    def "Update message null duration"() {
+        given:
+        def messageText = "test message before update"
+        queueClient.create()
+        queueClient.sendMessage(messageText)
+
+        def dequeueMsg = queueClient.receiveMessage()
+        when:
+        def updateMsgResponse = queueClient.updateMessageWithResponse(dequeueMsg.getMessageId(),
+            dequeueMsg.getPopReceipt(), null, null, null,  null)
+        sleepIfLive(2000)
+        def peekMsgIter = queueClient.peekMessage()
+        then:
+        QueueTestHelper.assertResponseStatusCode(updateMsgResponse, 204)
+        messageText == peekMsgIter.getMessageText()
+    }
+
     @Unroll
     def "Update message invalid args"() {
         given:
@@ -497,5 +514,20 @@ class QueueAPITests extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        given:
+        def queueClient = queueBuilderHelper(interceptorManager)
+            .addPolicy(getPerCallVersionPolicy()).buildClient()
+        queueClient.create()
+
+        when:
+        def response = queueClient.getPropertiesWithResponse(null, null)
+
+        then:
+        notThrown(QueueStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 }

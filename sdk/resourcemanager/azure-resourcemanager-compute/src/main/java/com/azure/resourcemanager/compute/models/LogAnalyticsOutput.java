@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LogAnalyticsOutput model. */
+/** LogAnalytics output properties. */
 @Immutable
 public final class LogAnalyticsOutput {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LogAnalyticsOutput.class);

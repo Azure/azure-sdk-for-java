@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualHubId model. */
+/** Virtual Hub identifier. */
 @Fluent
 public final class VirtualHubId {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubId.class);

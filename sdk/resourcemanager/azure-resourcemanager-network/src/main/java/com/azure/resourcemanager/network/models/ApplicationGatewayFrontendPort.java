@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationGatewayFrontendPort model. */
+/** Frontend port of an application gateway. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayFrontendPort extends SubResource {
@@ -112,6 +112,13 @@ public class ApplicationGatewayFrontendPort extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayFrontendPort withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**

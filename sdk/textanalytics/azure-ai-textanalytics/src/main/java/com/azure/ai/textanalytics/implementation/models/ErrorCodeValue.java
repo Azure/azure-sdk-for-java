@@ -9,17 +9,20 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /** Defines values for ErrorCodeValue. */
 public enum ErrorCodeValue {
-    /** Enum value invalidRequest. */
-    INVALID_REQUEST("invalidRequest"),
+    /** Enum value InvalidRequest. */
+    INVALID_REQUEST("InvalidRequest"),
 
-    /** Enum value invalidArgument. */
-    INVALID_ARGUMENT("invalidArgument"),
+    /** Enum value InvalidArgument. */
+    INVALID_ARGUMENT("InvalidArgument"),
 
-    /** Enum value internalServerError. */
-    INTERNAL_SERVER_ERROR("internalServerError"),
+    /** Enum value InternalServerError. */
+    INTERNAL_SERVER_ERROR("InternalServerError"),
 
-    /** Enum value serviceUnavailable. */
-    SERVICE_UNAVAILABLE("serviceUnavailable");
+    /** Enum value ServiceUnavailable. */
+    SERVICE_UNAVAILABLE("ServiceUnavailable"),
+
+    /** Enum value NotFound. */
+    NOT_FOUND("NotFound");
 
     /** The actual serialized value for a ErrorCodeValue instance. */
     private final String value;

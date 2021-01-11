@@ -5,7 +5,6 @@ package com.azure.search.documents.implementation.converters;
 
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.LanguageDetectionSkill;
-import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,12 +23,9 @@ public final class LanguageDetectionSkillConverter {
             return null;
         }
 
-        List<OutputFieldMappingEntry> outputs = obj.getOutputs() == null ? null :
-            obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
         List<InputFieldMappingEntry> inputs = obj.getInputs() == null ? null :
             obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
-        LanguageDetectionSkill languageDetectionSkill = new LanguageDetectionSkill(inputs, outputs);
+        LanguageDetectionSkill languageDetectionSkill = new LanguageDetectionSkill(inputs, obj.getOutputs());
 
         String name = obj.getName();
         languageDetectionSkill.setName(name);
@@ -51,15 +47,12 @@ public final class LanguageDetectionSkillConverter {
             return null;
         }
 
-        List<com.azure.search.documents.indexes.implementation.models.OutputFieldMappingEntry> outputs =
-            obj.getOutputs() == null ? null :
-                obj.getOutputs().stream().map(OutputFieldMappingEntryConverter::map).collect(Collectors.toList());
-
         List<com.azure.search.documents.indexes.implementation.models.InputFieldMappingEntry> inputs =
             obj.getOutputs() == null ? null :
                 obj.getInputs().stream().map(InputFieldMappingEntryConverter::map).collect(Collectors.toList());
         com.azure.search.documents.indexes.implementation.models.LanguageDetectionSkill languageDetectionSkill =
-            new com.azure.search.documents.indexes.implementation.models.LanguageDetectionSkill(inputs, outputs);
+            new com.azure.search.documents.indexes.implementation.models.LanguageDetectionSkill(inputs,
+                obj.getOutputs());
 
         String name = obj.getName();
         languageDetectionSkill.setName(name);
@@ -69,7 +62,7 @@ public final class LanguageDetectionSkillConverter {
 
         String description = obj.getDescription();
         languageDetectionSkill.setDescription(description);
-        languageDetectionSkill.validate();
+
         return languageDetectionSkill;
     }
 

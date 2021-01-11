@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AppServiceCertificatePatchResource model. */
+/** Key Vault container ARM resource for a certificate that is purchased through Azure. */
 @JsonFlatten
 @Fluent
 public class AppServiceCertificatePatchResource extends ProxyOnlyResource {

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkRuleSet model. */
+/** Network rule set. */
 @Fluent
 public final class NetworkRuleSet {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSet.class);

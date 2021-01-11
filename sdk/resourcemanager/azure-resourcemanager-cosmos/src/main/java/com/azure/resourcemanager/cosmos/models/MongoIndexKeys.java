@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MongoIndexKeys model. */
+/** Cosmos DB MongoDB collection resource object. */
 @Fluent
 public final class MongoIndexKeys {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoIndexKeys.class);

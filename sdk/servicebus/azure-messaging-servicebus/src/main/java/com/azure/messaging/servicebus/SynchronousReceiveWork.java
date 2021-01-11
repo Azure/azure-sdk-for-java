@@ -26,9 +26,9 @@ class SynchronousReceiveWork implements AutoCloseable {
     private final AtomicInteger remaining;
     private final int numberToReceive;
     private final Duration timeout;
-    private final FluxSink<ServiceBusReceivedMessageContext> emitter;
-    private final FluxSink<ServiceBusReceivedMessageContext> messageReceivedSink;
-    private final DirectProcessor<ServiceBusReceivedMessageContext> emitterProcessor;
+    private final FluxSink<ServiceBusReceivedMessage> emitter;
+    private final FluxSink<ServiceBusReceivedMessage> messageReceivedSink;
+    private final DirectProcessor<ServiceBusReceivedMessage> emitterProcessor;
     // Subscribes to next message from upstream and implement short timeout between the messages.
     private final Disposable nextMessageSubscriber;
 
@@ -49,7 +49,7 @@ class SynchronousReceiveWork implements AutoCloseable {
      * @param emitter Sink to publish received messages to.
      */
     SynchronousReceiveWork(long id, int numberToReceive, Duration timeout,
-        FluxSink<ServiceBusReceivedMessageContext> emitter) {
+        FluxSink<ServiceBusReceivedMessage> emitter) {
         this.id = id;
         this.remaining = new AtomicInteger(numberToReceive);
         this.numberToReceive = numberToReceive;
@@ -118,7 +118,7 @@ class SynchronousReceiveWork implements AutoCloseable {
      *
      * @param message Event to publish downstream.
      */
-    void next(ServiceBusReceivedMessageContext message) {
+    void next(ServiceBusReceivedMessage message) {
         try {
             emitter.next(message);
             messageReceivedSink.next(message);

@@ -26,11 +26,9 @@ public final class SuggesterConverter {
         if (obj == null) {
             return null;
         }
-        com.azure.search.documents.indexes.implementation.models.Suggester suggester =
-            new com.azure.search.documents.indexes.implementation.models.Suggester(obj.getName(),
-                "analyzingInfixMatching", obj.getSourceFields());
-        suggester.validate();
-        return suggester;
+
+        return new com.azure.search.documents.indexes.implementation.models.Suggester(obj.getName(),
+            "analyzingInfixMatching", obj.getSourceFields());
     }
 
     private SuggesterConverter() {

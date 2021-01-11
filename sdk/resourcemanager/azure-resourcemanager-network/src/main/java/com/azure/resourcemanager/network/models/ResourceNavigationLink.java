@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceNavigationLink model. */
+/** ResourceNavigationLink resource. */
 @JsonFlatten
 @Fluent
 public class ResourceNavigationLink extends SubResource {
@@ -141,6 +141,13 @@ public class ResourceNavigationLink extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ResourceNavigationLink withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**

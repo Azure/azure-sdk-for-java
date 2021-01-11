@@ -53,4 +53,14 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
                 : (this.queryRanges = super.getList(
                         PartitionedQueryExecutionInfoInternal.QUERY_RANGES_PROPERTY, QUERY_RANGES_CLASS));
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

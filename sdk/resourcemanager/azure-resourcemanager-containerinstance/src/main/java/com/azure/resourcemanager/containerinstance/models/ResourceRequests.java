@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceRequests model. */
+/** The resource requests. */
 @Fluent
 public final class ResourceRequests {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceRequests.class);

@@ -49,7 +49,7 @@ public class KeyVaultCertificateSourceParameters {
     /**
      * The version(GUID) of Key Vault Secret in Key Vault.
      */
-    @JsonProperty(value = "secretVersion", required = true)
+    @JsonProperty(value = "secretVersion")
     private String secretVersion;
 
     /**
@@ -72,7 +72,6 @@ public class KeyVaultCertificateSourceParameters {
      * @param resourceGroupName resource group of the user's Key Vault containing the SSL certificate.
      * @param vaultName the name of the user's Key Vault containing the SSL certificate.
      * @param secretName the name of Key Vault Secret (representing the full certificate PFX) in Key Vault.
-     * @param secretVersion the version(GUID) of Key Vault Secret in Key Vault.
      */
     public KeyVaultCertificateSourceParameters() {
         odatatype = "#Microsoft.Azure.Cdn.Models.KeyVaultCertificateSourceParameters";

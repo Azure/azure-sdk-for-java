@@ -56,7 +56,7 @@ public final class SkillsetsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceClientS")
-    private interface SkillsetsService {
+    public interface SkillsetsService {
         @Put("/skillsets('{skillsetName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
@@ -143,22 +143,6 @@ public final class SkillsetsImpl {
             String ifNoneMatch,
             RequestOptions requestOptions,
             Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (skillsetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter skillsetName is required and cannot be null."));
-        }
-        if (skillset == null) {
-            return Mono.error(new IllegalArgumentException("Parameter skillset is required and cannot be null."));
-        } else {
-            skillset.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -197,17 +181,6 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
             String skillsetName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (skillsetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter skillsetName is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -239,17 +212,6 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> getWithResponseAsync(
             String skillsetName, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (skillsetName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter skillsetName is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -280,14 +242,6 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ListSkillsetsResult>> listWithResponseAsync(
             String select, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
@@ -312,19 +266,6 @@ public final class SkillsetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchIndexerSkillset>> createWithResponseAsync(
             SearchIndexerSkillset skillset, RequestOptions requestOptions, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                    new IllegalArgumentException(
-                            "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (skillset == null) {
-            return Mono.error(new IllegalArgumentException("Parameter skillset is required and cannot be null."));
-        } else {
-            skillset.validate();
-        }
-        if (requestOptions != null) {
-            requestOptions.validate();
-        }
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {

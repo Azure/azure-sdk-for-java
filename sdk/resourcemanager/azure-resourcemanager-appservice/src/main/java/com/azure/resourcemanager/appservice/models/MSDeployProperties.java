@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MSDeployProperties model. */
+/** Core resource properties. */
 @Fluent
 public final class MSDeployProperties extends MSDeployCore {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeployProperties.class);

@@ -3,17 +3,17 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayProbeInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayProbeInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.Set;
 
 /** A client-side representation of an application gateway probe. */
 @Fluent()
 public interface ApplicationGatewayProbe
-    extends HasInner<ApplicationGatewayProbeInner>,
+    extends HasInnerModel<ApplicationGatewayProbeInner>,
         ChildResource<ApplicationGateway>,
         HasProtocol<ApplicationGatewayProtocol> {
 

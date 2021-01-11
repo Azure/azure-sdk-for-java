@@ -4,384 +4,1094 @@
 
 package com.azure.resourcemanager.authorization.fluent;
 
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.GraphRbacManagementClient;
-import com.azure.resourcemanager.authorization.fluent.inner.DomainInner;
-import com.azure.resourcemanager.authorization.fluent.inner.DomainListResultInner;
+import com.azure.resourcemanager.authorization.fluent.models.DomainsForceDeleteRequestBody;
+import com.azure.resourcemanager.authorization.fluent.models.DomainsOrderby;
+import com.azure.resourcemanager.authorization.fluent.models.DomainsSelect;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDirectoryObjectInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDomainDnsRecordInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDomainInner;
+import java.util.List;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Domains. */
-public final class DomainsClient {
-    private final ClientLogger logger = new ClientLogger(DomainsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final DomainsService service;
-
-    /** The service client containing this operation class. */
-    private final GraphRbacManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in DomainsClient. */
+public interface DomainsClient {
     /**
-     * Initializes an instance of DomainsClient.
+     * Get domainNameReferences from domains.
      *
-     * @param client the instance of the service client containing this operation class.
-     */
-    public DomainsClient(GraphRbacManagementClient client) {
-        this.service = RestProxy.create(DomainsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for GraphRbacManagementClientDomains to be used by the proxy service to
-     * perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "GraphRbacManagementC")
-    private interface DomainsService {
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get("/{tenantID}/domains")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainListResultInner>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get("/{tenantID}/domains/{domainName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DomainInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("domainName") String domainName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-    }
-
-    /**
-     * Gets a list of domains for the current tenant.
-     *
-     * @param filter The filter to apply to the operation.
+     * @param domainId key: id of domain.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of domains for the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DomainInner>> listSinglePageAsync(String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<DomainInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets a list of domains for the current tenant.
-     *
-     * @param filter The filter to apply to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of domains for the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DomainInner>> listSinglePageAsync(String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
-    }
-
-    /**
-     * Gets a list of domains for the current tenant.
-     *
-     * @param filter The filter to apply to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of domains for the current tenant.
+     * @return domainNameReferences from domains.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DomainInner> listAsync(String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter));
-    }
+    PagedFlux<MicrosoftGraphDirectoryObjectInner> listDomainNameReferencesAsync(
+        String domainId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<DomainsOrderby> orderby,
+        List<DomainsSelect> select,
+        List<String> expand);
 
     /**
-     * Gets a list of domains for the current tenant.
+     * Get domainNameReferences from domains.
      *
-     * @param filter The filter to apply to the operation.
-     * @param context The context to associate with this operation.
+     * @param domainId key: id of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of domains for the current tenant.
+     * @return domainNameReferences from domains.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DomainInner> listAsync(String filter, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter, context));
-    }
+    PagedFlux<MicrosoftGraphDirectoryObjectInner> listDomainNameReferencesAsync(String domainId);
 
     /**
-     * Gets a list of domains for the current tenant.
+     * Get domainNameReferences from domains.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @param domainId key: id of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of domains for the current tenant.
+     * @return domainNameReferences from domains.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DomainInner> listAsync() {
-        final String filter = null;
-        final Context context = null;
-        return new PagedFlux<>(() -> listSinglePageAsync(filter));
-    }
+    PagedIterable<MicrosoftGraphDirectoryObjectInner> listDomainNameReferences(String domainId);
 
     /**
-     * Gets a list of domains for the current tenant.
+     * Get domainNameReferences from domains.
      *
-     * @param filter The filter to apply to the operation.
+     * @param domainId key: id of domain.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of domains for the current tenant.
+     * @return domainNameReferences from domains.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DomainInner> list(String filter) {
-        return new PagedIterable<>(listAsync(filter));
-    }
+    PagedIterable<MicrosoftGraphDirectoryObjectInner> listDomainNameReferences(
+        String domainId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<DomainsOrderby> orderby,
+        List<DomainsSelect> select,
+        List<String> expand,
+        Context context);
 
     /**
-     * Gets a list of domains for the current tenant.
+     * Get ref of domainNameReferences from domains.
      *
-     * @param filter The filter to apply to the operation.
-     * @param context The context to associate with this operation.
+     * @param domainId key: id of domain.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of domains for the current tenant.
+     * @return ref of domainNameReferences from domains.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DomainInner> list(String filter, Context context) {
-        return new PagedIterable<>(listAsync(filter, context));
-    }
+    PagedFlux<String> listRefDomainNameReferencesAsync(
+        String domainId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<DomainsOrderby> orderby);
 
     /**
-     * Gets a list of domains for the current tenant.
+     * Get ref of domainNameReferences from domains.
      *
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @param domainId key: id of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of domains for the current tenant.
+     * @return ref of domainNameReferences from domains.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DomainInner> list() {
-        final String filter = null;
-        final Context context = null;
-        return new PagedIterable<>(listAsync(filter));
-    }
+    PagedFlux<String> listRefDomainNameReferencesAsync(String domainId);
 
     /**
-     * Gets a specific domain in the current tenant.
+     * Get ref of domainNameReferences from domains.
      *
-     * @param domainName name of the domain.
+     * @param domainId key: id of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific domain in the current tenant.
+     * @return ref of domainNameReferences from domains.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DomainInner>> getWithResponseAsync(String domainName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            domainName,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefDomainNameReferences(String domainId);
 
     /**
-     * Gets a specific domain in the current tenant.
+     * Get ref of domainNameReferences from domains.
      *
-     * @param domainName name of the domain.
+     * @param domainId key: id of domain.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific domain in the current tenant.
+     * @return ref of domainNameReferences from domains.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DomainInner>> getWithResponseAsync(String domainName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(), domainName, this.client.getApiVersion(), this.client.getTenantId(), context);
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefDomainNameReferences(
+        String domainId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<DomainsOrderby> orderby,
+        Context context);
 
     /**
-     * Gets a specific domain in the current tenant.
+     * Create new navigation property ref to domainNameReferences for domains.
      *
-     * @param domainName name of the domain.
+     * @param domainId key: id of domain.
+     * @param body New navigation property ref value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific domain in the current tenant.
+     * @return dictionary of &lt;any&gt;.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DomainInner> getAsync(String domainName) {
-        return getWithResponseAsync(domainName)
-            .flatMap(
-                (Response<DomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
+    Mono<Response<Map<String, Object>>> createRefDomainNameReferencesWithResponseAsync(
+        String domainId, Map<String, Object> body);
 
     /**
-     * Gets a specific domain in the current tenant.
+     * Create new navigation property ref to domainNameReferences for domains.
      *
-     * @param domainName name of the domain.
+     * @param domainId key: id of domain.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Map<String, Object>> createRefDomainNameReferencesAsync(String domainId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to domainNameReferences for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> createRefDomainNameReferences(String domainId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to domainNameReferences for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param body New navigation property ref value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific domain in the current tenant.
+     * @return dictionary of &lt;any&gt;.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DomainInner> getAsync(String domainName, Context context) {
-        return getWithResponseAsync(domainName, context)
-            .flatMap(
-                (Response<DomainInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
+    Response<Map<String, Object>> createRefDomainNameReferencesWithResponse(
+        String domainId, Map<String, Object> body, Context context);
 
     /**
-     * Gets a specific domain in the current tenant.
+     * Invoke action forceDelete.
      *
-     * @param domainName name of the domain.
+     * @param domainId key: id of domain.
+     * @param body Action parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific domain in the current tenant.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainInner get(String domainName) {
-        return getAsync(domainName).block();
-    }
+    Mono<Response<Void>> forceDeleteWithResponseAsync(String domainId, DomainsForceDeleteRequestBody body);
 
     /**
-     * Gets a specific domain in the current tenant.
+     * Invoke action forceDelete.
      *
-     * @param domainName name of the domain.
+     * @param domainId key: id of domain.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> forceDeleteAsync(String domainId, DomainsForceDeleteRequestBody body);
+
+    /**
+     * Invoke action forceDelete.
+     *
+     * @param domainId key: id of domain.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void forceDelete(String domainId, DomainsForceDeleteRequestBody body);
+
+    /**
+     * Invoke action forceDelete.
+     *
+     * @param domainId key: id of domain.
+     * @param body Action parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific domain in the current tenant.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainInner get(String domainName, Context context) {
-        return getAsync(domainName, context).block();
-    }
+    Response<Void> forceDeleteWithResponse(String domainId, DomainsForceDeleteRequestBody body, Context context);
+
+    /**
+     * Invoke action verify.
+     *
+     * @param domainId key: id of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphDomainInner>> verifyWithResponseAsync(String domainId);
+
+    /**
+     * Invoke action verify.
+     *
+     * @param domainId key: id of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphDomainInner> verifyAsync(String domainId);
+
+    /**
+     * Invoke action verify.
+     *
+     * @param domainId key: id of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphDomainInner verify(String domainId);
+
+    /**
+     * Invoke action verify.
+     *
+     * @param domainId key: id of domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphDomainInner> verifyWithResponse(String domainId, Context context);
+
+    /**
+     * Get serviceConfigurationRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return serviceConfigurationRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDomainDnsRecordInner> listServiceConfigurationRecordsAsync(
+        String domainId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<DomainsOrderby> orderby,
+        List<DomainsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get serviceConfigurationRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return serviceConfigurationRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDomainDnsRecordInner> listServiceConfigurationRecordsAsync(String domainId);
+
+    /**
+     * Get serviceConfigurationRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return serviceConfigurationRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDomainDnsRecordInner> listServiceConfigurationRecords(String domainId);
+
+    /**
+     * Get serviceConfigurationRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return serviceConfigurationRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDomainDnsRecordInner> listServiceConfigurationRecords(
+        String domainId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<DomainsOrderby> orderby,
+        List<DomainsSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Create new navigation property to serviceConfigurationRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domainDnsRecord.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphDomainDnsRecordInner>> createServiceConfigurationRecordsWithResponseAsync(
+        String domainId, MicrosoftGraphDomainDnsRecordInner body);
+
+    /**
+     * Create new navigation property to serviceConfigurationRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domainDnsRecord.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphDomainDnsRecordInner> createServiceConfigurationRecordsAsync(
+        String domainId, MicrosoftGraphDomainDnsRecordInner body);
+
+    /**
+     * Create new navigation property to serviceConfigurationRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domainDnsRecord.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphDomainDnsRecordInner createServiceConfigurationRecords(
+        String domainId, MicrosoftGraphDomainDnsRecordInner body);
+
+    /**
+     * Create new navigation property to serviceConfigurationRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param body New navigation property.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domainDnsRecord.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphDomainDnsRecordInner> createServiceConfigurationRecordsWithResponse(
+        String domainId, MicrosoftGraphDomainDnsRecordInner body, Context context);
+
+    /**
+     * Get serviceConfigurationRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return serviceConfigurationRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphDomainDnsRecordInner>> getServiceConfigurationRecordsWithResponseAsync(
+        String domainId, String domainDnsRecordId, List<DomainsSelect> select, List<String> expand);
+
+    /**
+     * Get serviceConfigurationRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return serviceConfigurationRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphDomainDnsRecordInner> getServiceConfigurationRecordsAsync(
+        String domainId, String domainDnsRecordId, List<DomainsSelect> select, List<String> expand);
+
+    /**
+     * Get serviceConfigurationRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return serviceConfigurationRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphDomainDnsRecordInner> getServiceConfigurationRecordsAsync(
+        String domainId, String domainDnsRecordId);
+
+    /**
+     * Get serviceConfigurationRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return serviceConfigurationRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphDomainDnsRecordInner getServiceConfigurationRecords(String domainId, String domainDnsRecordId);
+
+    /**
+     * Get serviceConfigurationRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return serviceConfigurationRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphDomainDnsRecordInner> getServiceConfigurationRecordsWithResponse(
+        String domainId, String domainDnsRecordId, List<DomainsSelect> select, List<String> expand, Context context);
+
+    /**
+     * Update the navigation property serviceConfigurationRecords in domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> updateServiceConfigurationRecordsWithResponseAsync(
+        String domainId, String domainDnsRecordId, MicrosoftGraphDomainDnsRecordInner body);
+
+    /**
+     * Update the navigation property serviceConfigurationRecords in domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> updateServiceConfigurationRecordsAsync(
+        String domainId, String domainDnsRecordId, MicrosoftGraphDomainDnsRecordInner body);
+
+    /**
+     * Update the navigation property serviceConfigurationRecords in domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateServiceConfigurationRecords(
+        String domainId, String domainDnsRecordId, MicrosoftGraphDomainDnsRecordInner body);
+
+    /**
+     * Update the navigation property serviceConfigurationRecords in domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param body New navigation property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> updateServiceConfigurationRecordsWithResponse(
+        String domainId, String domainDnsRecordId, MicrosoftGraphDomainDnsRecordInner body, Context context);
+
+    /**
+     * Delete navigation property serviceConfigurationRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteServiceConfigurationRecordsWithResponseAsync(
+        String domainId, String domainDnsRecordId, String ifMatch);
+
+    /**
+     * Delete navigation property serviceConfigurationRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteServiceConfigurationRecordsAsync(String domainId, String domainDnsRecordId, String ifMatch);
+
+    /**
+     * Delete navigation property serviceConfigurationRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteServiceConfigurationRecordsAsync(String domainId, String domainDnsRecordId);
+
+    /**
+     * Delete navigation property serviceConfigurationRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteServiceConfigurationRecords(String domainId, String domainDnsRecordId);
+
+    /**
+     * Delete navigation property serviceConfigurationRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteServiceConfigurationRecordsWithResponse(
+        String domainId, String domainDnsRecordId, String ifMatch, Context context);
+
+    /**
+     * Get verificationDnsRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return verificationDnsRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDomainDnsRecordInner> listVerificationDnsRecordsAsync(
+        String domainId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<DomainsOrderby> orderby,
+        List<DomainsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get verificationDnsRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return verificationDnsRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDomainDnsRecordInner> listVerificationDnsRecordsAsync(String domainId);
+
+    /**
+     * Get verificationDnsRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return verificationDnsRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDomainDnsRecordInner> listVerificationDnsRecords(String domainId);
+
+    /**
+     * Get verificationDnsRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return verificationDnsRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDomainDnsRecordInner> listVerificationDnsRecords(
+        String domainId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<DomainsOrderby> orderby,
+        List<DomainsSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Create new navigation property to verificationDnsRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domainDnsRecord.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphDomainDnsRecordInner>> createVerificationDnsRecordsWithResponseAsync(
+        String domainId, MicrosoftGraphDomainDnsRecordInner body);
+
+    /**
+     * Create new navigation property to verificationDnsRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domainDnsRecord.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphDomainDnsRecordInner> createVerificationDnsRecordsAsync(
+        String domainId, MicrosoftGraphDomainDnsRecordInner body);
+
+    /**
+     * Create new navigation property to verificationDnsRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domainDnsRecord.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphDomainDnsRecordInner createVerificationDnsRecords(
+        String domainId, MicrosoftGraphDomainDnsRecordInner body);
+
+    /**
+     * Create new navigation property to verificationDnsRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param body New navigation property.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domainDnsRecord.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphDomainDnsRecordInner> createVerificationDnsRecordsWithResponse(
+        String domainId, MicrosoftGraphDomainDnsRecordInner body, Context context);
+
+    /**
+     * Get verificationDnsRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return verificationDnsRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphDomainDnsRecordInner>> getVerificationDnsRecordsWithResponseAsync(
+        String domainId, String domainDnsRecordId, List<DomainsSelect> select, List<String> expand);
+
+    /**
+     * Get verificationDnsRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return verificationDnsRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphDomainDnsRecordInner> getVerificationDnsRecordsAsync(
+        String domainId, String domainDnsRecordId, List<DomainsSelect> select, List<String> expand);
+
+    /**
+     * Get verificationDnsRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return verificationDnsRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphDomainDnsRecordInner> getVerificationDnsRecordsAsync(String domainId, String domainDnsRecordId);
+
+    /**
+     * Get verificationDnsRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return verificationDnsRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphDomainDnsRecordInner getVerificationDnsRecords(String domainId, String domainDnsRecordId);
+
+    /**
+     * Get verificationDnsRecords from domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return verificationDnsRecords from domains.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphDomainDnsRecordInner> getVerificationDnsRecordsWithResponse(
+        String domainId, String domainDnsRecordId, List<DomainsSelect> select, List<String> expand, Context context);
+
+    /**
+     * Update the navigation property verificationDnsRecords in domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> updateVerificationDnsRecordsWithResponseAsync(
+        String domainId, String domainDnsRecordId, MicrosoftGraphDomainDnsRecordInner body);
+
+    /**
+     * Update the navigation property verificationDnsRecords in domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> updateVerificationDnsRecordsAsync(
+        String domainId, String domainDnsRecordId, MicrosoftGraphDomainDnsRecordInner body);
+
+    /**
+     * Update the navigation property verificationDnsRecords in domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateVerificationDnsRecords(
+        String domainId, String domainDnsRecordId, MicrosoftGraphDomainDnsRecordInner body);
+
+    /**
+     * Update the navigation property verificationDnsRecords in domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param body New navigation property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> updateVerificationDnsRecordsWithResponse(
+        String domainId, String domainDnsRecordId, MicrosoftGraphDomainDnsRecordInner body, Context context);
+
+    /**
+     * Delete navigation property verificationDnsRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteVerificationDnsRecordsWithResponseAsync(
+        String domainId, String domainDnsRecordId, String ifMatch);
+
+    /**
+     * Delete navigation property verificationDnsRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteVerificationDnsRecordsAsync(String domainId, String domainDnsRecordId, String ifMatch);
+
+    /**
+     * Delete navigation property verificationDnsRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteVerificationDnsRecordsAsync(String domainId, String domainDnsRecordId);
+
+    /**
+     * Delete navigation property verificationDnsRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteVerificationDnsRecords(String domainId, String domainDnsRecordId);
+
+    /**
+     * Delete navigation property verificationDnsRecords for domains.
+     *
+     * @param domainId key: id of domain.
+     * @param domainDnsRecordId key: id of domainDnsRecord.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteVerificationDnsRecordsWithResponse(
+        String domainId, String domainDnsRecordId, String ifMatch, Context context);
 }

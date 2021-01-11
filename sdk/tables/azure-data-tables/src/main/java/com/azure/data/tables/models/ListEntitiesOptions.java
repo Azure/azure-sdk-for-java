@@ -6,7 +6,7 @@ package com.azure.data.tables.models;
 import com.azure.core.annotation.Fluent;
 
 /**
- * helps construct a query
+ * Options to modify the data returned from the {@code listEntities} family of methods.
  */
 @Fluent
 public final class ListEntitiesOptions {
@@ -15,19 +15,19 @@ public final class ListEntitiesOptions {
     private String filter;
 
     /**
-     * Get the top property: Maximum number of records to return.
+     * Gets the value of the `top` OData query option which limits the number of returned entities.
      *
-     * @return the top value.
+     * @return The value of the `top` OData query option.
      */
     public Integer getTop() {
         return this.top;
     }
 
     /**
-     * Set the top property: Maximum number of records to return.
+     * Sets the value of the `top` OData query option which limits the number of returned entities.
      *
-     * @param top the top value to set.
-     * @return the TableEntityQueryOptions object itself.
+     * @param top The value of the `top` OData query option.
+     * @return The updated {@code ListEntitiesOptions}.
      */
     public ListEntitiesOptions setTop(Integer top) {
         this.top = top;
@@ -35,21 +35,19 @@ public final class ListEntitiesOptions {
     }
 
     /**
-     * Get the select property: Select expression using OData notation. Limits the columns on each record to just those
-     * requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * Gets the value of the `select` OData query option which limits the properties returned on each entity.
      *
-     * @return the select value.
+     * @return The value of the `select` OData query option.
      */
     public String getSelect() {
         return this.select;
     }
 
     /**
-     * Set the select property: Select expression using OData notation. Limits the columns on each record to just those
-     * requested, e.g. "$select=PolicyAssignmentId, ResourceId".
+     * Sets the value of the `select` OData query option which limits the properties returned on each entity.
      *
-     * @param select the select value to set.
-     * @return the TableEntityQueryOptions object itself.
+     * @param select The value of the `select` OData query option.
+     * @return The updated {@code ListEntitiesOptions}.
      */
     public ListEntitiesOptions setSelect(String select) {
         this.select = select;
@@ -57,19 +55,21 @@ public final class ListEntitiesOptions {
     }
 
     /**
-     * Get the filter property: OData filter expression.
+     * Gets the value of the `filter` OData query option which filters the set of returned entities, excluding those
+     * that do not match the filter expression.
      *
-     * @return the filter value.
+     * @return The value of the `filter` OData query option.
      */
     public String getFilter() {
         return this.filter;
     }
 
     /**
-     * Set the filter property: OData filter expression.
+     * Sets the value of the `filter` OData query option which filters the set of returned entities, excluding those
+     * that do not match the filter expression.
      *
-     * @param filter the filter value to set.
-     * @return the TableEntityQueryOptions object itself.
+     * @param filter The value of the `filter` OData query option.
+     * @return The updated {@code ListEntitiesOptions}.
      */
     public ListEntitiesOptions setFilter(String filter) {
         this.filter = filter;

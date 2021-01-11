@@ -52,12 +52,12 @@ public final class PatternTokenizerConverter {
 
         if (obj.getFlags() != null) {
             String flattenFlags = obj.getFlags().stream().map(RegexFlags::toString).collect(Collectors.joining("|"));
-            patternTokenizer.setFlags(com.azure.search.documents.indexes.implementation.models.RegexFlags.fromString(flattenFlags));
+            patternTokenizer.setFlags(RegexFlags.fromString(flattenFlags));
         }
 
         Integer group = obj.getGroup();
         patternTokenizer.setGroup(group);
-        patternTokenizer.validate();
+
         return patternTokenizer;
     }
 

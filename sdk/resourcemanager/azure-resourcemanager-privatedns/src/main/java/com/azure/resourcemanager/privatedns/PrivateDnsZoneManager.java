@@ -4,17 +4,18 @@ package com.azure.resourcemanager.privatedns;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.privatedns.fluent.PrivateDnsManagementClient;
+import com.azure.resourcemanager.privatedns.implementation.PrivateDnsManagementClientBuilder;
 import com.azure.resourcemanager.privatedns.implementation.PrivateDnsZonesImpl;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZones;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.Manager;
-import com.azure.resourcemanager.resources.fluentcore.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure private DNS zone management. */
-public final class PrivateDnsZoneManager extends Manager<PrivateDnsZoneManager, PrivateDnsManagementClient> {
+public final class PrivateDnsZoneManager extends Manager<PrivateDnsManagementClient> {
 
     private PrivateDnsZones privateZones;
 
@@ -45,21 +46,8 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsZoneManager, 
      * @param profile the profile to use
      * @return the PrivateDnsZoneManager
      */
-    public static PrivateDnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
-        return new PrivateDnsZoneManager(httpPipeline, profile, new SdkContext());
-    }
-
-    /**
-     * Creates an instance of PrivateDnsZoneManager that exposes private DNS zone management API entry points.
-     *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
-     * @param profile the profile to use
-     * @param sdkContext the sdk context
-     * @return the PrivateDnsZoneManager
-     */
-    public static PrivateDnsZoneManager authenticate(
-        HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        return new PrivateDnsZoneManager(httpPipeline, profile, sdkContext);
+    private static PrivateDnsZoneManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return new PrivateDnsZoneManager(httpPipeline, profile);
     }
 
     /** The interface allowing configurations to be set. */
@@ -81,16 +69,15 @@ public final class PrivateDnsZoneManager extends Manager<PrivateDnsZoneManager, 
         }
     }
 
-    private PrivateDnsZoneManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+    private PrivateDnsZoneManager(HttpPipeline httpPipeline, AzureProfile profile) {
         super(
             httpPipeline,
             profile,
             new PrivateDnsManagementClientBuilder()
                 .pipeline(httpPipeline)
-                .subscriptionId(profile.subscriptionId())
-                .buildClient(),
-            sdkContext
-        );
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient());
     }
 
     /**

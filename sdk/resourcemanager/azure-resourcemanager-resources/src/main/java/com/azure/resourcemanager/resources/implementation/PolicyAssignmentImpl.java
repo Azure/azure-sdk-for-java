@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.models.PolicyAssignment;
 import com.azure.resourcemanager.resources.models.PolicyDefinition;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.CreatableImpl;
-import com.azure.resourcemanager.resources.fluent.inner.PolicyAssignmentInner;
+import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
 import com.azure.resourcemanager.resources.fluent.PolicyAssignmentsClient;
 import reactor.core.publisher.Mono;
 
@@ -29,67 +29,67 @@ final class PolicyAssignmentImpl extends
 
     @Override
     public String displayName() {
-        return inner().displayName();
+        return innerModel().displayName();
     }
 
     @Override
     public String policyDefinitionId() {
-        return inner().policyDefinitionId();
+        return innerModel().policyDefinitionId();
     }
 
     @Override
     public String scope() {
-        return inner().scope();
+        return innerModel().scope();
     }
 
     @Override
     public String id() {
-        return inner().id();
+        return innerModel().id();
     }
 
     @Override
     public String type() {
-        return inner().type();
+        return innerModel().type();
     }
 
     @Override
     public PolicyAssignmentImpl withDisplayName(String displayName) {
-        inner().withDisplayName(displayName);
+        innerModel().withDisplayName(displayName);
         return this;
     }
 
     @Override
     public PolicyAssignmentImpl forScope(String scope) {
-        inner().withScope(scope);
+        innerModel().withScope(scope);
         return this;
     }
 
     @Override
     public PolicyAssignmentImpl forResourceGroup(ResourceGroup resourceGroup) {
-        inner().withScope(resourceGroup.id());
+        innerModel().withScope(resourceGroup.id());
         return this;
     }
 
     public PolicyAssignmentImpl forResource(GenericResource genericResource) {
-        inner().withScope(genericResource.id());
+        innerModel().withScope(genericResource.id());
         return this;
     }
 
     @Override
     public PolicyAssignmentImpl withPolicyDefinitionId(String policyDefinitionId) {
-        inner().withPolicyDefinitionId(policyDefinitionId);
+        innerModel().withPolicyDefinitionId(policyDefinitionId);
         return this;
     }
 
     @Override
     public PolicyAssignmentImpl withPolicyDefinition(PolicyDefinition policyDefinition) {
-        inner().withPolicyDefinitionId(policyDefinition.id());
+        innerModel().withPolicyDefinitionId(policyDefinition.id());
         return this;
     }
 
     @Override
     public Mono<PolicyAssignment> createResourceAsync() {
-        return innerCollection.createAsync(inner().scope(), name(), inner())
+        return innerCollection.createAsync(innerModel().scope(), name(), innerModel())
                 .map(innerToFluentMap(this));
     }
 
@@ -100,6 +100,6 @@ final class PolicyAssignmentImpl extends
 
     @Override
     protected Mono<PolicyAssignmentInner> getInnerAsync() {
-        return innerCollection.getAsync(inner().scope(), name());
+        return innerCollection.getAsync(innerModel().scope(), name());
     }
 }

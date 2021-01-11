@@ -45,7 +45,7 @@ public final class SynonymTokenFilterConverter {
 
         Boolean ignoreCase = obj.isCaseIgnored();
         synonymTokenFilter.setIgnoreCase(ignoreCase);
-        synonymTokenFilter.validate();
+
         return synonymTokenFilter;
     }
 

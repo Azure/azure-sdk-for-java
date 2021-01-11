@@ -5,13 +5,13 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.inner.ImageInner;
+import com.azure.resourcemanager.compute.fluent.models.ImageInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import java.util.Map;
 
@@ -280,7 +280,7 @@ public interface VirtualMachineCustomImage
 
     /** An immutable client-side representation of a data disk image in an image resource. */
     @Fluent
-    interface CustomImageDataDisk extends HasInner<ImageDataDisk>, ChildResource<VirtualMachineCustomImage> {
+    interface CustomImageDataDisk extends HasInnerModel<ImageDataDisk>, ChildResource<VirtualMachineCustomImage> {
         /** Grouping of data disk image definition stages. */
         interface DefinitionStages {
             /**

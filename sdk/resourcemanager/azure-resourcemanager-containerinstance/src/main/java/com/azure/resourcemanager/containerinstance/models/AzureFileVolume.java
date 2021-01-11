@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureFileVolume model. */
+/** The properties of the Azure File volume. Azure File shares are mounted as volumes. */
 @Fluent
 public final class AzureFileVolume {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileVolume.class);

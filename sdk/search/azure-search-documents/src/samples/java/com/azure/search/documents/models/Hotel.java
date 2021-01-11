@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.models;
 
-import com.azure.search.documents.indexes.SearchableFieldProperty;
-import com.azure.search.documents.indexes.SimpleFieldProperty;
+import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.SimpleField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class Hotel {
     }
 
     @JsonProperty(value = "HotelId")
-    @SimpleFieldProperty(isKey = true)
+    @SimpleField(isKey = true)
     public String getHotelId() {
         return this.hotelId;
     }
@@ -30,7 +30,7 @@ public class Hotel {
     }
 
     @JsonProperty(value = "Tags")
-    @SearchableFieldProperty(isFilterable = true, analyzerName = "en.lucene")
+    @SearchableField(isFilterable = true, analyzerName = "en.lucene")
     public List<String> getTags() {
         return this.tags;
     }

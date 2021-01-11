@@ -3,15 +3,11 @@
 ## Key concepts
 This sample project demonstrates how to use Azure Media Services with Spring Boot.
 
-### Prerequisites
-
-* An Azure subscription; if you don't already have an Azure subscription, you can activate your [MSDN subscriber benefits](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/) or sign up for a [free Azure account](https://azure.microsoft.com/free/).
-
-* A [Java Development Kit (JDK)](http://www.oracle.com/technetwork/java/javase/downloads/), version 1.8.
-
-* [Apache Maven](http://maven.apache.org/), version 3.0 or later.
-
 ## Getting started
+
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+
 ### Create Azure Media Services on Azure
 
 1. Go to [Azure portal](https://portal.azure.com/) and create the service by following this [link](https://docs.microsoft.com/azure/media-services/media-services-portal-create-account). 
@@ -41,9 +37,8 @@ and `REST API ENDPOINT` respectively.
     ```
 
 ### Run with Maven
+
 ```
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-mediaservices
 mvn spring-boot:run
 ```
@@ -54,4 +49,8 @@ mvn spring-boot:run
 
 ## License
 
-The video file `video.mp4` under `src/main/resources` folder is from GitHub repository [big-buck-bunny-480p-5s](https://github.com/bower-media-samples/big-buck-bunny-480p-5s) without any modification and is under the [Creative Commons Attribution 3.0 license](http://creativecommons.org/licenses/by/3.0/).
+The video file `video.mp4` under `src/main/resources` folder is from GitHub repository [big-buck-bunny-480p-5s](https://github.com/bower-media-samples/big-buck-bunny-480p-5s) without any modification and is under the [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/).
+
+<!-- LINKS -->
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist

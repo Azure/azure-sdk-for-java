@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.indexes.SearchableFieldProperty;
+import com.azure.search.documents.indexes.SearchableField;
 
 /**
  * The data object model is to test exception case.
@@ -16,7 +16,7 @@ public class HotelSearchException {
      *
      * @return Get hotel id
      */
-    @SearchableFieldProperty
+    @SearchableField
     public int getHotelId() {
         return hotelId;
     }

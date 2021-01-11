@@ -4,17 +4,17 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.compute.fluent.inner.ResourceSkuInner;
+import com.azure.resourcemanager.compute.fluent.models.ResourceSkuInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /** Type representing sku for an Azure compute resource. */
 @Fluent
-public interface ComputeSku extends HasInner<ResourceSkuInner> {
+public interface ComputeSku extends HasInnerModel<ResourceSkuInner> {
     /** @return the sku name */
     ComputeSkuName name();
     /** @return the sku tier */
@@ -34,8 +34,7 @@ public interface ComputeSku extends HasInner<ResourceSkuInner> {
      * The managed disk or snapshot sku type if the sku describes sku for disk or snapshot resource type.
      *
      * <p>The sku type can be used for {@link Disk.DefinitionStages.WithSku#withSku(DiskSkuTypes)}, {@link
-     * Disk.UpdateStages.WithSku#withSku(DiskSkuTypes)}, {@link Snapshot.DefinitionStages.WithSku#withSku(DiskSkuTypes)}
-     * and {@link Snapshot.UpdateStages.WithSku#withSku(DiskSkuTypes)}.
+     * Disk.UpdateStages.WithSku#withSku(DiskSkuTypes)}.
      *
      * @return the managed disk or snapshot sku type
      */

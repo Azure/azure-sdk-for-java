@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FirewallPolicyNatRuleCollectionAction model. */
+/** Properties of the FirewallPolicyNatRuleCollectionAction. */
 @Fluent
 public final class FirewallPolicyNatRuleCollectionAction {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyNatRuleCollectionAction.class);

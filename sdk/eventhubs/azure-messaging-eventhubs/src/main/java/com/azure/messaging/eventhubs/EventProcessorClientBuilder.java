@@ -45,19 +45,18 @@ import java.util.function.Supplier;
  * from the Event Hub.</li>
  * <li>{@link #processError(Consumer) processError} - A callback that handles errors that may occur while running the
  * EventProcessorClient.</li>
- * <li>Credentials -
- *  <strong>Credentials are required</strong> to perform operations against Azure Event Hubs. They can be set by using
- *  one of the following methods:
- *  <ul>
- *  <li>{@link #connectionString(String)} with a connection string to a specific Event Hub.
- *  </li>
- *  <li>{@link #connectionString(String, String)} with an Event Hub <i>namespace</i> connection string and the Event Hub
- *  name.</li>
- *  <li>{@link #credential(String, String, TokenCredential)} with the fully qualified namespace, Event Hub name, and a
- *  set of credentials authorized to use the Event Hub.
- *  </li>
- *  </ul>
- *  </li>
+ * <li>Credentials to perform operations against Azure Event Hubs. They can be set by using one of the following
+ * methods:
+ * <ul>
+ * <li>{@link #connectionString(String) connectionString(String)} with a connection string to a specific Event Hub.
+ * </li>
+ * <li>{@link #connectionString(String, String) connectionString(String, String)} with an Event Hub <i>namespace</i>
+ * connection string and the Event Hub name.</li>
+ * <li>{@link #credential(String, String, TokenCredential) credential(String, String, TokenCredential)} with the fully
+ * qualified namespace, Event Hub name, and a set of credentials authorized to use the Event Hub.
+ * </li>
+ * </ul>
+ * </li>
  * </ul>
  *
  * <p><strong>Creating an {@link EventProcessorClient}</strong></p>
@@ -70,6 +69,8 @@ import java.util.function.Supplier;
 @ServiceClientBuilder(serviceClients = EventProcessorClient.class)
 public class EventProcessorClientBuilder {
 
+    public static final Duration DEFAULT_LOAD_BALANCING_UPDATE_INTERVAL = Duration.ofSeconds(10);
+    public static final int DEFAULT_OWNERSHIP_EXPIRATION_FACTOR = 6;
     private final ClientLogger logger = new ClientLogger(EventProcessorClientBuilder.class);
 
     private final EventHubClientBuilder eventHubClientBuilder;
@@ -84,6 +85,9 @@ public class EventProcessorClientBuilder {
     private Map<String, EventPosition> initialPartitionEventPosition = new HashMap<>();
     private int maxBatchSize = 1; // setting this to 1 by default
     private Duration maxWaitTime;
+    private Duration loadBalancingUpdateInterval;
+    private Duration partitionOwnershipExpirationInterval;
+    private LoadBalancingStrategy loadBalancingStrategy = LoadBalancingStrategy.BALANCED;
 
     /**
      * Creates a new instance of {@link EventProcessorClientBuilder}.
@@ -234,6 +238,61 @@ public class EventProcessorClientBuilder {
      */
     public EventProcessorClientBuilder checkpointStore(CheckpointStore checkpointStore) {
         this.checkpointStore = Objects.requireNonNull(checkpointStore, "'checkpointStore' cannot be null");
+        return this;
+    }
+
+    /**
+     * The time interval between load balancing update cycles. This is also generally the interval at which ownership
+     * of partitions are renewed. By default, this interval is set to 10 seconds.
+     *
+     * @param loadBalancingUpdateInterval The time duration between load balancing update cycles.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
+     * @throws NullPointerException if {@code loadBalancingUpdateInterval} is {@code null}.
+     * @throws IllegalArgumentException if {@code loadBalancingUpdateInterval} is zero or a negative duration.
+     */
+    public EventProcessorClientBuilder loadBalancingUpdateInterval(Duration loadBalancingUpdateInterval) {
+        Objects.requireNonNull(loadBalancingUpdateInterval, "'loadBalancingUpdateInterval' cannot be null");
+        if (loadBalancingUpdateInterval.isZero() || loadBalancingUpdateInterval.isNegative()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'loadBalancingUpdateInterval' "
+                + "should be a positive duration"));
+        }
+        this.loadBalancingUpdateInterval = loadBalancingUpdateInterval;
+        return this;
+    }
+
+    /**
+     * The time duration after which the ownership of partition expires if it's not renewed by the owning processor
+     * instance. This is the duration that this processor instance will wait before taking over the ownership of
+     * partitions previously owned by an inactive processor. By default, this duration is set to a minute.
+     *
+     * @param partitionOwnershipExpirationInterval The time duration after which the ownership of partition expires.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
+     * @throws NullPointerException if {@code partitionOwnershipExpirationInterval} is {@code null}.
+     * @throws IllegalArgumentException if {@code partitionOwnershipExpirationInterval} is zero or a negative duration.
+     */
+    public EventProcessorClientBuilder partitionOwnershipExpirationInterval(
+        Duration partitionOwnershipExpirationInterval) {
+        Objects.requireNonNull(partitionOwnershipExpirationInterval, "'partitionOwnershipExpirationInterval' cannot "
+            + "be null");
+        if (partitionOwnershipExpirationInterval.isZero() || partitionOwnershipExpirationInterval.isNegative()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'partitionOwnershipExpirationInterval' "
+                + "should be a positive duration"));
+        }
+        this.partitionOwnershipExpirationInterval = partitionOwnershipExpirationInterval;
+        return this;
+    }
+
+    /**
+     * The {@link LoadBalancingStrategy} the {@link EventProcessorClient event processor} will use for claiming
+     * partition ownership. By default, a {@link LoadBalancingStrategy#BALANCED Balanced} approach will be used.
+     *
+     * @param loadBalancingStrategy The {@link LoadBalancingStrategy} to use.
+     * @return The updated {@link EventProcessorClientBuilder} instance.
+     * @throws NullPointerException if {@code loadBalancingStrategy} is {@code null}.
+     */
+    public EventProcessorClientBuilder loadBalancingStrategy(LoadBalancingStrategy loadBalancingStrategy) {
+        this.loadBalancingStrategy = Objects.requireNonNull(loadBalancingStrategy, "'loadBalancingStrategy' cannot be"
+            + " null");
         return this;
     }
 
@@ -421,9 +480,17 @@ public class EventProcessorClientBuilder {
         }
 
         final TracerProvider tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
+        if (loadBalancingUpdateInterval == null) {
+            loadBalancingUpdateInterval = DEFAULT_LOAD_BALANCING_UPDATE_INTERVAL;
+        }
+        if (partitionOwnershipExpirationInterval == null) {
+            partitionOwnershipExpirationInterval = loadBalancingUpdateInterval.multipliedBy(
+                DEFAULT_OWNERSHIP_EXPIRATION_FACTOR);
+        }
         return new EventProcessorClient(eventHubClientBuilder, this.consumerGroup,
             getPartitionProcessorSupplier(), checkpointStore, trackLastEnqueuedEventProperties, tracerProvider,
-            processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null);
+            processError, initialPartitionEventPosition, maxBatchSize, maxWaitTime, processEventBatch != null,
+            loadBalancingUpdateInterval, partitionOwnershipExpirationInterval, loadBalancingStrategy);
     }
 
     private Supplier<PartitionProcessor> getPartitionProcessorSupplier() {

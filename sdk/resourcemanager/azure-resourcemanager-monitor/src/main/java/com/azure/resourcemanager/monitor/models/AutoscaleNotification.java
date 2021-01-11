@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AutoscaleNotification model. */
+/** Autoscale notification. */
 @Fluent
 public final class AutoscaleNotification {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleNotification.class);

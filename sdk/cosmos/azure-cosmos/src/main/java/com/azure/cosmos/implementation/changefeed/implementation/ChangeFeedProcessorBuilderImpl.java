@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ChangeFeedOptions;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.guava25.collect.Streams;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
@@ -26,6 +27,7 @@ import com.azure.cosmos.implementation.changefeed.PartitionProcessor;
 import com.azure.cosmos.implementation.changefeed.PartitionProcessorFactory;
 import com.azure.cosmos.implementation.changefeed.PartitionSupervisorFactory;
 import com.azure.cosmos.implementation.changefeed.RequestOptionsFactory;
+import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +38,10 @@ import reactor.util.function.Tuple2;
 
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -63,6 +69,11 @@ import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
  * </pre>
  */
 public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, AutoCloseable {
+    private static final String PK_RANGE_ID_SEPARATOR = ":";
+    private static final String SEGMENT_SEPARATOR = "#";
+    private static final String PROPERTY_NAME_LSN = "_lsn";
+    private static final String PROPERTY_NAME_TS = "_ts";
+
     private final Logger logger = LoggerFactory.getLogger(ChangeFeedProcessorBuilderImpl.class);
     private static final long DefaultUnhealthinessDuration = Duration.ofMinutes(15).toMillis();
     private final Duration sleepTime = Duration.ofSeconds(15);
@@ -162,13 +173,10 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                 return this.feedContextClient.createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options)
                     .take(1)
                     .map(feedResponse -> {
-                        final String pkRangeIdSeparator = ":";
-                        final String segmentSeparator = "#";
-                        final String lsnPropertyName = "_lsn";
                         String ownerValue = lease.getOwner();
                         String sessionTokenLsn = feedResponse.getSessionToken();
-                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(pkRangeIdSeparator));
-                        String[] segments = parsedSessionToken.split(segmentSeparator);
+                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
+                        String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
                         String latestLsn = segments[0];
 
                         if (segments.length >= 2) {
@@ -188,7 +196,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                         Integer currentLsn = 0;
                         Integer estimatedLag = 0;
                         try {
-                            currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(lsnPropertyName).asText("0"));
+                            currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
                             estimatedLag = Integer.valueOf(latestLsn);
                             estimatedLag = estimatedLag - currentLsn + 1;
                         } catch (NumberFormatException ex) {
@@ -207,6 +215,87 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                 }
                 return result;
             });
+    }
+
+    /**
+     * Returns a list of states each representing one scoped worker item.
+     * <p>
+     * An empty list will be returned if the processor was not started or no lease items matching the current
+     *   {@link ChangeFeedProcessor} instance's lease prefix could be found.
+     *
+     * @return a list of states each representing one scoped worker item.
+     */
+    @Override
+    public Mono<List<ChangeFeedProcessorState>> getCurrentState() {
+        List<ChangeFeedProcessorState> earlyResult = new ArrayList<>();
+
+        if (this.leaseStoreManager == null || this.feedContextClient == null) {
+            return Mono.just(Collections.unmodifiableList(earlyResult));
+        }
+
+        return this.leaseStoreManager.getAllLeases()
+            .flatMap(lease -> {
+                ChangeFeedOptions options = new ChangeFeedOptions()
+                    .setMaxItemCount(1)
+                    .setPartitionKeyRangeId(lease.getLeaseToken())
+                    .setStartFromBeginning(true)
+                    .setRequestContinuation(lease.getContinuationToken());
+
+                return this.feedContextClient.createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options)
+                    .take(1)
+                    .map(feedResponse -> {
+                        String sessionTokenLsn = feedResponse.getSessionToken();
+                        String parsedSessionToken = sessionTokenLsn.substring(sessionTokenLsn.indexOf(PK_RANGE_ID_SEPARATOR));
+                        String[] segments = StringUtils.split(parsedSessionToken, SEGMENT_SEPARATOR);
+                        String latestLsn = segments[0];
+
+                        if (segments.length >= 2) {
+                            // default to Global LSN
+                            latestLsn = segments[1];
+                        }
+
+                        // lease.getId() - the ID of the lease item representing the persistent state of a change feed processor worker.
+                        // latestLsn - a marker representing the latest item that will be processed.
+                        ChangeFeedProcessorState changeFeedProcessorState = new ChangeFeedProcessorState()
+                            .setHostName(lease.getOwner())
+                            .setLeaseToken(lease.getLeaseToken());
+
+                        // An empty list of documents returned means that we are current (zero lag)
+                        if (feedResponse.getResults() == null || feedResponse.getResults().size() == 0) {
+                            changeFeedProcessorState.setEstimatedLag(0)
+                                .setContinuationToken(latestLsn);
+
+                            return changeFeedProcessorState;
+                        }
+
+                        changeFeedProcessorState.setContinuationToken(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText(null));
+
+                        // continuationTokenTimestamp - the system time for the last item that was processed.
+//                        try {
+//                            changeFeedProcessorState.setContinuationTokenTimestamp(Instant.ofEpochSecond(Long.valueOf(
+//                                    feedResponse.getResults().get(0).get(PROPERTY_NAME_TS).asText("0"))));
+//                        } catch (NumberFormatException ex) {
+//                            logger.warn("Unexpected Cosmos _ts found", ex);
+//                            changeFeedProcessorState.setContinuationTokenTimestamp(null);
+//                        }
+
+                        Integer currentLsn = 0;
+                        Integer estimatedLag = 0;
+                        try {
+                            currentLsn = Integer.valueOf(feedResponse.getResults().get(0).get(PROPERTY_NAME_LSN).asText("0"));
+                            estimatedLag = Integer.valueOf(latestLsn);
+                            estimatedLag = estimatedLag - currentLsn + 1;
+                            changeFeedProcessorState.setEstimatedLag(estimatedLag);
+                        } catch (NumberFormatException ex) {
+                            logger.warn("Unexpected Cosmos LSN found", ex);
+                            changeFeedProcessorState.setEstimatedLag(-1);
+                        }
+
+                        return changeFeedProcessorState;
+                    });
+            })
+            .collectList()
+            .map(Collections::unmodifiableList);
     }
 
     /**
@@ -403,6 +492,10 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
 
         if (this.observerFactory == null) {
             throw new IllegalArgumentException("Observer was not specified");
+        }
+
+        if (this.changeFeedProcessorOptions != null && this.changeFeedProcessorOptions.getLeaseAcquireInterval().compareTo(ChangeFeedProcessorOptions.DEFAULT_ACQUIRE_INTERVAL) < 0) {
+            logger.warn("Found lower than expected setting for leaseAcquireInterval");
         }
 
         if (this.scheduler == null) {

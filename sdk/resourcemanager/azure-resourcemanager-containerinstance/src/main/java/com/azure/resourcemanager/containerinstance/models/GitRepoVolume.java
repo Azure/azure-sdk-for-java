@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GitRepoVolume model. */
+/** Represents a volume that is populated with the contents of a git repository. */
 @Fluent
 public final class GitRepoVolume {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GitRepoVolume.class);

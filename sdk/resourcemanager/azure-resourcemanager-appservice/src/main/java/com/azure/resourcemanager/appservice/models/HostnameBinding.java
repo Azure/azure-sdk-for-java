@@ -4,16 +4,16 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.appservice.fluent.inner.HostnameBindingInner;
+import com.azure.resourcemanager.appservice.fluent.models.HostnameBindingInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An immutable representation of a host name binding. */
 @Fluent
 public interface HostnameBinding
-    extends HasInner<HostnameBindingInner>, ExternalChildResource<HostnameBinding, WebAppBase>, Resource {
+    extends HasInnerModel<HostnameBindingInner>, ExternalChildResource<HostnameBinding, WebAppBase>, Resource {
     /** @return the web app name */
     String webAppName();
 

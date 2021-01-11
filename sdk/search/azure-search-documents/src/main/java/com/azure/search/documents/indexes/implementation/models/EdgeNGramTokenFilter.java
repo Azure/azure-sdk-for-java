@@ -8,12 +8,16 @@ package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.search.documents.indexes.models.EdgeNGramTokenFilterSide;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The EdgeNGramTokenFilter model. */
+/**
+ * Generates n-grams of the given size(s) starting from the front or the back of an input token. This token filter is
+ * implemented using Apache Lucene.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.EdgeNGramTokenFilter")
 @JsonFlatten
@@ -39,9 +43,13 @@ public class EdgeNGramTokenFilter extends TokenFilter {
     @JsonProperty(value = "side")
     private EdgeNGramTokenFilterSide side;
 
-    /** Creates an instance of EdgeNGramTokenFilter class. */
+    /**
+     * Creates an instance of EdgeNGramTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public EdgeNGramTokenFilter(@JsonProperty(value = "name") String name) {
+    public EdgeNGramTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -103,15 +111,5 @@ public class EdgeNGramTokenFilter extends TokenFilter {
     public EdgeNGramTokenFilter setSide(EdgeNGramTokenFilterSide side) {
         this.side = side;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

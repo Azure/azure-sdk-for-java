@@ -19,7 +19,12 @@ public enum QueryFormatType {
     /**
      * Enum value json.
      */
-    JSON("json");
+    JSON("json"),
+
+    /**
+     * Enum value arrow.
+     */
+    ARROW("arrow");
 
     /**
      * The actual serialized value for a QueryFormatType instance.

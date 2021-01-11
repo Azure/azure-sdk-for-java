@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureFirewallApplicationRuleProtocol model. */
+/** Properties of the application rule protocol. */
 @Fluent
 public final class AzureFirewallApplicationRuleProtocol {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallApplicationRuleProtocol.class);

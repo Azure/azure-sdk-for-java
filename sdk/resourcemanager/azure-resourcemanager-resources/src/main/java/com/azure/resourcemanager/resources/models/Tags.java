@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The Tags model. */
+/** A dictionary of name and value pairs. */
 @Fluent
 public final class Tags {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Tags.class);

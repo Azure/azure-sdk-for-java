@@ -22,6 +22,12 @@ import com.microsoft.azure.ProxyResource;
 @JsonFlatten
 public class NetworkRuleSetInner extends ProxyResource {
     /**
+     * Value that indicates whether Trusted Service Access is Enabled or not.
+     */
+    @JsonProperty(value = "properties.trustedServiceAccessEnabled")
+    private Boolean trustedServiceAccessEnabled;
+
+    /**
      * Default Action for Network Rule Set. Possible values include: 'Allow',
      * 'Deny'.
      */
@@ -39,6 +45,26 @@ public class NetworkRuleSetInner extends ProxyResource {
      */
     @JsonProperty(value = "properties.ipRules")
     private List<NWRuleSetIpRules> ipRules;
+
+    /**
+     * Get value that indicates whether Trusted Service Access is Enabled or not.
+     *
+     * @return the trustedServiceAccessEnabled value
+     */
+    public Boolean trustedServiceAccessEnabled() {
+        return this.trustedServiceAccessEnabled;
+    }
+
+    /**
+     * Set value that indicates whether Trusted Service Access is Enabled or not.
+     *
+     * @param trustedServiceAccessEnabled the trustedServiceAccessEnabled value to set
+     * @return the NetworkRuleSetInner object itself.
+     */
+    public NetworkRuleSetInner withTrustedServiceAccessEnabled(Boolean trustedServiceAccessEnabled) {
+        this.trustedServiceAccessEnabled = trustedServiceAccessEnabled;
+        return this;
+    }
 
     /**
      * Get default Action for Network Rule Set. Possible values include: 'Allow', 'Deny'.

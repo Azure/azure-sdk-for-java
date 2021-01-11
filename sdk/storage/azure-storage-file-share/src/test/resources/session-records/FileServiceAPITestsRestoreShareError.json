@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://kasobolcanarytest.file.core.windows.net/jtsfileserviceapitestsrestoreshareerror0834516fbccc1b6?restype=share&comp=undelete",
+    "Uri" : "https://REDACTED.file.core.windows.net/jtsfileserviceapitestsrestoreshareerror019575e3091236d?restype=share&comp=undelete",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
-      "x-ms-client-request-id" : "aa2e9ede-b843-4ea4-84ec-80c728085847"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cdb91f93-14b2-406e-b831-cc8e5ff11e13"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "f1d72008-401a-00e3-5e68-2994dc000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:f1d72008-401a-00e3-5e68-2994dc000000\nTime:2020-05-13T20:49:31.8730046Z</Message></Error>",
-      "Date" : "Wed, 13 May 2020 20:49:30 GMT",
-      "x-ms-client-request-id" : "aa2e9ede-b843-4ea4-84ec-80c728085847",
+      "x-ms-request-id" : "88cdb829-501a-00c0-0337-9b0e1f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:88cdb829-501a-00c0-0337-9b0e1f000000\nTime:2020-10-05T16:51:30.0219244Z</Message></Error>",
+      "Date" : "Mon, 05 Oct 2020 16:51:29 GMT",
+      "x-ms-client-request-id" : "cdb91f93-14b2-406e-b831-cc8e5ff11e13",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileserviceapitestsrestoreshareerror718108b4e114b1", "jtsfileserviceapitestsrestoreshareerror0834516fbccc1b6" ]
+  "variables" : [ "fileserviceapitestsrestoreshareerror23233374012cce", "jtsfileserviceapitestsrestoreshareerror019575e3091236d" ]
 }

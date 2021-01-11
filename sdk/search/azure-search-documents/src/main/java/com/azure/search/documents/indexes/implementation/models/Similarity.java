@@ -12,7 +12,11 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The Similarity model. */
+/**
+ * Base type for similarity algorithms. Similarity algorithms are used to calculate scores that tie queries to
+ * documents. The higher the score, the more relevant the document is to that specific query. Those scores are used to
+ * rank the search results.
+ */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -25,11 +29,4 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @JsonFlatten
 @Immutable
-public class Similarity {
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
-}
+public class Similarity {}

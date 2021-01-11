@@ -8,8 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** The PacketCaptureResultProperties model. */
+/** The properties of a packet capture session. */
 @Immutable
 public final class PacketCaptureResultProperties extends PacketCaptureParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureResultProperties.class);
@@ -27,6 +28,48 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PacketCaptureResultProperties withTarget(String target) {
+        super.withTarget(target);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PacketCaptureResultProperties withBytesToCapturePerPacket(Long bytesToCapturePerPacket) {
+        super.withBytesToCapturePerPacket(bytesToCapturePerPacket);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PacketCaptureResultProperties withTotalBytesPerSession(Long totalBytesPerSession) {
+        super.withTotalBytesPerSession(totalBytesPerSession);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PacketCaptureResultProperties withTimeLimitInSeconds(Integer timeLimitInSeconds) {
+        super.withTimeLimitInSeconds(timeLimitInSeconds);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PacketCaptureResultProperties withStorageLocation(PacketCaptureStorageLocation storageLocation) {
+        super.withStorageLocation(storageLocation);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PacketCaptureResultProperties withFilters(List<PacketCaptureFilter> filters) {
+        super.withFilters(filters);
+        return this;
     }
 
     /**

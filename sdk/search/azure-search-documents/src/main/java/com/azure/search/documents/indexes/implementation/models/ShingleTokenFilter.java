@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The ShingleTokenFilter model. */
+/** Creates combinations of tokens as a single token. This token filter is implemented using Apache Lucene. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
 @JsonTypeName("#Microsoft.Azure.Search.ShingleTokenFilter")
 @JsonFlatten
@@ -61,9 +61,13 @@ public class ShingleTokenFilter extends TokenFilter {
     @JsonProperty(value = "filterToken")
     private String filterToken;
 
-    /** Creates an instance of ShingleTokenFilter class. */
+    /**
+     * Creates an instance of ShingleTokenFilter class.
+     *
+     * @param name the name value to set.
+     */
     @JsonCreator
-    public ShingleTokenFilter(@JsonProperty(value = "name") String name) {
+    public ShingleTokenFilter(@JsonProperty(value = "name", required = true) String name) {
         super(name);
     }
 
@@ -195,15 +199,5 @@ public class ShingleTokenFilter extends TokenFilter {
     public ShingleTokenFilter setFilterToken(String filterToken) {
         this.filterToken = filterToken;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    @Override
-    public void validate() {
-        super.validate();
     }
 }

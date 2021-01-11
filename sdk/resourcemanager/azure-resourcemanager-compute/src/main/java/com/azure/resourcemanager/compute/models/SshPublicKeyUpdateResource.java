@@ -9,8 +9,9 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-/** The SshPublicKeyUpdateResource model. */
+/** Specifies information about the SSH public key. */
 @JsonFlatten
 @Fluent
 public class SshPublicKeyUpdateResource extends UpdateResource {
@@ -49,6 +50,13 @@ public class SshPublicKeyUpdateResource extends UpdateResource {
      */
     public SshPublicKeyUpdateResource withPublicKey(String publicKey) {
         this.publicKey = publicKey;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SshPublicKeyUpdateResource withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

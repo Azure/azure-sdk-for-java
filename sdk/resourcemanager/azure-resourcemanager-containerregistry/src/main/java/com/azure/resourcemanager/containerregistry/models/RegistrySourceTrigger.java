@@ -4,13 +4,13 @@ package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.List;
 
 /** An immutable client-side representation of a Container Registry source trigger. */
 @Fluent()
-public interface RegistrySourceTrigger extends HasInner<SourceTrigger> {
+public interface RegistrySourceTrigger extends HasInnerModel<SourceTrigger> {
 
     /** @return Returns the type of source control this trigger uses. I.e., Github, AzureDevOps etc. */
     SourceControlType sourceControlType();

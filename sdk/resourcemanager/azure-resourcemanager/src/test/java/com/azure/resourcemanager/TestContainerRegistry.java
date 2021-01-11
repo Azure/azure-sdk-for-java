@@ -8,14 +8,14 @@ import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.Webhook;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
     @Override
     public Registry createResource(Registries registries) throws Exception {
-        final String testId = registries.manager().sdkContext().randomResourceName("", 8);
+        final String testId = registries.manager().resourceManager().internalContext().randomResourceName("", 8);
         final String newName = "acr" + testId;
         final String rgName = "rgacr" + testId;
         Registry registry =
@@ -32,7 +32,9 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
         RegistryCredentials registryCredentials = registry.getCredentials();
         Assertions.assertNotNull(registryCredentials);
-        Assertions.assertEquals(newName + "1", registryCredentials.username());
+        if (TestUtils.isRecordMode()) {
+            Assertions.assertEquals(newName + "1", registryCredentials.username());
+        }
         Assertions.assertEquals(2, registryCredentials.accessKeys().size());
         Assertions.assertEquals(0, registry.webhooks().list().stream().count());
 
@@ -65,7 +67,9 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
         RegistryCredentials registryCredentials2 = registry2.getCredentials();
         Assertions.assertNotNull(registryCredentials2);
-        Assertions.assertEquals(newName + "2", registryCredentials2.username());
+        if (TestUtils.isRecordMode()) {
+            Assertions.assertEquals(newName + "2", registryCredentials2.username());
+        }
         Assertions.assertEquals(2, registryCredentials2.accessKeys().size());
 
         PagedIterable<Webhook> webhooksList = registry2.webhooks().list();

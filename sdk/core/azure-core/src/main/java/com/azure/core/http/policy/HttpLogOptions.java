@@ -4,6 +4,7 @@
 package com.azure.core.http.policy;
 
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Arrays;
@@ -158,7 +159,9 @@ public class HttpLogOptions {
      * Gets the application specific id.
      *
      * @return The application specific id.
+     * @deprecated Use {@link ClientOptions} to configure {@code applicationId}.
      */
+    @Deprecated
     public String getApplicationId() {
         return applicationId;
     }
@@ -168,7 +171,9 @@ public class HttpLogOptions {
      *
      * @param applicationId The user specified application id.
      * @return The updated HttpLogOptions object.
+     * @deprecated Use {@link ClientOptions} to configure {@code applicationId}.
      */
+    @Deprecated
     public HttpLogOptions setApplicationId(final String applicationId) {
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
             if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {

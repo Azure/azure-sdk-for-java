@@ -3,11 +3,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** Response containing the Azure SQL Database metric availability. */
 @Fluent
-public interface SqlDatabaseMetricAvailability extends HasInner<MetricAvailability> {
+public interface SqlDatabaseMetricAvailability extends HasInnerModel<MetricAvailability> {
     /** @return the length of retention for the database metric */
     String retention();
 

@@ -4,6 +4,8 @@
 package com.azure.storage.common.implementation;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
@@ -15,8 +17,12 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This class provides helper methods for buffered upload.
@@ -140,6 +146,50 @@ public class UploadUtils {
             channel.close();
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
+
+    /**
+     * Computes the md5 of the data and wraps it with the data.
+     *
+     * @param data The data.
+     * @param computeMd5 Whether or not to compute the md5.
+     * @param logger Logger to log errors.
+     * @return The data wrapped with its md5.
+     */
+    public static Mono<FluxMd5Wrapper> computeMd5(Flux<ByteBuffer> data, boolean computeMd5, ClientLogger logger) {
+        if (computeMd5) {
+            try {
+                return data.reduce(MessageDigest.getInstance("MD5"), (digest, buffer) -> {
+                    int position = buffer.position();
+                    byte[] bytes = FluxUtil.byteBufferToArray(buffer);
+                    digest.update(bytes, 0, bytes.length);
+                    buffer.position(position);
+                    return digest;
+                }).map(messageDigest -> new FluxMd5Wrapper(data, messageDigest.digest()));
+            } catch (NoSuchAlgorithmException e) {
+                return monoError(logger, new RuntimeException(e));
+            }
+        } else {
+            return Mono.just(new FluxMd5Wrapper(data, null));
+        }
+    }
+
+    public static class FluxMd5Wrapper {
+        private final Flux<ByteBuffer> data;
+        private final byte[] md5;
+
+        FluxMd5Wrapper(Flux<ByteBuffer> data, byte[] md5) {
+            this.data = data;
+            this.md5 = CoreUtils.clone(md5);
+        }
+
+        public Flux<ByteBuffer> getData() {
+            return data;
+        }
+
+        public byte[] getMd5() {
+            return CoreUtils.clone(md5);
         }
     }
 }

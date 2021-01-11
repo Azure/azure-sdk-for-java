@@ -5,7 +5,10 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
+import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
 import com.azure.messaging.servicebus.implementation.models.EntityAvailabilityStatus;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
 import com.azure.messaging.servicebus.implementation.models.QueueDescription;
@@ -14,11 +17,15 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimitive;
 
 /**
- * The {@link QueueProperties} model.
+ * Properties on a queue.
+ *
+ * @see ServiceBusAdministrationAsyncClient#getQueue(String)
+ * @see ServiceBusAdministrationClient#getQueue(String)
  */
 @Fluent
 public final class QueueProperties {
@@ -54,16 +61,15 @@ public final class QueueProperties {
         // This is used by classes in different packages to get access to private and package-private methods.
         EntityHelper.setQueueAccessor(new EntityHelper.QueueAccessor() {
             @Override
-            public QueueDescription toImplementation(QueueProperties queue) {
-                return new QueueDescription()
+            public QueueDescription toImplementation(QueueProperties queue, List<AuthorizationRuleImpl> rules) {
+                final QueueDescription description = new QueueDescription()
                     .setAccessedAt(queue.getAccessedAt())
-                    .setAuthorizationRules(queue.getAuthorizationRules())
                     .setAutoDeleteOnIdle(queue.getAutoDeleteOnIdle())
                     .setCreatedAt(queue.getCreatedAt())
                     .setDeadLetteringOnMessageExpiration(queue.isDeadLetteringOnMessageExpiration())
                     .setDefaultMessageTimeToLive(queue.getDefaultMessageTimeToLive())
                     .setDuplicateDetectionHistoryTimeWindow(queue.getDuplicateDetectionHistoryTimeWindow())
-                    .setEnablePartitioning(queue.enablePartitioning())
+                    .setEnablePartitioning(queue.isPartitioningEnabled())
                     .setEnableExpress(queue.enableExpress)
                     .setEnableBatchedOperations(queue.enableBatchedOperations)
                     .setEntityAvailabilityStatus(queue.entityAvailabilityStatus)
@@ -78,10 +84,16 @@ public final class QueueProperties {
                     .setSupportOrdering(queue.supportOrdering)
                     .setStatus(queue.getStatus())
                     .setSizeInBytes(queue.getSizeInBytes())
-                    .setRequiresSession(queue.requiresSession())
-                    .setRequiresDuplicateDetection(queue.requiresDuplicateDetection())
+                    .setRequiresSession(queue.isSessionRequired())
+                    .setRequiresDuplicateDetection(queue.isDuplicateDetectionRequired())
                     .setUpdatedAt(queue.getUpdatedAt())
                     .setUserMetadata(queue.getUserMetadata());
+
+                if (!rules.isEmpty()) {
+                    description.setAuthorizationRules(rules);
+                }
+
+                return description;
             }
 
             @Override
@@ -104,7 +116,9 @@ public final class QueueProperties {
     QueueProperties(QueueDescription description) {
         this.accessedAt = description.getAccessedAt();
         this.autoDeleteOnIdle = description.getAutoDeleteOnIdle();
-        this.authorizationRules = description.getAuthorizationRules();
+        this.authorizationRules = description.getAuthorizationRules().stream()
+            .map(SharedAccessAuthorizationRule::new)
+            .collect(Collectors.toList());
         this.createdAt = description.getCreatedAt();
         this.defaultMessageTimeToLive = description.getDefaultMessageTimeToLive();
         this.deadLetteringOnMessageExpiration = toPrimitive(description.isDeadLetteringOnMessageExpiration());
@@ -252,7 +266,7 @@ public final class QueueProperties {
      *
      * @return the enableBatchedOperations value.
      */
-    public boolean enableBatchedOperations() {
+    public boolean isBatchedOperationsEnabled() {
         return this.enableBatchedOperations;
     }
 
@@ -264,7 +278,7 @@ public final class QueueProperties {
      *
      * @return the {@link QueueProperties} object itself.
      */
-    public QueueProperties setEnableBatchedOperations(boolean enableBatchedOperations) {
+    public QueueProperties setBatchedOperationsEnabled(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }
@@ -275,7 +289,7 @@ public final class QueueProperties {
      *
      * @return the enablePartitioning value.
      */
-    public boolean enablePartitioning() {
+    public boolean isPartitioningEnabled() {
         return this.enablePartitioning;
     }
 
@@ -400,7 +414,7 @@ public final class QueueProperties {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public boolean requiresDuplicateDetection() {
+    public boolean isDuplicateDetectionRequired() {
         return this.requiresDuplicateDetection;
     }
 
@@ -409,7 +423,7 @@ public final class QueueProperties {
      *
      * @return the requiresSession value.
      */
-    public boolean requiresSession() {
+    public boolean isSessionRequired() {
         return this.requiresSession;
     }
 
@@ -512,17 +526,17 @@ public final class QueueProperties {
         return this.updatedAt;
     }
 
-    QueueProperties setEnablePartitioning(boolean enablePartitioning) {
+    QueueProperties setPartitioningEnabled(boolean enablePartitioning) {
         this.enablePartitioning = enablePartitioning;
         return this;
     }
 
-    QueueProperties setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
+    QueueProperties setDuplicateDetectionRequired(boolean requiresDuplicateDetection) {
         this.requiresDuplicateDetection = requiresDuplicateDetection;
         return this;
     }
 
-    QueueProperties setRequiresSession(boolean requiresSession) {
+    QueueProperties setSessionRequired(boolean requiresSession) {
         this.requiresSession = requiresSession;
         return this;
     }

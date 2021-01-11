@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetVMExtensionsSummary model. */
+/** Extensions summary for virtual machines of a virtual machine scale set. */
 @Immutable
 public final class VirtualMachineScaleSetVMExtensionsSummary {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMExtensionsSummary.class);

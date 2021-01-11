@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualNetworkProfile model. */
+/** Specification for using a Virtual Network. */
 @Fluent
 public final class VirtualNetworkProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkProfile.class);

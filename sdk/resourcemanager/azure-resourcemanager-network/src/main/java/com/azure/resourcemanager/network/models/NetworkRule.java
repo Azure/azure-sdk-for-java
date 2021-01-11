@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The NetworkRule model. */
+/** Rule of type network. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
 @JsonTypeName("NetworkRule")
 @Fluent
@@ -198,6 +198,20 @@ public final class NetworkRule extends FirewallPolicyRule {
      */
     public NetworkRule withDestinationFqdns(List<String> destinationFqdns) {
         this.destinationFqdns = destinationFqdns;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkRule withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkRule withDescription(String description) {
+        super.withDescription(description);
         return this;
     }
 

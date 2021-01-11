@@ -1,9 +1,12 @@
 # Sample for Azure AD B2C Spring Boot client library for Java
 
 ## Key concepts
-This sample illustrates how to use `azure-active-directory-b2c-spring-boot-starter` package to work with OAuth 2.0 and OpenID Connect protocols with Azure Active Diretory B2C.
+This sample illustrates how to use `azure-spring-boot-starter-active-directory-b2c` package to work with OAuth 2.0 and OpenID Connect protocols with Azure Active Diretory B2C.
 
 ## Getting started
+
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ### Create your Azure Active Directory B2C tenant
 
@@ -55,10 +58,7 @@ azure:
 Please make sure that these two placeholders should be the same as `application.yml` respectively.
 
 ### Run with Maven
-
 ```
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
 mvn spring-boot:run
 ```
@@ -86,3 +86,5 @@ And also available for Amazon, Azure AD, FaceBook, Github, Linkedin and Twitter.
 
 ## Next steps
 ## Contributing
+<!-- LINKS -->
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist

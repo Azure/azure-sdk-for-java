@@ -7,17 +7,16 @@
 package com.azure.search.documents.indexes.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SearchIndexerSkillset model. */
+/** A list of skills. */
 @Fluent
 public final class SearchIndexerSkillset {
     /*
      * The name of the skillset.
      */
-    @JsonProperty(value = "name", required = true)
+    @JsonProperty(value = "name")
     private String name;
 
     /*
@@ -29,7 +28,7 @@ public final class SearchIndexerSkillset {
     /*
      * A list of skills in the skillset.
      */
-    @JsonProperty(value = "skills", required = true)
+    @JsonProperty(value = "skills")
     private List<SearchIndexerSkill> skills;
 
     /*
@@ -44,14 +43,21 @@ public final class SearchIndexerSkillset {
     @JsonProperty(value = "@odata.etag")
     private String eTag;
 
-    /** Creates an instance of SearchIndexerSkillset class. */
-    @JsonCreator
-    public SearchIndexerSkillset(
-            @JsonProperty(value = "name") String name,
-            @JsonProperty(value = "skills") List<SearchIndexerSkill> skills) {
-        this.name = name;
-        this.skills = skills;
-    }
+    /*
+     * A description of an encryption key that you create in Azure Key Vault.
+     * This key is used to provide an additional level of encryption-at-rest
+     * for your skillset definition when you want full assurance that no one,
+     * not even Microsoft, can decrypt your skillset definition in Azure
+     * Cognitive Search. Once you have encrypted your skillset definition, it
+     * will always remain encrypted. Azure Cognitive Search will ignore
+     * attempts to set this property to null. You can change this property as
+     * needed if you want to rotate your encryption key; Your skillset
+     * definition will be unaffected. Encryption with customer-managed keys is
+     * not available for free search services, and is only available for paid
+     * services created on or after January 1, 2019.
+     */
+    @JsonProperty(value = "encryptionKey")
+    private SearchResourceEncryptionKey encryptionKey;
 
     /**
      * Get the name property: The name of the skillset.
@@ -68,6 +74,11 @@ public final class SearchIndexerSkillset {
      * @param name the name value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    public SearchIndexerSkillset setName(String name) {
+        this.name = name;
+        return this;
+    }
+
     /**
      * Get the description property: The description of the skillset.
      *
@@ -103,6 +114,11 @@ public final class SearchIndexerSkillset {
      * @param skills the skills value to set.
      * @return the SearchIndexerSkillset object itself.
      */
+    public SearchIndexerSkillset setSkills(List<SearchIndexerSkill> skills) {
+        this.skills = skills;
+        return this;
+    }
+
     /**
      * Get the cognitiveServicesAccount property: Details about cognitive services to be used when running skills.
      *
@@ -144,21 +160,34 @@ public final class SearchIndexerSkillset {
     }
 
     /**
-     * Validates the instance.
+     * Get the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
+     * is used to provide an additional level of encryption-at-rest for your skillset definition when you want full
+     * assurance that no one, not even Microsoft, can decrypt your skillset definition in Azure Cognitive Search. Once
+     * you have encrypted your skillset definition, it will always remain encrypted. Azure Cognitive Search will ignore
+     * attempts to set this property to null. You can change this property as needed if you want to rotate your
+     * encryption key; Your skillset definition will be unaffected. Encryption with customer-managed keys is not
+     * available for free search services, and is only available for paid services created on or after January 1, 2019.
      *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
+     * @return the encryptionKey value.
      */
-    public void validate() {
-        if (getName() == null) {
-            throw new IllegalArgumentException("Missing required property name in model SearchIndexerSkillset");
-        }
-        if (getSkills() == null) {
-            throw new IllegalArgumentException("Missing required property skills in model SearchIndexerSkillset");
-        } else {
-            getSkills().forEach(e -> e.validate());
-        }
-        if (getCognitiveServicesAccount() != null) {
-            getCognitiveServicesAccount().validate();
-        }
+    public SearchResourceEncryptionKey getEncryptionKey() {
+        return this.encryptionKey;
+    }
+
+    /**
+     * Set the encryptionKey property: A description of an encryption key that you create in Azure Key Vault. This key
+     * is used to provide an additional level of encryption-at-rest for your skillset definition when you want full
+     * assurance that no one, not even Microsoft, can decrypt your skillset definition in Azure Cognitive Search. Once
+     * you have encrypted your skillset definition, it will always remain encrypted. Azure Cognitive Search will ignore
+     * attempts to set this property to null. You can change this property as needed if you want to rotate your
+     * encryption key; Your skillset definition will be unaffected. Encryption with customer-managed keys is not
+     * available for free search services, and is only available for paid services created on or after January 1, 2019.
+     *
+     * @param encryptionKey the encryptionKey value to set.
+     * @return the SearchIndexerSkillset object itself.
+     */
+    public SearchIndexerSkillset setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
+        this.encryptionKey = encryptionKey;
+        return this;
     }
 }

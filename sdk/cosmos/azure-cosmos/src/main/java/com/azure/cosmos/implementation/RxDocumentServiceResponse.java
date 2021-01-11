@@ -25,11 +25,12 @@ import java.util.Map;
  * This is core Transport/Connection agnostic response for the Azure Cosmos DB database service.
  */
 public class RxDocumentServiceResponse {
+    private final DiagnosticsClientContext diagnosticsClientContext;
     private final int statusCode;
     private final Map<String, String> headersMap;
     private final StoreResponse storeResponse;
 
-    public RxDocumentServiceResponse(StoreResponse response) {
+    public RxDocumentServiceResponse(DiagnosticsClientContext diagnosticsClientContext, StoreResponse response) {
         String[] headerNames = response.getResponseHeaderNames();
         String[] headerValues = response.getResponseHeaderValues();
 
@@ -44,6 +45,7 @@ public class RxDocumentServiceResponse {
         }
 
         this.storeResponse = response;
+        this.diagnosticsClientContext = diagnosticsClientContext;
     }
 
     public static <T extends Resource> String getResourceKey(Class<T> c) {
@@ -180,10 +182,14 @@ public class RxDocumentServiceResponse {
         return null;
     }
 
-    CosmosDiagnostics getCosmosDiagnostics() {
+    public CosmosDiagnostics getCosmosDiagnostics() {
         if (this.storeResponse == null) {
             return null;
         }
         return this.storeResponse.getCosmosDiagnostics();
+    }
+
+    public DiagnosticsClientContext getDiagnosticsClientContext() {
+        return diagnosticsClientContext;
     }
 }

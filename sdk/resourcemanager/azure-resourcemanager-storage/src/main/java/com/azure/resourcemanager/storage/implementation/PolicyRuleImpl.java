@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.storage.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.storage.models.BlobTypes;
 import com.azure.resourcemanager.storage.models.DateAfterCreation;
 import com.azure.resourcemanager.storage.models.DateAfterModification;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Update, HasInner<ManagementPolicyRule> {
+class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Update, HasInnerModel<ManagementPolicyRule> {
 
     private ManagementPolicyRule inner;
     private ManagementPolicyImpl managementPolicyImpl;
@@ -151,7 +151,7 @@ class PolicyRuleImpl implements PolicyRule, PolicyRule.Definition, PolicyRule.Up
     }
 
     @Override
-    public ManagementPolicyRule inner() {
+    public ManagementPolicyRule innerModel() {
         return this.inner;
     }
 

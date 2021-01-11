@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ParametersLink model. */
+/** Entity representing the reference to the deployment parameters. */
 @Fluent
 public final class ParametersLink {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ParametersLink.class);

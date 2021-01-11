@@ -5,8 +5,8 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.resources.fluent.inner.WhatIfOperationResultInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.resources.fluent.models.WhatIfOperationResultInner;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Fluent
 public interface WhatIfOperationResult extends
-        HasInner<WhatIfOperationResultInner> {
+        HasInnerModel<WhatIfOperationResultInner> {
 
     /**
      * @return status of the What-If operation.

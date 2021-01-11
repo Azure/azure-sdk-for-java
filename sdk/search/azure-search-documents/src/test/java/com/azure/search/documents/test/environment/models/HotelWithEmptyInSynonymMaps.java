@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.test.environment.models;
 
-import com.azure.search.documents.indexes.SearchableFieldProperty;
+import com.azure.search.documents.indexes.SearchableField;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class HotelWithEmptyInSynonymMaps {
      *
      * @return The tags of hotel.
      */
-    @SearchableFieldProperty(synonymMapNames = {"asynonymMaps", "", "  ", "maps"})
+    @SearchableField(synonymMapNames = {"asynonymMaps", "", "  ", "maps"})
     public List<String> getTags() {
         return tags;
     }

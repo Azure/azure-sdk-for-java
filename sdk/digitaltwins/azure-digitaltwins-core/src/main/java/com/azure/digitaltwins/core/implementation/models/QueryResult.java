@@ -8,14 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The QueryResult model. */
+/** The results of a query operation and an optional continuation token. */
 @Fluent
 public final class QueryResult {
     /*
      * The query results.
      */
-    @JsonProperty(value = "items")
-    private List<Object> items;
+    @JsonProperty(value = "value")
+    private List<Object> value;
 
     /*
      * A token which can be used to construct a new QuerySpecification to
@@ -25,22 +25,22 @@ public final class QueryResult {
     private String continuationToken;
 
     /**
-     * Get the items property: The query results.
+     * Get the value property: The query results.
      *
-     * @return the items value.
+     * @return the value value.
      */
-    public List<Object> getItems() {
-        return this.items;
+    public List<Object> getValue() {
+        return this.value;
     }
 
     /**
-     * Set the items property: The query results.
+     * Set the value property: The query results.
      *
-     * @param items the items value to set.
+     * @param value the value value to set.
      * @return the QueryResult object itself.
      */
-    public QueryResult setItems(List<Object> items) {
-        this.items = items;
+    public QueryResult setValue(List<Object> value) {
+        this.value = value;
         return this;
     }
 
@@ -65,4 +65,11 @@ public final class QueryResult {
         this.continuationToken = continuationToken;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.eastus-1.eventgrid.azure.net/api/events?api-version=2018-01-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (1.8.0_252; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "efa97ec4-6df5-4ca0-99cc-55ddb6a0e18c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2018-01-01",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "d1c7c818-61e5-4b41-b457-bf52d4346a91",
+      "Date" : "Tue, 11 Aug 2020 17:41:22 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

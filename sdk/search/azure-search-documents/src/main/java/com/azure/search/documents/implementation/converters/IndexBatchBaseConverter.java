@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexBatchBase;
@@ -41,11 +40,8 @@ public final class IndexBatchBaseConverter {
         List<com.azure.search.documents.implementation.models.IndexAction> actions = obj.getActions() == null ? null
             : obj.getActions().stream().map(indexAction -> IndexActionConverter.map(indexAction, jsonSerializer))
                 .collect(Collectors.toList());
-        com.azure.search.documents.implementation.models.IndexBatch indexBatch =
-            new com.azure.search.documents.implementation.models.IndexBatch(actions);
 
-        indexBatch.validate();
-        return indexBatch;
+        return new com.azure.search.documents.implementation.models.IndexBatch(actions);
     }
 
     private IndexBatchBaseConverter() {

@@ -3,25 +3,33 @@
 
 package com.azure.resourcemanager.samples;
 
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.containerregistry.samples.ManageContainerRegistry;
 import com.azure.resourcemanager.containerregistry.samples.ManageContainerRegistryWithWebhooks;
-import com.azure.resourcemanager.resources.core.TestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 public class ContainerRegistryTests extends SamplesTestBase {
-    public ContainerRegistryTests() {
-        // Failing in playback - dependent on Docker client/glassfish jersey library which is expecting a real connection
-        super(TestBase.RunCondition.LIVE_ONLY);
+
+    @Test
+    @DoNotRecord
+    public void testManageContainerRegistry() throws IOException {
+        if (skipInPlayback()) {
+            return;
+        }
+
+        Assertions.assertTrue(ManageContainerRegistry.runSample(azureResourceManager));
     }
 
     @Test
-    public void testManageContainerRegistry() {
-        Assertions.assertTrue(ManageContainerRegistry.runSample(azure));
-    }
+    @DoNotRecord
+    public void testManageContainerRegistryWithWebhooks() throws IOException, InterruptedException {
+        if (skipInPlayback()) {
+            return;
+        }
 
-    @Test
-    public void testManageContainerRegistryWithWebhooks() {
-        Assertions.assertTrue(ManageContainerRegistryWithWebhooks.runSample(azure));
+        Assertions.assertTrue(ManageContainerRegistryWithWebhooks.runSample(azureResourceManager));
     }
 }

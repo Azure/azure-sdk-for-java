@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerServicePrincipalProfile model. */
+/** Information about a service principal identity for the cluster to use for manipulating Azure APIs. */
 @Fluent
 public final class ContainerServicePrincipalProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServicePrincipalProfile.class);

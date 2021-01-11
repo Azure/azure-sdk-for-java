@@ -39,7 +39,6 @@ import java.util.stream.Collectors;
 @ServiceClient(builder = EventProcessorClientBuilder.class)
 public class EventProcessorClient {
 
-    private static final long INTERVAL_IN_SECONDS = 10; // run the load balancer every 10 seconds
     private static final long BASE_JITTER_IN_SECONDS = 2; // the initial delay jitter before starting the processor
     private final ClientLogger logger = new ClientLogger(EventProcessorClient.class);
 
@@ -54,6 +53,7 @@ public class EventProcessorClient {
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
     private final String consumerGroup;
+    private final Duration loadBalancerUpdateInterval;
 
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
@@ -71,12 +71,16 @@ public class EventProcessorClient {
      * @param maxWaitTime The maximum time to wait to receive a batch or a single event.
      * @param batchReceiveMode The boolean value indicating if this processor is configured to receive in batches or
      * single events.
+     * @param loadBalancerUpdateInterval The time duration between load balancing update cycles.
+     * @param partitionOwnershipExpirationInterval The time duration after which the ownership of partition expires.
+     * @param loadBalancingStrategy The load balancing strategy to use.
      */
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
         Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
         boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider, Consumer<ErrorContext> processError,
         Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
-        boolean batchReceiveMode) {
+        boolean batchReceiveMode, Duration loadBalancerUpdateInterval, Duration partitionOwnershipExpirationInterval,
+        LoadBalancingStrategy loadBalancingStrategy) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
@@ -89,6 +93,7 @@ public class EventProcessorClient {
         this.fullyQualifiedNamespace = eventHubAsyncClient.getFullyQualifiedNamespace().toLowerCase(Locale.ROOT);
         this.eventHubName = eventHubAsyncClient.getEventHubName().toLowerCase(Locale.ROOT);
         this.consumerGroup = consumerGroup.toLowerCase(Locale.ROOT);
+        this.loadBalancerUpdateInterval = loadBalancerUpdateInterval;
 
         logger.info("The instance ID for this event processors is {}", this.identifier);
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
@@ -97,8 +102,8 @@ public class EventProcessorClient {
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
                 this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
-                TimeUnit.MINUTES.toSeconds(1), this.partitionPumpManager, processError);
-
+                partitionOwnershipExpirationInterval.getSeconds(), this.partitionPumpManager, processError,
+                loadBalancingStrategy);
     }
 
     /**
@@ -136,7 +141,7 @@ public class EventProcessorClient {
             ThreadLocalRandom.current().nextDouble() * TimeUnit.SECONDS.toMillis(BASE_JITTER_IN_SECONDS);
 
         runner.set(scheduler.get().scheduleWithFixedDelay(partitionBasedLoadBalancer::loadBalance,
-            jitterInMillis.longValue(), TimeUnit.SECONDS.toMillis(INTERVAL_IN_SECONDS), TimeUnit.MILLISECONDS));
+            jitterInMillis.longValue(), loadBalancerUpdateInterval.toMillis(), TimeUnit.MILLISECONDS));
     }
 
     /**

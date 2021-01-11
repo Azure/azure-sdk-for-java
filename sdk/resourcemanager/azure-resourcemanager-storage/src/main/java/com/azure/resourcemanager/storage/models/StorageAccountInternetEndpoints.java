@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StorageAccountInternetEndpoints model. */
+/**
+ * The URIs that are used to perform a retrieval of a public blob, file, web or dfs object via a internet routing
+ * endpoint.
+ */
 @Immutable
 public final class StorageAccountInternetEndpoints {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountInternetEndpoints.class);

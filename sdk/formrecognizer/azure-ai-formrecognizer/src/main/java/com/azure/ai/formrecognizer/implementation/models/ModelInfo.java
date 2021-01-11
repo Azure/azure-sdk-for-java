@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** The ModelInfo model. */
+/** Basic custom model information. */
 @Fluent
 public final class ModelInfo {
     /*
@@ -35,6 +35,18 @@ public final class ModelInfo {
      */
     @JsonProperty(value = "lastUpdatedDateTime", required = true)
     private OffsetDateTime lastUpdatedDateTime;
+
+    /*
+     * Optional user defined model name (max length: 1024).
+     */
+    @JsonProperty(value = "modelName")
+    private String modelName;
+
+    /*
+     * Optional model attributes.
+     */
+    @JsonProperty(value = "attributes")
+    private Attributes attributes;
 
     /**
      * Get the modelId property: Model identifier.
@@ -113,6 +125,46 @@ public final class ModelInfo {
      */
     public ModelInfo setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
         this.lastUpdatedDateTime = lastUpdatedDateTime;
+        return this;
+    }
+
+    /**
+     * Get the modelName property: Optional user defined model name (max length: 1024).
+     *
+     * @return the modelName value.
+     */
+    public String getModelName() {
+        return this.modelName;
+    }
+
+    /**
+     * Set the modelName property: Optional user defined model name (max length: 1024).
+     *
+     * @param modelName the modelName value to set.
+     * @return the ModelInfo object itself.
+     */
+    public ModelInfo setModelName(String modelName) {
+        this.modelName = modelName;
+        return this;
+    }
+
+    /**
+     * Get the attributes property: Optional model attributes.
+     *
+     * @return the attributes value.
+     */
+    public Attributes getAttributes() {
+        return this.attributes;
+    }
+
+    /**
+     * Set the attributes property: Optional model attributes.
+     *
+     * @param attributes the attributes value to set.
+     * @return the ModelInfo object itself.
+     */
+    public ModelInfo setAttributes(Attributes attributes) {
+        this.attributes = attributes;
         return this;
     }
 }

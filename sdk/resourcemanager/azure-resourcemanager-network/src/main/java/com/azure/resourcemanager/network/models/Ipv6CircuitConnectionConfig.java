@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Ipv6CircuitConnectionConfig model. */
+/** IPv6 Circuit Connection properties for global reach. */
 @Fluent
 public final class Ipv6CircuitConnectionConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Ipv6CircuitConnectionConfig.class);

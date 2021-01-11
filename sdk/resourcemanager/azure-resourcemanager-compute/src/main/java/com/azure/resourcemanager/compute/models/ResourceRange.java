@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ResourceRange model. */
+/** Describes the resource range. */
 @Fluent
 public final class ResourceRange {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceRange.class);

@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AdditionalUnattendContent model. */
+/**
+ * Specifies additional XML formatted information that can be included in the Unattend.xml file, which is used by
+ * Windows Setup. Contents are defined by setting name, component name, and the pass in which the content is applied.
+ */
 @Fluent
 public final class AdditionalUnattendContent {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AdditionalUnattendContent.class);

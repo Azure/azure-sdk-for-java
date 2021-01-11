@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TestKeys model. */
+/** Test keys payload. */
 @Fluent
 public final class TestKeys {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TestKeys.class);

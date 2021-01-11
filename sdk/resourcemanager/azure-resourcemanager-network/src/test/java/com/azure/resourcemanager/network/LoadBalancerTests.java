@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
 import com.azure.resourcemanager.network.models.TransportProtocol;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -22,8 +22,8 @@ public class LoadBalancerTests extends NetworkManagementTest {
 
     @Test
     public void canCRUDProbe() throws Exception {
-        String vmName = sdkContext.randomResourceName("vm", 8);
-        String lbName = sdkContext.randomResourceName("lb", 8);
+        String vmName = generateRandomResourceName("vm", 8);
+        String lbName = generateRandomResourceName("lb", 8);
 
         ResourceGroup resourceGroup =
             resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();

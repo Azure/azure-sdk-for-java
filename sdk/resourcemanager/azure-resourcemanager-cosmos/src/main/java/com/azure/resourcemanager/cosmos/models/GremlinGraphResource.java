@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GremlinGraphResource model. */
+/** Cosmos DB Gremlin graph resource object. */
 @Fluent
 public class GremlinGraphResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GremlinGraphResource.class);

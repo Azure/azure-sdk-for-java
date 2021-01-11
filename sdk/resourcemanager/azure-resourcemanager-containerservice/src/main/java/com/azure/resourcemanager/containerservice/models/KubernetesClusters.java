@@ -4,8 +4,7 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerservice.ContainerServiceManager;
-import com.azure.resourcemanager.containerservice.fluent.ManagedClustersClient;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -25,7 +23,6 @@ import java.util.Set;
 @Fluent()
 public interface KubernetesClusters
     extends HasManager<ContainerServiceManager>,
-        HasInner<ManagedClustersClient>,
         SupportsCreating<KubernetesCluster.DefinitionStages.Blank>,
         SupportsBatchCreation<KubernetesCluster>,
         SupportsListing<KubernetesCluster>,

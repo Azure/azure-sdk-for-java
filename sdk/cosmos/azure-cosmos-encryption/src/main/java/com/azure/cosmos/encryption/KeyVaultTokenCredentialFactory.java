@@ -19,5 +19,5 @@ abstract public class KeyVaultTokenCredentialFactory {
      * @param keyVaultKeyUri Azure Key-Vault Key URI to acquire a TokenCredentials for
      * @return Mono of TokenCredentials result token credentials
      */
-    public abstract Mono<TokenCredential> getTokenCredentialAsync(URI keyVaultKeyUri);
+    public abstract Mono<TokenCredential> getTokenCredential(URI keyVaultKeyUri);
 }
