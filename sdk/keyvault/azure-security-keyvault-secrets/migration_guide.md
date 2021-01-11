@@ -104,7 +104,7 @@ SecretClient secretClient = new SecretClientBuilder()
 ```
 
 ### Async operations
-The modern `azure-security-keyvault-secrets` library includes a complete set of async APIs that return [Project Reactor-based types](https://projectreactor.io/), as opposed to `azure-keyvault` async APIs that return either [Observable](http://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html) or [ServiceFuture](https://azure.github.io/ref-docs/java/com/microsoft/rest/ServiceFuture.html).
+The modern `azure-security-keyvault-secrets` library includes a complete set of async APIs that return [Project Reactor-based types](https://projectreactor.io/), as opposed to `azure-keyvault` async APIs that return either [Observable](https://reactivex.io/RxJava/javadoc/io/reactivex/Observable.html) or [ServiceFuture](https://azure.github.io/ref-docs/java/com/microsoft/rest/ServiceFuture.html).
 
 Another difference is that async operations are available on their own separate async clients, which include the word `Async` in their name, like `SecretAsyncClient`.
 
