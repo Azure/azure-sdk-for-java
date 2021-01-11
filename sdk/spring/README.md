@@ -38,10 +38,10 @@ azure-active-directory-b2c-spring-boot-starter | [![Maven Central][aad-b2c-start
 azure-active-directory-spring-boot-starter | [![Maven Central][aad-starter-mvn-2.3.x-img]][aad-starter-mvn-2.3.x] | [![Maven Central][aad-starter-mvn-2.2.x-img]][aad-starter-mvn-2.2.x] | [![][aad-starter-mvn-2.1.x-img]][aad-starter-mvn-2.1.x] | [![][aad-starter-mvn-2.0.x-img]][aad-starter-mvn-2.0.x]
 azure-cosmosdb-spring-boot-starter | [![Maven Central][cosmosdb-starter-mvn-2.3.x-img]][cosmosdb-starter-mvn-2.3.x] | [![Maven Central][cosmosdb-starter-mvn-2.2.x-img]][cosmosdb-starter-mvn-2.2.x] | [![][cosmosdb-starter-mvn-2.1.x-img]][cosmosdb-starter-mvn-2.1.x] | [![][cosmosdb-starter-mvn-2.0.x-img]][cosmosdb-starter-mvn-2.0.x]
 azure-keyvault-secrets-spring-boot-starter | [![Maven Central][keyvault-starter-mvn-2.3.x-img]][keyvault-starter-mvn-2.3.x] | [![Maven Central][keyvault-starter-mvn-2.2.x-img]][keyvault-starter-mvn-2.2.x] | [![][keyvault-starter-mvn-2.1.x-img]][keyvault-starter-mvn-2.1.x] | [![][keyvault-starter-mvn-2.0.x-img]][keyvault-starter-mvn-2.0.x]
-azure-mediaservices-spring-boot-starter | N/A | [![Maven Central][mediaservices-starter-mvn-2.2.x-img]][mediaservices-starter-mvn-2.2.x] | [![][mediaservices-starter-mvn-2.1.x-img]][mediaservices-starter-mvn-2.1.x] | [![][mediaservices-starter-mvn-2.0.x-img]][mediaservices-starter-mvn-2.0.x]
+azure-mediaservices-spring-boot-starter(Deprecated) | N/A | [![Maven Central][mediaservices-starter-mvn-2.2.x-img]][mediaservices-starter-mvn-2.2.x] | [![][mediaservices-starter-mvn-2.1.x-img]][mediaservices-starter-mvn-2.1.x] | [![][mediaservices-starter-mvn-2.0.x-img]][mediaservices-starter-mvn-2.0.x]
 azure-servicebus-jms-spring-boot-starter | [![Maven Central][jms-starter-mvn-2.3.x-img]][jms-starter-mvn-2.3.x] | [![Maven Central][jms-starter-mvn-2.2.x-img]][jms-starter-mvn-2.2.x] | [![Maven Central][jms-starter-mvn-2.1.x-img]][jms-starter-mvn-2.1.x] | N/A
-azure-servicebus-spring-boot-starter | N/A | [![Maven Central][servicebus-starter-mvn-2.2.x-img]][servicebus-starter-mvn-2.2.x] | [![][servicebus-starter-mvn-2.1.x-img]][servicebus-starter-mvn-2.1.x] | [![][servicebus-starter-mvn-2.0.x-img]][servicebus-starter-mvn-2.0.x]
-azure-spring-boot-metrics-starter | [![Maven Central][metrics-starter-mvn-2.3.x-img]][metrics-starter-mvn-2.3.x] | [![Maven Central][metrics-starter-mvn-2.2.x-img]][metrics-starter-mvn-2.2.x] | [![][metrics-starter-mvn-2.1.x-img]][metrics-starter-mvn-2.1.x] | [![][metrics-starter-mvn-2.0.x-img]][metrics-starter-mvn-2.0.x]
+azure-servicebus-spring-boot-starter(Deprecated) | N/A | [![Maven Central][servicebus-starter-mvn-2.2.x-img]][servicebus-starter-mvn-2.2.x] | [![][servicebus-starter-mvn-2.1.x-img]][servicebus-starter-mvn-2.1.x] | [![][servicebus-starter-mvn-2.0.x-img]][servicebus-starter-mvn-2.0.x]
+azure-spring-boot-metrics-starter(Deprecated) | [![Maven Central][metrics-starter-mvn-2.3.x-img]][metrics-starter-mvn-2.3.x] | [![Maven Central][metrics-starter-mvn-2.2.x-img]][metrics-starter-mvn-2.2.x] | [![][metrics-starter-mvn-2.1.x-img]][metrics-starter-mvn-2.1.x] | [![][metrics-starter-mvn-2.0.x-img]][metrics-starter-mvn-2.0.x]
 azure-storage-spring-boot-starter | [![Maven Central][storage-starter-mvn-2.3.x-img]][storage-starter-mvn-2.3.x] | [![Maven Central][storage-starter-mvn-2.2.x-img]][storage-starter-mvn-2.2.x] | [![][storage-starter-mvn-2.1.x-img]][storage-starter-mvn-2.1.x] | [![][storage-starter-mvn-2.0.x-img]][storage-starter-mvn-2.0.x]
 spring-data-gremlin-boot-starter | [![Maven Central][gremlin-starter-mvn-2.3.x-img]][gremlin-starter-mvn-2.3.x] | [![Maven Central][gremlin-starter-mvn-2.2.x-img]][gremlin-starter-mvn-2.2.x] | [![][gremlin-starter-mvn-2.1.x-img]][gremlin-starter-mvn-2.1.x] | [![][gremlin-starter-mvn-2.0.x-img]][gremlin-starter-mvn-2.0.x]
 
@@ -64,35 +64,35 @@ Artifact Id | Version
 [azure-spring-cloud-feature-management][azure-spring-cloud-feature-management-readme] | N/A 
 [azure-spring-cloud-starter-appconfiguration-config][spring-cloud-starter-azure-appconfiguration-config-readme] | N/A 
 [azure-spring-cloud-starter-cache][azure-spring-cloud-starter-cache-readme] | [![Maven Central][azure-spring-cloud-starter-cache-mvn-2.x.x-img]][azure-spring-cloud-starter-cache-mvn-2.x.x] 
+[azure-spring-cloud-stream-binder-eventhubs][azure-spring-cloud-stream-binder-eventhubs-readme] | [![Maven Central][azure-spring-cloud-stream-binder-eventhubs-mvn-2.x.x-img]][azure-spring-cloud-stream-binder-eventhubs-2.x.x] 
 [azure-spring-cloud-starter-eventhubs-kafka][azure-spring-cloud-starter-eventhubs-kafka-readme] | [![Maven Central][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.x.x-img]][azure-spring-cloud-starter-eventhubs-kafka-mvn-2.x.x]
 [azure-spring-cloud-starter-eventhubs][azure-spring-cloud-starter-eventhubs-readme] | [![Maven Central][azure-spring-cloud-starter-eventhubs-mvn-2.x.x-img]][azure-spring-cloud-starter-eventhubs-mvn-2.x.x]
-[azure-spring-cloud-starter-servicebus][azure-spring-cloud-starter-servicebus-readme] | [![Maven Central][azure-spring-cloud-starter-servicebus-mvn-2.x.x-img]][azure-spring-cloud-starter-servicebus-mvn-2.x.x]
-[azure-spring-cloud-starter-storage-queue][azure-spring-cloud-starter-storage-queue-readme] | [![Maven Central][azure-spring-cloud-starter-storage-queue-mvn-2.x.x-img]][azure-spring-cloud-starter-storage-queue-mvn-2.x.x]
-[azure-spring-cloud-stream-binder-eventhubs][azure-spring-cloud-stream-binder-eventhubs-readme] | [![Maven Central][azure-spring-cloud-stream-binder-eventhubs-mvn-2.x.x-img]][azure-spring-cloud-stream-binder-eventhubs-2.x.x] 
+[azure-spring-integration-eventhubs][azure-spring-integration-eventhubs-readme] | [![Maven Central][azure-spring-integration-eventhubs-mvn-2.x.x-img]][azure-spring-integration-eventhubs-mvn-2.x.x]
 [azure-spring-cloud-stream-binder-servicebus-queue][azure-spring-cloud-stream-binder-servicebus-queue-readme] | [![Maven Central][azure-spring-cloud-stream-binder-servicebus-queue-mvn-2.x.x-img]][azure-spring-cloud-stream-binder-servicebus-queue-mvn-2.x.x]
 [azure-spring-cloud-stream-binder-servicebus-topic][azure-spring-cloud-stream-binder-servicebus-topic-readme] | [![Maven Central][azure-spring-cloud-stream-binder-servicebus-topic-mvn-2.x.x-img]][azure-spring-cloud-stream-binder-servicebus-topic-mvn-2.x.x]
-[azure-spring-integration-eventhubs][azure-spring-integration-eventhubs-readme] | [![Maven Central][azure-spring-integration-eventhubs-mvn-2.x.x-img]][azure-spring-integration-eventhubs-mvn-2.x.x]
+[azure-spring-cloud-starter-servicebus][azure-spring-cloud-starter-servicebus-readme] | [![Maven Central][azure-spring-cloud-starter-servicebus-mvn-2.x.x-img]][azure-spring-cloud-starter-servicebus-mvn-2.x.x]
 [azure-spring-integration-servicebus][azure-spring-integration-servicebus-readme] | [![Maven Central][azure-spring-integration-servicebus-mvn-2.x.x-img]][azure-spring-integration-servicebus-mvn-2.x.x]
+[azure-spring-cloud-starter-storage-queue][azure-spring-cloud-starter-storage-queue-readme] | [![Maven Central][azure-spring-cloud-starter-storage-queue-mvn-2.x.x-img]][azure-spring-cloud-starter-storage-queue-mvn-2.x.x]
 [azure-spring-integration-storage-queue][azure-spring-integration-storage-queue-readme] | [![Maven Central][azure-spring-integration-servicebus-mvn-2.x.x-img]][azure-spring-integration-servicebus-mvn-2.x.x]
 
 Below packages are Azure Spring Cloud packages with original artifactIds and groupId of `com.microsoft.azure`.
 
 Artifact Id | Version
 ------ |---
-spring-cloud-azure-appconfiguration-config | [![Maven Central][azure-spring-cloud-appconfiguration-config-mvn-1.2.x-img]][azure-spring-cloud-appconfiguration-config-mvn-1.2.x] 
 spring-cloud-azure-appconfiguration-config-web | [![Maven Central][spring-cloud-azure-appconfiguration-config-web-mvn-1.2.x-img]][spring-cloud-azure-appconfiguration-config-web-mvn-1.2.x] 
-spring-cloud-azure-eventhubs-stream-binder  | [![Maven Central][spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x]
-spring-cloud-azure-feature-management | [![Maven Central][azure-spring-cloud-feature-management-mvn-1.2.x-img]][azure-spring-cloud-feature-management-mvn-1.2.x]
-spring-cloud-azure-feature-management-web | [![Maven Central][azure-spring-cloud-feature-management-web-mvn-1.2.x-img]][azure-spring-cloud-feature-management-web-mvn-1.2.x]
-spring-cloud-azure-servicebus-queue-stream-binder | [![Maven Central][spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x]
-spring-cloud-azure-servicebus-topic-stream-binder | [![Maven Central][spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x]
+spring-cloud-azure-appconfiguration-config | [![Maven Central][azure-spring-cloud-appconfiguration-config-mvn-1.2.x-img]][azure-spring-cloud-appconfiguration-config-mvn-1.2.x] 
 spring-cloud-starter-azure-appconfiguration-config | [![Maven Central][spring-cloud-starter-azure-appconfiguration-config-mvn-1.2.x-img]][spring-cloud-starter-azure-appconfiguration-config-mvn-1.2.x]
+spring-cloud-azure-feature-management-web | [![Maven Central][azure-spring-cloud-feature-management-web-mvn-1.2.x-img]][azure-spring-cloud-feature-management-web-mvn-1.2.x]
+spring-cloud-azure-feature-management | [![Maven Central][azure-spring-cloud-feature-management-mvn-1.2.x-img]][azure-spring-cloud-feature-management-mvn-1.2.x]
+spring-starter-azure-cache | [![Maven Central][azure-spring-cloud-starter-cache-mvn-1.2.x-img]][azure-spring-cloud-starter-cache-mvn-1.2.x]
+spring-cloud-azure-eventhubs-stream-binder  | [![Maven Central][spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x]
 spring-cloud-starter-azure-eventhubs | [![Maven Central][spring-cloud-starter-azure-eventhubs-mvn-1.2.x-img]][spring-cloud-starter-azure-eventhubs-mvn-1.2.x]
 spring-cloud-starter-azure-eventhubs-kafka | [![Maven Central][spring-cloud-starter-azure-eventhubs-kafka-mvn-1.2.x-img]][spring-cloud-starter-azure-eventhubs-kafka-mvn-1.2.x]
+spring-cloud-azure-servicebus-queue-stream-binder | [![Maven Central][spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x]
+spring-cloud-azure-servicebus-topic-stream-binder | [![Maven Central][spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x-img]][spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x]
 spring-cloud-starter-azure-servicebus | [![Maven Central][spring-cloud-starter-azure-servicebus-mvn-1.2.x-img]][spring-cloud-starter-azure-servicebus-mvn-1.2.x]
 spring-cloud-starter-azure-storage-queue | [![Maven Central][spring-cloud-starter-azure-storage-queue-mvn-1.2.x-img]][spring-cloud-starter-azure-storage-queue-mvn-1.2.x]
-spring-starter-azure-cache | [![Maven Central][azure-spring-cloud-starter-cache-mvn-1.2.x-img]][azure-spring-cloud-starter-cache-mvn-1.2.x]
-spring-starter-azure-storage | [![Maven Central][azure-spring-starter-storage-mvn-1.2.x-img]][azure-spring-starter-storage-mvn-1.2.x]
+spring-starter-azure-storage(Deprecated) | [![Maven Central][azure-spring-starter-storage-mvn-1.2.x-img]][azure-spring-starter-storage-mvn-1.2.x]
 
 ### Daily built dev feed  
 Daily built beta feeds of all Spring packages from `master` branch are available. The packages are published to an Azure Artifacts public feed hosted at the following URL: 
@@ -154,8 +154,8 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [privacy-statement]: https://privacy.microsoft.com/privacystatement
 
 [aad-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory
-[aad-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter.svg
-[aad-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-active-directory-spring-boot-starter%22AND%20v:2.3.*
+[aad-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter/2.3.svg
+[aad-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-active-directory-spring-boot-starter%20AND%20v:2.3.*
 [aad-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter/2.2.svg
 [aad-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-spring-boot-starter%20AND%20v:2.2.*
 [aad-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-spring-boot-starter/2.1.svg
@@ -166,8 +166,8 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [new-aad-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.azure.spring%22%20AND%20a%3A%22azure-spring-boot-starter-active-directory%22
 
 [storage-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-storage
-[storage-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-storage-spring-boot-starter.svg
-[storage-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-storage-spring-boot-starter%22
+[storage-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-storage-spring-boot-starter/2.3.svg
+[storage-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-storage-spring-boot-starter%20AND%20v:2.3.*
 [storage-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-storage-spring-boot-starter.svg
 [storage-starter-mvn-2.2.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-storage-spring-boot-starter%20AND%20v:2.2.*
 [storage-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-storage-spring-boot-starter/2.1.svg
@@ -181,8 +181,8 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [spring-starter-storage-mvn-2.3.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20%20a:spring-starter-azure-storage
 
 [keyvault-secrets-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-secrets
-[keyvault-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter.svg
-[keyvault-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-keyvault-secrets-spring-boot-starter%22
+[keyvault-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter/2.3.svg
+[keyvault-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-keyvault-secrets-spring-boot-starter%20AND%20v:2.3.*
 [keyvault-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter/2.2.svg
 [keyvault-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-keyvault-secrets-spring-boot-starter%20AND%20v:2.2.*
 [keyvault-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter/2.1.svg
@@ -197,8 +197,8 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [new-keyvault-certificates-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.azure.spring%22%20AND%20a%3A%22azure-spring-boot-starter-keyvault-certificates%22
 
 [aad-b2c-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-active-directory-b2c
-[aad-b2c-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter.svg
-[aad-b2c-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-active-directory-b2c-spring-boot-starter%22
+[aad-b2c-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter/2.3.svg
+[aad-b2c-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-active-directory-b2c-spring-boot-starter%20AND%20v:2.3.*
 [aad-b2c-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter/2.2.svg
 [aad-b2c-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-active-directory-b2c-spring-boot-starter%20AND%20v:2.2.*
 [aad-b2c-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter/2.1.svg
@@ -207,8 +207,8 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [new-aad-b2c-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.azure.spring%22%20AND%20a%3A%22azure-spring-boot-starter-active-directory-b2c%22
 
 [cosmos-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-cosmos
-[cosmosdb-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter.svg
-[cosmosdb-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-cosmosdb-spring-boot-starter%22
+[cosmosdb-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter/2.3.svg
+[cosmosdb-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-cosmosdb-spring-boot-starter%20AND%20v:2.3.*
 [cosmosdb-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter/2.2.svg
 [cosmosdb-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-cosmosdb-spring-boot-starter%20AND%20v:2.2.*
 [cosmosdb-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb-spring-boot-starter/2.1.svg
@@ -255,8 +255,8 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [metrics-starter-mvn-2.0.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-spring-boot-metrics-starter%20AND%20v:2.0.*
 
 [jms-starter-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-servicebus-jms
-[jms-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter.svg
-[jms-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-servicebus-jms-spring-boot-starter%22
+[jms-starter-mvn-2.3.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter/2.3.svg
+[jms-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-servicebus-jms-spring-boot-starter%20AND%20v:2.3.*
 [jms-starter-mvn-2.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter/2.2.svg
 [jms-starter-mvn-2.2.x]: https://search.maven.org/search?q=g:com.microsoft.azure%20AND%20a:azure-servicebus-jms-spring-boot-starter%20AND%20v:2.2.*
 [jms-starter-mvn-2.1.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/azure-servicebus-jms-spring-boot-starter/2.1.svg
@@ -265,32 +265,32 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [new-jms-starter-mvn-2.3.x]: https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.azure.spring%22%20AND%20a%3A%22azure-spring-boot-starter-servicebus-jms%22
 
 [azure-spring-cloud-stream-binder-eventhubs-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-cloud-stream-binder-eventhubs
-[spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-azure-eventhubs-stream-binder.svg
-[spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-azure-eventhubs-stream-binder%22
+[spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-azure-eventhubs-stream-binder/1.2.svg
+[spring-cloud-azure-eventhubs-stream-binder-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-azure-eventhubs-stream-binder%20AND%20v:1.2.*
 [azure-spring-cloud-stream-binder-eventhubs-mvn-2.x.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-stream-binder-eventhubs.svg
 [azure-spring-cloud-stream-binder-eventhubs-2.x.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-stream-binder-eventhubs%22
 
 [azure-spring-cloud-starter-eventhubs-kafka-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-cloud-starter-eventhubs-kafka
-[spring-cloud-starter-azure-eventhubs-kafka-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-starter-azure-eventhubs-kafka.svg
-[spring-cloud-starter-azure-eventhubs-kafka-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-starter-azure-eventhubs-kafka%22
+[spring-cloud-starter-azure-eventhubs-kafka-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-starter-azure-eventhubs-kafka/1.2.svg
+[spring-cloud-starter-azure-eventhubs-kafka-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-starter-azure-eventhubs-kafka%20AND%20v:1.2.*
 [azure-spring-cloud-starter-eventhubs-kafka-mvn-2.x.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-eventhubs-kafka.svg
 [azure-spring-cloud-starter-eventhubs-kafka-mvn-2.x.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-eventhubs-kafka%22
 
 [azure-spring-cloud-stream-binder-servicebus-topic-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-cloud-stream-binder-servicebus-topic
-[spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-azure-servicebus-topic-stream-binder.svg
-[spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-azure-servicebus-topic-stream-binder%22
+[spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-azure-servicebus-topic-stream-binder/1.2.svg
+[spring-cloud-azure-servicebus-topic-stream-binder-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-azure-servicebus-topic-stream-binder%20AND%20v:1.2.*
 [azure-spring-cloud-stream-binder-servicebus-topic-mvn-2.x.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-topic.svg
 [azure-spring-cloud-stream-binder-servicebus-topic-mvn-2.x.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-stream-binder-servicebus-topic%22
 
 [azure-spring-cloud-stream-binder-servicebus-queue-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-cloud-stream-binder-servicebus-queue
-[spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-azure-servicebus-queue-stream-binder.svg
-[spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-azure-servicebus-queue-stream-binder%22
+[spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-azure-servicebus-queue-stream-binder/1.2.svg
+[spring-cloud-azure-servicebus-queue-stream-binder-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-azure-servicebus-queue-stream-binder%20AND%20v:1.2.*
 [azure-spring-cloud-stream-binder-servicebus-queue-mvn-2.x.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-stream-binder-servicebus-queue.svg
 [azure-spring-cloud-stream-binder-servicebus-queue-mvn-2.x.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-stream-binder-servicebus-queue%22
 
 [azure-spring-cloud-starter-eventhubs-readme]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-eventhubs
-[spring-cloud-starter-azure-eventhubs-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-starter-azure-eventhubs.svg
-[spring-cloud-starter-azure-eventhubs-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-starter-azure-eventhubs%22
+[spring-cloud-starter-azure-eventhubs-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-starter-azure-eventhubs/1.2.svg
+[spring-cloud-starter-azure-eventhubs-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-starter-azure-eventhubs%20AND%20v:1.2.*
 [azure-spring-cloud-starter-eventhubs-mvn-2.x.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-eventhubs.svg
 [azure-spring-cloud-starter-eventhubs-mvn-2.x.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-eventhubs%22
 
@@ -299,8 +299,8 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [azure-spring-integration-eventhubs-mvn-2.x.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-integration-eventhubs%22
 
 [azure-spring-cloud-starter-servicebus-readme]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-servicebus
-[spring-cloud-starter-azure-servicebus-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-starter-azure-servicebus.svg
-[spring-cloud-starter-azure-servicebus-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-starter-azure-servicebus%22
+[spring-cloud-starter-azure-servicebus-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-starter-azure-servicebus/1.2.svg
+[spring-cloud-starter-azure-servicebus-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-starter-azure-servicebus%20AND%20v:1.2.*
 [azure-spring-cloud-starter-servicebus-mvn-2.x.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-servicebus.svg
 [azure-spring-cloud-starter-servicebus-mvn-2.x.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-servicebus%22
 
@@ -309,8 +309,8 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [azure-spring-integration-servicebus-mvn-2.x.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-integration-servicebus%22
 
 [azure-spring-cloud-starter-storage-queue-readme]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-cloud-starter-storage-queue
-[spring-cloud-starter-azure-storage-queue-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-starter-azure-storage-queue.svg
-[spring-cloud-starter-azure-storage-queue-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-starter-azure-storage-queue%22
+[spring-cloud-starter-azure-storage-queue-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-cloud-starter-azure-storage-queue/1.2.svg
+[spring-cloud-starter-azure-storage-queue-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-cloud-starter-azure-storage-queue%20AND%20v:1.2.*
 [azure-spring-cloud-starter-storage-queue-mvn-2.x.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-storage-queue.svg
 [azure-spring-cloud-starter-storage-queue-mvn-2.x.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-storage-queue%22
 
@@ -323,8 +323,8 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [azure-spring-starter-storage-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-starter-azure-storage%22
 
 [azure-spring-cloud-starter-cache-readme]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-cloud-starter-cache
-[azure-spring-cloud-starter-cache-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-starter-azure-cache.svg
-[azure-spring-cloud-starter-cache-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-starter-azure-cache%22
+[azure-spring-cloud-starter-cache-mvn-1.2.x-img]: https://img.shields.io/maven-central/v/com.microsoft.azure/spring-starter-azure-cache/1.2.svg
+[azure-spring-cloud-starter-cache-mvn-1.2.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22spring-starter-azure-cache%20AND%20v:1.2.*
 [azure-spring-cloud-starter-cache-mvn-2.x.x-img]: https://img.shields.io/maven-central/v/com.azure.spring/azure-spring-cloud-starter-cache.svg
 [azure-spring-cloud-starter-cache-mvn-2.x.x]: https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-spring-cloud-starter-cache%22
 
