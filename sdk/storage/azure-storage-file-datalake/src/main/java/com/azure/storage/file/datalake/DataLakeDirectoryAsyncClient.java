@@ -174,7 +174,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         return new DataLakeFileAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(fileName))).toString(),
             getServiceVersion(), getAccountName(), getFileSystemName(), getObjectPath() + "/"
-            + Utility.urlDecode(fileName), blockBlobAsyncClient);
+            + fileName, blockBlobAsyncClient);
     }
 
     /**
@@ -316,7 +316,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(subdirectoryName)))
                 .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), getObjectPath() + "/"
-            + Utility.urlDecode(subdirectoryName), blockBlobAsyncClient);
+            + subdirectoryName, blockBlobAsyncClient);
     }
 
     /**

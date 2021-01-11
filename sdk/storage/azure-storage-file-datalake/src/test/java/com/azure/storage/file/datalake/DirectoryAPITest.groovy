@@ -6,12 +6,11 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
-
+import com.azure.storage.common.Utility
 import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
@@ -3000,5 +2999,25 @@ class DirectoryAPITest extends APISpec {
 
         then:
         thrown(DataLakeStorageException)
+    }
+
+    def "Get file client"() {
+        expect:
+        dc.getFileClient(path + generatePathName())
+
+        where:
+        path                    || _
+        ""                      || _
+        Utility.urlEncode("%")  || _
+    }
+
+    def "Get sub directory client"() {
+        expect:
+        dc.getSubdirectoryClient(path + generatePathName())
+
+        where:
+        path                    || _
+        ""                      || _
+        Utility.urlEncode("%")  || _
     }
 }
