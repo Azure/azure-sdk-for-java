@@ -20,10 +20,11 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public class CosmosContainerTest extends TestSuiteBase {
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
     private CosmosClient client;
     private CosmosDatabase createdDatabase;
+    private CosmosContainer createdContainer;
 
     @Factory(dataProvider = "clientBuilders")
     public CosmosContainerTest(CosmosClientBuilder clientBuilder) {
@@ -55,12 +57,31 @@ public class CosmosContainerTest extends TestSuiteBase {
         safeCloseSyncClient(client);
     }
 
+    @BeforeMethod(groups = { "emulator" })
+    public void beforeTest() throws Exception {
+        this.createdContainer = null;
+    }
+
+    @AfterMethod(groups = { "emulator" })
+    public void afterTest() throws Exception {
+        if (this.createdContainer != null) {
+            try {
+                this.createdContainer.delete();
+            } catch (CosmosException error) {
+                if (error.getStatusCode() != 404) {
+                    throw error;
+                }
+            }
+        }
+    }
+
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createContainer_withProperties() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponse(containerProperties, containerResponse);
     }
@@ -88,6 +109,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         }
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponse(containerProperties, containerResponse);
 
@@ -100,6 +122,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         validateContainerResponse(containerProperties, containerResponse);
 
         try {
@@ -118,6 +141,7 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
             ThroughputProperties.createManualThroughput(throughput));
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         validateContainerResponse(containerProperties, containerResponse);
     }
 
@@ -130,6 +154,7 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
             ThroughputProperties.createManualThroughput(throughput));
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         validateContainerResponse(containerProperties, containerResponse);
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
@@ -146,6 +171,7 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
             ThroughputProperties.createManualThroughput(throughput));
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         validateContainerResponse(containerProperties, containerResponse);
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
@@ -161,6 +187,7 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
             ThroughputProperties.createManualThroughput(throughput));
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         validateContainerResponse(containerProperties, containerResponse);
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
@@ -175,6 +202,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties, options);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         validateContainerResponse(containerProperties, containerResponse);
     }
 
@@ -187,6 +215,7 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
             throughput, options);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         validateContainerResponse(containerProperties, containerResponse);
     }
 
@@ -196,6 +225,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         String partitionKeyPath = "/mypk";
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(collectionName, partitionKeyPath);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         validateContainerResponse(new CosmosContainerProperties(collectionName, partitionKeyPath), containerResponse);
     }
 
@@ -207,6 +237,7 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(collectionName,
             partitionKeyPath, ThroughputProperties.createManualThroughput(throughput));
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         validateContainerResponse(new CosmosContainerProperties(collectionName, partitionKeyPath), containerResponse);
     }
 
@@ -217,6 +248,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
 
         CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
 
@@ -234,6 +266,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
 
         CosmosContainer syncContainer = createdDatabase.getContainer(collectionName);
 
@@ -278,6 +311,7 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         validateContainerResponse(containerProperties, containerResponse);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
 
         assertThat(containerResponse.getProperties().getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
 
@@ -307,6 +341,7 @@ public class CosmosContainerTest extends TestSuiteBase {
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         validateContainerResponse(containerProperties, containerResponse);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDurationInMinutes())
@@ -332,6 +367,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         validateContainerResponse(containerProperties, containerResponse);
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
@@ -357,6 +393,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         CosmosPagedIterable<CosmosContainerProperties> feedResponseIterator = createdDatabase.readAllContainers();
         // Very basic validation
         assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
@@ -374,6 +411,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        this.createdContainer = createdDatabase.getContainer(collectionName);
         String query = String.format("SELECT * from c where c.id = '%s'", collectionName);
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
