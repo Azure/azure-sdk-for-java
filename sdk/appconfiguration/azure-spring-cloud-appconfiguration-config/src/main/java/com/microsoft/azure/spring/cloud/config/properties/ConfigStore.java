@@ -4,23 +4,28 @@ package com.microsoft.azure.spring.cloud.config.properties;
 
 import static com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties.LABEL_SEPARATOR;
 
-import com.microsoft.azure.spring.cloud.config.resource.Connection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.Pattern;
+
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
+import com.microsoft.azure.spring.cloud.config.resource.Connection;
+
 public class ConfigStore {
 
     private static final String EMPTY_LABEL = "\0";
-    private static final String[] EMPTY_LABEL_ARRAY = {EMPTY_LABEL};
+
+    private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
+
     private String endpoint; // Config store endpoint
 
     @Nullable
@@ -116,10 +121,13 @@ public class ConfigStore {
     }
 
     /**
+     * @param profiles List of current Spring profiles to default to using is null label is set.
      * @return List of reversed label values, which are split by the separator, the latter label has higher priority
      */
-    public String[] getLabels() {
-        if (!StringUtils.hasText(this.getLabel())) {
+    public String[] getLabels(List<String> profiles) {
+        if (this.getLabel() == null && profiles.size() > 0) {
+            return profiles.toArray(new String[profiles.size()]);
+        } else if (!StringUtils.hasText(this.getLabel())) {
             return EMPTY_LABEL_ARRAY;
         }
 
