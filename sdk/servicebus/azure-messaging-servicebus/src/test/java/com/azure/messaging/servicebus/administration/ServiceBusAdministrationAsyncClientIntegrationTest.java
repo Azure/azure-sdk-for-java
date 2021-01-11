@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.administration;
 
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -804,6 +805,23 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void getSubscriptionRuntimePropertiesUnauthorizedClient(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient, true);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-1"
+            : getEntityName(getTopicBaseName(), 1);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+
+        // Act & Assert
+        StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
+            .verifyErrorMatches(throwable -> throwable instanceof ClientAuthenticationException);
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void listRules(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
@@ -927,12 +945,22 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     }
 
     private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient) {
+        return createClient(httpClient, false);
+    }
+
+    private ServiceBusAdministrationAsyncClient createClient(HttpClient httpClient, boolean isUnauthorizedClient) {
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
             : TestUtils.getConnectionString();
+
+        final String connectionStringUpdated = isUnauthorizedClient
+            ? connectionString.replace("SharedAccessKey=", "SharedAccessKey=fake-key-")
+            : connectionString;
+
+
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .connectionString(connectionString);
+            .connectionString(connectionStringUpdated);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
@@ -947,4 +975,5 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
         return builder.buildAsyncClient();
     }
+
 }

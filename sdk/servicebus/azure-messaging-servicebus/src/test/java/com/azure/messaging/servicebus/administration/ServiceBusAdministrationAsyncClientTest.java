@@ -35,6 +35,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -56,6 +59,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -342,61 +346,43 @@ class ServiceBusAdministrationAsyncClientTest {
             .verifyComplete();
     }
 
-    /* When ServiceBusManagementError is not populated in 'ServiceBusManagementErrorException', we get
-    'ClientAuthenticationException' with error message.*/
-    @Test
-    void getSubscriptionRuntimePropertiesException() {
+    /**
+     * When ServiceBusManagementError is not populated or 'null' in 'ServiceBusManagementErrorException', we get
+     * 'ClientAuthenticationException' with error message.
+     */
+    @ParameterizedTest
+    @MethodSource
+    void getSubscriptionRuntimePropertiesUnauthorised(String errorMessae, ServiceBusManagementError managementError) {
         // Arrange
         final String topicName = "topicName";
-        final String SubscriptionName = "subscriptionName";
-        final String errorMessage = "Unauthorized access";
-        final HttpResponse response =  mock(HttpResponse.class);
-        when(subscriptions.getWithResponseAsync(eq(topicName),eq(SubscriptionName), eq(true), any(Context.class)))
-            .thenReturn(Mono.error(new ServiceBusManagementErrorException(errorMessage, response, null)));
+        final String subscriptionName = "subscriptionName";
+        final HttpResponse response = mock(HttpResponse.class);
+        when(subscriptions.getWithResponseAsync(eq(topicName), eq(subscriptionName), eq(true), any(Context.class)))
+            .thenReturn(Mono.error(new ServiceBusManagementErrorException(errorMessae, response, managementError)));
         when(response.getStatusCode()).thenReturn(HttpStatus.SC_UNAUTHORIZED);
 
         // Act & Assert
-        StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, SubscriptionName))
+        StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
             .verifyErrorMatches(error -> error instanceof ClientAuthenticationException
-                && error.getMessage().equals(errorMessage));
+                && error.getMessage().equals(errorMessae));
     }
 
-    /* When ServiceBusManagementError is populated in 'ServiceBusManagementErrorException', we get
-    'ClientAuthenticationException' with error message.*/
-    @Test
-    void getSubscriptionRuntimePropertiesWithManagementError() {
-        // Arrange
-        final String topicName = "topicName";
-        final String SubscriptionName = "subscriptionName";
-        final String message = "Unauthorized access";
-        final HttpResponse response =  mock(HttpResponse.class);
-        final ServiceBusManagementError managementError = new ServiceBusManagementError();
-        managementError.setCode(HttpStatus.SC_UNAUTHORIZED);
-        managementError.setDetail(message);
-
-        when(subscriptions.getWithResponseAsync(eq(topicName),eq(SubscriptionName), eq(true), any(Context.class)))
-            .thenReturn(Mono.error(new ServiceBusManagementErrorException(message, response, managementError)));
-
-        // Act & Assert
-        StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, SubscriptionName))
-            .verifyErrorMatches(error -> error instanceof ClientAuthenticationException
-                && error.getMessage().equals(message));
-    }
-
-    /* When ServiceBusManagementError is populated in 'ServiceBusManagementErrorException' with no Http status code,
-       we get 'HttpResponseException' with error message.
-       We should always have Http status code populated but this test is to ensure we do not throw NullPointerException.*/
+    /**
+     * When ServiceBusManagementError is populated in 'ServiceBusManagementErrorException' with no Http status code,
+     * we get 'HttpResponseException' with error message.
+     * We should always have Http status code populated but this test is to ensure we do not throw NullPointerException.
+     */
     @Test
     void getSubscriptionRuntimePropertiesWithNoStatusCode() {
         // Arrange
         final String topicName = "topicName";
         final String SubscriptionName = "subscriptionName";
         final String message = "Unauthorized access";
-        final HttpResponse response =  mock(HttpResponse.class);
+        final HttpResponse response = mock(HttpResponse.class);
         final ServiceBusManagementError managementError = new ServiceBusManagementError();
         managementError.setDetail(message);
 
-        when(subscriptions.getWithResponseAsync(eq(topicName),eq(SubscriptionName), eq(true), any(Context.class)))
+        when(subscriptions.getWithResponseAsync(eq(topicName), eq(SubscriptionName), eq(true), any(Context.class)))
             .thenReturn(Mono.error(new ServiceBusManagementErrorException(message, response, managementError)));
 
         // Act & Assert
@@ -534,9 +520,15 @@ class ServiceBusAdministrationAsyncClientTest {
             .verifyComplete();
     }
 
+    static Stream<Arguments> getSubscriptionRuntimePropertiesUnauthorised() {
+        return Stream.of(
+            Arguments.of("Unauthorized access", null),
+            Arguments.of("Unauthorized access", new ServiceBusManagementError().setCode(HttpStatus.SC_UNAUTHORIZED).setDetail("Unauthorized access"))
+        );
+    }
+
     /**
      * Gets the corresponding test xml file.
-     *
      * @param fileName Name of the xml file.
      *
      * @return String contents of file.

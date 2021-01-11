@@ -2564,22 +2564,14 @@ public final class ServiceBusAdministrationAsyncClient {
         final ServiceBusManagementError error = managementError.getValue();
         final HttpResponse errorHttpResponse = managementError.getResponse();
 
-        Integer httpStatusCode = null;
-        String errorDetail = null;
-        if (error != null ) {
-            httpStatusCode = error.getCode();
-            errorDetail = error.getDetail();
-        } else if (errorHttpResponse != null){
-            httpStatusCode = errorHttpResponse.getStatusCode();
-            errorDetail = managementError.getMessage();
-        }
+        final int statusCode = error != null && error.getCode() != null
+            ? error.getCode()
+            : errorHttpResponse.getStatusCode();
+        final String errorDetail = error != null && error.getDetail() != null
+            ? error.getDetail()
+            : managementError.getMessage();
 
-        if (httpStatusCode == null) {
-            return new HttpResponseException("Error while performing operation.", managementError.getResponse(),
-                exception);
-        }
-
-        switch (httpStatusCode) {
+        switch (statusCode) {
             case 401:
                 return new ClientAuthenticationException(errorDetail, managementError.getResponse(), exception);
             case 404:
