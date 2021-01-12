@@ -6,8 +6,8 @@ Increase max memory if you're using Autorest older than 3. Set the environment v
 
 This is the AutoRest configuration file for the KeyVaultAccessControlClient and KeyVaultBackupClient.
 ---
-## Getting Started 
-To build the SDK for either client, simply [Install AutoRest](https://github.com/Azure/autorest/blob/master/docs/installing-autorest.md) and in this folder, run:
+## Getting Started
+To build the SDK for either client, simply [Install AutoRest](https://github.com/Azure/autorest/blob/master/docs/install/readme.md) and in this folder, run:
 
 > `autorest`
 
@@ -20,13 +20,13 @@ There are two swagger specifications for KeyVault Administration: rbac and backu
 
 ```ps
 cd <swagger-folder>
-autorest --use=@microsoft.azure/autorest.java@4.0.0 --tag=${package} 
+autorest --use=@microsoft.azure/autorest.java@4.0.0 --tag=${package}
 ```
 
 e.g.
 ```ps
 cd <swagger-folder>
-autorest --use=@microsoft.azure/autorest.java@4.0.0 --tag=rbac-preview  
+autorest --use=@microsoft.azure/autorest.java@4.0.0 --tag=rbac-preview
 ```
 
 ```ps
