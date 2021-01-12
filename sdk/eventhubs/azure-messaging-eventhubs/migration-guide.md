@@ -13,8 +13,8 @@ library for Java, please refer to the [README.md][README] rather than this guide
   - [Migration benefits](#migration-benefits)
     - [Cross Service SDK improvements](#cross-service-sdk-improvements)
   - [Important changes](#important-changes)
-    - [Package names and namespaces](#package-names-and-namespaces)
-    - [Client hierarchy and constructors](#client-hierarchy-and-constructors)
+    - [Group id, artifact id, and package names](#group-id-artifact-id-and-package-names)
+    - [Client hierarchy](#client-hierarchy)
     - [Send events to an Event Hub](#send-events-to-an-event-hub)
     - [Receiving events from all partitions](#receiving-events-from-all-partitions)
     - [Receive events from a single partition](#receive-events-from-a-single-partition)
@@ -42,24 +42,24 @@ The modern Event Hubs client library also provides the ability to share in some 
 
 ## Important changes
 
-### Package names and namespaces
+### Group id, artifact id, and package names
 
 Group ids, artifact ids, and package names for the modern Azure client libraries for Java have changed. They follow the [Java SDK naming guidelines][GuidelinesJavaDesign]. Each will have the group id `com.azure`, an artifact id following the pattern `azure-[area]-[service]`, and the root package name `com.azure.[area].[Service]`. The legacy clients have a group id `com.microsoft.azure` and their package names followed the pattern `com.microsoft. Azure.[service]`. This provides a quick and accessible means to help understand, at a glance, whether you are using modern or legacy clients.
 
 In Event Hubs, the modern client libraries have packages and namespaces that begin with `com.azure.messaging.eventhubs` and were released starting with version 5. The legacy client libraries have package names starting with `com.microsoft.azure.eventhubs` and a version of 3.x.x or below.
 
-### Client hierarchy and constructors
+### Client hierarchy
 
 In the interest of simplifying the API surface, we've made separate clients for sending and receiving events:
 - [EventHubProducerClient][EventHubProducerClient] is the sync client to send events. [EventHubProducerAsyncClient][EventHubProducerAsyncClient] is the corresponding async client.
-- [EventProcessorClient][EventProcessorClient] is what you would typically use to read events from all partitions with an optional, but recommended checkpointing feature. 
+- [EventProcessorClient][EventProcessorClient] is what you would typically use to read events from all partitions with an optional, but recommended checkpointing feature.
 - [EventHubConsumerClient][EventHubConsumerClient] is the sync client you would use for lower-level control of [EventData][EventData] consumption from a single partition. [EventHubConsumerAsyncClient][EventHubConsumerAsyncClient] is the corresponding async client.
 
-Creation of producer and consumer clients is done through the [EventHubClientBuilder][EventHubClientBuilder] while the [EventProcessorClient][EventProcessorClient] is created through the [EventProcessorClientBuilder][EventProcessorClientBuilder].
+#### Instantiating clients
 
-#### Create an Event Hub producer
+In v3, the `EventHubClient` was instantiated via static overloads. The client contained both sync and async methods. A `PartitionReceiver` or `PartitionSender` could be created from this client. `EventHubClient
 
-Event Hub synchronous and asynchronous producers in v3 were created using static methods in `EventHubClient`. In v5, they are created with [EventHubClientBuilder][EventHubClientBuilder]. Samples below demonstrate how to create an Event Hub producer, but the same steps can be used for the consumer.
+In v5, the creation of producer and consumer clients is done through the [EventHubClientBuilder][EventHubClientBuilder] while the [EventProcessorClient][EventProcessorClient] is created through the [EventProcessorClientBuilder][EventProcessorClientBuilder].
 
 In v3:
 
@@ -70,8 +70,7 @@ public static void main(String[] args) throws Exception {
         EventHubClient.createFromConnectionString("connection-string-for-an-event-hub",
         scheduler);
 
-    CompletableFuture<Void> workFuture = clientFuture
-    .thenComposeAsync(client -> {
+    CompletableFuture<Void> workFuture = clientFuture.thenComposeAsync(client -> {
         // Do things with the client.
         // Dispose of client.
         return client.close();
@@ -102,10 +101,11 @@ public static void main(String[] args) throws Exception {
 
 In v3, events could be published to a specific partition using the `send` or `sendSync` methods on the `PartitionSender` or automatically routed to an available partition via similar methods on the `EventHubClient`. You could either send a single event, a list of events or an event batch.
 
-In v5, the option to send single events is dropped to encourage sending events in batches for better throughput. 
+In v5, the option to send single events is dropped to encourage sending events in batches for better throughput.
 You can send a list of events or create and send an event batch as before. Instead of using different classes, sending to a specific partition and making use of the automatic routing is done using overloads of the same methods. For example:
-- Passing a list of events to the `send` method with no options makes use of automatic routing. If `partitionId` is passed in the options to this method, the events are sent to the given partition
-- Creating a batch of events using the `createBatch` method without setting the `partitionId` in the options makes use of automatic routing. If `partitionId` is passed in the options to this method, the events are sent to the given partition
+
+- Passing a list of events to the `send` method with no options makes use of automatic routing. If `partitionId` is passed in the options to this method, the events are sent to the given partition.
+- Creating a batch of events using the `createBatch` method without setting the `partitionId` in the options makes use of automatic routing. If `partitionId` is passed in the options to this method, the events are sent to the given partition.
 
 Additionally, we consolidate send into an efficient `send(EventDataBatch)` method on the producer client. Batching merges information from multiple events into a single sent message, reducing the amount of network communication needed vs sending events one at a time.
 
