@@ -7,7 +7,6 @@ import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
-
 // scalastyle:on underscore.import
 
 class CosmosCatalogSpec extends IntegrationSpec with CosmosClient {

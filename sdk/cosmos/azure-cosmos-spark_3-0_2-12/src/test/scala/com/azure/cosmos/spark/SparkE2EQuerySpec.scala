@@ -5,8 +5,7 @@ package com.azure.cosmos.spark
 import java.util.UUID
 
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-// scalastyle:off underscore.import
-// scalastyle:on underscore.import
+
 class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient with CosmosContainer {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number

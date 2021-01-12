@@ -8,10 +8,6 @@ import com.azure.cosmos.implementation.{TestConfigurations, Utils}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 
-// scalastyle:off underscore.import
-// scalastyle:on underscore.import
-
-
 class SparkE2EConfigResolutionSpec extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number

@@ -3,14 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-// scalastyle:off underscore.import
-// scalastyle:on underscore.import
 
-
-// TODO moderakh rely on the shared database/container for the tests to avoid creating many
-// TODO moderakh we need to clean up databases after creation.
-// TODO use facility from V4 SDk?
-// TODO do proper clean up for spark session, client, etc
 class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient with AutoCleanableCosmosContainer {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
