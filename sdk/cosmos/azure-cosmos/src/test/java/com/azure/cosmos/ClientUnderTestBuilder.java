@@ -50,8 +50,7 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
                 this.getConsistencyLevel(),
                 this.configs(),
                 this.getCredential(),
-                this.isContentResponseOnWriteEnabled(),
-                this.isQueryPlanCachingEnabled());
+                this.isContentResponseOnWriteEnabled());
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

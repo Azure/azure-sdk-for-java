@@ -238,8 +238,7 @@ public interface AsyncDocumentClient {
                 tokenCredential,
                 sessionCapturingOverride,
                 transportClientSharing,
-                contentResponseOnWriteEnabled,
-                queryPlanCachingEnabled);
+                contentResponseOnWriteEnabled);
 
             client.init();
             return client;
@@ -354,13 +353,6 @@ public interface AsyncDocumentClient {
      * @return a boolean indicating whether resource will be included in the response or not.
      */
     boolean isContentResponseOnWriteEnabled();
-
-    /**
-     * Gets where to allow query plan to be cached during query execution
-     *
-     * @return flag to allow query plan to be cached during query execution
-     */
-    boolean isQueryPlanCachingEnabled();
 
     /**
      * Gets the connection policy

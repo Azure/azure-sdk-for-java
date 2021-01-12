@@ -37,7 +37,7 @@ public class SpyClientUnderTestFactory {
                             boolean contentResponseOnWriteEnabled, boolean queryPlanCachingEnabled ) {
             super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, credential,
                   null, false, false,
-                  contentResponseOnWriteEnabled, queryPlanCachingEnabled);
+                  contentResponseOnWriteEnabled);
         }
 
         public abstract List<T> getCapturedRequests();

@@ -106,7 +106,6 @@ public class CosmosClientBuilder {
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
     private boolean clientTelemetryEnabled = false;
-    private boolean queryPlanCachingEnabled = false;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -717,16 +716,6 @@ public class CosmosClientBuilder {
      */
     boolean isReadRequestsFallbackEnabled() {
         return readRequestsFallbackEnabled;
-    }
-
-    /**
-     * Gets where to allow query plan to be cached during query execution
-     *
-     * @return flag to allow query plan to be cached during query execution
-     */
-    boolean isQueryPlanCachingEnabled() {
-        // Used while initializing the client.
-        return Configs.isQueryPlanCachingEnabled();
     }
 
     /**

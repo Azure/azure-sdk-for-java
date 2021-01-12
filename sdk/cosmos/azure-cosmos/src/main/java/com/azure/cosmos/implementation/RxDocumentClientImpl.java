@@ -136,7 +136,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
     private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
     private final boolean contentResponseOnWriteEnabled;
-    private boolean queryPlanCachingEnabled;
     private ConcurrentMap<String, PartitionedQueryExecutionInfo> queryPlanCache;
 
     private final AtomicBoolean closed = new AtomicBoolean(false);
@@ -177,11 +176,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 AzureKeyCredential credential,
                                 boolean sessionCapturingOverride,
                                 boolean connectionSharingAcrossClientsEnabled,
-                                boolean contentResponseOnWriteEnabled,
-                                boolean queryPlanCachingEnabled) {
+                                boolean contentResponseOnWriteEnabled) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
             credential, null, sessionCapturingOverride, connectionSharingAcrossClientsEnabled,
-             contentResponseOnWriteEnabled, queryPlanCachingEnabled);
+             contentResponseOnWriteEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -196,11 +194,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 TokenCredential tokenCredential,
                                 boolean sessionCapturingOverride,
                                 boolean connectionSharingAcrossClientsEnabled,
-                                boolean contentResponseOnWriteEnabled,
-                                boolean queryPlanCachingEnabled) {
+                                boolean contentResponseOnWriteEnabled) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
             credential, tokenCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled,
-             contentResponseOnWriteEnabled, queryPlanCachingEnabled);
+             contentResponseOnWriteEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -214,11 +211,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 TokenCredential tokenCredential,
                                 boolean sessionCapturingOverrideEnabled,
                                 boolean connectionSharingAcrossClientsEnabled,
-                                boolean contentResponseOnWriteEnabled,
-                                 boolean queryPlanCachingEnabled) {
+                                boolean contentResponseOnWriteEnabled) {
         this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs,
             credential, tokenCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled,
-             contentResponseOnWriteEnabled, queryPlanCachingEnabled);
+             contentResponseOnWriteEnabled);
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
             for (Permission permission : permissionFeed) {
@@ -270,8 +266,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          TokenCredential tokenCredential,
                          boolean sessionCapturingOverrideEnabled,
                          boolean connectionSharingAcrossClientsEnabled,
-                         boolean contentResponseOnWriteEnabled,
-                         boolean queryPlanCachingEnabled) {
+                         boolean contentResponseOnWriteEnabled) {
 
         activeClientsCnt.incrementAndGet();
         this.clientId = clientIdGenerator.getAndDecrement();
@@ -295,7 +290,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.credential = credential;
             this.tokenCredential = tokenCredential;
             this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
-            this.queryPlanCachingEnabled = queryPlanCachingEnabled;
             this.authorizationTokenType = AuthorizationTokenType.Invalid;
 
             if (this.credential != null) {
@@ -549,11 +543,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public boolean isQueryPlanCachingEnabled() {
-        return this.queryPlanCachingEnabled;
-    }
-
-    @Override
     public ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
@@ -747,7 +736,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             DocumentQueryExecutionContextFactory
                 .createDocumentQueryExecutionContextAsync(this, queryClient, resourceTypeEnum, klass, sqlQuery,
                                                           options, resourceLink, false, activityId,
-                                                          this.isQueryPlanCachingEnabled(), queryPlanCache);
+                                                          Configs.isQueryPlanCachingEnabled(), queryPlanCache);
 
         AtomicBoolean isFirstResponse = new AtomicBoolean(true);
         return executionContext.flatMap(iDocumentQueryExecutionContext -> {

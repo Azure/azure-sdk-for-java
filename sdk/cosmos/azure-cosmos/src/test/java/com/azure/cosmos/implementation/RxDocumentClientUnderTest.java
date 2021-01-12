@@ -37,10 +37,9 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      ConsistencyLevel consistencyLevel,
                                      Configs configs,
                                      AzureKeyCredential credential,
-                                     boolean contentResponseOnWriteEnabled,
-                                     boolean queryPlanCachingEnabled) {
+                                     boolean contentResponseOnWriteEnabled) {
         super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, null, false,
-              false, contentResponseOnWriteEnabled, queryPlanCachingEnabled);
+              false, contentResponseOnWriteEnabled);
         init();
     }
 

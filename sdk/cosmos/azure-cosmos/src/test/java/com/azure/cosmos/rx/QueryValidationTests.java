@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -10,6 +9,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -78,11 +78,11 @@ public class QueryValidationTests extends TestSuiteBase {
     public void queryPlanCacheEnabledFlag() {
         System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "false");
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder();
-        assertThat(BridgeInternal.isQueryPlanCachingEnabled(cosmosClientBuilder)).isFalse();
+        assertThat(Configs.isQueryPlanCachingEnabled()).isFalse();
         System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "true");
-        assertThat(BridgeInternal.isQueryPlanCachingEnabled(cosmosClientBuilder)).isTrue();
+        assertThat(Configs.isQueryPlanCachingEnabled()).isTrue();
         System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "false");
-        assertThat(BridgeInternal.isQueryPlanCachingEnabled(cosmosClientBuilder)).isFalse();
+        assertThat(Configs.isQueryPlanCachingEnabled()).isFalse();
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
