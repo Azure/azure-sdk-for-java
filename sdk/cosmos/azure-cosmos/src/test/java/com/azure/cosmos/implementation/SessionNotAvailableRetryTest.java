@@ -1,0 +1,318 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.implementation;
+
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
+import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
+import com.azure.cosmos.implementation.directconnectivity.ReplicatedResourceClient;
+import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
+import com.azure.cosmos.implementation.directconnectivity.StoreClient;
+import com.azure.cosmos.implementation.directconnectivity.StoreReader;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.TransportClient;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.rx.TestSuiteBase;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.mockito.Mockito;
+import org.mockito.stubbing.Answer;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
+import static org.mockito.Mockito.doAnswer;
+
+public class SessionNotAvailableRetryTest extends TestSuiteBase {
+    private CosmosAsyncClient client;
+    private CosmosAsyncContainer cosmosAsyncContainer;
+    private DatabaseAccount databaseAccount;
+
+    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
+    public void beforeClass() throws IllegalAccessException {
+        client = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .directMode()
+            .buildAsyncClient();
+        AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(client,
+            "asyncDocumentClient", true);
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
+        GlobalEndpointManager globalEndpointManager =
+            ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+        DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+        this.databaseAccount = databaseAccount;
+
+    }
+
+    @DataProvider(name = "preferredRegions")
+    private Object[][] preferredRegions() {
+        List<String> preferredLocations1 = new ArrayList<>();
+        List<String> regionalSuffix1 = new ArrayList<>();
+        List<String> preferredLocations2 = new ArrayList<>();
+        List<String> regionalSuffix2 = new ArrayList<>();
+        Iterator<DatabaseAccountLocation> locationIterator = this.databaseAccount.getReadableLocations().iterator();
+        while (locationIterator.hasNext()) {
+            DatabaseAccountLocation accountLocation = locationIterator.next();
+            preferredLocations1.add(accountLocation.getName());
+            regionalSuffix1.add(getStringDiff(accountLocation.getEndpoint(), TestConfigurations.HOST));
+        }
+
+        //putting preference in opposite direction than what comes from database account api
+        for (int i = preferredLocations1.size() - 1; i >= 0; i--) {
+            preferredLocations2.add(preferredLocations1.get(i));
+            regionalSuffix2.add(regionalSuffix1.get(i));
+        }
+
+        return new Object[][]{
+            new Object[]{preferredLocations1, regionalSuffix1, OperationType.Read},
+            new Object[]{preferredLocations2, regionalSuffix2, OperationType.Read},
+            new Object[]{preferredLocations1, regionalSuffix1, OperationType.Query},
+            new Object[]{preferredLocations2, regionalSuffix2, OperationType.Query},
+            new Object[]{preferredLocations1, regionalSuffix1, OperationType.Create},
+            new Object[]{preferredLocations2, regionalSuffix2, OperationType.Create},
+        };
+    }
+
+    @Test(groups = {"simple"}, dataProvider = "preferredRegions")
+    public void sessionNotAvailableRetryMultiMaster(List<String> preferredLocations, List<String> regionalSuffix,
+                                                    OperationType operationType) throws IllegalAccessException {
+        CosmosAsyncClient preferredListClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .directMode()
+            .preferredRegions(preferredLocations)
+            .buildAsyncClient();
+
+        AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(preferredListClient,
+            "asyncDocumentClient", true);
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
+        ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
+        StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
+        ReplicatedResourceClient replicatedResourceClient =
+            (ReplicatedResourceClient) FieldUtils.readField(storeClient, "replicatedResourceClient", true);
+        ConsistencyReader consistencyReader = (ConsistencyReader) FieldUtils.readField(replicatedResourceClient,
+            "consistencyReader", true);
+        ConsistencyWriter consistencyWriter = (ConsistencyWriter) FieldUtils.readField(replicatedResourceClient,
+            "consistencyWriter", true);
+        StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
+        StoreReader storeReaderOfWriter = (StoreReader) FieldUtils.readField(consistencyWriter, "storeReader", true);
+
+        RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
+        RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
+        FieldUtils.writeField(storeReader, "transportClient", spyRntbdTransportClient, true);
+        FieldUtils.writeField(consistencyWriter, "transportClient", spyRntbdTransportClient, true);
+
+        cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
+        //cosmosAsyncContainer = preferredListClient.getDatabase("TestDb").getContainer("TestCol");
+
+        List<String> uris = new ArrayList<>();
+        doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
+            Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
+            RxDocumentServiceRequest serviceRequest = invocationOnMock.getArgumentAt(1, RxDocumentServiceRequest.class);
+            uris.add(uri.getURI().getHost());
+            CosmosException cosmosException = BridgeInternal.createCosmosException(404);
+            Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
+                "responseHeaders", true);
+            responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, "1002");
+            return Mono.error(cosmosException);
+        }).when(spyRntbdTransportClient).invokeStoreAsync(Mockito.any(Uri.class),
+            Mockito.any(RxDocumentServiceRequest.class));
+        try {
+            PartitionKey partitionKey = new PartitionKey("Test");
+            if (operationType.equals(OperationType.Read)) {
+                cosmosAsyncContainer.readItem("Test", partitionKey, InternalObjectNode.class).block();
+            } else if (operationType.equals(OperationType.Query)) {
+                String query = "Select * from C";
+                CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+                requestOptions.setPartitionKey(partitionKey);
+                cosmosAsyncContainer.queryItems(query, requestOptions, InternalObjectNode.class).byPage().blockFirst();
+            } else if (operationType.equals(OperationType.Create)) {
+                InternalObjectNode node = new InternalObjectNode();
+                node.setId("Test");
+                node.set("mypk", "Test");
+                node.set("pk", "Test");
+                cosmosAsyncContainer.createItem(node, partitionKey, new CosmosItemRequestOptions()).block();
+            }
+
+            fail("Request should fail with 404/1002 error");
+        } catch (CosmosException ex) {
+            System.out.println("ClientRetryPolicyTest.sessionNotAvailableRetry " + ex.getMessage());
+        }
+
+        HashSet<String> uniqueHost = new HashSet<>();
+        for (String uri : uris) {
+            uniqueHost.add(uri);
+        }
+        // First verify we are retrying in each region
+        assertThat(uniqueHost.size()).isEqualTo(preferredLocations.size());
+
+
+        // First region retry from initial request , then retrying per region in clientRetryPolicy and 1 retry at the
+        // last from
+        // RenameCollectionAwareClientRetryPolicy after clearing session token
+        int numberOfRegionRetried = preferredLocations.size() + 2;
+
+        // Calculating approx avg number of retries in each region
+        int averageRetryBySessionRetryPolicyInOneRegion = uris.size() / numberOfRegionRetried;
+
+        int totalTries = averageRetryBySessionRetryPolicyInOneRegion;
+        // First region retries should be in first preferred region
+        assertThat(uris.get(totalTries / 2)).contains(regionalSuffix.get(0));
+
+        for (int i = 1; i <= preferredLocations.size(); i++) {
+            assertThat(uris.get(totalTries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(i % regionalSuffix.size()));
+            totalTries = totalTries + averageRetryBySessionRetryPolicyInOneRegion;
+        }
+
+        // Last region retries should be in first preferred region
+        assertThat(uris.get(totalTries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(0));
+    }
+
+    @Test(groups = {"simple"}, dataProvider = "preferredRegions")
+    public void sessionNotAvailableRetrySingleMaster(List<String> preferredLocations, List<String> regionalSuffix,
+                                                     OperationType operationType) throws IllegalAccessException {
+        CosmosAsyncClient preferredListClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .directMode()
+            .preferredRegions(preferredLocations)
+            .buildAsyncClient();
+
+        AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(preferredListClient,
+            "asyncDocumentClient", true);
+        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
+        ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
+        StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
+        ReplicatedResourceClient replicatedResourceClient =
+            (ReplicatedResourceClient) FieldUtils.readField(storeClient, "replicatedResourceClient", true);
+        ConsistencyReader consistencyReader = (ConsistencyReader) FieldUtils.readField(replicatedResourceClient,
+            "consistencyReader", true);
+        StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
+
+        RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
+        RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
+        FieldUtils.writeField(storeReader, "transportClient", spyRntbdTransportClient, true);
+
+        cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
+        //cosmosAsyncContainer = preferredListClient.getDatabase("TestDb").getContainer("TestCol");
+
+        PartitionKey partitionKey = new PartitionKey("Test");
+        List<String> uris = new ArrayList<>();
+        doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
+            Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
+            RxDocumentServiceRequest serviceRequest = invocationOnMock.getArgumentAt(1, RxDocumentServiceRequest.class);
+            uris.add(uri.getURI().getHost());
+            CosmosException cosmosException = BridgeInternal.createCosmosException(404);
+            Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
+                "responseHeaders", true);
+            responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, "1002");
+            FieldUtils.writeField(cosmosException, "responseHeaders", responseHeaders, true);
+            return Mono.error(cosmosException);
+        }).when(spyRntbdTransportClient).invokeStoreAsync(Mockito.any(Uri.class),
+            Mockito.any(RxDocumentServiceRequest.class));
+        try {
+            if (operationType.equals(OperationType.Read)) {
+                cosmosAsyncContainer.readItem("TestId", partitionKey, InternalObjectNode.class).block();
+            } else if (operationType.equals(OperationType.Query)) {
+                String query = "Select * from C";
+                CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+                requestOptions.setPartitionKey(new PartitionKey("Test"));
+                cosmosAsyncContainer.queryItems(query, requestOptions, InternalObjectNode.class).byPage().blockFirst();
+            }
+            fail("Request should fail with 404/1002 error");
+        } catch (CosmosException ex) {
+            System.out.println("ClientRetryPolicyTest.sessionNotAvailableRetry " + ex.getMessage());
+        }
+
+        HashSet<String> uniqueHost = new HashSet<>();
+        for (String uri : uris) {
+            uniqueHost.add(uri);
+        }
+
+        String masterOrHubRegionSuffix =
+            getStringDiff(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
+                TestConfigurations.HOST);
+
+        //First verify we are retrying in first preferred region and master region
+        if (regionalSuffix.get(0).equals(masterOrHubRegionSuffix)) {
+            assertThat(uniqueHost.size()).isEqualTo(1);
+        } else {
+            assertThat(uniqueHost.size()).isEqualTo(2);
+        }
+
+        // First region retry from initial request , then retrying in master/hub region and 1 retry at the last from
+        // RenameCollectionAwareClientRetryPolicy after clearing session token
+        int numberOfRegionRetried = 3;
+
+        // Calculating approx avg number of retries in each region
+        int averageRetryBySessionRetryPolicyInOneRegion = uris.size() / numberOfRegionRetried;
+
+        int totalTries = averageRetryBySessionRetryPolicyInOneRegion;
+        //First region retries should be in first preferred region
+        assertThat(uris.get(totalTries / 2)).contains(regionalSuffix.get(0));
+
+        // Second region retries should be in masterOrHubRegion
+        assertThat(uris.get(totalTries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
+        totalTries = totalTries + averageRetryBySessionRetryPolicyInOneRegion;
+
+        //Last region retries should be in first preferred region
+        assertThat(uris.get(totalTries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(0));
+    }
+
+    private String getStringDiff(String str1, String str2) {
+        int initialIndex = findInitialIndex(str1, str2);
+        int indexFromLast = findIndexFromLast(str1, str2);
+        return str1.substring(initialIndex + 1, str1.length() - indexFromLast);
+    }
+
+    private int findInitialIndex(String str1, String str2) {
+        int counter = 0;
+        while (str1.charAt(counter) == str2.charAt(counter)) {
+            counter++;
+        }
+        return counter;
+    }
+
+    private int findIndexFromLast(String str1, String str2) {
+        int length1 = str1.length();
+        int length2 = str2.length();
+        int counter = 0;
+        while (str1.charAt(length1 - 1 - counter) == str2.charAt(length2 - 1 - counter)) {
+            counter++;
+        }
+        return counter;
+    }
+
+    private class RntbdTransportClientTest extends TransportClient {
+
+        @Override
+        protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
+            return Mono.empty();
+        }
+
+        @Override
+        public void close() {
+        }
+    }
+}

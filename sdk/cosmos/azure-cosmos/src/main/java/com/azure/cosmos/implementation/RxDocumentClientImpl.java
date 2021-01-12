@@ -1850,7 +1850,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             return requestObs.flatMap(req -> {
                 if (retryPolicyInstance != null) {
-                    retryPolicyInstance.onBeforeSendRequest(request);
+                   retryPolicyInstance.onBeforeSendRequest(request);
                 }
                 return this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
             });
