@@ -1,68 +1,71 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.dev.communication.azure.net/identities?api-version=2020-07-20-preview2",
+    "Uri" : "https://REDACTED.int.communication.azure.net/identities?api-version=2020-07-20-preview2",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.4 (11.0.9; Windows 10; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "api-supported-versions" : "2020-01-15-preview3, 2020-07-20-preview1, 2020-07-20-preview2",
-      "X-Processing-Time" : "142ms",
-      "MS-CV" : "6j8JAbHZnkSCmiMOtemwAA.0",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
+      "X-Processing-Time" : "93ms",
+      "MS-CV" : "YzJx3Llo9EWas/hk3ZSMtA.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0xNHGXwAAAADYe4HxULZZRJ9DaicOEOuGWVZSMzBFREdFMDQxMAA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "0zd79XwAAAABHB/Wi5ju5TYCml7N531DiWVZSMzBFREdFMDMxOABjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000006-c085-0a60-8a72-5a3a0d00021f\"}",
-      "Date" : "Tue, 01 Dec 2020 23:29:07 GMT",
-      "x-ms-client-request-id" : "73c91689-1c40-46e8-928e-2fdd8e3eb701",
+      "Body" : "{\"id\":\"8:acs:46849534-eb08-4ab7-bde7-c36928cd1547_00000007-978f-f655-dbb7-3a3a0d00296e\"}",
+      "Date" : "Tue, 12 Jan 2021 17:39:25 GMT",
+      "x-ms-client-request-id" : "8275ba7e-c2e1-4857-9c03-97a81a4bc0bf",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.dev.communication.azure.net/identities?api-version=2020-07-20-preview2",
+    "Uri" : "https://REDACTED.int.communication.azure.net/identities?api-version=2020-07-20-preview2",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.4 (11.0.9; Windows 10; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "api-supported-versions" : "2020-01-15-preview3, 2020-07-20-preview1, 2020-07-20-preview2",
-      "X-Processing-Time" : "147ms",
-      "MS-CV" : "UBq3YtqXGEWEF/pmVfrWvg.0",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
+      "X-Processing-Time" : "37ms",
+      "MS-CV" : "406U8PhSPEuAjBItUo1YQg.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0xNHGXwAAAABezuVVVfWEQ4lMpEd5B9HiWVZSMzBFREdFMDMwNgA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "0zd79XwAAAACBfw5FaqBdQKsi5QT4TzpVWVZSMzBFREdFMDMxNQBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000006-c085-0b13-d67a-5a3a0d000159\"}",
-      "Date" : "Tue, 01 Dec 2020 23:29:07 GMT",
-      "x-ms-client-request-id" : "681e16b3-2cc2-48a9-92cd-0de4534f4367",
+      "Body" : "{\"id\":\"8:acs:46849534-eb08-4ab7-bde7-c36928cd1547_00000007-978f-f6a1-1655-373a0d002671\"}",
+      "Date" : "Tue, 12 Jan 2021 17:39:25 GMT",
+      "x-ms-client-request-id" : "d7e19dac-7805-4ed7-9513-12073c78711e",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.dev.communication.azure.net/identities/8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000006-c085-0a60-8a72-5a3a0d00021f/token?api-version=2020-07-20-preview2",
+    "Uri" : "https://REDACTED.int.communication.azure.net/identities/8:acs:46849534-eb08-4ab7-bde7-c36928cd1547_00000007-978f-f655-dbb7-3a3a0d00296e/token?api-version=2020-07-20-preview2",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.4 (11.0.9; Windows 10; 10.0)",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "api-supported-versions" : "2020-01-15-preview3, 2020-07-20-preview1, 2020-07-20-preview2",
-      "X-Processing-Time" : "306ms",
-      "MS-CV" : "st60h8xRfUGrwNHLmC//zQ.0",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
+      "X-Processing-Time" : "112ms",
+      "MS-CV" : "YSYnAwqG1kycLyX4FLzijg.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0xNHGXwAAAACVA0RqynvQQKQoebKAdOKyWVZSMzBFREdFMDQxMAA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "0zd79XwAAAADcxU73d46CQLmkrAywYtUxWVZSMzBFREdFMDMxOABjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000006-c085-0a60-8a72-5a3a0d00021f\",\"token\":\"REDACTED\",\"expiresOn\":\"2020-12-02T23:29:07.7191712+00:00\"}",
-      "Date" : "Tue, 01 Dec 2020 23:29:08 GMT",
-      "x-ms-client-request-id" : "c0750461-080b-4abf-aa59-f43a6edcf7ff",
+      "Body" : "{\"id\":\"8:acs:46849534-eb08-4ab7-bde7-c36928cd1547_00000007-978f-f655-dbb7-3a3a0d00296e\",\"token\":\"REDACTED\",\"expiresOn\":\"2021-01-13T17:39:24.6328274+00:00\"}",
+      "Date" : "Tue, 12 Jan 2021 17:39:25 GMT",
+      "x-ms-client-request-id" : "efb625d9-f43d-48de-80f6-b6c633145daf",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.dev.communication.azure.net/chat/threads?api-version=2020-11-01-preview3",
+    "Uri" : "https://REDACTED.int.communication.azure.net/chat/threads?api-version=2020-11-01-preview3",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-chat/1.0.0-beta.4 (11.0.9; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -71,33 +74,33 @@
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2020-09-21-preview2, 2020-11-01-preview3",
-      "X-Processing-Time" : "833ms",
-      "MS-CV" : "YXz/a6+BjkS5XLlEEXAfXg.0",
+      "X-Processing-Time" : "3864ms",
+      "MS-CV" : "Y4e237/cGUSifSUexl//zQ.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0xNHGXwAAAACy+JnnyrcVSI3UaCgu/s0cWVZSMzBFREdFMDMwNgA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "0zd79XwAAAAB0tudpwSusQrkW1z2x8SzvWVZSMzBFREdFMDMxNQBjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
       "StatusCode" : "201",
-      "Body" : "{\"thread\":{\"id\":\"19:14f67aabfc1e410daad20630fd4129bc@thread.v2\",\"topic\":\"Test\",\"createdOn\":\"2020-12-01T23:29:08Z\",\"createdBy\":\"8:acs:9b665d53-8164-4923-ad5d-5e983b07d2e7_00000006-c085-0a60-8a72-5a3a0d00021f\"}}",
-      "Date" : "Tue, 01 Dec 2020 23:29:08 GMT",
+      "Body" : "{\"chatThread\":{\"id\":\"19:a800d0269de04fe1ada7bf0684c02537@thread.v2\",\"topic\":\"Test\",\"createdOn\":\"2021-01-12T17:39:25Z\",\"createdBy\":\"8:acs:46849534-eb08-4ab7-bde7-c36928cd1547_00000007-978f-f655-dbb7-3a3a0d00296e\"}}",
+      "Date" : "Tue, 12 Jan 2021 17:39:28 GMT",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "https://168.61.22.92/chat/threads/19%3A14f67aabfc1e410daad20630fd4129bc@thread.v2"
+      "Location" : "https://168.61.22.92/chat/threads/19%3Aa800d0269de04fe1ada7bf0684c02537@thread.v2"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.dev.communication.azure.net/chat/threads/19:14f67aabfc1e410daad20630fd4129bc@thread.v2/typing?api-version=2020-11-01-preview3",
+    "Uri" : "https://REDACTED.int.communication.azure.net/chat/threads/19:a800d0269de04fe1ada7bf0684c02537@thread.v2/typing?api-version=2020-11-01-preview3",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-chat/1.0.0-beta.4 (11.0.9; Windows 10; 10.0)"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2020-09-21-preview2, 2020-11-01-preview3",
-      "X-Processing-Time" : "375ms",
-      "MS-CV" : "5LecLh3DsEynV1nupLKlog.0",
+      "X-Processing-Time" : "1384ms",
+      "MS-CV" : "u/OxqNueYEOUTbPpr8Cnaw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0xdHGXwAAAABT2ATdpWwaTJa3XrQGuBOyWVZSMzBFREdFMDQxMAA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "00d79XwAAAABOHD9S6SdeQJtPrPV/rW6UWVZSMzBFREdFMDMxOABjYzkyNzU4ZC0wNWY3LTRhZDYtYWE1ZS0wZmE5NzE4ZDg5ODU=",
       "Content-Length" : "0",
       "StatusCode" : "200",
-      "Date" : "Tue, 01 Dec 2020 23:29:09 GMT"
+      "Date" : "Tue, 12 Jan 2021 17:39:30 GMT"
     },
     "Exception" : null
   } ],
