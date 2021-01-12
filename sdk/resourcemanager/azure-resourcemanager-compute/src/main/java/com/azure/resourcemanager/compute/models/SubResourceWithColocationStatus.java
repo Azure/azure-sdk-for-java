@@ -42,6 +42,13 @@ public final class SubResourceWithColocationStatus extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public SubResourceWithColocationStatus withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

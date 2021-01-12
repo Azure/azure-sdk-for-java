@@ -13,6 +13,20 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public final class GalleryOSDiskImage extends GalleryDiskImage {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryOSDiskImage.class);
 
+    /** {@inheritDoc} */
+    @Override
+    public GalleryOSDiskImage withHostCaching(HostCaching hostCaching) {
+        super.withHostCaching(hostCaching);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryOSDiskImage withSource(GalleryArtifactVersionSource source) {
+        super.withSource(source);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

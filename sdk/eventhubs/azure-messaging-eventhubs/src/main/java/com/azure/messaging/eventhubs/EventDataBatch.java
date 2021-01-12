@@ -12,6 +12,7 @@ import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.ProcessKind;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
@@ -42,7 +43,9 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_TR
  * sent to the Azure Event Hubs service.
  *
  * @see EventHubProducerClient#createBatch()
+ * @see EventHubProducerClient#createBatch(CreateBatchOptions)
  * @see EventHubProducerAsyncClient#createBatch()
+ * @see EventHubProducerAsyncClient#createBatch(CreateBatchOptions)
  * @see EventHubClientBuilder See EventHubClientBuilder for examples of building an asynchronous or synchronous
  *     producer.
  */

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Assertions;
 /** Tests Express Route Circuit. */
 public class TestExpressRouteCircuit {
     private String testId = "";
-    private static final Region REGION = Region.US_NORTH_CENTRAL;
+    private static final Region REGION = Region.ASIA_SOUTHEAST;
     private String circuitName;
 
     private void initializeResourceNames(ResourceManagerUtils.InternalRuntimeContext internalContext) {

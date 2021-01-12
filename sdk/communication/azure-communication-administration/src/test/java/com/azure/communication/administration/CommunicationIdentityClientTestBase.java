@@ -92,6 +92,10 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             return TestMode.PLAYBACK;
         }
     }
+    
+    protected CommunicationIdentityClientBuilder addLoggingPolicy(CommunicationIdentityClientBuilder builder, String testName) {
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
 
     static class FakeCredentials implements TokenCredential {
         @Override

@@ -49,8 +49,8 @@ public class AADAccessTokenScopesIT {
         Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.ReadDlp"));
         Assert.assertTrue(httpResponse.contains("https://manage.office.com/ServiceHealth.Read"));
 
-        httpResponse = aadSeleniumITHelper.httpGet("arm");
-        Assert.assertNotEquals(httpResponse, "arm");
+        httpResponse = aadSeleniumITHelper.httpGet("notExist");
+        Assert.assertNotEquals(httpResponse, "notExist");
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -85,10 +85,10 @@ public class AADAccessTokenScopesIT {
                            .orElse(null);
         }
 
-        @GetMapping(value = "arm")
-        public String arm(
-            @RegisteredOAuth2AuthorizedClient("arm") OAuth2AuthorizedClient authorizedClient) {
-            return "arm";
+        @GetMapping(value = "notExist")
+        public String notExist(
+            @RegisteredOAuth2AuthorizedClient("notExist") OAuth2AuthorizedClient authorizedClient) {
+            return "notExist";
         }
     }
 
