@@ -1,0 +1,5 @@
+*.log
+.gitignore
+
+metastore_db/*
+spark-warehouse/*
