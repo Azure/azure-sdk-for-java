@@ -17,7 +17,7 @@ To run integration tests (requires Cosmos DB endpoint)
 Create the file ~/cosmos-v4.properties with the following content (modify to match your cosmos endpoint):
 
 ```
-ACCOUNT_HOST=https://192.168.1.51:8081
+ACCOUNT_HOST=https://localhost:8081
 ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==
 ```
 
