@@ -14,6 +14,7 @@ import com.azure.communication.chat.implementation.converters.ChatMessageReadRec
 import com.azure.communication.chat.implementation.converters.SendChatMessageResultConverter;
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
 import com.azure.communication.chat.models.AddChatParticipantsOptions;
+import com.azure.communication.chat.models.AddChatParticipantsResult;
 import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
@@ -129,15 +130,12 @@ public final class ChatThreadAsyncClient {
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
      * @param options Options for adding participants.
-     * @return the completion.
+     * @return the result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addParticipants(AddChatParticipantsOptions options) {
+    public Mono<Response<AddChatParticipantsResult>> addParticipants(AddChatParticipantsOptions options) {
         try {
-            return withContext(context -> addParticipants(options, context)
-                .flatMap((Response<Void> res) -> {
-                    return Mono.empty();
-                }));
+            return withContext(context -> addParticipants(options, context));
         } catch (RuntimeException ex) {
 
             return monoError(logger, ex);
@@ -148,10 +146,10 @@ public final class ChatThreadAsyncClient {
      * Adds participants to a thread. If participants already exist, no change occurs.
      *
      * @param options Options for adding participants.
-     * @return the completion.
+     * @return the result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addParticipantsWithResponse(AddChatParticipantsOptions options) {
+    public Mono<Response<AddChatParticipantsResult>> addParticipantsWithResponse(AddChatParticipantsOptions options) {
         try {
             return withContext(context -> addParticipants(options, context));
         } catch (RuntimeException ex) {
@@ -164,18 +162,15 @@ public final class ChatThreadAsyncClient {
      * Adds a participant to a thread. If the participant already exists, no change occurs.
      *
      * @param participant The new participant.
-     * @return the completion.
+     * @return the result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addParticipant(ChatParticipant participant) {
+    public Mono<Response<AddChatParticipantsResult>> addParticipant(ChatParticipant participant) {
         try {
             return withContext(context -> addParticipants(
                 new AddChatParticipantsOptions()
                     .setParticipants(Collections.singletonList(participant)),
-                context)
-                .flatMap((Response<Void> res) -> {
-                    return Mono.empty();
-                }));
+                context));
         } catch (RuntimeException ex) {
 
             return monoError(logger, ex);
@@ -186,10 +181,10 @@ public final class ChatThreadAsyncClient {
      * Adds a participant to a thread. If the participant already exists, no change occurs.
      *
      * @param participant The new participant.
-     * @return the completion.
+     * @return the result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addParticipantWithResponse(ChatParticipant participant) {
+    public Mono<Response<AddChatParticipantsResult>> addParticipantWithResponse(ChatParticipant participant) {
         try {
             return withContext(context -> addParticipants(
                 new AddChatParticipantsOptions()
@@ -206,9 +201,9 @@ public final class ChatThreadAsyncClient {
      *
      * @param options Options for adding participants.
      * @param context The context to associate with this operation.
-     * @return the completion.
+     * @return the result.
      */
-    Mono<Response<Void>> addParticipants(AddChatParticipantsOptions options, Context context) {
+    Mono<Response<AddChatParticipantsResult>> addParticipants(AddChatParticipantsOptions options, Context context) {
         context = context == null ? Context.NONE : context;
 
         Objects.requireNonNull(options, "'options' cannot be null.");

@@ -12,8 +12,8 @@ public final class CreateChatThreadResult {
     /*
      * The thread property.
      */
-    @JsonProperty(value = "thread")
-    private ChatThread thread;
+    @JsonProperty(value = "chatThread")
+    private ChatThread chatThread;
 
     /*
      * The errors property.
@@ -22,22 +22,22 @@ public final class CreateChatThreadResult {
     private CreateChatThreadErrors errors;
 
     /**
-     * Get the thread property: The thread property.
+     * Get the chatThread property: The chatThread property.
      *
-     * @return the thread value.
+     * @return the chatThread value.
      */
-    public ChatThread getThread() {
-        return this.thread;
+    public ChatThread getChatThread() {
+        return this.chatThread;
     }
 
     /**
-     * Set the thread property: The thread property.
+     * Set the chatThread property: The chatThread property.
      *
-     * @param thread the thread value to set.
+     * @param chatThread the thread value to set.
      * @return the CreateChatThreadResult object itself.
      */
-    public CreateChatThreadResult setThread(ChatThread thread) {
-        this.thread = thread;
+    public CreateChatThreadResult setChatThread(ChatThread chatThread) {
+        this.chatThread = chatThread;
         return this;
     }
 

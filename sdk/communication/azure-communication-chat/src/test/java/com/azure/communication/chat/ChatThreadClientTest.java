@@ -69,7 +69,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             firstParticipant.getId(), secondParticipant.getId());
 
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
-        chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
+        chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
 
         threadId = chatThreadClient.getChatThreadId();
     }
@@ -244,7 +244,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         String response = chatThreadClient.sendMessage(messageRequest);
 
         ChatMessage message = chatThreadClient.getMessage(response);
-        assertEquals(message.getContent(), messageRequest.getContent());
+        assertEquals(message.getContent().getMessage(), messageRequest.getContent());
         assertEquals(message.getPriority(), messageRequest.getPriority());
         assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
     }
@@ -260,7 +260,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         String response = chatThreadClient.sendMessageWithResponse(messageRequest, Context.NONE).getValue();
 
         ChatMessage message = chatThreadClient.getMessageWithResponse(response, Context.NONE).getValue();
-        assertEquals(message.getContent(), messageRequest.getContent());
+        assertEquals(message.getContent().getMessage(), messageRequest.getContent());
         assertEquals(message.getPriority(), messageRequest.getPriority());
         assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
     }
@@ -305,7 +305,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         chatThreadClient.updateMessage(response, updateMessageRequest);
 
         ChatMessage message = chatThreadClient.getMessage(response);
-        assertEquals(message.getContent(), updateMessageRequest.getContent());
+        assertEquals(message.getContent().getMessage(), updateMessageRequest.getContent());
     }
 
     @ParameterizedTest
@@ -322,7 +322,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         chatThreadClient.updateMessageWithResponse(response, updateMessageRequest, Context.NONE);
 
         ChatMessage message = chatThreadClient.getMessage(response);
-        assertEquals(message.getContent(), updateMessageRequest.getContent());
+        assertEquals(message.getContent().getMessage(), updateMessageRequest.getContent());
     }
 
     @ParameterizedTest
@@ -342,7 +342,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         messagesResponse.iterableByPage().forEach(resp -> {
             assertEquals(200, resp.getStatusCode());
             resp.getItems().forEach(item -> {
-                if (item.getType().equals("Text")) {
+                if (item.getType().equals(ChatMessageType.TEXT)) {
                     returnedMessages.add(item);
                 }
             });
@@ -372,7 +372,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         messagesResponse.iterableByPage().forEach(resp -> {
             assertEquals(200, resp.getStatusCode());
             resp.getItems().forEach(item -> {
-                if (item.getType().equals("Text")) {
+                if (item.getType().equals(ChatMessageType.TEXT)) {
                     returnedMessages.add(item);
                 }
             });

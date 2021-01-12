@@ -21,14 +21,9 @@ public final class ChatMessage {
     /*
      * Type of the chat message.
      *
-     * Possible values:
-     * - Text
-     * - ThreadActivity/TopicUpdate
-     * - ThreadActivity/AddMember
-     * - ThreadActivity/DeleteMember
      */
     @JsonProperty(value = "type")
-    private String type;
+    private ChatMessageType type;
 
     /*
      * The chat message priority.
@@ -46,7 +41,7 @@ public final class ChatMessage {
      * Content of the chat message.
      */
     @JsonProperty(value = "content")
-    private String content;
+    private ChatMessageContent content;
 
     /*
      * The display name of the chat message sender. This property is used to
@@ -109,7 +104,7 @@ public final class ChatMessage {
      *
      * @return the type value.
      */
-    public String getType() {
+    public ChatMessageType getType() {
         return this.type;
     }
 
@@ -121,7 +116,7 @@ public final class ChatMessage {
      * @param type the type value to set.
      * @return the ChatMessage object itself.
      */
-    public ChatMessage setType(String type) {
+    public ChatMessage setType(ChatMessageType type) {
         this.type = type;
         return this;
     }
@@ -171,7 +166,7 @@ public final class ChatMessage {
      *
      * @return the content value.
      */
-    public String getContent() {
+    public ChatMessageContent getContent() {
         return this.content;
     }
 
@@ -181,7 +176,7 @@ public final class ChatMessage {
      * @param content the content value to set.
      * @return the ChatMessage object itself.
      */
-    public ChatMessage setContent(String content) {
+    public ChatMessage setContent(ChatMessageContent content) {
         this.content = content;
         return this;
     }
