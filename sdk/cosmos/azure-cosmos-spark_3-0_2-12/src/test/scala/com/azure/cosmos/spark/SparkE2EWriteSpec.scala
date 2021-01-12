@@ -2,15 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import java.util.UUID
-
-import com.azure.cosmos.CosmosClientBuilder
 import com.azure.cosmos.implementation.TestConfigurations
-import com.fasterxml.jackson.databind.node.ObjectNode
-import org.apache.spark.sql.SparkSession
-import org.assertj.core.api.Assertions.assertThat
 // scalastyle:off underscore.import
-import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 
@@ -18,8 +11,7 @@ import scala.collection.JavaConverters._
 // TODO moderakh we need to clean up databases after creation.
 // TODO use facility from V4 SDk?
 // TODO do proper clean up for spark session, client, etc
-
-class SparkE2EWriteSpec extends IntegrationSpec {
+class SparkE2EWriteSpec extends IntegrationSpec with Spark with CosmosClient with AutoCleanableCosmosContainer {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
@@ -27,16 +19,6 @@ class SparkE2EWriteSpec extends IntegrationSpec {
   "basic dataframe" can "write to cosmos" taggedAs (RequiresCosmosEndpoint) in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
-    val cosmosDatabase = "testDB"
-    val cosmosContainer = UUID.randomUUID().toString
-
-    val client = new CosmosClientBuilder()
-      .endpoint(cosmosEndpoint)
-      .key(cosmosMasterKey)
-      .buildAsyncClient()
-
-    client.createDatabaseIfNotExists(cosmosDatabase).block()
-    client.getDatabase(cosmosDatabase).createContainerIfNotExists(cosmosContainer, "/id").block()
 
     val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey,
@@ -44,15 +26,12 @@ class SparkE2EWriteSpec extends IntegrationSpec {
       "spark.cosmos.container" -> cosmosContainer
     )
 
-    // TODO: moderakh do we need to recreate spark for each test or should we use a common instance?
-    val spark = SparkSession.builder()
-      .appName("spark connector sample")
-      .master("local")
-      .getOrCreate()
+    val newSpark = getSpark()
 
     // scalastyle:off underscore.import
     // scalastyle:off import.grouping
     import spark.implicits._
+    val spark = newSpark
     // scalastyle:on underscore.import
     // scalastyle:on import.grouping
 
@@ -70,19 +49,13 @@ class SparkE2EWriteSpec extends IntegrationSpec {
     // wait for a second to allow replication is completed.
     Thread.sleep(1000)
 
-    val results = client.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-      .queryItems("SELECT * FROM r", classOf[ObjectNode])
-      .toIterable
-      .asScala
-      .toArray
+    val results = readAllItems().toArray
 
-    assertThat(results).hasSize(1)
-    assertThat(results(0).get("number").asInt()).isEqualTo(299792458)
-    assertThat(results(0).get("word").asText()).isEqualTo("speed of light")
+    results should have size 1
+    results(0).get("number").asInt() shouldEqual 299792458
+    results(0).get("word").asText() shouldEqual "speed of light"
 
     // TODO: moderakh develop the proper pattern for proper resource cleanup after test
-    client.close()
-    spark.close()
   }
 
   //scalastyle:on magic.number

@@ -2,12 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import org.assertj.core.api.Assertions.assertThat
-
 class CosmosConfigSpec extends UnitSpec {
   //scalastyle:off multiple.string.literals
 
-  "account endpoint" should "be parsed" in {
+  "Config Parser" should "parse account credentials" in {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "https://localhsot:8081",
       "spark.cosmos.accountKey" -> "xyz"
@@ -15,11 +13,11 @@ class CosmosConfigSpec extends UnitSpec {
 
     val endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
 
-    assertThat(endpointConfig.endpoint).isEqualTo( "https://localhsot:8081")
-    assertThat(endpointConfig.key).isEqualTo( "xyz")
+    endpointConfig.endpoint shouldEqual "https://localhsot:8081"
+    endpointConfig.key shouldEqual "xyz"
   }
 
-  "account endpoint" should "be validated" in {
+  it should "validate account endpoint" in {
     val userConfig = Map(
       "spark.cosmos.accountEndpoint" -> "invalidUrl",
       "spark.cosmos.accountKey" -> "xyz"
@@ -29,13 +27,13 @@ class CosmosConfigSpec extends UnitSpec {
       CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
       fail("invalid URL")
     } catch {
-      case e: Exception => assertThat(e.getMessage).isEqualTo(
+      case e: Exception => e.getMessage shouldEqual
         "invalid configuration for spark.cosmos.accountEndpoint:invalidUrl." +
-          " Config description: Cosmos DB Account Endpoint Uri")
+          " Config description: Cosmos DB Account Endpoint Uri"
     }
   }
 
-  "account endpoint" should "mandatory config" in {
+  it should "complain if mandatory config is missing" in {
     val userConfig = Map(
       "spark.cosmos.accountKey" -> "xyz"
     )
@@ -44,9 +42,9 @@ class CosmosConfigSpec extends UnitSpec {
       CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
       fail("missing URL")
     } catch {
-      case e: Exception => assertThat(e.getMessage).isEqualTo(
+      case e: Exception => e.getMessage shouldEqual
         "mandatory option spark.cosmos.accountEndpoint is missing." +
-          " Config description: Cosmos DB Account Endpoint Uri")
+          " Config description: Cosmos DB Account Endpoint Uri"
     }
   }
   //scalastyle:on multiple.string.literals

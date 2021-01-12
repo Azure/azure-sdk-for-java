@@ -5,7 +5,6 @@ package com.azure.cosmos.spark
 import com.fasterxml.jackson.databind.node.ArrayNode
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 import org.apache.spark.sql.types.{ArrayType, IntegerType, NullType, StringType, StructField, StructType}
-import org.assertj.core.api.Assertions.assertThat
 
 class CosmosRowConverterSpec extends UnitSpec {
   //scalastyle:off null
@@ -23,8 +22,8 @@ class CosmosRowConverterSpec extends UnitSpec {
       StructType(Seq(StructField(colName1, IntegerType), StructField(colName2, StringType))))
 
     val objectNode = CosmosRowConverter.rowToObjectNode(row)
-    assertThat(objectNode.get(colName1).asInt()).isEqualTo(colVal1)
-    assertThat(objectNode.get(colName2).asText()).isEqualTo(colVal2)
+    objectNode.get(colName1).asInt() shouldEqual colVal1
+    objectNode.get(colName2).asText() shouldEqual colVal2
   }
 
   "null type in spark row" should "translate to null in ObjectNode" in {
@@ -39,8 +38,8 @@ class CosmosRowConverterSpec extends UnitSpec {
       StructType(Seq(StructField(colName1, NullType), StructField(colName2, StringType))))
 
     val objectNode = CosmosRowConverter.rowToObjectNode(row)
-    assertThat(objectNode.get(colName1).isNull).isTrue
-    assertThat(objectNode.get(colName2).asText()).isEqualTo(colVal2)
+    objectNode.get(colName1).isNull shouldBe true
+    objectNode.get(colName2).asText() shouldEqual colVal2
   }
 
   "array in spark row" should "translate to null in ArrayNode" in {
@@ -53,12 +52,12 @@ class CosmosRowConverterSpec extends UnitSpec {
       StructType(Seq(StructField(colName1, ArrayType(StringType, true)), StructField(colName2, StringType))))
 
     val objectNode = CosmosRowConverter.rowToObjectNode(row)
-    assertThat(objectNode.get(colName1).isArray)
-    assertThat(objectNode.get(colName1).asInstanceOf[ArrayNode]).hasSize(2)
-    assertThat(objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText()).isEqualTo("arrayElement1")
-    assertThat(objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText()).isEqualTo("arrayElement2")
+    objectNode.get(colName1).isArray shouldBe true
+    objectNode.get(colName1).asInstanceOf[ArrayNode] should have size 2
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText() shouldEqual "arrayElement1"
+    objectNode.get(colName1).asInstanceOf[ArrayNode].get(1).asText() shouldEqual "arrayElement2"
 
-    assertThat(objectNode.get(colName2).asText()).isEqualTo(colVal1)
+    objectNode.get(colName2).asText() shouldEqual colVal1
   }
   //scalastyle:on null
   //scalastyle:on multiple.string.literals
