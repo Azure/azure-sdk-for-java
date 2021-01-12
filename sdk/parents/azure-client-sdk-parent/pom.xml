@@ -1656,9 +1656,33 @@
         <!-- This property configures creating a heap dump if the Surefire JVM fails with an OutOfMemoryError -->
         <heapDumpOnOom>
           -XX:+HeapDumpOnOutOfMemoryError
-          -XX:HeapDumpPath=${packageOutputDirectory}
+          -XX:HeapDumpPath=${packageOutputDirectory}/ciHeapDumps
         </heapDumpOnOom>
       </properties>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <version>1.8</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>create-heapdump-directory</id>
+                <phase>process-test-resources</phase>
+                <configuration>
+                  <tasks>
+                    <mkdir dir="${packageOutputDirectory}/ciHeapDumps"/>
+                  </tasks>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
   </profiles>
 </project>
