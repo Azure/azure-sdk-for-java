@@ -352,7 +352,7 @@ jobs:
         displayName: "Check for heap dump"
         condition: succeededOrFailed()
 
-      - ${{if gt(length(variables['HeapDumpFiles'], 0))}}:
+      - ${{if gt(length(variables['HeapDumpFiles']), 0)}}:
         - ${{ each heapDumpFile in variables['HeapDumpFiles'] }}:
           - task: PublishBuildArtifacts@1
             displayName: 'Retain build failure artifacts: ${{heapDumpFile}}'
