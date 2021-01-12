@@ -4,7 +4,6 @@ package com.azure.spring.autoconfigure.b2c;
 
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
@@ -74,10 +73,6 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
         return null;
     }
 
-    private void cleanupSecurityContextAuthentication() {
-        SecurityContextHolder.getContext().setAuthentication(null);
-    }
-
     private OAuth2AuthorizationRequest getB2CAuthorizationRequest(@Nullable OAuth2AuthorizationRequest request,
                                                                   String userFlow) {
         Assert.hasText(userFlow, "User flow should contain text.");
@@ -85,8 +80,6 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
         if (request == null) {
             return null;
         }
-
-        cleanupSecurityContextAuthentication();
 
         final Map<String, Object> additionalParameters = new HashMap<>();
         Optional.ofNullable(this.properties)

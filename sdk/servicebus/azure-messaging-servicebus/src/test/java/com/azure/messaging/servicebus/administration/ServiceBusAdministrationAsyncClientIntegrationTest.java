@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.administration;
 
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -804,6 +805,46 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void getSubscriptionRuntimePropertiesUnauthorizedClient(HttpClient httpClient) {
+        // Arrange
+        final String connectionString = interceptorManager.isPlaybackMode()
+            ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
+            : TestUtils.getConnectionString();
+
+        final String connectionStringUpdated = connectionString.replace("SharedAccessKey=",
+            "SharedAccessKey=fake-key-");
+
+        final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .connectionString(connectionStringUpdated);
+
+        if (interceptorManager.isPlaybackMode()) {
+            builder.httpClient(interceptorManager.getPlaybackClient());
+        } else if (interceptorManager.isLiveMode()) {
+            builder.httpClient(httpClient)
+                .addPolicy(new RetryPolicy());
+        } else {
+            builder.httpClient(httpClient)
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .addPolicy(new RetryPolicy());
+        }
+
+        final ServiceBusAdministrationAsyncClient client = builder.buildAsyncClient();
+
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-1"
+            : getEntityName(getTopicBaseName(), 1);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+
+        // Act & Assert
+        StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
+            .verifyErrorMatches(throwable -> throwable instanceof ClientAuthenticationException);
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void listRules(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
@@ -930,6 +971,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
             : TestUtils.getConnectionString();
+
         final ServiceBusAdministrationClientBuilder builder = new ServiceBusAdministrationClientBuilder()
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .connectionString(connectionString);
@@ -947,4 +989,5 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
         return builder.buildAsyncClient();
     }
+
 }
