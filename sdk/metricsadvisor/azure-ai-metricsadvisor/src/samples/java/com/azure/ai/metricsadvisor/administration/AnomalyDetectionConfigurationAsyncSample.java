@@ -71,6 +71,14 @@ public class AnomalyDetectionConfigurationAsyncSample {
                         System.out.printf("Updated detection configuration%n"));
             });
 
+        // List configurations
+        System.out.printf("Listing detection configurations%n");
+        PagedFlux<AnomalyDetectionConfiguration> detectionConfigsFlux
+            = advisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs(metricId);
+
+        detectionConfigsFlux.doOnNext(detectionConfig -> printDetectionConfiguration(detectionConfig))
+            .blockLast();
+
         // Delete the detection configuration.
         Mono<Void> deleteDetectionConfigMono = updateDetectionConfigMono.flatMap(detectionConfig -> {
             return advisorAdministrationAsyncClient.deleteMetricAnomalyDetectionConfiguration(detectionConfig.getId())
@@ -86,14 +94,6 @@ public class AnomalyDetectionConfigurationAsyncSample {
           It is used here to ensure the sample runs to completion.
         */
         deleteDetectionConfigMono.block();
-
-        // List configurations
-        System.out.printf("Listing detection configurations%n");
-        PagedFlux<AnomalyDetectionConfiguration> detectionConfigsFlux
-            = advisorAdministrationAsyncClient.listMetricAnomalyDetectionConfigs(metricId);
-
-        detectionConfigsFlux.doOnNext(detectionConfig -> printDetectionConfiguration(detectionConfig))
-            .blockLast();
     }
 
     private static AnomalyDetectionConfiguration prepareDetectionConfigurationObject() {
