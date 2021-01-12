@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.jdk.httpclient.implementation;
+package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.jdk.httpclient.JdkAsyncHttpClientBuilder;
 import com.azure.core.test.RestProxyTestsWireMockServer;
 import com.azure.core.test.implementation.RestProxyTests;
 import com.github.tomakehurst.wiremock.WireMockServer;

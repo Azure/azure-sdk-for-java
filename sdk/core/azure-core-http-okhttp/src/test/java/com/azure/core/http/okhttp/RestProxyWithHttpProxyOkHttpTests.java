@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.netty.implementation;
+package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.RestProxyTestsWireMockServer;
 import com.azure.core.test.implementation.RestProxyTests;
 import com.github.tomakehurst.wiremock.WireMockServer;
@@ -16,7 +15,7 @@ import org.junit.jupiter.api.Disabled;
 import java.net.InetSocketAddress;
 
 @Disabled("Should only be run manually when a local proxy server (e.g. Fiddler) is running")
-public class RestProxyWithHttpProxyNettyTests extends RestProxyTests {
+public class RestProxyWithHttpProxyOkHttpTests extends RestProxyTests {
     private static WireMockServer server;
 
     @BeforeAll
@@ -39,7 +38,10 @@ public class RestProxyWithHttpProxyNettyTests extends RestProxyTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        InetSocketAddress address = new InetSocketAddress("localhost", 8888);
-        return new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, address)).build();
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
+                new InetSocketAddress("localhost", 8888));
+        return new OkHttpAsyncHttpClientBuilder()
+                .proxy(proxyOptions)
+                .build();
     }
 }
