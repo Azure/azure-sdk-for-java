@@ -5,14 +5,8 @@ This sample project demonstrates how to use Azure Cosmos DB via Spring Boot Star
 
 ## Getting started
 
-### Prerequisites
-
-* An Azure subscription; if you don't already have an Azure subscription, you can activate your [MSDN subscriber benefits](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/) or sign up for a [free Azure account](https://azure.microsoft.com/free/).
-
-* A [Java Development Kit (JDK)][jdk_link], version 1.8.
-
-* [Apache Maven](https://maven.apache.org/), version 3.0 or later.
-
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ### Create an Azure Cosmos DB on Azure
 
@@ -39,10 +33,7 @@ This sample project demonstrates how to use Azure Cosmos DB via Spring Boot Star
     Call `http://{hostname}:{port}/actuator/health/cosmos` to get the Cosmos DB health info. 
 
 ### Run with Maven
-First, we need to ensure that this [instruction] is completed before run.
 ```
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-cosmos
 mvn spring-boot:run
 ```
@@ -66,6 +57,7 @@ If `com.fasterxml.jackson.databind.JsonMappingException` is thrown during deseri
 Please refer to [this article](https://docs.microsoft.com/java/azure/spring-framework/configure-spring-boot-starter-java-app-with-cosmos-db) for the tutorial about how to use the Spring Boot Starter with Azure Cosmos DB API.
 
 ## Contributing
+
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
