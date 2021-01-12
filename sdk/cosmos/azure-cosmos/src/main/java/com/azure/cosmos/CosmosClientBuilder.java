@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosPermissionProperties;
-import com.azure.cosmos.util.Beta;
 
 import java.net.URI;
 import java.net.URISyntaxException;
