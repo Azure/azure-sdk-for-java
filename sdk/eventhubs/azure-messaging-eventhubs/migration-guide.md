@@ -50,7 +50,10 @@ In Event Hubs, the modern client libraries have packages and namespaces that beg
 
 ### Client hierarchy and constructors
 
-In the interest of simplifying the API surface, we've made three clients. One client is for producing events, [EventHubProducerAsyncClient][EventHubProducerAsyncClient] has async operations and [EventHubProducerClient][EventHubProducerClient] is the sync version. The other two clients are intended for reading events. [EventProcessorClient][EventProcessorClient] is what you would typically use to read events from all partitions with an optional, but recommended checkpointing feature. [EventHubConsumerAsyncClient][EventHubConsumerAsyncClient] is what you would use for lower-level control of [EventData][EventData] consumption from a single partition.
+In the interest of simplifying the API surface, we've made separate clients for sending and receiving events:
+- [EventHubProducerClient][EventHubProducerClient] is the sync client to send events. [EventHubProducerAsyncClient][EventHubProducerAsyncClient] is the corresponding async client.
+- [EventProcessorClient][EventProcessorClient] is what you would typically use to read events from all partitions with an optional, but recommended checkpointing feature. 
+- [EventHubConsumerClient][EventHubConsumerClient] is the sync client you would use for lower-level control of [EventData][EventData] consumption from a single partition. [EventHubConsumerAsyncClient][EventHubConsumerAsyncClient] is the corresponding async client.
 
 Creation of producer and consumer clients is done through the [EventHubClientBuilder][EventHubClientBuilder] while the [EventProcessorClient][EventProcessorClient] is created through the [EventProcessorClientBuilder][EventProcessorClientBuilder].
 
