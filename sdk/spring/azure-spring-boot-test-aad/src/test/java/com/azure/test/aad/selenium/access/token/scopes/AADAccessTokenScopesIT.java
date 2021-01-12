@@ -21,36 +21,44 @@ import java.util.Set;
 
 public class AADAccessTokenScopesIT {
 
+    private AADSeleniumITHelper aadSeleniumITHelper;
+
     @Test
     public void testAccessTokenScopes() throws InterruptedException {
-        Map<String, String> arguments = new HashMap<>();
-        arguments.put(
-            "azure.activedirectory.authorization-clients.office.scopes",
-            "https://manage.office.com/ActivityFeed.Read, https://manage.office.com/ActivityFeed.ReadDlp, "
-                + "https://manage.office.com/ServiceHealth.Read");
-        arguments.put(
-            "azure.activedirectory.authorization-clients.graph.scopes",
-            "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.AccessAsUser.All");
-        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, arguments);
+        try {
+            Map<String, String> arguments = new HashMap<>();
+            arguments.put(
+                "azure.activedirectory.authorization-clients.office.scopes",
+                "https://manage.office.com/ActivityFeed.Read, https://manage.office.com/ActivityFeed.ReadDlp, "
+                    + "https://manage.office.com/ServiceHealth.Read");
+            arguments.put(
+                "azure.activedirectory.authorization-clients.graph.scopes",
+                "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.AccessAsUser.All");
+            aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, arguments);
+            aadSeleniumITHelper.login();
+            String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
+            Assert.assertTrue(httpResponse.contains("profile"));
+            Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
+            Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
 
-        String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
-        Assert.assertTrue(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
-        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
+            httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/graph");
+            Assert.assertTrue(httpResponse.contains("profile"));
+            Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
+            Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
 
-        httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/graph");
-        Assert.assertTrue(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
-        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
+            httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/office");
+            Assert.assertFalse(httpResponse.contains("profile"));
+            Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.Read"));
+            Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.ReadDlp"));
+            Assert.assertTrue(httpResponse.contains("https://manage.office.com/ServiceHealth.Read"));
 
-        httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/office");
-        Assert.assertFalse(httpResponse.contains("profile"));
-        Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.Read"));
-        Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.ReadDlp"));
-        Assert.assertTrue(httpResponse.contains("https://manage.office.com/ServiceHealth.Read"));
-
-        httpResponse = aadSeleniumITHelper.httpGet("notExist");
-        Assert.assertNotEquals(httpResponse, "notExist");
+            httpResponse = aadSeleniumITHelper.httpGet("notExist");
+            Assert.assertNotEquals(httpResponse, "notExist");
+        } finally {
+            if (aadSeleniumITHelper != null) {
+                aadSeleniumITHelper.destroy();
+            }
+        }
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)

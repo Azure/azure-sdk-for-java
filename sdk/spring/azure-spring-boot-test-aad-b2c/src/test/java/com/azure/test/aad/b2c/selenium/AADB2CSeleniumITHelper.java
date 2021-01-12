@@ -1,25 +1,23 @@
 package com.azure.test.aad.b2c.selenium;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
+
 import com.azure.spring.test.AppRunner;
 import com.azure.test.aad.b2c.utils.AADB2CTestUtils;
-import java.io.File;
-import java.io.IOException;
+import com.azure.test.aad.common.SeleniumITHelper;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverService;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class AADB2CSeleniumITHelper {
+public class AADB2CSeleniumITHelper extends SeleniumITHelper {
 
-    private final String userEmail;
-    private final String userPassword;
-    private final AppRunner app;
-    private final WebDriver driver;
+    private String userEmail;
+    private String userPassword;
     private static final Map<String, String> DEFAULT_PROPERTIES = new HashMap<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CSeleniumITHelper.class);
 
     static {
         DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.tenant", AADB2CTestUtils.AAD_B2C_TENANT);
@@ -33,100 +31,58 @@ public class AADB2CSeleniumITHelper {
         DEFAULT_PROPERTIES
             .put("azure.activedirectory.b2c.user-flows.profile-edit",
                 AADB2CTestUtils.AAD_B2C_PROFILE_EDIT);
+    }
 
-        final String directory = "src/test/resources/driver/";
-        final String chromedriverLinux = "chromedriver_linux64";
-        final String chromedriverWin32 = "chromedriver_win32.exe";
-        final String chromedriverMac = "chromedriver_mac64";
-        String osName = System.getProperty("os.name").toLowerCase();
-        Process process = null;
+    public AADB2CSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
         try {
-            File dir = new File(directory);
-            if (Pattern.matches("linux.*", osName)) {
-                process = Runtime.getRuntime().exec("chmod +x " + chromedriverLinux, null, dir);
-                process.waitFor();
-                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, directory + chromedriverLinux);
-            } else if (Pattern.matches("windows.*", osName)) {
-                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, directory + chromedriverWin32);
-            } else if (Pattern.matches("mac.*", osName)) {
-                process = Runtime.getRuntime().exec("chmod +x " + chromedriverMac, null, dir);
-                process.waitFor();
-                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, directory + chromedriverMac);
-            } else {
-                throw new IllegalStateException("Unrecognized osName. osName = " + System.getProperty("os.name"));
-            }
-        } catch (InterruptedException | IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            if (process != null) {
-                process.destroy();
-            }
+            userEmail = AADB2CTestUtils.AAD_B2C_USER_EMAIL;
+            userPassword = AADB2CTestUtils.AAD_B2C_USER_PASSWORD;
+            app = new AppRunner(appClass);
+            DEFAULT_PROPERTIES.forEach(app::property);
+            properties.forEach(app::property);
+            setDriver();
+            this.app.start();
+        } catch (Exception e) {
+            LOGGER.error("AADB2CSeleniumITHelper initialization produces an exception. ", e);
+            app.close();
         }
     }
 
-    public AADB2CSeleniumITHelper(Class<?> appClass, Map<String, String> properties) throws InterruptedException {
-        userEmail = AADB2CTestUtils.AAD_B2C_USER_EMAIL;
-        userPassword = AADB2CTestUtils.AAD_B2C_USER_PASSWORD;
-        app = new AppRunner(appClass);
-        DEFAULT_PROPERTIES.forEach(app::property);
-        properties.forEach(app::property);
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
-        this.driver = new ChromeDriver(options);
-
-        this.app.start();
-        Thread.sleep(5000);
-        signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
-    }
-
-    public void signIn(String userFlowName) throws InterruptedException {
+    public void signIn(String userFlowName) {
         driver.get(app.root());
-        Thread.sleep(5000);
-        driver.findElement(By.cssSelector("a[href='/oauth2/authorization/" + userFlowName + "']")).click();
-        Thread.sleep(5000);
-        driver.findElement(By.id("email")).sendKeys(userEmail);
-        driver.findElement(By.id("password")).sendKeys(userPassword);
-        driver.findElement(By.cssSelector("button[type='submit']")).click();
-        Thread.sleep(7000);
+        wait.until(ExpectedConditions
+            .elementToBeClickable(By.cssSelector("a[href='/oauth2/authorization/" + userFlowName + "']"))).click();
+        wait.until(presenceOfElementLocated(By.id("email"))).sendKeys(userEmail);
+        wait.until(presenceOfElementLocated(By.id("password"))).sendKeys(userPassword);
+        wait.until(presenceOfElementLocated(By.cssSelector("button[type='submit']"))).click();
         manualRedirection();
     }
 
-    public void profileEditJobTitle(String newJobTitle) throws InterruptedException {
-        Thread.sleep(5000);
-        driver.findElement(By.id("profileEdit")).click();
-        Thread.sleep(5000);
+    public void profileEditJobTitle(String newJobTitle) {
+        wait.until(presenceOfElementLocated(By.id("profileEdit"))).click();
         changeJobTile(newJobTitle);
         driver.findElement(By.cssSelector("button[type='submit']")).click();
-        Thread.sleep(5000);
         manualRedirection();
     }
 
-    public String logoutAndGetSignInButtonText() throws InterruptedException {
-        Thread.sleep(5000);
-        driver.findElement(By.id("logout")).click();
-        Thread.sleep(5000);
-        driver.findElement(By.cssSelector("button[type='submit']")).click();
-        Thread.sleep(5000);
+    public void logout() {
+        wait.until(presenceOfElementLocated(By.id("logout"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).submit();
         manualRedirection();
-        driver.findElement(
-            By.cssSelector(
-                "a[href='/oauth2/authorization/" + AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN + "']")).click();
-        Thread.sleep(5000);
-        return driver.findElement(By.cssSelector("button[type='submit']")).getText();
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(
+            "a[href='/oauth2/authorization/" + AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN + "']"))).click();
     }
 
-    private void manualRedirection() throws InterruptedException {
+    private void manualRedirection() {
+        wait.until(ExpectedConditions.urlMatches("^http://localhost"));
         String currentUrl = driver.getCurrentUrl();
         String newCurrentUrl = currentUrl.replaceFirst("http://localhost:8080/", app.root());
         driver.get(newCurrentUrl);
-        Thread.sleep(5000);
     }
 
     public void changeJobTile(String newValue) {
         String elementId = "jobTitle";
-        driver.findElement(By.id(elementId)).clear();
+        wait.until(presenceOfElementLocated(By.id(elementId))).clear();
         driver.findElement(By.id(elementId)).sendKeys(newValue);
     }
 
@@ -151,4 +107,7 @@ public class AADB2CSeleniumITHelper {
             .getText();
     }
 
+    public String getSignInButtonText() {
+        return wait.until(presenceOfElementLocated(By.cssSelector("button[type='submit']"))).getText();
+    }
 }

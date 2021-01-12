@@ -3,6 +3,8 @@
 
 package com.azure.test.aad.b2c.selenium;
 
+import static com.azure.test.aad.b2c.utils.AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN;
+
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
 import com.azure.test.aad.b2c.utils.AADB2CTestUtils;
 import java.util.Collections;
@@ -23,42 +25,64 @@ public class AADB2CIT {
 
     private final String JOB_TITLE_A_WORKER = "a worker";
     private final String JOB_TITLE_WORKER = "worker";
+    private AADB2CSeleniumITHelper aadb2cSeleniumITHelper;
 
     @Test
-    public void testSignIn() throws InterruptedException {
-        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
-            Collections.emptyMap());
-        String name = AADB2CSeleniumITHelper.getName();
-        String userFlowName = AADB2CSeleniumITHelper.getUserFlowName();
+    public void testSignIn() {
+        try {
+            aadb2cSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+            aadb2cSeleniumITHelper.signIn(AAD_B2C_SIGN_UP_OR_SIGN_IN);
+            String name = aadb2cSeleniumITHelper.getName();
+            String userFlowName = aadb2cSeleniumITHelper.getUserFlowName();
 
-        Assert.assertNotNull(name);
-        Assert.assertNotNull(userFlowName);
-        Assert.assertEquals(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN, userFlowName);
+            Assert.assertNotNull(name);
+            Assert.assertNotNull(userFlowName);
+            Assert.assertEquals(AAD_B2C_SIGN_UP_OR_SIGN_IN, userFlowName);
+        } finally {
+            aadb2cSeleniumITHelperDestroy();
+        }
     }
 
     @Test
-    public void testProfileEdit() throws InterruptedException {
-        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
-            Collections.emptyMap());
-        String currentJobTitle = AADB2CSeleniumITHelper.getJobTitle();
-        String newJobTitle = JOB_TITLE_A_WORKER.equals(currentJobTitle) ? JOB_TITLE_WORKER : JOB_TITLE_A_WORKER;
-        AADB2CSeleniumITHelper.profileEditJobTitle(newJobTitle);
-        String name = AADB2CSeleniumITHelper.getName();
-        String jobTitle = AADB2CSeleniumITHelper.getJobTitle();
-        String userFlowName = AADB2CSeleniumITHelper.getUserFlowName();
+    public void testProfileEdit() {
+        try {
+            aadb2cSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+            aadb2cSeleniumITHelper.signIn(AAD_B2C_SIGN_UP_OR_SIGN_IN);
+            aadb2cSeleniumITHelper.profileEditJobTitle(JOB_TITLE_A_WORKER);
+            String currentJobTitle = aadb2cSeleniumITHelper.getJobTitle();
+            String newJobTitle = JOB_TITLE_A_WORKER.equals(currentJobTitle) ? JOB_TITLE_WORKER : JOB_TITLE_A_WORKER;
+            aadb2cSeleniumITHelper.profileEditJobTitle(newJobTitle);
+            String name = aadb2cSeleniumITHelper.getName();
+            String jobTitle = aadb2cSeleniumITHelper.getJobTitle();
+            String userFlowName = aadb2cSeleniumITHelper.getUserFlowName();
 
-        Assert.assertNotNull(name);
-        Assert.assertNotNull(jobTitle);
-        Assert.assertEquals(newJobTitle, jobTitle);
-        Assert.assertEquals(AADB2CTestUtils.AAD_B2C_PROFILE_EDIT, userFlowName);
+            Assert.assertNotNull(name);
+            Assert.assertNotNull(jobTitle);
+            Assert.assertEquals(newJobTitle, jobTitle);
+            Assert.assertEquals(AADB2CTestUtils.AAD_B2C_PROFILE_EDIT, userFlowName);
+        } finally {
+            aadb2cSeleniumITHelperDestroy();
+        }
     }
 
     @Test
-    public void testLogOut() throws InterruptedException {
-        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
-            Collections.emptyMap());
-        String signInButtonText = AADB2CSeleniumITHelper.logoutAndGetSignInButtonText();
-        Assert.assertEquals("Sign in", signInButtonText);
+    public void testLogOut() {
+        try {
+            aadb2cSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+            aadb2cSeleniumITHelper.signIn(AAD_B2C_SIGN_UP_OR_SIGN_IN);
+            aadb2cSeleniumITHelper.logout();
+            String signInButtonText = aadb2cSeleniumITHelper.getSignInButtonText();
+            Assert.assertEquals("Sign in", signInButtonText);
+            aadb2cSeleniumITHelper.destroy();
+        } finally {
+            aadb2cSeleniumITHelperDestroy();
+        }
+    }
+
+    private void aadb2cSeleniumITHelperDestroy() {
+        if (aadb2cSeleniumITHelper != null) {
+            aadb2cSeleniumITHelper.destroy();
+        }
     }
 
     @EnableWebSecurity

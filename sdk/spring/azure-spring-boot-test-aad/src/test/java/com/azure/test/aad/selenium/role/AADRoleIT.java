@@ -22,16 +22,24 @@ import java.util.Collections;
 public class AADRoleIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADRoleIT.class);
+    private AADSeleniumITHelper aadSeleniumITHelper;
 
     @Test
     public void roleTest() throws InterruptedException {
-        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-        String httpResponse = aadSeleniumITHelper.httpGet("api/home");
-        Assert.assertTrue(httpResponse.contains("home"));
-        httpResponse = aadSeleniumITHelper.httpGet("api/group1");
-        Assert.assertTrue(httpResponse.contains("group1"));
-        httpResponse = aadSeleniumITHelper.httpGet("api/group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
-        Assert.assertNotEquals(httpResponse, "group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
+        try {
+            aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+            aadSeleniumITHelper.login();
+            String httpResponse = aadSeleniumITHelper.httpGet("api/home");
+            Assert.assertTrue(httpResponse.contains("home"));
+            httpResponse = aadSeleniumITHelper.httpGet("api/group1");
+            Assert.assertTrue(httpResponse.contains("group1"));
+            httpResponse = aadSeleniumITHelper.httpGet("api/group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
+            Assert.assertNotEquals(httpResponse, "group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
+        } finally {
+            if (aadSeleniumITHelper != null) {
+                aadSeleniumITHelper.destroy();
+            }
+        }
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)

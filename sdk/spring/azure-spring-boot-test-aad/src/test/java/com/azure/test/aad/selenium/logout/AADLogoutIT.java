@@ -20,11 +20,19 @@ import java.util.Collections;
 public class AADLogoutIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADLogoutIT.class);
+    private AADSeleniumITHelper aadSeleniumITHelper;
 
     @Test
     public void logoutTest() throws InterruptedException {
-        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-        aadSeleniumITHelper.logoutTest();
+        try {
+            aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+            aadSeleniumITHelper.login();
+            aadSeleniumITHelper.logoutTest();
+        } finally {
+            if (aadSeleniumITHelper != null) {
+                aadSeleniumITHelper.destroy();
+            }
+        }
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
