@@ -100,7 +100,7 @@ public static void main(String[] args) throws Exception {
 
 ### Send events to an Event Hub
 
-In v3, events could be published to a single partition using `PartitionSender` or automatically routed to an available partition via `EventHubClient`.
+In v3, events could be published to a specific partition using the `send` or `sendSync` methods on the `PartitionSender` or automatically routed to an available partition via similar methods on the `EventHubClient`. You could either send a single event, a list of events or an event batch.
 
 In v5, the **same client** can create an [EventDataBatchs][EventDataBatch] that routes to a specific partition or use automatic routing. Events are published to a specific partition using [`CreateBatchOptions.setPartitionId()`][CreateBatchOptions]; otherwise, the batch is automatically routed.
 
