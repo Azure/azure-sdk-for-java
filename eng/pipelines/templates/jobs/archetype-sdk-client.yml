@@ -336,8 +336,8 @@ jobs:
         displayName: 'Run tests'
         inputs:
           mavenPomFile: pom.xml
-          options: ${{ parameters.TestOptions }} -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions) -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$(Build.ArtifactStagingDirectory)/oomdump'
+          options: ${{ parameters.TestOptions }} -DinCI -pl $(PLSkipOptions)$(ProjectList) -am $(AdditionalOptions)
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
@@ -347,7 +347,7 @@ jobs:
         condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
 
       - pwsh: |
-          $hasHeapDump = Test-Path -Path $(Build.ArtifactStagingDirectory)/oomdump
+          $hasHeapDump = Test-Path -Path $(Build.ArtifactStagingDirectory)/ciHeapDump.hprof
           Write-Host "##vso[task.setvariable variable=HasHeapDump]$hasHeapDump"
         displayName: "Check for heap dump"
         condition: failed()
@@ -355,8 +355,8 @@ jobs:
       - task: PublishBuildArtifacts@1
         displayName: 'Retain build failure artifacts'
         inputs:
-          pathToPublish: '$(Build.ArtifactStagingDirectory)/oomdump'
-          artifactName: 'oomdump'
+          pathToPublish: '$(Build.ArtifactStagingDirectory)/ciHeapDump.hprof'
+          artifactName: 'ciHeapDump.hprof'
           publishLocation: 'Container'
         condition: and(failed(), eq(variables['HasHeapDump'],'true'))
 
