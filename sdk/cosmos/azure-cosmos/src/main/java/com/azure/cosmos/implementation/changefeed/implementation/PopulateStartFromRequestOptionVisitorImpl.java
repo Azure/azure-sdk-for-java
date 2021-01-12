@@ -7,7 +7,6 @@ import java.time.Instant;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.feedranges.FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -72,10 +71,6 @@ class PopulateStartFromRequestOptionVisitorImpl extends ChangeFeedStartFromVisit
                 HttpConstants.HttpHeaders.IF_NONE_MATCH,
                 startFromEtagAndFeedRange.getETag());
         }
-
-        startFromEtagAndFeedRange.getFeedRange().accept(
-            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON,
-            request);
     }
 
     @Override

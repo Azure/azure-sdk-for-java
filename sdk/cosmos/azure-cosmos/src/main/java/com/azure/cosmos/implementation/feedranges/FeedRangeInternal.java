@@ -3,34 +3,30 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
-import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public abstract class FeedRangeInternal extends JsonSerializable implements FeedRange {
     private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeInternal.class);
-
-    public abstract void accept(FeedRangeVisitor visitor);
-
-    public abstract <TInput> void accept(GenericFeedRangeVisitor<TInput> visitor, TInput input);
-
-    public abstract <T> Mono<T> accept(FeedRangeAsyncVisitor<T> visitor);
 
     public static FeedRangeInternal convert(final FeedRange feedRange) {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null");
@@ -61,15 +57,20 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         return parsedRange;
     }
 
-    public abstract Mono<UnmodifiableList<Range<String>>> getEffectiveRanges(
+    public abstract Mono<List<Range<String>>> getEffectiveRanges(
         IRoutingMapProvider routingMapProvider,
-        String containerRid,
-        PartitionKeyDefinition partitionKeyDefinition);
+        RxDocumentServiceRequest request,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono);
 
-    public abstract Mono<UnmodifiableList<String>> getPartitionKeyRanges(
+    public abstract Mono<List<String>> getPartitionKeyRanges(
         IRoutingMapProvider routingMapProvider,
-        String containerRid,
-        PartitionKeyDefinition partitionKeyDefinition);
+        RxDocumentServiceRequest request,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono);
+
+    public abstract Mono<RxDocumentServiceRequest> populateFeedRangeFilteringHeaders(
+        IRoutingMapProvider routingMapProvider,
+        RxDocumentServiceRequest request,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono);
 
     public void populatePropertyBag() {
         setProperties(this, false);

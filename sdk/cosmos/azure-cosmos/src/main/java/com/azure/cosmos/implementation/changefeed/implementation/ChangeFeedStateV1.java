@@ -6,7 +6,6 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
-import com.azure.cosmos.implementation.feedranges.FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 
 import java.util.Objects;
@@ -84,12 +83,6 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
     public void populateEffectiveRangeAndStartFromSettingsToRequest(
         RxDocumentServiceRequest request
     ) {
-        // populate the request headers based on the aggregated FeedRange used
-        // this could be a wider scope than EPK like PK or PKRange
-        this.feedRange.accept(
-            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON,
-            request);
-
         final FeedRangeInternal effectiveFeedRange;
         final ChangeFeedStartFromInternal effectiveStartFrom;
         final CompositeContinuationToken continuationToken;
@@ -109,16 +102,15 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
                 effectiveFeedRange);
         }
 
-        // The also populate the request headers for the specific range
+        // By applying the effective feed range to the request
+        // it will populate the request headers for the specific range
         // available in the composite continuation token
         // this is necessary because when merging continuation tokens
         // for example you could have a PkRange feed range
         // with multiple composite continuations for different
         // sub ranges with different eTags/continuations
         // worst case this is the same range as above.
-        effectiveFeedRange.accept(
-            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON,
-            request);
+        request.applyFeedRangeFilter(effectiveFeedRange);
 
         effectiveStartFrom.populateRequest(
             PopulateStartFromRequestOptionVisitorImpl.SINGLETON,

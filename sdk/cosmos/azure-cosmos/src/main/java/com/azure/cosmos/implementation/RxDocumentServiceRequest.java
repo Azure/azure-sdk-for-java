@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -54,6 +55,8 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     // has the non serialized value of the partition-key
     private PartitionKeyInternal partitionKeyInternal;
+
+    private FeedRangeInternal feedRange;
 
     private byte[] contentAsByteArray;
 
@@ -829,6 +832,14 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void routeTo(PartitionKeyRangeIdentity partitionKeyRangeIdentity) {
         this.setPartitionKeyRangeIdentity(partitionKeyRangeIdentity);
+    }
+
+    public FeedRangeInternal getFeedRange() {
+        return this.feedRange;
+    }
+
+    public void applyFeedRangeFilter(FeedRangeInternal feedRange) {
+        this.feedRange = feedRange;
     }
 
     public void setPartitionKeyRangeIdentity(PartitionKeyRangeIdentity partitionKeyRangeIdentity) {

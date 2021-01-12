@@ -6,7 +6,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
-import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeExtractorImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.ChangeFeedPolicy;
@@ -387,7 +386,6 @@ public class ChangeFeedTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    @Ignore("// TODO fabianm re-enable")
     public void changeFeed_fromBeginning_withFeedRangeFiltering() throws Exception {
 
         FeedRangePartitionKeyRangeExtractorImpl effectiveFeedRangeExtractor =

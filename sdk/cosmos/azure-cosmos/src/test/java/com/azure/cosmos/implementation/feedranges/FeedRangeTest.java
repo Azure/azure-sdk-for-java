@@ -2,17 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.ReadFeedKeyType;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalUtils;
 import com.azure.cosmos.implementation.routing.Range;
@@ -30,7 +31,6 @@ import java.util.UUID;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.ThrowableAssert.catchThrowableOfType;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
 import static org.mockito.Matchers.anyMapOf;
@@ -48,29 +48,28 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void feedRangeEPK_RequestVisitor() {
+    public void feedRangeEPK_PopulatedHeaders() {
         Range<String> range = new Range<>("AA", "BB", true, false);
         FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(range);
         RxDocumentServiceRequest request = createMockRequest(true);
-        feedRange.accept(
-            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON, request);
-        assertThat(request.getPropertiesOrThrow()).hasSize(2);
-        assertThat(request.getPropertiesOrThrow().get(EpkRequestPropertyConstants.START_EPK_STRING))
+        IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
+        DocumentCollection collection = new DocumentCollection();
+        feedRange.populateFeedRangeFilteringHeaders(
+            routingMapProviderMock,
+            request,
+            Mono.just(new Utils.ValueHolder<>(collection))).block();
+
+        assertThat(request.getPropertiesOrThrow().get(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE))
+            .isNotNull()
+            .isEqualTo(ReadFeedKeyType.EffectivePartitionKey.name());
+
+        assertThat(request.getPropertiesOrThrow().get(HttpConstants.HttpHeaders.START_EPK))
             .isNotNull()
             .isEqualTo("AA");
-        assertThat(request.getPropertiesOrThrow().get(EpkRequestPropertyConstants.END_EPK_STRING))
+
+        assertThat(request.getPropertiesOrThrow().get(HttpConstants.HttpHeaders.END_EPK))
             .isNotNull()
             .isEqualTo("BB");
-    }
-
-    @Test(groups = "unit")
-    public void feedRangeEPK_RequestVisitor_ThrowsWhenNoPropertiesAvailable() {
-        Range<String> range = new Range<>("AA", "BB", true, false);
-        FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(range);
-        RxDocumentServiceRequest request = createMockRequest(false);
-        assertThat(catchThrowableOfType(() -> feedRange.accept(
-            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON, request),
-            IllegalStateException.class)).isNotNull();
     }
 
     @Test(groups = "unit")
@@ -128,7 +127,7 @@ public class FeedRangeTest {
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
                 assertThat(r).hasSize(1);
-                UnmodifiableList<String> response = new ArrayList<>(r).get(0);
+                List<String> response = new ArrayList<>(r).get(0);
                 assertThat(response)
                     .hasSize(1)
                     .contains(partitionKeyRange.getId());
@@ -177,7 +176,7 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void feedRangePKRangeId_RequestVisitor() {
+    public void feedRangePKRangeId_PopulatedHeaders() {
         Range<String> range = new Range<>("AA", "BB", true, false);
         String pkRangeId = UUID.randomUUID().toString();
         PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
@@ -189,8 +188,13 @@ public class FeedRangeTest {
             new FeedRangePartitionKeyRangeImpl(partitionKeyRange.getId());
 
         RxDocumentServiceRequest request = createMockRequest(true);
-        feedRangPartitionKeyRange.accept(
-            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON, request);
+        IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
+        DocumentCollection collection = new DocumentCollection();
+        feedRangPartitionKeyRange.populateFeedRangeFilteringHeaders(
+            routingMapProviderMock,
+            request,
+            Mono.just(new Utils.ValueHolder<>(collection))).block();
+
         assertThat(request.getPartitionKeyRangeIdentity()).isNotNull();
     }
 
@@ -222,7 +226,7 @@ public class FeedRangeTest {
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
                 assertThat(r).hasSize(1);
-                UnmodifiableList<Range<String>> ranges = new ArrayList<>(r).get(0);
+                List<Range<String>> ranges = new ArrayList<>(r).get(0);
                 assertThat(ranges).hasSize(1);
                 Range<String> range = ranges.get(0);
                 assertThat(range).isNotNull();
@@ -307,7 +311,7 @@ public class FeedRangeTest {
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
                 assertThat(r).hasSize(1);
-                UnmodifiableList<Range<String>> ranges = new ArrayList<>(r).get(0);
+                List<Range<String>> ranges = new ArrayList<>(r).get(0);
                 assertThat(ranges).hasSize(1);
                 Range<String> range = ranges.get(0);
                 assertThat(range).isNotNull();
@@ -351,7 +355,7 @@ public class FeedRangeTest {
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
                 assertThat(r).hasSize(1);
-                UnmodifiableList<String> response = new ArrayList<>(r).get(0);
+                List<String> response = new ArrayList<>(r).get(0);
                 assertThat(response)
                     .hasSize(1)
                     .contains(partitionKeyRange.getId());
@@ -384,14 +388,19 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void feedRangePK_RequestVisitor() {
+    public void feedRangePK_PopulatedHeaders() {
         PartitionKeyInternal partitionKey = PartitionKeyInternalUtils.createPartitionKeyInternal(
             "Test");
         FeedRangePartitionKeyImpl feedRangePartitionKey =
             new FeedRangePartitionKeyImpl(partitionKey);
         RxDocumentServiceRequest request = createMockRequest(true);
-        feedRangePartitionKey.accept(
-            FeedRangeRxDocumentServiceRequestPopulatorVisitorImpl.SINGLETON, request);
+        IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
+        DocumentCollection collection = new DocumentCollection();
+        feedRangePartitionKey.populateFeedRangeFilteringHeaders(
+            routingMapProviderMock,
+            request,
+            Mono.just(new Utils.ValueHolder<>(collection))).block();
+
         assertThat(request.getPartitionKeyInternal()).isNotNull();
         assertThat(request.getPartitionKeyInternal().toJson())
             .isNotNull()
@@ -409,13 +418,16 @@ public class FeedRangeTest {
         Range<String> range = Range.getPointRange(
             partitionKey.getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition));
 
+        DocumentCollection collection = new DocumentCollection();
+        collection.setPartitionKey(partitionKeyDefinition);
+
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         StepVerifier
             .create(
                 feedRangePartitionKey.getEffectiveRanges(
                     routingMapProviderMock,
                     null,
-                    partitionKeyDefinition))
+                    Mono.just(new Utils.ValueHolder<>(collection))))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
@@ -453,6 +465,9 @@ public class FeedRangeTest {
                 anyMapOf(String.class, Object.class)))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
+        DocumentCollection collection = new DocumentCollection();
+        collection.setPartitionKey(partitionKeyDefinition);
+
         FeedRangePartitionKeyImpl feedRangPartitionKey =
             new FeedRangePartitionKeyImpl(partitionKey);
         StepVerifier
@@ -460,12 +475,12 @@ public class FeedRangeTest {
                 feedRangPartitionKey.getPartitionKeyRanges(
                     routingMapProviderMock,
                     null,
-                    partitionKeyDefinition))
+                    Mono.just(new Utils.ValueHolder<>(collection))))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
                 assertThat(r).hasSize(1);
-                UnmodifiableList<String> response = new ArrayList<>(r).get(0);
+                List<String> response = new ArrayList<>(r).get(0);
                 assertThat(response)
                     .hasSize(1)
                     .contains(partitionKeyRange.getId());

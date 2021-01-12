@@ -3,11 +3,17 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -16,6 +22,7 @@ import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
@@ -40,84 +47,106 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
     }
 
     @Override
-    public void accept(final FeedRangeVisitor visitor) {
-        checkNotNull(visitor, "Argument 'visitor' must not be null");
-        visitor.visit(this);
+    public Mono<RxDocumentServiceRequest> populateFeedRangeFilteringHeaders(
+        IRoutingMapProvider routingMapProvider,
+        RxDocumentServiceRequest request,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
+
+        checkNotNull(
+            routingMapProvider,
+            "Argument 'routingMapProvider' must not be null");
+        checkNotNull(
+            request,
+            "Argument 'request' must not be null");
+        checkNotNull(
+            collectionResolutionMono,
+            "Argument 'collectionResolutionMono' must not be null");
+
+        return null;
     }
 
     @Override
-    public <TInput> void accept(GenericFeedRangeVisitor<TInput> visitor, TInput input) {
-        checkNotNull(visitor, "Argument 'visitor' must not be null");
-        visitor.visit(this, input);
-    }
+    public Mono<List<Range<String>>> getEffectiveRanges(
+        IRoutingMapProvider routingMapProvider,
+        RxDocumentServiceRequest request,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
 
-    @Override
-    public <T> Mono<T> accept(final FeedRangeAsyncVisitor<T> visitor) {
-        checkNotNull(visitor, "Argument 'visitor' must not be null");
-        return visitor.visit(this);
-    }
+        checkNotNull(
+            routingMapProvider,
+            "Argument 'routingMapProvider' must not be null");
+        checkNotNull(
+            request,
+            "Argument 'request' must not be null");
+        checkNotNull(
+            collectionResolutionMono,
+            "Argument 'collectionResolutionMono' must not be null");
 
-    @Override
-    public Mono<UnmodifiableList<Range<String>>> getEffectiveRanges(
-        final IRoutingMapProvider routingMapProvider,
-        final String containerRid,
-        final PartitionKeyDefinition partitionKeyDefinition) {
+        MetadataDiagnosticsContext metadataDiagnosticsCtx =
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
-        final Mono<ValueHolder<PartitionKeyRange>> getPkRangeTask = routingMapProvider
-            .tryGetPartitionKeyRangeByIdAsync(
-                null,
-                containerRid,
-                partitionKeyRangeId,
-                false,
-                null)
-            .flatMap((pkRangeHolder) -> {
-                if (pkRangeHolder.v == null) {
-                    return routingMapProvider.tryGetPartitionKeyRangeByIdAsync(
-                        null,
-                        containerRid,
-                        partitionKeyRangeId,
-                        true,
-                        null);
-                } else {
-                    return Mono.just(pkRangeHolder);
+        return collectionResolutionMono
+            .flatMap(documentCollectionResourceResponse -> {
+
+                final DocumentCollection collection = documentCollectionResourceResponse.v;
+                if (collection == null) {
+                    throw new IllegalStateException("Collection cannot be null");
                 }
-            })
-            .flatMap((pkRangeHolder) -> {
-                if (pkRangeHolder.v == null) {
-                    return Mono.error(
-                        new PartitionKeyRangeGoneException(
-                            String.format(
-                                "The PartitionKeyRangeId: \"%s\" is not valid for the current " +
-                                    "container %s .",
-                                partitionKeyRangeId,
-                                containerRid)
-                        ));
-                } else {
-                    return Mono.just(pkRangeHolder);
-                }
+
+                return routingMapProvider
+                        .tryGetPartitionKeyRangeByIdAsync(
+                            metadataDiagnosticsCtx,
+                            collection.getResourceId(),
+                            this.partitionKeyRangeId,
+                            false,
+                            null)
+                        .flatMap((pkRangeHolder) -> {
+                            if (pkRangeHolder.v == null) {
+                                return routingMapProvider.tryGetPartitionKeyRangeByIdAsync(
+                                    null,
+                                    collection.getResourceId(),
+                                    partitionKeyRangeId,
+                                    true,
+                                    null);
+                            } else {
+                                return Mono.just(pkRangeHolder);
+                            }
+                        })
+                        .flatMap((pkRangeHolder) -> {
+                            if (pkRangeHolder.v == null) {
+                                return Mono.error(
+                                    new PartitionKeyRangeGoneException(
+                                        String.format(
+                                            "The PartitionKeyRangeId: \"%s\" is not valid for the current " +
+                                                "container %s .",
+                                            partitionKeyRangeId,
+                                            collection.getResourceId())
+                                    ));
+                            } else {
+                                return Mono.just(pkRangeHolder);
+                            }
+                        })
+                        .flatMap((pkRangeHolder) -> {
+                            final ArrayList<Range<String>> temp = new ArrayList<>();
+                            if (pkRangeHolder != null) {
+                                temp.add(pkRangeHolder.v.toRange());
+                            }
+
+                            return Mono.just(UnmodifiableList.unmodifiableList(temp));
+                        });
             });
-
-        return getPkRangeTask.flatMap((pkRangeHolder) -> {
-            final ArrayList<Range<String>> temp = new ArrayList<>();
-            if (pkRangeHolder != null) {
-                temp.add(pkRangeHolder.v.toRange());
-            }
-
-            return Mono.just((UnmodifiableList<Range<String>>)UnmodifiableList.unmodifiableList(temp));
-        });
     }
 
     @Override
-    public Mono<UnmodifiableList<String>> getPartitionKeyRanges(
-        final IRoutingMapProvider routingMapProvider,
-        final String containerRid,
-        final PartitionKeyDefinition partitionKeyDefinition) {
+    public Mono<List<String>> getPartitionKeyRanges(
+        IRoutingMapProvider routingMapProvider,
+        RxDocumentServiceRequest request,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
 
         final ArrayList<String> temp = new ArrayList<>();
         temp.add(this.partitionKeyRangeId);
 
         return Mono.just(
-            (UnmodifiableList<String>)UnmodifiableList.unmodifiableList(temp));
+            UnmodifiableList.unmodifiableList(temp));
     }
 
     @Override

@@ -11,7 +11,6 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -1405,7 +1404,36 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.getHeaders().put(HttpConstants.HttpHeaders.ACCEPT, RuntimeConstants.MediaTypes.JSON);
         }
 
+        MetadataDiagnosticsContext metadataDiagnosticsCtx =
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+
+        if (this.requiresFeedRangeFiltering(request)) {
+            return request
+                .getFeedRange()
+                .populateFeedRangeFilteringHeaders(
+                    this.getPartitionKeyRangeCache(),
+                    request,
+                    this.collectionCache.resolveCollectionAsync(metadataDiagnosticsCtx, request))
+                .flatMap(r -> this.populateAuthorizationHeader(r));
+        }
+
         return populateAuthorizationHeader(request);
+    }
+
+    private boolean requiresFeedRangeFiltering(RxDocumentServiceRequest request) {
+        if (request.getResourceType() != ResourceType.Document) {
+            return false;
+        }
+
+        switch (request.getOperationType()) {
+            case ReadFeed:
+            // TODO fabianm add EPK filtering for query as well
+            // case Query:
+            // case SqlQuery:
+                return request.getFeedRange() != null;
+            default:
+                return false;
+        }
     }
 
     @Override

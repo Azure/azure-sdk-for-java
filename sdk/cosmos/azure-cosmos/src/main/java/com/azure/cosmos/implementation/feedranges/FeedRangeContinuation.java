@@ -128,6 +128,4 @@ public abstract class FeedRangeContinuation extends JsonSerializable {
     public abstract Mono<ShouldRetryResult> handleSplit(
         RxDocumentClientImpl client,
         RxDocumentServiceResponse responseMessage);
-
-    public abstract void accept(FeedRangeContinuationVisitor visitor);
 }

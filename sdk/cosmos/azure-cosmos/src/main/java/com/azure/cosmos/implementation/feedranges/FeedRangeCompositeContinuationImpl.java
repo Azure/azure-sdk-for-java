@@ -237,12 +237,6 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         });
     }
 
-    @Override
-    public void accept(final FeedRangeContinuationVisitor visitor) {
-        checkNotNull(visitor, "Argument 'visitor' must not be null");
-        visitor.visit(this);
-    }
-
     /**
      * Used for deserializtion only
      */
