@@ -102,7 +102,10 @@ public static void main(String[] args) throws Exception {
 
 In v3, events could be published to a specific partition using the `send` or `sendSync` methods on the `PartitionSender` or automatically routed to an available partition via similar methods on the `EventHubClient`. You could either send a single event, a list of events or an event batch.
 
-In v5, the **same client** can create an [EventDataBatchs][EventDataBatch] that routes to a specific partition or use automatic routing. Events are published to a specific partition using [`CreateBatchOptions.setPartitionId()`][CreateBatchOptions]; otherwise, the batch is automatically routed.
+In v5, the option to send single events is dropped to encourage sending events in batches for better throughput. 
+You can send a list of events or create and send an event batch as before. Instead of using different classes, sending to a specific partition and making use of the automatic routing is done using overloads of the same methods. For example:
+- Passing a list of events to the `send` method with no options makes use of automatic routing. If `partitionId` is passed in the options to this method, the events are sent to the given partition
+- Creating a batch of events using the `createBatch` method without setting the `partitionId` in the options makes use of automatic routing. If `partitionId` is passed in the options to this method, the events are sent to the given partition
 
 Additionally, we consolidate send into an efficient `send(EventDataBatch)` method on the producer client. Batching merges information from multiple events into a single sent message, reducing the amount of network communication needed vs sending events one at a time.
 
