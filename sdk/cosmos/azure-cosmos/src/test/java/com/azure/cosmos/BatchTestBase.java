@@ -71,6 +71,23 @@ public class BatchTestBase extends TestSuiteBase {
         return new TestDoc(testDoc.getId(), testDoc.getCost(), testDoc.getDescription(), testDoc.getStatus());
     }
 
+    void verifyByRead(CosmosAsyncContainer container, TestDoc doc) {
+        verifyByRead(container, doc, null);
+    }
+
+    void verifyByRead(CosmosAsyncContainer container, TestDoc doc, String eTag) {
+        PartitionKey partitionKey = this.getPartitionKey(doc.getStatus());
+
+        CosmosItemResponse<TestDoc> response = container.readItem(doc.getId(), partitionKey, TestDoc.class).block();
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(response.getItem()).isEqualTo(doc);
+
+        if (eTag != null) {
+            assertThat(response.getETag()).isEqualTo(eTag);
+        }
+    }
+
     void verifyByRead(CosmosContainer container, TestDoc doc) {
         verifyByRead(container, doc, null);
     }
