@@ -96,6 +96,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
             request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
             return (T) oAuth2AuthorizedClient;
         } catch (Throwable throwable) {
+            // Handle conditional access policy for obo flow.
             String claims = Optional.of(throwable)
                                     .map(Throwable::getCause)
                                     .filter(e -> e instanceof MsalInteractionRequiredException)
