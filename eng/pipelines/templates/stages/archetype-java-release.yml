@@ -1,4 +1,10 @@
 parameters:
+  - name: DependsOn
+    type: string
+  - name: ServiceDirectory
+    type: string
+  - name: SDKType
+    type: string
   - name: Artifacts
     type: object
     default: []
