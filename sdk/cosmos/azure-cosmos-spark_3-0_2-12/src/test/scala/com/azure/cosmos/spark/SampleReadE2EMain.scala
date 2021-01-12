@@ -7,7 +7,7 @@ import com.azure.cosmos.{ConsistencyLevel, CosmosClientBuilder}
 import org.apache.spark.sql.SparkSession
 
 /** sample test for query */
-object TestReadE2EMain {
+object SampleReadE2EMain {
   def main(args: Array[String]) {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY

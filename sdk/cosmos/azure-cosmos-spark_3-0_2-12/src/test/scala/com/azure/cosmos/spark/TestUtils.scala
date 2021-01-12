@@ -165,3 +165,9 @@ trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEa
     }
   }
 }
+
+object Platform {
+  def isWindows(): Boolean = {
+    System.getProperty("os.name").toLowerCase.contains("win")
+  }
+}

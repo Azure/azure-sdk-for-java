@@ -47,7 +47,12 @@ class CosmosCatalogSpec extends IntegrationSpec with CosmosClient {
     throughput.getProperties.getManualThroughput shouldEqual 1000
   }
 
+  // TODO: moderakh spark on windows has issue with this test.
+  // java.lang.RuntimeException: java.io.IOException: (null) entry in command string: null chmod 0733 D:\tmp\hive;
+  // once we move Linux CI re-enable the test:
   it can "drops a database" taggedAs (RequiresCosmosEndpoint) in {
+    assume(!Platform.isWindows())
+
     val databaseName = getAutoCleanableDatabaseName()
     spark.catalog.databaseExists(databaseName) shouldEqual false
 
