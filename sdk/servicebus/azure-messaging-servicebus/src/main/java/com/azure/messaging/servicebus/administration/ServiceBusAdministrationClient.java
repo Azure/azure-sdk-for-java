@@ -407,7 +407,7 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Deletes a subscription the matching {@code subscriptionName}.
+     * Deletes a subscription matching the {@code subscriptionName} in topic {@code topicName}.
      *
      * @param topicName Name of topic associated with subscription to delete.
      * @param subscriptionName Name of subscription to delete.
