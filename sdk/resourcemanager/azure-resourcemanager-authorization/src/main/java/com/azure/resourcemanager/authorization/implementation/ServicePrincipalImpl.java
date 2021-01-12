@@ -219,8 +219,8 @@ class ServicePrincipalImpl
         cachedPasswordCredentials.clear();
 
         if (inner.keyCredentials() != null) {
-            inner.keyCredentials().forEach(keycredentialInner -> {
-                CertificateCredential certificateCredential = new CertificateCredentialImpl<>(keycredentialInner);
+            inner.keyCredentials().forEach(keyCredentialInner -> {
+                CertificateCredential certificateCredential = new CertificateCredentialImpl<>(keyCredentialInner);
                 cachedCertificateCredentials.put(certificateCredential.name(), certificateCredential);
             });
         }

@@ -76,4 +76,19 @@ public interface SyncPoller<T, U> {
      * cancels the remote long-running operation if cancellation is supported by the service.
      */
     void cancelOperation();
+
+    /**
+     * Sets the poll interval for this poller. The new interval will be used for all subsequent polling operations
+     * including the polling operations that are already in progress.
+     *
+     * @param pollInterval The new poll interval for this poller.
+     * @return The updated instance of {@link SyncPoller}.
+     * @throws NullPointerException if the {@code pollInterval} is null.
+     * @throws IllegalArgumentException if the {@code pollInterval} is zero or negative.
+     */
+    default SyncPoller<T, U> setPollInterval(Duration pollInterval) {
+        // This method is made default to prevent breaking change to the interface.
+        // no-op
+        return this;
+    }
 }

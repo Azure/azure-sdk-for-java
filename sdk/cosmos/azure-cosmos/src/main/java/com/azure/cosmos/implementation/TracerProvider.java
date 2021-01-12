@@ -212,7 +212,7 @@ public class TracerProvider {
         tracer.end(statusCode, throwable, context);
     }
 
-    public void fillClientTelemetry(CosmosAsyncClient cosmosAsyncClient,
+    private void fillClientTelemetry(CosmosAsyncClient cosmosAsyncClient,
                                     CosmosDiagnostics cosmosDiagnostics,
                                     int statusCode,
                                     Integer objectSize,
