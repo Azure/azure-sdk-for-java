@@ -3,7 +3,9 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
@@ -27,6 +29,7 @@ import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
 import com.azure.cosmos.implementation.guava25.collect.Multimap;
+import org.mockito.Mockito;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -388,11 +391,6 @@ public class ChangeFeedTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void changeFeed_fromBeginning_withFeedRangeFiltering() throws Exception {
 
-        FeedRangePartitionKeyRangeExtractorImpl effectiveFeedRangeExtractor =
-            new FeedRangePartitionKeyRangeExtractorImpl(
-                (RxDocumentClientImpl)this.client,
-                this.getCollectionLink());
-
         ArrayList<Range<String>> ranges = new ArrayList<>();
 
         // TODO fabianm remove the top 1
@@ -403,7 +401,12 @@ public class ChangeFeedTest extends TestSuiteBase {
                 ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(partitionKey)));
 
             List<Range<String>> effectiveRanges =
-                effectiveFeedRangeExtractor.visit(feedRangeForLogicalPartition).block();
+                feedRangeForLogicalPartition
+                    .getEffectiveRanges(
+                        client.getPartitionKeyRangeCache(),
+                        null,
+                        Mono.just(new Utils.ValueHolder<>(this.createdCollection)))
+                    .block();
 
             assertThat(effectiveRanges).isNotNull();
             assertThat(effectiveRanges).size().isEqualTo(1);

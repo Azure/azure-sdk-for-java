@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.feedranges;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
@@ -43,16 +44,15 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
 
         checkNotNull(
-            routingMapProvider,
-            "Argument 'routingMapProvider' must not be null");
-        checkNotNull(
             request,
             "Argument 'request' must not be null");
-        checkNotNull(
-            collectionResolutionMono,
-            "Argument 'collectionResolutionMono' must not be null");
 
-        return null;
+        request.getHeaders().put(
+            HttpConstants.HttpHeaders.PARTITION_KEY,
+            this.partitionKey.toJson());
+        request.setPartitionKeyInternal(this.partitionKey);
+
+        return Mono.just(request);
     }
 
     @Override

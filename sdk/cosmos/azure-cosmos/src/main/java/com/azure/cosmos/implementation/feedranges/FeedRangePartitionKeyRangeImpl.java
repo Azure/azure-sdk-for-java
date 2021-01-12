@@ -53,16 +53,12 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
 
         checkNotNull(
-            routingMapProvider,
-            "Argument 'routingMapProvider' must not be null");
-        checkNotNull(
             request,
             "Argument 'request' must not be null");
-        checkNotNull(
-            collectionResolutionMono,
-            "Argument 'collectionResolutionMono' must not be null");
 
-        return null;
+        request.routeTo(this.partitionKeyRangeIdentity);
+
+        return Mono.just(request);
     }
 
     @Override
