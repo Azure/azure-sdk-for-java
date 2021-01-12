@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.credential.AzureSasCredential
+import com.azure.core.credential.TokenCredential
 import com.azure.core.http.*
 import com.azure.core.http.policy.HttpLogOptions
 import com.azure.core.test.http.MockHttpResponse
@@ -437,6 +439,51 @@ class BuilderHelperTest extends Specification {
         StepVerifier.create(pageBlobClient.getHttpPipeline().send(request(pageBlobClient.getBlobUrl())))
             .assertNext({ it.getStatusCode() == 200 })
             .verifyComplete()
+    }
+
+    def "Throws on ambigous credentials"() {
+        when:
+        new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .credential(Mock(TokenCredential.class))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new BlobClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .blobName("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
     }
 
     private static final class FreshDateTestClient implements HttpClient {
