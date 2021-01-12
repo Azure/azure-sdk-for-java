@@ -1656,7 +1656,7 @@
         <!-- This property configures creating a heap dump if the Surefire JVM fails with an OutOfMemoryError -->
         <heapDumpOnOom>
           -XX:+HeapDumpOnOutOfMemoryError
-          -XX:HeapDumpPath=${packageOutputDirectory}/ciHeapDump.hprof
+          -XX:HeapDumpPath=${packageOutputDirectory}
         </heapDumpOnOom>
       </properties>
     </profile>

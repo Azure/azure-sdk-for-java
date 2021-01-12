@@ -347,18 +347,20 @@ jobs:
         condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
 
       - pwsh: |
-          $hasHeapDump = Test-Path -Path $(Build.ArtifactStagingDirectory)/ciHeapDump.hprof
-          Write-Host "##vso[task.setvariable variable=HasHeapDump]$hasHeapDump"
+          $heapDumpFiles = Get-ChildItem -Name -File -Path $(Build.ArtifactStagingDirectory) -Filter java_*.hprof
+          Write-Host "##vso[task.setvariable variable=HeapDumpFiles]$heapDumpFiles"
         displayName: "Check for heap dump"
-        condition: failed()
+        condition: succeededOrFailed()
 
-      - task: PublishBuildArtifacts@1
-        displayName: 'Retain build failure artifacts'
-        inputs:
-          pathToPublish: '$(Build.ArtifactStagingDirectory)/ciHeapDump.hprof'
-          artifactName: 'ciHeapDump.hprof'
-          publishLocation: 'Container'
-        condition: and(failed(), eq(variables['HasHeapDump'],'true'))
+      - ${{if gt(length(variables['HeapDumpFiles'], 0))}}:
+        - ${{ each heapDumpFile in variables['HeapDumpFiles'] }}:
+          - task: PublishBuildArtifacts@1
+            displayName: 'Retain build failure artifacts: ${{heapDumpFile}}'
+            inputs:
+              pathToPublish: '$(Build.ArtifactStagingDirectory)/${{heapDumpFile}}'
+              artifactName: '${{heapDumpFile}}'
+              publishLocation: 'Container'
+            condition: succeededOrFailed()
 
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
