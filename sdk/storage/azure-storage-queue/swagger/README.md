@@ -180,13 +180,13 @@ directive:
     $["x-ms-enum"].name = "GeoReplicationStatus";
 ```
 
-### QueueErrorCode	
-``` yaml	
-directive:	
-- from: swagger-document	
-  where: $.definitions.ErrorCode	
-  transform: >	
-    $["x-ms-enum"].name = "QueueErrorCode";	
+### QueueErrorCode
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ErrorCode
+  transform: >
+    $["x-ms-enum"].name = "QueueErrorCode";
 ```
 
 ### QueueServiceProperties, QueueAnalyticsLogging, QueueMetrics, QueueCorsRule, and QueueRetentionPolicy
