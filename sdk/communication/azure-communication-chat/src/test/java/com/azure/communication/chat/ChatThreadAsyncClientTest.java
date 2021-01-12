@@ -223,6 +223,33 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canSendThenGetHtmlMessage(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient);
+        SendChatMessageOptions messageRequest = new SendChatMessageOptions()
+            .setType(ChatMessageType.HTML)
+            .setPriority(ChatMessagePriority.NORMAL)
+            .setSenderDisplayName("John")
+            .setContent("<div>test</div>");
+
+        // Action & Assert
+        StepVerifier
+            .create(chatThreadClient.sendMessage(messageRequest)
+                .flatMap(response -> {
+                    return chatThreadClient.getMessage(response);
+                })
+            )
+            .assertNext(message -> {
+                assertEquals(message.getContent().getMessage(), messageRequest.getContent());
+                assertEquals(message.getType(), messageRequest.getType());
+                assertEquals(message.getPriority(), messageRequest.getPriority());
+                assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendThenGetMessage(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient);
@@ -238,6 +265,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
             .assertNext(message -> {
                 assertEquals(message.getContent().getMessage(), messageRequest.getContent());
                 assertEquals(message.getPriority(), messageRequest.getPriority());
+                assertEquals(message.getType(), messageRequest.getType());
                 assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
             })
             .verifyComplete();
