@@ -92,7 +92,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"simple"}, dataProvider = "preferredRegions")
+    @Test(groups = {"multi-master"}, dataProvider = "preferredRegions")
     public void sessionNotAvailableRetryMultiMaster(List<String> preferredLocations, List<String> regionalSuffix,
                                                     OperationType operationType) throws IllegalAccessException {
         CosmosAsyncClient preferredListClient = new CosmosClientBuilder()
@@ -115,7 +115,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         ConsistencyWriter consistencyWriter = (ConsistencyWriter) FieldUtils.readField(replicatedResourceClient,
             "consistencyWriter", true);
         StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
-        StoreReader storeReaderOfWriter = (StoreReader) FieldUtils.readField(consistencyWriter, "storeReader", true);
 
         RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
         RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
@@ -123,7 +122,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         FieldUtils.writeField(consistencyWriter, "transportClient", spyRntbdTransportClient, true);
 
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
-        //cosmosAsyncContainer = preferredListClient.getDatabase("TestDb").getContainer("TestCol");
 
         List<String> uris = new ArrayList<>();
         doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
@@ -150,7 +148,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 InternalObjectNode node = new InternalObjectNode();
                 node.setId("Test");
                 node.set("mypk", "Test");
-                node.set("pk", "Test");
                 cosmosAsyncContainer.createItem(node, partitionKey, new CosmosItemRequestOptions()).block();
             }
 
@@ -208,14 +205,16 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             (ReplicatedResourceClient) FieldUtils.readField(storeClient, "replicatedResourceClient", true);
         ConsistencyReader consistencyReader = (ConsistencyReader) FieldUtils.readField(replicatedResourceClient,
             "consistencyReader", true);
+        ConsistencyWriter consistencyWriter = (ConsistencyWriter) FieldUtils.readField(replicatedResourceClient,
+            "consistencyWriter", true);
         StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
 
         RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
         RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
         FieldUtils.writeField(storeReader, "transportClient", spyRntbdTransportClient, true);
+        FieldUtils.writeField(consistencyWriter, "transportClient", spyRntbdTransportClient, true);
 
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
-        //cosmosAsyncContainer = preferredListClient.getDatabase("TestDb").getContainer("TestCol");
 
         PartitionKey partitionKey = new PartitionKey("Test");
         List<String> uris = new ArrayList<>();
@@ -239,7 +238,13 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
                 requestOptions.setPartitionKey(new PartitionKey("Test"));
                 cosmosAsyncContainer.queryItems(query, requestOptions, InternalObjectNode.class).byPage().blockFirst();
+            } else if (operationType.equals(OperationType.Create)) {
+                InternalObjectNode node = new InternalObjectNode();
+                node.setId("Test");
+                node.set("mypk", "Test");
+                cosmosAsyncContainer.createItem(node, partitionKey, new CosmosItemRequestOptions()).block();
             }
+
             fail("Request should fail with 404/1002 error");
         } catch (CosmosException ex) {
             System.out.println("ClientRetryPolicyTest.sessionNotAvailableRetry " + ex.getMessage());
