@@ -87,7 +87,6 @@ public interface AsyncDocumentClient {
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
-        boolean queryPlanCachingEnabled;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
