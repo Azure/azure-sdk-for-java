@@ -6,6 +6,7 @@ package com.azure.test.aad.b2c.selenium;
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
 import com.azure.test.aad.b2c.utils.AADB2CTestUtils;
 import java.util.Collections;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,13 +24,14 @@ public class AADB2CIT {
 
     private final String JOB_TITLE_A_WORKER = "a worker";
     private final String JOB_TITLE_WORKER = "worker";
+    private AADB2CSeleniumITHelper aadB2CSeleniumITHelper;
 
     @Test
     public void testSignIn() throws InterruptedException {
-        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
-            Collections.emptyMap());
-        String name = AADB2CSeleniumITHelper.getName();
-        String userFlowName = AADB2CSeleniumITHelper.getUserFlowName();
+        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+        aadB2CSeleniumITHelper.signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
+        String name = aadB2CSeleniumITHelper.getName();
+        String userFlowName = aadB2CSeleniumITHelper.getUserFlowName();
 
         Assert.assertNotNull(name);
         Assert.assertNotNull(userFlowName);
@@ -38,14 +40,14 @@ public class AADB2CIT {
 
     @Test
     public void testProfileEdit() throws InterruptedException {
-        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
-            Collections.emptyMap());
-        String currentJobTitle = AADB2CSeleniumITHelper.getJobTitle();
+        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+        aadB2CSeleniumITHelper.signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
+        String currentJobTitle = aadB2CSeleniumITHelper.getJobTitle();
         String newJobTitle = JOB_TITLE_A_WORKER.equals(currentJobTitle) ? JOB_TITLE_WORKER : JOB_TITLE_A_WORKER;
-        AADB2CSeleniumITHelper.profileEditJobTitle(newJobTitle);
-        String name = AADB2CSeleniumITHelper.getName();
-        String jobTitle = AADB2CSeleniumITHelper.getJobTitle();
-        String userFlowName = AADB2CSeleniumITHelper.getUserFlowName();
+        aadB2CSeleniumITHelper.profileEditJobTitle(newJobTitle);
+        String name = aadB2CSeleniumITHelper.getName();
+        String jobTitle = aadB2CSeleniumITHelper.getJobTitle();
+        String userFlowName = aadB2CSeleniumITHelper.getUserFlowName();
 
         Assert.assertNotNull(name);
         Assert.assertNotNull(jobTitle);
@@ -55,10 +57,15 @@ public class AADB2CIT {
 
     @Test
     public void testLogOut() throws InterruptedException {
-        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
-            Collections.emptyMap());
-        String signInButtonText = AADB2CSeleniumITHelper.logoutAndGetSignInButtonText();
+        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+        aadB2CSeleniumITHelper.signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
+        String signInButtonText = aadB2CSeleniumITHelper.logoutAndGetSignInButtonText();
         Assert.assertEquals("Sign in", signInButtonText);
+    }
+
+    @After
+    public void quitDriver() {
+        aadB2CSeleniumITHelper.quitDriver();
     }
 
     @EnableWebSecurity

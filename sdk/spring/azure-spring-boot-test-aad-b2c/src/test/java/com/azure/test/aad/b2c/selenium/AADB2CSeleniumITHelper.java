@@ -12,13 +12,16 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class AADB2CSeleniumITHelper {
 
     private final String userEmail;
     private final String userPassword;
     private final AppRunner app;
-    private final WebDriver driver;
+    private WebDriver driver;
+    private WebDriverWait wait;
     private static final Map<String, String> DEFAULT_PROPERTIES = new HashMap<>();
 
     static {
@@ -70,62 +73,70 @@ public class AADB2CSeleniumITHelper {
         app = new AppRunner(appClass);
         DEFAULT_PROPERTIES.forEach(app::property);
         properties.forEach(app::property);
-
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
-        options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
-        this.driver = new ChromeDriver(options);
-
         this.app.start();
-        Thread.sleep(5000);
-        signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
+        setDriver();
+    }
+
+    public void quitDriver() {
+        try {
+            this.driver.quit();
+        } catch (Exception e) {
+            this.driver = null;
+        }
+    }
+
+    private void setDriver() {
+        if (driver == null) {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless");
+            options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
+            this.driver = new ChromeDriver(options);
+            wait = new WebDriverWait(driver, 5);
+        }
     }
 
     public void signIn(String userFlowName) throws InterruptedException {
         driver.get(app.root());
-        Thread.sleep(5000);
-        driver.findElement(By.cssSelector("a[href='/oauth2/authorization/" + userFlowName + "']")).click();
-        Thread.sleep(5000);
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']")));
         driver.findElement(By.id("email")).sendKeys(userEmail);
         driver.findElement(By.id("password")).sendKeys(userPassword);
         driver.findElement(By.cssSelector("button[type='submit']")).click();
-        Thread.sleep(7000);
         manualRedirection();
     }
 
     public void profileEditJobTitle(String newJobTitle) throws InterruptedException {
-        Thread.sleep(5000);
         driver.findElement(By.id("profileEdit")).click();
-        Thread.sleep(5000);
         changeJobTile(newJobTitle);
         driver.findElement(By.cssSelector("button[type='submit']")).click();
-        Thread.sleep(5000);
         manualRedirection();
     }
 
     public String logoutAndGetSignInButtonText() throws InterruptedException {
-        Thread.sleep(5000);
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("logout")));
         driver.findElement(By.id("logout")).click();
-        Thread.sleep(5000);
-        driver.findElement(By.cssSelector("button[type='submit']")).click();
-        Thread.sleep(5000);
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']")));
+        driver.findElement(By.cssSelector("button[type='submit']")).submit();
         manualRedirection();
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(
+            "a[href='/oauth2/authorization/" + AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN + "']")));
         driver.findElement(
             By.cssSelector(
                 "a[href='/oauth2/authorization/" + AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN + "']")).click();
-        Thread.sleep(5000);
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("next")));
         return driver.findElement(By.cssSelector("button[type='submit']")).getText();
     }
 
     private void manualRedirection() throws InterruptedException {
+        wait.until(ExpectedConditions.urlMatches("^http://localhost"));
         String currentUrl = driver.getCurrentUrl();
         String newCurrentUrl = currentUrl.replaceFirst("http://localhost:8080/", app.root());
         driver.get(newCurrentUrl);
-        Thread.sleep(5000);
     }
 
     public void changeJobTile(String newValue) {
         String elementId = "jobTitle";
+        wait.until(ExpectedConditions.elementToBeClickable(By.id(elementId)));
         driver.findElement(By.id(elementId)).clear();
         driver.findElement(By.id(elementId)).sendKeys(newValue);
     }
@@ -138,6 +149,7 @@ public class AADB2CSeleniumITHelper {
     }
 
     public String getName() {
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("tbody")));
         return driver.findElement(By.cssSelector("tbody"))
             .findElement(By.xpath("tr[2]"))
             .findElement(By.xpath("th[2]"))
