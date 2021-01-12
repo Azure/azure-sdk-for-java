@@ -38,9 +38,5 @@ public class QueueStorageCustomization extends Customization {
         servicesImpl.getMethod("listQueuesSegment").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
         servicesImpl.getMethod("listQueuesSegmentNext").addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)");
 
-        PackageCustomization models = customization.getPackage("com.azure.storage.queue.models");
-        models.getClass("StorageErrorCode").rename("QueueErrorCode");
-//        queueServiceProperties.getProperty("hourMetrics").
-
     }
 }

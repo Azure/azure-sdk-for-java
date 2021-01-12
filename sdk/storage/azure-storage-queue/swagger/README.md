@@ -26,7 +26,7 @@ sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 models-subpackage: implementation.models
-custom-types: StorageErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType
+custom-types: QueueErrorCode,QueueSignedIdentifier,SendMessageResult,QueueMessageItem,PeekedMessageItem,QueueItem,QueueServiceProperties,QueueServiceStatistics,QueueCorsRule,QueueAccessPolicy,QueueAnalyticsLogging,QueueMetrics,QueueRetentionPolicy,GeoReplicationStatus,GeoReplicationStatusType
 custom-types-subpackage: models
 customization-jar-path: target/azure-storage-queue-customization-1.0.0-beta.1.jar
 customization-class: com.azure.storage.queue.customization.QueueStorageCustomization
@@ -178,6 +178,15 @@ directive:
   where: $.definitions.GeoReplication.properties.Status
   transform: >
     $["x-ms-enum"].name = "GeoReplicationStatus";
+```
+
+### QueueErrorCode	
+``` yaml	
+directive:	
+- from: swagger-document	
+  where: $.definitions.ErrorCode	
+  transform: >	
+    $["x-ms-enum"].name = "QueueErrorCode";	
 ```
 
 ### QueueServiceProperties, QueueAnalyticsLogging, QueueMetrics, QueueCorsRule, and QueueRetentionPolicy
