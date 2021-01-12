@@ -4,8 +4,11 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
+import com.azure.spring.aad.webapi.AADOAuth2OboAuthorizedClientRepository;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import com.azure.spring.autoconfigure.aad.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -56,6 +59,8 @@ import static com.azure.spring.aad.AADClientRegistrationRepository.AZURE_CLIENT_
 @ConditionalOnProperty("azure.activedirectory.client-id")
 @EnableConfigurationProperties(AADAuthenticationProperties.class)
 public class AADWebAppConfiguration {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2OboAuthorizedClientRepository.class);
 
     @Autowired
     private AADAuthenticationProperties properties;
@@ -135,12 +140,11 @@ public class AADWebAppConfiguration {
      */
     @ControllerAdvice
     public static class GlobalExceptionAdvice {
-        @ExceptionHandler(AADConditionalAccessException.class)
+        @ExceptionHandler(ConditionalAccessException.class)
         public void handleUserNotFound(HttpServletRequest request,
                                        HttpServletResponse response, Exception exception) {
             Optional.of(exception)
-                    .filter(e -> e instanceof AADConditionalAccessException)
-                    .map(e -> (AADConditionalAccessException) e)
+                    .map(e -> (ConditionalAccessException) e)
                     .ifPresent(aadConditionalAccessException -> {
                         response.setStatus(302);
                         SecurityContextHolder.clearContext();
@@ -149,7 +153,7 @@ public class AADWebAppConfiguration {
                         try {
                             response.sendRedirect(request.getRequestURL().toString());
                         } catch (IOException e) {
-                            e.printStackTrace();
+                            LOGGER.error("An exception occurred while redirecting url.", e);
                         }
                     });
         }
@@ -231,45 +235,15 @@ public class AADWebAppConfiguration {
     }
 
 
-    public static ExchangeFilterFunction webClientErrorHandlingFilter() {
-        return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
-                if (clientResponse.statusCode().is4xxClientError()) {
-                    return clientResponse.bodyToMono(String.class)
-                                         .flatMap(errorBody -> {
-                                             if (isConditionalAccessError(errorBody)) {
-                                                 return Mono.error(convertToException(errorBody));
-                                             }
-                                             return Mono.just(clientResponse);
-                                         });
-                }
-                return Mono.just(clientResponse);
-            }
+    public static ExchangeFilterFunction conditionalAccessExchangeFilterFunction() {
+        return ExchangeFilterFunction.ofResponseProcessor(clientResponse ->
+            clientResponse.bodyToMono(String.class)
+                          .flatMap(httpBody -> {
+                              if (ConditionalAccessException.isConditionAccessException(httpBody)) {
+                                  return Mono.error(ConditionalAccessException.fromHttpBody(httpBody));
+                              }
+                              return Mono.just(clientResponse);
+                          })
         );
-    }
-
-
-    private static boolean isConditionalAccessError(String body) {
-        return body.startsWith(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
-    }
-
-    private static AADConditionalAccessException convertToException(String body) {
-        String claims = body.split(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS)[1];
-        return new AADConditionalAccessException(claims);
-    }
-
-    protected static class AADConditionalAccessException extends RuntimeException {
-        String claims;
-
-        protected AADConditionalAccessException(String claims) {
-            this.claims = claims;
-        }
-
-        public String getClaims() {
-            return claims;
-        }
-
-        public void setClaims(String claims) {
-            this.claims = claims;
-        }
     }
 }

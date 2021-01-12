@@ -3,7 +3,7 @@
 
 package com.azure.spring.aad.webapi;
 
-import com.azure.spring.autoconfigure.aad.Constants;
+import com.azure.spring.aad.webapp.ConditionalAccessException;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IClientSecret;
@@ -112,12 +112,11 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 try {
                     ServletOutputStream outputStream = response.getOutputStream();
-                    String result = Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS
-                        + claims + Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS;
+                    String result = ConditionalAccessException.claimsToHttpBody(claims);
                     outputStream.write(result.getBytes(StandardCharsets.UTF_8));
                     outputStream.flush();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    LOGGER.error("An exception occurred while operating the responseOutputStream.", e);
                 }
             }
             LOGGER.error("Failed to load authorized client.", throwable);

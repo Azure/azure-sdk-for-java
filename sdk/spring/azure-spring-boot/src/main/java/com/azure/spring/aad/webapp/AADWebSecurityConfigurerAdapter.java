@@ -33,7 +33,6 @@ import java.util.Arrays;
  */
 public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
-    private static final String DEFAULT_FAILURE_URL = "/login?error";
     @Autowired
     private AADWebAppClientRegistrationRepository repo;
     @Autowired
@@ -99,9 +98,9 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     private static final class AADHttpConfigurer extends AbstractHttpConfigurer<AADHttpConfigurer, HttpSecurity> {
         @Override
         public void init(HttpSecurity http) {
-            DefaultLoginPageGeneratingFilter sharedObject =
+            DefaultLoginPageGeneratingFilter filter =
                 http.getSharedObject(DefaultLoginPageGeneratingFilter.class);
-            sharedObject.setFailureUrl(DEFAULT_FAILURE_URL);
+            filter.setFailureUrl("/login?error");
         }
     }
 }

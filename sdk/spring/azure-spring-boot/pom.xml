@@ -274,6 +274,7 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-webflux</artifactId>
       <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-webflux;external_dependency} -->
+      <optional>true</optional>
     </dependency>
   </dependencies>
 
