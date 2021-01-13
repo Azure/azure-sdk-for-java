@@ -5,7 +5,7 @@ package com.azure.spring.aad.webapp;
 import com.azure.spring.autoconfigure.aad.Constants;
 
 /**
- * handle ConditionalAccess from obo flow.
+ * Create ConditionalAccessException to handle conditionalAccess in obo flow.
  */
 public final class ConditionalAccessException extends RuntimeException {
     private final String claims;
