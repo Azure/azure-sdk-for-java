@@ -6,11 +6,7 @@ package com.azure.storage.file.datalake
 import com.azure.core.credential.AzureSasCredential
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
-import com.azure.storage.blob.BlobClientBuilder
-import com.azure.storage.blob.BlobContainerClientBuilder
-import com.azure.storage.blob.BlobServiceClientBuilder
 import com.azure.storage.blob.sas.BlobSasServiceVersion
-import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
