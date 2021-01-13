@@ -40,14 +40,14 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
         driver.get(app.root());
         wait.until(presenceOfElementLocated(By.id("email"))).sendKeys(userEmail);
         wait.until(presenceOfElementLocated(By.id("password"))).sendKeys(userPassword);
-        wait.until(presenceOfElementLocated(By.id("next"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.id("next"))).click();
         manualRedirection();
     }
 
     public void profileEditJobTitle(String newJobTitle) {
         wait.until(presenceOfElementLocated(By.id("profileEdit"))).click();
         changeJobTile(newJobTitle);
-        driver.findElement(By.cssSelector("button[type='submit']")).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).click();
         manualRedirection();
     }
 
@@ -69,7 +69,7 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     public void changeJobTile(String newValue) {
         String elementId = "jobTitle";
         wait.until(presenceOfElementLocated(By.id(elementId))).clear();
-        driver.findElement(By.id(elementId)).sendKeys(newValue);
+        wait.until(presenceOfElementLocated(By.id(elementId))).sendKeys(newValue);
     }
 
     public String getJobTitle() {
@@ -94,6 +94,6 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     }
 
     public String getSignInButtonText() {
-        return wait.until(presenceOfElementLocated(By.cssSelector("button[type='submit']"))).getText();
+        return wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).getText();
     }
 }

@@ -38,9 +38,9 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
 
     public void login() {
         driver.get(app.root() + "oauth2/authorization/azure");
-        wait.until(ExpectedConditions.elementToBeClickable(By.name("loginfmt"))).sendKeys(username + Keys.ENTER);
-        wait.until(ExpectedConditions.elementToBeClickable(By.name("passwd"))).sendKeys(password + Keys.ENTER);
-        driver.findElement(By.cssSelector("input[type='submit']")).click();
+        wait.until(presenceOfElementLocated(By.name("loginfmt"))).sendKeys(username + Keys.ENTER);
+        wait.until(presenceOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']"))).click();
     }
 
     public String httpGet(String endpoint) {
