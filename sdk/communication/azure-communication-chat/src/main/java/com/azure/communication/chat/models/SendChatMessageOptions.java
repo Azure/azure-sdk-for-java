@@ -109,7 +109,7 @@ public final class SendChatMessageOptions {
     /**
      * Set the type property: The chat message type.
      *
-     * @param type the type value to set.
+     * @param type the content type, valid options are ChatMessageType.TEXT and ChatMessageType.HTML
      * @return the SendChatMessageOptions object itself.
      */
     public SendChatMessageOptions setType(ChatMessageType type) {
