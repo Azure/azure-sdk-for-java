@@ -2,11 +2,16 @@
 // Licensed under the MIT License.
 
 module com.azure.opentelemetry.exporter.azuremonitor {
+
     requires transitive com.azure.core;
+
     requires transitive io.opentelemetry.sdk;
-    requires transitive io.opentelemetry.sdk.tracing;
+    requires transitive io.opentelemetry.sdk.trace;
     requires transitive io.opentelemetry.sdk.common;
     requires transitive io.opentelemetry.api;
+
+    requires io.opentelemetry.api.trace;
+    requires io.opentelemetry.api.common;
 
     exports com.azure.opentelemetry.exporter.azuremonitor;
 

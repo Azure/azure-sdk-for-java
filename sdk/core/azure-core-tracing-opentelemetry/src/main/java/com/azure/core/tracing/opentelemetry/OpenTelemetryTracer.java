@@ -229,7 +229,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     private static Span startSpanWithRemoteParent(String spanName, SpanContext spanContext) {
         SpanBuilder spanBuilder = TRACER.spanBuilder(spanName)
             .setParent(io.opentelemetry.context.Context.root().with(Span.wrap(spanContext)));
-        // current?
+
         spanBuilder.setSpanKind(Span.Kind.CONSUMER);
         return spanBuilder.startSpan();
     }

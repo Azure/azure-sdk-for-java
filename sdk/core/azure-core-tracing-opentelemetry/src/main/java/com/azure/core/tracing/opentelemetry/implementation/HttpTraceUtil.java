@@ -40,17 +40,9 @@ public final class HttpTraceUtil {
     /**
      * Parse OpenTelemetry Status from HTTP response status code.
      *
-     * <p>This method serves a default routine to map HTTP status code to Open Census Status. The
-     * mapping is defined in <a
-     * href="https://github.com/googleapis/googleapis/blob/master/google/rpc/code.proto">Google API
-     * canonical error code</a>, and the behavior is defined in <a
-     * href="https://github.com/census-instrumentation/opencensus-specs/blob/master/trace/HTTP.md">OpenTelemetry
-     * Specs</a>.
-     *
-     *
-     * @param span
+     * @param span the span to set the status on.
      * @param statusCode the HTTP response status code. {@code 0} means invalid response.
-     * @param throwable
+     * @param throwable the {@link Throwable} to propagate to the span.
      * @return the corresponding OpenTelemetry {@code Status}.
      */
     public static Span setSpanStatus(Span span, int statusCode, Throwable throwable) {
