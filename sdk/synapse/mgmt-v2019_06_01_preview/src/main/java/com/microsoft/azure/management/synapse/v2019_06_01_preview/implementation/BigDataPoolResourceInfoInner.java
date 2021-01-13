@@ -55,18 +55,6 @@ public class BigDataPoolResourceInfoInner extends Resource {
     private Boolean isComputeIsolationEnabled;
 
     /**
-     * Whether library requirements changed.
-     */
-    @JsonProperty(value = "properties.haveLibraryRequirementsChanged")
-    private Boolean haveLibraryRequirementsChanged;
-
-    /**
-     * Whether session level packages enabled.
-     */
-    @JsonProperty(value = "properties.sessionLevelPackagesEnabled")
-    private Boolean sessionLevelPackagesEnabled;
-
-    /**
      * The Spark events folder.
      */
     @JsonProperty(value = "properties.sparkEventsFolder")
@@ -85,12 +73,6 @@ public class BigDataPoolResourceInfoInner extends Resource {
     private LibraryRequirements libraryRequirements;
 
     /**
-     * Spark configuration file to specify additional properties.
-     */
-    @JsonProperty(value = "properties.sparkConfigProperties")
-    private LibraryRequirements sparkConfigProperties;
-
-    /**
      * The Apache Spark version.
      */
     @JsonProperty(value = "properties.sparkVersion")
@@ -105,7 +87,7 @@ public class BigDataPoolResourceInfoInner extends Resource {
     /**
      * The level of compute power that each node in the Big Data pool has.
      * Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge',
-     * 'XXLarge', 'XXXLarge'.
+     * 'XXLarge'.
      */
     @JsonProperty(value = "properties.nodeSize")
     private NodeSize nodeSize;
@@ -218,46 +200,6 @@ public class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Get whether library requirements changed.
-     *
-     * @return the haveLibraryRequirementsChanged value
-     */
-    public Boolean haveLibraryRequirementsChanged() {
-        return this.haveLibraryRequirementsChanged;
-    }
-
-    /**
-     * Set whether library requirements changed.
-     *
-     * @param haveLibraryRequirementsChanged the haveLibraryRequirementsChanged value to set
-     * @return the BigDataPoolResourceInfoInner object itself.
-     */
-    public BigDataPoolResourceInfoInner withHaveLibraryRequirementsChanged(Boolean haveLibraryRequirementsChanged) {
-        this.haveLibraryRequirementsChanged = haveLibraryRequirementsChanged;
-        return this;
-    }
-
-    /**
-     * Get whether session level packages enabled.
-     *
-     * @return the sessionLevelPackagesEnabled value
-     */
-    public Boolean sessionLevelPackagesEnabled() {
-        return this.sessionLevelPackagesEnabled;
-    }
-
-    /**
-     * Set whether session level packages enabled.
-     *
-     * @param sessionLevelPackagesEnabled the sessionLevelPackagesEnabled value to set
-     * @return the BigDataPoolResourceInfoInner object itself.
-     */
-    public BigDataPoolResourceInfoInner withSessionLevelPackagesEnabled(Boolean sessionLevelPackagesEnabled) {
-        this.sessionLevelPackagesEnabled = sessionLevelPackagesEnabled;
-        return this;
-    }
-
-    /**
      * Get the Spark events folder.
      *
      * @return the sparkEventsFolder value
@@ -318,26 +260,6 @@ public class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Get spark configuration file to specify additional properties.
-     *
-     * @return the sparkConfigProperties value
-     */
-    public LibraryRequirements sparkConfigProperties() {
-        return this.sparkConfigProperties;
-    }
-
-    /**
-     * Set spark configuration file to specify additional properties.
-     *
-     * @param sparkConfigProperties the sparkConfigProperties value to set
-     * @return the BigDataPoolResourceInfoInner object itself.
-     */
-    public BigDataPoolResourceInfoInner withSparkConfigProperties(LibraryRequirements sparkConfigProperties) {
-        this.sparkConfigProperties = sparkConfigProperties;
-        return this;
-    }
-
-    /**
      * Get the Apache Spark version.
      *
      * @return the sparkVersion value
@@ -378,7 +300,7 @@ public class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Get the level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge', 'XXXLarge'.
+     * Get the level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge'.
      *
      * @return the nodeSize value
      */
@@ -387,7 +309,7 @@ public class BigDataPoolResourceInfoInner extends Resource {
     }
 
     /**
-     * Set the level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge', 'XXXLarge'.
+     * Set the level of compute power that each node in the Big Data pool has. Possible values include: 'None', 'Small', 'Medium', 'Large', 'XLarge', 'XXLarge'.
      *
      * @param nodeSize the nodeSize value to set
      * @return the BigDataPoolResourceInfoInner object itself.

@@ -6,18 +6,14 @@ param (
     [string]$RepoName,
 
     [Parameter(Mandatory = $true)]
-    $PullRequestNumber,
-
-    [Parameter(Mandatory = $true)]
-    [string]$AuthToken
+    $PullRequestNumber
 )
 
-. (Join-Path $PSScriptRoot common.ps1)
+. "${PSScriptRoot}\common.ps1"
 
 try
 {
-    $pullRequest = Get-GithubPullRequest -RepoOwner $RepoOwner -RepoName $RepoName `
-    -PullRequestNumber $PullRequestNumber -AuthToken $AuthToken
+    $pullRequest = Get-GithubPullRequest -RepoOwner $RepoOwner -RepoName $RepoName -PullRequestNumber $PullRequestNumber
     Write-Host "##vso[task.setvariable variable=System.PullRequest.Creator;]$($pullRequest.user.login)"
 }
 catch

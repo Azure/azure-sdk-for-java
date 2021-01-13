@@ -34,9 +34,6 @@ public final class NodeSize extends ExpandableStringEnum<NodeSize> {
     /** Static value XXLarge for NodeSize. */
     public static final NodeSize XXLARGE = fromString("XXLarge");
 
-    /** Static value XXXLarge for NodeSize. */
-    public static final NodeSize XXXLARGE = fromString("XXXLarge");
-
     /**
      * Creates or finds a NodeSize from its string representation.
      * @param name a name to look for

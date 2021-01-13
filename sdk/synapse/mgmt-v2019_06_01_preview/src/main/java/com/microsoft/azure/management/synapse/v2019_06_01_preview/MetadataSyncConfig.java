@@ -33,11 +33,6 @@ public interface MetadataSyncConfig extends HasInner<MetadataSyncConfigInner>, H
     String name();
 
     /**
-     * @return the syncIntervalInMinutes value.
-     */
-    Integer syncIntervalInMinutes();
-
-    /**
      * @return the type value.
      */
     String type();

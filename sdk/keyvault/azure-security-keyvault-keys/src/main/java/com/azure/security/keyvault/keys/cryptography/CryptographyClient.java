@@ -81,20 +81,18 @@ public class CryptographyClient {
      * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports a
      * single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
      * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys public
-     * portion of the key is used for encryption. This operation requires the keys/encrypt permission.
+     * portion of the key is used
+     * for encryption. This operation requires the keys/encrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
-     * specified encrypted content. Possible values for asymmetric keys include:
+     * specified encrypted content. Possible values for assymetric keys include:
      * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
      * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
      *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
-     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
-     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
-     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
-     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
-     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link
+     * EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256}, {@link EncryptionAlgorithm#A192CBC A192CBC},
+     * {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link EncryptionAlgorithm#A256CBC A256CBC} and
+     * {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
@@ -102,16 +100,16 @@ public class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context}
      *
      * @param algorithm The algorithm to be used for encryption.
-     * @param plainText The content to be encrypted.
+     * @param plaintext The content to be encrypted.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
      * content.
-     * @throws ResourceNotFoundException If the key cannot be found for encryption.
-     * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
+     * @throws ResourceNotFoundException if the key cannot be found for encryption.
+     * @throws UnsupportedOperationException if the encrypt operation is not supported or configured on the key.
+     * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
      */
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plainText, Context context) {
-        return encrypt(new EncryptOptions(algorithm, plainText, null, null), context);
+    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
+        return client.encrypt(algorithm, plaintext, context).block();
     }
 
     /**
@@ -121,17 +119,13 @@ public class CryptographyClient {
      * portion of the key is used for encryption. This operation requires the keys/encrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
-     * specified encrypted content. Possible values for asymmetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
-     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
-     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
-     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
-     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
-     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
-     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     * specified encrypted content. Possible values
+     * for assymetric keys include: {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP
+     * RSA_OAEP} and {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link
+     * EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link
+     * EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
@@ -139,51 +133,15 @@ public class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte}
      *
      * @param algorithm The algorithm to be used for encryption.
-     * @param plainText The content to be encrypted.
+     * @param plaintext The content to be encrypted.
      * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
-     * content.
-     * @throws ResourceNotFoundException If the key cannot be found for encryption.
-     * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code plainText} are {@code null}.
+     *     content.
+     * @throws ResourceNotFoundException if the key cannot be found for encryption.
+     * @throws UnsupportedOperationException if the encrypt operation is not supported or configured on the key.
+     * @throws NullPointerException if {@code algorithm} or  {@code plainText} is null.
      */
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plainText) {
-        return encrypt(algorithm, plainText, Context.NONE);
-    }
-
-    /**
-     * Encrypts an arbitrary sequence of bytes using the configured key. Note that the encrypt operation only supports a
-     * single block of data, the size of which is dependent on the target key and the encryption algorithm to be used.
-     * The encrypt operation is supported for both symmetric keys and asymmetric keys. In case of asymmetric keys public
-     * portion of the key is used for encryption. This operation requires the keys/encrypt permission.
-     *
-     * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
-     * specified encrypted content. Possible values for asymmetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
-     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
-     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
-     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
-     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
-     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
-     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Encrypts the content. Subscribes to the call asynchronously and prints out the encrypted content details when
-     * a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptOptions-Context}
-     *
-     * @param encryptOptions The parameters to use in the encryption operation.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The {@link EncryptResult} whose {@link EncryptResult#getCipherText() cipher text} contains the encrypted
-     * content.
-     * @throws ResourceNotFoundException If the key cannot be found for encryption.
-     * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code encryptOptions} is {@code null}.
-     */
-    public EncryptResult encrypt(EncryptOptions encryptOptions, Context context) {
-        return client.encrypt(encryptOptions, context).block();
+    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
+        return encrypt(algorithm, plaintext, Context.NONE);
     }
 
     /**
@@ -193,17 +151,13 @@ public class CryptographyClient {
      * keys/decrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
-     * specified encrypted content. Possible values for asymmetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
-     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
-     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
-     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
-     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
-     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
-     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     * specified encrypted content. Possible values
+     * for assymetric keys include: {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP
+     * RSA_OAEP} and {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link
+     * EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link
+     * EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
@@ -214,12 +168,12 @@ public class CryptographyClient {
      * @param cipherText The content to be decrypted.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The decrypted blob.
-     * @throws ResourceNotFoundException If the key cannot be found for encryption.
-     * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
+     * @throws ResourceNotFoundException if the key cannot be found for decryption.
+     * @throws UnsupportedOperationException if the decrypt operation is not supported or configured on the key.
+     * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
      */
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, Context context) {
-        return decrypt(new DecryptOptions(algorithm, cipherText, null, null, null), context);
+        return client.decrypt(algorithm, cipherText, context).block();
     }
 
     /**
@@ -229,17 +183,13 @@ public class CryptographyClient {
      * keys/decrypt permission.
      *
      * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
-     * specified encrypted content. Possible values for asymmetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
-     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
-     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
-     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
-     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
-     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
-     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
+     * specified encrypted content. Possible values
+     * for assymetric keys include: {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP
+     * RSA_OAEP} and {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC}, {@link
+     * EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
+     * {@link EncryptionAlgorithm#A192CBC A192CBC}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384}, {@link
+     * EncryptionAlgorithm#A256CBC A256CBC} and {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} </p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
@@ -249,47 +199,12 @@ public class CryptographyClient {
      * @param algorithm The algorithm to be used for decryption.
      * @param cipherText The content to be decrypted.
      * @return The decrypted blob.
-     * @throws ResourceNotFoundException If the key cannot be found for encryption.
-     * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code cipherText} are {@code null}.
+     * @throws ResourceNotFoundException if the key cannot be found for decryption.
+     * @throws UnsupportedOperationException if the decrypt operation is not supported or configured on the key.
+     * @throws NullPointerException if {@code algorithm} or {@code cipherText} is null.
      */
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] cipherText) {
-        return decrypt(new DecryptOptions(algorithm, cipherText, null, null, null), Context.NONE);
-    }
-
-    /**
-     * Decrypts a single block of encrypted data using the configured key and specified algorithm. Note that only a
-     * single block of data may be decrypted, the size of this block is dependent on the target key and the algorithm to
-     * be used. The decrypt operation is supported for both asymmetric and symmetric keys. This operation requires the
-     * keys/decrypt permission.
-     *
-     * <p>The {@link EncryptionAlgorithm encryption algorithm} indicates the type of algorithm to use for decrypting the
-     * specified encrypted content. Possible values for asymmetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
-     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128CBC A128CBC},
-     * {@link EncryptionAlgorithm#A128CBCPAD A128CBCPAD}, {@link EncryptionAlgorithm#A128CBC_HS256 A128CBC-HS256},
-     * {@link EncryptionAlgorithm#A128GCM A128GCM}, {@link EncryptionAlgorithm#A192CBC A192CBC},
-     * {@link EncryptionAlgorithm#A192CBCPAD A192CBCPAD}, {@link EncryptionAlgorithm#A192CBC_HS384 A192CBC-HS384},
-     * {@link EncryptionAlgorithm#A192GCM A192GCM}, {@link EncryptionAlgorithm#A256CBC A256CBC},
-     * {@link EncryptionAlgorithm#A256CBCPAD A256CBPAD}, {@link EncryptionAlgorithm#A256CBC_HS512 A256CBC-HS512} and
-     * {@link EncryptionAlgorithm#A256GCM A256GCM}.</p>
-     *
-     * <p><strong>Code Samples</strong></p>
-     * <p>Decrypts the encrypted content. Subscribes to the call asynchronously and prints out the decrypted content
-     * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptOptions-Context}
-     *
-     * @param decryptOptions The parameters to use in the decryption operation.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return The decrypted blob.
-     * @throws ResourceNotFoundException If the key cannot be found for encryption.
-     * @throws UnsupportedOperationException If the decrypt operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code decryptOptions} is {@code null}.
-     */
-    public DecryptResult decrypt(DecryptOptions decryptOptions, Context context) {
-        return client.decrypt(decryptOptions, context).block();
+        return decrypt(algorithm, cipherText, Context.NONE);
     }
 
     /**
@@ -417,12 +332,9 @@ public class CryptographyClient {
      * symmetric and asymmetric keys. This operation requires the keys/wrapKey permission.
      *
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified
-     * key content. Possible values for asymmetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
-     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
-     * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
+     * key content. Possible values include:
+     * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link
+     * KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
@@ -430,12 +342,12 @@ public class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte}
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
-     * @param key The key content to be wrapped.
+     * @param key The key content to be wrapped
      * @return The {@link WrapResult} whose {@link WrapResult#getEncryptedKey() encrypted key} contains the wrapped
-     * key result.
-     * @throws ResourceNotFoundException If the key cannot be found for encryption.
-     * @throws UnsupportedOperationException If the wrap operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code key} are {@code null}.
+     *     key result.
+     * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
+     * @throws UnsupportedOperationException if the wrap operation is not supported or configured on the key.
+     * @throws NullPointerException if {@code algorithm} or {@code key} is null.
      */
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
         return wrapKey(algorithm, key, Context.NONE);
@@ -446,12 +358,9 @@ public class CryptographyClient {
      * symmetric and asymmetric keys. This operation requires the keys/wrapKey permission.
      *
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified
-     * key content. Possible values for asymmetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
-     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
-     * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
+     * key content. Possible values include:
+     * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link
+     * KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Wraps the key content. Subscribes to the call asynchronously and prints out the wrapped key details when a
@@ -459,13 +368,13 @@ public class CryptographyClient {
      * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-Context}
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
-     * @param key The key content to be wrapped.
+     * @param key The key content to be wrapped
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The {@link WrapResult} whose {@link WrapResult#getEncryptedKey() encrypted key} contains the wrapped
-     * key result.
-     * @throws ResourceNotFoundException If the key cannot be found for encryption.
-     * @throws UnsupportedOperationException If the wrap operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code key} are {@code null}.
+     *     key result.
+     * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
+     * @throws UnsupportedOperationException if the wrap operation is not supported or configured on the key.
+     * @throws NullPointerException if {@code algorithm} or {@code key} is null.
      */
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
         return client.wrapKey(algorithm, key, context).block();
@@ -478,11 +387,10 @@ public class CryptographyClient {
      *
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified
      * key content. Possible values for asymmetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
-     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
-     * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
+     * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link
+     * KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW}, {@link
+     * KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when a
@@ -492,9 +400,9 @@ public class CryptographyClient {
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
      * @return The unwrapped key content.
-     * @throws ResourceNotFoundException If the key cannot be found for wrap operation.
-     * @throws UnsupportedOperationException If the unwrap operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code encryptedKey} are {@code null}.
+     * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
+     * @throws UnsupportedOperationException if the unwrap operation is not supported or configured on the key.
+     * @throws NullPointerException if {@code algorithm} or {@code encryptedKey} is null.
      */
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
         return unwrapKey(algorithm, encryptedKey, Context.NONE);
@@ -502,16 +410,16 @@ public class CryptographyClient {
 
     /**
      * Unwraps a symmetric key using the configured key that was initially used for wrapping that key. This operation is
-     * the reverse of the wrap operation. The unwrap operation supports asymmetric and symmetric keys to unwrap. This
-     * operation requires the keys/unwrapKey permission.
+     * the reverse of the wrap operation.
+     * The unwrap operation supports asymmetric and symmetric keys to unwrap. This operation requires the keys/unwrapKey
+     * permission.
      *
      * <p>The {@link KeyWrapAlgorithm wrap algorithm} indicates the type of algorithm to use for wrapping the specified
      * key content. Possible values for asymmetric keys include:
-     * {@link EncryptionAlgorithm#RSA1_5 RSA1_5}, {@link EncryptionAlgorithm#RSA_OAEP RSA_OAEP} and
-     * {@link EncryptionAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
-     *
-     * Possible values for symmetric keys include: {@link EncryptionAlgorithm#A128KW A128KW},
-     * {@link EncryptionAlgorithm#A192KW A192KW} and {@link EncryptionAlgorithm#A256KW A256KW}.</p>
+     * {@link KeyWrapAlgorithm#RSA1_5 RSA1_5}, {@link KeyWrapAlgorithm#RSA_OAEP RSA_OAEP} and {@link
+     * KeyWrapAlgorithm#RSA_OAEP_256 RSA_OAEP_256}.
+     * Possible values for symmetric keys include: {@link KeyWrapAlgorithm#A128KW A128KW}, {@link
+     * KeyWrapAlgorithm#A192KW A192KW} and {@link KeyWrapAlgorithm#A256KW A256KW}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Unwraps the key content. Subscribes to the call asynchronously and prints out the unwrapped key details when a
@@ -522,9 +430,9 @@ public class CryptographyClient {
      * @param encryptedKey The encrypted key content to unwrap.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The unwrapped key content.
-     * @throws ResourceNotFoundException If the key cannot be found for wrap operation.
-     * @throws UnsupportedOperationException If the unwrap operation is not supported or configured on the key.
-     * @throws NullPointerException If {@code algorithm} or {@code encryptedKey} are {@code null}.
+     * @throws ResourceNotFoundException if the key cannot be found for wrap operation.
+     * @throws UnsupportedOperationException if the unwrap operation is not supported or configured on the key.
+     * @throws NullPointerException if {@code algorithm} or {@code encryptedKey} is null.
      */
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         return client.unwrapKey(algorithm, encryptedKey, context).block();

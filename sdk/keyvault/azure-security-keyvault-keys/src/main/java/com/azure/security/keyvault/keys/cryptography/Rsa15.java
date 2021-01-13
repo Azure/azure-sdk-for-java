@@ -33,9 +33,9 @@ class Rsa15 extends RsaEncryption {
         }
 
         @Override
-        public byte[] doFinal(byte[] plainText) throws IllegalBlockSizeException, BadPaddingException {
+        public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException {
 
-            return cipher.doFinal(plainText);
+            return cipher.doFinal(plaintext);
         }
 
     }
@@ -59,9 +59,9 @@ class Rsa15 extends RsaEncryption {
         }
 
         @Override
-        public byte[] doFinal(byte[] plainText) throws IllegalBlockSizeException, BadPaddingException {
+        public byte[] doFinal(byte[] plaintext) throws IllegalBlockSizeException, BadPaddingException {
 
-            return cipher.doFinal(plainText);
+            return cipher.doFinal(plaintext);
         }
 
     }

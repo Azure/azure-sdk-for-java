@@ -5,7 +5,8 @@ package com.azure.security.keyvault.administration;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentScope;
 
 /**
  * This sample demonstrates how to create role assignments in the key vault for different scopes.
@@ -41,8 +42,11 @@ public class CreateRoleAssignmentsForDifferentScopes {
         String roleDefinitionId = "<role-definition-id>";
         String servicePrincipalId = "<service-principal-id>";
 
+        KeyVaultRoleAssignmentProperties roleAssignmentProperties =
+            new KeyVaultRoleAssignmentProperties(roleDefinitionId, servicePrincipalId);
+
         KeyVaultRoleAssignment roleAssignmentForAllKeys =
-            accessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId, servicePrincipalId);
+            accessControlClient.createRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, roleAssignmentProperties);
 
         System.out.printf("Created role assignment with name: %s %n", roleAssignmentForAllKeys.getName());
 
@@ -52,8 +56,8 @@ public class CreateRoleAssignmentsForDifferentScopes {
         String keyId = "<key-id>";
 
         KeyVaultRoleAssignment roleAssignmentForSingleKey =
-            accessControlClient.createRoleAssignment(KeyVaultRoleScope.fromString(keyId), roleDefinitionId,
-                servicePrincipalId);
+            accessControlClient.createRoleAssignment(KeyVaultRoleAssignmentScope.fromString(keyId),
+                roleAssignmentProperties);
 
         System.out.printf("Created role assignment with name: %s %n", roleAssignmentForSingleKey.getName());
     }

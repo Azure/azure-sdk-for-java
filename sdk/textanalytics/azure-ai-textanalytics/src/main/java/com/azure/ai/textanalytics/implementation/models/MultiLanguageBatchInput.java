@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Contains a set of input documents to be analyzed by the service. */
+/** The MultiLanguageBatchInput model. */
 @Fluent
 public final class MultiLanguageBatchInput {
     /*

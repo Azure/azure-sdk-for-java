@@ -3,12 +3,9 @@
 
 package com.azure.security.keyvault.administration.models;
 
-import com.azure.core.annotation.Immutable;
-
 /**
  * A class that represents an error occurred in a Key Vault operation.
  */
-@Immutable
 public final class KeyVaultError {
     private final String code;
     private final String message;

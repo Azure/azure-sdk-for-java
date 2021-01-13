@@ -115,7 +115,7 @@ library to share a single authentication solution between clients of different A
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .build();
 String fullyQualifiedNamespace = "yournamespace.servicebus.windows.net";
-ServiceBusSenderClient senderUsingTokenCredential = new ServiceBusClientBuilder()
+ServiceBusSenderClient client = new ServiceBusClientBuilder()
     .credential(fullyQualifiedNamespace, credential)
     .sender()
     .queueName("my-queue")
@@ -123,7 +123,7 @@ ServiceBusSenderClient senderUsingTokenCredential = new ServiceBusClientBuilder(
 
 // Create a sender client that will authenticate using a connection string
 String connectionString = "Endpoint=sb://yournamespace.servicebus.windows.net/;SharedAccessKeyName=your-key-name;SharedAccessKey=your-key";
-ServiceBusSenderClient senderUsingConnectionString = new ServiceBusClientBuilder()
+ServiceBusSenderClient client = new ServiceBusClientBuilder()
     .connectionString(connectionString)
     .sender()
     .queueName("my-queue")
@@ -139,8 +139,6 @@ While the `IQueueClient` supported the simple send operation, the `IMessageSende
 like scheduling to send messages at a later time and cancelling such scheduled messages.
 
 ```java
-// NOTE: this example is using code for the older package
-
 String queueName = "my-queue";
 String connectionString = "Endpoint=sb://yournamespace.servicebus.windows.net/;"
     + "SharedAccessKeyName=your-key-name;SharedAccessKey=your-key";
@@ -168,11 +166,9 @@ We continue to support sending bytes in the message. Though, if you are working 
 message directly without having to convert it to bytes first. The snippet below demonstrates the sync sender client.
 
 ```java
-// code using the latest package.
-
 // create the sync sender via the builder and its sub-builder
-ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+ServiceBusSenderClient client = new ServiceBusClientBuilder()
+    .connectionString(connectionString)
     .sender()
     .queueName("my-queue")
     .buildClient();
@@ -196,17 +192,13 @@ send. This uses the sync sender as well.
 
 ```java
 // create the sync sender via the builder and its sub-builder
-ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+ServiceBusSenderClient client = new ServiceBusClientBuilder()
+    .connectionString(connectionString)
     .sender()
     .queueName("my-queue")
     .buildClient();
 
-ServiceBusMessage[] inputMessageArray = new ServiceBusMessage[] {
-    new ServiceBusMessage("example message"),
-    new ServiceBusMessage("example message 2")
-};
-
+ServiceBusMessage[] inputMessageArray = new ServiceBusMessage[10];
 ServiceBusMessageBatch messageBatch = sender.createBatch();
 
 for (int i = 0; i < inputMessageArray.length; i++) {
@@ -241,8 +233,6 @@ handlers/callbacks, the `IMessageReceiver` provided you with ways to receive mes
 batches, settle messages and renew locks.
 
 ```java
-// NOTE: this example is using code for the older package
-
 QueueClient client = new QueueClient(new ConnectionStringBuilder(connectionString, queueName),
     ReceiveMode.PEEKLOCK);
 
@@ -285,23 +275,27 @@ For a more fine grained control and advanced features, you still have the `Servi
 counterpart `ServiceBusReceiverAsyncClient`.
 
 ```java
-// code using the latest package.
 
 // Sample code that processes a single message
 Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
-    System.out.println(messageContext.getMessage().getMessageId());
-    // other message processing code
-};
+    try {
+        System.out.println(messageContext.getMessage().getMessageId());
+        // other message processing code
+        messageContext.complete(); 
+    } catch (Exception ex) {
+        messageContext.abandon(); 
+    }
+}   
 
 // Sample code that gets called if there's an error
-Consumer<ServiceBusErrorContext> processError = errorContext -> {
-    logError(errorContext.getException());
-    metrics.recordError(errorContext.getException());
-};
+Consumer<Throwable> processError = throwable -> {
+    logError(throwable);
+    metrics.recordError(throwable);
+}
 
 // create the processor client via the builder and its sub-builder
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-                                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+                                .connectionString("connection-string")
                                 .processor()
                                 .queueName("queue-name")
                                 .processMessage(processMessage)
@@ -310,6 +304,7 @@ ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
 
 // Starts the processor in the background and returns immediately
 processorClient.start();
+
 ```
 
 ### Working with sessions
@@ -329,20 +324,25 @@ The below code snippet shows you how to use the processor client to receive mess
 ```java
 // Sample code that processes a single message
 Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
-    System.out.println(messageContext.getMessage().getMessageId());
-    // other message processing code
-};
+    try {
+        System.out.println(messageContext.getMessage().getMessageId());
+        // other message processing code
+        messageContext.complete(); 
+    } catch (Exception ex) {
+        messageContext.abandon(); 
+    }
+}   
 
 // Sample code that gets called if there's an error
-Consumer<ServiceBusErrorContext> processError = errorContext -> {
-    logError(errorContext.getException());
-    metrics.recordError(errorContext.getException());
-};
+Consumer<Throwable> processError = throwable -> {
+    logError(throwable);
+    metrics.recordError(throwable);
+}
 
 // create the processor client via the builder and its sub-builder
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-                                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
-                                .sessionProcessor()
+                                .connectionString("connection-string")
+                                .processor()
                                 .queueName("queue-name")
                                 .maxConcurrentSessions(3)
                                 .processMessage(processMessage)
@@ -363,7 +363,7 @@ While the below code uses `acceptSession()` that takes a sessionId, you can also
 
 ```java
 ServiceBusSessionReceiverClient sessionClient = new ServiceBusClientBuilder()
-    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+    .connectionString(connectionString)
     .sessionReceiver()
     .queueName("queue")
     .buildClient();

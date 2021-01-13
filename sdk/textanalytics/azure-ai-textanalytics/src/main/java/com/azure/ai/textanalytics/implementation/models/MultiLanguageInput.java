@@ -7,7 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains an input document to be analyzed by the service. */
+/** The MultiLanguageInput model. */
 @Fluent
 public final class MultiLanguageInput {
     /*

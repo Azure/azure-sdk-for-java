@@ -78,12 +78,16 @@ public class UserPrincipalMicrosoftGraphTest {
         serviceEndpointsProperties = new ServiceEndpointsProperties();
         final ServiceEndpoints serviceEndpoints = new ServiceEndpoints();
         serviceEndpoints.setAadMembershipRestUri("http://localhost:9519/memberOf");
+        serviceEndpoints.setAadTransitiveMemberRestUri("http://localhost:9519/transitiveMemberOf");
         serviceEndpointsProperties.getEndpoints().put("global-v2-graph", serviceEndpoints);
     }
 
     @Test
     public void getAuthoritiesByUserGroups() throws Exception {
+        aadAuthenticationProperties.getUserGroup().setGroupRelationship("direct");
         aadAuthenticationProperties.getUserGroup().setAllowedGroups(Collections.singletonList("group1"));
+        serviceEndpointsProperties.getServiceEndpoints("global-v2-graph")
+                                  .setAadMembershipRestUri("http://localhost:9519/memberOf");
         this.graphClientMock = new AzureADGraphClient(aadAuthenticationProperties, serviceEndpointsProperties);
 
         stubFor(get(urlEqualTo("/memberOf"))
@@ -104,8 +108,11 @@ public class UserPrincipalMicrosoftGraphTest {
     }
 
     @Test
-    public void getGroups() throws Exception {
-        aadAuthenticationProperties.setActiveDirectoryGroups(Arrays.asList("group1", "group2", "group3"));
+    public void getDirectGroups() throws Exception {
+        aadAuthenticationProperties.getUserGroup().setGroupRelationship("direct");
+        AADAuthenticationProperties.UserGroupProperties userGroupProperties = aadAuthenticationProperties.getUserGroup();
+        userGroupProperties.setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
+        aadAuthenticationProperties.setUserGroup(userGroupProperties);
         this.graphClientMock = new AzureADGraphClient(aadAuthenticationProperties, serviceEndpointsProperties);
 
         stubFor(get(urlEqualTo("/memberOf"))
@@ -124,6 +131,34 @@ public class UserPrincipalMicrosoftGraphTest {
             .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
 
         verify(getRequestedFor(urlMatching("/memberOf"))
+            .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
+            .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE)));
+    }
+
+    @Test
+    public void getTransitiveGroups() throws Exception {
+        aadAuthenticationProperties.getUserGroup().setGroupRelationship("transitive");
+        AADAuthenticationProperties.UserGroupProperties userGroupProperties = aadAuthenticationProperties.getUserGroup();
+        userGroupProperties.setAllowedGroups(Arrays.asList("group1", "group2", "group3"));
+        aadAuthenticationProperties.setUserGroup(userGroupProperties);
+        this.graphClientMock = new AzureADGraphClient(aadAuthenticationProperties, serviceEndpointsProperties);
+
+        stubFor(get(urlEqualTo("/transitiveMemberOf"))
+            .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
+            .willReturn(aResponse()
+                .withStatus(200)
+                .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
+                .withBody(userGroupsJson)));
+
+        final Collection<? extends GrantedAuthority> authorities = graphClientMock
+            .getGrantedAuthorities(MicrosoftGraphConstants.BEARER_TOKEN);
+
+        assertThat(authorities)
+            .isNotEmpty()
+            .extracting(GrantedAuthority::getAuthority)
+            .containsExactlyInAnyOrder("ROLE_group1", "ROLE_group2", "ROLE_group3");
+
+        verify(getRequestedFor(urlMatching("/transitiveMemberOf"))
             .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
             .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE)));
     }

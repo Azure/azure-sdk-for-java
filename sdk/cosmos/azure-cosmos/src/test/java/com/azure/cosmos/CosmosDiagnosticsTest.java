@@ -146,9 +146,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
-            assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotNull();
-            // TODO: (nakumars) - Uncomment the following line after your client telemetry fix
-            // assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             validateTransportRequestTimelineGateway(diagnostics);
             validateJson(diagnostics);
         } finally {
@@ -179,10 +176,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"statusCode\":404");
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
-            assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
-            assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotNull();
-            // TODO: (nakumars) - Uncomment the following line after your client telemetry fix
-            // assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineGateway(diagnostics);
             validateJson(diagnostics);
@@ -226,7 +219,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"metaDataName\":\"SERVER_ADDRESS_LOOKUP\"");
             assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
-            assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineDirect(diagnostics);
             validateJson(diagnostics);
@@ -425,8 +417,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             String diagnostics = exception.getDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
-            assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
-            assertThat(exception.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             validateJson(diagnostics);
             // TODO https://github.com/Azure/azure-sdk-for-java/issues/8035

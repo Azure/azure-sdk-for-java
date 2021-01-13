@@ -14,25 +14,11 @@ public class SecretBundle implements Serializable {
      * Stores the serial version UID.
      */
     private static final long serialVersionUID = 1L;
-    
-    /**
-     * Stores the content type.
-     */
-    private String contentType;
 
     /**
      * Stores the value.
      */
     private String value;
-
-    /**
-     * Get the content type.
-     * 
-     * @return the content type.
-     */
-    public String getContentType() {
-        return contentType;
-    }
 
     /**
      * Get the value.
@@ -41,15 +27,6 @@ public class SecretBundle implements Serializable {
      */
     public String getValue() {
         return value;
-    }
-    
-    /**
-     * Set the content type.
-     * 
-     * @param contentType the content type.
-     */
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
     }
 
     /**

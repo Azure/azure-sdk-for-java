@@ -7,7 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the confidence scores across all sentiment classes: positive, neutral, negative. */
+/** The AspectConfidenceScoreLabel model. */
 @Fluent
 public final class AspectConfidenceScoreLabel {
     /*

@@ -7,8 +7,8 @@ package com.azure.communication.administration.implementation;
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AcquiredPhoneNumbers;
 import com.azure.communication.administration.models.AreaCodes;
-import com.azure.communication.administration.models.CreateReservationOptions;
-import com.azure.communication.administration.models.CreateReservationResponse;
+import com.azure.communication.administration.models.CreateSearchOptions;
+import com.azure.communication.administration.models.CreateSearchResponse;
 import com.azure.communication.administration.models.ErrorResponseException;
 import com.azure.communication.administration.models.LocationOptionsQueries;
 import com.azure.communication.administration.models.LocationOptionsResponse;
@@ -20,7 +20,7 @@ import com.azure.communication.administration.models.PhoneNumberCountry;
 import com.azure.communication.administration.models.PhoneNumberEntities;
 import com.azure.communication.administration.models.PhoneNumberEntity;
 import com.azure.communication.administration.models.PhoneNumberRelease;
-import com.azure.communication.administration.models.PhoneNumberReservation;
+import com.azure.communication.administration.models.PhoneNumberSearch;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PhonePlanGroups;
@@ -227,7 +227,7 @@ public final class PhoneNumberAdministrationsImpl {
         @Get("/administration/phonenumbers/searches/{searchId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<PhoneNumberReservation>> getSearchById(
+        Mono<Response<PhoneNumberSearch>> getSearchById(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("searchId") String searchId,
                 @QueryParam("api-version") String apiVersion,
@@ -236,10 +236,10 @@ public final class PhoneNumberAdministrationsImpl {
         @Post("/administration/phonenumbers/searches")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<CreateReservationResponse>> createSearch(
+        Mono<Response<CreateSearchResponse>> createSearch(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CreateReservationOptions body,
+                @BodyParam("application/json") CreateSearchOptions body,
                 Context context);
 
         @Get("/administration/phonenumbers/searches")
@@ -2038,7 +2038,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @return search by search id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumberReservation>> getSearchByIdWithResponseAsync(String searchId) {
+    public Mono<Response<PhoneNumberSearch>> getSearchByIdWithResponseAsync(String searchId) {
         return FluxUtil.withContext(
                 context ->
                         service.getSearchById(
@@ -2056,7 +2056,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @return search by search id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumberReservation>> getSearchByIdWithResponseAsync(String searchId, Context context) {
+    public Mono<Response<PhoneNumberSearch>> getSearchByIdWithResponseAsync(String searchId, Context context) {
         return service.getSearchById(this.client.getEndpoint(), searchId, this.client.getApiVersion(), context);
     }
 
@@ -2070,10 +2070,10 @@ public final class PhoneNumberAdministrationsImpl {
      * @return search by search id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberReservation> getSearchByIdAsync(String searchId) {
+    public Mono<PhoneNumberSearch> getSearchByIdAsync(String searchId) {
         return getSearchByIdWithResponseAsync(searchId)
                 .flatMap(
-                        (Response<PhoneNumberReservation> res) -> {
+                        (Response<PhoneNumberSearch> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -2093,10 +2093,10 @@ public final class PhoneNumberAdministrationsImpl {
      * @return search by search id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberReservation> getSearchByIdAsync(String searchId, Context context) {
+    public Mono<PhoneNumberSearch> getSearchByIdAsync(String searchId, Context context) {
         return getSearchByIdWithResponseAsync(searchId, context)
                 .flatMap(
-                        (Response<PhoneNumberReservation> res) -> {
+                        (Response<PhoneNumberSearch> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -2115,7 +2115,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @return search by search id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberReservation getSearchById(String searchId) {
+    public PhoneNumberSearch getSearchById(String searchId) {
         return getSearchByIdAsync(searchId).block();
     }
 
@@ -2130,7 +2130,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @return search by search id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberReservation getSearchById(String searchId, Context context) {
+    public PhoneNumberSearch getSearchById(String searchId, Context context) {
         return getSearchByIdAsync(searchId, context).block();
     }
 
@@ -2144,7 +2144,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @return represents a search creation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateReservationResponse>> createSearchWithResponseAsync(CreateReservationOptions body) {
+    public Mono<Response<CreateSearchResponse>> createSearchWithResponseAsync(CreateSearchOptions body) {
         return FluxUtil.withContext(
                 context -> service.createSearch(this.client.getEndpoint(), this.client.getApiVersion(), body, context));
     }
@@ -2160,8 +2160,8 @@ public final class PhoneNumberAdministrationsImpl {
      * @return represents a search creation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CreateReservationResponse>> createSearchWithResponseAsync(
-            CreateReservationOptions body, Context context) {
+    public Mono<Response<CreateSearchResponse>> createSearchWithResponseAsync(
+            CreateSearchOptions body, Context context) {
         return service.createSearch(this.client.getEndpoint(), this.client.getApiVersion(), body, context);
     }
 
@@ -2175,10 +2175,10 @@ public final class PhoneNumberAdministrationsImpl {
      * @return represents a search creation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateReservationResponse> createSearchAsync(CreateReservationOptions body) {
+    public Mono<CreateSearchResponse> createSearchAsync(CreateSearchOptions body) {
         return createSearchWithResponseAsync(body)
                 .flatMap(
-                        (Response<CreateReservationResponse> res) -> {
+                        (Response<CreateSearchResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -2198,10 +2198,10 @@ public final class PhoneNumberAdministrationsImpl {
      * @return represents a search creation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateReservationResponse> createSearchAsync(CreateReservationOptions body, Context context) {
+    public Mono<CreateSearchResponse> createSearchAsync(CreateSearchOptions body, Context context) {
         return createSearchWithResponseAsync(body, context)
                 .flatMap(
-                        (Response<CreateReservationResponse> res) -> {
+                        (Response<CreateSearchResponse> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -2220,7 +2220,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @return represents a search creation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateReservationResponse createSearch(CreateReservationOptions body) {
+    public CreateSearchResponse createSearch(CreateSearchOptions body) {
         return createSearchAsync(body).block();
     }
 
@@ -2235,7 +2235,7 @@ public final class PhoneNumberAdministrationsImpl {
      * @return represents a search creation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateReservationResponse createSearch(CreateReservationOptions body, Context context) {
+    public CreateSearchResponse createSearch(CreateSearchOptions body, Context context) {
         return createSearchAsync(body, context).block();
     }
 

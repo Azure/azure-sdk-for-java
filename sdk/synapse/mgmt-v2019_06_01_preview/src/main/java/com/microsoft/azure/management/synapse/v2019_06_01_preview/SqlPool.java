@@ -72,7 +72,7 @@ public interface SqlPool extends HasInner<SqlPoolInner>, Indexable, Refreshable<
     /**
      * @return the restorePointInTime value.
      */
-    String restorePointInTime();
+    DateTime restorePointInTime();
 
     /**
      * @return the sku value.
@@ -221,7 +221,7 @@ public interface SqlPool extends HasInner<SqlPoolInner>, Indexable, Refreshable<
              * @param restorePointInTime Snapshot time to restore
              * @return the next definition stage
              */
-            WithCreate withRestorePointInTime(String restorePointInTime);
+            WithCreate withRestorePointInTime(DateTime restorePointInTime);
         }
 
         /**
@@ -383,7 +383,7 @@ public interface SqlPool extends HasInner<SqlPoolInner>, Indexable, Refreshable<
              * @param restorePointInTime Snapshot time to restore
              * @return the next update stage
              */
-            Update withRestorePointInTime(String restorePointInTime);
+            Update withRestorePointInTime(DateTime restorePointInTime);
         }
 
         /**

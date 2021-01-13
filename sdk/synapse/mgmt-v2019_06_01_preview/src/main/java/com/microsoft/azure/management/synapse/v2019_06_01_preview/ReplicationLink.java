@@ -10,8 +10,6 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.ReplicationLinkInner;
-import com.microsoft.azure.arm.model.Indexable;
-import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SynapseManager;
 import org.joda.time.DateTime;
@@ -19,7 +17,7 @@ import org.joda.time.DateTime;
 /**
  * Type representing ReplicationLink.
  */
-public interface ReplicationLink extends HasInner<ReplicationLinkInner>, Indexable, Refreshable<ReplicationLink>, HasManager<SynapseManager> {
+public interface ReplicationLink extends HasInner<ReplicationLinkInner>, HasManager<SynapseManager> {
     /**
      * @return the id value.
      */

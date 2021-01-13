@@ -27,7 +27,6 @@ public class AuthClientTest {
         AuthClient authClient = new AuthClient();
         String result = authClient.getAccessToken(
             "https://management.azure.com/",
-            System.getProperty("azure.keyvault.aadAuthenticationUrl"),
             tenantId,
             clientId,
             URLEncoder.encode(clientSecret, "UTF-8")

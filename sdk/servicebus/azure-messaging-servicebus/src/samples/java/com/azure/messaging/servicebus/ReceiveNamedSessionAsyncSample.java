@@ -3,7 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
@@ -36,7 +36,7 @@ public class ReceiveNamedSessionAsyncSample {
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .sessionReceiver()
-            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
+            .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 

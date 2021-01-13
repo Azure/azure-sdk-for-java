@@ -7,7 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestMode;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentProperties;
-import com.azure.security.keyvault.administration.models.KeyVaultRoleScope;
+import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignmentScope;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinitionProperties;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -15,11 +15,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlClientTestBase {
     private KeyVaultAccessControlAsyncClient asyncClient;
@@ -45,7 +43,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         List<KeyVaultRoleDefinition> roleDefinitions = new ArrayList<>();
 
-        asyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL).subscribe(roleDefinitions::add);
+        asyncClient.listRoleDefinitions(KeyVaultRoleAssignmentScope.GLOBAL).subscribe(roleDefinitions::add);
 
         assertTrue(roleDefinitions.iterator().hasNext());
 
@@ -81,7 +79,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         List<KeyVaultRoleAssignment> roleAssignments = new ArrayList<>();
 
-        asyncClient.listRoleAssignments(KeyVaultRoleScope.GLOBAL).subscribe(roleAssignments::add);
+        asyncClient.listRoleAssignments(KeyVaultRoleAssignmentScope.GLOBAL).subscribe(roleAssignments::add);
         sleepInLiveOrRecordMode(5000);
 
         for (KeyVaultRoleAssignment roleAssignment : roleAssignments) {
@@ -113,7 +111,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         List<KeyVaultRoleDefinition> roleDefinitions = new ArrayList<>();
 
-        asyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL).subscribe(roleDefinitions::add);
+        asyncClient.listRoleDefinitions(KeyVaultRoleAssignmentScope.GLOBAL).subscribe(roleDefinitions::add);
         sleepInLiveOrRecordMode(5000);
 
         KeyVaultRoleDefinition roleDefinition = null;
@@ -126,31 +124,33 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         assertNotNull(roleDefinition);
 
-        String roleAssignmentName = "d0bedeb4-7431-407d-81cd-278929c98218";
+        UUID roleAssignmentName = UUID.fromString("d0bedeb4-7431-407d-81cd-278929c98218");
+        KeyVaultRoleAssignmentProperties creationProperties =
+            new KeyVaultRoleAssignmentProperties(roleDefinition.getId(), clientId);
 
         try {
             // Create a role assignment.
             KeyVaultRoleAssignment roleAssignment =
-                asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName, roleDefinition.getId(),
-                    clientId).block();
+                asyncClient.createRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, roleAssignmentName,
+                    creationProperties).block();
 
             assertNotNull(roleAssignment);
             assertNotNull(roleAssignment.getId());
-            assertEquals(roleAssignment.getName(), roleAssignmentName);
+            assertEquals(roleAssignment.getName(), roleAssignmentName.toString());
             assertNotNull(roleAssignment.getType());
-            assertNotNull(roleAssignment.getRoleScope());
+            assertNotNull(roleAssignment.getScope());
 
             KeyVaultRoleAssignmentProperties properties = roleAssignment.getProperties();
 
             assertNotNull(properties);
-            assertEquals(clientId, properties.getPrincipalId());
-            assertEquals(roleDefinition.getId(), properties.getRoleDefinitionId());
+            assertEquals(creationProperties.getPrincipalId(), properties.getPrincipalId());
+            assertEquals(creationProperties.getRoleDefinitionId(), properties.getRoleDefinitionId());
         } finally {
             if (getTestMode() != TestMode.PLAYBACK) {
                 // Clean up the role assignment.
                 KeyVaultAccessControlAsyncClient cleanupClient = getClientBuilder(httpClient, true).buildAsyncClient();
 
-                cleanupClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
+                cleanupClient.deleteRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, roleAssignmentName.toString());
             }
         }
     }
@@ -171,7 +171,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         List<KeyVaultRoleDefinition> roleDefinitions = new ArrayList<>();
 
-        asyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL).subscribe(roleDefinitions::add);
+        asyncClient.listRoleDefinitions(KeyVaultRoleAssignmentScope.GLOBAL).subscribe(roleDefinitions::add);
         sleepInLiveOrRecordMode(5000);
 
         KeyVaultRoleDefinition roleDefinition = null;
@@ -184,38 +184,40 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         assertNotNull(roleDefinition);
 
-        String roleAssignmentName = "658d6c14-98c2-4a53-a523-be8609eb7f8b";
+        UUID roleAssignmentName = UUID.fromString("658d6c14-98c2-4a53-a523-be8609eb7f8b");
+        KeyVaultRoleAssignmentProperties creationProperties =
+            new KeyVaultRoleAssignmentProperties(roleDefinition.getId(), clientId);
 
         try {
             // Create a role assignment to retrieve.
             KeyVaultRoleAssignment createdRoleAssignment =
-                asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName, roleDefinition.getId(),
-                    clientId).block();
+                asyncClient.createRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, roleAssignmentName,
+                    creationProperties).block();
 
             assertNotNull(createdRoleAssignment);
 
             // Get the role assignment.
             KeyVaultRoleAssignment retrievedRoleAssignment =
-                asyncClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName)
+                asyncClient.getRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, roleAssignmentName.toString())
                     .block();
 
             assertNotNull(retrievedRoleAssignment);
             assertEquals(createdRoleAssignment.getId(), retrievedRoleAssignment.getId());
             assertEquals(createdRoleAssignment.getName(), retrievedRoleAssignment.getName());
             assertEquals(createdRoleAssignment.getType(), retrievedRoleAssignment.getType());
-            assertEquals(createdRoleAssignment.getRoleScope(), retrievedRoleAssignment.getRoleScope());
+            assertEquals(createdRoleAssignment.getScope(), retrievedRoleAssignment.getScope());
 
             KeyVaultRoleAssignmentProperties retrievedProperties = retrievedRoleAssignment.getProperties();
 
             assertNotNull(retrievedProperties);
-            assertEquals(clientId, retrievedProperties.getPrincipalId());
-            assertEquals(roleDefinition.getId(), retrievedProperties.getRoleDefinitionId());
+            assertEquals(creationProperties.getPrincipalId(), retrievedProperties.getPrincipalId());
+            assertEquals(creationProperties.getRoleDefinitionId(), retrievedProperties.getRoleDefinitionId());
         } finally {
             if (getTestMode() != TestMode.PLAYBACK) {
                 // Clean up the role assignment.
                 KeyVaultAccessControlAsyncClient cleanupClient = getClientBuilder(httpClient, true).buildAsyncClient();
 
-                cleanupClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
+                cleanupClient.deleteRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, roleAssignmentName.toString());
             }
         }
     }
@@ -236,7 +238,7 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         List<KeyVaultRoleDefinition> roleDefinitions = new ArrayList<>();
 
-        asyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL).subscribe(roleDefinitions::add);
+        asyncClient.listRoleDefinitions(KeyVaultRoleAssignmentScope.GLOBAL).subscribe(roleDefinitions::add);
         sleepInLiveOrRecordMode(5000);
 
         KeyVaultRoleDefinition roleDefinition = null;
@@ -249,29 +251,32 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
         assertNotNull(roleDefinition);
 
-        String roleAssignmentName = "33785c35-4196-46b5-9d99-d5bcb2b9ca1d";
+        UUID roleAssignmentName = UUID.fromString("33785c35-4196-46b5-9d99-d5bcb2b9ca1d");
+        KeyVaultRoleAssignmentProperties creationProperties =
+            new KeyVaultRoleAssignmentProperties(roleDefinition.getId(), clientId);
 
         // Create a role assignment to delete.
         KeyVaultRoleAssignment createdRoleAssignment =
-            asyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName, roleDefinition.getId(),
-                clientId).block();
+            asyncClient.createRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, roleAssignmentName,
+                creationProperties).block();
 
         assertNotNull(createdRoleAssignment);
 
         // Delete the role assignment.
         KeyVaultRoleAssignment deletedRoleAssignment =
-            asyncClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName).block();
+            asyncClient.deleteRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, roleAssignmentName.toString()).block();
+        //client.deleteRoleAssignment(KeyVaultRoleAssignmentScope.GLOBAL, "df0c4b30-93b9-4142-9523-ef3ec26ac99f");
 
         assertNotNull(deletedRoleAssignment);
         assertEquals(createdRoleAssignment.getId(), deletedRoleAssignment.getId());
         assertEquals(createdRoleAssignment.getName(), deletedRoleAssignment.getName());
         assertEquals(createdRoleAssignment.getType(), deletedRoleAssignment.getType());
-        assertEquals(createdRoleAssignment.getRoleScope(), deletedRoleAssignment.getRoleScope());
+        assertEquals(createdRoleAssignment.getScope(), deletedRoleAssignment.getScope());
 
         KeyVaultRoleAssignmentProperties retrievedProperties = deletedRoleAssignment.getProperties();
 
         assertNotNull(retrievedProperties);
-        assertEquals(clientId, retrievedProperties.getPrincipalId());
-        assertEquals(roleDefinition.getId(), retrievedProperties.getRoleDefinitionId());
+        assertEquals(creationProperties.getPrincipalId(), retrievedProperties.getPrincipalId());
+        assertEquals(creationProperties.getRoleDefinitionId(), retrievedProperties.getRoleDefinitionId());
     }
 }

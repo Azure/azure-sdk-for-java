@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2020-11-19)
+## 2.0.0-beta.1 (Unreleased)
 ### Breaking Changes
 - Change group id from `com.microsoft.azure` to `com.azure.spring`.
 - Change artifact id from `spring-cloud-azure-storage` to `azure-spring-cloud-storage`.

@@ -3,7 +3,7 @@
 
 package com.azure.spring.sample.servicebus;
 
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -26,7 +26,7 @@ public class ServiceBusProperties {
     /**
      * Queue receive mode.
      */
-    private ServiceBusReceiveMode queueReceiveMode;
+    private ReceiveMode queueReceiveMode;
 
     /**
      * Topic name. Entity path of the topic.
@@ -41,7 +41,7 @@ public class ServiceBusProperties {
     /**
      * Subscription receive mode.
      */
-    private ServiceBusReceiveMode subscriptionReceiveMode;
+    private ReceiveMode subscriptionReceiveMode;
 
     public String getConnectionString() {
         return connectionString;
@@ -59,11 +59,11 @@ public class ServiceBusProperties {
         this.queueName = queueName;
     }
 
-    public ServiceBusReceiveMode getQueueReceiveMode() {
+    public ReceiveMode getQueueReceiveMode() {
         return queueReceiveMode;
     }
 
-    public void setQueueReceiveMode(ServiceBusReceiveMode queueReceiveMode) {
+    public void setQueueReceiveMode(ReceiveMode queueReceiveMode) {
         this.queueReceiveMode = queueReceiveMode;
     }
 
@@ -83,11 +83,11 @@ public class ServiceBusProperties {
         this.subscriptionName = subscriptionName;
     }
 
-    public ServiceBusReceiveMode getSubscriptionReceiveMode() {
+    public ReceiveMode getSubscriptionReceiveMode() {
         return subscriptionReceiveMode;
     }
 
-    public void setSubscriptionReceiveMode(ServiceBusReceiveMode subscriptionReceiveMode) {
+    public void setSubscriptionReceiveMode(ReceiveMode subscriptionReceiveMode) {
         this.subscriptionReceiveMode = subscriptionReceiveMode;
     }
 }

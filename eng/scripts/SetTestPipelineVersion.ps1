@@ -1,11 +1,5 @@
-# Overides the project file and CHANGELOG.md for the template project.
+# Overides the project file and CHANGELOG.md for the template project using the next publishable version
 # This is to help with testing the release pipeline.
-
-param (
-  [Parameter(mandatory = $true)]
-  $BuildID
-)
-
 . "${PSScriptRoot}\..\common\scripts\common.ps1"
 $latestTags = git tag -l "azure-sdk-template_*"
 $semVars = @()
@@ -22,9 +16,7 @@ $semVarsSorted = [AzureEngSemanticVersion]::SortVersionStrings($semVars)
 LogDebug "Last Published Version $($semVarsSorted[0])"
 
 $newVersion = [AzureEngSemanticVersion]::ParseVersionString($semVarsSorted[0])
-$newVersion.PrereleaseLabel = "beta"
-$newVersion.PrereleaseNumber = $BuildID
-
+$newVersion.IncrementAndSetToPrerelease()
 LogDebug "Version to publish [ $($newVersion.ToString()) ]"
 
 $pomFileContent = New-Object -TypeName XML

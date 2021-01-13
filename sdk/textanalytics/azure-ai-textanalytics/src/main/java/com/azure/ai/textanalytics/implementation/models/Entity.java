@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Entity model. */
 @Fluent
-public class Entity {
+public final class Entity {
     /*
      * Entity text as appears in the request.
      */
@@ -17,27 +17,25 @@ public class Entity {
     private String text;
 
     /*
-     * Entity type.
+     * Entity type, such as Person/Location/Org/SSN etc
      */
     @JsonProperty(value = "category", required = true)
     private String category;
 
     /*
-     * (Optional) Entity sub type.
+     * Entity sub type, such as Age/Year/TimeRange etc
      */
     @JsonProperty(value = "subcategory")
     private String subcategory;
 
     /*
-     * Start position for the entity text. Use of different 'stringIndexType'
-     * values can affect the offset returned.
+     * Start position for the entity text.
      */
     @JsonProperty(value = "offset", required = true)
     private int offset;
 
     /*
-     * Length for the entity text. Use of different 'stringIndexType' values
-     * can affect the length returned.
+     * Length for the entity text.
      */
     @JsonProperty(value = "length", required = true)
     private int length;
@@ -69,7 +67,7 @@ public class Entity {
     }
 
     /**
-     * Get the category property: Entity type.
+     * Get the category property: Entity type, such as Person/Location/Org/SSN etc.
      *
      * @return the category value.
      */
@@ -78,7 +76,7 @@ public class Entity {
     }
 
     /**
-     * Set the category property: Entity type.
+     * Set the category property: Entity type, such as Person/Location/Org/SSN etc.
      *
      * @param category the category value to set.
      * @return the Entity object itself.
@@ -89,7 +87,7 @@ public class Entity {
     }
 
     /**
-     * Get the subcategory property: (Optional) Entity sub type.
+     * Get the subcategory property: Entity sub type, such as Age/Year/TimeRange etc.
      *
      * @return the subcategory value.
      */
@@ -98,7 +96,7 @@ public class Entity {
     }
 
     /**
-     * Set the subcategory property: (Optional) Entity sub type.
+     * Set the subcategory property: Entity sub type, such as Age/Year/TimeRange etc.
      *
      * @param subcategory the subcategory value to set.
      * @return the Entity object itself.
@@ -109,8 +107,7 @@ public class Entity {
     }
 
     /**
-     * Get the offset property: Start position for the entity text. Use of different 'stringIndexType' values can affect
-     * the offset returned.
+     * Get the offset property: Start position for the entity text.
      *
      * @return the offset value.
      */
@@ -119,8 +116,7 @@ public class Entity {
     }
 
     /**
-     * Set the offset property: Start position for the entity text. Use of different 'stringIndexType' values can affect
-     * the offset returned.
+     * Set the offset property: Start position for the entity text.
      *
      * @param offset the offset value to set.
      * @return the Entity object itself.
@@ -131,8 +127,7 @@ public class Entity {
     }
 
     /**
-     * Get the length property: Length for the entity text. Use of different 'stringIndexType' values can affect the
-     * length returned.
+     * Get the length property: Length for the entity text.
      *
      * @return the length value.
      */
@@ -141,8 +136,7 @@ public class Entity {
     }
 
     /**
-     * Set the length property: Length for the entity text. Use of different 'stringIndexType' values can affect the
-     * length returned.
+     * Set the length property: Length for the entity text.
      *
      * @param length the length value to set.
      * @return the Entity object itself.

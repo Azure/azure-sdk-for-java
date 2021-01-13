@@ -1,8 +1,5 @@
 # Release History
 
-## 12.0.0-beta.5 (Unreleased)
-
-
 ## 12.0.0-beta.4 (2020-11-11)
 ### Dependency updates
 

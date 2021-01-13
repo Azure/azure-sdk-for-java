@@ -17,7 +17,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
 
 abstract class AesKw extends LocalKeyWrapAlgorithm {
-    static final int BLOCK_SIZE_IN_BITS = 64;
     static final byte[] DEFAULT_IV =
         new byte[]{(byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6, (byte) 0xA6,
             (byte) 0xA6};
@@ -48,10 +47,10 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
         }
 
         @Override
-        public byte[] doFinal(byte[] plainText)
+        public byte[] doFinal(byte[] plaintext)
             throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException, NoSuchAlgorithmException {
 
-            return cipher.unwrap(plainText, "AESWrap", Cipher.SECRET_KEY).getEncoded();
+            return cipher.unwrap(plaintext, "AESWrap", Cipher.SECRET_KEY).getEncoded();
         }
 
     }
@@ -81,10 +80,10 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
         }
 
         @Override
-        public byte[] doFinal(byte[] plainText)
+        public byte[] doFinal(byte[] plaintext)
             throws IllegalBlockSizeException, BadPaddingException, InvalidKeyException {
 
-            return cipher.wrap(new SecretKeySpec(plainText, "AES"));
+            return cipher.wrap(new SecretKeySpec(plaintext, "AES"));
         }
 
     }
@@ -134,9 +133,8 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
 
         if (iv != null) {
             // iv length must be 64 bits
-            if (iv.length != BLOCK_SIZE_IN_BITS >> 3) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "iv length must be %s bits", BLOCK_SIZE_IN_BITS)));
+            if (iv.length != 8) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("iv length must be 64 bits"));
             }
             // iv cannot be specified with the default provider
             if (provider == null) {
@@ -188,9 +186,8 @@ abstract class AesKw extends LocalKeyWrapAlgorithm {
 
         if (iv != null) {
             // iv length must be 64 bits
-            if (iv.length != BLOCK_SIZE_IN_BITS >> 3) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                    "iv length must be %s bits", BLOCK_SIZE_IN_BITS)));
+            if (iv.length != 8) {
+                throw logger.logExceptionAsError(new IllegalArgumentException("iv length must be 64 bits"));
             }
             // iv cannot be specified with the default provider
             if (provider == null) {

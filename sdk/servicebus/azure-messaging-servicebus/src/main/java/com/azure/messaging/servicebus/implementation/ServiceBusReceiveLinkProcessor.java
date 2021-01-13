@@ -7,7 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import org.reactivestreams.Subscription;
@@ -45,6 +45,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     private final Object queueLock = new Object();
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicInteger retryAttempts = new AtomicInteger();
+    private final AtomicBoolean linkCreditsAdded = new AtomicBoolean();
     private final AtomicReference<String> linkName = new AtomicReference<>();
 
     // Queue containing all the prefetched messages.
@@ -59,7 +60,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     private final AtomicInteger wip = new AtomicInteger();
 
     private final AmqpRetryPolicy retryPolicy;
-    private final ServiceBusReceiveMode receiveMode;
+    private final ReceiveMode receiveMode;
 
     private volatile Throwable lastError;
     private volatile boolean isCancelled;
@@ -86,8 +87,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
      * @throws NullPointerException if {@code retryPolicy} is null.
      * @throws IllegalArgumentException if {@code prefetch} is less than 0.
      */
-    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, ServiceBusReceiveMode
-        receiveMode) {
+    public ServiceBusReceiveLinkProcessor(int prefetch, AmqpRetryPolicy retryPolicy, ReceiveMode receiveMode) {
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
         this.receiveMode = Objects.requireNonNull(receiveMode, "'receiveMode' cannot be null.");
 
@@ -199,7 +199,12 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             oldSubscription = currentLinkSubscriptions;
 
             currentLink = next;
-            next.setEmptyCreditListener(() -> 0);
+            next.setEmptyCreditListener(() -> {
+                final int creditsToAdd = getCreditsToAdd(0);
+                linkCreditsAdded.set(creditsToAdd > 0);
+
+                return creditsToAdd;
+            });
 
             currentLinkSubscriptions = Disposables.composite(
                 next.receive().publishOn(Schedulers.boundedElastic()).subscribe(message -> {
@@ -490,11 +495,8 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
 
                     // These don't have to be settled because they're automatically settled by the link, so we
                     // decrement the count.
-                    if (receiveMode != ServiceBusReceiveMode.PEEK_LOCK) {
+                    if (receiveMode != ReceiveMode.PEEK_LOCK) {
                         pendingMessages.decrementAndGet();
-                    }
-                    if (prefetch > 0) { // re-fill messageQueue if there is prefetch configured.
-                        checkAndAddCredits(currentLink);
                     }
                 } catch (Exception e) {
                     logger.error("Exception occurred while handling downstream onNext operation.", e);
@@ -542,14 +544,18 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
             return;
         }
 
-        synchronized (lock) {
-            final int linkCredits = link.getCredits();
-            final int credits = getCreditsToAdd(linkCredits);
-            logger.info("Link credits='{}', Link credits to add: '{}'", linkCredits, credits);
+        // Credits have already been added to the link. We won't try again.
+        if (linkCreditsAdded.getAndSet(true)) {
+            return;
+        }
 
-            if (credits > 0) {
-                link.addCredits(credits);
-            }
+        final int credits = getCreditsToAdd(link.getCredits());
+        linkCreditsAdded.set(credits > 0);
+
+        logger.info("Link credits to add. Credits: '{}'", credits);
+
+        if (credits > 0) {
+            link.addCredits(credits);
         }
     }
 
@@ -564,40 +570,22 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
         }
 
         final int creditsToAdd;
-        final int expectedTotalCredit;
-        if (prefetch == 0) {
-            if (r <= Integer.MAX_VALUE) {
-                expectedTotalCredit = (int) r;
-            } else {
-                //This won't really happen in reality.
-                //For async client, receiveMessages() calls "return receiveMessagesNoBackPressure().limitRate(1, 0);".
-                //So it will request one by one from this link processor, even though the user's request has no
-                //back pressure.
-                //For sync client, the sync subscriber has back pressure.
-                //The request count uses the the argument of method receiveMessages(int maxMessages).
-                //It's at most Integer.MAX_VALUE.
-                expectedTotalCredit = Integer.MAX_VALUE;
-            }
+        if (messageQueue.isEmpty() && !hasBackpressure) {
+            creditsToAdd = prefetch;
         } else {
-            expectedTotalCredit = prefetch;
-        }
-        logger.info("linkCredits: '{}', expectedTotalCredit: '{}'", linkCredits, expectedTotalCredit);
+            synchronized (queueLock) {
+                final int queuedMessages = pendingMessages.get();
+                final int pending = queuedMessages + linkCredits;
 
-        synchronized (queueLock) {
-            final int queuedMessages = pendingMessages.get();
-            final int pending = queuedMessages + linkCredits;
-
-            if (hasBackpressure) {
-                creditsToAdd = Math.max(expectedTotalCredit - pending, 0);
-            } else {
-                // If the queue has less than 1/3 of the prefetch, then add the difference to keep the queue full.
-                creditsToAdd = minimumNumberOfMessages >= queuedMessages
-                    ? Math.max(expectedTotalCredit - pending, 0)
-                    : 0;
+                if (hasBackpressure) {
+                    creditsToAdd = Math.max(Long.valueOf(r).intValue() - pending, 0);
+                } else {
+                    // If the queue has less than 1/3 of the prefetch, then add the difference to keep the queue full.
+                    creditsToAdd = minimumNumberOfMessages >= queuedMessages
+                        ? Math.max(prefetch - pending, 1)
+                        : 0;
+                }
             }
-            logger.info("prefetch: '{}', requested: '{}', linkCredits: '{}', expectedTotalCredit: '{}', queuedMessages:"
-                    + "'{}', creditsToAdd: '{}', messageQueue.size(): '{}'", getPrefetch(), r, linkCredits,
-                expectedTotalCredit, queuedMessages, creditsToAdd, messageQueue.size());
         }
 
         return creditsToAdd;

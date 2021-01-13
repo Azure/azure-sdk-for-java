@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import static com.azure.cosmos.implementation.ClientRetryPolicyTest.validateSuccess;
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
+import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
 public class RenameCollectionAwareClientRetryPolicyTest {
 
@@ -38,7 +39,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
                 OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
         dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
 
-        Mono<ShouldRetryResult> shouldRetry =
+        Mono<IRetryPolicy.ShouldRetryResult> shouldRetry =
                 renameCollectionAwareClientRetryPolicy.shouldRetry(exception);
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
                 .withException(exception)
@@ -66,7 +67,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
 
         NotFoundException notFoundException = new NotFoundException();
 
-        Mono<ShouldRetryResult> singleShouldRetry = renameCollectionAwareClientRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = renameCollectionAwareClientRetryPolicy
                 .shouldRetry(notFoundException);
         validateSuccess(singleShouldRetry, ShouldRetryValidator.builder()
                 .withException(notFoundException)
@@ -100,7 +101,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
 
         Mockito.when(rxClientCollectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request)).thenReturn(Mono.just(new Utils.ValueHolder<>(documentCollection)));
 
-        Mono<ShouldRetryResult> singleShouldRetry = renameCollectionAwareClientRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = renameCollectionAwareClientRetryPolicy
                 .shouldRetry(notFoundException);
         validateSuccess(singleShouldRetry, ShouldRetryValidator.builder()
                 .nullException()
@@ -127,9 +128,9 @@ public class RenameCollectionAwareClientRetryPolicyTest {
         request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
         renameCollectionAwareClientRetryPolicy.onBeforeSendRequest(request);
 
-        Mono<ShouldRetryResult> singleShouldRetry = renameCollectionAwareClientRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = renameCollectionAwareClientRetryPolicy
                 .shouldRetry(new BadRequestException());
-        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();
     }
 }
