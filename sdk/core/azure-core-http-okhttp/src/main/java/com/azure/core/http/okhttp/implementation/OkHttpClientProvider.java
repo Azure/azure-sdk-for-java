@@ -4,7 +4,7 @@
 package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpClientOptions;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 

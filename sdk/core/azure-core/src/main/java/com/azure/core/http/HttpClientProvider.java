@@ -3,6 +3,8 @@
 
 package com.azure.core.http;
 
+import com.azure.core.util.HttpClientOptions;
+
 /**
  * An interface to be implemented by any azure-core plugin that wishes to provide an alternate {@link HttpClient}
  * implementation.

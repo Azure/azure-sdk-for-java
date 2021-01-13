@@ -3,8 +3,9 @@
 package com.azure.core.implementation.http;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpClientOptions;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.HttpClientOptions;
 
 import java.util.Iterator;
 import java.util.ServiceLoader;
@@ -38,11 +39,15 @@ public final class HttpClientProviders {
         return createInstance(null);
     }
 
-    public static HttpClient createInstance(HttpClientOptions clientOptions) {
+    public static HttpClient createInstance(ClientOptions clientOptions) {
         if (defaultProvider == null) {
             throw new IllegalStateException(CANNOT_FIND_HTTP_CLIENT);
         }
 
-        return defaultProvider.createInstance(clientOptions);
+        if (clientOptions instanceof HttpClientOptions) {
+            return defaultProvider.createInstance((HttpClientOptions) clientOptions);
+        }
+
+        return defaultProvider.createInstance();
     }
 }

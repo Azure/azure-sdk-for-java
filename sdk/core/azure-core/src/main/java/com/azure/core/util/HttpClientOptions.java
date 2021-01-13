@@ -1,16 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http;
+package com.azure.core.util;
 
-import com.azure.core.util.Configuration;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.ProxyOptions;
 
 import java.time.Duration;
 
 /**
- * General configuration options for {@link HttpClient HttpClients}.TableEntity
+ * General configuration options for {@link HttpClient HttpClients}.
  */
-public class HttpClientOptions {
+public class HttpClientOptions extends ClientOptions {
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration NO_TIMEOUT = Duration.ZERO;
@@ -20,6 +21,20 @@ public class HttpClientOptions {
     private Duration writeTimeout;
     private Duration responseTimeout;
     private Duration readTimeout;
+
+    @Override
+    public HttpClientOptions setApplicationId(String applicationId) {
+        super.setApplicationId(applicationId);
+
+        return this;
+    }
+
+    @Override
+    public HttpClientOptions setHeaders(Iterable<Header> headers) {
+        super.setHeaders(headers);
+
+        return this;
+    }
 
     /**
      * Sets the {@link ProxyOptions proxy options} that the {@link HttpClient} will use.
