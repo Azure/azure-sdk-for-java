@@ -61,12 +61,6 @@ public final class DigitalTwinsAsyncClient {
     private static final Boolean includeModelDefinitionOnGet = true;
     private final JsonSerializer serializer;
     private static final String DIGITAL_TWINS_TRACING_NAMESPACE_VALUE = "Microsoft.DigitalTwins";
-    private static final String DIGITAL_TWIN_ID_TRACING_KEY = "DigitalTwinId";
-    private static final String RELATIONSHIP_ID_TRACING_KEY = "RelationshipId";
-    private static final String MODEL_ID_TRACING_KEY = "ModelId";
-    private static final String COMPONENT_NAME_TRACING_KEY = "ComponentName";
-    private static final String EVENT_ROUTE_ID_TRACING_KEY = "EventRouteId";
-    private static final String MESSAGE_ID_TRACING_KEY = "MessageId";
 
     DigitalTwinsAsyncClient(String serviceEndpoint, HttpPipeline pipeline, DigitalTwinsServiceVersion serviceVersion, JsonSerializer jsonSerializer) {
         final SimpleModule stringModule = new SimpleModule("String Serializer");
@@ -162,8 +156,7 @@ public final class DigitalTwinsAsyncClient {
                 digitalTwinId,
                 digitalTwin,
                 OptionsConverter.toProtocolLayerOptions(options),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -240,8 +233,7 @@ public final class DigitalTwinsAsyncClient {
             .getByIdWithResponseAsync(
                 digitalTwinId,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -304,8 +296,7 @@ public final class DigitalTwinsAsyncClient {
                 digitalTwinId,
                 jsonPatch,
                 OptionsConverter.toProtocolLayerOptions(options),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders);
@@ -352,8 +343,7 @@ public final class DigitalTwinsAsyncClient {
             .deleteWithResponseAsync(
                 digitalTwinId,
                 OptionsConverter.toProtocolLayerOptions(options),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId));
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     //endregion Digital twin APIs
@@ -422,9 +412,7 @@ public final class DigitalTwinsAsyncClient {
                 relationshipId,
                 relationship,
                 OptionsConverter.toProtocolLayerOptions(options),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId)
-                    .addData(RELATIONSHIP_ID_TRACING_KEY, relationshipId))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -494,9 +482,7 @@ public final class DigitalTwinsAsyncClient {
                 digitalTwinId,
                 relationshipId,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId)
-                    .addData(RELATIONSHIP_ID_TRACING_KEY, relationshipId))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -556,9 +542,7 @@ public final class DigitalTwinsAsyncClient {
                 relationshipId,
                 jsonPatch,
                 OptionsConverter.toProtocolLayerOptions(options),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId)
-                    .addData(RELATIONSHIP_ID_TRACING_KEY, relationshipId))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(), twinHeaders);
@@ -606,9 +590,7 @@ public final class DigitalTwinsAsyncClient {
                 digitalTwinId,
                 relationshipId,
                 OptionsConverter.toProtocolLayerOptions(options),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId)
-                    .addData(RELATIONSHIP_ID_TRACING_KEY, relationshipId));
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     /**
@@ -668,9 +650,7 @@ public final class DigitalTwinsAsyncClient {
             .listRelationshipsSinglePageAsync(
                 digitalTwinId, relationshipName,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId)
-                    .addData(RELATIONSHIP_ID_TRACING_KEY, relationshipName))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(
                 objectPagedResponse -> {
                     List<T> list = objectPagedResponse.getValue().stream()
@@ -752,8 +732,7 @@ public final class DigitalTwinsAsyncClient {
             .listIncomingRelationshipsSinglePageAsync(
                 digitalTwinId,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(pagedIncomingRelationshipMappingFunction);
     }
 
@@ -1024,8 +1003,7 @@ public final class DigitalTwinsAsyncClient {
             .deleteWithResponseAsync(
                 modelId,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(MODEL_ID_TRACING_KEY, modelId));
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     /**
@@ -1067,8 +1045,7 @@ public final class DigitalTwinsAsyncClient {
             modelId,
             updateOperation,
             null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                .addData(MODEL_ID_TRACING_KEY, modelId));
+            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     //endregion Model APIs
@@ -1118,9 +1095,7 @@ public final class DigitalTwinsAsyncClient {
                 digitalTwinId,
                 componentName,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId)
-                    .addData(COMPONENT_NAME_TRACING_KEY, componentName))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
                 T genericResponse;
                 try {
@@ -1179,9 +1154,7 @@ public final class DigitalTwinsAsyncClient {
                 componentName,
                 jsonPatch,
                 OptionsConverter.toProtocolLayerOptions(options),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId)
-                    .addData(COMPONENT_NAME_TRACING_KEY, componentName))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .flatMap(response -> {
                 DigitalTwinsResponseHeaders twinHeaders = mapper.convertValue(response.getDeserializedHeaders(), DigitalTwinsResponseHeaders.class);
                 return Mono.just(new DigitalTwinsResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null, twinHeaders));
@@ -1397,8 +1370,7 @@ public final class DigitalTwinsAsyncClient {
         return this.protocolLayer.getEventRoutes().getByIdWithResponseAsync(
             eventRouteId,
             null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                .addData(EVENT_ROUTE_ID_TRACING_KEY, eventRouteId))
+            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(eventRouteResponse -> new SimpleResponse<>(
                 eventRouteResponse.getRequest(),
                 eventRouteResponse.getStatusCode(),
@@ -1592,9 +1564,7 @@ public final class DigitalTwinsAsyncClient {
             payload,
             options.getTimestamp().toString(),
             null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId)
-                .addData(MESSAGE_ID_TRACING_KEY, messageId));
+            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     /**
@@ -1667,10 +1637,7 @@ public final class DigitalTwinsAsyncClient {
             payload,
             options.getTimestamp().toString(),
             null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                .addData(DIGITAL_TWIN_ID_TRACING_KEY, digitalTwinId)
-                .addData(COMPONENT_NAME_TRACING_KEY, componentName)
-                .addData(MESSAGE_ID_TRACING_KEY, messageId));
+            context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     //endregion Telemetry APIs
