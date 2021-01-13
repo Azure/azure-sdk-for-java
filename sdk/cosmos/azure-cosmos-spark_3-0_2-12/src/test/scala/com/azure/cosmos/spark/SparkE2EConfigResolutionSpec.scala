@@ -4,35 +4,17 @@ package com.azure.cosmos.spark
 
 import java.util.UUID
 
-import com.azure.cosmos.CosmosClientBuilder
 import com.azure.cosmos.implementation.{TestConfigurations, Utils}
-import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
-import org.assertj.core.api.Assertions.assertThat
 
-// scalastyle:off underscore.import
-import scala.collection.JavaConverters._
-// scalastyle:on underscore.import
-
-
-class SparkE2EConfigResolutionSpec extends IntegrationSpec {
+class SparkE2EConfigResolutionSpec extends IntegrationSpec with CosmosClient with AutoCleanableCosmosContainer {
   //scalastyle:off multiple.string.literals
   //scalastyle:off magic.number
 
-  it can "merge user config with spark config for write" taggedAs (RequiresCosmosEndpoint) in {
+  "config resolution" can "merge user config with spark config for write" taggedAs (RequiresCosmosEndpoint) in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
-    val cosmosDatabase = "testDB"
-    val cosmosContainer = UUID.randomUUID().toString
-
-    val client = new CosmosClientBuilder()
-      .endpoint(cosmosEndpoint)
-      .key(cosmosMasterKey)
-      .buildAsyncClient()
-
-    client.createDatabaseIfNotExists(cosmosDatabase).block()
-    client.getDatabase(cosmosDatabase).createContainerIfNotExists(cosmosContainer, "/id").block()
 
     val sparkConfig = new SparkConf()
     sparkConfig.set("spark.cosmos.accountEndpoint", cosmosEndpoint)
@@ -55,7 +37,6 @@ class SparkE2EConfigResolutionSpec extends IntegrationSpec {
     ).toDF("number", "word")
     df.printSchema()
 
-
     val options = Map(
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer
@@ -68,35 +49,21 @@ class SparkE2EConfigResolutionSpec extends IntegrationSpec {
     // wait for a second to allow replication is completed.
     Thread.sleep(1000)
 
-    val results = client.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
-      .queryItems("SELECT * FROM r", classOf[ObjectNode])
-      .toIterable
-      .asScala
-      .toArray
+    val results = readAllItems().toArray
 
-    assertThat(results).hasSize(1)
-    assertThat(results(0).get("number").asInt()).isEqualTo(26)
-    assertThat(results(0).get("word").asText()).isEqualTo("Iron atomic number")
+    results should have size 1
+    results(0).get("number").asInt() shouldEqual 26
+    results(0).get("word").asText() shouldEqual "Iron atomic number"
 
-    client.close()
     spark.close()
   }
 
   it can "merge user config with spark config for query" taggedAs (RequiresCosmosEndpoint) in {
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
-    val cosmosDatabase = "testDB"
-    val cosmosContainer = UUID.randomUUID().toString
 
-    val client = new CosmosClientBuilder()
-      .endpoint(cosmosEndpoint)
-      .key(cosmosMasterKey)
-      .buildAsyncClient()
 
-    client.createDatabaseIfNotExists(cosmosDatabase).block()
-    client.getDatabase(cosmosDatabase).createContainerIfNotExists(cosmosContainer, "/id").block()
-
-    val container = client.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+    val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
     val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
     objectNode.put("word", "Cobalt atomic number")
     objectNode.put("number", 27)
@@ -126,7 +93,6 @@ class SparkE2EConfigResolutionSpec extends IntegrationSpec {
     row.getAs[String]("word") shouldEqual "Cobalt atomic number"
     row.getAs[Double]("number") shouldEqual 27
 
-    client.close()
     spark.close()
   }
 
