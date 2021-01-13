@@ -30,8 +30,7 @@ import org.apache.spark.unsafe.types.UTF8String
 // scalastyle:off multiple.string.literals
 // scalastyle:off null
 object CosmosRowConverter
-  extends Serializable
-  with JsonSupport
+  extends JsonSupport
     with CosmosLoggingTrait {
 
   def toInternalRow(schema: StructType, objectNode: ObjectNode): InternalRow = {
