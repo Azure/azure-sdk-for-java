@@ -415,6 +415,26 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
 
     @ParameterizedTest
     @MethodSource("createHttpClients")
+    void deleteRule(HttpClient httpClient) {
+        // Arrange
+        final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
+        final String ruleName = testResourceNamer.randomName("rule-", 11);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-13"
+            : getEntityName(getTopicBaseName(), 13);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription"
+            : getSubscriptionBaseName();
+
+        client.createRule(topicName, subscriptionName, ruleName).block(TIMEOUT);
+
+        // Act & Assert
+        StepVerifier.create(client.deleteRule(topicName, subscriptionName, ruleName))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("createHttpClients")
     void deleteSubscription(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
