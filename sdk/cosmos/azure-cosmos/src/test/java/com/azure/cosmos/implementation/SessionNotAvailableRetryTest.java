@@ -153,17 +153,17 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             try {
                 PartitionKey partitionKey = new PartitionKey("Test");
                 if (operationType.equals(OperationType.Read)) {
-                    cosmosAsyncContainer.readItem("Test", partitionKey, InternalObjectNode.class).block();
+                    cosmosAsyncContainer.readItem("Test", partitionKey, TestItem.class).block();
                 } else if (operationType.equals(OperationType.Query)) {
                     String query = "Select * from C";
                     CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
                     requestOptions.setPartitionKey(partitionKey);
-                    cosmosAsyncContainer.queryItems(query, requestOptions, InternalObjectNode.class).byPage().blockFirst();
+                    cosmosAsyncContainer.queryItems(query, requestOptions, TestItem.class).byPage().blockFirst();
                 } else if (operationType.equals(OperationType.Create)) {
-                    InternalObjectNode node = new InternalObjectNode();
-                    node.setId("Test");
-                    node.set("mypk", "Test");
-                    cosmosAsyncContainer.createItem(node, partitionKey, new CosmosItemRequestOptions()).block();
+                    TestItem item = new TestItem();
+                    item.setId("Test");
+                    item.setMypk("Test");
+                    cosmosAsyncContainer.createItem(item, partitionKey, new CosmosItemRequestOptions()).block();
                 }
 
                 fail("Request should fail with 404/1002 error");
@@ -252,17 +252,17 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 Mockito.any(RxDocumentServiceRequest.class));
             try {
                 if (operationType.equals(OperationType.Read)) {
-                    cosmosAsyncContainer.readItem("TestId", partitionKey, InternalObjectNode.class).block();
+                    cosmosAsyncContainer.readItem("TestId", partitionKey, TestItem.class).block();
                 } else if (operationType.equals(OperationType.Query)) {
                     String query = "Select * from C";
                     CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
                     requestOptions.setPartitionKey(new PartitionKey("Test"));
-                    cosmosAsyncContainer.queryItems(query, requestOptions, InternalObjectNode.class).byPage().blockFirst();
+                    cosmosAsyncContainer.queryItems(query, requestOptions, TestItem.class).byPage().blockFirst();
                 } else if (operationType.equals(OperationType.Create)) {
-                    InternalObjectNode node = new InternalObjectNode();
-                    node.setId("Test");
-                    node.set("mypk", "Test");
-                    cosmosAsyncContainer.createItem(node, partitionKey, new CosmosItemRequestOptions()).block();
+                    TestItem item = new TestItem();
+                    item.setId("Test");
+                    item.setMypk("Test");
+                    cosmosAsyncContainer.createItem(item, partitionKey, new CosmosItemRequestOptions()).block();
                 }
 
                 fail("Request should fail with 404/1002 error");
@@ -369,17 +369,17 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             try {
                 PartitionKey partitionKey = new PartitionKey("Test");
                 if (operationType.equals(OperationType.Read)) {
-                    cosmosAsyncContainer.readItem("Test", partitionKey, InternalObjectNode.class).block();
+                    cosmosAsyncContainer.readItem("Test", partitionKey, TestItem.class).block();
                 } else if (operationType.equals(OperationType.Query)) {
                     String query = "Select * from C";
                     CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
                     requestOptions.setPartitionKey(partitionKey);
-                    cosmosAsyncContainer.queryItems(query, requestOptions, InternalObjectNode.class).byPage().blockFirst();
+                    cosmosAsyncContainer.queryItems(query, requestOptions, TestItem.class).byPage().blockFirst();
                 } else if (operationType.equals(OperationType.Create)) {
-                    InternalObjectNode node = new InternalObjectNode();
-                    node.setId("Test");
-                    node.set("mypk", "Test");
-                    cosmosAsyncContainer.createItem(node, partitionKey, new CosmosItemRequestOptions()).block();
+                    TestItem item = new TestItem();
+                    item.setId("Test");
+                    item.setMypk("Test");
+                    cosmosAsyncContainer.createItem(item, partitionKey, new CosmosItemRequestOptions()).block();
                 }
 
                 fail("Request should fail with 404/1002 error");
@@ -454,6 +454,27 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
         @Override
         public void close() {
+        }
+    }
+
+    private class TestItem {
+        private String id;
+        private String mypk;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getMypk() {
+            return mypk;
+        }
+
+        public void setMypk(String mypk) {
+            this.mypk = mypk;
         }
     }
 }
