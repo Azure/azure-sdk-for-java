@@ -202,8 +202,7 @@
       "name": "[variables('keyVaultName')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', variables('appServiceName'))]",
-        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))]"
+        "[resourceId('Microsoft.Web/sites', variables('appServiceName'))]"
       ],
       "properties": {
         "sku": {
