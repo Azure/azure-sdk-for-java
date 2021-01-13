@@ -25,6 +25,7 @@ import com.azure.cosmos.rx.TestSuiteBase;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -63,6 +64,11 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
     }
 
+    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    public void afterClass() {
+        safeClose(client);
+    }
+
     @DataProvider(name = "preferredRegions")
     private Object[][] preferredRegions() {
         List<String> preferredLocations1 = new ArrayList<>();
@@ -97,308 +103,326 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         return new Object[][]{
             new Object[]{OperationType.Read},
             new Object[]{OperationType.Query},
-            new Object[]{ OperationType.Create},
+            new Object[]{OperationType.Create},
         };
     }
 
     @Test(groups = {"multi-master"}, dataProvider = "preferredRegions")
     public void sessionNotAvailableRetryMultiMaster(List<String> preferredLocations, List<String> regionalSuffix,
                                                     OperationType operationType) throws IllegalAccessException {
-        CosmosAsyncClient preferredListClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .contentResponseOnWriteEnabled(true)
-            .directMode()
-            .preferredRegions(preferredLocations)
-            .buildAsyncClient();
-
-        AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(preferredListClient,
-            "asyncDocumentClient", true);
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-        ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
-        StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
-        ReplicatedResourceClient replicatedResourceClient =
-            (ReplicatedResourceClient) FieldUtils.readField(storeClient, "replicatedResourceClient", true);
-        ConsistencyReader consistencyReader = (ConsistencyReader) FieldUtils.readField(replicatedResourceClient,
-            "consistencyReader", true);
-        ConsistencyWriter consistencyWriter = (ConsistencyWriter) FieldUtils.readField(replicatedResourceClient,
-            "consistencyWriter", true);
-        StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
-
-        RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
-        RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
-        FieldUtils.writeField(storeReader, "transportClient", spyRntbdTransportClient, true);
-        FieldUtils.writeField(consistencyWriter, "transportClient", spyRntbdTransportClient, true);
-
-        cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
-
-        List<String> uris = new ArrayList<>();
-        doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
-            Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
-            uris.add(uri.getURI().getHost());
-            CosmosException cosmosException = BridgeInternal.createCosmosException(404);
-            @SuppressWarnings("unchecked")
-            Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
-                "responseHeaders", true);
-            responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, "1002");
-            return Mono.error(cosmosException);
-        }).when(spyRntbdTransportClient).invokeStoreAsync(Mockito.any(Uri.class),
-            Mockito.any(RxDocumentServiceRequest.class));
+        CosmosAsyncClient preferredListClient = null;
         try {
-            PartitionKey partitionKey = new PartitionKey("Test");
-            if (operationType.equals(OperationType.Read)) {
-                cosmosAsyncContainer.readItem("Test", partitionKey, InternalObjectNode.class).block();
-            } else if (operationType.equals(OperationType.Query)) {
-                String query = "Select * from C";
-                CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
-                requestOptions.setPartitionKey(partitionKey);
-                cosmosAsyncContainer.queryItems(query, requestOptions, InternalObjectNode.class).byPage().blockFirst();
-            } else if (operationType.equals(OperationType.Create)) {
-                InternalObjectNode node = new InternalObjectNode();
-                node.setId("Test");
-                node.set("mypk", "Test");
-                cosmosAsyncContainer.createItem(node, partitionKey, new CosmosItemRequestOptions()).block();
+            preferredListClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .preferredRegions(preferredLocations)
+                .buildAsyncClient();
+
+            AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(preferredListClient,
+                "asyncDocumentClient", true);
+            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
+            ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
+            StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
+            ReplicatedResourceClient replicatedResourceClient =
+                (ReplicatedResourceClient) FieldUtils.readField(storeClient, "replicatedResourceClient", true);
+            ConsistencyReader consistencyReader = (ConsistencyReader) FieldUtils.readField(replicatedResourceClient,
+                "consistencyReader", true);
+            ConsistencyWriter consistencyWriter = (ConsistencyWriter) FieldUtils.readField(replicatedResourceClient,
+                "consistencyWriter", true);
+            StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
+
+            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
+            RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
+            FieldUtils.writeField(storeReader, "transportClient", spyRntbdTransportClient, true);
+            FieldUtils.writeField(consistencyWriter, "transportClient", spyRntbdTransportClient, true);
+
+            cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
+
+            List<String> uris = new ArrayList<>();
+            doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
+                Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
+                uris.add(uri.getURI().getHost());
+                CosmosException cosmosException = BridgeInternal.createCosmosException(404);
+                @SuppressWarnings("unchecked")
+                Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
+                    "responseHeaders", true);
+                responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, "1002");
+                return Mono.error(cosmosException);
+            }).when(spyRntbdTransportClient).invokeStoreAsync(Mockito.any(Uri.class),
+                Mockito.any(RxDocumentServiceRequest.class));
+            try {
+                PartitionKey partitionKey = new PartitionKey("Test");
+                if (operationType.equals(OperationType.Read)) {
+                    cosmosAsyncContainer.readItem("Test", partitionKey, InternalObjectNode.class).block();
+                } else if (operationType.equals(OperationType.Query)) {
+                    String query = "Select * from C";
+                    CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+                    requestOptions.setPartitionKey(partitionKey);
+                    cosmosAsyncContainer.queryItems(query, requestOptions, InternalObjectNode.class).byPage().blockFirst();
+                } else if (operationType.equals(OperationType.Create)) {
+                    InternalObjectNode node = new InternalObjectNode();
+                    node.setId("Test");
+                    node.set("mypk", "Test");
+                    cosmosAsyncContainer.createItem(node, partitionKey, new CosmosItemRequestOptions()).block();
+                }
+
+                fail("Request should fail with 404/1002 error");
+            } catch (CosmosException ex) {
+                assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             }
 
-            fail("Request should fail with 404/1002 error");
-        } catch (CosmosException ex) {
-            assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+            HashSet<String> uniqueHost = new HashSet<>();
+            for (String uri : uris) {
+                uniqueHost.add(uri);
+            }
+            // First verify we are retrying in each region
+            assertThat(uniqueHost.size()).isEqualTo(preferredLocations.size());
+
+
+            // First regional retries in originating region , then retrying per region in clientRetryPolicy and 1
+            // retry in the
+            // last as per RenameCollectionAwareClientRetryPolicy after clearing session token
+            int numberOfRegionRetried = preferredLocations.size() + 2;
+
+            // Calculating avg number of retries in each region
+            int averageRetryBySessionRetryPolicyInOneRegion = uris.size() / numberOfRegionRetried;
+
+            int totalRetries = averageRetryBySessionRetryPolicyInOneRegion;
+            // First regional retries should be in the first preferred region
+            assertThat(uris.get(totalRetries / 2)).contains(regionalSuffix.get(0));
+
+            for (int i = 1; i <= preferredLocations.size(); i++) {
+                // Retrying in each region as per preferred region
+                assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(i % regionalSuffix.size()));
+                totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
+            }
+
+            // Last region retries should be in first preferred region
+            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(0));
+        } finally {
+            safeClose(preferredListClient);
         }
-
-        HashSet<String> uniqueHost = new HashSet<>();
-        for (String uri : uris) {
-            uniqueHost.add(uri);
-        }
-        // First verify we are retrying in each region
-        assertThat(uniqueHost.size()).isEqualTo(preferredLocations.size());
-
-
-        // First regional retries in originating region , then retrying per region in clientRetryPolicy and 1 retry in the
-        // last as per RenameCollectionAwareClientRetryPolicy after clearing session token
-        int numberOfRegionRetried = preferredLocations.size() + 2;
-
-        // Calculating avg number of retries in each region
-        int averageRetryBySessionRetryPolicyInOneRegion = uris.size() / numberOfRegionRetried;
-
-        int totalRetries = averageRetryBySessionRetryPolicyInOneRegion;
-        // First regional retries should be in the first preferred region
-        assertThat(uris.get(totalRetries / 2)).contains(regionalSuffix.get(0));
-
-        for (int i = 1; i <= preferredLocations.size(); i++) {
-            // Retrying in each region as per preferred region
-            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(i % regionalSuffix.size()));
-            totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
-        }
-
-        // Last region retries should be in first preferred region
-        assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(0));
     }
 
     @Test(groups = {"simple"}, dataProvider = "preferredRegions")
     public void sessionNotAvailableRetrySingleMaster(List<String> preferredLocations, List<String> regionalSuffix,
                                                      OperationType operationType) throws IllegalAccessException {
-        CosmosAsyncClient preferredListClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .contentResponseOnWriteEnabled(true)
-            .directMode()
-            .preferredRegions(preferredLocations)
-            .buildAsyncClient();
-
-        AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(preferredListClient,
-            "asyncDocumentClient", true);
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-        ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
-        StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
-        ReplicatedResourceClient replicatedResourceClient =
-            (ReplicatedResourceClient) FieldUtils.readField(storeClient, "replicatedResourceClient", true);
-        ConsistencyReader consistencyReader = (ConsistencyReader) FieldUtils.readField(replicatedResourceClient,
-            "consistencyReader", true);
-        ConsistencyWriter consistencyWriter = (ConsistencyWriter) FieldUtils.readField(replicatedResourceClient,
-            "consistencyWriter", true);
-        StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
-
-        RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
-        RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
-        FieldUtils.writeField(storeReader, "transportClient", spyRntbdTransportClient, true);
-        FieldUtils.writeField(consistencyWriter, "transportClient", spyRntbdTransportClient, true);
-
-        cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
-
-        PartitionKey partitionKey = new PartitionKey("Test");
-        List<String> uris = new ArrayList<>();
-        doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
-            Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
-            uris.add(uri.getURI().getHost());
-            CosmosException cosmosException = BridgeInternal.createCosmosException(404);
-            @SuppressWarnings("unchecked")
-            Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
-                "responseHeaders", true);
-            responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, "1002");
-            FieldUtils.writeField(cosmosException, "responseHeaders", responseHeaders, true);
-            return Mono.error(cosmosException);
-        }).when(spyRntbdTransportClient).invokeStoreAsync(Mockito.any(Uri.class),
-            Mockito.any(RxDocumentServiceRequest.class));
+        CosmosAsyncClient preferredListClient = null;
         try {
-            if (operationType.equals(OperationType.Read)) {
-                cosmosAsyncContainer.readItem("TestId", partitionKey, InternalObjectNode.class).block();
-            } else if (operationType.equals(OperationType.Query)) {
-                String query = "Select * from C";
-                CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
-                requestOptions.setPartitionKey(new PartitionKey("Test"));
-                cosmosAsyncContainer.queryItems(query, requestOptions, InternalObjectNode.class).byPage().blockFirst();
-            } else if (operationType.equals(OperationType.Create)) {
-                InternalObjectNode node = new InternalObjectNode();
-                node.setId("Test");
-                node.set("mypk", "Test");
-                cosmosAsyncContainer.createItem(node, partitionKey, new CosmosItemRequestOptions()).block();
+            preferredListClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .preferredRegions(preferredLocations)
+                .buildAsyncClient();
+
+            AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(preferredListClient,
+                "asyncDocumentClient", true);
+            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
+            ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
+            StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
+            ReplicatedResourceClient replicatedResourceClient =
+                (ReplicatedResourceClient) FieldUtils.readField(storeClient, "replicatedResourceClient", true);
+            ConsistencyReader consistencyReader = (ConsistencyReader) FieldUtils.readField(replicatedResourceClient,
+                "consistencyReader", true);
+            ConsistencyWriter consistencyWriter = (ConsistencyWriter) FieldUtils.readField(replicatedResourceClient,
+                "consistencyWriter", true);
+            StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
+
+            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
+            RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
+            FieldUtils.writeField(storeReader, "transportClient", spyRntbdTransportClient, true);
+            FieldUtils.writeField(consistencyWriter, "transportClient", spyRntbdTransportClient, true);
+
+            cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
+
+            PartitionKey partitionKey = new PartitionKey("Test");
+            List<String> uris = new ArrayList<>();
+            doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
+                Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
+                uris.add(uri.getURI().getHost());
+                CosmosException cosmosException = BridgeInternal.createCosmosException(404);
+                @SuppressWarnings("unchecked")
+                Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
+                    "responseHeaders", true);
+                responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, "1002");
+                FieldUtils.writeField(cosmosException, "responseHeaders", responseHeaders, true);
+                return Mono.error(cosmosException);
+            }).when(spyRntbdTransportClient).invokeStoreAsync(Mockito.any(Uri.class),
+                Mockito.any(RxDocumentServiceRequest.class));
+            try {
+                if (operationType.equals(OperationType.Read)) {
+                    cosmosAsyncContainer.readItem("TestId", partitionKey, InternalObjectNode.class).block();
+                } else if (operationType.equals(OperationType.Query)) {
+                    String query = "Select * from C";
+                    CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+                    requestOptions.setPartitionKey(new PartitionKey("Test"));
+                    cosmosAsyncContainer.queryItems(query, requestOptions, InternalObjectNode.class).byPage().blockFirst();
+                } else if (operationType.equals(OperationType.Create)) {
+                    InternalObjectNode node = new InternalObjectNode();
+                    node.setId("Test");
+                    node.set("mypk", "Test");
+                    cosmosAsyncContainer.createItem(node, partitionKey, new CosmosItemRequestOptions()).block();
+                }
+
+                fail("Request should fail with 404/1002 error");
+            } catch (CosmosException ex) {
+                assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             }
 
-            fail("Request should fail with 404/1002 error");
-        } catch (CosmosException ex) {
-            assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
-        }
+            HashSet<String> uniqueHost = new HashSet<>();
+            for (String uri : uris) {
+                uniqueHost.add(uri);
+            }
 
-        HashSet<String> uniqueHost = new HashSet<>();
-        for (String uri : uris) {
-            uniqueHost.add(uri);
-        }
+            String masterOrHubRegionSuffix =
+                getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
+                    TestConfigurations.HOST);
+            // First regional retries in originating region, then retrying in master/hub region and 1 retry at the
+            // last from
+            // RenameCollectionAwareClientRetryPolicy after clearing session token
+            int numberOfRegionRetried = 3;
 
-        String masterOrHubRegionSuffix =
-            getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
-                TestConfigurations.HOST);
-        // First regional retries in originating region, then retrying in master/hub region and 1 retry at the last from
-        // RenameCollectionAwareClientRetryPolicy after clearing session token
-        int numberOfRegionRetried = 3;
+            // Calculating approx avg number of retries in each region
+            int averageRetryBySessionRetryPolicyInOneRegion = uris.size() / numberOfRegionRetried;
 
-        // Calculating approx avg number of retries in each region
-        int averageRetryBySessionRetryPolicyInOneRegion = uris.size() / numberOfRegionRetried;
+            int totalRetries = averageRetryBySessionRetryPolicyInOneRegion;
 
-        int totalRetries = averageRetryBySessionRetryPolicyInOneRegion;
+            if (operationType.equals(OperationType.Create)) {
+                assertThat(uniqueHost.size()).isEqualTo(1); // always goes to master region
 
-        if (operationType.equals(OperationType.Create)) {
-            assertThat(uniqueHost.size()).isEqualTo(1); // always goes to master region
+                //First region retries should be in masterOrHubRegionSuffix
+                assertThat(uris.get(totalRetries / 2)).contains(masterOrHubRegionSuffix);
 
-            //First region retries should be in masterOrHubRegionSuffix
-            assertThat(uris.get(totalRetries / 2)).contains(masterOrHubRegionSuffix);
+                // Second region retries should be in masterOrHubRegionSuffix
+                assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
+                totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
 
-            // Second region retries should be in masterOrHubRegionSuffix
-            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
-            totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
-
-            //Last region retries should be in masterOrHubRegionSuffix
-            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
-        } else {
-            if (regionalSuffix.get(0).equals(masterOrHubRegionSuffix)) {
-                //Verify we are retrying only in master region
-                assertThat(uniqueHost.size()).isEqualTo(1);
+                //Last region retries should be in masterOrHubRegionSuffix
+                assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
             } else {
-                //Verify we are retrying in first preferred region and master region
-                assertThat(uniqueHost.size()).isEqualTo(2);
+                if (regionalSuffix.get(0).equals(masterOrHubRegionSuffix)) {
+                    //Verify we are retrying only in master region
+                    assertThat(uniqueHost.size()).isEqualTo(1);
+                } else {
+                    //Verify we are retrying in first preferred region and master region
+                    assertThat(uniqueHost.size()).isEqualTo(2);
+                }
+
+                //First region retries should be in first preferred region
+                assertThat(uris.get(totalRetries / 2)).contains(regionalSuffix.get(0));
+
+                // Second region retries should be in masterOrHubRegion
+                assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
+                totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
+
+                //Last region retries should be in first preferred region
+                assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(0));
             }
-
-            //First region retries should be in first preferred region
-            assertThat(uris.get(totalRetries / 2)).contains(regionalSuffix.get(0));
-
-            // Second region retries should be in masterOrHubRegion
-            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
-            totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
-
-            //Last region retries should be in first preferred region
-            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(0));
+        } finally {
+            safeClose(preferredListClient);
         }
     }
 
     @Test(groups = {"simple", "multi-master"}, dataProvider = "operations")
     public void sessionNotAvailableRetryWithoutPreferredList(OperationType operationType) throws IllegalAccessException {
-        CosmosAsyncClient preferredListClient = new CosmosClientBuilder()
-            .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY)
-            .contentResponseOnWriteEnabled(true)
-            .directMode()
-            .buildAsyncClient();
-
-        AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(preferredListClient,
-            "asyncDocumentClient", true);
-        RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-        ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
-        StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
-        ReplicatedResourceClient replicatedResourceClient =
-            (ReplicatedResourceClient) FieldUtils.readField(storeClient, "replicatedResourceClient", true);
-        ConsistencyReader consistencyReader = (ConsistencyReader) FieldUtils.readField(replicatedResourceClient,
-            "consistencyReader", true);
-        ConsistencyWriter consistencyWriter = (ConsistencyWriter) FieldUtils.readField(replicatedResourceClient,
-            "consistencyWriter", true);
-        StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
-
-        RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
-        RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
-        FieldUtils.writeField(storeReader, "transportClient", spyRntbdTransportClient, true);
-        FieldUtils.writeField(consistencyWriter, "transportClient", spyRntbdTransportClient, true);
-
-        cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
-
-        List<String> uris = new ArrayList<>();
-        doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
-            Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
-            uris.add(uri.getURI().getHost());
-            CosmosException cosmosException = BridgeInternal.createCosmosException(404);
-            @SuppressWarnings("unchecked")
-            Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
-                "responseHeaders", true);
-            responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, "1002");
-            return Mono.error(cosmosException);
-        }).when(spyRntbdTransportClient).invokeStoreAsync(Mockito.any(Uri.class),
-            Mockito.any(RxDocumentServiceRequest.class));
+        CosmosAsyncClient preferredListClient = null;
         try {
-            PartitionKey partitionKey = new PartitionKey("Test");
-            if (operationType.equals(OperationType.Read)) {
-                cosmosAsyncContainer.readItem("Test", partitionKey, InternalObjectNode.class).block();
-            } else if (operationType.equals(OperationType.Query)) {
-                String query = "Select * from C";
-                CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
-                requestOptions.setPartitionKey(partitionKey);
-                cosmosAsyncContainer.queryItems(query, requestOptions, InternalObjectNode.class).byPage().blockFirst();
-            } else if (operationType.equals(OperationType.Create)) {
-                InternalObjectNode node = new InternalObjectNode();
-                node.setId("Test");
-                node.set("mypk", "Test");
-                cosmosAsyncContainer.createItem(node, partitionKey, new CosmosItemRequestOptions()).block();
+            preferredListClient = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildAsyncClient();
+
+            AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(preferredListClient,
+                "asyncDocumentClient", true);
+            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
+            ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
+            StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
+            ReplicatedResourceClient replicatedResourceClient =
+                (ReplicatedResourceClient) FieldUtils.readField(storeClient, "replicatedResourceClient", true);
+            ConsistencyReader consistencyReader = (ConsistencyReader) FieldUtils.readField(replicatedResourceClient,
+                "consistencyReader", true);
+            ConsistencyWriter consistencyWriter = (ConsistencyWriter) FieldUtils.readField(replicatedResourceClient,
+                "consistencyWriter", true);
+            StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
+
+            RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
+            RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
+            FieldUtils.writeField(storeReader, "transportClient", spyRntbdTransportClient, true);
+            FieldUtils.writeField(consistencyWriter, "transportClient", spyRntbdTransportClient, true);
+
+            cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
+
+            List<String> uris = new ArrayList<>();
+            doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
+                Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
+                uris.add(uri.getURI().getHost());
+                CosmosException cosmosException = BridgeInternal.createCosmosException(404);
+                @SuppressWarnings("unchecked")
+                Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
+                    "responseHeaders", true);
+                responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, "1002");
+                return Mono.error(cosmosException);
+            }).when(spyRntbdTransportClient).invokeStoreAsync(Mockito.any(Uri.class),
+                Mockito.any(RxDocumentServiceRequest.class));
+            try {
+                PartitionKey partitionKey = new PartitionKey("Test");
+                if (operationType.equals(OperationType.Read)) {
+                    cosmosAsyncContainer.readItem("Test", partitionKey, InternalObjectNode.class).block();
+                } else if (operationType.equals(OperationType.Query)) {
+                    String query = "Select * from C";
+                    CosmosQueryRequestOptions requestOptions = new CosmosQueryRequestOptions();
+                    requestOptions.setPartitionKey(partitionKey);
+                    cosmosAsyncContainer.queryItems(query, requestOptions, InternalObjectNode.class).byPage().blockFirst();
+                } else if (operationType.equals(OperationType.Create)) {
+                    InternalObjectNode node = new InternalObjectNode();
+                    node.setId("Test");
+                    node.set("mypk", "Test");
+                    cosmosAsyncContainer.createItem(node, partitionKey, new CosmosItemRequestOptions()).block();
+                }
+
+                fail("Request should fail with 404/1002 error");
+            } catch (CosmosException ex) {
+                assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             }
 
-            fail("Request should fail with 404/1002 error");
-        } catch (CosmosException ex) {
-            assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+            HashSet<String> uniqueHost = new HashSet<>();
+            for (String uri : uris) {
+                uniqueHost.add(uri);
+            }
+            // Verifying we are only retrying in masterOrHub region
+            assertThat(uniqueHost.size()).isEqualTo(1);
+
+            String masterOrHubRegionSuffix =
+                getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
+                    TestConfigurations.HOST);
+
+            // First regional retries in originating region , then retrying in master as per clientRetryPolicy and 1
+            // retry in the
+            // last as per RenameCollectionAwareClientRetryPolicy after clearing session token
+            int numberOfRegionRetried = 3;
+
+            // Calculating avg number of retries in each region
+            int averageRetryBySessionRetryPolicyInOneRegion = uris.size() / numberOfRegionRetried;
+
+            int totalRetries = averageRetryBySessionRetryPolicyInOneRegion;
+            // First regional retries should be in master region
+            assertThat(uris.get(totalRetries / 2)).contains(masterOrHubRegionSuffix);
+
+            // Retrying again in master region
+            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
+            totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
+
+            // Last region retries should be master region
+            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
+        } finally {
+            safeClose(preferredListClient);
         }
-
-        HashSet<String> uniqueHost = new HashSet<>();
-        for (String uri : uris) {
-            uniqueHost.add(uri);
-        }
-        // Verifying we are only retrying in masterOrHub region
-        assertThat(uniqueHost.size()).isEqualTo(1);
-
-        String masterOrHubRegionSuffix =
-            getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
-                TestConfigurations.HOST);
-
-        // First regional retries in originating region , then retrying in master as per clientRetryPolicy and 1 retry in the
-        // last as per RenameCollectionAwareClientRetryPolicy after clearing session token
-        int numberOfRegionRetried = 3;
-
-        // Calculating avg number of retries in each region
-        int averageRetryBySessionRetryPolicyInOneRegion = uris.size() / numberOfRegionRetried;
-
-        int totalRetries = averageRetryBySessionRetryPolicyInOneRegion;
-        // First regional retries should be in master region
-        assertThat(uris.get(totalRetries / 2)).contains(masterOrHubRegionSuffix);
-
-        // Retrying again in master region
-        assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
-        totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
-
-        // Last region retries should be master region
-        assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
     }
 
     private String getRegionalSuffix(String str1, String str2) {
