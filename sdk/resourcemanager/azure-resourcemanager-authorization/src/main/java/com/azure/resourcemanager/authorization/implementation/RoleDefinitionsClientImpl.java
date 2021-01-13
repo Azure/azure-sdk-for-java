@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -63,7 +64,7 @@ public final class RoleDefinitionsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "AuthorizationManagem")
     private interface RoleDefinitionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -72,9 +73,10 @@ public final class RoleDefinitionsClientImpl
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleDefinitionId") String roleDefinitionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -83,9 +85,10 @@ public final class RoleDefinitionsClientImpl
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleDefinitionId") String roleDefinitionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put("/{scope}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -95,9 +98,10 @@ public final class RoleDefinitionsClientImpl
             @PathParam("roleDefinitionId") String roleDefinitionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RoleDefinitionInner roleDefinition,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Authorization/roleDefinitions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -106,9 +110,10 @@ public final class RoleDefinitionsClientImpl
             @PathParam(value = "scope", encoded = true) String scope,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/{roleId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -116,14 +121,18 @@ public final class RoleDefinitionsClientImpl
             @HostParam("$host") String endpoint,
             @PathParam(value = "roleId", encoded = true) String roleId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleDefinitionListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -152,9 +161,11 @@ public final class RoleDefinitionsClientImpl
                 .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.delete(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, context))
+                context ->
+                    service.delete(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, accept, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -186,8 +197,9 @@ public final class RoleDefinitionsClientImpl
                 .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, context);
+        return service.delete(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, accept, context);
     }
 
     /**
@@ -270,9 +282,10 @@ public final class RoleDefinitionsClientImpl
                 .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context -> service.get(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, context))
+                context -> service.get(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, accept, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -304,8 +317,9 @@ public final class RoleDefinitionsClientImpl
                 .error(new IllegalArgumentException("Parameter roleDefinitionId is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, context);
+        return service.get(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, accept, context);
     }
 
     /**
@@ -367,7 +381,7 @@ public final class RoleDefinitionsClientImpl
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition Role definition.
+     * @param roleDefinition The values for the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -395,12 +409,19 @@ public final class RoleDefinitionsClientImpl
             roleDefinition.validate();
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .createOrUpdate(
-                            this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, roleDefinition, context))
+                            this.client.getEndpoint(),
+                            scope,
+                            roleDefinitionId,
+                            apiVersion,
+                            roleDefinition,
+                            accept,
+                            context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -409,7 +430,7 @@ public final class RoleDefinitionsClientImpl
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition Role definition.
+     * @param roleDefinition The values for the role definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -438,9 +459,11 @@ public final class RoleDefinitionsClientImpl
             roleDefinition.validate();
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .createOrUpdate(this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, roleDefinition, context);
+            .createOrUpdate(
+                this.client.getEndpoint(), scope, roleDefinitionId, apiVersion, roleDefinition, accept, context);
     }
 
     /**
@@ -448,7 +471,7 @@ public final class RoleDefinitionsClientImpl
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition Role definition.
+     * @param roleDefinition The values for the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -473,7 +496,7 @@ public final class RoleDefinitionsClientImpl
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition Role definition.
+     * @param roleDefinition The values for the role definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -490,7 +513,7 @@ public final class RoleDefinitionsClientImpl
      *
      * @param scope The scope of the role definition.
      * @param roleDefinitionId The ID of the role definition.
-     * @param roleDefinition Role definition.
+     * @param roleDefinition The values for the role definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -526,8 +549,9 @@ public final class RoleDefinitionsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), scope, filter, apiVersion, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), scope, filter, apiVersion, accept, context))
             .<PagedResponse<RoleDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -564,9 +588,10 @@ public final class RoleDefinitionsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), scope, filter, apiVersion, context)
+            .list(this.client.getEndpoint(), scope, filter, apiVersion, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -631,6 +656,21 @@ public final class RoleDefinitionsClientImpl
      * Get all role definitions that are applicable at scope and above.
      *
      * @param scope The scope of the role definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all role definitions that are applicable at scope and above.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<RoleDefinitionInner> list(String scope) {
+        final String filter = null;
+        return new PagedIterable<>(listAsync(scope, filter));
+    }
+
+    /**
+     * Get all role definitions that are applicable at scope and above.
+     *
+     * @param scope The scope of the role definition.
      * @param filter The filter to apply on the operation. Use atScopeAndBelow filter to search below the given scope as
      *     well.
      * @param context The context to associate with this operation.
@@ -642,21 +682,6 @@ public final class RoleDefinitionsClientImpl
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleDefinitionInner> list(String scope, String filter, Context context) {
         return new PagedIterable<>(listAsync(scope, filter, context));
-    }
-
-    /**
-     * Get all role definitions that are applicable at scope and above.
-     *
-     * @param scope The scope of the role definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all role definitions that are applicable at scope and above.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleDefinitionInner> list(String scope) {
-        final String filter = null;
-        return new PagedIterable<>(listAsync(scope, filter));
     }
 
     /**
@@ -683,8 +708,9 @@ public final class RoleDefinitionsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getById(this.client.getEndpoint(), roleId, apiVersion, context))
+            .withContext(context -> service.getById(this.client.getEndpoint(), roleId, apiVersion, accept, context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
@@ -713,8 +739,9 @@ public final class RoleDefinitionsClientImpl
             return Mono.error(new IllegalArgumentException("Parameter roleId is required and cannot be null."));
         }
         final String apiVersion = "2018-01-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getById(this.client.getEndpoint(), roleId, apiVersion, context);
+        return service.getById(this.client.getEndpoint(), roleId, apiVersion, accept, context);
     }
 
     /**
@@ -791,8 +818,15 @@ public final class RoleDefinitionsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<RoleDefinitionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -820,9 +854,16 @@ public final class RoleDefinitionsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

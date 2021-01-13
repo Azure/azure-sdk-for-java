@@ -3,6 +3,16 @@
 ## 1.3.0-beta.1 (Unreleased)
 
 
+## 1.2.2 (2021-01-12)
+
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.12.0
+
+
+## 1.2.1 (2020-12-08)
+### Dependency Updates
+- Upgraded `azure-core` dependency to 1.11.0
+
 ## 1.2.0 (2020-11-09)
 
 ### New Features

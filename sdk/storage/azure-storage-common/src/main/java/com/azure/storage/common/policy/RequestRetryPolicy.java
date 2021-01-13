@@ -111,7 +111,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          until after the retry backoff delay, so we call delaySubscription.
          */
         return next.clone().process()
-            .timeout(Duration.ofSeconds(this.requestRetryOptions.getTryTimeout()))
+            .timeout(this.requestRetryOptions.getTryTimeoutDuration())
             .delaySubscription(Duration.ofMillis(delayMs))
             .flatMap(response -> {
                 boolean newConsiderSecondary = considerSecondary;

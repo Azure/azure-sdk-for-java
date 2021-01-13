@@ -572,6 +572,19 @@ public interface SubnetsClient {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void unprepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName);
+
+    /**
+     * Unprepares a subnet by removing network intent policies.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
      * @param serviceName The name of the service for which subnet is being unprepared for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -581,19 +594,6 @@ public interface SubnetsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     void unprepareNetworkPolicies(
         String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName, Context context);
-
-    /**
-     * Unprepares a subnet by removing network intent policies.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void unprepareNetworkPolicies(String resourceGroupName, String virtualNetworkName, String subnetName);
 
     /**
      * Gets all subnets in a virtual network.

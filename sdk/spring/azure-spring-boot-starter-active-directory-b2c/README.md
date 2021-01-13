@@ -19,7 +19,7 @@ while protecting the identities of your customers at the same time.
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-    <version>3.0.0-beta.1</version>
+    <version>3.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
@@ -101,6 +101,10 @@ application to use the Spring annotations and classes to protect the web app.
            sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
            profile-edit: ${your-profile-edit-user-flow}     # optional
            password-reset: ${your-password-reset-user-flow} # optional
+         authenticate-additional-parameters: 
+           prompt: [login,none,consent]   # optional
+           login_hint: xxxxxxxxx          # optional
+           domain_hint: xxxxxxxxx         # optional
    ```
    Where:
 
@@ -234,7 +238,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory-b2c-oidc
-[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#azure-active-directory-b2c-spring-boot-starter
+[refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application

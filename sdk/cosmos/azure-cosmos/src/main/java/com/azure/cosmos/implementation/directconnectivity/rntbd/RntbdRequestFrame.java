@@ -165,8 +165,8 @@ final class RntbdRequestFrame {
                 return RntbdOperationType.Stop;
             case SqlQuery:
                 return RntbdOperationType.SqlQuery;
-            case Update:
-                return RntbdOperationType.Update;
+            case Patch:
+                return RntbdOperationType.Patch;
             case ForceConfigRefresh:
                 return RntbdOperationType.ForceConfigRefresh;
             case Head:

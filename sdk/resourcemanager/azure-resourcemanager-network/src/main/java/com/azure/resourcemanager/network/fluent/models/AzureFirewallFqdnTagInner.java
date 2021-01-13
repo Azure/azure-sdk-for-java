@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Azure Firewall FQDN Tag Resource. */
 @JsonFlatten
@@ -86,6 +87,20 @@ public class AzureFirewallFqdnTagInner extends Resource {
      */
     public AzureFirewallFqdnTagInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFirewallFqdnTagInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFirewallFqdnTagInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

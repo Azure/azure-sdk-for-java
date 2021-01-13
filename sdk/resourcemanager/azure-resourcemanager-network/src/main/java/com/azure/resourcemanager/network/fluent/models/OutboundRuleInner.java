@@ -257,6 +257,13 @@ public class OutboundRuleInner extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public OutboundRuleInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

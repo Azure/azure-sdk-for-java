@@ -28,7 +28,9 @@ import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
+import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.Utility
+import com.azure.storage.common.implementation.StorageImplUtils
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -907,6 +909,20 @@ class ContainerAPITest extends APISpec {
         StepVerifier.create(ccAsync.listBlobs(options).byPage().limitRequest(1))
             .assertNext({ assert it.getValue().size() == PAGE_SIZE })
             .verifyComplete()
+    }
+
+    def "List blobs prefix with comma"() {
+        setup:
+        def prefix = generateBlobName() + ", " + generateBlobName()
+        def b = cc.getBlobClient(prefix).getBlockBlobClient()
+        b.upload(defaultInputStream.get(), defaultData.remaining())
+
+        when:
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix(prefix)
+        def blob = cc.listBlobs(options, null).iterator().next()
+
+        then:
+        blob.getName() == prefix
     }
 
     def "List blobs flat options fail"() {

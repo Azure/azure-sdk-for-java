@@ -1,0 +1,20 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.servicebus.windows.net/topic-1/subscriptions/subscription?enrich=true&api-version=2017-04",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.1.0-beta.1 (11.0.6; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000",
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "ETag" : "637327008259230000",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "401",
+      "Date" : "Sat, 09 Jan 2021 23:27:55 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

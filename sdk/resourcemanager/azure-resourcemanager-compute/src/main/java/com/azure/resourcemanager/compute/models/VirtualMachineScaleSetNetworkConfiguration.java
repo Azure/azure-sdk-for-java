@@ -209,6 +209,13 @@ public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetNetworkConfiguration withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

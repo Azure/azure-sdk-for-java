@@ -31,6 +31,7 @@ import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
@@ -218,6 +219,27 @@ public final class BlobContainerAsyncClient {
     }
 
     /**
+     * Get an async client pointing to the account.
+     *
+     * @return {@link BlobServiceAsyncClient}
+     */
+    public BlobServiceAsyncClient getServiceAsyncClient() {
+        return getServiceClientBuilder().buildAsyncClient();
+    }
+
+    BlobServiceClientBuilder getServiceClientBuilder() {
+        CustomerProvidedKey encryptionKey = this.customerProvidedKey == null ? null
+            : new CustomerProvidedKey(this.customerProvidedKey.getEncryptionKey());
+        return new BlobServiceClientBuilder()
+            .endpoint(this.getBlobContainerUrl())
+            .pipeline(this.getHttpPipeline())
+            .serviceVersion(this.serviceVersion)
+            .blobContainerEncryptionScope(this.blobContainerEncryptionScope)
+            .encryptionScope(this.getEncryptionScope())
+            .customerProvidedKey(encryptionKey);
+    }
+
+    /**
      * Gets the service version the client is using.
      *
      * @return the service version the client is using.
@@ -335,7 +357,8 @@ public final class BlobContainerAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.createWithResponse#Map-PublicAccessType}
      *
-     * @param metadata Metadata to associate with the container.
+     * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A reactive response signalling completion.
@@ -479,7 +502,8 @@ public final class BlobContainerAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.setMetadata#Map}
      *
-     * @param metadata Metadata to associate with the container.
+     * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains signalling
      * completion.
      */
@@ -499,7 +523,8 @@ public final class BlobContainerAsyncClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.setMetadataWithResponse#Map-BlobRequestConditions}
      *
-     * @param metadata Metadata to associate with the container.
+     * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response signalling completion.
      * @throws UnsupportedOperationException If one of {@link BlobRequestConditions#getIfMatch()},
@@ -1025,20 +1050,43 @@ public final class BlobContainerAsyncClient {
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
-     * @see BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to
-     * get a user delegation key.
+     * See {@link BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
+     * how to get a user delegation key.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey, getAccountName(),
+            Context.NONE);
+    }
+
+    /**
+     * Generates a user delegation SAS for the container using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link BlobServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
+     * how to get a user delegation key.
+     * @param accountName The account name.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, String accountName, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
-            .generateUserDelegationSas(userDelegationKey, getAccountName());
+            .generateUserDelegationSas(userDelegationKey, accountName, context);
     }
 
     /**
      * Generates a service SAS for the container using the specified {@link BlobServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -1047,11 +1095,29 @@ public final class BlobContainerAsyncClient {
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
+        return generateSas(blobServiceSasSignatureValues, Context.NONE);
+    }
+
+    /**
+     * Generates a service SAS for the container using the specified {@link BlobServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerAsyncClient.generateSas#BlobServiceSasSignatureValues-Context}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
         return new BlobSasImplUtil(blobServiceSasSignatureValues, getBlobContainerName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
     private boolean validateNoETag(BlobRequestConditions modifiedRequestConditions) {

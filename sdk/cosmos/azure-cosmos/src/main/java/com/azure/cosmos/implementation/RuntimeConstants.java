@@ -20,6 +20,7 @@ public class RuntimeConstants {
         public static final String TEXT_HTML = "text/html";
         public static final String TEXT_PLAIN = "text/plain";
         public static final String XML = "application/xml";
+        public static final String JSON_PATCH = "application/json-patch+json";
     }
 
     public static class ProtocolScheme {

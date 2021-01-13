@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.2//languages",
+    "Uri" : "https://REDACTED.azure-api.net/text/analytics/v3.1-preview.3//languages",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c7dfb57d-46ef-4411-a1c2-62fa3c71bda4",
