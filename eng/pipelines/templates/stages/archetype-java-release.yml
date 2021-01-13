@@ -70,6 +70,7 @@ stages:
                     pwsh: true
                     workingDirectory: $(Build.SourcesDirectory)
                     filePath: eng/scripts/SetTestPipelineVersion.ps1
+                    arguments: '-BuildID $(Build.BuildId)'
 
               - task: UsePythonVersion@0
                 displayName: 'Use Python 3.6'
@@ -160,7 +161,7 @@ stages:
               environment: github
               dependsOn: PublishPackage
               variables:
-                CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0'}]}"
+                CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1','content_folder':'docs-ref-services/preview'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0','content_folder':'docs-ref-services/latest'}]}"
                 skipComponentGovernanceDetection: true
               pool:
                 vmImage: vs2017-win2016
@@ -188,6 +189,7 @@ stages:
                           GHReviewersVariable: 'OwningGHUser'
                           CIConfigs: $(CIConfigs)
                           CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
+                          SkipPackageJson: ${{artifact.skipUpdatePackageJson}}
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
@@ -254,6 +256,7 @@ stages:
                           PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
                           CommitMsg: "Increment package version after release of ${{ artifact.groupId }} ${{ artifact.name }}"
                           PRTitle: "Increment version for ${{ parameters.ServiceDirectory }} releases"
+                          CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
   - ${{if ne(parameters.EnableIntegrationStage, false)}}:
     - stage: Integration

@@ -157,6 +157,13 @@ public class ServiceEndpointPolicyDefinitionInner extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ServiceEndpointPolicyDefinitionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

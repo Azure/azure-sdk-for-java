@@ -37,7 +37,7 @@ public final class ManageNetworkInterface {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
-        final Region region = Region.US_NORTH_CENTRAL;
+        final Region region = Region.US_WEST;
         final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 24);
         final String networkInterfaceName1 = Utils.randomResourceName(azureResourceManager, "nic1", 24);
         final String networkInterfaceName2 = Utils.randomResourceName(azureResourceManager, "nic2", 24);
@@ -133,7 +133,7 @@ public final class ManageNetworkInterface {
                     .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                     .withAdminUsername(userName)
                     .withAdminPassword(password)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D8a_v4"))
                     .withExistingSecondaryNetworkInterface(networkInterface2)
                     .withExistingSecondaryNetworkInterface(networkInterface3)
                     .create();

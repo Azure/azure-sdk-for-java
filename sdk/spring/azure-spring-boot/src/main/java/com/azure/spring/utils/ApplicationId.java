@@ -32,5 +32,11 @@ public class ApplicationId {
     public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/" + VERSION;
     public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/" + VERSION;
     public static final String AZURE_SPRING_STORAGE_FILES = "az-sp-sf/" + VERSION;
+    /**
+     * AZURE_SPRING_AAD does not contain VERSION, because AAD server support 2 headers:
+     * 1. x-client-SKU;
+     * 2. x-client-VER;
+     */
+    public static final String AZURE_SPRING_AAD = "az-sp-aad";
 
 }

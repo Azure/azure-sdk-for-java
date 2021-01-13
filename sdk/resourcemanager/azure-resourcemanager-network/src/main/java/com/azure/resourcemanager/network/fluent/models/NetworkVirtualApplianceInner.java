@@ -16,6 +16,7 @@ import com.azure.resourcemanager.network.models.VirtualApplianceSkuProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** NetworkVirtualAppliance Resource. */
 @JsonFlatten
@@ -41,6 +42,12 @@ public class NetworkVirtualApplianceInner extends Resource {
      */
     @JsonProperty(value = "properties.nvaSku")
     private VirtualApplianceSkuProperties nvaSku;
+
+    /*
+     * Address Prefix.
+     */
+    @JsonProperty(value = "properties.addressPrefix", access = JsonProperty.Access.WRITE_ONLY)
+    private String addressPrefix;
 
     /*
      * BootStrapConfigurationBlobs storage URLs.
@@ -83,6 +90,12 @@ public class NetworkVirtualApplianceInner extends Resource {
      */
     @JsonProperty(value = "properties.virtualApplianceSites", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> virtualApplianceSites;
+
+    /*
+     * List of references to InboundSecurityRules.
+     */
+    @JsonProperty(value = "properties.inboundSecurityRules", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> inboundSecurityRules;
 
     /*
      * The provisioning state of the resource.
@@ -143,6 +156,15 @@ public class NetworkVirtualApplianceInner extends Resource {
     public NetworkVirtualApplianceInner withNvaSku(VirtualApplianceSkuProperties nvaSku) {
         this.nvaSku = nvaSku;
         return this;
+    }
+
+    /**
+     * Get the addressPrefix property: Address Prefix.
+     *
+     * @return the addressPrefix value.
+     */
+    public String addressPrefix() {
+        return this.addressPrefix;
     }
 
     /**
@@ -264,6 +286,15 @@ public class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
+     * Get the inboundSecurityRules property: List of references to InboundSecurityRules.
+     *
+     * @return the inboundSecurityRules value.
+     */
+    public List<SubResource> inboundSecurityRules() {
+        return this.inboundSecurityRules;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the resource.
      *
      * @return the provisioningState value.
@@ -289,6 +320,20 @@ public class NetworkVirtualApplianceInner extends Resource {
      */
     public NetworkVirtualApplianceInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkVirtualApplianceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkVirtualApplianceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

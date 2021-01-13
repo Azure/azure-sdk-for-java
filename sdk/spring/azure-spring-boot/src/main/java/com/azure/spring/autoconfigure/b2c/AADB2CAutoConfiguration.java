@@ -69,7 +69,7 @@ public class AADB2CAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AADB2CAuthorizationRequestResolver b2cOAuth2AuthorizationRequestResolver() {
-        return new AADB2CAuthorizationRequestResolver(repository, properties.getUserFlows().getPasswordReset());
+        return new AADB2CAuthorizationRequestResolver(repository, properties);
     }
 
     @Bean

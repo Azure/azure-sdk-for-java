@@ -355,8 +355,18 @@ public class BlobClientJavaDocCodeSnippets {
     public void getContainerName() {
         // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getContainerName
         String containerName = client.getContainerName();
-        System.out.println("The name of the blob is " + containerName);
+        System.out.println("The name of the container is " + containerName);
         // END: com.azure.storage.blob.specialized.BlobClientBase.getContainerName
+    }
+
+    /**
+     * Generates a code sample for using {@link BlobClient#getContainerClient()}
+     */
+    public void getContainerClient() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobClientBase.getContainerClient
+        BlobContainerClient containerClient = client.getContainerClient();
+        System.out.println("The name of the container is " + containerClient.getBlobContainerName());
+        // END: com.azure.storage.blob.specialized.BlobClientBase.getContainerClient
     }
 
     /**

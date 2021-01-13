@@ -1,42 +1,42 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.1//custom/models",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.2//custom/models",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f74e519a-493e-42c1-8568-fee93b71e20c",
+      "x-ms-client-request-id" : "28788cc9-dc2f-4102-acbc-fdfcc2994b92",
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "x-envoy-upstream-service-time" : "131",
+      "x-envoy-upstream-service-time" : "217",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "d988aaf5-57e3-4141-adf8-d6ef91ae28a9",
+      "apim-request-id" : "9f92918b-53b9-435d-b5c3-70e9f502ec14",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "Date" : "Wed, 16 Sep 2020 00:52:05 GMT",
-      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.1/custom/models/fd0130e0-1b0c-46b9-a719-dad565f14ced"
+      "Date" : "Tue, 03 Nov 2020 05:58:54 GMT",
+      "Location" : "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1-preview.2/custom/models/b554fad8-9d54-40a2-a0b9-7f6504939cfb"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.1//custom/models/fd0130e0-1b0c-46b9-a719-dad565f14ced?includeKeys=true",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.1-preview.2//custom/models/b554fad8-9d54-40a2-a0b9-7f6504939cfb?includeKeys=true",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-ai-formrecognizer/3.1.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "893400ef-2739-4de5-99ab-8b293dc23de6"
+      "x-ms-client-request-id" : "cea09d0e-c5ab-46e5-a915-b54943063bbd"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "24",
+      "x-envoy-upstream-service-time" : "29",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "78753ed7-bb3b-4f1f-b700-17556745170f",
+      "apim-request-id" : "bbfc4541-f83e-4566-846d-744114727fec",
       "retry-after" : "0",
       "StatusCode" : "200",
       "x-ms-cs-error-code" : "2012",
-      "Body" : "{\"modelInfo\":{\"modelId\":\"fd0130e0-1b0c-46b9-a719-dad565f14ced\",\"status\":\"invalid\",\"createdDateTime\":\"2020-09-16T00:52:05Z\",\"lastUpdatedDateTime\":\"2020-09-16T00:52:06Z\"},\"keys\":{\"clusters\":{}},\"trainResult\":{\"trainingDocuments\":[],\"errors\":[{\"code\":\"2012\",\"message\":\"Unable to list blobs on the Azure blob storage account.\"}]}}",
-      "Date" : "Wed, 16 Sep 2020 00:52:10 GMT",
+      "Body" : "{\"modelInfo\":{\"modelId\":\"b554fad8-9d54-40a2-a0b9-7f6504939cfb\",\"status\":\"invalid\",\"createdDateTime\":\"2020-11-03T05:58:54Z\",\"lastUpdatedDateTime\":\"2020-11-03T05:58:55Z\"},\"keys\":{\"clusters\":{}},\"trainResult\":{\"trainingDocuments\":[],\"errors\":[{\"code\":\"2012\",\"message\":\"Unable to list blobs on the Azure blob storage account.\"}]}}",
+      "Date" : "Tue, 03 Nov 2020 05:58:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

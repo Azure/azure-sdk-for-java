@@ -11,7 +11,7 @@ import com.azure.core.util.ExpandableStringEnum;
 public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBusErrorSource> {
 
     /** Error while abandoning the message.*/
-    public static final ServiceBusErrorSource ABANDONED = fromString("ABANDONED", ServiceBusErrorSource.class);
+    public static final ServiceBusErrorSource ABANDON = fromString("ABANDON", ServiceBusErrorSource.class);
 
     /** Error while completing the message.*/
     public static final ServiceBusErrorSource COMPLETE = fromString("COMPLETE", ServiceBusErrorSource.class);
@@ -36,4 +36,12 @@ public final class ServiceBusErrorSource extends ExpandableStringEnum<ServiceBus
     /** Error while session is closed.*/
     public static final ServiceBusErrorSource CLOSE_SESSION = fromString("CLOSE_SESSION",
         ServiceBusErrorSource.class);
+
+    /** Error while sending a message.*/
+    public static final ServiceBusErrorSource SEND = fromString("SEND",
+            ServiceBusErrorSource.class);
+
+    /** Error while trying to do an operation on the management link. */
+    public static final ServiceBusErrorSource MANAGEMENT = fromString("MANAGEMENT",
+            ServiceBusErrorSource.class);
 }

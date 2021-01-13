@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue;
 
+import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.QueueAccessPolicy;
 import com.azure.storage.queue.models.QueueProperties;
@@ -506,5 +507,22 @@ public class QueueAsyncJavaDocCodeSamples {
 
         client.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
         // END: com.azure.storage.queue.QueueAsyncClient.generateSas#QueueServiceSasSignatureValues
+    }
+
+
+    /**
+     * Code snippet for {@link QueueAsyncClient#generateSas(QueueServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        // BEGIN: com.azure.storage.queue.QueueAsyncClient.generateSas#QueueServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        QueueSasPermission permission = new QueueSasPermission().setReadPermission(true);
+
+        QueueServiceSasSignatureValues values = new QueueServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        client.generateSas(values, new Context("key", "value"));
+        // END: com.azure.storage.queue.QueueAsyncClient.generateSas#QueueServiceSasSignatureValues-Context
     }
 }

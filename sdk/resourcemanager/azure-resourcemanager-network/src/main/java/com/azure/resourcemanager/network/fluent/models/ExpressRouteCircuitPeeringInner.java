@@ -577,6 +577,13 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
         return this.peeredConnections;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteCircuitPeeringInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

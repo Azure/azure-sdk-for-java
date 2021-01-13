@@ -57,6 +57,11 @@ public class BatchTestBase extends TestSuiteBase {
         return populateTestDoc(partitionKey, 20);
     }
 
+    TestDoc populateTestDoc(String partitionKey, int cost, int minDesiredSize) {
+        String description = StringUtils.repeat("x", minDesiredSize);
+        return new TestDoc(cost + UUID.randomUUID().toString(), cost, description, partitionKey);
+    }
+
     TestDoc populateTestDoc(String partitionKey, int minDesiredSize) {
         String description = StringUtils.repeat("x", minDesiredSize);
         return new TestDoc(UUID.randomUUID().toString(), this.random.nextInt(), description, partitionKey);
@@ -255,6 +260,16 @@ public class BatchTestBase extends TestSuiteBase {
         public void setStatus(String status) {
             this.status = status;
         }
+
+        @Override
+        public String toString() {
+            return "TestDoc{" +
+                "id='" + id + '\'' +
+                ", cost=" + cost +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+        }
     }
 
     public static class EventDoc {
@@ -335,6 +350,17 @@ public class BatchTestBase extends TestSuiteBase {
         @Override
         public int hashCode() {
             return Objects.hash(id, clicks, views, type, partitionKey);
+        }
+
+        @Override
+        public String toString() {
+            return "EventDoc{" +
+                "id='" + id + '\'' +
+                ", clicks=" + clicks +
+                ", views=" + views +
+                ", type='" + type + '\'' +
+                ", partitionKey='" + partitionKey + '\'' +
+                '}';
         }
     }
 }

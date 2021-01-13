@@ -13,7 +13,7 @@ import java.util.Objects;
  * Runtime properties about the topic.
  */
 @Immutable
-public class TopicRuntimeProperties {
+public final class TopicRuntimeProperties {
     private final String name;
     private final int subscriptionCount;
     private final long sizeInBytes;

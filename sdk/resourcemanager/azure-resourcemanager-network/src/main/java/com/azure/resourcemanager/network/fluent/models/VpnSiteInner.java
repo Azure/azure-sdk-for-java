@@ -12,10 +12,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.DeviceProperties;
+import com.azure.resourcemanager.network.models.O365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** VpnSite Resource. */
 @JsonFlatten
@@ -82,6 +84,12 @@ public class VpnSiteInner extends Resource {
      */
     @JsonProperty(value = "properties.vpnSiteLinks")
     private List<VpnSiteLinkInner> vpnSiteLinks;
+
+    /*
+     * Office365 Policy.
+     */
+    @JsonProperty(value = "properties.o365Policy")
+    private O365PolicyProperties o365Policy;
 
     /*
      * Resource ID.
@@ -268,6 +276,26 @@ public class VpnSiteInner extends Resource {
     }
 
     /**
+     * Get the o365Policy property: Office365 Policy.
+     *
+     * @return the o365Policy value.
+     */
+    public O365PolicyProperties o365Policy() {
+        return this.o365Policy;
+    }
+
+    /**
+     * Set the o365Policy property: Office365 Policy.
+     *
+     * @param o365Policy the o365Policy value to set.
+     * @return the VpnSiteInner object itself.
+     */
+    public VpnSiteInner withO365Policy(O365PolicyProperties o365Policy) {
+        this.o365Policy = o365Policy;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -284,6 +312,20 @@ public class VpnSiteInner extends Resource {
      */
     public VpnSiteInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VpnSiteInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VpnSiteInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
@@ -304,6 +346,9 @@ public class VpnSiteInner extends Resource {
         }
         if (vpnSiteLinks() != null) {
             vpnSiteLinks().forEach(e -> e.validate());
+        }
+        if (o365Policy() != null) {
+            o365Policy().validate();
         }
     }
 }

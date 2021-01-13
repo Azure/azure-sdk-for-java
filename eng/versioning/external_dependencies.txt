@@ -1,3 +1,10 @@
+# To avoid dependency conflicts between SDK and Spring, when modify or add dependencies,
+# make sure the version is same to sdk/spring/scripts/spring_managed_external_dependencies.txt.
+# If your version is different from sdk/spring/scripts/spring_managed_external_dependencies.txt,
+# please discuss with Spring Integration team members:
+# @chenrujun (rujche), @saragluna (xiada), @yiliuTo (yiliu6), @backwind1233 (zhihaoguo).
+# Thanks.
+
 # Format;
 # groupId:artifactId;dependency-version
 com.fasterxml.jackson.core:jackson-annotations;2.11.3
@@ -85,7 +92,6 @@ org.slf4j:slf4j-nop;1.7.30
 org.slf4j:slf4j-simple;1.7.30
 
 ## Spring boot dependency versions
-# After you update spring-boot-dependencies' version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
 org.springframework.boot:spring-boot-dependencies;2.3.5.RELEASE
 org.springframework.boot:spring-boot-actuator-autoconfigure;2.3.5.RELEASE
 org.springframework.boot:spring-boot-autoconfigure-processor;2.3.5.RELEASE
@@ -99,6 +105,7 @@ org.springframework.boot:spring-boot-starter-logging;2.3.5.RELEASE
 org.springframework.boot:spring-boot-starter-test;2.3.5.RELEASE
 org.springframework.boot:spring-boot-starter-validation;2.3.5.RELEASE
 org.springframework.boot:spring-boot-starter-web;2.3.5.RELEASE
+org.springframework.boot:spring-boot-starter-webflux;2.3.5.RELEASE
 org.springframework.boot:spring-boot-starter;2.3.5.RELEASE
 org.springframework.boot:spring-boot;2.3.5.RELEASE
 org.springframework.data:spring-data-commons;2.3.5.RELEASE
@@ -109,6 +116,7 @@ org.springframework.kafka:spring-kafka;2.5.7.RELEASE
 org.springframework.security:spring-security-config;5.3.5.RELEASE
 org.springframework.security:spring-security-core;5.3.5.RELEASE
 org.springframework.security:spring-security-oauth2-client;5.3.5.RELEASE
+org.springframework.security:spring-security-oauth2-resource-server;5.3.5.RELEASE
 org.springframework.security:spring-security-oauth2-core;5.3.5.RELEASE
 org.springframework.security:spring-security-oauth2-jose;5.3.5.RELEASE
 org.springframework.security:spring-security-web;5.3.5.RELEASE
@@ -125,10 +133,9 @@ org.springframework:spring-web;5.2.10.RELEASE
 org.springframework:spring-webmvc;5.2.10.RELEASE
 
 # spring-boot-starter-parent is not managed by spring-boot-dependencies or spring-cloud-dependencies.
-org.springframework.boot:spring-boot-starter-parent;2.3.3.RELEASE
+org.springframework.boot:spring-boot-starter-parent;2.3.7.RELEASE
 
 ## Spring cloud dependency versions
-# After you update spring-cloud-dependencies' version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
 org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR8
 org.springframework.cloud:spring-cloud-bus;2.2.3.RELEASE
 org.springframework.cloud:spring-cloud-context;2.2.5.RELEASE
@@ -248,6 +255,7 @@ org.codehaus.mojo:properties-maven-plugin;1.0.0
 org.codehaus.mojo:xml-maven-plugin;1.0
 org.eclipse.jetty:jetty-maven-plugin;9.4.33.v20201020
 org.eclipse.m2e:lifecycle-mapping;1.0.0
+org.hdrhistogram:HdrHistogram;2.1.12
 org.jacoco:jacoco-maven-plugin;0.8.5
 org.jacoco:org.jacoco.agent;0.8.5
 org.mockito:mockito-core;3.3.3
@@ -279,6 +287,7 @@ cosmos_io.dropwizard.metrics:metrics-graphite;4.1.0
 cosmos_io.dropwizard.metrics:metrics-jvm;4.1.0
 cosmos_org.mockito:mockito-core;1.10.19
 cosmos_org.mpierce.metrics.reservoir:hdrhistogram-metrics-reservoir;1.1.0
+cosmos_org.hdrhistogram:HdrHistogram;2.1.12
 
 ## Cosmos Spark connector under sdk\cosmos\azure-cosmos-spark_3-0_2-12\pom.xml
 # Cosmos Spark connector runtime dependencies - provided by Spark runtime/host

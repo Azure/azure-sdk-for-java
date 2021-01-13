@@ -4,20 +4,23 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.amqp.AmqpMessageConstant;
+import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
-import com.azure.core.amqp.models.AmqpBodyType;
-import com.azure.core.amqp.models.AmqpDataBody;
+import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.amqp.models.AmqpMessageBodyType;
+import com.azure.core.amqp.models.AmqpMessageHeader;
+import com.azure.core.amqp.models.AmqpMessageId;
+import com.azure.core.amqp.models.AmqpMessageProperties;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.experimental.util.BinaryData;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.DEAD_LETTER_REASON_ANNOTATION_NAME;
@@ -28,28 +31,20 @@ import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATIO
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.core.amqp.AmqpMessageConstant.VIA_PARTITION_KEY_ANNOTATION_NAME;
 
 /**
- * The data structure encapsulating the message being sent-to Service Bus.
+ * The data structure encapsulating the message being sent to Service Bus. The message structure is discussed in detail
+ * in the <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads">product
+ * documentation</a>.
  *
- * <p>
- * Here's how AMQP message sections map to {@link ServiceBusMessage}. For reference, the specification can be found
- * here:
- * <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification</a>
- *
- * <ol>
- * <li>{@link #getApplicationProperties()} - AMQPMessage.ApplicationProperties section</li>
- * <li>{@link #getBody()} - if AMQPMessage.Body has Data section</li>
- * </ol>
- *
- * <p>
- * Serializing a received {@link ServiceBusMessage} with AMQP sections other than ApplicationProperties
- * (with primitive Java types) and Data section is not supported.
- * </p>
- *
+ * @see ServiceBusReceivedMessage
  * @see ServiceBusMessageBatch
- * @see BinaryData
+ * @see ServiceBusSenderAsyncClient#sendMessage(ServiceBusMessage)
+ * @see ServiceBusSenderClient#sendMessage(ServiceBusMessage)
+ * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads">Service Bus
+ *      message payloads</a>
+ * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-complete-v1.0-os.pdf">AMQP 1.0 specification
+ *     </a>
  */
 public class ServiceBusMessage {
     private static final int MAX_MESSAGE_ID_LENGTH = 128;
@@ -73,9 +68,9 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Creates a {@link ServiceBusMessage} with a {@link java.nio.charset.StandardCharsets#UTF_8 UTF_8} encoded body.
+     * Creates a {@link ServiceBusMessage} with a {@link StandardCharsets#UTF_8 UTF-8} encoded body.
      *
-     * @param body The content of the Service bus message.
+     * @param body The content of the Service Bus message.
      *
      * @throws NullPointerException if {@code body} is null.
      */
@@ -85,20 +80,18 @@ public class ServiceBusMessage {
 
     /**
      * Creates a {@link ServiceBusMessage} containing the {@code body}.The {@link BinaryData} provides various
-     * convenience API representing byte array. It also provides a way to serialize {@link Object} into
-     * {@link BinaryData}.
+     * convenience API representing byte array. It also provides a way to serialize {@link Object} into {@link
+     * BinaryData}.
      *
      * @param body The data to set for this {@link ServiceBusMessage}.
      *
      * @throws NullPointerException if {@code body} is {@code null}.
-     *
      * @see BinaryData
      */
     public ServiceBusMessage(BinaryData body) {
         Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Context.NONE;
-        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(
-            new AmqpDataBody(Collections.singletonList(body.toBytes())));
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(AmqpMessageBody.fromData(body.toBytes()));
     }
 
     /**
@@ -108,39 +101,113 @@ public class ServiceBusMessage {
      * @param receivedMessage The received message to create new message from.
      *
      * @throws NullPointerException if {@code receivedMessage} is {@code null}.
+     * @throws UnsupportedOperationException if {@link AmqpMessageBodyType} is {@link AmqpMessageBodyType#SEQUENCE}
+     *     or {@link AmqpMessageBodyType#VALUE}.
+     * @throws IllegalStateException for invalid {@link AmqpMessageBodyType}.
      */
     public ServiceBusMessage(ServiceBusReceivedMessage receivedMessage) {
         Objects.requireNonNull(receivedMessage, "'receivedMessage' cannot be null.");
 
-        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(receivedMessage.getAmqpAnnotatedMessage());
+        final AmqpMessageBodyType bodyType = receivedMessage.getRawAmqpMessage().getBody().getBodyType();
+        AmqpMessageBody amqpMessageBody;
+        switch (bodyType) {
+            case DATA:
+                amqpMessageBody = AmqpMessageBody.fromData(receivedMessage.getRawAmqpMessage().getBody()
+                    .getFirstData());
+                break;
+            case SEQUENCE:
+            case VALUE:
+                // This should not happen because we will not create `ServiceBusReceivedMessage` with these types.
+                throw logger.logExceptionAsError(new UnsupportedOperationException(
+                    "This constructor only supports the AMQP Data body type at present. Track this issue, "
+                        + "https://github.com/Azure/azure-sdk-for-java/issues/17614 for other body type support in "
+                        + "future."));
+            default:
+                throw logger.logExceptionAsError(new IllegalStateException("Body type not valid "
+                    + bodyType.toString()));
+        }
+        this.amqpAnnotatedMessage = new AmqpAnnotatedMessage(amqpMessageBody);
+
+        // set properties
+        final AmqpMessageProperties receivedProperties = receivedMessage.getRawAmqpMessage().getProperties();
+        final AmqpMessageProperties newProperties = amqpAnnotatedMessage.getProperties();
+        newProperties.setMessageId(receivedProperties.getMessageId());
+        newProperties.setUserId(receivedProperties.getUserId());
+        newProperties.setTo(receivedProperties.getTo());
+        newProperties.setSubject(receivedProperties.getSubject());
+        newProperties.setReplyTo(receivedProperties.getReplyTo());
+        newProperties.setCorrelationId(receivedProperties.getCorrelationId());
+        newProperties.setContentType(receivedProperties.getContentType());
+        newProperties.setContentEncoding(receivedProperties.getContentEncoding());
+        newProperties.setAbsoluteExpiryTime(receivedProperties.getAbsoluteExpiryTime());
+        newProperties.setCreationTime(receivedProperties.getCreationTime());
+        newProperties.setGroupId(receivedProperties.getGroupId());
+        newProperties.setGroupSequence(receivedProperties.getGroupSequence());
+        newProperties.setReplyToGroupId(receivedProperties.getReplyToGroupId());
+
+        // copy header except for delivery count which should be set to null
+        final AmqpMessageHeader receivedHeader = receivedMessage.getRawAmqpMessage().getHeader();
+        final AmqpMessageHeader newHeader = this.amqpAnnotatedMessage.getHeader();
+        newHeader.setPriority(receivedHeader.getPriority());
+        newHeader.setTimeToLive(receivedHeader.getTimeToLive());
+        newHeader.setDurable(receivedHeader.isDurable());
+        newHeader.setFirstAcquirer(receivedHeader.isFirstAcquirer());
+
+        // copy message annotations except for broker set ones
+        final Map<String, Object> receivedAnnotations = receivedMessage.getRawAmqpMessage()
+            .getMessageAnnotations();
+        final Map<String, Object> newAnnotations = this.amqpAnnotatedMessage.getMessageAnnotations();
+
+        for (Map.Entry<String, Object> entry : receivedAnnotations.entrySet()) {
+            if (AmqpMessageConstant.fromString(entry.getKey()) == LOCKED_UNTIL_KEY_ANNOTATION_NAME
+                || AmqpMessageConstant.fromString(entry.getKey()) == SEQUENCE_NUMBER_ANNOTATION_NAME
+                || AmqpMessageConstant.fromString(entry.getKey()) == DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME
+                || AmqpMessageConstant.fromString(entry.getKey()) == ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME
+                || AmqpMessageConstant.fromString(entry.getKey()) == ENQUEUED_TIME_UTC_ANNOTATION_NAME) {
+
+                continue;
+            }
+            newAnnotations.put(entry.getKey(), entry.getValue());
+        }
+
+        // copy delivery annotations
+        final Map<String, Object> receivedDelivery = receivedMessage.getRawAmqpMessage().getDeliveryAnnotations();
+        final Map<String, Object> newDelivery = this.amqpAnnotatedMessage.getDeliveryAnnotations();
+
+        for (Map.Entry<String, Object> entry : receivedDelivery.entrySet()) {
+            newDelivery.put(entry.getKey(), entry.getValue());
+        }
+
+        // copy Footer
+        final Map<String, Object> receivedFooter = receivedMessage.getRawAmqpMessage().getFooter();
+        final Map<String, Object> newFooter = this.amqpAnnotatedMessage.getFooter();
+
+        for (Map.Entry<String, Object> entry : receivedFooter.entrySet()) {
+            newFooter.put(entry.getKey(), entry.getValue());
+        }
+
+        // copy application properties except for broker set ones
+        final Map<String, Object> receivedApplicationProperties = receivedMessage.getRawAmqpMessage()
+            .getApplicationProperties();
+        final Map<String, Object> newApplicationProperties = this.amqpAnnotatedMessage.getApplicationProperties();
+
+        for (Map.Entry<String, Object> entry : receivedApplicationProperties.entrySet()) {
+            if (AmqpMessageConstant.fromString(entry.getKey()) == DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME
+                || AmqpMessageConstant.fromString(entry.getKey()) == DEAD_LETTER_REASON_ANNOTATION_NAME) {
+
+                continue;
+            }
+            newApplicationProperties.put(entry.getKey(), entry.getValue());
+        }
+
         this.context = Context.NONE;
-
-        // clean up data which user is not allowed to set.
-        amqpAnnotatedMessage.getHeader().setDeliveryCount(null);
-
-        removeValues(amqpAnnotatedMessage.getMessageAnnotations(), LOCKED_UNTIL_KEY_ANNOTATION_NAME,
-            SEQUENCE_NUMBER_ANNOTATION_NAME, DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME,
-            ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME, ENQUEUED_TIME_UTC_ANNOTATION_NAME);
-
-        removeValues(amqpAnnotatedMessage.getApplicationProperties(), DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME,
-            DEAD_LETTER_REASON_ANNOTATION_NAME);
-
-    }
-
-    /**
-     * Gets the {@link AmqpAnnotatedMessage}.
-     *
-     * @return the amqp message.
-     */
-    public AmqpAnnotatedMessage getAmqpAnnotatedMessage() {
-        return amqpAnnotatedMessage;
     }
 
     /**
      * Gets the set of free-form {@link ServiceBusMessage} properties which may be used for passing metadata associated
-     * with the {@link ServiceBusMessage} during Service Bus operations. A common use-case for
-     * {@code getApplicationProperties()} is to associate serialization hints for the {@link #getBody()} as an aid to
-     * consumers who wish to deserialize the binary data.
+     * with the {@link ServiceBusMessage} during Service Bus operations. A common use-case for {@code
+     * getApplicationProperties()} is to associate serialization hints for the {@link #getBody()} as an aid to consumers
+     * who wish to deserialize the binary data.
      *
      * @return Application properties associated with this {@link ServiceBusMessage}.
      */
@@ -149,33 +216,22 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Gets the actual payload/data wrapped by the {@link ServiceBusMessage}.
+     * Gets the actual payload wrapped by the {@link ServiceBusMessage}.
      *
      * <p>The {@link BinaryData} wraps byte array and is an abstraction over many different ways it can be represented.
-     * It provides many convenience API including APIs to serialize/deserialize object.
-     * <p>
-     * If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use of
-     * {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
-     * consumers who wish to deserialize the binary data.
-     * </p>
+     * It provides convenience APIs to serialize/deserialize the object.</p>
      *
-     * @return A byte array representing the data.
+     * <p>If the means for deserializing the raw data is not apparent to consumers, a common technique is to make use
+     * of {@link #getApplicationProperties()} when creating the event, to associate serialization hints as an aid to
+     * consumers who wish to deserialize the binary data.</p>
+     *
+     * @return Binary data representing the payload.
      */
     public BinaryData getBody() {
-        final AmqpBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
+        final AmqpMessageBodyType type = amqpAnnotatedMessage.getBody().getBodyType();
         switch (type) {
             case DATA:
-                Optional<byte[]> byteArrayData = ((AmqpDataBody) amqpAnnotatedMessage.getBody()).getData().stream()
-                    .findFirst();
-                final byte[] bytes;
-
-                if (byteArrayData.isPresent()) {
-                    bytes = byteArrayData.get();
-                } else {
-                    logger.warning("Data not present.");
-                    bytes = new byte[0];
-                }
-                return BinaryData.fromBytes(bytes);
+                return BinaryData.fromBytes(amqpAnnotatedMessage.getBody().getFirstData());
             case SEQUENCE:
             case VALUE:
                 throw logger.logExceptionAsError(new UnsupportedOperationException("Not supported AmqpBodyType: "
@@ -189,7 +245,11 @@ public class ServiceBusMessage {
     /**
      * Gets the content type of the message.
      *
-     * @return the contentType of the {@link ServiceBusMessage}.
+     * <p>
+     * Optionally describes the payload of the message, with a descriptor following the format of RFC2045, Section 5,
+     * for example "application/json".
+     * </p>
+     * @return The content type of the {@link ServiceBusMessage}.
      */
     public String getContentType() {
         return amqpAnnotatedMessage.getProperties().getContentType();
@@ -198,7 +258,12 @@ public class ServiceBusMessage {
     /**
      * Sets the content type of the {@link ServiceBusMessage}.
      *
-     * @param contentType of the message.
+     * <p>
+     * Optionally describes the payload of the message, with a descriptor following the format of RFC2045, Section 5,
+     * for example "application/json".
+     * </p>
+     *
+     * @param contentType RFC2045 Content-Type descriptor of the message.
      *
      * @return The updated {@link ServiceBusMessage}.
      */
@@ -214,12 +279,17 @@ public class ServiceBusMessage {
      * reflecting the MessageId of a message that is being replied to.
      * </p>
      *
-     * @return correlation id of this message
+     * @return The correlation id of this message.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
      *     Routing and Correlation</a>
      */
     public String getCorrelationId() {
-        return amqpAnnotatedMessage.getProperties().getCorrelationId();
+        String correlationId = null;
+        AmqpMessageId amqpCorrelationId = amqpAnnotatedMessage.getProperties().getCorrelationId();
+        if (amqpCorrelationId != null) {
+            correlationId = amqpCorrelationId.toString();
+        }
+        return correlationId;
     }
 
     /**
@@ -231,12 +301,21 @@ public class ServiceBusMessage {
      * @see #getCorrelationId()
      */
     public ServiceBusMessage setCorrelationId(String correlationId) {
-        amqpAnnotatedMessage.getProperties().setCorrelationId(correlationId);
+        AmqpMessageId id = null;
+        if (correlationId != null) {
+            id = new AmqpMessageId(correlationId);
+        }
+        amqpAnnotatedMessage.getProperties().setCorrelationId(id);
         return this;
     }
 
     /**
      * Gets the subject for the message.
+     *
+     * <p>
+     * This property enables the application to indicate the purpose of the message to the receiver in a standardized
+     * fashion, similar to an email subject line. The mapped AMQP property is "subject".
+     * </p>
      *
      * @return The subject for the message.
      */
@@ -247,7 +326,7 @@ public class ServiceBusMessage {
     /**
      * Sets the subject for the message.
      *
-     * @param subject The subject to set.
+     * @param subject The application specific subject.
      *
      * @return The updated {@link ServiceBusMessage} object.
      */
@@ -257,23 +336,42 @@ public class ServiceBusMessage {
     }
 
     /**
+     * Gets the message id.
+     *
+     * <p>
+     * The message identifier is an application-defined value that uniquely identifies the message and its payload. The
+     * identifier is a free-form string and can reflect a GUID or an identifier derived from the application context. If
+     * enabled, the
+     * <a href="https://docs.microsoft.com/azure/service-bus-messaging/duplicate-detection">duplicate detection</a>
+     * feature identifies and removes second and further submissions of messages with the same {@code messageId}.
+     * </p>
+     *
      * @return Id of the {@link ServiceBusMessage}.
      */
     public String getMessageId() {
-        return amqpAnnotatedMessage.getProperties().getMessageId();
+        String messageId = null;
+        AmqpMessageId amqpMessageId = amqpAnnotatedMessage.getProperties().getMessageId();
+        if (amqpMessageId != null) {
+            messageId = amqpMessageId.toString();
+        }
+        return messageId;
     }
 
     /**
      * Sets the message id.
      *
-     * @param messageId to be set.
+     * @param messageId The message id to be set.
      *
      * @return The updated {@link ServiceBusMessage}.
      * @throws IllegalArgumentException if {@code messageId} is too long.
      */
     public ServiceBusMessage setMessageId(String messageId) {
         checkIdLength("messageId", messageId, MAX_MESSAGE_ID_LENGTH);
-        amqpAnnotatedMessage.getProperties().setMessageId(messageId);
+        AmqpMessageId id = null;
+        if (messageId != null) {
+            id = new AmqpMessageId(messageId);
+        }
+        amqpAnnotatedMessage.getProperties().setMessageId(id);
         return this;
     }
 
@@ -285,8 +383,9 @@ public class ServiceBusMessage {
      * submission sequence order is correctly recorded. The partition is chosen by a hash function over this value and
      * cannot be chosen directly. For session-aware entities, the {@link #getSessionId() sessionId} property overrides
      * this value.
+     * </p>
      *
-     * @return The partition key of this message
+     * @return The partition key of this message.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-partitioning">Partitioned
      *     entities</a>
      */
@@ -297,12 +396,12 @@ public class ServiceBusMessage {
     /**
      * Sets a partition key for sending a message to a partitioned entity
      *
-     * @param partitionKey partition key of this message
+     * @param partitionKey The partition key of this message.
      *
      * @return The updated {@link ServiceBusMessage}.
+     * @throws IllegalArgumentException if {@code partitionKey} is too long or if the {@code partitionKey} does not
+     *     match the {@code sessionId}.
      * @see #getPartitionKey()
-     * @throws IllegalArgumentException if {@code partitionKey} is too long or if the {@code partitionKey}
-     * does not match the {@code sessionId}.
      */
     public ServiceBusMessage setPartitionKey(String partitionKey) {
         checkIdLength("partitionKey", partitionKey, MAX_PARTITION_KEY_LENGTH);
@@ -310,6 +409,15 @@ public class ServiceBusMessage {
 
         amqpAnnotatedMessage.getMessageAnnotations().put(PARTITION_KEY_ANNOTATION_NAME.getValue(), partitionKey);
         return this;
+    }
+
+    /**
+     * Gets the {@link AmqpAnnotatedMessage}.
+     *
+     * @return The raw AMQP message.
+     */
+    public AmqpAnnotatedMessage getRawAmqpMessage() {
+        return amqpAnnotatedMessage;
     }
 
     /**
@@ -324,7 +432,12 @@ public class ServiceBusMessage {
      *     Routing and Correlation</a>
      */
     public String getReplyTo() {
-        return amqpAnnotatedMessage.getProperties().getReplyTo();
+        String replyTo = null;
+        AmqpAddress amqpAddress = amqpAnnotatedMessage.getProperties().getReplyTo();
+        if (amqpAddress != null) {
+            replyTo = amqpAddress.toString();
+        }
+        return replyTo;
     }
 
     /**
@@ -336,33 +449,55 @@ public class ServiceBusMessage {
      * @see #getReplyTo()
      */
     public ServiceBusMessage setReplyTo(String replyTo) {
-        amqpAnnotatedMessage.getProperties().setReplyTo(replyTo);
+        AmqpAddress replyToAddress = null;
+        if (replyTo != null) {
+            replyToAddress = new AmqpAddress(replyTo);
+        }
+        amqpAnnotatedMessage.getProperties().setReplyTo(replyToAddress);
         return this;
     }
 
     /**
      * Gets the "to" address.
      *
-     * @return "To" property value of this message
-     */
-    public String getTo() {
-        return amqpAnnotatedMessage.getProperties().getTo();
-    }
-
-    /**
-     * Sets the "to" address.
      * <p>
      * This property is reserved for future use in routing scenarios and presently ignored by the broker itself.
      * Applications can use this value in rule-driven
      * <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding">auto-forward
      * chaining</a> scenarios to indicate the intended logical destination of the message.
+     * </p>
      *
-     * @param to To property value of this message
+     * @return "To" property value of this message
+     */
+    public String getTo() {
+        String to = null;
+        AmqpAddress amqpAddress = amqpAnnotatedMessage.getProperties().getTo();
+        if (amqpAddress != null) {
+            to = amqpAddress.toString();
+        }
+        return to;
+    }
+
+    /**
+     * Sets the "to" address.
+     *
+     * <p>
+     * This property is reserved for future use in routing scenarios and presently ignored by the broker itself.
+     * Applications can use this value in rule-driven
+     * <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-auto-forwarding">auto-forward
+     * chaining</a> scenarios to indicate the intended logical destination of the message.
+     * </p>
+     *
+     * @param to To property value of this message.
      *
      * @return The updated {@link ServiceBusMessage}.
      */
     public ServiceBusMessage setTo(String to) {
-        amqpAnnotatedMessage.getProperties().setTo(to);
+        AmqpAddress toAddress = null;
+        if (to != null) {
+            toAddress = new AmqpAddress(to);
+        }
+        amqpAnnotatedMessage.getProperties().setTo(toAddress);
         return this;
     }
 
@@ -417,8 +552,8 @@ public class ServiceBusMessage {
 
     /**
      * Sets the scheduled enqueue time of this message. A {@code null} will not be set. If this value needs to be unset
-     * it could be done by value removing from {@link AmqpAnnotatedMessage#getMessageAnnotations()} using key
-     * {@link AmqpMessageConstant#SCHEDULED_ENQUEUE_UTC_TIME_NAME}.
+     * it could be done by value removing from {@link AmqpAnnotatedMessage#getMessageAnnotations()} using key {@link
+     * AmqpMessageConstant#SCHEDULED_ENQUEUE_UTC_TIME_NAME}.
      *
      * @param scheduledEnqueueTime the datetime at which this message should be enqueued in Azure Service Bus.
      *
@@ -436,10 +571,10 @@ public class ServiceBusMessage {
     /**
      * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
      * <p>
-     * This value augments the ReplyTo information and specifies which SessionId should be set for the reply when sent
-     * to the reply entity.
+     * This value augments the {@link #getReplyTo() reply to} information and specifies which {@code sessionId} should
+     * be set for the reply when sent to the reply entity.
      *
-     * @return ReplyToSessionId property value of this message
+     * @return The {@code getReplyToGroupId} property value of this message.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messages-payloads?#message-routing-and-correlation">Message
      *     Routing and Correlation</a>
      */
@@ -450,7 +585,7 @@ public class ServiceBusMessage {
     /**
      * Gets or sets a session identifier augmenting the {@link #getReplyTo() ReplyTo} address.
      *
-     * @param replyToSessionId ReplyToSessionId property value of this message
+     * @param replyToSessionId The ReplyToGroupId property value of this message.
      *
      * @return The updated {@link ServiceBusMessage}.
      */
@@ -460,50 +595,30 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Gets the partition key for sending a message to a entity via another partitioned transfer entity.
+     * Gets the session identifier for a session-aware entity.
      *
-     * If a message is sent via a transfer queue in the scope of a transaction, this value selects the transfer queue
-     * partition: This is functionally equivalent to {@link #getPartitionKey()} and ensures that messages are kept
-     * together and in order as they are transferred.
+     * <p>
+     * For session-aware entities, this application-defined value specifies the session affiliation of the message.
+     * Messages with the same session identifier are subject to summary locking and enable exact in-order processing and
+     * demultiplexing. For session-unaware entities, this value is ignored. See <a
+     * href="https://docs.microsoft.com/azure/service-bus-messaging/message-sessions">Message Sessions</a>.
+     * </p>
      *
-     * @return partition key on the via queue.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers
-     *     and Send Via</a>
-     */
-    public String getViaPartitionKey() {
-        return (String) amqpAnnotatedMessage.getMessageAnnotations().get(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue());
-    }
-
-    /**
-     * Sets a via-partition key for sending a message to a destination entity via another partitioned entity
-     *
-     * @param viaPartitionKey via-partition key of this message
-     *
-     * @return The updated {@link ServiceBusMessage}.
-     * @see #getViaPartitionKey()
-     */
-    public ServiceBusMessage setViaPartitionKey(String viaPartitionKey) {
-        amqpAnnotatedMessage.getMessageAnnotations().put(VIA_PARTITION_KEY_ANNOTATION_NAME.getValue(), viaPartitionKey);
-        return this;
-    }
-
-    /**
-     * Gets the session id of the message.
-     *
-     * @return Session Id of the {@link ServiceBusMessage}.
+     * @return The session id of the {@link ServiceBusMessage}.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-sessions">Message Sessions</a>
      */
     public String getSessionId() {
         return amqpAnnotatedMessage.getProperties().getGroupId();
     }
 
     /**
-     * Sets the session id.
+     * Sets the session identifier for a session-aware entity.
      *
-     * @param sessionId to be set.
+     * @param sessionId The session identifier to be set.
      *
      * @return The updated {@link ServiceBusMessage}.
-     * @throws IllegalArgumentException if {@code sessionId} is too long or if the  {@code sessionId}
-     * does not match the {@code partitionKey}.
+     * @throws IllegalArgumentException if {@code sessionId} is too long or if the {@code sessionId} does not match
+     *     the {@code partitionKey}.
      */
     public ServiceBusMessage setSessionId(String sessionId) {
         checkIdLength("sessionId", sessionId, MAX_SESSION_ID_LENGTH);
@@ -540,15 +655,6 @@ public class ServiceBusMessage {
         return this;
     }
 
-    /*
-     * Gets value from given map.
-     */
-    private void removeValues(Map<String, Object> dataMap, AmqpMessageConstant... keys) {
-        for (AmqpMessageConstant key : keys) {
-            dataMap.remove(key.getValue());
-        }
-    }
-
     /**
      * Checks the length of ID fields.
      *
@@ -562,8 +668,8 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Validates that the user can't set the partitionKey to a different value than the session ID.
-     * (this will eventually migrate to a service-side check)
+     * Validates that the user can't set the partitionKey to a different value than the session ID. (this will
+     * eventually migrate to a service-side check)
      */
     private void checkSessionId(String proposedSessionId) {
         if (proposedSessionId == null) {
@@ -580,8 +686,8 @@ public class ServiceBusMessage {
     }
 
     /**
-     * Validates that the user can't set the partitionKey to a different value than the session ID.
-     * (this will eventually migrate to a service-side check)
+     * Validates that the user can't set the partitionKey to a different value than the session ID. (this will
+     * eventually migrate to a service-side check)
      */
     private void checkPartitionKey(String proposedPartitionKey) {
         if (proposedPartitionKey == null) {

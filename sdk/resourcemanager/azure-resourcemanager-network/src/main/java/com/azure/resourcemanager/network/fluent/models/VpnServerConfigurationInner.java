@@ -20,6 +20,7 @@ import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRootCert
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** VpnServerConfiguration Resource. */
 @JsonFlatten
@@ -438,6 +439,20 @@ public class VpnServerConfigurationInner extends Resource {
      */
     public VpnServerConfigurationInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VpnServerConfigurationInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VpnServerConfigurationInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

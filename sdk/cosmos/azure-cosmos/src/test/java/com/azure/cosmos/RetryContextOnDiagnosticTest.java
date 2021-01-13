@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.RxStoreModel;
+import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -251,7 +252,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             if (noRetry) {
                 return Mono.just(ShouldRetryResult.noRetry());
             }
-            return Mono.just(IRetryPolicy.ShouldRetryResult.retryAfter(Duration.ofSeconds(2)));
+            return Mono.just(ShouldRetryResult.retryAfter(Duration.ofSeconds(2)));
         }
 
         @Override

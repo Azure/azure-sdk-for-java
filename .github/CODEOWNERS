@@ -66,6 +66,8 @@
 
 /sdk/loganalytics/microsoft-azure-loganalytics/     @divya-jay @geneh @alongafni
 
+/sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor    @trask @joshfree @srnagar
+
 # PRLabel: %Schema Registry
 /sdk/schemaregistry/                                @arerlend @sjkwak
 
@@ -98,6 +100,7 @@
 
 # Management Plane
 /sdk/resourcemanager/                               @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
+/sdk/**/azure-resourcemanager-*                     @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
 /sdk/**/mgmt*/                                      @ChenTanyi @weidongxu-microsoft @yungezz @xccc-msft
 
 ###########

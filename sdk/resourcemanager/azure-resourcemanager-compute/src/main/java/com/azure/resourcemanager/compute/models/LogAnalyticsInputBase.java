@@ -52,6 +52,18 @@ public class LogAnalyticsInputBase {
     @JsonProperty(value = "groupByResourceName")
     private Boolean groupByResourceName;
 
+    /*
+     * Group query result by Client Application ID.
+     */
+    @JsonProperty(value = "groupByClientApplicationId")
+    private Boolean groupByClientApplicationId;
+
+    /*
+     * Group query result by User Agent.
+     */
+    @JsonProperty(value = "groupByUserAgent")
+    private Boolean groupByUserAgent;
+
     /**
      * Get the blobContainerSasUri property: SAS Uri of the logging blob container to which LogAnalytics Api writes
      * output logs to.
@@ -171,6 +183,46 @@ public class LogAnalyticsInputBase {
      */
     public LogAnalyticsInputBase withGroupByResourceName(Boolean groupByResourceName) {
         this.groupByResourceName = groupByResourceName;
+        return this;
+    }
+
+    /**
+     * Get the groupByClientApplicationId property: Group query result by Client Application ID.
+     *
+     * @return the groupByClientApplicationId value.
+     */
+    public Boolean groupByClientApplicationId() {
+        return this.groupByClientApplicationId;
+    }
+
+    /**
+     * Set the groupByClientApplicationId property: Group query result by Client Application ID.
+     *
+     * @param groupByClientApplicationId the groupByClientApplicationId value to set.
+     * @return the LogAnalyticsInputBase object itself.
+     */
+    public LogAnalyticsInputBase withGroupByClientApplicationId(Boolean groupByClientApplicationId) {
+        this.groupByClientApplicationId = groupByClientApplicationId;
+        return this;
+    }
+
+    /**
+     * Get the groupByUserAgent property: Group query result by User Agent.
+     *
+     * @return the groupByUserAgent value.
+     */
+    public Boolean groupByUserAgent() {
+        return this.groupByUserAgent;
+    }
+
+    /**
+     * Set the groupByUserAgent property: Group query result by User Agent.
+     *
+     * @param groupByUserAgent the groupByUserAgent value to set.
+     * @return the LogAnalyticsInputBase object itself.
+     */
+    public LogAnalyticsInputBase withGroupByUserAgent(Boolean groupByUserAgent) {
+        this.groupByUserAgent = groupByUserAgent;
         return this;
     }
 
