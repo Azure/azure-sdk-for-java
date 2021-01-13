@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PrivateLinkServiceConnectionState {
     /**
-     * The private link service connection status.
+     * The private link service connection status. Possible values include:
+     * 'Approved', 'Pending', 'Rejected', 'Disconnected'.
      */
     @JsonProperty(value = "status")
     private String status;
@@ -33,7 +34,7 @@ public class PrivateLinkServiceConnectionState {
     private String actionsRequired;
 
     /**
-     * Get the private link service connection status.
+     * Get the private link service connection status. Possible values include: 'Approved', 'Pending', 'Rejected', 'Disconnected'.
      *
      * @return the status value
      */
@@ -42,7 +43,7 @@ public class PrivateLinkServiceConnectionState {
     }
 
     /**
-     * Set the private link service connection status.
+     * Set the private link service connection status. Possible values include: 'Approved', 'Pending', 'Rejected', 'Disconnected'.
      *
      * @param status the status value to set
      * @return the PrivateLinkServiceConnectionState object itself.

@@ -4,7 +4,8 @@ package com.azure.communication.administration;
 
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
-import com.azure.communication.administration.models.CreateReservationOptions;
+import com.azure.communication.administration.models.CreateSearchOptions;
+import com.azure.communication.administration.models.CreateSearchResponse;
 import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.LocationOptionsResponse;
 import com.azure.communication.administration.models.NumberConfigurationResponse;
@@ -16,7 +17,7 @@ import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
-import com.azure.communication.administration.models.PhoneNumberReservation;
+import com.azure.communication.administration.models.PhoneNumberSearch;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
 import com.azure.communication.common.PhoneNumber;
 import com.azure.core.annotation.ReturnType;
@@ -387,110 +388,134 @@ public final class PhoneNumberClient {
     }
 
     /**
-     * Gets a reservation by ID.
+     * Gets a search by ID.
      *
-     * @param reservationId ID of the reservation
-     * @return A {@link PhoneNumberReservation} representing the reservation.
+     * @param searchId ID of the search
+     * @return A {@link PhoneNumberSearch} representing the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberReservation getReservationById(String reservationId) {
-        return phoneNumberAsyncClient.getReservationById(reservationId).block();
+    public PhoneNumberSearch getSearchById(String searchId) {
+        return phoneNumberAsyncClient.getSearchById(searchId).block();
     }
 
     /**
-     * Gets a reservation by ID.
+     * Gets a search by ID.
      *
-     * @param reservationId ID of the reservation
+     * @param searchId ID of the search
      * @param context A {@link Context} representing the request context.
      * @return A {@link Response} whose {@link Response#getValue()} value returns
-     * a {@link PhoneNumberReservation} representing the reservation.
+     * a {@link PhoneNumberSearch} representing the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumberReservation> getReservationByIdWithResponse(String reservationId, Context context) {
-        return phoneNumberAsyncClient.getReservationByIdWithResponse(reservationId, context).block();
+    public Response<PhoneNumberSearch> getSearchByIdWithResponse(String searchId, Context context) {
+        return phoneNumberAsyncClient.getSearchByIdWithResponse(searchId, context).block();
     }
 
     /**
-     * Gets the list of all reservations
+     * Create a phone number search.
      *
-     * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing reservations.
+     * @param searchOptions A {@link CreateSearchOptions} with the search options
+     * @return A {@link CreateSearchResponse} representing the search.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CreateSearchResponse createSearch(CreateSearchOptions searchOptions) {
+        return phoneNumberAsyncClient.createSearch(searchOptions).block();
+    }
+
+    /**
+     * Create a phone number search.
+     *
+     * @param searchOptions A {@link CreateSearchOptions} with the search options
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link Response} whose {@link Response#getValue()} value returns
+     * a {@link CreateSearchResponse} representing the search.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CreateSearchResponse> createSearchWithResponse(CreateSearchOptions searchOptions, Context context) {
+        return phoneNumberAsyncClient.createSearchWithResponse(searchOptions, context).block();
+    }
+
+    /**
+     * Gets the list of all searches
+     *
+     * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing searches.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberEntity> listAllReservations() {
-        return new PagedIterable<>(phoneNumberAsyncClient.listAllReservations());
+    public PagedIterable<PhoneNumberEntity> listAllSearches() {
+        return new PagedIterable<>(phoneNumberAsyncClient.listAllSearches());
     }
 
     /**
-     * Gets the list of all reservationes
+     * Gets the list of all searches
      *
      * @param context A {@link Context} representing the request context.
-     * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing reservations.
+     * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing searches.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberEntity> listAllReservations(Context context) {
-        return new PagedIterable<>(phoneNumberAsyncClient.listAllReservations(context));
+    public PagedIterable<PhoneNumberEntity> listAllSearches(Context context) {
+        return new PagedIterable<>(phoneNumberAsyncClient.listAllSearches(context));
     }
 
     /**
-     * Cancels the reservation. This means existing numbers in the reservation will be made available.
+     * Cancels the search. This means existing numbers in the search will be made available.
      *
-     * @param reservationId ID of the reservation
+     * @param searchId ID of the search
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelReservation(String reservationId) {
-        phoneNumberAsyncClient.cancelReservation(reservationId).block();
+    public void cancelSearch(String searchId) {
+        phoneNumberAsyncClient.cancelSearch(searchId).block();
     }
 
     /**
-     * Cancels the reservation. This means existing numbers in the reservation will be made available.
+     * Cancels the search. This means existing numbers in the search will be made available.
      *
-     * @param reservationId ID of the reservation
+     * @param searchId ID of the search
      * @param context A {@link Context} representing the request context.
      * @return A {@link Response} for the operation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelReservationWithResponse(String reservationId, Context context) {
-        return phoneNumberAsyncClient.cancelReservationWithResponse(reservationId, context).block();
+    public Response<Void> cancelSearchWithResponse(String searchId, Context context) {
+        return phoneNumberAsyncClient.cancelSearchWithResponse(searchId, context).block();
     }
 
     /**
-     * Initiates a reservation and returns a {@link PhoneNumberReservation} usable by other functions
+     * Initiates a search and returns a {@link PhoneNumberSearch} usable by other functions
      * This function returns a Long Running Operation poller.
-     *
-     * @param options A {@link CreateReservationOptions} with the reservation options
-     * @param pollInterval The time our long running operation will keep on polling
+     * 
+     * @param options A {@link CreateSearchOptions} with the search options
+     * @param pollInterval The time our long running operation will keep on polling 
      * until it gets a result from the server
-     * @return A {@link SyncPoller} object with the reservation result
+     * @return A {@link SyncPoller} object with the search result
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<PhoneNumberReservation, PhoneNumberReservation> beginCreateReservation(
-        CreateReservationOptions options, Duration pollInterval) {
-        return phoneNumberAsyncClient.beginCreateReservation(options, pollInterval).getSyncPoller();
+    public SyncPoller<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
+        CreateSearchOptions options, Duration pollInterval) {
+        return phoneNumberAsyncClient.beginCreateSearch(options, pollInterval).getSyncPoller();
     }
 
     /**
      * Initiates a purchase process and polls until a terminal state is reached
      * This function returns a Long Running Operation poller
-     *
-     * @param reservationId ID of the reservation
-     * @param pollInterval The time our long running operation will keep on polling
+     * 
+     * @param searchId ID of the search     
+     * @param pollInterval The time our long running operation will keep on polling 
      * until it gets a result from the server
-     * @return A {@link SyncPoller} object with the reservation result
+     * @return A {@link SyncPoller} object with the search result
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<Void, Void> beginPurchaseReservation(
-        String reservationId, Duration pollInterval) {
-        return phoneNumberAsyncClient.beginPurchaseReservation(reservationId, pollInterval).getSyncPoller();
+    public SyncPoller<Void, Void> beginPurchaseSearch(
+        String searchId, Duration pollInterval) {
+        return phoneNumberAsyncClient.beginPurchaseSearch(searchId, pollInterval).getSyncPoller();
     }
 
  /**
      * Releases the given phone numbers.
      * This function returns a Long Running Operation poller
-     *
+     * 
      * @param phoneNumbers A list of {@link PhoneNumber} with the desired numbers to release
-     * @param pollInterval The time our long running operation will keep on polling
+     * @param pollInterval The time our long running operation will keep on polling 
      * until it gets a result from the server
-     * @return A {@link SyncPoller} object with the reservation result
+     * @return A {@link SyncPoller} object with the search result
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<PhoneNumberRelease, PhoneNumberRelease> beginReleasePhoneNumbers(

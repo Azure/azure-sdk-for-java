@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
@@ -15,7 +16,6 @@ import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.guava25.base.Supplier;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
@@ -41,9 +41,9 @@ public class GoneAndRetryWithRetryPolicyTest {
             OperationType.Read,
             ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new GoneException());
-        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
@@ -91,9 +91,9 @@ public class GoneAndRetryWithRetryPolicyTest {
             return goneExceptionForNotYetFlushedRequest;
         };
 
-        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
             .shouldRetry(goneExceptionForNotYetFlushedRequestSupplier.get());
-        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
@@ -141,9 +141,9 @@ public class GoneAndRetryWithRetryPolicyTest {
         };
 
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
             .shouldRetry(goneExceptionForFlushedRequestSupplier.get());
-        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
 
         assertThat(shouldRetryResult.shouldRetry).isFalse();
         assertThat(shouldRetryResult.policyArg).isNotNull();
@@ -173,9 +173,9 @@ public class GoneAndRetryWithRetryPolicyTest {
             return goneExceptionForFlushedRequest;
         };
 
-        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
             .shouldRetry(goneExceptionForFlushedRequestSupplier.get());
-        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue3()).isEqualTo(1);
@@ -215,9 +215,9 @@ public class GoneAndRetryWithRetryPolicyTest {
             ResourceType.Document);
 
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
             .shouldRetry(new RequestTimeoutException());
-        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
 
         assertThat(shouldRetryResult.shouldRetry).isFalse();
         assertThat(shouldRetryResult.policyArg).isNull();
@@ -248,9 +248,9 @@ public class GoneAndRetryWithRetryPolicyTest {
             OperationType.Read,
             ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new PartitionIsMigratingException());
-        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(request.forceCollectionRoutingMapRefresh).isTrue();
         assertThat(shouldRetryResult.policyArg.getValue0()).isTrue();
@@ -266,9 +266,9 @@ public class GoneAndRetryWithRetryPolicyTest {
             OperationType.Read,
             ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new InvalidPartitionException());
-        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(request.requestContext.quorumSelectedLSN).isEqualTo(-1);
         assertThat(request.requestContext.resolvedPartitionKeyRange).isNull();
@@ -294,9 +294,9 @@ public class GoneAndRetryWithRetryPolicyTest {
             OperationType.Read,
             ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new PartitionKeyRangeIsSplittingException());
-        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isTrue();
         assertThat(request.forcePartitionKeyRangeRefresh).isTrue();
         assertThat(request.requestContext.resolvedPartitionKeyRange).isNull();
@@ -315,9 +315,9 @@ public class GoneAndRetryWithRetryPolicyTest {
             OperationType.Read,
             ResourceType.Document);
         GoneAndRetryWithRetryPolicy goneAndRetryWithRetryPolicy = new GoneAndRetryWithRetryPolicy(request, 30);
-        Mono<ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
+        Mono<IRetryPolicy.ShouldRetryResult> singleShouldRetry = goneAndRetryWithRetryPolicy
                 .shouldRetry(new BadRequestException());
-        ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
+        IRetryPolicy.ShouldRetryResult shouldRetryResult = singleShouldRetry.block();
         assertThat(shouldRetryResult.shouldRetry).isFalse();
     }
 

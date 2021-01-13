@@ -14,8 +14,8 @@ import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkHubPatchInfo;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -68,7 +68,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      */
     interface PrivateLinkHubsService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkHubs listByResourceGroup" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHub")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkHubs getByResourceGroup" })
@@ -81,15 +81,11 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkHubs createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("privateLinkHubName") String privateLinkHubName, @Body PrivateLinkHubInner privateLinkHubInfo, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("privateLinkHubName") String privateLinkHubName, @Query("api-version") String apiVersion, @Body PrivateLinkHubInner privateLinkHubInfo, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkHubs delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("privateLinkHubName") String privateLinkHubName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkHubs beginDelete" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("privateLinkHubName") String privateLinkHubName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.PrivateLinkHubs list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Synapse/privateLinkHubs")
@@ -110,7 +106,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PrivateLinkHubInner&gt; object if successful.
      */
@@ -213,10 +209,10 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
             });
     }
 
-    private ServiceResponse<PageImpl<PrivateLinkHubInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateLinkHubInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<PrivateLinkHubInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateLinkHubInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PrivateLinkHubInner>>() { }.getType())
-                .registerError(ErrorContractException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -224,9 +220,9 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Gets a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws ErrorContractInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PrivateLinkHubInner object if successful.
      */
@@ -238,7 +234,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Gets a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -251,7 +247,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Gets a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateLinkHubInner object
      */
@@ -268,7 +264,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Gets a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateLinkHubInner object
      */
@@ -299,10 +295,10 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
             });
     }
 
-    private ServiceResponse<PrivateLinkHubInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PrivateLinkHubInner, ErrorContractException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PrivateLinkHubInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PrivateLinkHubInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PrivateLinkHubInner>() { }.getType())
-                .registerError(ErrorContractException.class)
+                .registerError(ErrorContractInnerException.class)
                 .build(response);
     }
 
@@ -310,9 +306,9 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Updates a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws ErrorContractInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PrivateLinkHubInner object if successful.
      */
@@ -324,7 +320,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Updates a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -337,7 +333,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Updates a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateLinkHubInner object
      */
@@ -354,7 +350,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Updates a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateLinkHubInner object
      */
@@ -392,10 +388,10 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Updates a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @param tags Resource tags
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws ErrorContractInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PrivateLinkHubInner object if successful.
      */
@@ -407,7 +403,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Updates a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @param tags Resource tags
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -421,7 +417,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Updates a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @param tags Resource tags
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateLinkHubInner object
@@ -439,7 +435,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Updates a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @param tags Resource tags
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateLinkHubInner object
@@ -474,11 +470,11 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
             });
     }
 
-    private ServiceResponse<PrivateLinkHubInner> updateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PrivateLinkHubInner, ErrorContractException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PrivateLinkHubInner> updateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PrivateLinkHubInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PrivateLinkHubInner>() { }.getType())
                 .register(201, new TypeToken<PrivateLinkHubInner>() { }.getType())
-                .registerError(ErrorContractException.class)
+                .registerError(ErrorContractInnerException.class)
                 .build(response);
     }
 
@@ -486,10 +482,10 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Creates or updates a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @param privateLinkHubInfo PrivateLinkHub create or update request properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws ErrorContractInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PrivateLinkHubInner object if successful.
      */
@@ -501,7 +497,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Creates or updates a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @param privateLinkHubInfo PrivateLinkHub create or update request properties
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -515,7 +511,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Creates or updates a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @param privateLinkHubInfo PrivateLinkHub create or update request properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateLinkHubInner object
@@ -533,7 +529,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Creates or updates a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @param privateLinkHubInfo PrivateLinkHub create or update request properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PrivateLinkHubInner object
@@ -548,14 +544,14 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
         if (privateLinkHubName == null) {
             throw new IllegalArgumentException("Parameter privateLinkHubName is required and cannot be null.");
         }
-        if (privateLinkHubInfo == null) {
-            throw new IllegalArgumentException("Parameter privateLinkHubInfo is required and cannot be null.");
-        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
+        if (privateLinkHubInfo == null) {
+            throw new IllegalArgumentException("Parameter privateLinkHubInfo is required and cannot be null.");
+        }
         Validator.validate(privateLinkHubInfo);
-        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, privateLinkHubName, privateLinkHubInfo, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, privateLinkHubName, this.client.apiVersion(), privateLinkHubInfo, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateLinkHubInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PrivateLinkHubInner>> call(Response<ResponseBody> response) {
@@ -569,11 +565,11 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
             });
     }
 
-    private ServiceResponse<PrivateLinkHubInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PrivateLinkHubInner, ErrorContractException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PrivateLinkHubInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PrivateLinkHubInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PrivateLinkHubInner>() { }.getType())
                 .register(201, new TypeToken<PrivateLinkHubInner>() { }.getType())
-                .registerError(ErrorContractException.class)
+                .registerError(ErrorContractInnerException.class)
                 .build(response);
     }
 
@@ -581,20 +577,20 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Deletes a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws ErrorContractInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String privateLinkHubName) {
-        deleteWithServiceResponseAsync(resourceGroupName, privateLinkHubName).toBlocking().last().body();
+        deleteWithServiceResponseAsync(resourceGroupName, privateLinkHubName).toBlocking().single().body();
     }
 
     /**
      * Deletes a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -607,9 +603,9 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Deletes a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
+     * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String privateLinkHubName) {
         return deleteWithServiceResponseAsync(resourceGroupName, privateLinkHubName).map(new Func1<ServiceResponse<Void>, Void>() {
@@ -624,9 +620,9 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Deletes a privateLinkHub.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
+     * @param privateLinkHubName The name of the privateLinkHub
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
+     * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String privateLinkHubName) {
         if (this.client.subscriptionId() == null) {
@@ -641,80 +637,12 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, privateLinkHubName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
-    }
-
-    /**
-     * Deletes a privateLinkHub.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void beginDelete(String resourceGroupName, String privateLinkHubName) {
-        beginDeleteWithServiceResponseAsync(resourceGroupName, privateLinkHubName).toBlocking().single().body();
-    }
-
-    /**
-     * Deletes a privateLinkHub.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String privateLinkHubName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, privateLinkHubName), serviceCallback);
-    }
-
-    /**
-     * Deletes a privateLinkHub.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> beginDeleteAsync(String resourceGroupName, String privateLinkHubName) {
-        return beginDeleteWithServiceResponseAsync(resourceGroupName, privateLinkHubName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes a privateLinkHub.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateLinkHubName Name of the privateLinkHub
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String privateLinkHubName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (privateLinkHubName == null) {
-            throw new IllegalArgumentException("Parameter privateLinkHubName is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(this.client.subscriptionId(), resourceGroupName, privateLinkHubName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.delete(this.client.subscriptionId(), resourceGroupName, privateLinkHubName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -723,12 +651,11 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
             });
     }
 
-    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, ErrorContractException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractException.class)
+                .registerError(ErrorContractInnerException.class)
                 .build(response);
     }
 
@@ -736,7 +663,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      * Returns a list of privateLinkHubs in a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PrivateLinkHubInner&gt; object if successful.
      */
@@ -832,10 +759,10 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
             });
     }
 
-    private ServiceResponse<PageImpl<PrivateLinkHubInner>> listDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateLinkHubInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<PrivateLinkHubInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateLinkHubInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PrivateLinkHubInner>>() { }.getType())
-                .registerError(ErrorContractException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -844,7 +771,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PrivateLinkHubInner&gt; object if successful.
      */
@@ -943,10 +870,10 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
             });
     }
 
-    private ServiceResponse<PageImpl<PrivateLinkHubInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateLinkHubInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<PrivateLinkHubInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateLinkHubInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PrivateLinkHubInner>>() { }.getType())
-                .registerError(ErrorContractException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 
@@ -955,7 +882,7 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;PrivateLinkHubInner&gt; object if successful.
      */
@@ -1054,10 +981,10 @@ public class PrivateLinkHubsInner implements InnerSupportsGet<PrivateLinkHubInne
             });
     }
 
-    private ServiceResponse<PageImpl<PrivateLinkHubInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateLinkHubInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<PrivateLinkHubInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PrivateLinkHubInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PrivateLinkHubInner>>() { }.getType())
-                .registerError(ErrorContractException.class)
+                .registerError(CloudException.class)
                 .build(response);
     }
 

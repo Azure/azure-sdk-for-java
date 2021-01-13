@@ -7,7 +7,7 @@ package com.azure.ai.textanalytics.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the confidence scores between 0 and 1 across all sentiment classes: positive, neutral, negative. */
+/** The SentimentConfidenceScorePerLabel model. */
 @Fluent
 public final class SentimentConfidenceScorePerLabel {
     /*

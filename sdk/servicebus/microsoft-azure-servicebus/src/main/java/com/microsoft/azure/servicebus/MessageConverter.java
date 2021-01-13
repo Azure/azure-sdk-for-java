@@ -131,20 +131,14 @@ class MessageConverter {
         // Header
         // Delivery count for service bus starts from 1, for AMQP it starts from 0.
         brokeredMessage.setDeliveryCount(amqpMessage.getDeliveryCount() + 1);
-        long ttlMillis = amqpMessage.getTtl();
-        if (ttlMillis > 0l) {
-        	brokeredMessage.setTimeToLive(Duration.ofMillis(ttlMillis));
-        }
+        brokeredMessage.setTimeToLive(Duration.ofMillis(amqpMessage.getTtl()));
+        
 
         // Properties
         // Override TimeToLive from CrationTime and ExpiryTime, as they support duration of any length, which ttl doesn't
         if (amqpMessage.getCreationTime() != 0l && amqpMessage.getExpiryTime() != 0l) {
-        	ttlMillis = amqpMessage.getExpiryTime() - amqpMessage.getCreationTime();
-        	if (ttlMillis > 0l)	{
-        		brokeredMessage.setTimeToLive(Duration.ofMillis(ttlMillis));
-        	}
+        	brokeredMessage.setTimeToLive(Duration.ofMillis(amqpMessage.getExpiryTime() - amqpMessage.getCreationTime()));
         }
-        
         Object messageId = amqpMessage.getMessageId();
         if (messageId != null) {
             brokeredMessage.setMessageId(messageId.toString());

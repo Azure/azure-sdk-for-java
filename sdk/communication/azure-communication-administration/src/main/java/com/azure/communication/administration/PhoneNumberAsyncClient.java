@@ -6,12 +6,11 @@ import com.azure.communication.administration.implementation.PhoneNumberAdminCli
 import com.azure.communication.administration.implementation.PhoneNumberAdministrationsImpl;
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
-import com.azure.communication.administration.models.CreateReservationOptions;
-import com.azure.communication.administration.models.CreateReservationResponse;
-import com.azure.communication.administration.models.LocationOptionsQuery;
+import com.azure.communication.administration.models.CreateSearchOptions;
+import com.azure.communication.administration.models.CreateSearchResponse;
 import com.azure.communication.administration.models.LocationOptionsQueries;
+import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.LocationOptionsResponse;
-import com.azure.communication.administration.models.NumberConfiguration;
 import com.azure.communication.administration.models.NumberConfigurationPhoneNumber;
 import com.azure.communication.administration.models.NumberConfigurationResponse;
 import com.azure.communication.administration.models.NumberUpdateCapabilities;
@@ -21,12 +20,14 @@ import com.azure.communication.administration.models.PhoneNumberRelease;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
-import com.azure.communication.administration.models.ReleaseResponse;
 import com.azure.communication.administration.models.ReleaseRequest;
+import com.azure.communication.administration.models.ReleaseResponse;
 import com.azure.communication.administration.models.ReleaseStatus;
-import com.azure.communication.administration.models.UpdateNumberCapabilitiesRequest;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
-import com.azure.communication.administration.models.PhoneNumberReservation;
+import com.azure.communication.administration.models.NumberConfiguration;
+import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.SearchStatus;
+import com.azure.communication.administration.models.UpdateNumberCapabilitiesRequest;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
 import com.azure.communication.common.PhoneNumber;
 import com.azure.core.annotation.ReturnType;
@@ -598,36 +599,36 @@ public final class PhoneNumberAsyncClient {
     }
 
     /**
-     * Gets a reservation by ID.
+     * Gets a search by ID.
      *
-     * @param reservationId ID of the reservation
-     * @return A {@link Mono} containing a {@link PhoneNumberReservation} representing the reservation.
+     * @param searchId ID of the search
+     * @return A {@link Mono} containing a {@link PhoneNumberSearch} representing the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumberReservation> getReservationById(String reservationId) {
-        return getReservationByIdWithResponse(reservationId).flatMap(FluxUtil::toMono);
+    public Mono<PhoneNumberSearch> getSearchById(String searchId) {
+        return getSearchByIdWithResponse(searchId).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Gets a reservation by ID.
+     * Gets a search by ID.
      *
-     * @param reservationId ID of the reservation
+     * @param searchId ID of the search
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue()} value returns
-     * a {@link PhoneNumberReservation} representing the reservation.
+     * a {@link PhoneNumberSearch} representing the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumberReservation>> getReservationByIdWithResponse(String reservationId) {
-        return getReservationByIdWithResponse(reservationId, null);
+    public Mono<Response<PhoneNumberSearch>> getSearchByIdWithResponse(String searchId) {
+        return getSearchByIdWithResponse(searchId, null);
     }
 
-    Mono<Response<PhoneNumberReservation>> getReservationByIdWithResponse(String reservationId, Context context) {
-        Objects.requireNonNull(reservationId, "'ReservationId' cannot be null.");
+    Mono<Response<PhoneNumberSearch>> getSearchByIdWithResponse(String searchId, Context context) {
+        Objects.requireNonNull(searchId, "'searchId' cannot be null.");
 
         try {
             if (context == null) {
-                return phoneNumberAdministrations.getSearchByIdWithResponseAsync(reservationId);
+                return phoneNumberAdministrations.getSearchByIdWithResponseAsync(searchId);
             } else {
-                return phoneNumberAdministrations.getSearchByIdWithResponseAsync(reservationId, context);
+                return phoneNumberAdministrations.getSearchByIdWithResponseAsync(searchId, context);
             }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -635,36 +636,36 @@ public final class PhoneNumberAsyncClient {
     }
 
     /**
-     * Create a phone number reservation.
+     * Create a phone number search.
      *
-     * @param reservationOptions A {@link CreateReservationOptions} with the reservation options
-     * @return A {@link Mono} containing a {@link CreateReservationResponse} representing the reservation.
+     * @param searchOptions A {@link CreateSearchOptions} with the search options
+     * @return A {@link Mono} containing a {@link CreateSearchResponse} representing the search.
      */
-    private Mono<CreateReservationResponse> createReservation(CreateReservationOptions reservationOptions) {
-        return createReservationWithResponse(reservationOptions).flatMap(FluxUtil::toMono);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CreateSearchResponse> createSearch(CreateSearchOptions searchOptions) {
+        return createSearchWithResponse(searchOptions).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Create a phone number reservation.
+     * Create a phone number search.
      *
-     * @param reservationOptions A {@link CreateReservationOptions} with the reservation options
+     * @param searchOptions A {@link CreateSearchOptions} with the search options
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue()} value returns
-     * a {@link CreateReservationResponse} representing the reservation.
+     * a {@link CreateSearchResponse} representing the search.
      */
-    private Mono<Response<CreateReservationResponse>> createReservationWithResponse(
-        CreateReservationOptions reservationOptions) {
-        return createReservationWithResponse(reservationOptions, null);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CreateSearchResponse>> createSearchWithResponse(CreateSearchOptions searchOptions) {
+        return createSearchWithResponse(searchOptions, null);
     }
 
-    Mono<Response<CreateReservationResponse>> createReservationWithResponse(
-        CreateReservationOptions reservationOptions, Context context) {
-        Objects.requireNonNull(reservationOptions, "'reservationOptions' cannot be null.");
+    Mono<Response<CreateSearchResponse>> createSearchWithResponse(CreateSearchOptions searchOptions, Context context) {
+        Objects.requireNonNull(searchOptions, "'searchOptions' cannot be null.");
 
         try {
             if (context == null) {
-                return phoneNumberAdministrations.createSearchWithResponseAsync(reservationOptions);
+                return phoneNumberAdministrations.createSearchWithResponseAsync(searchOptions);
             } else {
-                return phoneNumberAdministrations.createSearchWithResponseAsync(reservationOptions, context);
+                return phoneNumberAdministrations.createSearchWithResponseAsync(searchOptions, context);
             }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -672,16 +673,16 @@ public final class PhoneNumberAsyncClient {
     }
 
     /**
-     * Gets the list of all reservations
+     * Gets the list of all searches
      *
-     * @return A {@link PagedFlux} of {@link PhoneNumberEntity} instances representing reservations.
+     * @return A {@link PagedFlux} of {@link PhoneNumberEntity} instances representing searches.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumberEntity> listAllReservations() {
-        return listAllReservations(null);
+    public PagedFlux<PhoneNumberEntity> listAllSearches() {
+        return listAllSearches(null);
     }
 
-    PagedFlux<PhoneNumberEntity> listAllReservations(Context context) {
+    PagedFlux<PhoneNumberEntity> listAllSearches(Context context) {
         try {
             if (context == null) {
                 return phoneNumberAdministrations.getAllSearchesAsync(null, null);
@@ -694,35 +695,35 @@ public final class PhoneNumberAsyncClient {
     }
 
     /**
-     * Cancels the reservation. This means existing numbers in the reservation will be made available.
+     * Cancels the search. This means existing numbers in the search will be made available.
      *
-     * @param reservationId ID of the reservation
+     * @param searchId ID of the search
      * @return A {@link Mono} for the asynchronous return
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> cancelReservation(String reservationId) {
-        return cancelReservationWithResponse(reservationId).flatMap(FluxUtil::toMono);
+    public Mono<Void> cancelSearch(String searchId) {
+        return cancelSearchWithResponse(searchId).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Cancels the reservation. This means existing numbers in the reservation will be made available.
+     * Cancels the search. This means existing numbers in the search will be made available.
      *
-     * @param reservationId ID of the reservation
+     * @param searchId ID of the search
      * @return A {@link Mono} containing a {@link Response} for the operation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> cancelReservationWithResponse(String reservationId) {
-        return cancelReservationWithResponse(reservationId, null);
+    public Mono<Response<Void>> cancelSearchWithResponse(String searchId) {
+        return cancelSearchWithResponse(searchId, null);
     }
 
-    Mono<Response<Void>> cancelReservationWithResponse(String reservationId, Context context) {
-        Objects.requireNonNull(reservationId, "'ReservationId' cannot be null.");
+    Mono<Response<Void>> cancelSearchWithResponse(String searchId, Context context) {
+        Objects.requireNonNull(searchId, "'searchId' cannot be null.");
 
         try {
             if (context == null) {
-                return phoneNumberAdministrations.cancelSearchWithResponseAsync(reservationId);
+                return phoneNumberAdministrations.cancelSearchWithResponseAsync(searchId);
             } else {
-                return phoneNumberAdministrations.cancelSearchWithResponseAsync(reservationId, context);
+                return phoneNumberAdministrations.cancelSearchWithResponseAsync(searchId, context);
             }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -730,33 +731,33 @@ public final class PhoneNumberAsyncClient {
     }
 
     /**
-     * Purchases the phone number reservation.
+     * Purchases the phone number search.
      *
-     * @param reservationId ID of the reservation
+     * @param searchId ID of the search
      * @return A {@link Mono} for the asynchronous return
      */
-    private Mono<Void> purchaseReservation(String reservationId) {
-        return purchaseReservationWithResponse(reservationId).flatMap(FluxUtil::toMono);
+    private Mono<Void> purchaseSearch(String searchId) {
+        return purchaseSearchWithResponse(searchId).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Purchases the phone number reservation.
+     * Purchases the phone number search.
      *
-     * @param reservationId ID of the reservation
+     * @param searchId ID of the search
      * @return A {@link Mono} containing a {@link Response} for the operation
      */
-    private Mono<Response<Void>> purchaseReservationWithResponse(String reservationId) {
-        return purchaseReservationWithResponse(reservationId, null);
+    private Mono<Response<Void>> purchaseSearchWithResponse(String searchId) {
+        return purchaseSearchWithResponse(searchId, null);
     }
 
-    private Mono<Response<Void>> purchaseReservationWithResponse(String reservationId, Context context) {
-        Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
+    private Mono<Response<Void>> purchaseSearchWithResponse(String searchId, Context context) {
+        Objects.requireNonNull(searchId, "'searchId' cannot be null.");
 
         try {
             if (context == null) {
-                return phoneNumberAdministrations.purchaseSearchWithResponseAsync(reservationId);
+                return phoneNumberAdministrations.purchaseSearchWithResponseAsync(searchId);
             } else {
-                return phoneNumberAdministrations.purchaseSearchWithResponseAsync(reservationId, context);
+                return phoneNumberAdministrations.purchaseSearchWithResponseAsync(searchId, context);
             }
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -764,76 +765,74 @@ public final class PhoneNumberAsyncClient {
     }
 
     /**
-     * Initiates a reservation and returns a {@link PhoneNumberReservation} usable by other functions
-     * This function returns a Long Running Operation poller that allows you to
+     * Initiates a search and returns a {@link PhoneNumberSearch} usable by other functions
+     * This function returns a Long Running Operation poller that allows you to 
      * wait indefinitely until the operation is complete.
-     *
-     * @param options A {@link CreateReservationOptions} with the reservation options
-     * @param pollInterval The time our long running operation will keep on polling
+     * 
+     * @param options A {@link CreateSearchOptions} with the search options
+     * @param pollInterval The time our long running operation will keep on polling 
      * until it gets a result from the server
-     * @return A {@link PollerFlux} object with the reservation result
+     * @return A {@link PollerFlux} object with the search result
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<PhoneNumberReservation, PhoneNumberReservation> beginCreateReservation(
-        CreateReservationOptions options, Duration pollInterval) {
+    public PollerFlux<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
+        CreateSearchOptions options, Duration pollInterval) {
         Objects.requireNonNull(options, "'options' cannot be null.");
 
         if (pollInterval == null) {
             pollInterval = defaultPollInterval;
         }
 
-        return new PollerFlux<PhoneNumberReservation, PhoneNumberReservation>(pollInterval,
-            createReservationActivationOperation(options),
-            createReservationPollOperation(),
-            cancelReservationOperation(),
-            createReservationFetchResultOperation());
+        return new PollerFlux<PhoneNumberSearch, PhoneNumberSearch>(pollInterval,
+            createSearchActivationOperation(options),
+            createSearchPollOperation(),
+            cancelSearchOperation(),
+            createSearchFetchResultOperation());
     }
 
-    private Function<PollingContext<PhoneNumberReservation>, Mono<PhoneNumberReservation>>
-        createReservationActivationOperation(CreateReservationOptions options) {
+    private Function<PollingContext<PhoneNumberSearch>, Mono<PhoneNumberSearch>> 
+        createSearchActivationOperation(CreateSearchOptions options) {
         return (pollingContext) -> {
-            Mono<PhoneNumberReservation> response = createReservation(options).flatMap(createReservationResponse -> {
-                String reservationId = createReservationResponse.getReservationId();
-                Mono<PhoneNumberReservation> phoneNumberReservation = getReservationById(reservationId);
-                return phoneNumberReservation;
+            Mono<PhoneNumberSearch> response = createSearch(options).flatMap(createSearchResponse -> {
+                String searchId = createSearchResponse.getSearchId();
+                Mono<PhoneNumberSearch> phoneNumberSearch = getSearchById(searchId);
+                return phoneNumberSearch;
             });
             return response;
         };
     }
 
-    private Function<PollingContext<PhoneNumberReservation>, Mono<PollResponse<PhoneNumberReservation>>>
-        createReservationPollOperation() {
+    private Function<PollingContext<PhoneNumberSearch>, Mono<PollResponse<PhoneNumberSearch>>> 
+        createSearchPollOperation() {
         return pollingContext ->
-            getReservationById(pollingContext.getLatestResponse().getValue().getReservationId())
-                .flatMap(getReservationResponse -> {
-                    ReservationStatus status =
-                        ReservationStatus.fromString(getReservationResponse.getStatus().toString());
-                    if (status.equals(ReservationStatus.EXPIRED)
-                        || status.equals(ReservationStatus.CANCELLED)
-                        || status.equals(ReservationStatus.RESERVED)) {
+            getSearchById(pollingContext.getLatestResponse().getValue().getSearchId())
+                .flatMap(getSearchResponse -> {
+                    SearchStatus status = getSearchResponse.getStatus();
+                    if (status.equals(SearchStatus.EXPIRED) 
+                        || status.equals(SearchStatus.CANCELLED) 
+                        || status.equals(SearchStatus.RESERVED)) {
                         return Mono.just(new PollResponse<>(
-                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getReservationResponse));
+                        LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getSearchResponse));
                     }
-                    if (status.equals(ReservationStatus.ERROR)) {
+                    if (status.equals(SearchStatus.ERROR)) {
                         return Mono.just(new PollResponse<>(
-                        LongRunningOperationStatus.FAILED, getReservationResponse));
+                        LongRunningOperationStatus.FAILED, getSearchResponse));
                     }
-                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
-                        getReservationResponse));
+                    return Mono.just(new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS, getSearchResponse));
                 });
     }
 
-    private BiFunction<PollingContext<PhoneNumberReservation>,
-        PollResponse<PhoneNumberReservation>, Mono<PhoneNumberReservation>>
-        cancelReservationOperation() {
+    private BiFunction<PollingContext<PhoneNumberSearch>,
+        PollResponse<PhoneNumberSearch>, Mono<PhoneNumberSearch>> 
+        cancelSearchOperation() {
         return (pollingContext, firstResponse) -> {
-            cancelReservation(pollingContext.getLatestResponse().getValue().getReservationId());
+            cancelSearch(pollingContext.getLatestResponse().getValue().getSearchId());
             return Mono.just(pollingContext.getLatestResponse().getValue());
         };
     }
 
-    private Function<PollingContext<PhoneNumberReservation>,
-        Mono<PhoneNumberReservation>> createReservationFetchResultOperation() {
+    private Function<PollingContext<PhoneNumberSearch>,
+        Mono<PhoneNumberSearch>> createSearchFetchResultOperation() {
         return pollingContext -> {
             return Mono.just(pollingContext.getLatestResponse().getValue());
         };
@@ -841,49 +840,48 @@ public final class PhoneNumberAsyncClient {
 
     /**
      * Initiates a purchase process and polls until a terminal state is reached
-     * This function returns a Long Running Operation poller that allows you to
+     * This function returns a Long Running Operation poller that allows you to 
      * wait indefinitely until the operation is complete.
      *
-     * @param reservationId ID of the reservation
-     * @param pollInterval The time our long running operation will keep on polling
+     * @param searchId ID of the search
+     * @param pollInterval The time our long running operation will keep on polling 
      * until it gets a result from the server
      * @return A {@link PollerFlux} object.
      */
 
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<Void, Void> beginPurchaseReservation(String reservationId, Duration pollInterval) {
-        Objects.requireNonNull(reservationId, "'ReservationId' can not be null.");
-
+    public PollerFlux<Void, Void> beginPurchaseSearch(String searchId, Duration pollInterval) {
+        Objects.requireNonNull(searchId, "'searchId' can not be null.");
+        
         if (pollInterval == null) {
             pollInterval = defaultPollInterval;
         }
 
         return new PollerFlux<Void, Void>(pollInterval,
-            purchaseReservationActivationOperation(reservationId),
-            purchaseReservationPollOperation(reservationId),
+            purchaseSearchActivationOperation(searchId),
+            purchaseSearchPollOperation(searchId),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
-            purchaseReservationFetchResultOperation());
+            purchaseSearchFetchResultOperation());
     }
 
-    private Function<PollingContext<Void>,
-        Mono<Void>> purchaseReservationActivationOperation(String reservationId) {
+    private Function<PollingContext<Void>, 
+        Mono<Void>> purchaseSearchActivationOperation(String searchId) {
         return (pollingContext) -> {
-            return purchaseReservation(reservationId);
+            return purchaseSearch(searchId);
         };
     }
 
     private Function<PollingContext<Void>, Mono<PollResponse<Void>>>
-        purchaseReservationPollOperation(String reservationId) {
-        return (pollingContext) -> getReservationById(reservationId)
-            .flatMap(getReservationResponse -> {
-                ReservationStatus statusResponse =
-                    ReservationStatus.fromString(getReservationResponse.getStatus().toString());
-                if (statusResponse.equals(ReservationStatus.SUCCESS)) {
+        purchaseSearchPollOperation(String searchId) {
+        return (pollingContext) -> getSearchById(searchId)
+            .flatMap(getSearchResponse -> {
+                SearchStatus statusResponse = getSearchResponse.getStatus();
+                if (statusResponse.equals(SearchStatus.SUCCESS)) {
                     return Mono.just(new PollResponse<>(
                     LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, null));
                 }
-                if (statusResponse.equals(ReservationStatus.ERROR)
-                    || statusResponse.equals(ReservationStatus.EXPIRED)) {
+                if (statusResponse.equals(SearchStatus.ERROR) 
+                    || statusResponse.equals(SearchStatus.EXPIRED)) {
                     return Mono.just(new PollResponse<>(
                     LongRunningOperationStatus.FAILED, null));
                 }
@@ -892,7 +890,7 @@ public final class PhoneNumberAsyncClient {
     }
 
     private Function<PollingContext<Void>,
-        Mono<Void>> purchaseReservationFetchResultOperation() {
+        Mono<Void>> purchaseSearchFetchResultOperation() {
         return pollingContext -> {
             return Mono.empty();
         };
@@ -901,16 +899,16 @@ public final class PhoneNumberAsyncClient {
 
  /**
      * Releases the given phone numbers.
-     * This function returns a Long Running Operation poller that allows you to
+     * This function returns a Long Running Operation poller that allows you to 
      * wait indefinitely until the operation is complete.
-     *
+     * 
      * @param phoneNumbers A list of {@link PhoneNumber} with the desired numbers to release
-     * @param pollInterval The time our long running operation will keep on polling
+     * @param pollInterval The time our long running operation will keep on polling 
      * until it gets a result from the server
      * @return A {@link PollerFlux} object with the release entity
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<PhoneNumberRelease, PhoneNumberRelease>
+    public PollerFlux<PhoneNumberRelease, PhoneNumberRelease> 
         beginReleasePhoneNumbers(List<PhoneNumber> phoneNumbers, Duration pollInterval) {
         Objects.requireNonNull(phoneNumbers, "'phoneNumbers' cannot be null.");
 
@@ -926,7 +924,7 @@ public final class PhoneNumberAsyncClient {
             releaseNumbersFetchResultOperation());
     }
 
-    private Function<PollingContext<PhoneNumberRelease>, Mono<PhoneNumberRelease>>
+    private Function<PollingContext<PhoneNumberRelease>, Mono<PhoneNumberRelease>> 
         releaseNumbersActivationOperation(List<PhoneNumber> phoneNumbers) {
         return (pollingContext) -> {
             Mono<PhoneNumberRelease> response = releasePhoneNumbers(phoneNumbers)
@@ -939,13 +937,13 @@ public final class PhoneNumberAsyncClient {
         };
     }
 
-    private Function<PollingContext<PhoneNumberRelease>, Mono<PollResponse<PhoneNumberRelease>>>
+    private Function<PollingContext<PhoneNumberRelease>, Mono<PollResponse<PhoneNumberRelease>>> 
         releaseNumbersPollOperation() {
         return pollingContext ->
             getReleaseById(pollingContext.getLatestResponse().getValue().getReleaseId())
                 .flatMap(getReleaseResponse -> {
                     ReleaseStatus status = getReleaseResponse.getStatus();
-                    if (status.equals(ReleaseStatus.COMPLETE)
+                    if (status.equals(ReleaseStatus.COMPLETE) 
                         || status.equals(ReleaseStatus.EXPIRED)) {
                         return Mono.just(new PollResponse<>(
                         LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, getReleaseResponse));

@@ -28,7 +28,6 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
 
     private final long timeoutMillis;
 
-    private boolean closed;
     private long lastWriteMillis;
     private long lastWriteProgress;
     private ScheduledFuture<?> writeTimeoutWatcher;
@@ -84,10 +83,6 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
         }
 
         // No progress has been made since the last timeout event, channel has timed out.
-        if (!closed) {
-            ctx.fireExceptionCaught(new TimeoutException(String.format(WRITE_TIMED_OUT_MESSAGE, timeoutMillis)));
-            ctx.close();
-            closed = true;
-        }
+        ctx.fireExceptionCaught(new TimeoutException(String.format(WRITE_TIMED_OUT_MESSAGE, timeoutMillis)));
     }
 }

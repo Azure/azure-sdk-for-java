@@ -125,19 +125,10 @@ class CryptographyServiceClient {
         return mapper.readValue(jsonString, JsonWebKey.class);
     }
 
-    Mono<EncryptResult> encrypt(EncryptOptions encryptOptions, Context context) {
-        Objects.requireNonNull(encryptOptions, "'encryptOptions' cannot be null.");
+    Mono<EncryptResult> encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
 
-        EncryptionAlgorithm algorithm = encryptOptions.getAlgorithm();
-        byte[] iv = encryptOptions.getIv();
-        byte[] authenticatedData = encryptOptions.getAdditionalAuthenticatedData();
-        KeyOperationParameters parameters = new KeyOperationParameters()
-            .setAlgorithm(algorithm)
-            .setValue(encryptOptions.getPlainText())
-            .setIv(iv)
-            .setAdditionalAuthenticatedData(authenticatedData);
+        KeyOperationParameters parameters = new KeyOperationParameters().setAlgorithm(algorithm).setValue(plaintext);
         context = context == null ? Context.NONE : context;
-
         return service.encrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Encrypting content with algorithm - {}", algorithm.toString()))
@@ -149,21 +140,9 @@ class CryptographyServiceClient {
                 Mono.just(new EncryptResult(keyOperationResultResponse.getValue().getResult(), algorithm, keyId)));
     }
 
-    Mono<DecryptResult> decrypt(DecryptOptions decryptOptions, Context context) {
-        Objects.requireNonNull(decryptOptions, "'decryptOptions' cannot be null.");
-
-        EncryptionAlgorithm algorithm = decryptOptions.getAlgorithm();
-        byte[] iv = decryptOptions.getIv();
-        byte[] additionalAuthenticatedData = decryptOptions.getAdditionalAuthenticatedData();
-        byte[] authenticationTag = decryptOptions.getAuthenticationTag();
-        KeyOperationParameters parameters = new KeyOperationParameters()
-            .setAlgorithm(algorithm)
-            .setValue(decryptOptions.getCipherText())
-            .setIv(iv)
-            .setAdditionalAuthenticatedData(additionalAuthenticatedData)
-            .setAuthenticationTag(authenticationTag);
+    Mono<DecryptResult> decrypt(EncryptionAlgorithm algorithm, byte[] cipherText, Context context) {
+        KeyOperationParameters parameters = new KeyOperationParameters().setAlgorithm(algorithm).setValue(cipherText);
         context = context == null ? Context.NONE : context;
-
         return service.decrypt(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Decrypting content with algorithm - {}", algorithm.toString()))
@@ -204,11 +183,9 @@ class CryptographyServiceClient {
     }
 
     Mono<WrapResult> wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
-        KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest()
-            .setAlgorithm(algorithm)
-            .setValue(key);
-        context = context == null ? Context.NONE : context;
 
+        KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest().setAlgorithm(algorithm).setValue(key);
+        context = context == null ? Context.NONE : context;
         return service.wrapKey(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Wrapping key content with algorithm - {}", algorithm.toString()))
@@ -222,11 +199,8 @@ class CryptographyServiceClient {
 
     Mono<UnwrapResult> unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
 
-        KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest()
-            .setAlgorithm(algorithm)
-            .setValue(encryptedKey);
+        KeyWrapUnwrapRequest parameters = new KeyWrapUnwrapRequest().setAlgorithm(algorithm).setValue(encryptedKey);
         context = context == null ? Context.NONE : context;
-
         return service.unwrapKey(vaultUrl, keyName, version, apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Unwrapping key content with algorithm - {}", algorithm.toString()))

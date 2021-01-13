@@ -59,11 +59,11 @@ param(
   [boolean]$CloseAfterOpenForTesting=$false
 )
 
-. (Join-Path $PSScriptRoot common.ps1)
+. "${PSScriptRoot}\common.ps1"
 
 try {
   $resp = Get-GitHubPullRequests -RepoOwner $RepoOwner -RepoName $RepoName `
-  -Head "${PROwner}:${PRBranch}" -Base $BaseBranch -AuthToken $AuthToken
+  -Head "${PROwner}:${PRBranch}" -Base $BaseBranch
 }
 catch { 
   LogError "Get-GitHubPullRequests failed with exception:`n$_"
@@ -89,10 +89,8 @@ else {
     # setting variable to reference the pull request by number
     Write-Host "##vso[task.setvariable variable=Submitted.PullRequest.Number]$($resp.number)"
 
-    if ($UserReviewers -or $TeamReviewers) {
-      Add-GitHubPullRequestReviewers -RepoOwner $RepoOwner -RepoName $RepoName -PrNumber $resp.number `
-      -Users $UserReviewers -Teams $TeamReviewers -AuthToken $AuthToken
-    }
+    Add-GitHubPullRequestReviewers -RepoOwner $RepoOwner -RepoName $RepoName -PrNumber $resp.number `
+    -Users $UserReviewers -Teams $TeamReviewers -AuthToken $AuthToken
 
     if ($CloseAfterOpenForTesting) {
       $prState = "closed"

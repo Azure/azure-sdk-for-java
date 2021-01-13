@@ -66,7 +66,7 @@ class SensitivityLabelsImpl extends CreatableUpdatableImpl<SensitivityLabels, Se
     @Override
     protected Observable<SensitivityLabelInner> getInnerAsync() {
         SqlPoolSensitivityLabelsInner client = this.manager().inner().sqlPoolSensitivityLabels();
-        return client.getAsync(this.resourceGroupName, this.workspaceName, this.sqlPoolName, this.schemaName, this.tableName, this.columnName, null);
+        return null; // NOP getInnerAsync implementation as get is not supported
     }
 
     @Override

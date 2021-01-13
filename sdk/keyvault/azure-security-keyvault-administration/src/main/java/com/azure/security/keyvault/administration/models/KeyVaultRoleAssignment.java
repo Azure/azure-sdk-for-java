@@ -3,18 +3,15 @@
 
 package com.azure.security.keyvault.administration.models;
 
-import com.azure.core.annotation.Immutable;
-
 /**
  * A class that defines a role assignment.
  */
-@Immutable
 public final class KeyVaultRoleAssignment {
     private final String id;
     private final String name;
     private final String type;
     private final KeyVaultRoleAssignmentProperties properties;
-    private final KeyVaultRoleScope roleScope;
+    private final KeyVaultRoleAssignmentScope scope;
 
     /**
      * Creates a new {@link KeyVaultRoleAssignment role assignment} with the specified details.
@@ -24,14 +21,15 @@ public final class KeyVaultRoleAssignment {
      * @param type The type of this {@link KeyVaultRoleAssignment role assignment}.
      * @param properties {@link KeyVaultRoleAssignmentProperties properties} of this {@link KeyVaultRoleAssignment
      * role assignment}.
-     * @param roleScope The {@link KeyVaultRoleScope scope} of this {@link KeyVaultRoleAssignment role assignment}.
+     * @param roleScope The {@link KeyVaultRoleAssignmentScope scope} of this {@link KeyVaultRoleAssignment role
+     * assignment}.
      */
-    public KeyVaultRoleAssignment(String id, String name, String type, KeyVaultRoleAssignmentProperties properties, KeyVaultRoleScope roleScope) {
+    public KeyVaultRoleAssignment(String id, String name, String type, KeyVaultRoleAssignmentProperties properties, KeyVaultRoleAssignmentScope roleScope) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.properties = properties;
-        this.roleScope = roleScope;
+        this.scope = roleScope;
     }
 
     /**
@@ -71,11 +69,11 @@ public final class KeyVaultRoleAssignment {
     }
 
     /**
-     * Get the {@link KeyVaultRoleAssignment role assignment} {@link KeyVaultRoleScope scope}.
+     * Get the {@link KeyVaultRoleAssignment role assignment} {@link KeyVaultRoleAssignmentScope scope}.
      *
-     * @return The {@link KeyVaultRoleAssignment role assignment} {@link KeyVaultRoleScope scope}.
+     * @return The {@link KeyVaultRoleAssignment role assignment} {@link KeyVaultRoleAssignmentScope scope}.
      */
-    public KeyVaultRoleScope getRoleScope() {
-        return roleScope;
+    public KeyVaultRoleAssignmentScope getScope() {
+        return scope;
     }
 }

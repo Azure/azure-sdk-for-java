@@ -56,7 +56,12 @@ specified in $ProvisionerApplicationId and $ProvisionerApplicationSecret.
 ### EXAMPLE 1
 ```
 Connect-AzAccount -Subscription "REPLACE_WITH_SUBSCRIPTION_ID"
-New-TestResources.ps1 -ServiceDirectory 'keyvault'
+$testAadApp = New-AzADServicePrincipal -Role Owner -DisplayName 'azure-sdk-live-test-app'
+New-TestResources.ps1 `
+    -BaseName 'uuid123' `
+    -ServiceDirectory 'keyvault' `
+    -TestApplicationId $testAadApp.ApplicationId.ToString() `
+    -TestApplicationSecret (ConvertFrom-SecureString $testAadApp.Secret -AsPlainText)
 ```
 
 Run this in a desktop environment to create new AAD apps and Service Principals

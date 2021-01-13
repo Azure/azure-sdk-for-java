@@ -291,7 +291,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return Mono.just(
                 new ServiceBusMessageBatch(batchSize, link::getErrorContext, tracerProvider, messageSerializer,
                     entityName, getFullyQualifiedNamespace()));
-        })).onErrorMap(this::mapError);
+        }));
     }
 
     /**
@@ -619,7 +619,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 if (isTracingEnabled) {
                     tracerProvider.endSpan(parentContext.get(), signal);
                 }
-            }).onErrorMap(this::mapError);
+            });
+
     }
 
     private Mono<Void> sendInternal(Flux<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
@@ -633,8 +634,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         link::getErrorContext, tracerProvider, messageSerializer, entityName,
                         link.getHostname()));
                 })
-                .flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transactionContext)))
-                .onErrorMap(this::mapError);
+                .flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transactionContext)));
     }
 
     private Mono<Void> sendInternalBatch(Flux<ServiceBusMessageBatch> eventBatches,
@@ -656,13 +656,6 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 }
             })
             .doOnNext(next -> linkName.compareAndSet(null, next.getLinkName()));
-    }
-
-    private Throwable mapError(Throwable throwable) {
-        if (!(throwable instanceof ServiceBusException)) {
-            return new ServiceBusException(throwable, ServiceBusErrorSource.SEND);
-        }
-        return throwable;
     }
 
     private static class AmqpMessageCollector implements Collector<ServiceBusMessage, List<ServiceBusMessageBatch>,

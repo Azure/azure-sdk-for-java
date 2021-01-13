@@ -48,14 +48,14 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
     @Override
     public Observable<PrivateEndpointConnection> createResourceAsync() {
         PrivateEndpointConnectionsInner client = this.manager().inner().privateEndpointConnections();
-        return client.createAsync(this.resourceGroupName, this.workspaceName, this.privateEndpointConnectionName, this.inner())
+        return client.createAsync(this.resourceGroupName, this.workspaceName, this.privateEndpointConnectionName)
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<PrivateEndpointConnection> updateResourceAsync() {
         PrivateEndpointConnectionsInner client = this.manager().inner().privateEndpointConnections();
-        return client.createAsync(this.resourceGroupName, this.workspaceName, this.privateEndpointConnectionName, this.inner())
+        return client.createAsync(this.resourceGroupName, this.workspaceName, this.privateEndpointConnectionName)
             .map(innerToFluentMap(this));
     }
 
@@ -105,18 +105,6 @@ class PrivateEndpointConnectionImpl extends CreatableUpdatableImpl<PrivateEndpoi
     public PrivateEndpointConnectionImpl withExistingWorkspace(String resourceGroupName, String workspaceName) {
         this.resourceGroupName = resourceGroupName;
         this.workspaceName = workspaceName;
-        return this;
-    }
-
-    @Override
-    public PrivateEndpointConnectionImpl withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
-        this.inner().withPrivateEndpoint(privateEndpoint);
-        return this;
-    }
-
-    @Override
-    public PrivateEndpointConnectionImpl withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
-        this.inner().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
     }
 

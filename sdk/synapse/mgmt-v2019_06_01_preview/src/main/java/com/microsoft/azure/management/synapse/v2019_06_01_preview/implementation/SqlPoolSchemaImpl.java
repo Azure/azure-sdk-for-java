@@ -9,35 +9,20 @@
 package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation;
 
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolSchema;
-import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
+import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 
-class SqlPoolSchemaImpl extends IndexableRefreshableWrapperImpl<SqlPoolSchema, SqlPoolSchemaInner> implements SqlPoolSchema {
+class SqlPoolSchemaImpl extends WrapperImpl<SqlPoolSchemaInner> implements SqlPoolSchema {
     private final SynapseManager manager;
-    private String resourceGroupName;
-    private String workspaceName;
-    private String sqlPoolName;
-    private String schemaName;
 
     SqlPoolSchemaImpl(SqlPoolSchemaInner inner,  SynapseManager manager) {
-        super(null, inner);
+        super(inner);
         this.manager = manager;
-        // set resource ancestor and positional variables
-        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
-        this.workspaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "workspaces");
-        this.sqlPoolName = IdParsingUtils.getValueFromIdByName(inner.id(), "sqlPools");
-        this.schemaName = IdParsingUtils.getValueFromIdByName(inner.id(), "schemas");
     }
 
     @Override
     public SynapseManager manager() {
         return this.manager;
-    }
-
-    @Override
-    protected Observable<SqlPoolSchemaInner> getInnerAsync() {
-        SqlPoolSchemasInner client = this.manager().inner().sqlPoolSchemas();
-        return client.getAsync(this.resourceGroupName, this.workspaceName, this.sqlPoolName, this.schemaName);
     }
 
 

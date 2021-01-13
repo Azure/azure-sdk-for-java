@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.synapse.v2019_06_01_preview;
 
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -25,7 +24,7 @@ public class ManagedIdentity {
      * The tenant ID of the workspace managed identity.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID tenantId;
+    private String tenantId;
 
     /**
      * The type of managed identity for the workspace. Possible values include:
@@ -48,7 +47,7 @@ public class ManagedIdentity {
      *
      * @return the tenantId value
      */
-    public UUID tenantId() {
+    public String tenantId() {
         return this.tenantId;
     }
 

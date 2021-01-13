@@ -24,18 +24,16 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 
 public class ConnectionStateListenerTest {
-    private static final Logger logger = LoggerFactory.getLogger(ConnectionStateListenerTest.class);
 
     private static int port = 8082;
-    private static String serverAddressPrefix = "rntbd://localhost:";
-    private static Random random = new Random();
+    private static String serverUriString = "rntbd://localhost:" + port;
+    private static final Logger logger = LoggerFactory.getLogger(ConnectionStateListenerTest.class);
 
     @DataProvider(name = "connectionStateListenerConfigProvider")
     public Object[][] connectionStateListenerConfigProvider() {
@@ -54,9 +52,7 @@ public class ConnectionStateListenerTest {
         RequestResponseType responseType,
         int times) throws ExecutionException, InterruptedException {
 
-        // using a random generated server port
-        int serverPort = port + random.nextInt(1000);
-        TcpServer server = TcpServerFactory.startNewRntbdServer(serverPort);
+        TcpServer server = TcpServerFactory.startNewRntbdServer(port);
         // Inject fake response
         server.injectServerResponse(responseType);
 
@@ -82,17 +78,17 @@ public class ConnectionStateListenerTest {
                 getDocumentDefinition(), new HashMap<>());
         req.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("fakeCollectionId","fakePartitionKeyRangeId"));
 
-        Uri targetUri = new Uri(serverAddressPrefix + serverPort);
+        Uri targetUri = new Uri(serverUriString);
         try {
             client.invokeStoreAsync(targetUri, req).block();
         } catch (Exception e) {
             logger.info("expected failed request with reason {}", e);
         }
         finally {
-            TcpServerFactory.shutdownRntbdServer(server);
+            Mockito.verify(addressResolver, Mockito.times(times)).updateAddresses(Mockito.any(), Mockito.any());
         }
 
-        Mockito.verify(addressResolver, Mockito.times(times)).updateAddresses(Mockito.any(), Mockito.any());
+        TcpServerFactory.shutdownRntbdServer(server);
     }
 
     private Document getDocumentDefinition() {

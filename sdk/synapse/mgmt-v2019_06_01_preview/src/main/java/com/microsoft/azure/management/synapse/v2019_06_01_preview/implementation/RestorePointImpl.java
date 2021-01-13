@@ -9,37 +9,22 @@
 package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation;
 
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.RestorePoint;
-import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
+import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.RestorePointType;
 
-class RestorePointImpl extends IndexableRefreshableWrapperImpl<RestorePoint, RestorePointInner> implements RestorePoint {
+class RestorePointImpl extends WrapperImpl<RestorePointInner> implements RestorePoint {
     private final SynapseManager manager;
-    private String resourceGroupName;
-    private String workspaceName;
-    private String sqlPoolName;
-    private String restorePointName;
 
     RestorePointImpl(RestorePointInner inner,  SynapseManager manager) {
-        super(null, inner);
+        super(inner);
         this.manager = manager;
-        // set resource ancestor and positional variables
-        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
-        this.workspaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "workspaces");
-        this.sqlPoolName = IdParsingUtils.getValueFromIdByName(inner.id(), "sqlPools");
-        this.restorePointName = IdParsingUtils.getValueFromIdByName(inner.id(), "restorePoints");
     }
 
     @Override
     public SynapseManager manager() {
         return this.manager;
-    }
-
-    @Override
-    protected Observable<RestorePointInner> getInnerAsync() {
-        SqlPoolRestorePointsInner client = this.manager().inner().sqlPoolRestorePoints();
-        return client.getAsync(this.resourceGroupName, this.workspaceName, this.sqlPoolName, this.restorePointName);
     }
 
 

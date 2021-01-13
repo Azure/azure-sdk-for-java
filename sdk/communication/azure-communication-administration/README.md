@@ -22,7 +22,7 @@ Acquired phone numbers can come with many capabilities, depending on the country
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-administration</artifactId>
-  <version>1.0.0-beta.3</version>
+  <version>1.0.0-beta.2</version>
 </dependency>
 ```
 
@@ -242,7 +242,7 @@ for (String areaCode
 
 ### Configure Phone Number
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L306-L306 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L338-L338 -->
 ```java
 phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
 ```
@@ -253,49 +253,49 @@ The Phone Number Client supports a variety of long running operations that allow
 
 ### Create Search
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L313-L337 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L345-L369 -->
 ```java
 String phonePlanId = "PHONE_PLAN_ID";
 
 List<String> phonePlanIds = new ArrayList<>();
 phonePlanIds.add(phonePlanId);
 
-CreateReservationOptions createReservationOptions = new CreateReservationOptions();
-createReservationOptions
-    .setAreaCode("AREA_CODE_FOR_RESERVATION")
-    .setDescription("DESCRIPTION_FOR_RESERVATION")
-    .setDisplayName("NAME_FOR_RESERVATION")
+CreateSearchOptions createSearchOptions = new CreateSearchOptions();
+createSearchOptions
+    .setAreaCode("AREA_CODE_FOR_SEARCH")
+    .setDescription("DESCRIPTION_FOR_SEARCH")
+    .setDisplayName("NAME_FOR_SEARCH")
     .setPhonePlanIds(phonePlanIds)
     .setQuantity(2);
 
 Duration duration = Duration.ofSeconds(1);
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-SyncPoller<PhoneNumberReservation, PhoneNumberReservation> res =
-    phoneNumberClient.beginCreateReservation(createReservationOptions, duration);
+SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
+    phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
 res.waitForCompletion();
-PhoneNumberReservation result = res.getFinalResult();
+PhoneNumberSearch result = res.getFinalResult();
 
-System.out.println("Reservation Id: " + result.getReservationId());
+System.out.println("Search Id: " + result.getSearchId());
 for (String phoneNumber: result.getPhoneNumbers()) {
     System.out.println("Phone Number: " + phoneNumber);
 }
 ```
 
 ### Purchase Search
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L344-L350 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L376-L382 -->
 ```java
 Duration duration = Duration.ofSeconds(1);
-String phoneNumberReservationId = "RESERVATION_ID_TO_PURCHASE";
+String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-SyncPoller<Void, Void> res =
-    phoneNumberClient.beginPurchaseReservation(phoneNumberReservationId, duration);
+SyncPoller<Void, Void> res = 
+    phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
 res.waitForCompletion();
 ```
 
 ### Release Phone Numbers
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L357-L367 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L389-L399 -->
 ```java
 Duration duration = Duration.ofSeconds(1);
 PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
@@ -303,7 +303,7 @@ List<PhoneNumber> phoneNumbers = new ArrayList<>();
 phoneNumbers.add(phoneNumber);
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res =
+SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res = 
     phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
 res.waitForCompletion();
 PhoneNumberRelease result = res.getFinalResult();

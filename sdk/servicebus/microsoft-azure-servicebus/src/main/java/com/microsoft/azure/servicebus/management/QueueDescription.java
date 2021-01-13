@@ -399,7 +399,7 @@ public class QueueDescription extends UnknownPropertiesHolder {
         this.userMetadata = userMetadata;
     }
     
-    boolean isSupportOrdering() {
+    boolean getSupportOrdering() {
     	if (this.isSupportOrderingExplicitlySet) {
     		return this.supportOrdering;
     	} else {
@@ -442,7 +442,7 @@ public class QueueDescription extends UnknownPropertiesHolder {
                 && AuthorizationRuleSerializer.equals(this.authorizationRules, other.authorizationRules)
         		&& this.enableExpress == other.enableExpress 
         		&& this.isAnonymousAccessible == other.isAnonymousAccessible
-        		&& this.isSupportOrdering() == other.isSupportOrdering() ) {
+        		&& this.supportOrdering == other.supportOrdering ) {
             return true;
         }
 

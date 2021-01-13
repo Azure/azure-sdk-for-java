@@ -37,7 +37,6 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile StoreResult quorumSelectedStoreResponse;
     public volatile PartitionKeyInternal effectivePartitionKey;
     public volatile CosmosDiagnostics cosmosDiagnostics;
-    public volatile String resourcePhysicalAddress;
     public RetryContext retryContext;
 
     public DocumentServiceRequestContext() {
@@ -146,7 +145,6 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.effectivePartitionKey = this.effectivePartitionKey;
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
         context.cosmosDiagnostics = this.cosmosDiagnostics;
-        context.resourcePhysicalAddress = this.resourcePhysicalAddress;
         context.retryContext = new RetryContext(this.retryContext);
 
         return context;
