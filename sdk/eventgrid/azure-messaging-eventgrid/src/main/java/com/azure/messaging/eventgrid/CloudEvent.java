@@ -6,9 +6,7 @@ package com.azure.messaging.eventgrid;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -17,14 +15,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
  * The CloudEvent model. This represents a cloud event as specified by the Cloud Native Computing Foundation
  * (https://github.com/cloudevents/spec/blob/v1.0.1/spec.md).
- * @see EventGridPublisherAsyncClient
- * @see EventGridPublisherClient
+ * @see EventGridPublisherAsyncClient to send cloud events asynchronously.
+ * @see EventGridPublisherClient to send cloud events.
  **/
 @Fluent
 public final class CloudEvent {
@@ -35,8 +32,6 @@ public final class CloudEvent {
 
     private static final ClientLogger logger = new ClientLogger(CloudEvent.class);
 
-    private boolean parsed = false;
-
     /**
      * Create an instance of CloudEvent. The source and type are required fields to publish.
      * @param source a URI identifying the origin of the event.
@@ -45,7 +40,8 @@ public final class CloudEvent {
     public CloudEvent(String source, String type) {
         if (CoreUtils.isNullOrEmpty(source)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Source cannot be null or empty"));
-        } else if (CoreUtils.isNullOrEmpty(type)) {
+        }
+        if (CoreUtils.isNullOrEmpty(type)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("type cannot be null or empty"));
         }
 
@@ -61,7 +57,7 @@ public final class CloudEvent {
      * from raw JSON into rich event(s).
      * @param json the JSON payload containing one or more events.
      *
-     * @return all of the events in the payload parsed as CloudEvents.
+     * @return all of the events in the payload parsed as {@link CloudEvent}s.
      */
     public static List<CloudEvent> parse(String json) {
         return EventParser.parseCloudEvents(json);
@@ -103,7 +99,7 @@ public final class CloudEvent {
      * @return {@code true} if the even is a system event, or {@code false} otherwise.
      */
     public boolean isSystemEvent() {
-        String eventType = SystemEventMappings.canonicalizeEventType(this.getType());
+        String eventType = this.getType();
         return SystemEventMappings.getSystemEventMappings().containsKey(eventType);
     }
 
@@ -113,48 +109,45 @@ public final class CloudEvent {
      * @return The system event if the event is a system event, or {@code null} if it's not.
      */
     public Object asSystemEventData() {
-        if (!parsed) {
-            // data was set instead of parsed, throw error
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "This method should only be called on events created through the parse method"));
-        }
-        if (cloudEvent.getData() == null) { // this means normal data is null
+        if ((cloudEvent.getData() == null && cloudEvent.getDataBase64() == null)) {
             return null;
         }
-        String eventType = SystemEventMappings.canonicalizeEventType(cloudEvent.getType());
-        if (SystemEventMappings.getSystemEventMappings().containsKey(eventType)) {
-            // system event
-            return Objects.requireNonNull(this.getData())
-                .toObject(TypeReference.createInstance(SystemEventMappings.getSystemEventMappings().get(eventType)));
+        return EventParser.getSystemEventData(this.getData(), cloudEvent.getType());
+    }
+
+    /**
+     * Convert the event's data into the system event data if the event is a system event.
+     * @see SystemEventMappings
+     * @return The system event if the event is a system event, or Mono.empty() if it's not.
+     */
+    public Mono<Object> asSystemEventDataAsync() {
+        if ((cloudEvent.getData() == null && cloudEvent.getDataBase64() == null)) {
+            return Mono.empty();
+        }
+        return EventParser.getSystemEventDataAsync(this.getDataAsync(), cloudEvent.getType());
+    }
+
+    /**
+     * Get the data associated with this event as a {@link BinaryData}, which has API to deserialize the data into
+     * a String, an Object, or a byte[].
+     * @return A {@link BinaryData} that wraps the this event's data payload.
+     */
+    public BinaryData getData() {
+        if (cloudEvent.getDataBase64() != null) {
+            return BinaryData.fromBytes(cloudEvent.getDataBase64());
+        }
+        if (cloudEvent.getData() != null) {
+            return EventParser.getData(cloudEvent.getData());
         }
         return null;
     }
 
     /**
-     * Get the data associated with this event. For use in a parsed event only.
-     * @return If the event was parsed from a Json, this method will return the rich
-     * system event data if it is a system event, and a {@code byte[]} otherwise, such as in the case of binary event
-     * data, including data set through {@link CloudEvent#setData(byte[], String)}.
-     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
+     * Get the data associated with this event as a {@link BinaryData}, which has API to deserialize the data into
+     * a String, an Object, or a byte[].
+     * @return A {@link BinaryData} that wraps the this event's data payload.
      */
-    public BinaryData getData() {
-        if (!parsed) {
-            // data was set instead of parsed, throw error
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "This method should only be called on events created through the parse method"));
-        }
-        if (cloudEvent.getDataBase64() != null) { // this means normal data is null
-            return BinaryData.fromBytes(cloudEvent.getDataBase64());
-        }
-        return EventParser.getData(cloudEvent.getData());
-    }
-
     public Mono<BinaryData> getDataAsync() {
-        if (!parsed) {
-            // data was set instead of parsed, throw error
-            return FluxUtil.monoError(logger, new IllegalStateException(
-                "This method should only be called on events created through the parse method"));
-        }
         if (cloudEvent.getDataBase64() != null) { // this means normal data is null
             return Mono.defer(() -> Mono.just(BinaryData.fromBytes(cloudEvent.getDataBase64())));
         }
@@ -166,53 +159,30 @@ public final class CloudEvent {
 
     /**
      * Set the data associated with this event.
-     * @param data the data to set. Should be serializable with the serializer set on the publisher client.
+     * @param data the data to set.
      *
      * @return the cloud event itself.
      */
     public CloudEvent setData(Object data) {
-        this.cloudEvent.setData(data);
+        if (data instanceof byte[]) {
+            this.cloudEvent.setDataBase64((byte[]) data);
+        } else {
+            this.cloudEvent.setData(data);
+        }
         return this;
     }
 
     /**
      * Set the data associated with this event, along with a content type URI
-     * @param data            the data to set. Should be serializable by the serializer set on the publisher client.
+     * @param data            the data to set.
      * @param dataContentType a URI identifying the MIME type of the data.
      *                        For example, if the data was an XML string, the data content type could be
      *                        {@code "application/xml"}.
      * @return the cloud event itself.
      */
     public CloudEvent setData(Object data, String dataContentType) {
-        this.cloudEvent.setData(data);
+        this.setData(data);
         this.cloudEvent.setDatacontenttype(dataContentType);
-        return this;
-    }
-
-    /**
-     * Set byte data associated with this event.
-     * @param data            the data to set.
-     *
-     * @return the cloud event itself.
-     */
-    public CloudEvent setData(byte[] data) {
-        this.cloudEvent.setDataBase64(data);
-        return this;
-    }
-
-    /**
-     * Set byte data associated with this event, as well as the content type of the byte data. The data content
-     * type should be a string identifying the media type of the data.
-     * @param data            the data to set.
-     * @param dataContentType the string identifying the media type of the byte data, as a MIME type. A null value will
-     *                        be interpreted as the {@code application/json} type.
-     *
-     * @return the cloud event itself.
-     */
-    public CloudEvent setData(byte[] data, String dataContentType) {
-        this.cloudEvent
-            .setDataBase64(data)
-            .setDatacontenttype(dataContentType);
         return this;
     }
 
@@ -310,7 +280,7 @@ public final class CloudEvent {
     }
 
     /**
-     * Add/Overwrite a single extension attribute to the cloud event envelope. The property name will be transformed
+     * Add/Overwrite a single extension attribute to the cloud event. The property name will be transformed
      * to lowercase and must not share a name with any reserved cloud event properties.
      * @param name  the name of the attribute.
      * @param value the value to associate with the name.
@@ -327,7 +297,6 @@ public final class CloudEvent {
 
     CloudEvent(com.azure.messaging.eventgrid.implementation.models.CloudEvent impl) {
         this.cloudEvent = impl;
-        this.parsed = true;
     }
 
     com.azure.messaging.eventgrid.implementation.models.CloudEvent toImpl() {

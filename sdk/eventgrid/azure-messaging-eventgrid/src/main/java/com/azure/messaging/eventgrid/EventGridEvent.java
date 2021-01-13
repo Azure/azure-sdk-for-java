@@ -4,24 +4,13 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -36,9 +25,6 @@ public final class EventGridEvent {
 
     private static final ClientLogger logger = new ClientLogger(EventGridEvent.class);
 
-    private boolean parsed = false;
-
-    private static final JsonSerializer deserializer = EventParser.DESERIALIZER;
     /**
      * Create a new instance of the EventGridEvent, with the given required fields.
      * @param subject     the subject of the event.
@@ -69,7 +55,7 @@ public final class EventGridEvent {
      * from raw JSON into rich event(s).
      * @param json the JSON payload containing one or more events.
      *
-     * @return all of the events in the payload parsed as CloudEvents.
+     * @return all of the events in the payload parsed as {@link EventGridEvent}s.
      */
     public static List<EventGridEvent> parse(String json) {
         return EventParser.parseEventGridEvents(json);
@@ -126,12 +112,12 @@ public final class EventGridEvent {
     }
 
     /**
-     * Gets whether this event is a system event.
+     * Get whether this event is a system event.
      * @see SystemEventMappings
      * @return {@code true} if the even is a system event, or {@code false} otherwise.
      */
     public boolean isSystemEvent() {
-        String eventType = SystemEventMappings.canonicalizeEventType(this.getEventType());
+        String eventType = this.getEventType();
         return SystemEventMappings.getSystemEventMappings().containsKey(eventType);
     }
 
@@ -141,31 +127,46 @@ public final class EventGridEvent {
      * @return The system event if the event is a system event, or {@code null} if it's not.
      */
     public Object asSystemEventData() {
-        if (!parsed) {
-            // data was set instead of parsed, throw error
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "This method should only be called on events created through the parse method"));
-        }
-        if (event.getData() == null) { // this means normal data is null
+        if (event.getData() == null) {
             return null;
         }
         return EventParser.getSystemEventData(this.getData(), event.getEventType());
     }
 
     /**
-     * Get the data associated with this event. For use in a parsed event only.
-     * @return If the event was parsed from a Json, this method will return the rich
-     * system event data if it is a system event, and a {@code byte[]} otherwise, such as in the case of custom event
-     * data.
-     * @throws IllegalStateException If the event was not created through {@link EventGridEvent#parse(String)}.
+     * Convert the event's data into the system event data if the event is a system event.
+     * @see SystemEventMappings
+     * @return The system event if the event is a system event, or Mono.empty() if it's not.
+     */
+    public Mono<Object> asSystemEventDataAsync() {
+        if (event.getData() == null) {
+            return Mono.empty();
+        }
+        return EventParser.getSystemEventDataAsync(this.getDataAsync(), event.getEventType());
+    }
+
+    /**
+     * Get the data associated with this event as a {@link BinaryData}, which has API to deserialize the data into
+     * a String, an Object, or a byte[].
+     * @return A {@link BinaryData} that wraps the this event's data payload.
      */
     public BinaryData getData() {
-        if (!parsed) {
-            // data was set instead of parsed, throw error
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "This method should only be called on events created through the parse method"));
+        if (event.getData() != null) {
+            return EventParser.getData(event.getData());
         }
-        return EventParser.getData(event.getData());
+        return null;
+    }
+
+    /**
+     * Get the data associated with this event as a {@link BinaryData}, which has API to deserialize the data into
+     * a String, an Object, or a byte[].
+     * @return A {@link BinaryData} that wraps the this event's data payload.
+     */
+    public Mono<BinaryData> getDataAsync() {
+        if (event.getData() != null) {
+            return Mono.defer(() -> Mono.just(EventParser.getData(event.getData())));
+        }
+        return Mono.empty();
     }
 
     /**
@@ -214,7 +215,6 @@ public final class EventGridEvent {
 
     EventGridEvent(com.azure.messaging.eventgrid.implementation.models.EventGridEvent impl) {
         this.event = impl;
-        parsed = true;
     }
 
     com.azure.messaging.eventgrid.implementation.models.EventGridEvent toImpl() {

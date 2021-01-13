@@ -1,10 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventgrid;
+package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.AzureSasCredential;
+
+import com.azure.messaging.eventgrid.CloudEvent;
+import com.azure.messaging.eventgrid.EventGridEvent;
+import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
+import com.azure.messaging.eventgrid.EventGridPublisherClient;
+import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
+import com.azure.messaging.eventgrid.EventGridSasCreator;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 
 import java.time.OffsetDateTime;

@@ -17,7 +17,10 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
-public class EventGridSasCreator {
+public final class EventGridSasCreator {
+    private EventGridSasCreator() {
+        // Hide the constructor
+    }
     private static final ClientLogger logger = new ClientLogger(EventGridPublisherClient.class);
 
     /**
