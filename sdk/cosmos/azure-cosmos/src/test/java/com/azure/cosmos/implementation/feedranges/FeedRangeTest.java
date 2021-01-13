@@ -78,7 +78,7 @@ public class FeedRangeTest {
 
         assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE))
             .isNotNull()
-            .isEqualTo(ReadFeedKeyType.EffectivePartitionKey.name());
+            .isEqualTo(ReadFeedKeyType.EffectivePartitionKeyRange.name());
 
         assertThat(request.getHeaders().get(HttpConstants.HttpHeaders.START_EPK))
             .isNotNull()
