@@ -342,6 +342,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
         }
         final String notebookWorkspaceName = "default";
         final String apiVersion = "2020-06-01-preview";
+        final NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters = new NotebookWorkspaceCreateUpdateParameters();
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, accountName, notebookWorkspaceName, apiVersion, this.client.acceptLanguage(), notebookCreateUpdateParameters, this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<NotebookWorkspaceInner>() { }.getType());
     }
@@ -410,6 +411,7 @@ public class NotebookWorkspacesInner implements InnerSupportsDelete<Void> {
         }
         final String notebookWorkspaceName = "default";
         final String apiVersion = "2020-06-01-preview";
+        final NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters = new NotebookWorkspaceCreateUpdateParameters();
         return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, accountName, notebookWorkspaceName, apiVersion, this.client.acceptLanguage(), notebookCreateUpdateParameters, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NotebookWorkspaceInner>>>() {
                 @Override
