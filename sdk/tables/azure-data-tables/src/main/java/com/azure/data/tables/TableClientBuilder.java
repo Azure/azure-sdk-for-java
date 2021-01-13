@@ -63,6 +63,7 @@ public class TableClientBuilder {
      *
      * @return A {@link TableClient} created from the configurations in this builder.
      * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public TableClient buildClient() {
         return new TableClient(buildAsyncClient());
@@ -73,6 +74,7 @@ public class TableClientBuilder {
      *
      * @return A {@link TableAsyncClient} created from the configurations in this builder.
      * @throws IllegalArgumentException if {@code tableName} is {@code null} or empty.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public TableAsyncClient buildAsyncClient() {
         TablesServiceVersion serviceVersion = version != null ? version : TablesServiceVersion.getLatest();

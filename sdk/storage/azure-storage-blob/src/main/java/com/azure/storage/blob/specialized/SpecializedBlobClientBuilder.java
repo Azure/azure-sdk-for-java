@@ -91,6 +91,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link AppendBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public AppendBlobClient buildAppendBlobClient() {
         return new AppendBlobClient(buildAppendBlobAsyncClient());
@@ -103,6 +104,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link AppendBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
         validateConstruction();
@@ -120,6 +122,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link BlockBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlockBlobClient buildBlockBlobClient() {
         return new BlockBlobClient(buildBlockBlobAsyncClient());
@@ -134,6 +137,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link BlockBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
         validateConstruction();
@@ -151,6 +155,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link PageBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public PageBlobClient buildPageBlobClient() {
         return new PageBlobClient(buildPageBlobAsyncClient());
@@ -164,6 +169,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link PageBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
         validateConstruction();

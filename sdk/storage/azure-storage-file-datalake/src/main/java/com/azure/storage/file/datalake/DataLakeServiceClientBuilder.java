@@ -78,6 +78,7 @@ public class DataLakeServiceClientBuilder {
 
     /**
      * @return a {@link DataLakeServiceClient} created from the configurations in this builder.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public DataLakeServiceClient buildClient() {
         return new DataLakeServiceClient(buildAsyncClient(), blobServiceClientBuilder.buildClient());
@@ -85,6 +86,7 @@ public class DataLakeServiceClientBuilder {
 
     /**
      * @return a {@link DataLakeServiceAsyncClient} created from the configurations in this builder.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public DataLakeServiceAsyncClient buildAsyncClient() {
         if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)

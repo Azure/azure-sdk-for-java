@@ -95,6 +95,7 @@ public final class BlobClientBuilder {
      *
      * @return a {@link BlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlobClient buildClient() {
         return new BlobClient(buildAsyncClient());
@@ -111,6 +112,7 @@ public final class BlobClientBuilder {
      *
      * @return a {@link BlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlobAsyncClient buildAsyncClient() {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");

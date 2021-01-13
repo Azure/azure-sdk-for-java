@@ -133,6 +133,7 @@ public final class EncryptedBlobClientBuilder {
      *
      * @return a {@link EncryptedBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public EncryptedBlobClient buildEncryptedBlobClient() {
         return new EncryptedBlobClient(buildEncryptedBlobAsyncClient());
@@ -147,6 +148,7 @@ public final class EncryptedBlobClientBuilder {
      *
      * @return a {@link EncryptedBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public EncryptedBlobAsyncClient buildEncryptedBlobAsyncClient() {
         Objects.requireNonNull(blobName, "'blobName' cannot be null.");

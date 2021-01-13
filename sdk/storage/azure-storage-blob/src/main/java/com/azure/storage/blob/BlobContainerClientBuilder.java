@@ -90,6 +90,7 @@ public final class BlobContainerClientBuilder {
      * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.buildClient}
      *
      * @return a {@link BlobContainerClient} created from the configurations in this builder.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlobContainerClient buildClient() {
         return new BlobContainerClient(buildAsyncClient());
@@ -103,6 +104,7 @@ public final class BlobContainerClientBuilder {
      * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.buildAsyncClient}
      *
      * @return a {@link BlobContainerAsyncClient} created from the configurations in this builder.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlobContainerAsyncClient buildAsyncClient() {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);

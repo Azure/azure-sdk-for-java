@@ -59,6 +59,7 @@ public class TableServiceClientBuilder {
      * Creates a {@link TableServiceClient} based on options set in the builder.
      *
      * @return A {@link TableServiceClient} created from the configurations in this builder.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public TableServiceClient buildClient() {
         return new TableServiceClient(buildAsyncClient());
@@ -68,6 +69,7 @@ public class TableServiceClientBuilder {
      * Creates a {@link TableServiceAsyncClient} based on options set in the builder.
      *
      * @return A {@link TableServiceAsyncClient} created from the configurations in this builder.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public TableServiceAsyncClient buildAsyncClient() {
 

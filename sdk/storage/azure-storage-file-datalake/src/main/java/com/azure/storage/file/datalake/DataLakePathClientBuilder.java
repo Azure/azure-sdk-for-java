@@ -94,6 +94,7 @@ public final class DataLakePathClientBuilder {
      *
      * @return a {@link DataLakeFileClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public DataLakeFileClient buildFileClient() {
         return new DataLakeFileClient(buildFileAsyncClient(),
@@ -109,6 +110,7 @@ public final class DataLakePathClientBuilder {
      *
      * @return a {@link DataLakeFileAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code pathName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public DataLakeFileAsyncClient buildFileAsyncClient() {
         Objects.requireNonNull(pathName, "'pathName' cannot be null.");

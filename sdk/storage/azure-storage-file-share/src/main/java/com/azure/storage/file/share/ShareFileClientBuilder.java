@@ -162,6 +162,7 @@ public class ShareFileClientBuilder {
      * @throws NullPointerException If {@code shareName} is {@code null} or {@code shareName} is {@code null}.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public ShareDirectoryAsyncClient buildDirectoryAsyncClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
@@ -183,6 +184,7 @@ public class ShareFileClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code shareName} or {@code directoryPath} is {@code null}.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public ShareDirectoryClient buildDirectoryClient() {
         return new ShareDirectoryClient(this.buildDirectoryAsyncClient());
@@ -202,6 +204,7 @@ public class ShareFileClientBuilder {
      * @throws NullPointerException If {@code shareName} is {@code null} or the (@code resourcePath) is {@code null}.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public ShareFileAsyncClient buildFileAsyncClient() {
         ShareServiceVersion serviceVersion = getServiceVersion();
@@ -223,6 +226,7 @@ public class ShareFileClientBuilder {
      * @throws NullPointerException If {@code endpoint}, {@code shareName} or {@code resourcePath} is {@code null}.
      * @throws IllegalStateException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public ShareFileClient buildFileClient() {
         return new ShareFileClient(this.buildFileAsyncClient());

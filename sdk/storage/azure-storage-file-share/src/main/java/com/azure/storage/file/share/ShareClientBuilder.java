@@ -120,6 +120,7 @@ public class ShareClientBuilder {
      * @throws NullPointerException If {@code shareName} is {@code null}.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or
      * {@link #sasToken(String) SAS token} has been set.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public ShareAsyncClient buildAsyncClient() {
         Objects.requireNonNull(shareName, "'shareName' cannot be null.");
@@ -163,6 +164,7 @@ public class ShareClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code shareName} is {@code null}.
      * @throws IllegalStateException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public ShareClient buildClient() {
         return new ShareClient(buildAsyncClient());

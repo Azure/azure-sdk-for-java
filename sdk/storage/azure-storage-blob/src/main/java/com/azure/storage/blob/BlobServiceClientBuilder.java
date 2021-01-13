@@ -82,6 +82,8 @@ public final class BlobServiceClientBuilder {
 
     /**
      * @return a {@link BlobServiceClient} created from the configurations in this builder.
+     * @throws IllegalArgumentException If no credentials are provided.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlobServiceClient buildClient() {
         return new BlobServiceClient(buildAsyncClient());
@@ -90,6 +92,7 @@ public final class BlobServiceClientBuilder {
     /**
      * @return a {@link BlobServiceAsyncClient} created from the configurations in this builder.
      * @throws IllegalArgumentException If no credentials are provided.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlobServiceAsyncClient buildAsyncClient() {
         BuilderHelper.httpsValidation(customerProvidedKey, "customer provided key", endpoint, logger);

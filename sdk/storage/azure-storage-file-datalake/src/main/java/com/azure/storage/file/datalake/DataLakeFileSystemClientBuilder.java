@@ -87,6 +87,7 @@ public class DataLakeFileSystemClientBuilder {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClientBuilder.buildClient}
      *
      * @return a {@link DataLakeFileSystemClient} created from the configurations in this builder.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public DataLakeFileSystemClient buildClient() {
         return new DataLakeFileSystemClient(buildAsyncClient(),
@@ -99,6 +100,7 @@ public class DataLakeFileSystemClientBuilder {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClientBuilder.buildAsyncClient}
      *
      * @return a {@link DataLakeFileSystemAsyncClient} created from the configurations in this builder.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public DataLakeFileSystemAsyncClient buildAsyncClient() {
         /*

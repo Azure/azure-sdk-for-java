@@ -116,6 +116,7 @@ public final class QueueClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
      * @throws IllegalStateException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public QueueClient buildClient() {
         return new QueueClient(buildAsyncClient());
@@ -135,6 +136,7 @@ public final class QueueClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public QueueAsyncClient buildAsyncClient() {
         StorageImplUtils.assertNotNull("queueName", queueName);
