@@ -170,9 +170,9 @@ extends:
         groupId: com.azure.spring
       - name: azure-spring-data-sample-gremlin-web-service
         groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-appconfiguration-convert-complete
+      - name: azure-spring-cloud-sample-appconfiguration-conversion-complete
         groupId: com.azure.spring
-      - name: azure-spring-cloud-sample-appconfiguration-convert-initial
+      - name: azure-spring-cloud-sample-appconfiguration-conversion-initial
         groupId: com.azure.spring
       - name: azure-spring-cloud-sample-appconfiguration
         groupId: com.azure.spring

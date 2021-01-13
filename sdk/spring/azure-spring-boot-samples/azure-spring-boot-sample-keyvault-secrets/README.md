@@ -3,7 +3,7 @@
 ## Key concepts
 This sample illustrates how to use [Azure Spring Boot Starter Key Vault Secrets ](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-starter-keyvault-secrets/README.md).
 
-In this sample, a secret named `spring-datasource-url` is stored into an Azure Key Vault, and a sample Spring application will use its value as a configuration property value.
+In this sample, a secret named `spring-data-source-url` is stored into an Azure Key Vault, and a sample Spring application will use its value as a configuration property value.
 
 ## Getting started
 
@@ -11,7 +11,7 @@ In this sample, a secret named `spring-datasource-url` is stored into an Azure K
 We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ### Store Secret
-We need to store secret `spring-datasource-url` into Azure Key Vault.
+We need to store secret `spring-data-source-url` into Azure Key Vault.
 
 - Create one azure service principal by using Azure CLI or via [Azure Portal](https://docs.microsoft.com/azure/azure-resource-manager/resource-group-create-service-principal-portal). Save your service principal id and password for later use.
 You can use the following az cli commands to create a service principal:
@@ -48,7 +48,7 @@ Save the displayed Key Vault uri for later use.
 - Set secret in Azure Key Vault by using Azure CLI or via Azure Portal. 
 You can use the following az cli commands:
 ```bash
-az keyvault secret set --name spring-datasource-url                \
+az keyvault secret set --name spring-data-source-url                \
                        --value jdbc:mysql://localhost:3306/moviedb \
                        --vault-name <your_keyvault_name>
 az keyvault secret set --name <yourSecretPropertyName>   \
@@ -56,24 +56,29 @@ az keyvault secret set --name <yourSecretPropertyName>   \
                        --vault-name <your_keyvault_name>
 ```
 
-- If you want to use certificate authentication, upload the certificate file to App registrations in Azure Active Directory by using Azure Portal. 
-You can manually add a new application or use the service principal created in the previous step.
-
-    1. Select **App registrations**, then select the application name or service principal name just created.
+- If you want to use certificate authentication, upload the certificate file to App registrations or  in Azure Active Directory. 
+    - Upload using Azure Portal
+        1. Select **App registrations**, then select the application name or service principal name just created.
+        
+        1. Select **Certificates & secrets**, then select **Upload Certificate**, upload your cer, pem, or crt type certificate, click **Add** button to complete the upload.
+        
+        1. If you add a new application, one more step is to grant appropriate permissions to the application created. Please see [Assign an access policy][assign-an-access-policy]. 
+           You can also use the above `az keyvault set-policy` command to authorize the application id to access the Key Vault.
+        
+    - Upload using Azure Cli
+        1. You can use the following az cli commands to create a service principal with the certificate, and complete the certificate configuration in one step. Please see [Certificate-based authentication][certificate-based-authentication].
+           ```bash
+           # create azure service principal with the certificate by azure cli
+           az ad sp create-for-rbac --name <your_azure_service_principal_name> --cert @/path/to/cert.pem
+           # save the appId and password from output
+           az keyvault set-policy --name <your_keyvault_name>   \
+                                  --secret-permission get list  \
+                                  --spn <your_sp_id_create_in_current_step>
+           ```
     
-    1. Select **Certificates & secrets**, then select **Upload Certificate**, upload your cer, pem, or crt type certificate, click **Add** button to complete the upload.
-    
-    1. If you add a new application, grant appropriate permissions to the application created.
-       
-       You can use the following az cli commands:
-       ```bash
-       az keyvault set-policy --name <your_keyvault_name>   \
-                              --secret-permission get list  \
-                              --spn <your_application_id_create_in_current_step>
-       ```
 ## Examples
 
-### The service-principal-based authentication property setting
+### The key-based authentication property setting
 Open `application.properties` file and add below properties to specify your Azure Key Vault url, Azure service principal client id and client key.
 
 ```properties
@@ -129,3 +134,5 @@ mvn spring-boot:run
 <!-- links -->
 [version_link]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/keyvault/azure-security-keyvault-secrets/src/main/java/com/azure/security/keyvault/secrets/SecretServiceVersion.java#L12
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[certificate-based-authentication]: https://docs.microsoft.com/cli/azure/create-an-azure-service-principal-azure-cli#certificate-based-authentication
+[assign-an-access-policy]: https://docs.microsoft.com/azure/key-vault/general/assign-access-policy-portal#assign-an-access-policy
