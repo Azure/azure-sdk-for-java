@@ -39,7 +39,8 @@ class BuilderHelperTest extends Specification {
      */
     def "Fresh date applied on retry"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, requestRetryOptions, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
+            endpoint, requestRetryOptions, BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions(),
             new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -153,7 +154,8 @@ class BuilderHelperTest extends Specification {
     @Unroll
     def "Custom application id in UA string"() {
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
+            endpoint, new RequestRetryOptions(), new HttpLogOptions().setApplicationId(logOptionsUA), new ClientOptions().setApplicationId(clientOptionsUA),
             new ApplicationIdUAStringTestClient(expectedUA), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
@@ -310,7 +312,8 @@ class BuilderHelperTest extends Specification {
         headers.add(new Header("User-Agent", "overwritten"))
 
         when:
-        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, endpoint, new RequestRetryOptions(), BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions().setHeaders(headers),
+        def pipeline = BuilderHelper.buildPipeline(credentials, null, null, null,
+            endpoint, new RequestRetryOptions(), BuilderHelper.getDefaultHttpLogOptions(), new ClientOptions().setHeaders(headers),
             new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTest.class))
 
         then:
