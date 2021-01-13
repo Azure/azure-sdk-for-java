@@ -4,6 +4,10 @@
 package com.azure.test.aad.selenium.logout;
 
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import java.security.Principal;
+import java.util.Collections;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,24 +18,28 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-import java.util.Collections;
-
 public class AADLogoutIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADLogoutIT.class);
     private AADSeleniumITHelper aadSeleniumITHelper;
 
+    @Before
+    public void aadSeleniumITHelperInit() {
+        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+        aadSeleniumITHelper.setDriver();
+        aadSeleniumITHelper.appInit();
+    }
+
     @Test
     public void logoutTest() throws InterruptedException {
-        try {
-            aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-            aadSeleniumITHelper.login();
-            aadSeleniumITHelper.logoutTest();
-        } finally {
-            if (aadSeleniumITHelper != null) {
-                aadSeleniumITHelper.destroy();
-            }
+        aadSeleniumITHelper.login();
+        aadSeleniumITHelper.logoutTest();
+    }
+
+    @After
+    public void aadSeleniumITHelperDestroy() {
+        if (aadSeleniumITHelper != null) {
+            aadSeleniumITHelper.destroy();
         }
     }
 

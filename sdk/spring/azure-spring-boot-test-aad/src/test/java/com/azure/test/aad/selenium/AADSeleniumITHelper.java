@@ -33,18 +33,11 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         DEFAULT_PROPERTIES.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
     }
 
-    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) throws InterruptedException {
-        try {
-            username = AAD_USER_NAME_1;
-            password = AAD_USER_PASSWORD_1;
-            app = new AppRunner(appClass);
-            DEFAULT_PROPERTIES.forEach(app::property);
-            properties.forEach(app::property);
-            setDriver();
-            this.app.start();
-        } catch (Exception e) {
-            LOGGER.error("AADSeleniumITHelper initialization produces an exception. ", e);
-        }
+    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
+        username = AAD_USER_NAME_1;
+        password = AAD_USER_PASSWORD_1;
+        this.appClass = appClass;
+        this.properties = properties;
     }
 
     public void login() {
@@ -67,5 +60,13 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         String id = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div[tabindex='0']")))
             .getAttribute("data-test-id");
         Assert.assertEquals(username, id);
+    }
+
+    @Override
+    public void appInit() {
+        app = new AppRunner(appClass);
+        DEFAULT_PROPERTIES.forEach(app::property);
+        properties.forEach(app::property);
+        this.app.start();
     }
 }

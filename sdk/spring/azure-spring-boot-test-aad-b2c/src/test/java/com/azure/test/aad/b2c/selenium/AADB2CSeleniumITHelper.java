@@ -17,7 +17,6 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     private String userEmail;
     private String userPassword;
     private static final Map<String, String> DEFAULT_PROPERTIES = new HashMap<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CSeleniumITHelper.class);
 
     static {
         DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.tenant", AADB2CTestUtils.AAD_B2C_TENANT);
@@ -34,24 +33,22 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     }
 
     public AADB2CSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
-        try {
-            userEmail = AADB2CTestUtils.AAD_B2C_USER_EMAIL;
-            userPassword = AADB2CTestUtils.AAD_B2C_USER_PASSWORD;
-            app = new AppRunner(appClass);
-            DEFAULT_PROPERTIES.forEach(app::property);
-            properties.forEach(app::property);
-            setDriver();
-            this.app.start();
-        } catch (Exception e) {
-            LOGGER.error("AADB2CSeleniumITHelper initialization produces an exception. ", e);
-            app.close();
-        }
+        userEmail = AADB2CTestUtils.AAD_B2C_USER_EMAIL;
+        userPassword = AADB2CTestUtils.AAD_B2C_USER_PASSWORD;
+        this.appClass = appClass;
+        this.properties = properties;
     }
 
-    public void signIn(String userFlowName) {
+    @Override
+    public void appInit(){
+        app = new AppRunner(appClass);
+        DEFAULT_PROPERTIES.forEach(app::property);
+        properties.forEach(app::property);
+        this.app.start();
+    }
+
+    public void signIn() {
         driver.get(app.root());
-        wait.until(ExpectedConditions
-            .elementToBeClickable(By.cssSelector("a[href='/oauth2/authorization/" + userFlowName + "']"))).click();
         wait.until(presenceOfElementLocated(By.id("email"))).sendKeys(userEmail);
         wait.until(presenceOfElementLocated(By.id("password"))).sendKeys(userPassword);
         wait.until(presenceOfElementLocated(By.cssSelector("button[type='submit']"))).click();

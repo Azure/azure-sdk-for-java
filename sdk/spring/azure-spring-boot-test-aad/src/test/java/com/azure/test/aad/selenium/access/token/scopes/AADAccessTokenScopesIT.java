@@ -4,7 +4,9 @@
 package com.azure.test.aad.selenium.access.token.scopes;
 
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,41 +25,48 @@ public class AADAccessTokenScopesIT {
 
     private AADSeleniumITHelper aadSeleniumITHelper;
 
+    @Before
+    public void aadSeleniumITHelperInit() {
+        Map<String, String> arguments = new HashMap<>();
+        arguments.put(
+            "azure.activedirectory.authorization-clients.office.scopes",
+            "https://manage.office.com/ActivityFeed.Read, https://manage.office.com/ActivityFeed.ReadDlp, "
+                + "https://manage.office.com/ServiceHealth.Read");
+        arguments.put(
+            "azure.activedirectory.authorization-clients.graph.scopes",
+            "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.AccessAsUser.All");
+        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, arguments);
+        aadSeleniumITHelper.setDriver();
+        aadSeleniumITHelper.appInit();
+    }
+
     @Test
     public void testAccessTokenScopes() throws InterruptedException {
-        try {
-            Map<String, String> arguments = new HashMap<>();
-            arguments.put(
-                "azure.activedirectory.authorization-clients.office.scopes",
-                "https://manage.office.com/ActivityFeed.Read, https://manage.office.com/ActivityFeed.ReadDlp, "
-                    + "https://manage.office.com/ServiceHealth.Read");
-            arguments.put(
-                "azure.activedirectory.authorization-clients.graph.scopes",
-                "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.AccessAsUser.All");
-            aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, arguments);
-            aadSeleniumITHelper.login();
-            String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
-            Assert.assertTrue(httpResponse.contains("profile"));
-            Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
-            Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
+        aadSeleniumITHelper.login();
+        String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
+        Assert.assertTrue(httpResponse.contains("profile"));
+        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
+        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
 
-            httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/graph");
-            Assert.assertTrue(httpResponse.contains("profile"));
-            Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
-            Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
+        httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/graph");
+        Assert.assertTrue(httpResponse.contains("profile"));
+        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));
+        Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/User.Read"));
 
-            httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/office");
-            Assert.assertFalse(httpResponse.contains("profile"));
-            Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.Read"));
-            Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.ReadDlp"));
-            Assert.assertTrue(httpResponse.contains("https://manage.office.com/ServiceHealth.Read"));
+        httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/office");
+        Assert.assertFalse(httpResponse.contains("profile"));
+        Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.Read"));
+        Assert.assertTrue(httpResponse.contains("https://manage.office.com/ActivityFeed.ReadDlp"));
+        Assert.assertTrue(httpResponse.contains("https://manage.office.com/ServiceHealth.Read"));
 
-            httpResponse = aadSeleniumITHelper.httpGet("notExist");
-            Assert.assertNotEquals(httpResponse, "notExist");
-        } finally {
-            if (aadSeleniumITHelper != null) {
-                aadSeleniumITHelper.destroy();
-            }
+        httpResponse = aadSeleniumITHelper.httpGet("notExist");
+        Assert.assertNotEquals(httpResponse, "notExist");
+    }
+
+    @After
+    public void aadSeleniumITHelperDestroy() {
+        if (aadSeleniumITHelper != null) {
+            aadSeleniumITHelper.destroy();
         }
     }
 

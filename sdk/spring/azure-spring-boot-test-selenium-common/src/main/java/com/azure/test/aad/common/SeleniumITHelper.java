@@ -6,22 +6,21 @@ package com.azure.test.aad.common;
 import com.azure.spring.test.AppRunner;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Map;
 import java.util.regex.Pattern;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class SeleniumITHelper {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SeleniumITHelper.class);
-
+public abstract class SeleniumITHelper {
     protected AppRunner app;
     protected WebDriver driver;
     protected WebDriverWait wait;
+    protected Class<?> appClass;
+    protected Map<String, String> properties = Collections.emptyMap();
 
     static {
         init();
@@ -61,29 +60,22 @@ public class SeleniumITHelper {
 
     public void setDriver() {
         if (driver == null) {
-            try {
-                ChromeOptions options = new ChromeOptions();
-                options.addArguments("--headless");
-                options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
-                this.driver = new ChromeDriver(options);
-                wait = new WebDriverWait(driver, 10);
-            } catch (Exception e) {
-                LOGGER.error("Driver initialization produces an exception. ", e);
-                app.close();
-            }
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless");
+            options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
+            this.driver = new ChromeDriver(options);
+            wait = new WebDriverWait(driver, 10);
         }
     }
 
     public void destroy() {
-        quitDriver();
-        app.close();
-    }
-
-    public void quitDriver() {
         if (driver != null) {
             this.driver.quit();
         }
+        if (app != null) {
+            app.close();
+        }
     }
 
-
+    public abstract void appInit();
 }

@@ -4,7 +4,11 @@
 package com.azure.test.aad.selenium.role;
 
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import java.security.Principal;
+import java.util.Collections;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,29 +20,33 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-import java.util.Collections;
-
 public class AADRoleIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADRoleIT.class);
     private AADSeleniumITHelper aadSeleniumITHelper;
 
+    @Before
+    public void aadSeleniumITHelperInit() {
+        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+        aadSeleniumITHelper.setDriver();
+        aadSeleniumITHelper.appInit();
+    }
+
     @Test
-    public void roleTest() throws InterruptedException {
-        try {
-            aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-            aadSeleniumITHelper.login();
-            String httpResponse = aadSeleniumITHelper.httpGet("api/home");
-            Assert.assertTrue(httpResponse.contains("home"));
-            httpResponse = aadSeleniumITHelper.httpGet("api/group1");
-            Assert.assertTrue(httpResponse.contains("group1"));
-            httpResponse = aadSeleniumITHelper.httpGet("api/group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
-            Assert.assertNotEquals(httpResponse, "group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
-        } finally {
-            if (aadSeleniumITHelper != null) {
-                aadSeleniumITHelper.destroy();
-            }
+    public void roleTest() {
+        aadSeleniumITHelper.login();
+        String httpResponse = aadSeleniumITHelper.httpGet("api/home");
+        Assert.assertTrue(httpResponse.contains("home"));
+        httpResponse = aadSeleniumITHelper.httpGet("api/group1");
+        Assert.assertTrue(httpResponse.contains("group1"));
+        httpResponse = aadSeleniumITHelper.httpGet("api/group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
+        Assert.assertNotEquals(httpResponse, "group_fdsaliieammQiovlikIOWssIEURsafjFelasdfe");
+    }
+
+    @After
+    public void aadSeleniumITHelperDestroy() {
+        if (aadSeleniumITHelper != null) {
+            aadSeleniumITHelper.destroy();
         }
     }
 

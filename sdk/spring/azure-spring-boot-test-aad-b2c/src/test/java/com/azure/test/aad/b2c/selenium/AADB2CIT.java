@@ -8,7 +8,9 @@ import static com.azure.test.aad.b2c.utils.AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SI
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
 import com.azure.test.aad.b2c.utils.AADB2CTestUtils;
 import java.util.Collections;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -27,59 +29,48 @@ public class AADB2CIT {
     private final String JOB_TITLE_WORKER = "worker";
     private AADB2CSeleniumITHelper aadb2cSeleniumITHelper;
 
+    @Before
+    public void aadb2cSeleniumITHelperInitAndSignIn(){
+        aadb2cSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+        aadb2cSeleniumITHelper.setDriver();
+        aadb2cSeleniumITHelper.appInit();
+        aadb2cSeleniumITHelper.signIn();
+    }
+
     @Test
     public void testSignIn() {
-        try {
-            aadb2cSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-            aadb2cSeleniumITHelper.signIn(AAD_B2C_SIGN_UP_OR_SIGN_IN);
-            String name = aadb2cSeleniumITHelper.getName();
-            String userFlowName = aadb2cSeleniumITHelper.getUserFlowName();
-
-            Assert.assertNotNull(name);
-            Assert.assertNotNull(userFlowName);
-            Assert.assertEquals(AAD_B2C_SIGN_UP_OR_SIGN_IN, userFlowName);
-        } finally {
-            aadb2cSeleniumITHelperDestroy();
-        }
+        String name = aadb2cSeleniumITHelper.getName();
+        String userFlowName = aadb2cSeleniumITHelper.getUserFlowName();
+        Assert.assertNotNull(name);
+        Assert.assertNotNull(userFlowName);
+        Assert.assertEquals(AAD_B2C_SIGN_UP_OR_SIGN_IN, userFlowName);
     }
 
     @Test
     public void testProfileEdit() {
-        try {
-            aadb2cSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-            aadb2cSeleniumITHelper.signIn(AAD_B2C_SIGN_UP_OR_SIGN_IN);
-            aadb2cSeleniumITHelper.profileEditJobTitle(JOB_TITLE_A_WORKER);
-            String currentJobTitle = aadb2cSeleniumITHelper.getJobTitle();
-            String newJobTitle = JOB_TITLE_A_WORKER.equals(currentJobTitle) ? JOB_TITLE_WORKER : JOB_TITLE_A_WORKER;
-            aadb2cSeleniumITHelper.profileEditJobTitle(newJobTitle);
-            String name = aadb2cSeleniumITHelper.getName();
-            String jobTitle = aadb2cSeleniumITHelper.getJobTitle();
-            String userFlowName = aadb2cSeleniumITHelper.getUserFlowName();
-
-            Assert.assertNotNull(name);
-            Assert.assertNotNull(jobTitle);
-            Assert.assertEquals(newJobTitle, jobTitle);
-            Assert.assertEquals(AADB2CTestUtils.AAD_B2C_PROFILE_EDIT, userFlowName);
-        } finally {
-            aadb2cSeleniumITHelperDestroy();
-        }
+        aadb2cSeleniumITHelper.profileEditJobTitle(JOB_TITLE_A_WORKER);
+        String currentJobTitle = aadb2cSeleniumITHelper.getJobTitle();
+        String newJobTitle = JOB_TITLE_A_WORKER.equals(currentJobTitle) ? JOB_TITLE_WORKER : JOB_TITLE_A_WORKER;
+        aadb2cSeleniumITHelper.profileEditJobTitle(newJobTitle);
+        String name = aadb2cSeleniumITHelper.getName();
+        String jobTitle = aadb2cSeleniumITHelper.getJobTitle();
+        String userFlowName = aadb2cSeleniumITHelper.getUserFlowName();
+        Assert.assertNotNull(name);
+        Assert.assertNotNull(jobTitle);
+        Assert.assertEquals(newJobTitle, jobTitle);
+        Assert.assertEquals(AADB2CTestUtils.AAD_B2C_PROFILE_EDIT, userFlowName);
     }
 
     @Test
     public void testLogOut() {
-        try {
-            aadb2cSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-            aadb2cSeleniumITHelper.signIn(AAD_B2C_SIGN_UP_OR_SIGN_IN);
-            aadb2cSeleniumITHelper.logout();
-            String signInButtonText = aadb2cSeleniumITHelper.getSignInButtonText();
-            Assert.assertEquals("Sign in", signInButtonText);
-            aadb2cSeleniumITHelper.destroy();
-        } finally {
-            aadb2cSeleniumITHelperDestroy();
-        }
+        aadb2cSeleniumITHelper.logout();
+        String signInButtonText = aadb2cSeleniumITHelper.getSignInButtonText();
+        Assert.assertEquals("Sign in", signInButtonText);
+        aadb2cSeleniumITHelper.destroy();
     }
 
-    private void aadb2cSeleniumITHelperDestroy() {
+    @After
+    public void aadb2cSeleniumITHelperDestroy() {
         if (aadb2cSeleniumITHelper != null) {
             aadb2cSeleniumITHelper.destroy();
         }
