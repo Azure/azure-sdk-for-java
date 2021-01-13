@@ -143,7 +143,7 @@ public class DataLakeServiceClientBuilder {
         blobServiceClientBuilder.credential(credential);
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
-        this.azureSasCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -158,7 +158,7 @@ public class DataLakeServiceClientBuilder {
         blobServiceClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
-        this.azureSasCredential = null;
+        this.sasToken = null;
         return this;
     }
 

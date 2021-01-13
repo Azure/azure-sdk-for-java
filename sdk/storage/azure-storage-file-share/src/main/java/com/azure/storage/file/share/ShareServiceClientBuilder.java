@@ -203,7 +203,7 @@ public final class ShareServiceClientBuilder {
      */
     public ShareServiceClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
-        this.azureSasCredential = null;
+        this.sasToken = null;
         return this;
     }
 
