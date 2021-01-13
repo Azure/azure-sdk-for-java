@@ -5,8 +5,8 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
 
 /**
  * Represents the change feed policy configuration for the container in the Azure Cosmos DB service.
@@ -50,6 +50,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * }
  * </pre>
  */
+@Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
 public final class ChangeFeedPolicy {
 
     private final JsonSerializable jsonSerializable;
@@ -64,6 +65,7 @@ public final class ChangeFeedPolicy {
      *
      * @return ChangeFeedPolicy for full fidelity change feed.
      */
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
     public static ChangeFeedPolicy createFullFidelityPolicy(int retentionDurationInMinutes) {
 
         if (retentionDurationInMinutes <= 0) {
@@ -86,6 +88,7 @@ public final class ChangeFeedPolicy {
      *
      * @return ChangeFeedPolicy for default/incremental change feed without full fidelity.
      */
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
     public static ChangeFeedPolicy createIncrementalPolicy() {
 
         ChangeFeedPolicy policy = new ChangeFeedPolicy();
@@ -126,6 +129,7 @@ public final class ChangeFeedPolicy {
      *
      * @return full fidelity retention duration in minutes.
      */
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
     public int getFullFidelityRetentionDurationInMinutes() {
 
         Integer intValue = this.jsonSerializable.getInt(Constants.Properties.LOG_RETENTION_DURATION);

@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -151,6 +152,7 @@ public final class CosmosContainerProperties {
      *
      * @return ChangeFeedPolicy
      */
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
     public ChangeFeedPolicy getChangeFeedPolicy() {
         return this.documentCollection.getChangeFeedPolicy();
     }
@@ -161,6 +163,7 @@ public final class CosmosContainerProperties {
      * @param value ChangeFeedPolicy to be used.
      * @return the CosmosContainerProperties.
      */
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
     public CosmosContainerProperties setChangeFeedPolicy(ChangeFeedPolicy value) {
         this.documentCollection.setChangeFeedPolicy(value);
         return this;

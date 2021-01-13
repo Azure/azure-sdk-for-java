@@ -9,16 +9,12 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -47,18 +43,20 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
     }
 
     @Override
-    public Mono<RxDocumentServiceRequest> populateFeedRangeFilteringHeaders(
-        IRoutingMapProvider routingMapProvider,
-        RxDocumentServiceRequest request,
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        FeedRangePartitionKeyRangeImpl that = (FeedRangePartitionKeyRangeImpl)o;
+        return Objects.equals(this.partitionKeyRangeId, that.partitionKeyRangeId);
+    }
 
-        checkNotNull(
-            request,
-            "Argument 'request' must not be null");
-
-        request.routeTo(this.partitionKeyRangeIdentity);
-
-        return Mono.just(request);
+    @Override
+    public int hashCode() {
+        return Objects.hash(partitionKeyRangeId);
     }
 
     @Override
@@ -89,38 +87,39 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                 }
 
                 return routingMapProvider
-                        .tryGetPartitionKeyRangeByIdAsync(
-                            metadataDiagnosticsCtx,
-                            collection.getResourceId(),
-                            this.partitionKeyRangeId,
-                            false,
-                            null)
-                        .flatMap((pkRangeHolder) -> {
-                            if (pkRangeHolder.v == null) {
-                                return routingMapProvider.tryGetPartitionKeyRangeByIdAsync(
-                                    null,
-                                    collection.getResourceId(),
-                                    partitionKeyRangeId,
-                                    true,
-                                    null);
-                            } else {
-                                return Mono.just(pkRangeHolder);
-                            }
-                        })
-                        .flatMap((pkRangeHolder) -> {
-                            if (pkRangeHolder.v == null) {
-                                return Mono.error(
-                                    new PartitionKeyRangeGoneException(
-                                        String.format(
-                                            "The PartitionKeyRangeId: \"%s\" is not valid for the current " +
-                                                "container %s .",
-                                            partitionKeyRangeId,
-                                            collection.getResourceId())
-                                    ));
-                            } else {
-                                return Mono.just(pkRangeHolder.v.toRange());
-                            }
-                        });
+                    .tryGetPartitionKeyRangeByIdAsync(
+                        metadataDiagnosticsCtx,
+                        collection.getResourceId(),
+                        this.partitionKeyRangeId,
+                        false,
+                        null)
+                    .flatMap((pkRangeHolder) -> {
+                        if (pkRangeHolder.v == null) {
+                            return routingMapProvider.tryGetPartitionKeyRangeByIdAsync(
+                                null,
+                                collection.getResourceId(),
+                                partitionKeyRangeId,
+                                true,
+                                null);
+                        } else {
+                            return Mono.just(pkRangeHolder);
+                        }
+                    })
+                    .flatMap((pkRangeHolder) -> {
+                        if (pkRangeHolder.v == null) {
+                            return Mono.error(
+                                new PartitionKeyRangeGoneException(
+                                    String.format(
+                                        "The PartitionKeyRangeId: \"%s\" is not valid for the " +
+                                            "current " +
+                                            "container %s .",
+                                        partitionKeyRangeId,
+                                        collection.getResourceId())
+                                ));
+                        } else {
+                            return Mono.just(pkRangeHolder.v.toRange());
+                        }
+                    });
             });
     }
 
@@ -138,9 +137,35 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
     }
 
     @Override
+    public Mono<RxDocumentServiceRequest> populateFeedRangeFilteringHeaders(
+        IRoutingMapProvider routingMapProvider,
+        RxDocumentServiceRequest request,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
+
+        checkNotNull(
+            request,
+            "Argument 'request' must not be null");
+
+        request.routeTo(this.partitionKeyRangeIdentity);
+
+        return Mono.just(request);
+    }
+
+    @Override
     public void populatePropertyBag() {
         super.populatePropertyBag();
         setProperties(this, false);
+    }
+
+    @Override
+    public String toString() {
+        return this.partitionKeyRangeId;
+    }
+
+    @Override
+    public void removeProperties(JsonSerializable serializable) {
+        checkNotNull(serializable, "Argument 'serializable' must not be null.");
+        serializable.remove(Constants.Properties.FEED_RANGE_PARTITION_KEY_RANGE_ID);
     }
 
     @Override
@@ -156,29 +181,5 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                 Constants.Properties.FEED_RANGE_PARTITION_KEY_RANGE_ID,
                 this.partitionKeyRangeId);
         }
-    }
-
-    @Override
-    public void removeProperties(JsonSerializable serializable) {
-        checkNotNull(serializable, "Argument 'serializable' must not be null.");
-        serializable.remove(Constants.Properties.FEED_RANGE_PARTITION_KEY_RANGE_ID);
-    }
-
-    @Override
-    public String toString() {
-        return this.partitionKeyRangeId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FeedRangePartitionKeyRangeImpl that = (FeedRangePartitionKeyRangeImpl) o;
-        return Objects.equals(this.partitionKeyRangeId, that.partitionKeyRangeId);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(partitionKeyRangeId);
     }
 }

@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
-import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -38,21 +37,20 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     }
 
     @Override
-    public Mono<RxDocumentServiceRequest> populateFeedRangeFilteringHeaders(
-        IRoutingMapProvider routingMapProvider,
-        RxDocumentServiceRequest request,
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        FeedRangePartitionKeyImpl that = (FeedRangePartitionKeyImpl)o;
+        return Objects.equals(this.partitionKey, that.partitionKey);
+    }
 
-        checkNotNull(
-            request,
-            "Argument 'request' must not be null");
-
-        request.getHeaders().put(
-            HttpConstants.HttpHeaders.PARTITION_KEY,
-            this.partitionKey.toJson());
-        request.setPartitionKeyInternal(this.partitionKey);
-
-        return Mono.just(request);
+    @Override
+    public int hashCode() {
+        return Objects.hash(partitionKey);
     }
 
     @Override
@@ -73,7 +71,8 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                     throw new IllegalStateException("Collection cannot be null");
                 }
 
-                final String effectivePartitionKey = this.partitionKey.getEffectivePartitionKeyString(
+                final String effectivePartitionKey =
+                    this.partitionKey.getEffectivePartitionKeyString(
                     this.partitionKey,
                     collection.getPartitionKey());
 
@@ -110,7 +109,8 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                 }
 
                 final String containerRid = collection.getResourceId();
-                final String effectivePartitionKey = this.partitionKey.getEffectivePartitionKeyString(
+                final String effectivePartitionKey =
+                    this.partitionKey.getEffectivePartitionKeyString(
                     this.partitionKey,
                     collection.getPartitionKey());
 
@@ -135,9 +135,38 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     }
 
     @Override
+    public Mono<RxDocumentServiceRequest> populateFeedRangeFilteringHeaders(
+        IRoutingMapProvider routingMapProvider,
+        RxDocumentServiceRequest request,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
+
+        checkNotNull(
+            request,
+            "Argument 'request' must not be null");
+
+        request.getHeaders().put(
+            HttpConstants.HttpHeaders.PARTITION_KEY,
+            this.partitionKey.toJson());
+        request.setPartitionKeyInternal(this.partitionKey);
+
+        return Mono.just(request);
+    }
+
+    @Override
     public void populatePropertyBag() {
         super.populatePropertyBag();
         setProperties(this, false);
+    }
+
+    @Override
+    public String toString() {
+        return this.partitionKey.toJson();
+    }
+
+    @Override
+    public void removeProperties(JsonSerializable serializable) {
+        checkNotNull(serializable, "Argument 'serializable' must not be null.");
+        serializable.remove(Constants.Properties.FEED_RANGE_PARTITION_KEY);
     }
 
     @Override
@@ -148,79 +177,8 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
         }
 
         if (this.partitionKey != null) {
-            setProperty(serializable, Constants.Properties.FEED_RANGE_PARTITION_KEY, this.partitionKey);
+            setProperty(serializable, Constants.Properties.FEED_RANGE_PARTITION_KEY,
+                this.partitionKey);
         }
-    }
-
-    @Override
-    public void removeProperties(JsonSerializable serializable) {
-        checkNotNull(serializable, "Argument 'serializable' must not be null.");
-        serializable.remove(Constants.Properties.FEED_RANGE_PARTITION_KEY);
-    }
-
-    @Override
-    public String toString() {
-        return this.partitionKey.toJson();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FeedRangePartitionKeyImpl that = (FeedRangePartitionKeyImpl) o;
-        return Objects.equals(this.partitionKey, that.partitionKey);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(partitionKey);
-    }
-
-    public Mono<PartitionKeyRange> tryGetRangeByEffectivePartitionKey(
-        IRoutingMapProvider routingMapProvider,
-        RxDocumentServiceRequest request,
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
-
-        checkNotNull(
-            routingMapProvider,
-            "Argument 'routingMapProvider' must not be null");
-        checkNotNull(
-            request,
-            "Argument 'request' must not be null");
-        checkNotNull(
-            collectionResolutionMono,
-            "Argument 'collectionResolutionMono' must not be null");
-
-        MetadataDiagnosticsContext metadataDiagnosticsCtx =
-            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
-
-        return collectionResolutionMono
-            .flatMap(documentCollectionResourceResponse -> {
-
-                final DocumentCollection collection = documentCollectionResourceResponse.v;
-                if (collection == null) {
-                    throw new IllegalStateException("Collection cannot be null");
-                }
-
-                final String containerRid = collection.getResourceId();
-                final String effectivePartitionKey = this.partitionKey.getEffectivePartitionKeyString(
-                    this.partitionKey,
-                    collection.getPartitionKey());
-
-                return routingMapProvider
-                    .tryGetOverlappingRangesAsync(
-                        metadataDiagnosticsCtx,
-                        containerRid,
-                        Range.getPointRange(effectivePartitionKey),
-                        false,
-                        null)
-                    .flatMap((pkRangeHolder) -> {
-                        if (pkRangeHolder == null) {
-                            throw new IllegalStateException("Not able to resolve partition key range id for EPK");
-                        }
-
-                        return Mono.just(pkRangeHolder.v.get(0));
-                    });
-            });
     }
 }

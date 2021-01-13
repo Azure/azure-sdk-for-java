@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -11,6 +12,7 @@ import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseContainer;
 import com.azure.cosmos.implementation.changefeed.LeaseManager;
 import com.azure.cosmos.implementation.changefeed.PartitionSynchronizer;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,11 +57,9 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases() {
+        // TODO: log the partition getKey ID found.
         return this.enumPartitionKeyRanges()
-            .map(partitionKeyRange -> {
-                // TODO: log the partition getKey ID found.
-                return partitionKeyRange.getId();
-            })
+            .map(Resource::getId)
             .collectList()
             .flatMap( partitionKeyRangeIds -> {
                 Set<String> leaseTokens = new HashSet<>(partitionKeyRangeIds);
@@ -127,8 +127,8 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
         ModelBridgeInternal.setQueryRequestOptionsContinuationTokenAndMaxItemCount(cosmosQueryRequestOptions, null, this.maxBatchSize);
 
         return this.documentClient.readPartitionKeyRangeFeed(partitionKeyRangesPath, cosmosQueryRequestOptions)
-            .map(partitionKeyRangeFeedResponse -> partitionKeyRangeFeedResponse.getResults())
-            .flatMap(partitionKeyRangeList -> Flux.fromIterable(partitionKeyRangeList))
+            .map(FeedResponse::getResults)
+            .flatMap(Flux::fromIterable)
             .onErrorResume(throwable -> {
                 // TODO: Log the exception.
                 return Flux.empty();

@@ -23,8 +23,6 @@ import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.fasterxml.jackson.databind.JsonNode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -40,11 +38,9 @@ import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
  * Implementation for ChangeFeedDocumentClient.
  */
 public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
-    private final Logger logger = LoggerFactory.getLogger(ChangeFeedContextClientImpl.class);
-
     private final AsyncDocumentClient documentClient;
     private final CosmosAsyncContainer cosmosContainer;
-    private Scheduler rxScheduler;
+    private final Scheduler rxScheduler;
 
     /**
      * Initializes a new instance of the {@link ChangeFeedContextClient} interface.
@@ -161,7 +157,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     @Override
     public Mono<CosmosContainerProperties> readContainerSettings(CosmosAsyncContainer containerLink, CosmosContainerRequestOptions options) {
         return containerLink.read(options)
-            .map(cosmosContainerResponse -> cosmosContainerResponse.getProperties());
+            .map(CosmosContainerResponse::getProperties);
     }
 
     @Override

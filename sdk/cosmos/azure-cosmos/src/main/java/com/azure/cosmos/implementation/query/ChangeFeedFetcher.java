@@ -18,8 +18,8 @@ import java.util.function.Supplier;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
-    private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final ChangeFeedState changeFeedState;
+    private final Supplier<RxDocumentServiceRequest> createRequestFunc;
 
     public ChangeFeedFetcher(
         Supplier<RxDocumentServiceRequest> createRequestFunc,
@@ -34,6 +34,24 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
         checkNotNull(changeFeedState, "Argument 'changeFeedState' must not be null.");
         this.createRequestFunc = createRequestFunc;
         this.changeFeedState = changeFeedState;
+    }
+
+    @Override
+    public Mono<FeedResponse<T>> nextPage() {
+        return Mono.fromSupplier(this::nextPageCore)
+                   .flatMap(Function.identity())
+                   .flatMap((r) -> {
+                       FeedRangeContinuation continuationSnapshot =
+                           this.changeFeedState.getContinuation();
+
+                       if (continuationSnapshot != null &&
+                           continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_IMMEDIATELY) {
+                           return Mono.empty();
+                       }
+
+                       return Mono.just(r);
+                   })
+                   .repeatWhenEmpty(o -> o);
     }
 
     @Override
@@ -61,23 +79,5 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
         RxDocumentServiceRequest request = this.createRequestFunc.get();
         this.changeFeedState.populateRequest(request, maxItemCount);
         return request;
-    }
-
-    @Override
-    public Mono<FeedResponse<T>> nextPage() {
-        return Mono.fromSupplier(this::nextPageCore)
-            .flatMap(Function.identity())
-            .flatMap((r) -> {
-               FeedRangeContinuation continuationSnapshot = this.changeFeedState.getContinuation();
-
-               if (continuationSnapshot != null &&
-                   continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_IMMEDIATELY)
-               {
-                   return Mono.empty();
-               }
-
-               return Mono.just(r);
-            })
-            .repeatWhenEmpty(o -> o);
     }
 }

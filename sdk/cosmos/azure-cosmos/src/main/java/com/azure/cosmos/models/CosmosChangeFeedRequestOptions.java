@@ -20,12 +20,12 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
 public final class CosmosChangeFeedRequestOptions {
     private static final Integer DEFAULT_MAX_ITEM_COUNT = 1000;
-    private final FeedRangeInternal feedRangeInternal;
-    private Integer maxItemCount;
-    private ChangeFeedStartFromInternal startFromInternal;
-    private final Map<String, Object> properties;
-    private ChangeFeedMode mode;
     private final ChangeFeedState continuationState;
+    private final FeedRangeInternal feedRangeInternal;
+    private final Map<String, Object> properties;
+    private Integer maxItemCount;
+    private ChangeFeedMode mode;
+    private ChangeFeedStartFromInternal startFromInternal;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -75,7 +75,6 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the max number of items.
      */
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
-
     public Integer getMaxItemCount() {
         return this.maxItemCount;
     }
@@ -88,7 +87,6 @@ public final class CosmosChangeFeedRequestOptions {
      * @return the FeedOptionsBase.
      */
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
-
     public CosmosChangeFeedRequestOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
@@ -98,29 +96,17 @@ public final class CosmosChangeFeedRequestOptions {
         return this.mode;
     }
 
+    /**
+     * Gets the properties
+     *
+     * @return Map of request options properties
+     */
+    Map<String, Object> getProperties() {
+        return properties;
+    }
+
     ChangeFeedStartFromInternal getStartFromSettings() {
         return this.startFromInternal;
-    }
-
-    void setRequestContinuation(String etag) {
-        this.startFromInternal = ChangeFeedStartFromInternal.createFromETagAndFeedRange(
-            etag,
-            this.feedRangeInternal);
-    }
-
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
-    public CosmosChangeFeedRequestOptions withFullFidelity() {
-
-        if (!this.startFromInternal.supportsFullFidelityRetention()) {
-            throw new IllegalStateException(
-                "Full fidelity retention is not supported for the chosen change feed start from " +
-                "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
-                "CosmosChangeFeedRequestOptions.createFromContinuation instead."
-            );
-        }
-
-        this.mode = ChangeFeedMode.FULL_FIDELITY;
-        return this;
     }
 
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
@@ -144,14 +130,15 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
-        ChangeFeedState changeFeedState ) {
+        ChangeFeedState changeFeedState) {
 
         FeedRangeInternal feedRange = changeFeedState.getFeedRange();
         FeedRangeContinuation continuation = changeFeedState.getContinuation();
         ChangeFeedMode mode = changeFeedState.getMode();
 
         if (continuation != null) {
-            CompositeContinuationToken continuationToken = continuation.getCurrentContinuationToken();
+            CompositeContinuationToken continuationToken =
+                continuation.getCurrentContinuationToken();
             if (continuationToken != null) {
                 String etag = continuationToken.getToken();
                 return new CosmosChangeFeedRequestOptions(
@@ -182,7 +169,8 @@ public final class CosmosChangeFeedRequestOptions {
         if (etag != null) {
             return new CosmosChangeFeedRequestOptions(
                 FeedRangeInternal.convert(feedRange),
-                ChangeFeedStartFromInternal.createFromETagAndFeedRange(etag, FeedRangeInternal.convert(feedRange)),
+                ChangeFeedStartFromInternal.createFromETagAndFeedRange(etag,
+                    FeedRangeInternal.convert(feedRange)),
                 ChangeFeedMode.INCREMENTAL,
                 null);
         }
@@ -195,7 +183,6 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
-
     public static CosmosChangeFeedRequestOptions createForProcessingFromNow(FeedRange feedRange) {
         if (feedRange == null) {
             throw new NullPointerException("feedRange");
@@ -209,7 +196,6 @@ public final class CosmosChangeFeedRequestOptions {
     }
 
     @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
-
     public static CosmosChangeFeedRequestOptions createForProcessingFromPointInTime(
         Instant pointInTime,
         FeedRange feedRange) {
@@ -229,12 +215,24 @@ public final class CosmosChangeFeedRequestOptions {
             null);
     }
 
-    /**
-     * Gets the properties
-     *
-     * @return Map of request options properties
-     */
-    Map<String, Object> getProperties() {
-        return properties;
+    void setRequestContinuation(String etag) {
+        this.startFromInternal = ChangeFeedStartFromInternal.createFromETagAndFeedRange(
+            etag,
+            this.feedRangeInternal);
+    }
+
+    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    public CosmosChangeFeedRequestOptions withFullFidelity() {
+
+        if (!this.startFromInternal.supportsFullFidelityRetention()) {
+            throw new IllegalStateException(
+                "Full fidelity retention is not supported for the chosen change feed start from " +
+                    "option. Use CosmosChangeFeedRequestOptions.createForProcessingFromNow or " +
+                    "CosmosChangeFeedRequestOptions.createFromContinuation instead."
+            );
+        }
+
+        this.mode = ChangeFeedMode.FULL_FIDELITY;
+        return this;
     }
 }

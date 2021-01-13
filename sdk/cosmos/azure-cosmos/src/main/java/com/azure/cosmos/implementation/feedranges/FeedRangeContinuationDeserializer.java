@@ -82,7 +82,7 @@ public class FeedRangeContinuationDeserializer extends StdDeserializer<FeedRange
                 throw JsonMappingException.from(
                     parser,
                     String.format(
-                        "Required property '%s' at index '%i' missing or does not have a valid value.",
+                        "Required property '%s' at index '%d' missing or does not have a valid value.",
                         Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION,
                         i));
             }

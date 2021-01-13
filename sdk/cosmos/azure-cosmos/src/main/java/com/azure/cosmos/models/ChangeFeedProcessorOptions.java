@@ -3,7 +3,6 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ChangeFeedProcessor;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
 
 import java.time.Duration;
 import java.time.Instant;

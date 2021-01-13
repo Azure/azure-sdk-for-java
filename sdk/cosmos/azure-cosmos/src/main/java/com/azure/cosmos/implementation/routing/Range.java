@@ -48,11 +48,11 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
     }
 
     public static <T extends Comparable<T>> Range<T> getPointRange(T value) {
-        return new Range<T>(value, value, true, true);
+        return new Range<>(value, value, true, true);
     }
 
     public static <T extends Comparable<T>> Range<T> getEmptyRange(T value) {
-        return new Range<T>(value, value, true, false);
+        return new Range<>(value, value, true, false);
     }
 
     public static <T extends Comparable<T>> boolean checkOverlapping(Range<T> range1, Range<T> range2) {

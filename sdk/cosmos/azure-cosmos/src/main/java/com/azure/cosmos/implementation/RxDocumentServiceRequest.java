@@ -44,7 +44,6 @@ public class RxDocumentServiceRequest implements Cloneable {
     public volatile boolean forceNameCacheRefresh;
     private volatile URI endpointOverride = null;
     private final UUID activityId;
-    private volatile String resourceFullName;
 
     private volatile String originalSessionToken;
     private volatile PartitionKeyRangeIdentity partitionKeyRangeIdentity;
@@ -1031,20 +1030,6 @@ public class RxDocumentServiceRequest implements Cloneable {
         }
 
         this.isDisposed = true;
-    }
-
-    /**
-     * Gets the request properties.
-     *
-     * @return the request properties.
-     */
-    public Map<String, Object> getPropertiesOrThrow() {
-        if (this.properties == null) {
-            throw new IllegalStateException(
-                "Only requests with properties (request options) can be used when using feed ranges");
-        }
-
-        return this.properties;
     }
 
     private static Map<String, Object> getProperties(Object options) {

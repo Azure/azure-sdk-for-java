@@ -144,8 +144,6 @@ public class FetcherTest {
 
         List<FeedResponse<Document>> feedResponseList = Arrays.asList(fp1, fp2);
 
-        AtomicInteger requestIndex = new AtomicInteger(0);
-
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (token, maxItemCount) -> {
             assertThat(maxItemCount).describedAs("max getItem count").isEqualTo(options.getMaxItemCount());
 
@@ -154,9 +152,7 @@ public class FetcherTest {
 
         AtomicInteger executeIndex = new AtomicInteger(0);
 
-        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc = request -> {
-            return Mono.just(feedResponseList.get(executeIndex.getAndIncrement()));
-        };
+        Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc = request -> Mono.just(feedResponseList.get(executeIndex.getAndIncrement()));
 
         ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
                 new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, null, isChangeFeed, top,

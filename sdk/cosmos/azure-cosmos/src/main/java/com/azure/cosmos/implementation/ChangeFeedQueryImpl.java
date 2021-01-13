@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStateV1;
-import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -23,7 +22,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 
 class ChangeFeedQueryImpl<T extends Resource> {
 
-    private static final String INITIAL_EMPTY_CONTINUATION_TOKEN = null;
     private static final int INITIAL_TOP_VALUE = -1;
 
     private final RxDocumentClientImpl client;

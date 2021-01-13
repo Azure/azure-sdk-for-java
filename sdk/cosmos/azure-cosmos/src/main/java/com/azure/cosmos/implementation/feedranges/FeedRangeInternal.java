@@ -6,15 +6,10 @@ package com.azure.cosmos.implementation.feedranges;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
-import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,10 +74,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
     @Override
     public abstract String toString();
 
-    @Override
-    public String toJsonString() {
-        return this.toJson();
-    }
+    public abstract void removeProperties(JsonSerializable serializable);
 
     public void setProperties(
         JsonSerializable serializable,
@@ -93,7 +85,10 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         }
     }
 
-    public abstract void removeProperties(JsonSerializable serializable) ;
+    @Override
+    public String toJsonString() {
+        return this.toJson();
+    }
 
     public static FeedRangeInternal tryParse(final String jsonString) {
         checkNotNull(jsonString, "Argument 'jsonString' must not be null");

@@ -46,103 +46,25 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
         return this.range;
     }
 
-    public static FeedRangeEpkImpl forFullRange() {
-        return fullRangeEPK;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        FeedRangeEpkImpl that = (FeedRangeEpkImpl)o;
+        return Objects.equals(this.range, that.range);
     }
 
     @Override
-    public Mono<RxDocumentServiceRequest> populateFeedRangeFilteringHeaders(
-        IRoutingMapProvider routingMapProvider,
-        RxDocumentServiceRequest request,
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
+    public int hashCode() {
+        return Objects.hash(range);
+    }
 
-        checkNotNull(
-            routingMapProvider,
-            "Argument 'routingMapProvider' must not be null");
-        checkNotNull(
-            request,
-            "Argument 'request' must not be null");
-        checkNotNull(
-            collectionResolutionMono,
-            "Argument 'collectionResolutionMono' must not be null");
-
-        MetadataDiagnosticsContext metadataDiagnosticsCtx =
-            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
-
-        return collectionResolutionMono
-            .flatMap(documentCollectionResourceResponse -> {
-
-                final DocumentCollection collection = documentCollectionResourceResponse.v;
-                if (collection == null) {
-                    throw new IllegalStateException("Collection cannot be null");
-                }
-
-                final String containerRid = collection.getResourceId();
-
-                return routingMapProvider
-                    .tryGetOverlappingRangesAsync(
-                        metadataDiagnosticsCtx,
-                        containerRid,
-                        this.range,
-                        false,
-                        null)
-                    .flatMap(pkRangeHolder -> {
-                        final ArrayList<String> rangeList = new ArrayList<>();
-
-                        if (pkRangeHolder == null) {
-                            return Mono.error(new NotFoundException(
-                                String.format("Stale cache for collection rid '%s'.", containerRid)));
-                        }
-
-                        final List<PartitionKeyRange> pkRanges = pkRangeHolder.v;
-                        if (pkRanges == null ||pkRanges.size() == 0) {
-                            return Mono.error(new NotFoundException(
-                                String.format("Stale cache for collection rid '%s'.", containerRid)));
-                        }
-
-                        // For epk range filtering we can end up in one of 3 cases:
-                        if (pkRanges.size() > 1) {
-
-                            // 1) The EpkRange spans more than one physical partition
-                            // In this case it means we have encountered a split and
-                            // we need to bubble that up to the higher layers to update their datastructures
-                            GoneException goneException = new GoneException(
-                                String.format("Epk Range '%s' is gone.", this.range));
-                            BridgeInternal.setSubStatusCode(
-                                goneException,
-                                HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
-
-                            return Mono.error(goneException);
-                        }
-
-                        final Range<String> singleRange = pkRanges.get(0).toRange();
-                        if (singleRange.getMin().equals(this.range.getMin()) &&
-                            singleRange.getMax().equals(this.range.getMax())) {
-
-                            // 2) The EpkRange spans exactly one physical partition
-                            // In this case we can route to the physical pkrange id
-                            request.routeTo(new PartitionKeyRangeIdentity(pkRanges.get(0).getId()));
-                        } else {
-                            // 3) The EpkRange spans less than single physical partition
-                            // In this case we route to the physical partition and
-                            // pass the epk range headers to filter within partition
-                            request.routeTo(new PartitionKeyRangeIdentity(pkRanges.get(0).getId()));
-
-                            final Map<String, String> headers = request.getHeaders();
-                            headers.put(
-                                HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE,
-                                ReadFeedKeyType.EffectivePartitionKeyRange.name());
-                            headers.put(
-                                HttpConstants.HttpHeaders.START_EPK,
-                                this.range.getMin());
-                            headers.put(
-                                HttpConstants.HttpHeaders.END_EPK,
-                                this.range.getMax());
-                        }
-
-                        return Mono.just(request);
-                    });
-            });
+    public static FeedRangeEpkImpl forFullRange() {
+        return fullRangeEPK;
     }
 
     @Override
@@ -206,27 +128,110 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
     }
 
     @Override
-    public String toString() {
-        return this.range.toString();
-    }
+    public Mono<RxDocumentServiceRequest> populateFeedRangeFilteringHeaders(
+        IRoutingMapProvider routingMapProvider,
+        RxDocumentServiceRequest request,
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        FeedRangeEpkImpl that = (FeedRangeEpkImpl) o;
-        return Objects.equals(this.range, that.range);
-    }
+        checkNotNull(
+            routingMapProvider,
+            "Argument 'routingMapProvider' must not be null");
+        checkNotNull(
+            request,
+            "Argument 'request' must not be null");
+        checkNotNull(
+            collectionResolutionMono,
+            "Argument 'collectionResolutionMono' must not be null");
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(range);
+        MetadataDiagnosticsContext metadataDiagnosticsCtx =
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+
+        return collectionResolutionMono
+            .flatMap(documentCollectionResourceResponse -> {
+
+                final DocumentCollection collection = documentCollectionResourceResponse.v;
+                if (collection == null) {
+                    throw new IllegalStateException("Collection cannot be null");
+                }
+
+                final String containerRid = collection.getResourceId();
+
+                return routingMapProvider
+                    .tryGetOverlappingRangesAsync(
+                        metadataDiagnosticsCtx,
+                        containerRid,
+                        this.range,
+                        false,
+                        null)
+                    .flatMap(pkRangeHolder -> {
+                        if (pkRangeHolder == null) {
+                            return Mono.error(new NotFoundException(
+                                String.format("Stale cache for collection rid '%s'.",
+                                    containerRid)));
+                        }
+
+                        final List<PartitionKeyRange> pkRanges = pkRangeHolder.v;
+                        if (pkRanges == null || pkRanges.size() == 0) {
+                            return Mono.error(new NotFoundException(
+                                String.format("Stale cache for collection rid '%s'.",
+                                    containerRid)));
+                        }
+
+                        // For epk range filtering we can end up in one of 3 cases:
+                        if (pkRanges.size() > 1) {
+
+                            // 1) The EpkRange spans more than one physical partition
+                            // In this case it means we have encountered a split and
+                            // we need to bubble that up to the higher layers to update their
+                            // datastructures
+                            GoneException goneException = new GoneException(
+                                String.format("Epk Range '%s' is gone.", this.range));
+                            BridgeInternal.setSubStatusCode(
+                                goneException,
+                                HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
+
+                            return Mono.error(goneException);
+                        }
+
+                        final Range<String> singleRange = pkRanges.get(0).toRange();
+                        if (singleRange.getMin().equals(this.range.getMin()) &&
+                            singleRange.getMax().equals(this.range.getMax())) {
+
+                            // 2) The EpkRange spans exactly one physical partition
+                            // In this case we can route to the physical pkrange id
+                            request.routeTo(new PartitionKeyRangeIdentity(pkRanges.get(0).getId()));
+                        } else {
+                            // 3) The EpkRange spans less than single physical partition
+                            // In this case we route to the physical partition and
+                            // pass the epk range headers to filter within partition
+                            request.routeTo(new PartitionKeyRangeIdentity(pkRanges.get(0).getId()));
+
+                            final Map<String, String> headers = request.getHeaders();
+                            headers.put(
+                                HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE,
+                                ReadFeedKeyType.EffectivePartitionKeyRange.name());
+                            headers.put(
+                                HttpConstants.HttpHeaders.START_EPK,
+                                this.range.getMin());
+                            headers.put(
+                                HttpConstants.HttpHeaders.END_EPK,
+                                this.range.getMax());
+                        }
+
+                        return Mono.just(request);
+                    });
+            });
     }
 
     @Override
     public void populatePropertyBag() {
         super.populatePropertyBag();
         setProperties(this, false);
+    }
+
+    @Override
+    public String toString() {
+        return this.range.toString();
     }
 
     @Override

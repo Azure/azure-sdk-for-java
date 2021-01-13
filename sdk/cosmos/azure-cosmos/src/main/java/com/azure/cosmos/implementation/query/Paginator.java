@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
-import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -68,7 +67,7 @@ public class Paginator {
         int maxPageSize) {
 
         return getPaginatedQueryResultAsObservable(
-            () -> new ChangeFeedFetcher<T>(
+            () -> new ChangeFeedFetcher<>(
                 createRequestFunc,
                 executeFunc,
                 changeFeedState,

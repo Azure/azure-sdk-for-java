@@ -49,13 +49,10 @@ steps:
         }
       }
 
-      $argumentList = , "/noexplorer"
+      $argumentList = ""
       if (-not [string]::IsNullOrEmpty("${{ parameters.StartParameters }}")) {
           $argumentList += , "${{ parameters.StartParameters }}"
       }
-      $argumentList += , "/noui"
-      $argumentList += , "/enablepreview"
-      $argumentList += "/disableratelimiting"
 
       Write-Host "Starting emulator process: $Emulator $argumentList"
       $process=Start-Process $Emulator -ArgumentList $argumentList -ErrorAction Stop -PassThru

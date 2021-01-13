@@ -742,7 +742,6 @@ public final class ModelBridgeInternal {
         return cosmosItemResponse.responseBodyAsByteArray != null ? cosmosItemResponse.responseBodyAsByteArray.length : 0;
     }
 
-
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosChangeFeedRequestOptions createChangeFeedRequestOptionsForEtagAndFeedRange(
         String etag, FeedRange feedRange) {
