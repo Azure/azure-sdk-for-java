@@ -4,6 +4,8 @@
 package com.azure.storage.blob
 
 import com.azure.core.credential.AzureSasCredential
+import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
 import com.azure.storage.blob.models.BlobAccessPolicy
@@ -667,7 +669,7 @@ class SasClientTests extends APISpec {
         notThrown(BlobStorageException)
     }
 
-    def "can use sas to autheticate"() {
+    def "can use sas to authenticate"() {
         setup:
         def service = new AccountSasService()
             .setBlobAccess(true)
@@ -680,12 +682,18 @@ class SasClientTests extends APISpec {
         def expiryTime = getUTCNow().plusDays(1)
         def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
         def sas = primaryBlobServiceClient.generateAccountSas(sasValues)
+        HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
+        if (testMode == TestMode.RECORD) {
+            recordPolicy = interceptorManager.getRecordPolicy()
+        }
 
         when:
         new BlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
             .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -697,6 +705,8 @@ class SasClientTests extends APISpec {
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
             .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -707,6 +717,8 @@ class SasClientTests extends APISpec {
         new BlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + sas)
             .blobName(blobName)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -718,6 +730,8 @@ class SasClientTests extends APISpec {
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
             .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
             .buildBlockBlobClient()
             .getProperties()
 
@@ -729,6 +743,8 @@ class SasClientTests extends APISpec {
             .endpoint(cc.getBlobContainerUrl())
             .blobName(blobName)
             .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
             .buildBlockBlobClient()
             .getProperties()
 
@@ -739,6 +755,8 @@ class SasClientTests extends APISpec {
         new SpecializedBlobClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + sas)
             .blobName(blobName)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
             .buildBlockBlobClient()
             .getProperties()
 
@@ -749,6 +767,8 @@ class SasClientTests extends APISpec {
         new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -759,6 +779,8 @@ class SasClientTests extends APISpec {
         new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -768,6 +790,8 @@ class SasClientTests extends APISpec {
         when:
         new BlobContainerClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -778,6 +802,8 @@ class SasClientTests extends APISpec {
         new BlobServiceClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -788,6 +814,8 @@ class SasClientTests extends APISpec {
         new BlobServiceClientBuilder()
             .endpoint(cc.getBlobContainerUrl())
             .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
@@ -797,6 +825,8 @@ class SasClientTests extends APISpec {
         when:
         new BlobServiceClientBuilder()
             .endpoint(cc.getBlobContainerUrl() + "?" + sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
             .buildClient()
             .getProperties()
 
