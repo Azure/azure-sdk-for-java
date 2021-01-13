@@ -1,22 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.netty.implementation;
+package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.RestProxyTestsWireMockServer;
 import com.azure.core.test.implementation.RestProxyTests;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.condition.DisabledForJreRange;
+import org.junit.jupiter.api.condition.JRE;
 
-import java.net.InetSocketAddress;
-
-@Disabled("Should only be run manually when a local proxy server (e.g. Fiddler) is running")
-public class RestProxyWithHttpProxyNettyTests extends RestProxyTests {
+@DisabledForJreRange(max = JRE.JAVA_11)
+public class RestProxyWithJdkHttpClientTests extends RestProxyTests {
     private static WireMockServer server;
 
     @BeforeAll
@@ -39,7 +36,6 @@ public class RestProxyWithHttpProxyNettyTests extends RestProxyTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        InetSocketAddress address = new InetSocketAddress("localhost", 8888);
-        return new NettyAsyncHttpClientBuilder().proxy(new ProxyOptions(ProxyOptions.Type.HTTP, address)).build();
+        return new JdkAsyncHttpClientBuilder().build();
     }
 }

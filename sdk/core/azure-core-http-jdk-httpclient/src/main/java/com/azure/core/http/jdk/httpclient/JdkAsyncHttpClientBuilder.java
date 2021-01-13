@@ -7,8 +7,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 import com.azure.core.util.Configuration;
-
 import com.azure.core.util.logging.ClientLogger;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.net.Authenticator;
@@ -83,8 +83,8 @@ public class JdkAsyncHttpClientBuilder {
 
     /**
      * Sets the executor to be used for asynchronous and dependent tasks. This cannot be null.
-     *
-     * <p> If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
+     * <p>
+     * If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
      * newly built {@code HttpClient}.
      *
      * @param executor the executor to be used for asynchronous and dependent tasks
@@ -151,8 +151,8 @@ public class JdkAsyncHttpClientBuilder {
      */
     public HttpClient build() {
         java.net.http.HttpClient.Builder httpClientBuilder = this.httpClientBuilder == null
-                     ? java.net.http.HttpClient.newBuilder()
-                     : this.httpClientBuilder;
+            ? java.net.http.HttpClient.newBuilder()
+            : this.httpClientBuilder;
 
         httpClientBuilder = (this.connectionTimeout != null)
             ? httpClientBuilder.connectTimeout(this.connectionTimeout)
@@ -210,7 +210,7 @@ public class JdkAsyncHttpClientBuilder {
 
         // Combine the set of all allowed restricted headers from both sources
         allowRestrictedHeaders.addAll(
-                Arrays.stream(allowRestrictedHeadersSystemProperties)
+            Arrays.stream(allowRestrictedHeadersSystemProperties)
                 .map(String::trim)
                 .collect(Collectors.toSet()));
 
