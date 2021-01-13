@@ -49,12 +49,12 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
         Pattern.CASE_INSENSITIVE);
 
-    protected PhoneNumberClientBuilder getClientBuilder(HttpClient httpClient) {
+    protected PhoneNumbersClientBuilder getClientBuilder(HttpClient httpClient) {
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
         }
 
-        PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
+        PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
             .httpClient(httpClient)
             .endpoint(ENV_ENDPOINT)
@@ -69,13 +69,13 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         return builder;
     }
 
-    protected PhoneNumberClientBuilder getClientBuilderWithConnectionString(HttpClient httpClient) {
+    protected PhoneNumbersClientBuilder getClientBuilderWithConnectionString(HttpClient httpClient) {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
         }
 
-        PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
+        PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
             .httpClient(httpClient)
             .connectionString(CONNECTION_STRING);
@@ -100,7 +100,7 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         return content;
     }
 
-    protected PhoneNumberClientBuilder addLoggingPolicy(PhoneNumberClientBuilder builder, String testName) {
+    protected PhoneNumbersClientBuilder addLoggingPolicy(PhoneNumbersClientBuilder builder, String testName) {
         return builder.addPolicy(new CommunicationLoggerPolicy(testName));
     }
 }

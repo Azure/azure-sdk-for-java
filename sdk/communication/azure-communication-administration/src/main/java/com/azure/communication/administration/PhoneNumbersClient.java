@@ -21,13 +21,13 @@ import com.azure.core.util.polling.SyncPoller;
 /**
  * Synchronous client for Communication service phone number operations
  */
-@ServiceClient(builder = PhoneNumberClientBuilder.class, isAsync = false)
-public final class PhoneNumberClient {
+@ServiceClient(builder = PhoneNumbersClientBuilder.class, isAsync = false)
+public final class PhoneNumbersClient {
 
-    private final ClientLogger logger = new ClientLogger(PhoneNumberAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(PhoneNumbersAsyncClient.class);
     private final PhoneNumbersImpl phoneNumbersImpl;
 
-    PhoneNumberClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
+    PhoneNumbersClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
         this.phoneNumbersImpl = phoneNumberAdminClient.getPhoneNumbers();
     }
   

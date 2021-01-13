@@ -109,7 +109,7 @@ public class ReadmeSamples {
      *
      * @return the Phone Number Client.
      */
-    public PhoneNumberClient createPhoneNumberClient() {
+    public PhoneNumbersClient createPhoneNumberClient() {
         // You can find your endpoint and access token from your resource in the Azure Portal
         String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
         String accessKey = "SECRET";
@@ -117,7 +117,7 @@ public class ReadmeSamples {
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
-        PhoneNumberClient phoneNumberClient = new PhoneNumberClientBuilder()
+        PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder()
             .endpoint(endpoint)
             .accessKey(accessKey)
             .httpClient(httpClient)

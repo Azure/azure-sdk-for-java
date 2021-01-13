@@ -30,14 +30,14 @@ import java.util.Objects;
 /**
  * Builder for creating clients of Communication Service phone number configuration
  */
-@ServiceClientBuilder(serviceClients = {PhoneNumberClient.class, PhoneNumberAsyncClient.class})
-public final class PhoneNumberClientBuilder {
+@ServiceClientBuilder(serviceClients = {PhoneNumbersClient.class, PhoneNumbersAsyncClient.class})
+public final class PhoneNumbersClientBuilder {
     private static final Map<String, String> PROPERTIES =
         CoreUtils.getProperties("azure-communication-administration.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private final ClientLogger logger = new ClientLogger(PhoneNumberClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(PhoneNumbersClientBuilder.class);
 
     private PhoneNumberServiceVersion version;
     private String endpoint;
@@ -52,10 +52,10 @@ public final class PhoneNumberClientBuilder {
      * Set endpoint of the service
      *
      * @param endpoint url of the service
-     * @return The updated {@link PhoneNumberClientBuilder} object.
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code endpoint} is {@code null}.
      */
-    public PhoneNumberClientBuilder endpoint(String endpoint) {
+    public PhoneNumbersClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
     }
@@ -64,12 +64,12 @@ public final class PhoneNumberClientBuilder {
      * Sets the HTTP pipeline to use for the service client
      * <p>
      * If {@code pipeline} is set, all other settings aside from
-     * {@link PhoneNumberClientBuilder#endpoint(String) endpoint} are ignored.
+     * {@link PhoneNumbersClientBuilder#endpoint(String) endpoint} are ignored.
      *
      * @param pipeline HttpPipeline to use
-     * @return The updated {@link PhoneNumberClientBuilder} object.
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
      */
-    public PhoneNumberClientBuilder pipeline(HttpPipeline pipeline) {
+    public PhoneNumbersClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -78,10 +78,10 @@ public final class PhoneNumberClientBuilder {
      * Set HttpClient to use
      *
      * @param httpClient HttpClient to use
-     * @return The updated {@link PhoneNumberClientBuilder} object.
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code httpClient} is {@code null}.
      */
-    public PhoneNumberClientBuilder httpClient(HttpClient httpClient) {
+    public PhoneNumbersClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
     }
@@ -92,9 +92,9 @@ public final class PhoneNumberClientBuilder {
      * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
      *
      * @param httpLogOptions The logging configuration to use when sending and receiving HTTP requests/responses.
-     * @return the updated {@link PhoneNumberClientBuilder} object.
+     * @return the updated {@link PhoneNumbersClientBuilder} object.
      */
-    public PhoneNumberClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public PhoneNumbersClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
         return this;
     }
@@ -103,10 +103,10 @@ public final class PhoneNumberClientBuilder {
      * Set CommunicationClientCredential for authorization
      *
      * @param accessKey access key for initalizing CommunicationClientCredential
-     * @return The updated {@link PhoneNumberClientBuilder} object.
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code accessKey} is {@code null}.
      */
-    public PhoneNumberClientBuilder accessKey(String accessKey) {
+    public PhoneNumbersClientBuilder accessKey(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
         this.credential = new CommunicationClientCredential(accessKey);
         return this;
@@ -116,10 +116,10 @@ public final class PhoneNumberClientBuilder {
      * Set the endpoint and CommunicationClientCredential for authorization
      *
      * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
-     * @return The updated {@link PhoneNumberClientBuilder} object.
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
-    public PhoneNumberClientBuilder connectionString(String connectionString) {
+    public PhoneNumbersClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         ConnectionString connectionStringObject = new ConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
@@ -134,9 +134,9 @@ public final class PhoneNumberClientBuilder {
      * Sets the configuration object used to retrieve environment configuration values during building of the client.
      *
      * @param configuration Configuration store used to retrieve environment configurations.
-     * @return The updated {@link PhoneNumberClientBuilder} object.
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
      */
-    public PhoneNumberClientBuilder configuration(Configuration configuration) {
+    public PhoneNumbersClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -145,10 +145,10 @@ public final class PhoneNumberClientBuilder {
      * Adds a policy to the set of existing policies that are executed after required policies.
      *
      * @param policy The retry policy for service requests.
-     * @return The updated {@link PhoneNumberClientBuilder} object.
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
-    public PhoneNumberClientBuilder addPolicy(HttpPipelinePolicy policy) {
+    public PhoneNumbersClientBuilder addPolicy(HttpPipelinePolicy policy) {
         this.additionalPolicies.add(Objects.requireNonNull(policy, "'policy' cannot be null."));
         return this;
     }
@@ -161,9 +161,9 @@ public final class PhoneNumberClientBuilder {
      * newer version the client library will have the result of potentially moving to a newer service version.
      *
      * @param version {@link PhoneNumberServiceVersion} of the service to be used when making requests.
-     * @return The updated {@link PhoneNumberClientBuilder} object.
+     * @return The updated {@link PhoneNumbersClientBuilder} object.
      */
-    public PhoneNumberClientBuilder serviceVersion(PhoneNumberServiceVersion version) {
+    public PhoneNumbersClientBuilder serviceVersion(PhoneNumberServiceVersion version) {
         this.version = version;
         return this;
     }
@@ -173,16 +173,16 @@ public final class PhoneNumberClientBuilder {
      * UserAgentPolicy, RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
-     * @return {@link PhoneNumberClient} instance
+     * @return {@link PhoneNumbersClient} instance
      */
-    public PhoneNumberClient buildClient() {
+    public PhoneNumbersClient buildClient() {
         this.validateRequiredFields();
 
         if (this.version != null) {
             logger.info("Build client for service version" + this.version.getVersion());
         }
 
-        return new PhoneNumberClient(this.createPhoneNumberAdminClient());
+        return new PhoneNumbersClient(this.createPhoneNumberAdminClient());
     }
 
     /**
@@ -190,9 +190,9 @@ public final class PhoneNumberClientBuilder {
      * UserAgentPolicy, RetryPolicy, and CookiePolicy.
      * Additional HttpPolicies specified by additionalPolicies will be applied after them
      *
-     * @return {@link PhoneNumberAsyncClient} instance
+     * @return {@link PhoneNumbersAsyncClient} instance
      */
-    public PhoneNumberAsyncClient buildAsyncClient() {
+    public PhoneNumbersAsyncClient buildAsyncClient() {
         this.validateRequiredFields();
 
         if (this.version != null) {
@@ -202,8 +202,8 @@ public final class PhoneNumberClientBuilder {
         return this.createPhoneNumberAsyncClient(this.createPhoneNumberAdminClient());
     }
 
-    PhoneNumberAsyncClient createPhoneNumberAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
-        return new PhoneNumberAsyncClient(phoneNumberAdminClient);
+    PhoneNumbersAsyncClient createPhoneNumberAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
+        return new PhoneNumbersAsyncClient(phoneNumberAdminClient);
     }
 
     HmacAuthenticationPolicy createAuthenticationPolicy(CommunicationClientCredential communicationClientCredential) {
