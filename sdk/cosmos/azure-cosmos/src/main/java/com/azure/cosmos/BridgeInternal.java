@@ -387,8 +387,14 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosException createCosmosException(String resourceAddress, int statusCode, Exception innerException) {
-        return new CosmosException(resourceAddress, statusCode, null, null, innerException);
+    public static CosmosException createCosmosException(int statusCode, Exception innerException) {
+        return new CosmosException(statusCode, null, null, innerException);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosException createCosmosException(int statusCode, CosmosError cosmosErrorResource,
+                                                        Map<String, String> responseHeaders) {
+        return new CosmosException(/* resourceAddress */ null, statusCode, cosmosErrorResource, responseHeaders);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

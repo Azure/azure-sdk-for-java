@@ -40,9 +40,9 @@ class SqlPoolMetadataSyncConfigsImpl extends WrapperImpl<SqlPoolMetadataSyncConf
     }
 
     @Override
-    public Observable<MetadataSyncConfig> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName, MetadataSyncConfigInner metadataSyncConfiguration) {
+    public Observable<MetadataSyncConfig> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
         SqlPoolMetadataSyncConfigsInner client = this.inner();
-        return client.createAsync(resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration)
+        return client.createAsync(resourceGroupName, workspaceName, sqlPoolName)
         .map(new Func1<MetadataSyncConfigInner, MetadataSyncConfig>() {
             @Override
             public MetadataSyncConfig call(MetadataSyncConfigInner inner) {

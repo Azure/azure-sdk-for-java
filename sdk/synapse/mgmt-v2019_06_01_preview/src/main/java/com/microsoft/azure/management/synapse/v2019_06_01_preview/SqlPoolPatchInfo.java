@@ -77,7 +77,7 @@ public class SqlPoolPatchInfo {
      * Snapshot time to restore.
      */
     @JsonProperty(value = "properties.restorePointInTime")
-    private String restorePointInTime;
+    private DateTime restorePointInTime;
 
     /**
      * What is this?.
@@ -276,7 +276,7 @@ public class SqlPoolPatchInfo {
      *
      * @return the restorePointInTime value
      */
-    public String restorePointInTime() {
+    public DateTime restorePointInTime() {
         return this.restorePointInTime;
     }
 
@@ -286,7 +286,7 @@ public class SqlPoolPatchInfo {
      * @param restorePointInTime the restorePointInTime value to set
      * @return the SqlPoolPatchInfo object itself.
      */
-    public SqlPoolPatchInfo withRestorePointInTime(String restorePointInTime) {
+    public SqlPoolPatchInfo withRestorePointInTime(DateTime restorePointInTime) {
         this.restorePointInTime = restorePointInTime;
         return this;
     }

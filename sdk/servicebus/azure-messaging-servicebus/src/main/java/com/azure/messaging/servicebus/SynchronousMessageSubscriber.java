@@ -57,6 +57,8 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
         if (Operators.setOnce(UPSTREAM, this, subscription)) {
             this.subscription = subscription;
+            remaining.addAndGet(requested);
+            subscription.request(requested);
             subscriberInitialized = true;
             drain();
         } else {
@@ -138,6 +140,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
             while ((currentWork = workQueue.peek()) != null
                 && (!currentWork.isProcessingStarted() || bufferMessages.size() > 0)) {
+
                 // Additional check for safety, but normally this work should never be terminal
                 if (currentWork.isTerminal()) {
                     // This work already finished by either timeout or no more messages to send, process next work.
@@ -152,9 +155,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     // timer to complete the currentWork in case of timeout trigger
                     currentTimeoutOperation = getTimeoutOperation(currentWork);
                     currentWork.startedProcessing();
-                    final long calculatedRequest = currentWork.getNumberOfEvents() - remaining.get();
-                    remaining.addAndGet(calculatedRequest);
-                    subscription.request(calculatedRequest);
                 }
 
                 // Send messages to currentWork from buffer
@@ -174,6 +174,15 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                         currentTimeoutOperation.dispose();
                     }
                     logger.verbose("The work [{}] is complete.", currentWork.getId());
+                } else {
+                    // Since this work is not complete, find out how much we should request from upstream
+                    long creditToAdd = currentWork.getRemaining() - (remaining.get() + bufferMessages.size());
+                    if (creditToAdd > 0) {
+                        remaining.addAndGet(creditToAdd);
+                        subscription.request(creditToAdd);
+                        logger.verbose("Requesting [{}] from upstream for work [{}].", creditToAdd,
+                            currentWork.getId());
+                    }
                 }
             }
         }

@@ -309,7 +309,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                     onSessionRequest(1L);
                 }
             }))
-            .publishOn(scheduler, 1);
+            .publishOn(scheduler);
     }
 
     private Mono<ServiceBusManagementNode> getManagementNode() {

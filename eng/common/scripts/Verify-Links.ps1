@@ -30,7 +30,6 @@ function NormalizeUrl([string]$url){
     $url = "file://" + (Resolve-Path $url).ToString();
   }
 
-  Write-Verbose "The url to check against: $url."
   $uri = [System.Uri]$url;
 
   if ($script:baseUrl -eq "") {

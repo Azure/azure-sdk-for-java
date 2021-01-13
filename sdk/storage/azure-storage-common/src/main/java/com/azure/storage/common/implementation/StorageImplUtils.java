@@ -63,18 +63,7 @@ public class StorageImplUtils {
      * @return a mapping of query string pieces as key-value pairs.
      */
     public static Map<String, String[]> parseQueryStringSplitValues(final String queryString) {
-        // We need to first split by comma and then decode each piece since we don't want to confuse legitimate separate
-        // query values from query values that container a comma.
-        // Example 1: prefix=a%2cb => prefix={decode(a%2cb)} => prefix={"a,b"}
-        // Example 2: prefix=a,b => prefix={decode(a),decode(b)} => prefix={"a", "b"}
-        return parseQueryStringHelper(queryString, value -> {
-            String[] v = value.split(",");
-            String[] ret = new String[v.length];
-            for (int i = 0; i < v.length; i++) {
-                ret[i] = urlDecode(v[i]);
-            }
-            return ret;
-        });
+        return parseQueryStringHelper(queryString, (value) -> urlDecode(value).split(","));
     }
 
     private static <T> Map<String, T> parseQueryStringHelper(final String queryString,

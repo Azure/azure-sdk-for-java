@@ -6,12 +6,12 @@ package com.azure.spring.sample.servicebus;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.azure.messaging.servicebus.models.ServiceBusReceiveMode.PEEK_LOCK;
+import static com.azure.messaging.servicebus.models.ReceiveMode.PEEK_LOCK;
 
 @Configuration
 @EnableConfigurationProperties(ServiceBusProperties.class)
@@ -53,7 +53,7 @@ public class ServiceBusConfiguration {
 
     @Bean
     public ServiceBusReceiverAsyncClient topicSubscriber() {
-        final ServiceBusReceiveMode subscriptionReceiveMode = properties.getSubscriptionReceiveMode();
+        final ReceiveMode subscriptionReceiveMode = properties.getSubscriptionReceiveMode();
 
         return new ServiceBusClientBuilder()
             .connectionString(properties.getConnectionString())

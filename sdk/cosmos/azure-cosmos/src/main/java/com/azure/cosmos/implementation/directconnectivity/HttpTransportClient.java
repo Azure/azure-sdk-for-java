@@ -218,7 +218,7 @@ public class HttpTransportClient extends TransportClient {
                                 null);
                     });
 
-            return httpResponseMono.flatMap(rsp -> processHttpResponse(request.requestContext.resourcePhysicalAddress,
+            return httpResponseMono.flatMap(rsp -> processHttpResponse(request.getResourceAddress(),
                     httpRequest, activityId, rsp, physicalAddress));
 
         } catch (Exception e) {

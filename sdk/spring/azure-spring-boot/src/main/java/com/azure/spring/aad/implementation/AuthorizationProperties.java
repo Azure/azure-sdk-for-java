@@ -3,17 +3,22 @@
 
 package com.azure.spring.aad.implementation;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class AuthorizationProperties {
 
-    private List<String> scopes;
+    private String[] scope = new String[0];
 
-    public void setScopes(List<String> scopes) {
-        this.scopes = scopes;
+    public void setScope(String[] scope) {
+        this.scope = scope.clone();
     }
 
-    public List<String> getScopes() {
-        return scopes;
+    public String[] getScope() {
+        return scope.clone();
+    }
+
+    public List<String> scopes() {
+        return Arrays.asList(scope);
     }
 }

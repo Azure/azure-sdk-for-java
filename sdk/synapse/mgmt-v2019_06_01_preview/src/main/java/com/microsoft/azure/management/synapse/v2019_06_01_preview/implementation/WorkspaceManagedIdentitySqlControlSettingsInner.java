@@ -10,7 +10,6 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -71,7 +70,7 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws ErrorContractInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ManagedIdentitySqlControlSettingsModelInner object if successful.
      */
@@ -144,10 +143,10 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
             });
     }
 
-    private ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> getDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ManagedIdentitySqlControlSettingsModelInner, ErrorContractException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> getDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ManagedIdentitySqlControlSettingsModelInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ManagedIdentitySqlControlSettingsModelInner>() { }.getType())
-                .registerError(ErrorContractException.class)
+                .registerError(ErrorContractInnerException.class)
                 .build(response);
     }
 
@@ -157,7 +156,7 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws ErrorContractInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ManagedIdentitySqlControlSettingsModelInner object if successful.
      */
@@ -240,7 +239,7 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
      * @param workspaceName The name of the workspace
      * @param grantSqlControlToManagedIdentity Grant sql control to managed identity
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws ErrorContractInnerException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ManagedIdentitySqlControlSettingsModelInner object if successful.
      */
@@ -319,11 +318,10 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
             });
     }
 
-    private ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ManagedIdentitySqlControlSettingsModelInner, ErrorContractException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ManagedIdentitySqlControlSettingsModelInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ManagedIdentitySqlControlSettingsModelInner>() { }.getType())
-                .register(201, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractException.class)
+                .registerError(ErrorContractInnerException.class)
                 .build(response);
     }
 

@@ -9,6 +9,8 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.exception.AmqpErrorCondition;
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -241,7 +243,7 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.createMessageBatch(options))
-            .expectError(ServiceBusException.class)
+            .expectError(IllegalArgumentException.class)
             .verify();
     }
 
@@ -521,25 +523,8 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.sendMessages(messages))
-            .verifyErrorMatches(error -> error instanceof ServiceBusException
-                && ((ServiceBusException) error).getReason() == ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED);
-
-        verify(sendLink, never()).send(anyList());
-    }
-
-    @Test
-    void sendSingleMessageThatExceedsSize() {
-        // arrange
-        ServiceBusMessage message = TestUtils.getServiceBusMessages(1, UUID.randomUUID().toString()).get(0);
-
-        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
-                .thenReturn(Mono.just(sendLink));
-        when(sendLink.getLinkSize()).thenReturn(Mono.just(1));
-
-        // Act & Assert
-        StepVerifier.create(sender.sendMessage(message))
-                .verifyErrorMatches(error -> error instanceof ServiceBusException
-                        && ((ServiceBusException) error).getReason() == ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED);
+            .verifyErrorMatches(error -> error instanceof AmqpException
+                && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
 
         verify(sendLink, never()).send(anyList());
     }

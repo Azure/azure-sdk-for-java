@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
-import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -183,7 +183,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
                     .buildClient();
                 receiver = getBuilder().receiver()
                     .queueName(queueName)
-                    .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+                    .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                     .buildAsyncClient();
                 break;
             case SUBSCRIPTION:
@@ -199,7 +199,7 @@ class ServiceBusSenderClientIntegrationTest extends IntegrationTestBase {
                 receiver = getBuilder().receiver()
                     .topicName(topicName)
                     .subscriptionName(subscriptionName)
-                    .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+                    .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                     .buildAsyncClient();
                 break;
             default:
