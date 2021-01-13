@@ -25,7 +25,7 @@ public class RestProxyWithHttpProxyJdkHttpClientTests extends RestProxyTests {
     }
 
     @AfterAll
-    public static void shutdownWireMockServer() {
+    public static void shutJdkAsyncHttpClientBuilderdownWireMockServer() {
         if (server != null) {
             server.shutdown();
         }
