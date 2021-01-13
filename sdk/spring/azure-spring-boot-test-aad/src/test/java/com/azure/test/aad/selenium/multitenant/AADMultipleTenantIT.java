@@ -19,13 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 import java.security.Principal;
 import java.util.Collections;
 
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_NAME_2;
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_2;
+
 public class AADMultipleTenantIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADMultipleTenantIT.class);
 
     @Test
     public void multipleTenantTest() throws InterruptedException {
         AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(AADRoleIT.DumbApp.class,
-            Collections.emptyMap(), true);
+            Collections.emptyMap(), AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
         Assert.assertTrue(httpResponse.contains("home"));
     }

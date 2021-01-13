@@ -20,9 +20,7 @@ import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CL
 import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.aad.EnvironmentVariables.AAD_TENANT_ID_1;
 import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_NAME_1;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_NAME_2;
 import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_1;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_2;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class AADSeleniumITHelper {
@@ -71,17 +69,13 @@ public class AADSeleniumITHelper {
     }
 
     public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) throws InterruptedException {
-        this(appClass, properties, false);
+        this(appClass, properties, AAD_USER_NAME_1, AAD_USER_PASSWORD_1);
     }
 
-    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties, boolean multipleTenant) throws InterruptedException {
-        if (multipleTenant) {
-            username = AAD_USER_NAME_2;
-            password = AAD_USER_PASSWORD_2;
-        } else {
-            username = AAD_USER_NAME_1;
-            password = AAD_USER_PASSWORD_1;
-        }
+    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties, String username, String password)
+        throws InterruptedException {
+        this.username = username;
+        this.password = password;
         app = new AppRunner(appClass);
         DEFAULT_PROPERTIES.forEach(app::property);
         properties.forEach(app::property);
