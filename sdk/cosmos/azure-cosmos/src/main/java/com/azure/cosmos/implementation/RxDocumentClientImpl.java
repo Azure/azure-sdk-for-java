@@ -28,11 +28,14 @@ import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
+import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
@@ -237,7 +240,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 partitionKeyAndResourceTokenPairs.add(new PartitionKeyAndResourceTokenPair(
                         partitionKey != null ? BridgeInternal.getPartitionKeyInternal(partitionKey) : PartitionKeyInternal.Empty,
                         permission.getToken()));
-                logger.debug("Initializing resource token map  , with map key [{}] , partition key [{}] and resource token",
+                logger.debug("Initializing resource token map  , with map key [{}] , partition key [{}] and resource token [{}]",
                         pathInfo.resourceIdOrFullName, partitionKey != null ? partitionKey.toString() : null, permission.getToken());
 
             }
@@ -1408,8 +1411,69 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
         if (this.requiresFeedRangeFiltering(request)) {
-            return request
-                .getFeedRange()
+            final Range<String> continuationRange = request.getContinuationRange();
+
+            if (continuationRange != null &&
+                !continuationRange.equals(PartitionKeyInternalHelper.FullRange)) {
+                Mono<Range<String>> getEffectiveRangeTask = request.getFeedRange().getEffectiveRange(
+                    this.getPartitionKeyRangeCache(),
+                    request,
+                    this.collectionCache.resolveCollectionAsync(metadataDiagnosticsCtx, request));
+
+                return getEffectiveRangeTask
+                    .flatMap(feedRangeRange -> {
+                        if (!Range.checkOverlapping(
+                            continuationRange,
+                            feedRangeRange)) {
+
+                            return Mono.error(new NotFoundException(
+                                String.format("Incompatible continuation token range '%s - %s' and feed range '%s - %s'.",
+                                    continuationRange.getMin(),
+                                    continuationRange.getMax(),
+                                    feedRangeRange.getMin(),
+                                    feedRangeRange.getMax())));
+                        }
+
+                        Range.MinComparator<String> minComparator = new Range.MinComparator<>();
+                        Range.MaxComparator<String> maxComparator = new Range.MaxComparator<>();
+
+                        boolean isMaxInclusive;
+                        boolean isMinInclusive;
+                        String effectiveMax;
+                        String effectiveMin;
+
+                        if (minComparator.compare(continuationRange, feedRangeRange) > 0) {
+                            effectiveMin = continuationRange.getMin();
+                            isMinInclusive = continuationRange.isMinInclusive();
+                        } else {
+                            effectiveMin = feedRangeRange.getMin();
+                            isMinInclusive = feedRangeRange.isMinInclusive();
+                        }
+                        if (maxComparator.compare(continuationRange, feedRangeRange) <= 0) {
+                            effectiveMax = continuationRange.getMax();
+                            isMaxInclusive = continuationRange.isMaxInclusive();
+                        } else {
+                            effectiveMax = feedRangeRange.getMax();
+                            isMaxInclusive = feedRangeRange.isMaxInclusive();
+                        }
+
+                        final Range<String> effectiveRange =
+                            new Range<>(effectiveMin, effectiveMax, isMinInclusive, isMaxInclusive);
+
+                        final FeedRangeInternal effectiveFeedRange =
+                            effectiveRange.equals(feedRangeRange)
+                                ? request.getFeedRange() : new FeedRangeEpkImpl(effectiveRange);
+
+                        return effectiveFeedRange
+                            .populateFeedRangeFilteringHeaders(
+                                this.getPartitionKeyRangeCache(),
+                                request,
+                                this.collectionCache.resolveCollectionAsync(metadataDiagnosticsCtx, request))
+                            .flatMap(r -> this.populateAuthorizationHeader(r));
+                    });
+            }
+
+            return request.getFeedRange()
                 .populateFeedRangeFilteringHeaders(
                     this.getPartitionKeyRangeCache(),
                     request,
@@ -1417,7 +1481,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .flatMap(r -> this.populateAuthorizationHeader(r));
         }
 
-        return populateAuthorizationHeader(request);
+        return this.populateAuthorizationHeader(request);
     }
 
     private boolean requiresFeedRangeFiltering(RxDocumentServiceRequest request) {
@@ -3742,7 +3806,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalStateException("PartitionKeyRange list cannot be null");
         }
 
-        List<FeedRange> feedRanges = new ArrayList<FeedRange>();
+        List<FeedRange> feedRanges = new ArrayList<>();
         partitionKeyRangeList.forEach(pkRange -> {
             feedRanges.add(toFeedRange(pkRange));
         });

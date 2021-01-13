@@ -83,23 +83,12 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
     public void populateEffectiveRangeAndStartFromSettingsToRequest(
         RxDocumentServiceRequest request
     ) {
-        final FeedRangeInternal effectiveFeedRange;
         final ChangeFeedStartFromInternal effectiveStartFrom;
         final CompositeContinuationToken continuationToken;
         if (this.continuation != null) {
             continuationToken = this.continuation.getCurrentContinuationToken();
         } else {
             continuationToken = null;
-        }
-
-        if (continuationToken == null) {
-            effectiveFeedRange = this.feedRange;
-            effectiveStartFrom = this.startFromSettings;
-        } else {
-            effectiveFeedRange = new FeedRangeEpkImpl(continuationToken.getRange());
-            effectiveStartFrom = new ChangeFeedStartFromETagAndFeedRangeImpl(
-                continuationToken.getToken(),
-                effectiveFeedRange);
         }
 
         // By applying the effective feed range to the request
@@ -110,7 +99,17 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         // with multiple composite continuations for different
         // sub ranges with different eTags/continuations
         // worst case this is the same range as above.
-        request.applyFeedRangeFilter(effectiveFeedRange);
+        request.applyFeedRangeFilter(this.feedRange);
+
+        if (continuationToken == null) {
+            effectiveStartFrom = this.startFromSettings;
+        } else {
+            effectiveStartFrom = new ChangeFeedStartFromETagAndFeedRangeImpl(
+                continuationToken.getToken(),
+                new FeedRangeEpkImpl(continuationToken.getRange()));
+
+            request.setContinuationRange(continuationToken.getRange());
+        }
 
         effectiveStartFrom.populateRequest(
             PopulateStartFromRequestOptionVisitorImpl.SINGLETON,

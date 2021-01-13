@@ -36,15 +36,10 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
         new FeedRangeEpkImpl(PartitionKeyInternalHelper.FullRange);
 
     private final Range<String> range;
-    private final UnmodifiableList<Range<String>> rangeList;
 
     public FeedRangeEpkImpl(final Range<String> range) {
         checkNotNull(range, "Argument 'range' must not be null");
         this.range = range;
-        final ArrayList<Range<String>> temp = new ArrayList<>();
-        temp.add(range);
-
-        this.rangeList = (UnmodifiableList<Range<String>>)UnmodifiableList.unmodifiableList(temp);
     }
 
     public Range<String> getRange() {
@@ -136,7 +131,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                             final Map<String, String> headers = request.getHeaders();
                             headers.put(
                                 HttpConstants.HttpHeaders.READ_FEED_KEY_TYPE,
-                                ReadFeedKeyType.EffectivePartitionKey.name());
+                                ReadFeedKeyType.EffectivePartitionKeyRange.name());
                             headers.put(
                                 HttpConstants.HttpHeaders.START_EPK,
                                 this.range.getMin());
@@ -151,12 +146,12 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
     }
 
     @Override
-    public Mono<List<Range<String>>> getEffectiveRanges(
+    public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         RxDocumentServiceRequest request,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
 
-        return Mono.just(this.rangeList);
+        return Mono.just(this.range);
     }
 
     @Override

@@ -135,24 +135,25 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void feedRangeEPK_getEffectiveRangesAsync() {
+    public void feedRangeEPK_getEffectiveRangeAsync() {
         Range<String> range = new Range<>("AA", "BB", true, false);
         FeedRangeEpkImpl FeedRangeEpk = new FeedRangeEpkImpl(range);
 
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         StepVerifier
             .create(
-                FeedRangeEpk.getEffectiveRanges(
+                FeedRangeEpk.getEffectiveRange(
                     routingMapProviderMock,
                     null,
                     null))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
-                assertThat(r).hasSize(1);
+                assertThat(r)
+                    .hasSize(1);
                 assertThat(new ArrayList<>(r).get(0))
-                    .hasSize(1)
-                    .contains(range);
+                    .isNotNull()
+                    .isEqualTo(range);
             })
             .verifyComplete();
     }
@@ -264,7 +265,7 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void feedRangePKRangeId_getEffectiveRangesAsync() {
+    public void feedRangePKRangeId_getEffectiveRangeAsync() {
         String pkRangeId = UUID.randomUUID().toString();
         PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
             .setId(pkRangeId)
@@ -289,15 +290,13 @@ public class FeedRangeTest {
 
         StepVerifier
             .create(
-                feedRangePartitionKeyRange.getEffectiveRanges(
+                feedRangePartitionKeyRange.getEffectiveRange(
                     routingMapProviderMock, request, Mono.just(Utils.ValueHolder.initialize(collection))))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
                 assertThat(r).hasSize(1);
-                List<Range<String>> ranges = new ArrayList<>(r).get(0);
-                assertThat(ranges).hasSize(1);
-                Range<String> range = ranges.get(0);
+                Range<String> range = new ArrayList<>(r).get(0);
                 assertThat(range).isNotNull();
                 assertThat(range.getMin()).isEqualTo(partitionKeyRange.getMinInclusive());
                 assertThat(range.getMax()).isEqualTo(partitionKeyRange.getMaxExclusive());
@@ -317,7 +316,7 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void feedRangePKRangeId_getEffectiveRangesAsync_Null() {
+    public void feedRangePKRangeId_getEffectiveRangeAsync_Null() {
         String pkRangeId = UUID.randomUUID().toString();
         PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
             .setId(pkRangeId)
@@ -343,7 +342,7 @@ public class FeedRangeTest {
 
         StepVerifier
             .create(
-                feedRangePartitionKeyRange.getEffectiveRanges(
+                feedRangePartitionKeyRange.getEffectiveRange(
                     routingMapProviderMock, request, Mono.just(Utils.ValueHolder.initialize(collection))))
             .recordWith(ArrayList::new)
             .expectErrorSatisfies((e) -> {
@@ -356,7 +355,7 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void feedRangePKRangeId_getEffectiveRangesAsync_Refresh() {
+    public void feedRangePKRangeId_getEffectiveRangeAsync_Refresh() {
         String pkRangeId = UUID.randomUUID().toString();
         PartitionKeyRange partitionKeyRange = new PartitionKeyRange()
             .setId(pkRangeId)
@@ -382,15 +381,13 @@ public class FeedRangeTest {
 
         StepVerifier
             .create(
-                feedRangePartitionKeyRange.getEffectiveRanges(
+                feedRangePartitionKeyRange.getEffectiveRange(
                     routingMapProviderMock, request, Mono.just(Utils.ValueHolder.initialize(collection))))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
                 assertThat(r).hasSize(1);
-                List<Range<String>> ranges = new ArrayList<>(r).get(0);
-                assertThat(ranges).hasSize(1);
-                Range<String> range = ranges.get(0);
+                Range<String> range = new ArrayList<>(r).get(0);
                 assertThat(range).isNotNull();
                 assertThat(range.getMin()).isEqualTo(partitionKeyRange.getMinInclusive());
                 assertThat(range.getMax()).isEqualTo(partitionKeyRange.getMaxExclusive());
@@ -485,7 +482,7 @@ public class FeedRangeTest {
     }
 
     @Test(groups = "unit")
-    public void feedRangePK_getEffectiveRangesAsync() {
+    public void feedRangePK_getEffectiveRangeAsync() {
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         partitionKeyDefinition.getPaths().add("/id");
         PartitionKeyInternal partitionKey = PartitionKeyInternalUtils.createPartitionKeyInternal(
@@ -501,7 +498,7 @@ public class FeedRangeTest {
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         StepVerifier
             .create(
-                feedRangePartitionKey.getEffectiveRanges(
+                feedRangePartitionKey.getEffectiveRange(
                     routingMapProviderMock,
                     null,
                     Mono.just(new Utils.ValueHolder<>(collection))))
@@ -510,8 +507,8 @@ public class FeedRangeTest {
             .consumeRecordedWith(r -> {
                 assertThat(r).hasSize(1);
                 assertThat(new ArrayList<>(r).get(0))
-                    .hasSize(1)
-                    .contains(range);
+                    .isNotNull()
+                    .isEqualTo(range);
             })
             .verifyComplete();
     }

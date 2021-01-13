@@ -388,30 +388,56 @@ public class ChangeFeedTest extends TestSuiteBase {
             .isNotNull();
     }
 
+    private Range<String> convertToMaxExclusive(Range<String> maxInclusiveRange) {
+        assertThat(maxInclusiveRange)
+            .isNotNull()
+            .matches(r -> r.isMaxInclusive(), "Ensure isMaxInclusive is set");
+
+        String max = maxInclusiveRange.getMax();
+        int i = max.length() - 1;
+
+        while (i >= 0) {
+            if (max.charAt(i) == 'F') {
+                i--;
+                continue;
+            }
+
+            char newChar = (char)(((int)max.charAt(i))+1);
+
+            if (i < max.length() - 1) {
+                max = max.substring(0, i) + newChar + max.substring(i + 1);
+            } else {
+                max = max.substring(0, i) + newChar;
+            }
+
+            break;
+        }
+
+        return new Range<>(maxInclusiveRange.getMin(), max, true, false);
+    }
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void changeFeed_fromBeginning_withFeedRangeFiltering() throws Exception {
 
         ArrayList<Range<String>> ranges = new ArrayList<>();
 
-        // TODO fabianm remove the top 1
-        for (String partitionKey : partitionKeyToDocuments.keySet().stream().limit(1).collect(Collectors.toList())) {
+        for (String partitionKey : partitionKeyToDocuments.keySet().stream().collect(Collectors.toList())) {
             Collection<Document> expectedDocuments = partitionKeyToDocuments.get(partitionKey);
 
             FeedRangePartitionKeyImpl feedRangeForLogicalPartition= new FeedRangePartitionKeyImpl(
                 ModelBridgeInternal.getPartitionKeyInternal(new PartitionKey(partitionKey)));
 
-            List<Range<String>> effectiveRanges =
+            Range<String> effectiveRange =
                 feedRangeForLogicalPartition
-                    .getEffectiveRanges(
+                    .getEffectiveRange(
                         client.getPartitionKeyRangeCache(),
                         null,
                         Mono.just(new Utils.ValueHolder<>(this.createdCollection)))
                     .block();
 
-            assertThat(effectiveRanges).isNotNull();
-            assertThat(effectiveRanges).size().isEqualTo(1);
+            assertThat(effectiveRange).isNotNull();
 
-            FeedRange feedRange = new FeedRangeEpkImpl(effectiveRanges.get(0));
+            FeedRange feedRange = new FeedRangeEpkImpl(convertToMaxExclusive(effectiveRange));
 
             CosmosChangeFeedRequestOptions changeFeedOption =
                 CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(feedRange);

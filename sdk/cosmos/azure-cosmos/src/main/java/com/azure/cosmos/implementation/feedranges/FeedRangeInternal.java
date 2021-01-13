@@ -57,7 +57,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         return parsedRange;
     }
 
-    public abstract Mono<List<Range<String>>> getEffectiveRanges(
+    public abstract Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         RxDocumentServiceRequest request,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono);

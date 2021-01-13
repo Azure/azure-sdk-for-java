@@ -56,7 +56,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     }
 
     @Override
-    public Mono<List<Range<String>>> getEffectiveRanges(
+    public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         RxDocumentServiceRequest request,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
@@ -78,10 +78,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                     collection.getPartitionKey());
 
                 Range<String> range = Range.getPointRange(effectivePartitionKey);
-                ArrayList<Range<String>> rangeList = new ArrayList<>();
-                rangeList.add(range);
-
-                return Mono.just((UnmodifiableList<Range<String>>)UnmodifiableList.unmodifiableList(rangeList));
+                return Mono.just(range);
             });
     }
 

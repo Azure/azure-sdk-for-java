@@ -62,7 +62,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
     }
 
     @Override
-    public Mono<List<Range<String>>> getEffectiveRanges(
+    public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         RxDocumentServiceRequest request,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
@@ -118,16 +118,8 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                                             collection.getResourceId())
                                     ));
                             } else {
-                                return Mono.just(pkRangeHolder);
+                                return Mono.just(pkRangeHolder.v.toRange());
                             }
-                        })
-                        .flatMap((pkRangeHolder) -> {
-                            final ArrayList<Range<String>> temp = new ArrayList<>();
-                            if (pkRangeHolder != null) {
-                                temp.add(pkRangeHolder.v.toRange());
-                            }
-
-                            return Mono.just(UnmodifiableList.unmodifiableList(temp));
                         });
             });
     }
