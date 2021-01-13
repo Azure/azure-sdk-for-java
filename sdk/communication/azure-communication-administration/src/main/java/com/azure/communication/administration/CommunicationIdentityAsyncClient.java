@@ -8,7 +8,7 @@ import com.azure.communication.administration.implementation.CommunicationIdenti
 import com.azure.communication.administration.models.CommunicationIdentity; 
 import com.azure.communication.administration.models.CommunicationTokenRequest;
 import com.azure.communication.administration.models.CommunicationIdentityUpdateRequest;
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -46,11 +46,11 @@ public final class CommunicationIdentityAsyncClient {
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationUser> createUser() {
+    public Mono<CommunicationUserIdentifier> createUser() {
         try {
             return withContext(context -> createUser(context)
                 .flatMap(
-                    (Response<CommunicationUser> res) -> {
+                    (Response<CommunicationUserIdentifier> res) -> {
                         if (res.getValue() != null) {
                             return Mono.just(res.getValue());
                         }
@@ -67,7 +67,7 @@ public final class CommunicationIdentityAsyncClient {
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationUser>> createUserWithResponse() {
+    public Mono<Response<CommunicationUserIdentifier>> createUserWithResponse() {
         try {
             return withContext(context -> createUser(context));
         } catch (RuntimeException ex) {
@@ -81,15 +81,15 @@ public final class CommunicationIdentityAsyncClient {
      * @param context the context of the request. Can also be null or Context.NONE.
      * @return the created Communication User.
      */
-    public Mono<Response<CommunicationUser>> createUser(Context context) {
+    public Mono<Response<CommunicationUserIdentifier>> createUser(Context context) {
         context = context == null ? Context.NONE : context;
 
         return client.createWithResponseAsync(context)
             .flatMap(
                 (Response<CommunicationIdentity> res) -> {
                     if (res.getValue() != null) {
-                        CommunicationUser user = new CommunicationUser(res.getValue().getId());
-                        return Mono.just(new ResponseBase<HttpHeaders, CommunicationUser>(res.getRequest(), 
+                        CommunicationUserIdentifier user = new CommunicationUserIdentifier(res.getValue().getId());
+                        return Mono.just(new ResponseBase<HttpHeaders, CommunicationUserIdentifier>(res.getRequest(), 
                         res.getStatusCode(), res.getHeaders(), user, null));
                     } 
                     return Mono.empty();
@@ -103,7 +103,7 @@ public final class CommunicationIdentityAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteUser(CommunicationUser communicationUser) {
+    public Mono<Void> deleteUser(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
             return withContext(context -> deleteUser(communicationUser, context)
@@ -123,7 +123,7 @@ public final class CommunicationIdentityAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteUserWithResponse(CommunicationUser communicationUser) {
+    public Mono<Response<Void>> deleteUserWithResponse(CommunicationUserIdentifier communicationUser) {
         try {
             Objects.requireNonNull(communicationUser);
             return withContext(context -> deleteUser(communicationUser, context));
@@ -139,7 +139,7 @@ public final class CommunicationIdentityAsyncClient {
      * @param context the context of the request. Can also be null or Context.NONE.
      * @return the response.
      */
-    public Mono<Response<Void>> deleteUser(CommunicationUser communicationUser, Context context) {
+    public Mono<Response<Void>> deleteUser(CommunicationUserIdentifier communicationUser, Context context) {
         context = context == null ? Context.NONE : context;
 
         return client.deleteWithResponseAsync(communicationUser.getId(), context);
@@ -153,7 +153,7 @@ public final class CommunicationIdentityAsyncClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> revokeTokens(CommunicationUser communicationUser, OffsetDateTime issuedBefore) {
+    public Mono<Void> revokeTokens(CommunicationUserIdentifier communicationUser, OffsetDateTime issuedBefore) {
         try {
             Objects.requireNonNull(communicationUser);
             return withContext(context -> revokeTokens(communicationUser, issuedBefore, context)
@@ -175,7 +175,7 @@ public final class CommunicationIdentityAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokeTokensWithResponse(
-        CommunicationUser communicationUser, OffsetDateTime issuedBefore) {
+        CommunicationUserIdentifier communicationUser, OffsetDateTime issuedBefore) {
         try {
             Objects.requireNonNull(communicationUser);
             return withContext(context -> revokeTokens(communicationUser, issuedBefore, context));
@@ -193,7 +193,7 @@ public final class CommunicationIdentityAsyncClient {
      * @return the response.
      */
     public Mono<Response<Void>> revokeTokens(
-        CommunicationUser communicationUser, OffsetDateTime issuedBefore, Context context) {
+        CommunicationUserIdentifier communicationUser, OffsetDateTime issuedBefore, Context context) {
         context = context == null ? Context.NONE : context;
         if (issuedBefore == null) {
             issuedBefore = OffsetDateTime.now();
@@ -212,7 +212,7 @@ public final class CommunicationIdentityAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationUserToken> issueToken(
-        CommunicationUser communicationUser, List<String> scopes) {
+        CommunicationUserIdentifier communicationUser, List<String> scopes) {
         try {
             Objects.requireNonNull(communicationUser);
             Objects.requireNonNull(scopes);
@@ -238,7 +238,7 @@ public final class CommunicationIdentityAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationUserToken>> issueTokenWithResponse(
-        CommunicationUser communicationUser, List<String> scopes) {
+        CommunicationUserIdentifier communicationUser, List<String> scopes) {
         try {
             Objects.requireNonNull(communicationUser);
             Objects.requireNonNull(scopes);
@@ -258,7 +258,7 @@ public final class CommunicationIdentityAsyncClient {
      * @return the object with the issued token.
      */
     public Mono<Response<CommunicationUserToken>> issueToken(
-        CommunicationUser communicationUser, List<String> scopes, Context context) {
+        CommunicationUserIdentifier communicationUser, List<String> scopes, Context context) {
         context = context == null ? Context.NONE : context;
 
         CommunicationTokenRequest communicationTokenRequest = new CommunicationTokenRequest();
@@ -267,7 +267,7 @@ public final class CommunicationIdentityAsyncClient {
         .flatMap(res -> {
             if (res.getValue() != null) {
                 CommunicationUserToken userToken = new CommunicationUserToken();
-                userToken.setUser(new CommunicationUser(res.getValue().getId()))
+                userToken.setUser(new CommunicationUserIdentifier(res.getValue().getId()))
                     .setToken(res.getValue().getToken())
                     .setExpiresOn(res.getValue().getExpiresOn());
                 return Mono.just(new ResponseBase<HttpHeaders, CommunicationUserToken>(res.getRequest(), 

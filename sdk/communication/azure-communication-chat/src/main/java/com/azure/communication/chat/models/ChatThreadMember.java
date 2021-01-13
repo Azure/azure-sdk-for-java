@@ -4,7 +4,7 @@
 
 package com.azure.communication.chat.models;
 
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -17,7 +17,7 @@ public final class ChatThreadMember {
      * in the format `8:acs...`.
      */
     @JsonProperty(value = "user", required = true)
-    private CommunicationUser user;
+    private CommunicationUserIdentifier user;
 
     /*
      * Display name for the chat thread member.
@@ -37,7 +37,7 @@ public final class ChatThreadMember {
      *
      * @return the user value.
      */
-    public CommunicationUser getUser() {
+    public CommunicationUserIdentifier getUser() {
         return this.user;
     }
 
@@ -47,7 +47,7 @@ public final class ChatThreadMember {
      * @param user the user value to set.
      * @return the ChatThreadMember object itself.
      */
-    public ChatThreadMember setUser(CommunicationUser user) {
+    public ChatThreadMember setUser(CommunicationUserIdentifier user) {
         this.user = user;
         return this;
     }

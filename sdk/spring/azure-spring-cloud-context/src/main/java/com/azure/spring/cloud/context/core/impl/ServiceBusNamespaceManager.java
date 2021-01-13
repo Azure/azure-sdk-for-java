@@ -3,8 +3,9 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
-import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespace;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
 
 /**
@@ -12,8 +13,11 @@ import com.azure.spring.cloud.context.core.config.AzureProperties;
  */
 public class ServiceBusNamespaceManager extends AzureManager<ServiceBusNamespace, String> {
 
-    public ServiceBusNamespaceManager(Azure azure, AzureProperties azureProperties) {
-        super(azure, azureProperties);
+    private final AzureResourceManager azureResourceManager;
+
+    public ServiceBusNamespaceManager(AzureResourceManager azureResourceManager, AzureProperties azureProperties) {
+        super(azureProperties);
+        this.azureResourceManager = azureResourceManager;
     }
 
     @Override
@@ -29,17 +33,21 @@ public class ServiceBusNamespaceManager extends AzureManager<ServiceBusNamespace
     @Override
     public ServiceBusNamespace internalGet(String namespace) {
         try {
-            return azure.serviceBusNamespaces().getByResourceGroup(azureProperties.getResourceGroup(), namespace);
-        } catch (NullPointerException e) {
-            // azure management api has no way to determine whether an eventhub namespace exists
-            // Workaround for this is by catching NPE
-            return null;
+            return azureResourceManager.serviceBusNamespaces().getByResourceGroup(resourceGroup, namespace);
+        } catch (ManagementException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return null;
+            } else {
+                throw e;
+            }
         }
     }
 
     @Override
     public ServiceBusNamespace internalCreate(String namespace) {
-        return azure.serviceBusNamespaces().define(namespace).withRegion(azureProperties.getRegion())
-            .withExistingResourceGroup(azureProperties.getResourceGroup()).create();
+        return azureResourceManager.serviceBusNamespaces()
+                                   .define(namespace)
+                                   .withRegion(region)
+                                   .withExistingResourceGroup(resourceGroup).create();
     }
 }

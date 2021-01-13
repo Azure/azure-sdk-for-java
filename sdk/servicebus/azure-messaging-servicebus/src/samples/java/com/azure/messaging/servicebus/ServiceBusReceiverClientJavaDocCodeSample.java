@@ -27,7 +27,6 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
 
     /**
      * Code snippet for creating an ServiceBusReceiverClient
-     *
      */
     @Test
     public void instantiate() {

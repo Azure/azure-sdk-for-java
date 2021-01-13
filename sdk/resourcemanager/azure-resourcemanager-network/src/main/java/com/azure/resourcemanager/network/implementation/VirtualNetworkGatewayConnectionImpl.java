@@ -4,6 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.models.ConnectionSharedKeyInner;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuit;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.LocalNetworkGateway;
@@ -33,6 +34,7 @@ public class VirtualNetworkGatewayConnectionImpl
         VirtualNetworkGatewayConnection.Update,
         AppliableWithTags<VirtualNetworkGatewayConnection> {
     private final VirtualNetworkGateway parent;
+    private String updateSharedKey;
 
     VirtualNetworkGatewayConnectionImpl(
         String name, VirtualNetworkGatewayImpl parent, VirtualNetworkGatewayConnectionInner inner) {
@@ -173,7 +175,11 @@ public class VirtualNetworkGatewayConnectionImpl
 
     @Override
     public VirtualNetworkGatewayConnectionImpl withSharedKey(String sharedKey) {
-        innerModel().withSharedKey(sharedKey);
+        if (isInCreateMode()) {
+            innerModel().withSharedKey(sharedKey);
+        } else {
+            updateSharedKey = sharedKey;
+        }
         return this;
     }
 
@@ -210,7 +216,23 @@ public class VirtualNetworkGatewayConnectionImpl
             .serviceClient()
             .getVirtualNetworkGatewayConnections()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
-            .map(innerToFluentMap(this));
+            .map(innerToFluentMap(this))
+            .flatMap(virtualNetworkGatewayConnection -> {
+                if (updateSharedKey == null) {
+                    return Mono.just(virtualNetworkGatewayConnection);
+                }
+                return myManager.serviceClient().getVirtualNetworkGatewayConnections()
+                    .setSharedKeyAsync(
+                        this.resourceGroupName(),
+                        this.name(),
+                        new ConnectionSharedKeyInner().withValue(updateSharedKey))
+                    .doOnSuccess(inner -> {
+                        updateSharedKey = null;
+                    })
+                    .then(myManager.serviceClient().getVirtualNetworkGatewayConnections()
+                        .getByResourceGroupAsync(this.resourceGroupName(), this.name())
+                        .map(innerToFluentMap(this)));
+            });
     }
 
     private void beforeCreating() {

@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.3.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <version>2.3.7.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
     <relativePath/>
     <!-- lookup parent from repository -->
   </parent>
@@ -83,7 +83,7 @@
     <dependency>
       <groupId>com.azure.spring</groupId>
       <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-      <version>3.0.0-beta.3</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-certificates;current} -->
+      <version>3.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-certificates;current} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -98,11 +98,11 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
           <systemPropertyVariables>
-            <AZURE_KEYVAULT_URI>${azure.keyvault.uri}</AZURE_KEYVAULT_URI>
-            <AZURE_KEYVAULT_TENTANT_ID>${azure.tenant.id}</AZURE_KEYVAULT_TENTANT_ID>
-            <AZURE_KEYVAULT_CLIENT_ID>${azure.client.id}</AZURE_KEYVAULT_CLIENT_ID>
-            <AZURE_KEYVAULT_CLIENT_SECRET>${azure.client.secret}</AZURE_KEYVAULT_CLIENT_SECRET>
-            <SERVER_SSL_KEY_ALIAS>${server.ssl.key-alias}</SERVER_SSL_KEY_ALIAS>
+            <azure.keyvault.uri>${azure.keyvault.uri}</azure.keyvault.uri>
+            <azure.keyvault.tenant-id>${azure.keyvault.tenant-id}</azure.keyvault.tenant-id>
+            <azure.keyvault.client-id>${azure.keyvault.client-id}</azure.keyvault.client-id>
+            <azure.keyvault.client-secret>${azure.keyvault.client-secret}</azure.keyvault.client-secret>
+            <server.ssl.key-alias>${server.ssl.key-alias}</server.ssl.key-alias>
           </systemPropertyVariables>
         </configuration>
       </plugin>

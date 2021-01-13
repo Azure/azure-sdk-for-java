@@ -13,8 +13,8 @@ OUTPUT_FOLDER_FORMAT = None
 
 # Constant parameters
 SDK_ROOT = '../../../'  # related to file dir
-AUTOREST_CORE_VERSION = '3.0.6327'
-AUTOREST_JAVA = '@autorest/java@4.0.5'
+AUTOREST_CORE_VERSION = '3.0.6350'
+AUTOREST_JAVA = '@autorest/java@4.0.8'
 DEFAULT_VERSION = '1.0.0-beta.1'
 GROUP_ID = 'com.azure.resourcemanager'
 API_SPECS_FILE = 'api-specs.yaml'
@@ -23,7 +23,7 @@ CI_FILE_FORMAT = 'sdk/{0}/ci.yml'
 POM_FILE_FORMAT = 'sdk/{0}/pom.xml'
 README_FORMAT = 'specification/{0}/resource-manager/readme.md'
 
-MODELERFOUR_ARGUMENTS = '--pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true --pipeline.modelerfour.flatten-payloads=false'
+MODELERFOUR_ARGUMENTS = '--pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true'
 FLUENTLITE_ARGUMENTS = '--java {0} --azure-arm --verbose --sdk-integration --fluent=lite --java.fluent=lite --java.license-header=MICROSOFT_MIT_SMALL'.format(
     MODELERFOUR_ARGUMENTS)
 
@@ -69,12 +69,52 @@ POM_FORMAT = '''\
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-{0}-service</artifactId>
+  <artifactId>azure-{service}-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-  </modules>
+
+  <profiles>
+    <profile>
+      <id>coverage</id>
+      <modules>
+      </modules>
+
+      <dependencies>
+      </dependencies>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.5</version> <!-- {{x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency}} -->
+            <executions>
+              <execution>
+                <id>report-aggregate</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>report-aggregate</goal>
+                </goals>
+                <configuration>
+                  <outputDirectory>${{project.reporting.outputDirectory}}/test-coverage</outputDirectory>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>default</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>{artifact_id}</module>
+      </modules>
+    </profile>
+  </profiles>
 </project>
 '''
 
-POM_MODULE_FORMAT = '    <module>{0}</module>\n'
+POM_MODULE_FORMAT = '<module>{0}</module>\n'

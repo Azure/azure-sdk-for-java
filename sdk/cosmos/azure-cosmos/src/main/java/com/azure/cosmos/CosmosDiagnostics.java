@@ -5,8 +5,10 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,11 +22,13 @@ import java.util.Set;
 public final class CosmosDiagnostics {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnostics.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final String COSMOS_DIAGNOSTICS_KEY = "cosmosDiagnostics";
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
     private FeedResponseDiagnostics feedResponseDiagnostics;
 
     static final String USER_AGENT = Utils.getUserAgent();
+    static final String USER_AGENT_KEY = "userAgent";
 
     CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
         this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext);
@@ -51,16 +55,7 @@ public final class CosmosDiagnostics {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        if (this.feedResponseDiagnostics != null) {
-            stringBuilder.append("userAgent=").append(USER_AGENT).append(System.lineSeparator());
-            stringBuilder.append(feedResponseDiagnostics);
-        } else {
-            try {
-                stringBuilder.append(OBJECT_MAPPER.writeValueAsString(this.clientSideRequestStatistics));
-            } catch (JsonProcessingException e) {
-                LOGGER.error("Error while parsing diagnostics " + e);
-            }
-        }
+        fillCosmosDiagnostics(null, stringBuilder);
         return stringBuilder.toString();
     }
 
@@ -83,11 +78,38 @@ public final class CosmosDiagnostics {
      * Regions contacted for this request
      * @return set of regions contacted for this request
      */
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Set<URI> getRegionsContacted() {
         return this.clientSideRequestStatistics.getRegionsContacted();
     }
 
     FeedResponseDiagnostics getFeedResponseDiagnostics() {
         return feedResponseDiagnostics;
+    }
+
+    void fillCosmosDiagnostics(ObjectNode parentNode, StringBuilder stringBuilder) {
+        if (this.feedResponseDiagnostics != null) {
+            if (parentNode != null) {
+                parentNode.put(USER_AGENT_KEY, USER_AGENT);
+                parentNode.putPOJO(COSMOS_DIAGNOSTICS_KEY, feedResponseDiagnostics);
+            }
+
+            if (stringBuilder != null) {
+                stringBuilder.append(USER_AGENT_KEY +"=").append(USER_AGENT).append(System.lineSeparator());
+                stringBuilder.append(feedResponseDiagnostics);
+            }
+        } else {
+            if (parentNode != null) {
+                parentNode.putPOJO(COSMOS_DIAGNOSTICS_KEY, clientSideRequestStatistics);
+            }
+
+            if (stringBuilder != null) {
+                try {
+                    stringBuilder.append(OBJECT_MAPPER.writeValueAsString(this.clientSideRequestStatistics));
+                } catch (JsonProcessingException e) {
+                    LOGGER.error("Error while parsing diagnostics ", e);
+                }
+            }
+        }
     }
 }

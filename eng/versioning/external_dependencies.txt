@@ -1,3 +1,10 @@
+# To avoid dependency conflicts between SDK and Spring, when modify or add dependencies,
+# make sure the version is same to sdk/spring/scripts/spring_managed_external_dependencies.txt.
+# If your version is different from sdk/spring/scripts/spring_managed_external_dependencies.txt,
+# please discuss with Spring Integration team members:
+# @chenrujun (rujche), @saragluna (xiada), @yiliuTo (yiliu6), @backwind1233 (zhihaoguo).
+# Thanks.
+
 # Format;
 # groupId:artifactId;dependency-version
 com.fasterxml.jackson.core:jackson-annotations;2.11.3
@@ -37,20 +44,20 @@ io.fabric8:kubernetes-client;4.10.3
 io.micrometer:micrometer-core;1.5.6
 io.micrometer:micrometer-registry-azure-monitor;1.5.6
 io.micrometer:micrometer-registry-graphite;1.5.6
-io.netty:netty-buffer;4.1.53.Final
-io.netty:netty-common;4.1.53.Final
-io.netty:netty-codec-http;4.1.53.Final
-io.netty:netty-codec-http2;4.1.53.Final
-io.netty:netty-transport;4.1.53.Final
-io.netty:netty-handler;4.1.53.Final
-io.netty:netty-handler-proxy;4.1.53.Final
-io.netty:netty-tcnative;2.0.34.Final
-io.netty:netty-tcnative-boringssl-static;2.0.34.Final
-io.netty:netty-transport-native-epoll;4.1.53.Final
-io.netty:netty-transport-native-unix-common;4.1.53.Final
-io.netty:netty-transport-native-kqueue;4.1.53.Final
-io.projectreactor.netty:reactor-netty;0.9.13.RELEASE
-io.projectreactor:reactor-core;3.3.11.RELEASE
+io.netty:netty-buffer;4.1.54.Final
+io.netty:netty-common;4.1.54.Final
+io.netty:netty-codec-http;4.1.54.Final
+io.netty:netty-codec-http2;4.1.54.Final
+io.netty:netty-transport;4.1.54.Final
+io.netty:netty-handler;4.1.54.Final
+io.netty:netty-handler-proxy;4.1.54.Final
+io.netty:netty-tcnative;2.0.35.Final
+io.netty:netty-tcnative-boringssl-static;2.0.35.Final
+io.netty:netty-transport-native-epoll;4.1.54.Final
+io.netty:netty-transport-native-unix-common;4.1.54.Final
+io.netty:netty-transport-native-kqueue;4.1.54.Final
+io.projectreactor.netty:reactor-netty;0.9.15.RELEASE
+io.projectreactor:reactor-core;3.3.12.RELEASE
 io.reactivex:rxjava;1.3.8
 javax.annotation:javax.annotation-api;1.3.2
 javax.servlet:javax.servlet-api;4.0.1
@@ -85,7 +92,6 @@ org.slf4j:slf4j-nop;1.7.30
 org.slf4j:slf4j-simple;1.7.30
 
 ## Spring boot dependency versions
-# After you update spring-boot-dependencies' version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
 org.springframework.boot:spring-boot-dependencies;2.3.5.RELEASE
 org.springframework.boot:spring-boot-actuator-autoconfigure;2.3.5.RELEASE
 org.springframework.boot:spring-boot-autoconfigure-processor;2.3.5.RELEASE
@@ -127,10 +133,9 @@ org.springframework:spring-web;5.2.10.RELEASE
 org.springframework:spring-webmvc;5.2.10.RELEASE
 
 # spring-boot-starter-parent is not managed by spring-boot-dependencies or spring-cloud-dependencies.
-org.springframework.boot:spring-boot-starter-parent;2.3.3.RELEASE
+org.springframework.boot:spring-boot-starter-parent;2.3.7.RELEASE
 
 ## Spring cloud dependency versions
-# After you update spring-cloud-dependencies' version, please run this script: /sdk/spring/scripts/sync_version_from_spring-boot-dependencies.py
 org.springframework.cloud:spring-cloud-dependencies;Hoxton.SR8
 org.springframework.cloud:spring-cloud-bus;2.2.3.RELEASE
 org.springframework.cloud:spring-cloud-context;2.2.5.RELEASE
@@ -163,7 +168,7 @@ com.sun.activation:jakarta.activation;1.2.2
 io.opentelemetry:opentelemetry-api;0.8.0
 io.opentelemetry:opentelemetry-sdk;0.8.0
 io.grpc:grpc-context;1.30.2
-io.projectreactor:reactor-test;3.3.11.RELEASE
+io.projectreactor:reactor-test;3.3.12.RELEASE
 junit:junit;4.13.1
 commons-cli:commons-cli;1.3
 org.apache.maven:maven-compat;3.6.2
@@ -171,7 +176,7 @@ org.apache.maven:maven-embedder;3.6.2
 org.apache.maven.wagon:wagon-http;3.3.4
 org.apache.maven.wagon:wagon-provider-api;3.3.4
 org.assertj:assertj-core;3.16.1
-org.bouncycastle:bcprov-jdk15on;1.66
+org.bouncycastle:bcprov-jdk15on;1.68
 org.eclipse.aether:aether-connector-basic;1.1.0
 org.eclipse.aether:aether-transport-wagon;1.1.0
 org.eclipse.jetty:jetty-http;9.4.33.v20201020
@@ -247,7 +252,7 @@ org.codehaus.mojo:cobertura-maven-plugin;2.7
 org.codehaus.mojo:exec-maven-plugin;1.2.1
 org.codehaus.mojo:findbugs-maven-plugin;3.0.5
 org.codehaus.mojo:properties-maven-plugin;1.0.0
-org.codehaus.mojo:xml-maven-plugin;1.0
+org.codehaus.mojo:xml-maven-plugin;1.0.2
 org.eclipse.jetty:jetty-maven-plugin;9.4.33.v20201020
 org.eclipse.m2e:lifecycle-mapping;1.0.0
 org.hdrhistogram:HdrHistogram;2.1.12

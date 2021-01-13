@@ -32,7 +32,7 @@ public class CommunicationBearerTokenCredential implements TokenCredential {
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         try {
-            return Mono.just(credential.getToken().get());
+            return credential.getToken();
         } catch (InterruptedException ex) {
             return Mono.error(ex);
         } catch (ExecutionException ex) {

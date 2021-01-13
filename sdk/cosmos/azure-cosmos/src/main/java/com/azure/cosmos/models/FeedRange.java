@@ -8,7 +8,7 @@ import com.azure.cosmos.util.Beta;
 
 import java.io.IOException;
 
-@Beta(Beta.SinceVersion.V4_9_0)
+@Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public interface FeedRange {
     /**
      * Creates a range from a previously obtained string representation.

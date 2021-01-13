@@ -46,21 +46,6 @@ public class AADAuthenticationFilterPropertiesTest {
         }
     }
 
-    @Test
-    public void defaultEnvironmentIsGlobal() {
-        configureAllRequiredProperties();
-        assertThat(System.getProperty(TestConstants.SERVICE_ENVIRONMENT_PROPERTY)).isNullOrEmpty();
-
-        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
-            context.register(Config.class);
-            context.refresh();
-
-            final AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
-
-            assertThat(properties.getEnvironment()).isEqualTo(TestConstants.DEFAULT_ENVIRONMENT);
-        }
-    }
-
     private void configureAllRequiredProperties() {
         System.setProperty(TestConstants.CLIENT_ID_PROPERTY, TestConstants.CLIENT_ID);
         System.setProperty(TestConstants.CLIENT_SECRET_PROPERTY, TestConstants.CLIENT_SECRET);
@@ -92,7 +77,7 @@ public class AADAuthenticationFilterPropertiesTest {
             final BindValidationException bindException = (BindValidationException) exception.getCause().getCause();
             final List<ObjectError> errors = bindException.getValidationErrors().getAllErrors();
 
-            final List<String> errorStrings = errors.stream().map(e -> e.toString()).collect(Collectors.toList());
+            final List<String> errorStrings = errors.stream().map(ObjectError::toString).collect(Collectors.toList());
 
             final List<String> errorStringsExpected = Arrays.asList(
                     "Field error in object 'azure.activedirectory' on field 'activeDirectoryGroups': "

@@ -24,6 +24,12 @@ public class DiskEncryptionSetUpdate {
     private Map<String, String> tags;
 
     /*
+     * The type of key used to encrypt the data of the disk.
+     */
+    @JsonProperty(value = "properties.encryptionType")
+    private DiskEncryptionSetType encryptionType;
+
+    /*
      * Key Vault Key Url and vault id of KeK, KeK is optional and when provided
      * is used to unwrap the encryptionKey
      */
@@ -47,6 +53,26 @@ public class DiskEncryptionSetUpdate {
      */
     public DiskEncryptionSetUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the encryptionType property: The type of key used to encrypt the data of the disk.
+     *
+     * @return the encryptionType value.
+     */
+    public DiskEncryptionSetType encryptionType() {
+        return this.encryptionType;
+    }
+
+    /**
+     * Set the encryptionType property: The type of key used to encrypt the data of the disk.
+     *
+     * @param encryptionType the encryptionType value to set.
+     * @return the DiskEncryptionSetUpdate object itself.
+     */
+    public DiskEncryptionSetUpdate withEncryptionType(DiskEncryptionSetType encryptionType) {
+        this.encryptionType = encryptionType;
         return this;
     }
 

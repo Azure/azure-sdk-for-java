@@ -40,7 +40,7 @@ public final class CosmosPagedIterable<T> extends ContinuablePagedIterable<Strin
      * @param feedResponseConsumer handler
      * @return CosmosPagedIterable instance with attached handler
      */
-    @Beta(value = Beta.SinceVersion.V4_6_0)
+    @Beta(value = Beta.SinceVersion.V4_6_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPagedIterable<T> handle(Consumer<FeedResponse<T>> feedResponseConsumer) {
         CosmosPagedFlux<T> cosmosPagedFlux = this.cosmosPagedFlux.handle(feedResponseConsumer);
         return new CosmosPagedIterable<>(cosmosPagedFlux);
