@@ -177,7 +177,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     // we have already tried this request on the write location
                     return ShouldRetryResult.noRetry();
                 } else {
-                    this.retryContext = new RetryContext(this.sessionTokenRetryCount, false);
+                    this.retryContext = new RetryContext(0, false);
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
             }
