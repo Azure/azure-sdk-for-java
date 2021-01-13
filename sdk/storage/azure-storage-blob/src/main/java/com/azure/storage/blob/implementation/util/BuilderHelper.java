@@ -26,6 +26,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
@@ -77,7 +78,8 @@ public final class BuilderHelper {
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
         Configuration configuration, ClientLogger logger) {
 
-        validateCredentials(storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
+        CredentialValidator.validateSingleCredentialIsPresent(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -171,21 +173,6 @@ public final class BuilderHelper {
         if (objectToCheck != null && !BlobUrlParts.parse(endpoint).getScheme().equals(Constants.HTTPS)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Using a(n) " + objectName + " requires https"));
-        }
-    }
-
-    public static void validateCredentials(StorageSharedKeyCredential storageSharedKeyCredential,
-        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken, ClientLogger logger) {
-        List<Object> usedCredentials = Stream.of(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken)
-            .filter(Objects::nonNull).collect(Collectors.toList());
-        if (usedCredentials.size() > 1) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "Only one credential should be used. Credentials present: "
-                    + usedCredentials.stream().map(
-                        c -> c instanceof String ? "sasToken" : c.getClass().getName())
-                        .collect(Collectors.joining(","))
-            ));
         }
     }
 

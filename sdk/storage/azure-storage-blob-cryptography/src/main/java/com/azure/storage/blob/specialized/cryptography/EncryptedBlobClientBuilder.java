@@ -41,6 +41,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
+import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
@@ -98,6 +99,7 @@ public final class EncryptedBlobClientBuilder {
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private AzureSasCredential azureSasCredential;
+    private String sasToken;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -165,6 +167,9 @@ public final class EncryptedBlobClientBuilder {
     }
 
     private HttpPipeline getHttpPipeline() {
+        CredentialValidator.validateSingleCredentialIsPresent(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
+
         // Prefer the pipeline set by the customer.
         if (httpPipeline != null) {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -224,6 +229,8 @@ public final class EncryptedBlobClientBuilder {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE));
         } else if (azureSasCredential != null) {
             policies.add(new AzureSasCredentialPolicy(azureSasCredential, false));
+        } else if (sasToken != null) {
+            policies.add(new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false));
         }
 
         policies.addAll(perRetryPolicies);
@@ -318,8 +325,11 @@ public final class EncryptedBlobClientBuilder {
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public EncryptedBlobClientBuilder sasToken(String sasToken) {
-        return this.credential(new AzureSasCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.")));
+        this.sasToken = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
+        this.storageSharedKeyCredential = null;
+        this.tokenCredential = null;
+        return this;
     }
 
     /**
@@ -332,8 +342,6 @@ public final class EncryptedBlobClientBuilder {
     public EncryptedBlobClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
-        this.storageSharedKeyCredential = null;
-        this.tokenCredential = null;
         return this;
     }
 
@@ -348,6 +356,7 @@ public final class EncryptedBlobClientBuilder {
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         this.azureSasCredential = null;
+        this.sasToken = null;
         return this;
     }
 
