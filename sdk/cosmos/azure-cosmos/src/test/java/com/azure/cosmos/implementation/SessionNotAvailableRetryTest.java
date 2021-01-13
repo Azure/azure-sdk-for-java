@@ -128,6 +128,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
             uris.add(uri.getURI().getHost());
             CosmosException cosmosException = BridgeInternal.createCosmosException(404);
+            @SuppressWarnings("unchecked")
             Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
                 "responseHeaders", true);
             responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, "1002");
@@ -221,6 +222,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
             uris.add(uri.getURI().getHost());
             CosmosException cosmosException = BridgeInternal.createCosmosException(404);
+            @SuppressWarnings("unchecked")
             Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
                 "responseHeaders", true);
             responseHeaders.put(HttpConstants.HttpHeaders.SUB_STATUS, "1002");
