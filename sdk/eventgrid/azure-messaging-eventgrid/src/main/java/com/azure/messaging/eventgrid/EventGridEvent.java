@@ -72,7 +72,7 @@ public final class EventGridEvent {
      * @return all of the events in the payload parsed as CloudEvents.
      */
     public static List<EventGridEvent> parse(String json) {
-        return EventParser.parseEventGridEvent(json);
+        return EventParser.parseEventGridEvents(json);
     }
 
 
@@ -125,7 +125,22 @@ public final class EventGridEvent {
         return this.event.getSubject();
     }
 
-    public Object getSystemEventData() {
+    /**
+     * Gets whether this event is a system event.
+     * @see SystemEventMappings
+     * @return {@code true} if the even is a system event, or {@code false} otherwise.
+     */
+    public boolean isSystemEvent() {
+        String eventType = SystemEventMappings.canonicalizeEventType(this.getEventType());
+        return SystemEventMappings.getSystemEventMappings().containsKey(eventType);
+    }
+
+    /**
+     * Convert the event's data into the system event data if the event is a system event.
+     * @see SystemEventMappings
+     * @return The system event if the event is a system event, or {@code null} if it's not.
+     */
+    public Object asSystemEventData() {
         if (!parsed) {
             // data was set instead of parsed, throw error
             throw logger.logExceptionAsError(new IllegalStateException(

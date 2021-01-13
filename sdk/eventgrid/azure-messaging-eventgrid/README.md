@@ -28,7 +28,7 @@ within your project, you can use [Maven][maven].
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>2.0.0-beta.3</version>
+    <version>2.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -75,6 +75,10 @@ az eventgrid topic show --name <your-resource-name> --resource-group <your-resou
 The keys are listed in the "Access Keys" tab of the [Azure Portal][portal], or can be obtained
 using the following command in [Azure CLI][cli].
 
+```bash
+az eventgrid topic show --name <your-resource-name> --resource-group <your-resource-group-name> --query "key"
+```
+
 #### Creating a shared access signature
 
 A shared access signature is an alternative way to authenticate requests to an [Event Grid][eventgrid]
@@ -82,12 +86,10 @@ topic or domain. They behave similarly to keys, and require a key to produce, bu
 with an expiration time, so they can be used to restrict access to a topic or domain.
 Here is sample code to produce a shared access signature that expires after 20 minutes:
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L104-L107 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L105-L107 -->
 ```java
 OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
-String credentialString = EventGridSasCredential
-    .createSas(endpoint, expiration, new AzureKeyCredential(key));
-EventGridSasCredential signature = new EventGridSasCredential(credentialString);
+String sasToken = EventGridSasCreator.createSas(endpoint, expiration, new AzureKeyCredential(key));
 ```
 
 #### Creating the Client
@@ -132,16 +134,18 @@ for describing event data in a common way. Regardless of what schema your topic 
 `EventGridPublisherClient` will be used to publish events to it. However, you must use the correct method for 
 publishing:
 
-| Schema       | Publishing Method     |
+| Event Schema       | Publishing Method     |
 | ------------ | --------------------- |
-| Event Grid   | `publishEvents`       |
+| Event Grid Events  | `publishEvents`       |
 | Cloud Events | `publishCloudEvents`  |
-| Custom       | `publishCustomEvents` |
+| Custom Events       | `publishCustomEvents` |
 
 Using the wrong method will result in an error from the service and your events will not be published.
 
 ### Consumption
 
+EventGrid doesn't store any events in the Event Grid Topic or Domain itself. You need to create subscriptions to the
+EventGrid Topic or Domain. The events sent to the topic or domain will be stored into the subscription
 Events can be consumed from the event destination using respective schema class' `parse` method, passing the JSON string 
 received from the destination.
 

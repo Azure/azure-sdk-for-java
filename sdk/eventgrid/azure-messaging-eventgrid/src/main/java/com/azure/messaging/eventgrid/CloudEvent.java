@@ -21,7 +21,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * The CloudEvent model. This represents a cloud event as specified by the CNCF, for sending event based data.
+ * The CloudEvent model. This represents a cloud event as specified by the Cloud Native Computing Foundation
+ * (https://github.com/cloudevents/spec/blob/v1.0.1/spec.md).
  * @see EventGridPublisherAsyncClient
  * @see EventGridPublisherClient
  **/
@@ -37,7 +38,7 @@ public final class CloudEvent {
     private boolean parsed = false;
 
     /**
-     * Create an instance of a CloudEvent. The source and type are required fields to publish.
+     * Create an instance of CloudEvent. The source and type are required fields to publish.
      * @param source a URI identifying the origin of the event.
      * @param type   the type of event, e.g. "Contoso.Items.ItemReceived".
      */
@@ -63,7 +64,7 @@ public final class CloudEvent {
      * @return all of the events in the payload parsed as CloudEvents.
      */
     public static List<CloudEvent> parse(String json) {
-        return EventParser.parseCloudEvent(json);
+        return EventParser.parseCloudEvents(json);
     }
 
     /**
@@ -96,7 +97,22 @@ public final class CloudEvent {
         return this.cloudEvent.getSource();
     }
 
-    public Object getSystemEventData() {
+    /**
+     * Gets whether this event is a system event.
+     * @see SystemEventMappings
+     * @return {@code true} if the even is a system event, or {@code false} otherwise.
+     */
+    public boolean isSystemEvent() {
+        String eventType = SystemEventMappings.canonicalizeEventType(this.getType());
+        return SystemEventMappings.getSystemEventMappings().containsKey(eventType);
+    }
+
+    /**
+     * Convert the event's data into the system event data if the event is a system event.
+     * @see SystemEventMappings
+     * @return The system event if the event is a system event, or {@code null} if it's not.
+     */
+    public Object asSystemEventData() {
         if (!parsed) {
             // data was set instead of parsed, throw error
             throw logger.logExceptionAsError(new IllegalStateException(
@@ -170,6 +186,17 @@ public final class CloudEvent {
     public CloudEvent setData(Object data, String dataContentType) {
         this.cloudEvent.setData(data);
         this.cloudEvent.setDatacontenttype(dataContentType);
+        return this;
+    }
+
+    /**
+     * Set byte data associated with this event.
+     * @param data            the data to set.
+     *
+     * @return the cloud event itself.
+     */
+    public CloudEvent setData(byte[] data) {
+        this.cloudEvent.setDataBase64(data);
         return this;
     }
 

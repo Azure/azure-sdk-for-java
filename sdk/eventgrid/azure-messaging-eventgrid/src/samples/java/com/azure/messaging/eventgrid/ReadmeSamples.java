@@ -65,13 +65,14 @@ public class ReadmeSamples {
         for (EventGridEvent event : events) {
             // system event data will be turned into it's rich object,
             // while custom event data will be turned into a byte[].
-            Object data = event.getData();
-
-            // this event type goes to any non-azure endpoint (such as a WebHook) when the subscription is created.
-            if (data instanceof SubscriptionValidationEventData) {
-                SubscriptionValidationEventData validationData = (SubscriptionValidationEventData) data;
-                System.out.println(validationData.getValidationCode());
-            } else if (data instanceof byte[]) {
+            if (event.isSystemEvent()) {
+                Object systemEventData = event.asSystemEventData();
+                if (systemEventData instanceof SubscriptionValidationEventData) {
+                    SubscriptionValidationEventData validationData = (SubscriptionValidationEventData) systemEventData;
+                    System.out.println(validationData.getValidationCode());
+                }
+            }
+            else {
                 // we can turn the data into the correct type by calling this method.
                 // since we set the data as a string when sending, we pass the String class in to get it back.
                 String stringData = event.getData().toString();
@@ -84,15 +85,15 @@ public class ReadmeSamples {
         List<CloudEvent> events = CloudEvent.parse(jsonData);
 
         for (CloudEvent event : events) {
-            // system event data will be turned into it's rich object,
-            // while custom event data will be turned into a byte[].
-            Object data = event.getData();
-
+            if (event.isSystemEvent()) {
+                Object systemEventData = event.asSystemEventData();
+                if (systemEventData instanceof SubscriptionValidationEventData) {
+                    SubscriptionValidationEventData validationData = (SubscriptionValidationEventData) systemEventData;
+                    System.out.println(validationData.getValidationCode());
+                }
+            }
             // this event type goes to any non-azure endpoint (such as a WebHook) when the subscription is created.
-            if (data instanceof SubscriptionValidationEventData) {
-                SubscriptionValidationEventData validationData = (SubscriptionValidationEventData) data;
-                System.out.println(validationData.getValidationCode());
-            } else if (data instanceof byte[]) {
+            else {
                 // we can turn the data into the correct type by calling this method.
                 // since we set the data as a string when sending, we pass the String class in to get it back.
                 String stringData = event.getData().toString();
@@ -103,10 +104,7 @@ public class ReadmeSamples {
 
     public void createSharedAccessSignature() {
         OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
-        String credentialString = EventGridSasCreator
+        String sasToken = EventGridSasCreator
             .createSas(endpoint, expiration, new AzureKeyCredential(key));
-        AzureSasCredential signature = new AzureSasCredential(credentialString);
     }
-
-
 }

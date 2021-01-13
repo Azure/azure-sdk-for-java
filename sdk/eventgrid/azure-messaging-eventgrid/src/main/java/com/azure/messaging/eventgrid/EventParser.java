@@ -27,7 +27,7 @@ public class EventParser {
      *
      * @return all of the events in the payload parsed as CloudEvents.
      */
-    public static List<EventGridEvent> parseEventGridEvent(String json) {
+    public static List<EventGridEvent> parseEventGridEvents(String json) {
         return Flux.fromArray(DESERIALIZER
             .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
                 TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class))
@@ -49,7 +49,7 @@ public class EventParser {
      *
      * @return all of the events in the payload parsed as CloudEvents.
      */
-    public static List<CloudEvent> parseCloudEvent(String json) {
+    public static List<CloudEvent> parseCloudEvents(String json) {
         return Flux.fromArray(DESERIALIZER
             .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
                 TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.CloudEvent[].class))
