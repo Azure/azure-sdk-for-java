@@ -29,13 +29,14 @@ java:
     add-context-parameter: true
     namespace: com.azure.security.attestation
     add-credentials: true
-    sync-methods: none
+    sync-methods: all
     client-side-validations: true
 #    generate-client-as-impl: true
 #    implementation-subpackage: implementation
 #    models-subpackage: implementation.models
     context-client-method-parameter: true
     custom-types-subpackage: models
+    generate-sync-async-clients: true
     required-fields-as-ctor-args: true
     v3: true
 ```
