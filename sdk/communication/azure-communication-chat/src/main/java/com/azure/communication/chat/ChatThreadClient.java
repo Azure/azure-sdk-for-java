@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.chat;
 
+import com.azure.communication.chat.models.AddChatParticipantsResult;
 import com.azure.communication.chat.models.AddChatParticipantsOptions;
 import com.azure.communication.chat.models.ChatMessage;
 import com.azure.communication.chat.models.ChatParticipant;
@@ -96,8 +97,8 @@ public final class ChatThreadClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addParticipantsWithResponse(AddChatParticipantsOptions options, Context context) {
-
+    public Response<AddChatParticipantsResult> addParticipantsWithResponse(
+        AddChatParticipantsOptions options, Context context) {
         return this.client.addParticipants(options, context).block();
     }
 
@@ -121,7 +122,8 @@ public final class ChatThreadClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addParticipantWithResponse(ChatParticipant participant, Context context) {
+    public Response<AddChatParticipantsResult> addParticipantWithResponse(ChatParticipant participant,
+                                                                          Context context) {
 
         return this.client.addParticipants(new AddChatParticipantsOptions()
             .setParticipants(Collections.singletonList(participant)), context).block();

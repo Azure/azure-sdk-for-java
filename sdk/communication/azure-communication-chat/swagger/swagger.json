@@ -6,7 +6,7 @@
     "version": "2020-11-01-preview3"
   },
   "paths": {
-    "/chat/threads/{chatThreadId}/readreceipts": {
+    "/chat/threads/{chatThreadId}/readReceipts": {
       "get": {
         "tags": [
           "Threads"
@@ -50,28 +50,28 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -122,32 +122,32 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "Request successful."
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -203,28 +203,28 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -264,7 +264,7 @@
           {
             "in": "query",
             "name": "startTime",
-            "description": "The earliest point in time to get messages up to. The timestamp should be in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.",
+            "description": "The earliest point in time to get messages up to. The timestamp should be in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.",
             "type": "string",
             "format": "date-time"
           },
@@ -280,28 +280,28 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -356,28 +356,28 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -435,28 +435,28 @@
             "description": "Message is successfully updated."
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -502,28 +502,28 @@
             "description": "Request successful."
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -564,28 +564,28 @@
             "description": "Request successful."
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -643,28 +643,28 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -679,78 +679,6 @@
         "x-ms-pageable": {
           "nextLinkName": "nextLink",
           "itemName": "value"
-        }
-      },
-      "post": {
-        "tags": [
-          "Participants"
-        ],
-        "summary": "Adds thread participants to a thread. If participants already exist, no change occurs.",
-        "operationId": "ChatThread_AddChatParticipants",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "chatThreadId",
-            "description": "Id of the thread to add participants to.",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "$ref": "#/parameters/ApiVersionParameter"
-          },
-          {
-            "in": "body",
-            "name": "addChatParticipantsRequest",
-            "description": "Thread participants to be added to the thread.",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/AddChatParticipantsRequest"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "The participants were successfully added."
-          },
-          "401": {
-            "description": "Unauthorized",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            },
-            "x-ms-error-response": true
-          },
-          "403": {
-            "description": "Forbidden",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            },
-            "x-ms-error-response": true
-          },
-          "429": {
-            "description": "Too many requests",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            },
-            "x-ms-error-response": true
-          },
-          "503": {
-            "description": "Service unavailable",
-            "schema": {
-              "$ref": "#/definitions/Error"
-            },
-            "x-ms-error-response": true
-          }
-        },
-        "x-ms-examples": {
-          "Add participants": {
-            "$ref": "./examples/Participants_AddChatParticipants.json"
-          }
         }
       }
     },
@@ -788,28 +716,28 @@
             "description": "Request successful."
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -819,6 +747,83 @@
         "x-ms-examples": {
           "Remove participant": {
             "$ref": "./examples/Participants_RemoveChatParticipant.json"
+          }
+        }
+      }
+    },
+    "/chat/threads/{chatThreadId}/participants/:add": {
+      "post": {
+        "tags": [
+          "Participants"
+        ],
+        "summary": "Adds thread participants to a thread. If participants already exist, no change occurs.",
+        "operationId": "ChatThread_AddChatParticipants",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "chatThreadId",
+            "description": "Id of the thread to add participants to.",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "$ref": "#/parameters/ApiVersionParameter"
+          },
+          {
+            "in": "body",
+            "name": "addChatParticipantsRequest",
+            "description": "Thread participants to be added to the thread.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AddChatParticipantsRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "The participants were successfully added.",
+            "schema": {
+              "$ref": "#/definitions/AddChatParticipantsResult"
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "x-ms-error-response": true
+          },
+          "403": {
+            "description": "Forbidden.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "x-ms-error-response": true
+          },
+          "429": {
+            "description": "Too many requests.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "x-ms-error-response": true
+          },
+          "503": {
+            "description": "Service unavailable.",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "x-ms-error-response": true
+          }
+        },
+        "x-ms-examples": {
+          "Add participants": {
+            "$ref": "./examples/Participants_AddChatParticipants.json"
           }
         }
       }
@@ -864,28 +869,28 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -921,7 +926,7 @@
           {
             "in": "query",
             "name": "startTime",
-            "description": "The earliest point in time to get chat threads up to. The timestamp should be in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.",
+            "description": "The earliest point in time to get chat threads up to. The timestamp should be in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.",
             "type": "string",
             "format": "date-time"
           },
@@ -937,28 +942,28 @@
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -1015,28 +1020,28 @@
             "description": "Thread was successfully updated."
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -1062,7 +1067,7 @@
           {
             "in": "path",
             "name": "chatThreadId",
-            "description": "Thread id to get.",
+            "description": "Id of the thread.",
             "required": true,
             "type": "string"
           },
@@ -1072,34 +1077,34 @@
         ],
         "responses": {
           "200": {
-            "description": "Request successful. The action returns a `Thread` resource.",
+            "description": "Request successful. The action returns a chat thread.",
             "schema": {
               "$ref": "#/definitions/ChatThread"
             }
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -1125,7 +1130,7 @@
           {
             "in": "path",
             "name": "chatThreadId",
-            "description": "Thread id to delete.",
+            "description": "Id of the thread to be deleted.",
             "required": true,
             "type": "string"
           },
@@ -1138,28 +1143,28 @@
             "description": "Request successful."
           },
           "401": {
-            "description": "Unauthorized",
+            "description": "Unauthorized.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "403": {
-            "description": "Forbidden",
+            "description": "Forbidden.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "429": {
-            "description": "Too many requests",
+            "description": "Too many requests.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
             "x-ms-error-response": true
           },
           "503": {
-            "description": "Service unavailable",
+            "description": "Service unavailable.",
             "schema": {
               "$ref": "#/definitions/Error"
             },
@@ -1177,30 +1182,36 @@
   "definitions": {
     "ChatMessageReadReceipt": {
       "description": "A chat message read receipt indicates the time a chat message was read by a recipient.",
+      "required": [
+        "chatMessageId",
+        "readOn",
+        "senderId"
+      ],
       "type": "object",
       "properties": {
         "senderId": {
-          "description": "Chat message read receipt sender id.",
+          "description": "Id of the participant who read the message.",
           "type": "string",
-          "readOnly": true,
           "example": "8:acs:8540c0de-899f-5cce-acb5-3ec493af3800_0e59221d-0c1d-46ae-9544-c963ce56c10b"
         },
         "chatMessageId": {
-          "description": "Id for the chat message that has been read. This id is generated by the server.",
+          "description": "Id of the chat message that has been read. This id is generated by the server.",
           "type": "string",
-          "readOnly": true,
           "example": "1591137790240"
         },
         "readOn": {
           "format": "date-time",
-          "description": "Chat message read receipt timestamp. The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.",
+          "description": "The time at which the message was read. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.",
           "type": "string",
-          "readOnly": true,
           "example": "2020-10-30T10:50:50Z"
         }
       }
     },
     "ChatMessageReadReceiptsCollection": {
+      "description": "A paged collection of chat message read receipts.",
+      "required": [
+        "value"
+      ],
       "type": "object",
       "properties": {
         "value": {
@@ -1208,8 +1219,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/ChatMessageReadReceipt"
-          },
-          "readOnly": true
+          }
         },
         "nextLink": {
           "description": "If there are more chat message read receipts that can be retrieved, the next link will be populated.",
@@ -1219,6 +1229,7 @@
       }
     },
     "Error": {
+      "description": "Error encountered while performing an operation.",
       "type": "object",
       "properties": {
         "code": {
@@ -1263,12 +1274,27 @@
     "ChatMessagePriority": {
       "description": "The chat message priority.",
       "enum": [
-        "Normal",
-        "High"
+        "normal",
+        "high"
       ],
       "type": "string",
       "x-ms-enum": {
         "name": "ChatMessagePriority",
+        "modelAsString": true
+      }
+    },
+    "ChatMessageType": {
+      "description": "The chat message type.",
+      "enum": [
+        "text",
+        "html",
+        "topicUpdated",
+        "participantAdded",
+        "participantRemoved"
+      ],
+      "type": "string",
+      "x-ms-enum": {
+        "name": "ChatMessageType",
         "modelAsString": true
       }
     },
@@ -1291,116 +1317,31 @@
           "description": "The display name of the chat message sender. This property is used to populate sender name for push notifications.",
           "type": "string",
           "example": "Bob Admin"
+        },
+        "type": {
+          "$ref": "#/definitions/ChatMessageType"
         }
       }
     },
     "SendChatMessageResult": {
       "description": "Result of the send message operation.",
+      "required": [
+        "id"
+      ],
       "type": "object",
       "properties": {
         "id": {
           "description": "A server-generated message id.",
           "type": "string",
-          "readOnly": true,
           "example": "123456789"
-        }
-      }
-    },
-    "ChatMessage": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "description": "The id of the chat message. This id is server generated.",
-          "type": "string",
-          "readOnly": true,
-          "example": "123456789"
-        },
-        "type": {
-          "description": "Type of the chat message.\r\n            \r\nPossible values:\r\n    - Text\r\n    - ThreadActivity/TopicUpdate\r\n    - ThreadActivity/AddMember\r\n    - ThreadActivity/DeleteMember",
-          "type": "string",
-          "example": "Text"
-        },
-        "priority": {
-          "$ref": "#/definitions/ChatMessagePriority"
-        },
-        "version": {
-          "description": "Version of the chat message.",
-          "type": "string",
-          "readOnly": true
-        },
-        "content": {
-          "description": "Content of the chat message.",
-          "type": "string",
-          "example": "Come one guys, lets go for lunch together."
-        },
-        "senderDisplayName": {
-          "description": "The display name of the chat message sender. This property is used to populate sender name for push notifications.",
-          "type": "string",
-          "example": "Jane"
-        },
-        "createdOn": {
-          "format": "date-time",
-          "description": "The timestamp when the chat message arrived at the server. The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.",
-          "type": "string",
-          "readOnly": true,
-          "example": "2020-10-30T10:50:50Z"
-        },
-        "senderId": {
-          "description": "The id of the chat message sender.",
-          "type": "string",
-          "readOnly": true,
-          "example": "8:acs:8540c0de-899f-5cce-acb5-3ec493af3800_0e59221d-0c1d-46ae-9544-c963ce56c10b"
-        },
-        "deletedOn": {
-          "format": "date-time",
-          "description": "The timestamp when the chat message was deleted. The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.",
-          "type": "string",
-          "example": "2020-10-30T10:50:50Z"
-        },
-        "editedOn": {
-          "format": "date-time",
-          "description": "The timestamp when the chat message was edited. The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.",
-          "type": "string",
-          "example": "2020-10-30T10:50:50Z"
-        }
-      }
-    },
-    "ChatMessagesCollection": {
-      "description": "Collection of chat messages for a particular chat thread.",
-      "type": "object",
-      "properties": {
-        "value": {
-          "description": "Collection of chat messages.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ChatMessage"
-          },
-          "readOnly": true
-        },
-        "nextLink": {
-          "description": "If there are more chat messages that can be retrieved, the next link will be populated.",
-          "type": "string",
-          "readOnly": true
-        }
-      }
-    },
-    "UpdateChatMessageRequest": {
-      "type": "object",
-      "properties": {
-        "content": {
-          "description": "Chat message content.",
-          "type": "string",
-          "example": "Let's go for lunch together."
-        },
-        "priority": {
-          "$ref": "#/definitions/ChatMessagePriority"
         }
       }
     },
     "ChatParticipant": {
       "description": "A participant of the chat thread.",
       "required": [
-        "id"
+        "id",
+        "shareHistoryTime"
       ],
       "type": "object",
       "properties": {
@@ -1416,14 +1357,145 @@
         },
         "shareHistoryTime": {
           "format": "date-time",
-          "description": "Time from which the chat history is shared with the participant. The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.",
+          "description": "Time from which the chat history is shared with the participant. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.",
           "type": "string",
           "example": "2020-10-30T10:50:50Z"
         }
       }
     },
+    "ChatMessageContent": {
+      "description": "Content of a chat message.",
+      "type": "object",
+      "properties": {
+        "message": {
+          "description": "Chat message content for type \"text\" or \"html\" messages.",
+          "type": "string",
+          "example": "Come one guys, lets go for lunch together."
+        },
+        "topic": {
+          "description": "Chat message content for type \"topicUpdated\" messages.",
+          "type": "string",
+          "example": "Lunch Chat thread"
+        },
+        "participants": {
+          "description": "Chat message content for type \"participantAdded\" or \"participantRemoved\" messages.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ChatParticipant"
+          }
+        },
+        "initiator": {
+          "description": "Chat message content for type \"participantAdded\" or \"participantRemoved\" messages.",
+          "type": "string",
+          "example": "8:acs:8540c0de-899f-5cce-acb5-3ec493af3800_0e59221d-0c1d-46ae-9544-c963ce56c10b"
+        }
+      }
+    },
+    "ChatMessage": {
+      "description": "Chat message.",
+      "required": [
+        "createdOn",
+        "id",
+        "priority",
+        "senderId",
+        "sequenceId",
+        "type",
+        "version"
+      ],
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "The id of the chat message. This id is server generated.",
+          "type": "string",
+          "example": "123456789"
+        },
+        "type": {
+          "$ref": "#/definitions/ChatMessageType"
+        },
+        "priority": {
+          "$ref": "#/definitions/ChatMessagePriority"
+        },
+        "sequenceId": {
+          "description": "Sequence of the chat message in the conversation.",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version of the chat message.",
+          "type": "string"
+        },
+        "content": {
+          "$ref": "#/definitions/ChatMessageContent"
+        },
+        "senderDisplayName": {
+          "description": "The display name of the chat message sender. This property is used to populate sender name for push notifications.",
+          "type": "string",
+          "example": "Jane"
+        },
+        "createdOn": {
+          "format": "date-time",
+          "description": "The timestamp when the chat message arrived at the server. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.",
+          "type": "string",
+          "example": "2020-10-30T10:50:50Z"
+        },
+        "senderId": {
+          "description": "The id of the chat message sender.",
+          "type": "string",
+          "example": "8:acs:8540c0de-899f-5cce-acb5-3ec493af3800_0e59221d-0c1d-46ae-9544-c963ce56c10b"
+        },
+        "deletedOn": {
+          "format": "date-time",
+          "description": "The timestamp (if applicable) when the message was deleted. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.",
+          "type": "string",
+          "example": "2020-10-30T10:50:50Z"
+        },
+        "editedOn": {
+          "format": "date-time",
+          "description": "The last timestamp (if applicable) when the message was edited. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.",
+          "type": "string",
+          "example": "2020-10-30T10:50:50Z"
+        }
+      }
+    },
+    "ChatMessagesCollection": {
+      "description": "Collection of chat messages for a particular chat thread.",
+      "required": [
+        "value"
+      ],
+      "type": "object",
+      "properties": {
+        "value": {
+          "description": "Collection of chat messages.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ChatMessage"
+          }
+        },
+        "nextLink": {
+          "description": "If there are more chat messages that can be retrieved, the next link will be populated.",
+          "type": "string",
+          "readOnly": true
+        }
+      }
+    },
+    "UpdateChatMessageRequest": {
+      "description": "Request payload for updating a chat message.",
+      "type": "object",
+      "properties": {
+        "content": {
+          "description": "Chat message content.",
+          "type": "string",
+          "example": "Let's go for lunch together."
+        },
+        "priority": {
+          "$ref": "#/definitions/ChatMessagePriority"
+        }
+      }
+    },
     "ChatParticipantsCollection": {
       "description": "Collection of participants belong to a particular thread.",
+      "required": [
+        "value"
+      ],
       "type": "object",
       "properties": {
         "value": {
@@ -1456,6 +1528,31 @@
         }
       }
     },
+    "AddChatParticipantsErrors": {
+      "description": "Errors encountered during the addition of the chat participant to the chat thread.",
+      "required": [
+        "invalidParticipants"
+      ],
+      "type": "object",
+      "properties": {
+        "invalidParticipants": {
+          "description": "The participants that failed to be added to the chat thread.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Error"
+          }
+        }
+      }
+    },
+    "AddChatParticipantsResult": {
+      "description": "Result of the add chat participants operation.",
+      "type": "object",
+      "properties": {
+        "errors": {
+          "$ref": "#/definitions/AddChatParticipantsErrors"
+        }
+      }
+    },
     "CreateChatThreadRequest": {
       "description": "Request payload for creating a chat thread.",
       "required": [
@@ -1479,12 +1576,18 @@
       }
     },
     "ChatThread": {
+      "description": "Chat thread.",
+      "required": [
+        "createdBy",
+        "createdOn",
+        "id",
+        "topic"
+      ],
       "type": "object",
       "properties": {
         "id": {
           "description": "Chat thread id.",
           "type": "string",
-          "readOnly": true,
           "example": "19:uni01_uy5ucb66ugp3lrhe7pxso6xx4hsmm3dl6eyjfefv2n6x3rrurpea@thread.v2"
         },
         "topic": {
@@ -1494,26 +1597,25 @@
         },
         "createdOn": {
           "format": "date-time",
-          "description": "The timestamp when the chat thread was created. The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.",
+          "description": "The timestamp when the chat thread was created. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.",
           "type": "string",
-          "readOnly": true,
           "example": "2020-10-30T10:50:50Z"
         },
         "createdBy": {
           "description": "Id of the chat thread owner.",
           "type": "string",
-          "readOnly": true,
           "example": "8:acs:8540c0de-899f-5cce-acb5-3ec493af3800_0e59221d-0c1d-46ae-9544-c963ce56c10b"
         },
         "deletedOn": {
           "format": "date-time",
-          "description": "The timestamp when the chat thread was deleted. The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.",
+          "description": "The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.",
           "type": "string",
           "example": "2020-10-30T10:50:50Z"
         }
       }
     },
     "CreateChatThreadErrors": {
+      "description": "Errors encountered during the creation of the chat thread.",
       "type": "object",
       "properties": {
         "invalidParticipants": {
@@ -1527,9 +1629,10 @@
       }
     },
     "CreateChatThreadResult": {
+      "description": "Result of the create chat thread operation.",
       "type": "object",
       "properties": {
-        "thread": {
+        "chatThread": {
           "$ref": "#/definitions/ChatThread"
         },
         "errors": {
@@ -1538,12 +1641,16 @@
       }
     },
     "ChatThreadInfo": {
+      "description": "Summary information of a chat thread.",
+      "required": [
+        "id",
+        "topic"
+      ],
       "type": "object",
       "properties": {
         "id": {
           "description": "Chat thread id.",
           "type": "string",
-          "readOnly": true,
           "example": "19:uni01_uy5ucb66ugp3lrhe7pxso6xx4hsmm3dl6eyjfefv2n6x3rrurpea@thread.v2"
         },
         "topic": {
@@ -1553,13 +1660,13 @@
         },
         "deletedOn": {
           "format": "date-time",
-          "description": "The timestamp when the chat thread was deleted. The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.",
+          "description": "The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.",
           "type": "string",
           "example": "2020-10-30T10:50:50Z"
         },
         "lastMessageReceivedOn": {
           "format": "date-time",
-          "description": "The timestamp when the last message arrived at the server. The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.",
+          "description": "The timestamp when the last message arrived at the server. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.",
           "type": "string",
           "readOnly": true,
           "example": "2020-10-30T10:50:50Z"
@@ -1568,6 +1675,9 @@
     },
     "ChatThreadsInfoCollection": {
       "description": "Collection of chat threads.",
+      "required": [
+        "value"
+      ],
       "type": "object",
       "properties": {
         "value": {
@@ -1575,8 +1685,7 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/ChatThreadInfo"
-          },
-          "readOnly": true
+          }
         },
         "nextLink": {
           "description": "If there are more chat threads that can be retrieved, the next link will be populated.",
@@ -1586,6 +1695,7 @@
       }
     },
     "UpdateChatThreadRequest": {
+      "description": "Request payload for updating a chat thread.",
       "type": "object",
       "properties": {
         "topic": {

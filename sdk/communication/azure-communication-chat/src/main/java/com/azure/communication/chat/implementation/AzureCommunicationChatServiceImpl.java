@@ -63,7 +63,7 @@ public final class AzureCommunicationChatServiceImpl {
     }
 
     /** The ChatThreadsImpl object to access its operations. */
-    private final ChatThreadImpl chatThreadClient;
+    private final ChatThreadImpl chatThreads;
 
     /**
      * Gets the ChatThreadsImpl object to access its operations.
@@ -71,11 +71,11 @@ public final class AzureCommunicationChatServiceImpl {
      * @return the ChatThreadsImpl object.
      */
     public ChatThreadImpl getChatThreadClient() {
-        return this.chatThreadClient;
+        return this.chatThreads;
     }
 
     /** The ChatsImpl object to access its operations. */
-    private final ChatImpl chatClient;
+    private final ChatImpl chats;
 
     /**
      * Gets the ChatsImpl object to access its operations.
@@ -83,7 +83,7 @@ public final class AzureCommunicationChatServiceImpl {
      * @return the ChatsImpl object.
      */
     public ChatImpl getChatClient() {
-        return this.chatClient;
+        return this.chats;
     }
 
     /** Initializes an instance of AzureCommunicationChatService client. */
@@ -116,7 +116,7 @@ public final class AzureCommunicationChatServiceImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.apiVersion = "2020-11-01-preview3";
-        this.chatThreadClient = new ChatThreadImpl(this);
-        this.chatClient = new ChatImpl(this);
+        this.chatThreads = new ChatThreadImpl(this);
+        this.chats = new ChatImpl(this);
     }
 }

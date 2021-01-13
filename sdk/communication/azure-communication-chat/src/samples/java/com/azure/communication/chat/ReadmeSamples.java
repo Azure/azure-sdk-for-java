@@ -85,7 +85,7 @@ public class ReadmeSamples {
             .setTopic("Topic")
             .setParticipants(participants);
         CreateChatThreadResult result = chatClient.createChatThread(createChatThreadOptions);
-        String chatThreadId = result.getThread().getId();
+        String chatThreadId = result.getChatThread().getId();
     }
 
     /**

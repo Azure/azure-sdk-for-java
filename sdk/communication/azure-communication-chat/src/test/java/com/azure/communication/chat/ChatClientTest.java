@@ -68,7 +68,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
         // Action & Assert
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
-        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
+        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
         assertNotNull(chatThreadClient);
         assertNotNull(chatThreadClient.getChatThreadId());
     }
@@ -83,7 +83,7 @@ public class ChatClientTest extends ChatClientTestBase {
 
         // Action & Assert
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
-        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
+        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
         assertNotNull(chatThreadClient);
         assertNotNull(chatThreadClient.getChatThreadId());
     }
@@ -109,7 +109,7 @@ public class ChatClientTest extends ChatClientTestBase {
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
-        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
+        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
 
         // Action & Assert
         ChatThread chatThread = client.getChatThread(chatThreadClient.getChatThreadId());
@@ -125,7 +125,7 @@ public class ChatClientTest extends ChatClientTestBase {
             firstThreadMember.getId(), secondThreadMember.getId());
 
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
-        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
+        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
 
         // Action & Assert
         ChatThread chatThread = client.getChatThreadWithResponse(chatThreadClient.getChatThreadId(), Context.NONE).getValue();
@@ -162,7 +162,7 @@ public class ChatClientTest extends ChatClientTestBase {
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
-        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
+        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
 
         // Action & Assert
         client.deleteChatThread(chatThreadClient.getChatThreadId());
@@ -176,7 +176,7 @@ public class ChatClientTest extends ChatClientTestBase {
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
         CreateChatThreadResult createChatThreadResult = client.createChatThread(threadRequest);
-        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getThread().getId());
+        ChatThreadClient chatThreadClient = client.getChatThreadClient(createChatThreadResult.getChatThread().getId());
 
         // Action & Assert
         client.deleteChatThreadWithResponse(chatThreadClient.getChatThreadId(), Context.NONE);

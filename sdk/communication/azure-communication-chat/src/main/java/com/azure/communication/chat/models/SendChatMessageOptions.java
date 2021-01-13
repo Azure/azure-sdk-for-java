@@ -29,6 +29,12 @@ public final class SendChatMessageOptions {
     @JsonProperty(value = "senderDisplayName")
     private String senderDisplayName;
 
+    /*
+     * The chat message type.
+     */
+    @JsonProperty(value = "type")
+    private ChatMessageType type;
+
     /**
      * Get the priority property: The chat message priority.
      *
@@ -88,6 +94,26 @@ public final class SendChatMessageOptions {
      */
     public SendChatMessageOptions setSenderDisplayName(String senderDisplayName) {
         this.senderDisplayName = senderDisplayName;
+        return this;
+    }
+
+    /**
+     * Get the type property: The chat message type.
+     *
+     * @return the type value.
+     */
+    public ChatMessageType getType() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: The chat message type.
+     *
+     * @param type the content type, valid options are ChatMessageType.TEXT and ChatMessageType.HTML
+     * @return the SendChatMessageOptions object itself.
+     */
+    public SendChatMessageOptions setType(ChatMessageType type) {
+        this.type = type;
         return this;
     }
 }

@@ -12,39 +12,39 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class CreateChatThreadResult {
     /*
-     * The thread property.
+     * Chat thread.
      */
-    @JsonProperty(value = "thread")
-    private ChatThread thread;
+    @JsonProperty(value = "chatThread")
+    private ChatThread chatThread;
 
     /*
-     * The errors property.
+     * Errors encountered during the creation of the chat thread.
      */
     @JsonProperty(value = "errors")
     private CreateChatThreadErrors errors;
 
     /**
-     * Get the thread property: The thread property.
+     * Get the chatThread property: Chat thread.
      *
-     * @return the thread value.
+     * @return the chatThread value.
      */
-    public ChatThread getThread() {
-        return this.thread;
+    public ChatThread getChatThread() {
+        return this.chatThread;
     }
 
     /**
-     * Set the thread property: The thread property.
+     * Set the chatThread property: Chat thread.
      *
-     * @param thread the thread value to set.
+     * @param chatThread the chatThread value to set.
      * @return the CreateChatThreadResult object itself.
      */
-    public CreateChatThreadResult setThread(ChatThread thread) {
-        this.thread = thread;
+    public CreateChatThreadResult setChatThread(ChatThread chatThread) {
+        this.chatThread = chatThread;
         return this;
     }
 
     /**
-     * Get the errors property: The errors property.
+     * Get the errors property: Errors encountered during the creation of the chat thread.
      *
      * @return the errors value.
      */
@@ -53,7 +53,7 @@ public final class CreateChatThreadResult {
     }
 
     /**
-     * Set the errors property: The errors property.
+     * Set the errors property: Errors encountered during the creation of the chat thread.
      *
      * @param errors the errors value to set.
      * @return the CreateChatThreadResult object itself.
