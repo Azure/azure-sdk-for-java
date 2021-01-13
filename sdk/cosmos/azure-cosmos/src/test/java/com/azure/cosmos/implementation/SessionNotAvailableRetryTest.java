@@ -73,10 +73,10 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         while (locationIterator.hasNext()) {
             DatabaseAccountLocation accountLocation = locationIterator.next();
             preferredLocations1.add(accountLocation.getName());
-            regionalSuffix1.add(getStringDiff(accountLocation.getEndpoint(), TestConfigurations.HOST));
+            regionalSuffix1.add(getRegionalSuffix(accountLocation.getEndpoint(), TestConfigurations.HOST));
         }
 
-        //putting preference in opposite direction than what comes from database account api
+        //putting preference in opposite direction than what came from database account api
         for (int i = preferredLocations1.size() - 1; i >= 0; i--) {
             preferredLocations2.add(preferredLocations1.get(i));
             regionalSuffix2.add(regionalSuffix1.get(i));
@@ -126,7 +126,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         List<String> uris = new ArrayList<>();
         doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
             Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
-            RxDocumentServiceRequest serviceRequest = invocationOnMock.getArgumentAt(1, RxDocumentServiceRequest.class);
             uris.add(uri.getURI().getHost());
             CosmosException cosmosException = BridgeInternal.createCosmosException(404);
             Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
@@ -153,7 +152,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             fail("Request should fail with 404/1002 error");
         } catch (CosmosException ex) {
-            System.out.println("ClientRetryPolicyTest.sessionNotAvailableRetry " + ex.getMessage());
+            assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
         }
 
         HashSet<String> uniqueHost = new HashSet<>();
@@ -164,25 +163,25 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         assertThat(uniqueHost.size()).isEqualTo(preferredLocations.size());
 
 
-        // First region retry from initial request , then retrying per region in clientRetryPolicy and 1 retry at the
-        // last from
-        // RenameCollectionAwareClientRetryPolicy after clearing session token
+        // First regional retries in originating region , then retrying per region in clientRetryPolicy and 1 retry in the
+        // last as per RenameCollectionAwareClientRetryPolicy after clearing session token
         int numberOfRegionRetried = preferredLocations.size() + 2;
 
-        // Calculating approx avg number of retries in each region
+        // Calculating avg number of retries in each region
         int averageRetryBySessionRetryPolicyInOneRegion = uris.size() / numberOfRegionRetried;
 
-        int totalTries = averageRetryBySessionRetryPolicyInOneRegion;
-        // First region retries should be in first preferred region
-        assertThat(uris.get(totalTries / 2)).contains(regionalSuffix.get(0));
+        int totalRetries = averageRetryBySessionRetryPolicyInOneRegion;
+        // First regional retries should be in the first preferred region
+        assertThat(uris.get(totalRetries / 2)).contains(regionalSuffix.get(0));
 
         for (int i = 1; i <= preferredLocations.size(); i++) {
-            assertThat(uris.get(totalTries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(i % regionalSuffix.size()));
-            totalTries = totalTries + averageRetryBySessionRetryPolicyInOneRegion;
+            // Retrying in each region as per preferred region
+            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(i % regionalSuffix.size()));
+            totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
         }
 
         // Last region retries should be in first preferred region
-        assertThat(uris.get(totalTries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(0));
+        assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(0));
     }
 
     @Test(groups = {"simple"}, dataProvider = "preferredRegions")
@@ -220,7 +219,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         List<String> uris = new ArrayList<>();
         doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
             Uri uri = invocationOnMock.getArgumentAt(0, Uri.class);
-            RxDocumentServiceRequest serviceRequest = invocationOnMock.getArgumentAt(1, RxDocumentServiceRequest.class);
             uris.add(uri.getURI().getHost());
             CosmosException cosmosException = BridgeInternal.createCosmosException(404);
             Map<String, String> responseHeaders = (Map<String, String>) FieldUtils.readField(cosmosException,
@@ -247,7 +245,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             fail("Request should fail with 404/1002 error");
         } catch (CosmosException ex) {
-            System.out.println("ClientRetryPolicyTest.sessionNotAvailableRetry " + ex.getMessage());
+            assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
         }
 
         HashSet<String> uniqueHost = new HashSet<>();
@@ -256,36 +254,51 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         }
 
         String masterOrHubRegionSuffix =
-            getStringDiff(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
+            getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
                 TestConfigurations.HOST);
-
-        //First verify we are retrying in first preferred region and master region
-        if (regionalSuffix.get(0).equals(masterOrHubRegionSuffix)) {
-            assertThat(uniqueHost.size()).isEqualTo(1);
-        } else {
-            assertThat(uniqueHost.size()).isEqualTo(2);
-        }
-
-        // First region retry from initial request , then retrying in master/hub region and 1 retry at the last from
+        // First regional retries in originating region, then retrying in master/hub region and 1 retry at the last from
         // RenameCollectionAwareClientRetryPolicy after clearing session token
         int numberOfRegionRetried = 3;
 
         // Calculating approx avg number of retries in each region
         int averageRetryBySessionRetryPolicyInOneRegion = uris.size() / numberOfRegionRetried;
 
-        int totalTries = averageRetryBySessionRetryPolicyInOneRegion;
-        //First region retries should be in first preferred region
-        assertThat(uris.get(totalTries / 2)).contains(regionalSuffix.get(0));
+        int totalRetries = averageRetryBySessionRetryPolicyInOneRegion;
 
-        // Second region retries should be in masterOrHubRegion
-        assertThat(uris.get(totalTries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
-        totalTries = totalTries + averageRetryBySessionRetryPolicyInOneRegion;
+        if (operationType.equals(OperationType.Create)) {
+            assertThat(uniqueHost.size()).isEqualTo(1); // always goes to master region
 
-        //Last region retries should be in first preferred region
-        assertThat(uris.get(totalTries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(0));
+            //First region retries should be in masterOrHubRegionSuffix
+            assertThat(uris.get(totalRetries / 2)).contains(masterOrHubRegionSuffix);
+
+            // Second region retries should be in masterOrHubRegionSuffix
+            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
+            totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
+
+            //Last region retries should be in masterOrHubRegionSuffix
+            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
+        } else {
+            if (regionalSuffix.get(0).equals(masterOrHubRegionSuffix)) {
+                //Verify we are retrying only in master region
+                assertThat(uniqueHost.size()).isEqualTo(1);
+            } else {
+                //Verify we are retrying in first preferred region and master region
+                assertThat(uniqueHost.size()).isEqualTo(2);
+            }
+
+            //First region retries should be in first preferred region
+            assertThat(uris.get(totalRetries / 2)).contains(regionalSuffix.get(0));
+
+            // Second region retries should be in masterOrHubRegion
+            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(masterOrHubRegionSuffix);
+            totalRetries = totalRetries + averageRetryBySessionRetryPolicyInOneRegion;
+
+            //Last region retries should be in first preferred region
+            assertThat(uris.get(totalRetries + (averageRetryBySessionRetryPolicyInOneRegion) / 2)).contains(regionalSuffix.get(0));
+        }
     }
 
-    private String getStringDiff(String str1, String str2) {
+    private String getRegionalSuffix(String str1, String str2) {
         int initialIndex = findInitialIndex(str1, str2);
         int indexFromLast = findIndexFromLast(str1, str2);
         return str1.substring(initialIndex + 1, str1.length() - indexFromLast);
