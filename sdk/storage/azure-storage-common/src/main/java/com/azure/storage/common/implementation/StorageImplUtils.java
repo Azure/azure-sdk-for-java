@@ -297,29 +297,6 @@ public class StorageImplUtils {
     }
 
     /**
-     * Reads data from an input stream and writes it to an output stream.
-     * @param source {@link InputStream source}
-     * @param writeLength The length of data to write.
-     * @param destination {@link OutputStream destination}
-     * @throws IOException If an I/O error occurs.
-     */
-    public static void copyToOutputStream(InputStream source, long writeLength, OutputStream destination)
-        throws IOException {
-        StorageImplUtils.assertNotNull("source", source);
-        StorageImplUtils.assertNotNull("destination", destination);
-
-        final byte[] retrievedBuff = new byte[Constants.BUFFER_COPY_LENGTH];
-        int nextCopy = (int) Math.min(retrievedBuff.length, writeLength);
-        int count = source.read(retrievedBuff, 0, nextCopy);
-
-        while (nextCopy > 0 && count != -1) {
-            destination.write(retrievedBuff, 0, count);
-            nextCopy = (int) Math.min(retrievedBuff.length, writeLength);
-            count = source.read(retrievedBuff, 0, nextCopy);
-        }
-    }
-
-    /**
      * Logs the string to sign if a valid context is provided.
      *
      * @param logger {@link ClientLogger}
