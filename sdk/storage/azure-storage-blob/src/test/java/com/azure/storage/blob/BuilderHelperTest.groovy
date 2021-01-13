@@ -444,7 +444,55 @@ class BuilderHelperTest extends Specification {
             .verifyComplete()
     }
 
-    def "Throws on ambigous credentials"() {
+    def "Does not throw on ambiguous credentials, without AzureSasCredential"(){
+        when:
+        new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildClient()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new SpecializedBlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildBlockBlobClient()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new BlobContainerClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildClient()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new BlobServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(Mock(TokenCredential.class))
+            .sasToken("foo")
+            .buildClient()
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "Throws on ambiguous credentials, with AzureSasCredential"() {
         when:
         new BlobClientBuilder()
             .endpoint(endpoint)
