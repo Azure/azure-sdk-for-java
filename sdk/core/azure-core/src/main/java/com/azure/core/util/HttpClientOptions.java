@@ -11,7 +11,7 @@ import java.time.Duration;
 /**
  * General configuration options for {@link HttpClient HttpClients}.
  */
-public class HttpClientOptions extends ClientOptions {
+public final class HttpClientOptions extends ClientOptions {
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration NO_TIMEOUT = Duration.ZERO;
@@ -40,7 +40,7 @@ public class HttpClientOptions extends ClientOptions {
      * Sets the {@link ProxyOptions proxy options} that the {@link HttpClient} will use.
      *
      * @param proxyOptions The proxy options to use.
-     * @return The update HttpClientOptions object.
+     * @return The updated HttpClientOptions object.
      */
     public HttpClientOptions setProxyOptions(ProxyOptions proxyOptions) {
         this.proxyOptions = proxyOptions;
