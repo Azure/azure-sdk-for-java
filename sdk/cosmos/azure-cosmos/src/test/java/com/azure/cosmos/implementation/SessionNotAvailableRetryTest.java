@@ -54,8 +54,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             .contentResponseOnWriteEnabled(true)
             .directMode()
             .buildAsyncClient();
-        AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(client,
-            "asyncDocumentClient", true);
+        AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(client);
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
         GlobalEndpointManager globalEndpointManager =
             ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
@@ -120,8 +119,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 .preferredRegions(preferredLocations)
                 .buildAsyncClient();
 
-            AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(preferredListClient,
-                "asyncDocumentClient", true);
+            AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(preferredListClient);
             RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
             ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
             StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
@@ -219,8 +217,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 .preferredRegions(preferredLocations)
                 .buildAsyncClient();
 
-            AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(preferredListClient,
-                "asyncDocumentClient", true);
+            AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(preferredListClient);
             RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
             ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
             StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
@@ -338,8 +335,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 .directMode()
                 .buildAsyncClient();
 
-            AsyncDocumentClient asyncDocumentClient = (AsyncDocumentClient) FieldUtils.readField(preferredListClient,
-                "asyncDocumentClient", true);
+            AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(preferredListClient);
             RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
             ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
             StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
