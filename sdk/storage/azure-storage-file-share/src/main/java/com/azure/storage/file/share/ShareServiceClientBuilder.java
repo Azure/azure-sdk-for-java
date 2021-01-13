@@ -10,21 +10,22 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
-import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
+import com.azure.storage.common.implementation.policy.VersionPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
-import com.azure.storage.file.share.implementation.AzureFileStorageBuilder;
+import com.azure.storage.common.sas.CommonSasQueryParameters;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.AzureFileStorageImplBuilder;
 import com.azure.storage.file.share.implementation.util.BuilderHelper;
 
 import java.net.MalformedURLException;
@@ -117,6 +118,7 @@ public final class ShareServiceClientBuilder {
      */
     public ShareServiceAsyncClient buildAsyncClient() {
         ShareServiceVersion serviceVersion = version != null ? version : ShareServiceVersion.getLatest();
+        perCallPolicies.add(0, new VersionPolicy(serviceVersion.getVersion()));
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {
                 return new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential);
@@ -128,11 +130,10 @@ public final class ShareServiceClientBuilder {
             }
         }, retryOptions, logOptions, clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration);
 
-        AzureFileStorageImpl azureFileStorage = new AzureFileStorageBuilder()
+        AzureFileStorageImpl azureFileStorage = new AzureFileStorageImplBuilder()
             .url(endpoint)
             .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .build();
+            .buildClient();
 
         return new ShareServiceAsyncClient(azureFileStorage, accountName, serviceVersion);
     }

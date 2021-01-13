@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.storage.file.share.implementation.models.ShareProtocolSettings;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
@@ -12,9 +13,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Storage service properties.
- */
+/** Storage service properties. */
 @JacksonXmlRootElement(localName = "StorageServiceProperties")
 @Fluent
 public final class ShareServiceProperties {
@@ -51,12 +50,11 @@ public final class ShareServiceProperties {
     /*
      * Protocol settings
      */
-    @JsonProperty(value = "ProtocolSettings")
+    @JsonProperty(value = "Protocol")
     private ShareProtocolSettings protocol;
 
     /**
-     * Get the hourMetrics property: A summary of request statistics grouped by
-     * API in hourly aggregates for files.
+     * Get the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for files.
      *
      * @return the hourMetrics value.
      */
@@ -65,8 +63,7 @@ public final class ShareServiceProperties {
     }
 
     /**
-     * Set the hourMetrics property: A summary of request statistics grouped by
-     * API in hourly aggregates for files.
+     * Set the hourMetrics property: A summary of request statistics grouped by API in hourly aggregates for files.
      *
      * @param hourMetrics the hourMetrics value to set.
      * @return the ShareServiceProperties object itself.
@@ -77,8 +74,7 @@ public final class ShareServiceProperties {
     }
 
     /**
-     * Get the minuteMetrics property: A summary of request statistics grouped
-     * by API in minute aggregates for files.
+     * Get the minuteMetrics property: A summary of request statistics grouped by API in minute aggregates for files.
      *
      * @return the minuteMetrics value.
      */
@@ -87,8 +83,7 @@ public final class ShareServiceProperties {
     }
 
     /**
-     * Set the minuteMetrics property: A summary of request statistics grouped
-     * by API in minute aggregates for files.
+     * Set the minuteMetrics property: A summary of request statistics grouped by API in minute aggregates for files.
      *
      * @param minuteMetrics the minuteMetrics value to set.
      * @return the ShareServiceProperties object itself.

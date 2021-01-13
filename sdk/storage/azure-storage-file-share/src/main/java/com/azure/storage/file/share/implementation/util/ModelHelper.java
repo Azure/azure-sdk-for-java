@@ -3,13 +3,15 @@
 
 package com.azure.storage.file.share.implementation.util;
 
+import com.azure.core.http.HttpHeaders;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
-import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 
 public class ModelHelper {
@@ -106,5 +108,13 @@ public class ModelHelper {
             }
         }
         return protocols;
+    }
+
+    public static ServicesListSharesSegmentHeaders transformListSharesHeaders(HttpHeaders headers) {
+        if (headers == null) {
+            return null;
+        }
+        // TODO : Finish this.
+        return new ServicesListSharesSegmentHeaders();
     }
 }
