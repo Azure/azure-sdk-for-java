@@ -37,8 +37,7 @@ public class CredentialValidator {
         if (usedCredentials.size() > 1) {
             throw logger.logExceptionAsError(new IllegalStateException(
                 "Only one credential should be used. Credentials present: "
-                    + usedCredentials.stream().map(
-                    c -> c instanceof String ? "sasToken" : c.getClass().getName())
+                    + usedCredentials.stream().map(c -> c instanceof String ? "sasToken" : c.getClass().getName())
                     .collect(Collectors.joining(","))
             ));
         }
