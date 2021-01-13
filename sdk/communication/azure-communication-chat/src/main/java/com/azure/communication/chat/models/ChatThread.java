@@ -25,7 +25,7 @@ public final class ChatThread {
 
     /*
      * The timestamp when the chat thread was created. The timestamp is in
-     * ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
@@ -77,7 +77,7 @@ public final class ChatThread {
     }
 
     /**
-     * Get the createdOn property: The timestamp when the chat thread was created. The timestamp is in ISO8601 format:
+     * Get the createdOn property: The timestamp when the chat thread was created. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the createdOn value.
@@ -87,7 +87,7 @@ public final class ChatThread {
     }
 
     /**
-     * Set the createdOn property: The timestamp when the chat thread was created. The timestamp is in ISO8601 format:
+     * Set the createdOn property: The timestamp when the chat thread was created. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @param createdOn the createdOn value to set.

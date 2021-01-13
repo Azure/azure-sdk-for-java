@@ -25,7 +25,7 @@ public final class ChatMessageReadReceipt {
     private String chatMessageId;
 
     /*
-     * Read receipt timestamp. The timestamp is in ISO8601 format:
+     * Read receipt timestamp. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "readOn", access = JsonProperty.Access.WRITE_ONLY)
@@ -72,7 +72,7 @@ public final class ChatMessageReadReceipt {
     }
 
     /**
-     * Get the readOn property: Read receipt timestamp. The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Get the readOn property: Read receipt timestamp. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the readOn value.
      */
@@ -81,7 +81,7 @@ public final class ChatMessageReadReceipt {
     }
 
     /**
-     * Set the readOn property: Read receipt timestamp. The timestamp is in ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * Set the readOn property: Read receipt timestamp. The timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @param readOn the readOn value to set.
      * @return the ChatMessageReadReceipt object itself.

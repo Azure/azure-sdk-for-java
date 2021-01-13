@@ -14,31 +14,31 @@ public final class ChatThread {
     /*
      * Chat thread id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Chat thread topic.
      */
-    @JsonProperty(value = "topic")
+    @JsonProperty(value = "topic", required = true)
     private String topic;
 
     /*
      * The timestamp when the chat thread was created. The timestamp is in
-     * ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "createdOn", required = true)
     private OffsetDateTime createdOn;
 
     /*
      * Id of the chat thread owner.
      */
-    @JsonProperty(value = "createdBy", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "createdBy", required = true)
     private String createdBy;
 
     /*
      * The timestamp when the chat thread was deleted. The timestamp is in
-     * ISO8601 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "deletedOn")
     private OffsetDateTime deletedOn;
@@ -50,6 +50,17 @@ public final class ChatThread {
      */
     public String getId() {
         return this.id;
+    }
+
+    /**
+     * Set the id property: Chat thread id.
+     *
+     * @param id the id value to set.
+     * @return the ChatThread object itself.
+     */
+    public ChatThread setId(String id) {
+        this.id = id;
+        return this;
     }
 
     /**
@@ -73,13 +84,25 @@ public final class ChatThread {
     }
 
     /**
-     * Get the createdOn property: The timestamp when the chat thread was created. The timestamp is in ISO8601 format:
+     * Get the createdOn property: The timestamp when the chat thread was created. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the createdOn value.
      */
     public OffsetDateTime getCreatedOn() {
         return this.createdOn;
+    }
+
+    /**
+     * Set the createdOn property: The timestamp when the chat thread was created. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
+     *
+     * @param createdOn the createdOn value to set.
+     * @return the ChatThread object itself.
+     */
+    public ChatThread setCreatedOn(OffsetDateTime createdOn) {
+        this.createdOn = createdOn;
+        return this;
     }
 
     /**
@@ -92,7 +115,18 @@ public final class ChatThread {
     }
 
     /**
-     * Get the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in ISO8601 format:
+     * Set the createdBy property: Id of the chat thread owner.
+     *
+     * @param createdBy the createdBy value to set.
+     * @return the ChatThread object itself.
+     */
+    public ChatThread setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+        return this;
+    }
+
+    /**
+     * Get the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @return the deletedOn value.
@@ -102,7 +136,7 @@ public final class ChatThread {
     }
 
     /**
-     * Set the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in ISO8601 format:
+     * Set the deletedOn property: The timestamp when the chat thread was deleted. The timestamp is in RFC3339 format:
      * `yyyy-MM-ddTHH:mm:ssZ`.
      *
      * @param deletedOn the deletedOn value to set.

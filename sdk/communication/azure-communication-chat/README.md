@@ -103,7 +103,7 @@ Use the `createChatThread` method to create a chat thread.
 - Use `participants` to list the thread participants to be added to the thread;
 
 `CreateChatThreadResult` is the response returned from creating a chat thread. 
-It contains a `getThread()` method which returns the `ChatThread` object that can be used to get the thread client from which you can get the `ChatThreadClient` for performing operations on the created thread: add participants, send message, etc.
+It contains a `getChatThread()` method which returns the `ChatThread` object that can be used to get the thread client from which you can get the `ChatThreadClient` for performing operations on the created thread: add participants, send message, etc.
 The `ChatThread` object also contains the `getId()` method which retrieves the unique ID of the thread.
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L71-L88 -->
@@ -125,7 +125,7 @@ CreateChatThreadOptions createChatThreadOptions = new CreateChatThreadOptions()
     .setTopic("Topic")
     .setParticipants(participants);
 CreateChatThreadResult result = chatClient.createChatThread(createChatThreadOptions);
-String chatThreadId = result.getThread().getId();
+String chatThreadId = result.getChatThread().getId();
 ```
 
 #### Get a chat thread

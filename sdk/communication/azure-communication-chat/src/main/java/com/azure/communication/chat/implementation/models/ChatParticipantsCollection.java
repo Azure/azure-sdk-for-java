@@ -14,7 +14,7 @@ public final class ChatParticipantsCollection {
     /*
      * Chat participants.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", required = true)
     private List<ChatParticipant> value;
 
     /*

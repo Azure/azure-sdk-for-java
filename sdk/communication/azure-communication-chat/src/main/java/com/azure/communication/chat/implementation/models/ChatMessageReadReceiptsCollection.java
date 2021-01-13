@@ -4,17 +4,17 @@
 
 package com.azure.communication.chat.implementation.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ChatMessageReadReceiptsCollection model. */
-@Immutable
+@Fluent
 public final class ChatMessageReadReceiptsCollection {
     /*
      * Collection of chat message read receipts.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "value", required = true)
     private List<ChatMessageReadReceipt> value;
 
     /*
@@ -31,6 +31,17 @@ public final class ChatMessageReadReceiptsCollection {
      */
     public List<ChatMessageReadReceipt> getValue() {
         return this.value;
+    }
+
+    /**
+     * Set the value property: Collection of chat message read receipts.
+     *
+     * @param value the value value to set.
+     * @return the ChatMessageReadReceiptsCollection object itself.
+     */
+    public ChatMessageReadReceiptsCollection setValue(List<ChatMessageReadReceipt> value) {
+        this.value = value;
+        return this;
     }
 
     /**

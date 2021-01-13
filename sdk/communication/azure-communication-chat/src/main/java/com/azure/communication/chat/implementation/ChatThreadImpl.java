@@ -13,6 +13,7 @@ import com.azure.communication.chat.implementation.models.ChatParticipant;
 import com.azure.communication.chat.implementation.models.ChatParticipantsCollection;
 import com.azure.communication.chat.implementation.models.SendChatMessageResult;
 import com.azure.communication.chat.implementation.models.SendReadReceiptRequest;
+import com.azure.communication.chat.models.AddChatParticipantsResult;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
@@ -76,7 +77,7 @@ public final class ChatThreadImpl {
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationCh")
     private interface ChatThreadsService {
-        @Get("/chat/threads/{chatThreadId}/readreceipts")
+        @Get("/chat/threads/{chatThreadId}/readReceipts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<ChatMessageReadReceiptsCollection>> listChatReadReceipts(
@@ -87,8 +88,8 @@ public final class ChatThreadImpl {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Post("/chat/threads/{chatThreadId}/readreceipts")
-        @ExpectedResponses({201})
+        @Post("/chat/threads/{chatThreadId}/readReceipts")
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<Void>> sendChatReadReceipt(
             @HostParam("endpoint") String endpoint,
@@ -169,16 +170,6 @@ public final class ChatThreadImpl {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Post("/chat/threads/{chatThreadId}/participants")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Void>> addChatParticipants(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("chatThreadId") String chatThreadId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AddChatParticipantsOptions addChatParticipantsRequest,
-            Context context);
-
         @Delete("/chat/threads/{chatThreadId}/participants/{chatParticipantId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ErrorException.class)
@@ -187,6 +178,16 @@ public final class ChatThreadImpl {
             @PathParam("chatThreadId") String chatThreadId,
             @PathParam("chatParticipantId") String chatParticipantId,
             @QueryParam("api-version") String apiVersion,
+            Context context);
+
+        @Post("/chat/threads/{chatThreadId}/participants/:add")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ErrorException.class)
+        Mono<Response<AddChatParticipantsResult>> addChatParticipants(
+            @HostParam("endpoint") String endpoint,
+            @PathParam("chatThreadId") String chatThreadId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") AddChatParticipantsOptions addChatParticipantsRequest,
             Context context);
 
         @Patch("/chat/threads/{chatThreadId}")
@@ -627,7 +628,7 @@ public final class ChatThreadImpl {
      *
      * @param chatThreadId The thread id of the message.
      * @param maxPageSize  The maximum number of messages to be returned per page.
-     * @param startTime    The earliest point in time to get messages up to. The timestamp should be in ISO8601 format:
+     * @param startTime    The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *                     `yyyy-MM-ddTHH:mm:ssZ`.
      * @return a list of messages from a thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -662,7 +663,7 @@ public final class ChatThreadImpl {
      *
      * @param chatThreadId The thread id of the message.
      * @param maxPageSize  The maximum number of messages to be returned per page.
-     * @param startTime    The earliest point in time to get messages up to. The timestamp should be in ISO8601 format:
+     * @param startTime    The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *                     `yyyy-MM-ddTHH:mm:ssZ`.
      * @param context      The context to associate with this operation.
      * @return a list of messages from a thread.
@@ -696,7 +697,7 @@ public final class ChatThreadImpl {
      *
      * @param chatThreadId The thread id of the message.
      * @param maxPageSize  The maximum number of messages to be returned per page.
-     * @param startTime    The earliest point in time to get messages up to. The timestamp should be in ISO8601 format:
+     * @param startTime    The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *                     `yyyy-MM-ddTHH:mm:ssZ`.
      * @return a list of messages from a thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -716,7 +717,7 @@ public final class ChatThreadImpl {
      *
      * @param chatThreadId The thread id of the message.
      * @param maxPageSize  The maximum number of messages to be returned per page.
-     * @param startTime    The earliest point in time to get messages up to. The timestamp should be in ISO8601 format:
+     * @param startTime    The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *                     `yyyy-MM-ddTHH:mm:ssZ`.
      * @param context      The context to associate with this operation.
      * @return a list of messages from a thread.
@@ -756,7 +757,7 @@ public final class ChatThreadImpl {
      *
      * @param chatThreadId The thread id of the message.
      * @param maxPageSize  The maximum number of messages to be returned per page.
-     * @param startTime    The earliest point in time to get messages up to. The timestamp should be in ISO8601 format:
+     * @param startTime    The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *                     `yyyy-MM-ddTHH:mm:ssZ`.
      * @return a list of messages from a thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -774,7 +775,7 @@ public final class ChatThreadImpl {
      *
      * @param chatThreadId The thread id of the message.
      * @param maxPageSize  The maximum number of messages to be returned per page.
-     * @param startTime    The earliest point in time to get messages up to. The timestamp should be in ISO8601 format:
+     * @param startTime    The earliest point in time to get messages up to. The timestamp should be in RFC3339 format:
      *                     `yyyy-MM-ddTHH:mm:ssZ`.
      * @param context      The context to associate with this operation.
      * @return a list of messages from a thread.
@@ -928,7 +929,7 @@ public final class ChatThreadImpl {
      *
      * @param chatThreadId             The thread id to which the message was sent.
      * @param chatMessageId            The message id.
-     * @param updateChatMessageRequest Details of the request to update the message.
+     * @param updateChatMessageRequest Request payload for updating a chat message.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException           thrown if the request is rejected by server.
@@ -953,7 +954,7 @@ public final class ChatThreadImpl {
      *
      * @param chatThreadId             The thread id to which the message was sent.
      * @param chatMessageId            The message id.
-     * @param updateChatMessageRequest Details of the request to update the message.
+     * @param updateChatMessageRequest Request payload for updating a chat message.
      * @param context                  The context to associate with this operation.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -980,7 +981,7 @@ public final class ChatThreadImpl {
      *
      * @param chatThreadId             The thread id to which the message was sent.
      * @param chatMessageId            The message id.
-     * @param updateChatMessageRequest Details of the request to update the message.
+     * @param updateChatMessageRequest Request payload for updating a chat message.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException           thrown if the request is rejected by server.
@@ -998,7 +999,7 @@ public final class ChatThreadImpl {
      *
      * @param chatThreadId             The thread id to which the message was sent.
      * @param chatMessageId            The message id.
-     * @param updateChatMessageRequest Details of the request to update the message.
+     * @param updateChatMessageRequest Request payload for updating a chat message.
      * @param context                  The context to associate with this operation.
      * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1020,7 +1021,7 @@ public final class ChatThreadImpl {
      *
      * @param chatThreadId             The thread id to which the message was sent.
      * @param chatMessageId            The message id.
-     * @param updateChatMessageRequest Details of the request to update the message.
+     * @param updateChatMessageRequest Request payload for updating a chat message.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException           thrown if the request is rejected by server.
      * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
@@ -1036,7 +1037,7 @@ public final class ChatThreadImpl {
      *
      * @param chatThreadId             The thread id to which the message was sent.
      * @param chatMessageId            The message id.
-     * @param updateChatMessageRequest Details of the request to update the message.
+     * @param updateChatMessageRequest Request payload for updating a chat message.
      * @param context                  The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException           thrown if the request is rejected by server.
@@ -1420,116 +1421,6 @@ public final class ChatThreadImpl {
     }
 
     /**
-     * Adds thread participants to a thread. If participants already exist, no change occurs.
-     *
-     * @param chatThreadId               Id of the thread to add participants to.
-     * @param addChatParticipantsRequest Participants to be added to the thread.
-     * @return the completion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addChatParticipantsWithResponseAsync(
-        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
-        return FluxUtil.withContext(
-            context ->
-                service.addChatParticipants(
-                    this.client.getEndpoint(),
-                    chatThreadId,
-                    this.client.getApiVersion(),
-                    addChatParticipantsRequest,
-                    context));
-    }
-
-    /**
-     * Adds thread participants to a thread. If participants already exist, no change occurs.
-     *
-     * @param chatThreadId               Id of the thread to add participants to.
-     * @param addChatParticipantsRequest Participants to be added to the thread.
-     * @param context                    The context to associate with this operation.
-     * @return the completion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addChatParticipantsWithResponseAsync(
-        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
-        return service.addChatParticipants(
-            this.client.getEndpoint(),
-            chatThreadId,
-            this.client.getApiVersion(),
-            addChatParticipantsRequest,
-            context);
-    }
-
-    /**
-     * Adds thread participants to a thread. If participants already exist, no change occurs.
-     *
-     * @param chatThreadId               Id of the thread to add participants to.
-     * @param addChatParticipantsRequest Participants to be added to the thread.
-     * @return the completion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addChatParticipantsAsync(
-        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
-        return addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Adds thread participants to a thread. If participants already exist, no change occurs.
-     *
-     * @param chatThreadId               Id of the thread to add participants to.
-     * @param addChatParticipantsRequest Participants to be added to the thread.
-     * @param context                    The context to associate with this operation.
-     * @return the completion.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> addChatParticipantsAsync(
-        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
-        return addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Adds thread participants to a thread. If participants already exist, no change occurs.
-     *
-     * @param chatThreadId               Id of the thread to add participants to.
-     * @param addChatParticipantsRequest Participants to be added to the thread.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addChatParticipants(String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
-        addChatParticipantsAsync(chatThreadId, addChatParticipantsRequest).block();
-    }
-
-    /**
-     * Adds thread participants to a thread. If participants already exist, no change occurs.
-     *
-     * @param chatThreadId               Id of the thread to add participants to.
-     * @param addChatParticipantsRequest Participants to be added to the thread.
-     * @param context                    The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void addChatParticipants(
-        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
-        addChatParticipantsAsync(chatThreadId, addChatParticipantsRequest, context).block();
-    }
-
-    /**
      * Remove a participant from a thread.
      *
      * @param chatThreadId      Thread id to remove the participant from.
@@ -1629,6 +1520,133 @@ public final class ChatThreadImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void removeChatParticipant(String chatThreadId, String chatParticipantId, Context context) {
         removeChatParticipantAsync(chatThreadId, chatParticipantId, context).block();
+    }
+
+    /**
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
+     *
+     * @param chatThreadId               Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Participants to be added to the thread.
+     * @return result of the add chat participants operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException           thrown if the request is rejected by server.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AddChatParticipantsResult>> addChatParticipantsWithResponseAsync(
+        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
+        return FluxUtil.withContext(
+            context ->
+                service.addChatParticipants(
+                    this.client.getEndpoint(),
+                    chatThreadId,
+                    this.client.getApiVersion(),
+                    addChatParticipantsRequest,
+                    context));
+    }
+
+    /**
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
+     *
+     * @param chatThreadId               Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Participants to be added to the thread.
+     * @param context                    The context to associate with this operation.
+     * @return result of the add chat participants operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException           thrown if the request is rejected by server.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AddChatParticipantsResult>> addChatParticipantsWithResponseAsync(
+        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
+        return service.addChatParticipants(
+            this.client.getEndpoint(),
+            chatThreadId,
+            this.client.getApiVersion(),
+            addChatParticipantsRequest,
+            context);
+    }
+
+    /**
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
+     *
+     * @param chatThreadId               Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Participants to be added to the thread.
+     * @return result of the add chat participants operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException           thrown if the request is rejected by server.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AddChatParticipantsResult> addChatParticipantsAsync(
+        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
+        return addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest)
+            .flatMap(
+                (Response<AddChatParticipantsResult> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
+     *
+     * @param chatThreadId               Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Participants to be added to the thread.
+     * @param context                    The context to associate with this operation.
+     * @return result of the add chat participants operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException           thrown if the request is rejected by server.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AddChatParticipantsResult> addChatParticipantsAsync(
+        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
+        return addChatParticipantsWithResponseAsync(chatThreadId, addChatParticipantsRequest, context)
+            .flatMap(
+                (Response<AddChatParticipantsResult> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
+     *
+     * @param chatThreadId               Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Participants to be added to the thread.
+     * @return result of the add chat participants operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException           thrown if the request is rejected by server.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddChatParticipantsResult addChatParticipants(
+        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest) {
+        return addChatParticipantsAsync(chatThreadId, addChatParticipantsRequest).block();
+    }
+
+    /**
+     * Adds thread participants to a thread. If participants already exist, no change occurs.
+     *
+     * @param chatThreadId               Id of the thread to add participants to.
+     * @param addChatParticipantsRequest Participants to be added to the thread.
+     * @param context                    The context to associate with this operation.
+     * @return result of the add chat participants operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException           thrown if the request is rejected by server.
+     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AddChatParticipantsResult addChatParticipants(
+        String chatThreadId, AddChatParticipantsOptions addChatParticipantsRequest, Context context) {
+        return addChatParticipantsAsync(chatThreadId, addChatParticipantsRequest, context).block();
     }
 
     /**
@@ -1740,7 +1758,7 @@ public final class ChatThreadImpl {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
-     * @return the response.
+     * @return a paged collection of chat message read receipts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException           thrown if the request is rejected by server.
      * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
@@ -1764,7 +1782,7 @@ public final class ChatThreadImpl {
      *
      * @param nextLink The nextLink parameter.
      * @param context  The context to associate with this operation.
-     * @return the response.
+     * @return a paged collection of chat message read receipts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException           thrown if the request is rejected by server.
      * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
