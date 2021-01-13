@@ -17,11 +17,6 @@ jobs:
       vmImage: 'ubuntu-18.04'
     steps:
 
-    - template: ../common/pipelines/templates/steps/verify-links.yml
-      parameters:
-        Directory: ""
-        CheckLinkGuidance: $true
-
     # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
     # reports. This means it is available as part of that, but also so that this is not documented in the project report.
     - template: templates/steps/install-reporting-tools.yml
@@ -44,7 +39,8 @@ jobs:
     - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
       # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
       # builds should be sufficient.
-      condition: and(succeededOrFailed(), ne(variables['Build.Reason'], 'PullRequest'))
+      # Only run if building all libraries succeeded.
+      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
       displayName: 'Component Detection'
 
     - task: Maven@3
@@ -97,6 +93,13 @@ jobs:
         Copy-Item eng/common/InterdependencyGraph.html $(Build.ArtifactStagingDirectory)/staging
         Copy-Item data.js $(Build.ArtifactStagingDirectory)/staging
       displayName: 'Copy reports to artifact staging'
+
+    # Run link verification at the end as it will run no matter the pipeline passing or failing.
+    # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
+    - template: ../common/pipelines/templates/steps/verify-links.yml
+      parameters:
+        Directory: ""
+        CheckLinkGuidance: $true
 
     - publish: $(Build.ArtifactStagingDirectory)
       condition: succeededOrFailed()
