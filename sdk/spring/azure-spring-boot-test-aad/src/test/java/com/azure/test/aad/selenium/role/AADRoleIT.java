@@ -8,7 +8,6 @@ import java.security.Principal;
 import java.util.Collections;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,15 +24,9 @@ public class AADRoleIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADRoleIT.class);
     private AADSeleniumITHelper aadSeleniumITHelper;
 
-    @Before
-    public void aadSeleniumITHelperInit() {
-        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-        aadSeleniumITHelper.setDriver();
-        aadSeleniumITHelper.appInit();
-    }
-
     @Test
     public void roleTest() {
+        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
         aadSeleniumITHelper.login();
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
         Assert.assertTrue(httpResponse.contains("home"));
@@ -45,9 +38,7 @@ public class AADRoleIT {
 
     @After
     public void aadSeleniumITHelperDestroy() {
-        if (aadSeleniumITHelper != null) {
-            aadSeleniumITHelper.destroy();
-        }
+        aadSeleniumITHelper.destroy();
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)

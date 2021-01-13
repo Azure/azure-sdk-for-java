@@ -7,23 +7,17 @@ import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_NAME_1;
 import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_1;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
-import com.azure.spring.test.AppRunner;
 import com.azure.test.aad.common.SeleniumITHelper;
-import java.util.HashMap;
 import java.util.Map;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AADSeleniumITHelper extends SeleniumITHelper {
 
     private String username;
     private String password;
-    private static final Map<String, String> DEFAULT_PROPERTIES = new HashMap<>();
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADSeleniumITHelper.class);
 
     static {
         DEFAULT_PROPERTIES.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
@@ -38,6 +32,8 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         password = AAD_USER_PASSWORD_1;
         this.appClass = appClass;
         this.properties = properties;
+        createDriver();
+        createAppRunner();
     }
 
     public void login() {
@@ -62,11 +58,4 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         Assert.assertEquals(username, id);
     }
 
-    @Override
-    public void appInit() {
-        app = new AppRunner(appClass);
-        DEFAULT_PROPERTIES.forEach(app::property);
-        properties.forEach(app::property);
-        this.app.start();
-    }
 }

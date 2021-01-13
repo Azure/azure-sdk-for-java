@@ -30,10 +30,8 @@ public class AADB2CIT {
     private AADB2CSeleniumITHelper aadb2cSeleniumITHelper;
 
     @Before
-    public void aadb2cSeleniumITHelperInitAndSignIn(){
+    public void initAndSignIn() {
         aadb2cSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-        aadb2cSeleniumITHelper.setDriver();
-        aadb2cSeleniumITHelper.appInit();
         aadb2cSeleniumITHelper.signIn();
     }
 
@@ -66,14 +64,11 @@ public class AADB2CIT {
         aadb2cSeleniumITHelper.logout();
         String signInButtonText = aadb2cSeleniumITHelper.getSignInButtonText();
         Assert.assertEquals("Sign in", signInButtonText);
-        aadb2cSeleniumITHelper.destroy();
     }
 
     @After
     public void aadb2cSeleniumITHelperDestroy() {
-        if (aadb2cSeleniumITHelper != null) {
-            aadb2cSeleniumITHelper.destroy();
-        }
+        aadb2cSeleniumITHelper.destroy();
     }
 
     @EnableWebSecurity

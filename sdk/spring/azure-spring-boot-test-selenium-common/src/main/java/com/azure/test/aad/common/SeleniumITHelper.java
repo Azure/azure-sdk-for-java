@@ -7,6 +7,7 @@ import com.azure.spring.test.AppRunner;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 import org.openqa.selenium.WebDriver;
@@ -15,12 +16,13 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public abstract class SeleniumITHelper {
+public class SeleniumITHelper {
     protected AppRunner app;
     protected WebDriver driver;
     protected WebDriverWait wait;
     protected Class<?> appClass;
     protected Map<String, String> properties = Collections.emptyMap();
+    protected static Map<String, String> DEFAULT_PROPERTIES = new HashMap<>();
 
     static {
         init();
@@ -58,24 +60,25 @@ public abstract class SeleniumITHelper {
         }
     }
 
-    public void setDriver() {
+    public void createDriver() {
         if (driver == null) {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--headless");
             options.addArguments("--incognito", "--no-sandbox", "--disable-dev-shm-usage");
-            this.driver = new ChromeDriver(options);
+            driver = new ChromeDriver(options);
             wait = new WebDriverWait(driver, 10);
         }
     }
 
-    public void destroy() {
-        if (driver != null) {
-            this.driver.quit();
-        }
-        if (app != null) {
-            app.close();
-        }
+    public void createAppRunner() {
+        app = new AppRunner(appClass);
+        DEFAULT_PROPERTIES.forEach(app::property);
+        properties.forEach(app::property);
+        app.start();
     }
 
-    public abstract void appInit();
+    public void destroy() {
+        driver.quit();
+        app.close();
+    }
 }

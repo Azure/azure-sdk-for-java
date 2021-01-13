@@ -4,9 +4,12 @@
 package com.azure.test.aad.selenium.access.token.scopes;
 
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -16,17 +19,12 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
 public class AADAccessTokenScopesIT {
 
     private AADSeleniumITHelper aadSeleniumITHelper;
 
-    @Before
-    public void aadSeleniumITHelperInit() {
+    @Test
+    public void testAccessTokenScopes() throws InterruptedException {
         Map<String, String> arguments = new HashMap<>();
         arguments.put(
             "azure.activedirectory.authorization-clients.office.scopes",
@@ -36,12 +34,6 @@ public class AADAccessTokenScopesIT {
             "azure.activedirectory.authorization-clients.graph.scopes",
             "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.AccessAsUser.All");
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, arguments);
-        aadSeleniumITHelper.setDriver();
-        aadSeleniumITHelper.appInit();
-    }
-
-    @Test
-    public void testAccessTokenScopes() throws InterruptedException {
         aadSeleniumITHelper.login();
         String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
         Assert.assertTrue(httpResponse.contains("profile"));
@@ -65,9 +57,7 @@ public class AADAccessTokenScopesIT {
 
     @After
     public void aadSeleniumITHelperDestroy() {
-        if (aadSeleniumITHelper != null) {
-            aadSeleniumITHelper.destroy();
-        }
+        aadSeleniumITHelper.destroy();
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)

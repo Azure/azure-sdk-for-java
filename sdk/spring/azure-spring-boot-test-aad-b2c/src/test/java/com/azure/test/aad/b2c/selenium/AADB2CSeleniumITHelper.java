@@ -2,21 +2,16 @@ package com.azure.test.aad.b2c.selenium;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
-import com.azure.spring.test.AppRunner;
 import com.azure.test.aad.b2c.utils.AADB2CTestUtils;
 import com.azure.test.aad.common.SeleniumITHelper;
-import java.util.HashMap;
 import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class AADB2CSeleniumITHelper extends SeleniumITHelper {
 
     private String userEmail;
     private String userPassword;
-    private static final Map<String, String> DEFAULT_PROPERTIES = new HashMap<>();
 
     static {
         DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.tenant", AADB2CTestUtils.AAD_B2C_TENANT);
@@ -37,21 +32,15 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
         userPassword = AADB2CTestUtils.AAD_B2C_USER_PASSWORD;
         this.appClass = appClass;
         this.properties = properties;
-    }
-
-    @Override
-    public void appInit(){
-        app = new AppRunner(appClass);
-        DEFAULT_PROPERTIES.forEach(app::property);
-        properties.forEach(app::property);
-        this.app.start();
+        createDriver();
+        createAppRunner();
     }
 
     public void signIn() {
         driver.get(app.root());
         wait.until(presenceOfElementLocated(By.id("email"))).sendKeys(userEmail);
         wait.until(presenceOfElementLocated(By.id("password"))).sendKeys(userPassword);
-        wait.until(presenceOfElementLocated(By.cssSelector("button[type='submit']"))).click();
+        wait.until(presenceOfElementLocated(By.id("next"))).click();
         manualRedirection();
     }
 
