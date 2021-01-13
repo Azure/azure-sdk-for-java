@@ -28,10 +28,9 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
     }
 
     public AADB2CSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
+        super(appClass,properties);
         userEmail = AADB2CTestUtils.AAD_B2C_USER_EMAIL;
         userPassword = AADB2CTestUtils.AAD_B2C_USER_PASSWORD;
-        this.appClass = appClass;
-        this.properties = properties;
         createDriver();
         createAppRunner();
     }

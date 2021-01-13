@@ -37,7 +37,7 @@ public class AADRoleIT {
     }
 
     @After
-    public void aadSeleniumITHelperDestroy() {
+    public void destroy() {
         aadSeleniumITHelper.destroy();
     }
 

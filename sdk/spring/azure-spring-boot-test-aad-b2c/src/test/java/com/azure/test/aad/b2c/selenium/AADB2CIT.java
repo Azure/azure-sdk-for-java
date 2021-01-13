@@ -67,7 +67,7 @@ public class AADB2CIT {
     }
 
     @After
-    public void aadb2cSeleniumITHelperDestroy() {
+    public void destroy() {
         aadb2cSeleniumITHelper.destroy();
     }
 

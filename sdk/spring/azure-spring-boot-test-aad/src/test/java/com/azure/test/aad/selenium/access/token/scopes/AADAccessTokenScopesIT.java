@@ -56,7 +56,7 @@ public class AADAccessTokenScopesIT {
     }
 
     @After
-    public void aadSeleniumITHelperDestroy() {
+    public void destroy() {
         aadSeleniumITHelper.destroy();
     }
 

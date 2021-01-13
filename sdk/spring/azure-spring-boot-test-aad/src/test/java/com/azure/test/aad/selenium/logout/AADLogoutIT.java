@@ -30,7 +30,7 @@ public class AADLogoutIT {
     }
 
     @After
-    public void aadSeleniumITHelperDestroy() {
+    public void destroy() {
         aadSeleniumITHelper.destroy();
     }
 

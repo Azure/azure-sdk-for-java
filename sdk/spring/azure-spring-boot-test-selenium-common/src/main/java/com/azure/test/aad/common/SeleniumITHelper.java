@@ -28,6 +28,11 @@ public class SeleniumITHelper {
         init();
     }
 
+    public SeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
+        this.appClass = appClass;
+        this.properties = properties;
+    }
+
     private static void init() {
         final String chromedriverLinux = "chromedriver_linux64";
         final String chromedriverWin32 = "chromedriver_win32.exe";
@@ -60,7 +65,7 @@ public class SeleniumITHelper {
         }
     }
 
-    public void createDriver() {
+    protected void createDriver() {
         if (driver == null) {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--headless");
@@ -70,7 +75,7 @@ public class SeleniumITHelper {
         }
     }
 
-    public void createAppRunner() {
+    protected void createAppRunner() {
         app = new AppRunner(appClass);
         DEFAULT_PROPERTIES.forEach(app::property);
         properties.forEach(app::property);

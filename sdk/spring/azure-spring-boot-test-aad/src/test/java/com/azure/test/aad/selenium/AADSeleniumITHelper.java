@@ -28,19 +28,18 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
     }
 
     public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
+        super(appClass, properties);
         username = AAD_USER_NAME_1;
         password = AAD_USER_PASSWORD_1;
-        this.appClass = appClass;
-        this.properties = properties;
         createDriver();
         createAppRunner();
     }
 
     public void login() {
         driver.get(app.root() + "oauth2/authorization/azure");
-        wait.until(presenceOfElementLocated(By.name("loginfmt"))).sendKeys(username + Keys.ENTER);
-        wait.until(presenceOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
-        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input[type='submit']"))).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("loginfmt"))).sendKeys(username + Keys.ENTER);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='submit']"))).click();
     }
 
     public String httpGet(String endpoint) {
