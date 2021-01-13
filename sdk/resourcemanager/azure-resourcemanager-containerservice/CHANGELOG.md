@@ -1,7 +1,15 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.2.0-beta.1 (Unreleased)
 
+- Updated `api-version` to `2020-11-01`
+- Removed `withNodeImageVersion` method in `ManagedClusterAgentPoolProfileProperties`
+- Removed unused class `Components1Q1Og48SchemasManagedclusterAllof1`
+- Removed unused class `ComponentsQit0EtSchemasManagedclusterpropertiesPropertiesIdentityprofileAdditionalproperties`, it is same as its superclass `UserAssignedIdentity`
+
+## 2.1.0 (2020-11-24)
+
+- Updated core dependency from resources
 
 ## 2.0.0 (2020-10-19)
 

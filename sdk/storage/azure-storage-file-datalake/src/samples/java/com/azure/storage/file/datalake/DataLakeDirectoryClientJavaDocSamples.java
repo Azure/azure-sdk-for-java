@@ -183,4 +183,19 @@ public class DataLakeDirectoryClientJavaDocSamples {
         System.out.println("Directory Client has been renamed");
         // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.renameWithResponse#String-String-DataLakeRequestConditions-DataLakeRequestConditions-Duration-Context
     }
+
+    /**
+     * Code snippets for {@link DataLakeDirectoryClient#listPaths()} and
+     * {@link DataLakeDirectoryClient#listPaths(boolean, boolean, Integer, Duration)}
+     */
+    public void listPaths() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.listPaths
+        client.listPaths().forEach(path -> System.out.printf("Name: %s%n", path.getName()));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.listPaths
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.listPaths#boolean-boolean-Integer-Duration
+        client.listPaths(false, false, 10, timeout)
+            .forEach(path -> System.out.printf("Name: %s%n", path.getName()));
+        // END: com.azure.storage.file.datalake.DataLakeDirectoryClient.listPaths#boolean-boolean-Integer-Duration
+    }
 }

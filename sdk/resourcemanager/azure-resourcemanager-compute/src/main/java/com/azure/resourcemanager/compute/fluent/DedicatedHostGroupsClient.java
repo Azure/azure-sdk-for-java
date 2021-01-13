@@ -12,6 +12,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostGroupInner;
 import com.azure.resourcemanager.compute.models.DedicatedHostGroupUpdate;
+import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -216,6 +217,8 @@ public interface DedicatedHostGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
+     * @param expand The expand expression to apply on the operation. The response shows the list of instance view of
+     *     the dedicated hosts under the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -223,7 +226,23 @@ public interface DedicatedHostGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DedicatedHostGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String hostGroupName);
+        String resourceGroupName, String hostGroupName, InstanceViewTypes expand);
+
+    /**
+     * Retrieves information about a dedicated host group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param hostGroupName The name of the dedicated host group.
+     * @param expand The expand expression to apply on the operation. The response shows the list of instance view of
+     *     the dedicated hosts under the dedicated host group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DedicatedHostGroupInner> getByResourceGroupAsync(
+        String resourceGroupName, String hostGroupName, InstanceViewTypes expand);
 
     /**
      * Retrieves information about a dedicated host group.
@@ -256,6 +275,8 @@ public interface DedicatedHostGroupsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
+     * @param expand The expand expression to apply on the operation. The response shows the list of instance view of
+     *     the dedicated hosts under the dedicated host group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -264,7 +285,7 @@ public interface DedicatedHostGroupsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DedicatedHostGroupInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String hostGroupName, Context context);
+        String resourceGroupName, String hostGroupName, InstanceViewTypes expand, Context context);
 
     /**
      * Lists all of the dedicated host groups in the specified resource group. Use the nextLink property in the response

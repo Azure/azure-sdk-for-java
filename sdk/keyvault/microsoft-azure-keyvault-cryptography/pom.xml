@@ -90,7 +90,7 @@
       <dependency>
         <groupId>org.bouncycastle</groupId>
         <artifactId>bcprov-jdk15on</artifactId>
-        <version>1.66</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
+        <version>1.68</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
         <scope>test</scope>
       </dependency>
     </dependencies>

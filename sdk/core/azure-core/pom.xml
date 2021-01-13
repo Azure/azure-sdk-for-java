@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core</artifactId>
   <packaging>jar</packaging>
-  <version>1.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+  <version>1.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
 
   <name>Microsoft Azure Java Core Library</name>
   <description>This package contains core types for Azure Java clients.</description>
@@ -84,18 +84,18 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.3.11.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+      <version>3.3.12.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.11.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.12.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-tcnative-boringssl-static</artifactId>
-      <version>2.0.34.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
+      <version>2.0.35.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -173,8 +173,8 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.netty:netty-tcnative-boringssl-static:[2.0.34.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
-                <include>io.projectreactor:reactor-core:[3.3.11.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>io.netty:netty-tcnative-boringssl-static:[2.0.35.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.3.12.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
                 <include>com.fasterxml.jackson.dataformat:jackson-dataformat-xml:[2.11.3]</include> <!-- {x-include-update;com.fasterxml.jackson.dataformat:jackson-dataformat-xml;external_dependency} -->
                 <include>com.fasterxml.jackson.datatype:jackson-datatype-jsr310:[2.11.3]</include> <!-- {x-include-update;com.fasterxml.jackson.datatype:jackson-datatype-jsr310;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.30]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->

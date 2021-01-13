@@ -13,6 +13,27 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class ManagedClusterAddonProfileIdentity extends UserAssignedIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAddonProfileIdentity.class);
 
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAddonProfileIdentity withResourceId(String resourceId) {
+        super.withResourceId(resourceId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAddonProfileIdentity withClientId(String clientId) {
+        super.withClientId(clientId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedClusterAddonProfileIdentity withObjectId(String objectId) {
+        super.withObjectId(objectId);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

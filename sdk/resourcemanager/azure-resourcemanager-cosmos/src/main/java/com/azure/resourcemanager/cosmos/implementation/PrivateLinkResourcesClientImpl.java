@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -59,7 +60,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     private interface PrivateLinkResourcesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/privateLinkResources")
@@ -71,9 +72,10 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/privateLinkResources/{groupName}")
@@ -86,6 +88,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             @QueryParam("api-version") String apiVersion,
             @PathParam("accountName") String accountName,
             @PathParam("groupName") String groupName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -122,6 +125,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -132,6 +136,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                             resourceGroupName,
                             apiVersion,
                             accountName,
+                            accept,
                             context))
             .<PagedResponse<PrivateLinkResourceInner>>map(
                 res ->
@@ -174,6 +179,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabaseAccount(
@@ -182,6 +188,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 resourceGroupName,
                 apiVersion,
                 accountName,
+                accept,
                 context)
             .map(
                 res ->
@@ -291,6 +298,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -302,6 +310,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                             apiVersion,
                             accountName,
                             groupName,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -344,6 +353,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
         }
         final String apiVersion = "2019-08-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -353,6 +363,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
                 apiVersion,
                 accountName,
                 groupName,
+                accept,
                 context);
     }
 

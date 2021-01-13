@@ -4,6 +4,8 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.models.CorrelationFilterImpl;
 import com.azure.messaging.servicebus.implementation.models.EmptyRuleActionImpl;
@@ -21,7 +23,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Represents the properties of a rule.
+ * Properties on a rule.
+ *
+ * @see ServiceBusAdministrationAsyncClient#getRule(String, String, String)
+ * @see ServiceBusAdministrationClient#getRule(String, String, String)
  */
 @Fluent
 public class RuleProperties {

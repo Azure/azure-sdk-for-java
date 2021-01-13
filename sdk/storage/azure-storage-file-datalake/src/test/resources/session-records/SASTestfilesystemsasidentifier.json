@@ -108,7 +108,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsfilesystemsasidentifier0546214f888438cbd6406?recursive=false&upn=false&resource=filesystem&sv=2020-02-10&si=0000&sr=c&sig=REDACTED",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsfilesystemsasidentifier0546214f888438cbd6406?recursive=false&upn=false&resource=filesystem&sv=2020-04-08&si=0000&sr=c&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",
@@ -129,7 +129,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsfilesystemsasidentifier0546214f888438cbd6406?recursive=false&upn=false&resource=filesystem&sv=2020-02-10&se=2020-08-28T20%3A22%3A32Z&sr=c&sp=racwdlmeop&sig=REDACTED",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsfilesystemsasidentifier0546214f888438cbd6406?recursive=false&upn=false&resource=filesystem&sv=2020-04-08&se=2020-08-28T20%3A22%3A32Z&sr=c&sp=racwdlmeop&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",

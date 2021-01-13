@@ -49,12 +49,7 @@ public final class LocalCryptographyClientJavaDocCodeSnippets {
      */
     public void encrypt() {
         LocalCryptographyClient cryptographyClient = createClient();
-        byte[] iv = {(byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd, (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04};
-        byte[] authData = {
-            (byte) 0x54, (byte) 0x68, (byte) 0x65, (byte) 0x20, (byte) 0x73, (byte) 0x65, (byte) 0x63, (byte) 0x6f, (byte) 0x6e, (byte) 0x64, (byte) 0x20, (byte) 0x70, (byte) 0x72, (byte) 0x69, (byte) 0x6e, (byte) 0x63,
-            (byte) 0x69, (byte) 0x70, (byte) 0x6c, (byte) 0x65, (byte) 0x20, (byte) 0x6f, (byte) 0x66, (byte) 0x20, (byte) 0x41, (byte) 0x75, (byte) 0x67, (byte) 0x75, (byte) 0x73, (byte) 0x74, (byte) 0x65, (byte) 0x20,
-            (byte) 0x4b, (byte) 0x65, (byte) 0x72, (byte) 0x63, (byte) 0x6b, (byte) 0x68, (byte) 0x6f, (byte) 0x66, (byte) 0x66, (byte) 0x73
-        };
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptionAlgorithm-byte
         byte[] plainText = new byte[100];
         new Random(0x1234567L).nextBytes(plainText);
@@ -62,6 +57,20 @@ public final class LocalCryptographyClientJavaDocCodeSnippets {
         System.out.printf("Received encrypted content of length %d with algorithm %s \n",
             encryptResult.getCipherText().length, encryptResult.getAlgorithm().toString());
         // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptionAlgorithm-byte
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptOptions
+        byte[] plainTextBytes = new byte[100];
+        new Random(0x1234567L).nextBytes(plainTextBytes);
+        byte[] iv = {
+            (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
+            (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
+        };
+        EncryptOptions encryptOptions = EncryptOptions.createAes128CbcOptions(plainTextBytes, iv);
+        EncryptResult encryptedResult = cryptographyClient.encrypt(encryptOptions);
+
+        System.out.printf("Received encrypted content of length %d with algorithm %s \n",
+            encryptedResult.getCipherText().length, encryptedResult.getAlgorithm().toString());
+        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.encrypt#EncryptOptions
     }
 
     /**
@@ -70,11 +79,25 @@ public final class LocalCryptographyClientJavaDocCodeSnippets {
      */
     public void decrypt() {
         LocalCryptographyClient cryptographyClient = createClient();
-        byte[] encryptedData = new byte[100];
+
         // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#EncryptionAlgorithm-byte
+        byte[] encryptedData = new byte[100];
         DecryptResult decryptResult = cryptographyClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptedData);
+
         System.out.printf("Received decrypted content of length %d\n", decryptResult.getPlainText().length);
         // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#EncryptionAlgorithm-byte
+
+        // BEGIN: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#DecryptOptions
+        byte[] encryptedBytes = new byte[100];
+        byte[] iv = {
+            (byte) 0x1a, (byte) 0xf3, (byte) 0x8c, (byte) 0x2d, (byte) 0xc2, (byte) 0xb9, (byte) 0x6f, (byte) 0xfd,
+            (byte) 0xd8, (byte) 0x66, (byte) 0x94, (byte) 0x09, (byte) 0x23, (byte) 0x41, (byte) 0xbc, (byte) 0x04
+        };
+        DecryptOptions decryptOptions = DecryptOptions.createAes128CbcOptions(encryptedBytes, iv);
+        DecryptResult decryptedResult = cryptographyClient.decrypt(decryptOptions);
+
+        System.out.printf("Received decrypted content of length %d\n", decryptedResult.getPlainText().length);
+        // END: com.azure.security.keyvault.keys.cryptography.LocalCryptographyClient.decrypt#DecryptOptions
     }
 
     /**

@@ -221,6 +221,13 @@ public class ApplicationGatewayUrlPathMapInner extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayUrlPathMapInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

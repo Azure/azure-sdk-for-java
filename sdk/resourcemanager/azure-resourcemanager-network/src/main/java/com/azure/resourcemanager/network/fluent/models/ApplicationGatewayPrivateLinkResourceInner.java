@@ -131,6 +131,13 @@ public class ApplicationGatewayPrivateLinkResourceInner extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayPrivateLinkResourceInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

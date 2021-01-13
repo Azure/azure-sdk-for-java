@@ -44,7 +44,7 @@ import org.junit.jupiter.api.Assertions;
 /** Test of load balancer management. */
 public class TestLoadBalancer {
     String testId = "";
-    Region region = Region.US_NORTH_CENTRAL;
+    Region region = Region.US_WEST;
     String groupName = "";
     String lbName = "";
     String[] pipNames = null;

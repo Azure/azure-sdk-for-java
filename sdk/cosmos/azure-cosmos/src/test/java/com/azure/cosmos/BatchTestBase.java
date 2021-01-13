@@ -57,6 +57,11 @@ public class BatchTestBase extends TestSuiteBase {
         return populateTestDoc(partitionKey, 20);
     }
 
+    TestDoc populateTestDoc(String partitionKey, int cost, int minDesiredSize) {
+        String description = StringUtils.repeat("x", minDesiredSize);
+        return new TestDoc(cost + UUID.randomUUID().toString(), cost, description, partitionKey);
+    }
+
     TestDoc populateTestDoc(String partitionKey, int minDesiredSize) {
         String description = StringUtils.repeat("x", minDesiredSize);
         return new TestDoc(UUID.randomUUID().toString(), this.random.nextInt(), description, partitionKey);
@@ -64,6 +69,23 @@ public class BatchTestBase extends TestSuiteBase {
 
     TestDoc getTestDocCopy(TestDoc testDoc) {
         return new TestDoc(testDoc.getId(), testDoc.getCost(), testDoc.getDescription(), testDoc.getStatus());
+    }
+
+    void verifyByRead(CosmosAsyncContainer container, TestDoc doc) {
+        verifyByRead(container, doc, null);
+    }
+
+    void verifyByRead(CosmosAsyncContainer container, TestDoc doc, String eTag) {
+        PartitionKey partitionKey = this.getPartitionKey(doc.getStatus());
+
+        CosmosItemResponse<TestDoc> response = container.readItem(doc.getId(), partitionKey, TestDoc.class).block();
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(response.getItem()).isEqualTo(doc);
+
+        if (eTag != null) {
+            assertThat(response.getETag()).isEqualTo(eTag);
+        }
     }
 
     void verifyByRead(CosmosContainer container, TestDoc doc) {
@@ -255,6 +277,16 @@ public class BatchTestBase extends TestSuiteBase {
         public void setStatus(String status) {
             this.status = status;
         }
+
+        @Override
+        public String toString() {
+            return "TestDoc{" +
+                "id='" + id + '\'' +
+                ", cost=" + cost +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+        }
     }
 
     public static class EventDoc {
@@ -335,6 +367,17 @@ public class BatchTestBase extends TestSuiteBase {
         @Override
         public int hashCode() {
             return Objects.hash(id, clicks, views, type, partitionKey);
+        }
+
+        @Override
+        public String toString() {
+            return "EventDoc{" +
+                "id='" + id + '\'' +
+                ", clicks=" + clicks +
+                ", views=" + views +
+                ", type='" + type + '\'' +
+                ", partitionKey='" + partitionKey + '\'' +
+                '}';
         }
     }
 }

@@ -22,7 +22,7 @@ public interface PrivateEndpointConnections extends SupportsCreating<PrivateEndp
      * Gets a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -33,7 +33,7 @@ public interface PrivateEndpointConnections extends SupportsCreating<PrivateEndp
      * Lists private endpoint connection in workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
@@ -43,7 +43,7 @@ public interface PrivateEndpointConnections extends SupportsCreating<PrivateEndp
      * Delete a private endpoint connection.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request

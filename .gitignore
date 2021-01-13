@@ -38,6 +38,7 @@ extlib/
 # Azure Tooling #
 node_modules
 packages
+__pycache__
 
 # Eclipse #
 *.pydevproject
@@ -90,3 +91,7 @@ nb-configuration.xml
 
 # Scala Stylecheck
 scalastyle-output.xml
+
+# Emacs #
+
+#changebundle.txt#

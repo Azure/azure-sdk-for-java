@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsaccountsastokenonendpoint2233154a7f6bb5e2d243?restype=container&sv=2020-02-10&se=2020-08-28T20%3A23%3A24Z&sp=rc&sig=REDACTED&ss=b&srt=sco",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsaccountsastokenonendpoint2233154a7f6bb5e2d243?restype=container&sv=2020-04-08&se=2020-08-28T20%3A23%3A24Z&sp=rc&sig=REDACTED&ss=b&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",

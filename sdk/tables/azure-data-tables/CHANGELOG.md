@@ -1,6 +1,9 @@
 # Release History
 
-## 12.0.0-beta.3 (Unreleased)
+## 12.0.0-beta.4 (Unreleased)
+
+
+## 12.0.0-beta.3 (2020-11-12)
 
 ### New Features
 
@@ -19,6 +22,11 @@
 - Client methods that accept a `timeout` and/or `context` parameter will use default values if either parameter is set
   to `null`. [#16386](https://github.com/Azure/azure-sdk-for-java/issues/16386)
 - Methods that perform upsert entity operations were mistakenly performing update operations instead.
+
+### Dependency Updates
+
+- Updated dependency version of `azure-core` to 1.10.0.
+- Updated dependency version of `azure-storage-common` to 12.9.0.
 
 ## 12.0.0-beta.2 (2020-10-06)
 

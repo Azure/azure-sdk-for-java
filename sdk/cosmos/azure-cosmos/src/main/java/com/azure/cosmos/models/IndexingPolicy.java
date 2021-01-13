@@ -204,6 +204,9 @@ public final class IndexingPolicy {
         if (this.compositeIndexes == null) {
             this.compositeIndexes = new ArrayList<>();
             ArrayNode compositeIndexes = (ArrayNode) this.jsonSerializable.get(Constants.Properties.COMPOSITE_INDEXES);
+            if (compositeIndexes == null) {
+                return this.compositeIndexes;
+            }
             for (int i = 0; i < compositeIndexes.size(); i++) {
                 ArrayNode compositeIndex = (ArrayNode) compositeIndexes.get(i);
                 ArrayList<CompositePath> compositePaths = new ArrayList<CompositePath>();
