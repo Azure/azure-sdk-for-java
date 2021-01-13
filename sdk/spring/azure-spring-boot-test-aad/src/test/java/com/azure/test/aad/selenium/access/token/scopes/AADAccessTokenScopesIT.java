@@ -24,7 +24,7 @@ public class AADAccessTokenScopesIT {
     private AADSeleniumITHelper aadSeleniumITHelper;
 
     @Test
-    public void testAccessTokenScopes() throws InterruptedException {
+    public void testAccessTokenScopes() {
         Map<String, String> arguments = new HashMap<>();
         arguments.put(
             "azure.activedirectory.authorization-clients.office.scopes",

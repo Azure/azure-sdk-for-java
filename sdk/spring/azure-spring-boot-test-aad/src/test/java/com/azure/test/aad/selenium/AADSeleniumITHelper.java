@@ -28,11 +28,10 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
     }
 
     public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
-        super(appClass, properties);
         username = AAD_USER_NAME_1;
         password = AAD_USER_PASSWORD_1;
         createDriver();
-        createAppRunner();
+        createAppRunner(appClass, properties);
     }
 
     public void login() {

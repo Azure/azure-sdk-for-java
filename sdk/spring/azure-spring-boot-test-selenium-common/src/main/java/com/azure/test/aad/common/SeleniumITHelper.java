@@ -20,17 +20,10 @@ public class SeleniumITHelper {
     protected AppRunner app;
     protected WebDriver driver;
     protected WebDriverWait wait;
-    protected Class<?> appClass;
-    protected Map<String, String> properties = Collections.emptyMap();
     protected static Map<String, String> DEFAULT_PROPERTIES = new HashMap<>();
 
     static {
         init();
-    }
-
-    public SeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
-        this.appClass = appClass;
-        this.properties = properties;
     }
 
     private static void init() {
@@ -75,7 +68,7 @@ public class SeleniumITHelper {
         }
     }
 
-    protected void createAppRunner() {
+    protected void createAppRunner(Class<?> appClass, Map<String, String> properties) {
         app = new AppRunner(appClass);
         DEFAULT_PROPERTIES.forEach(app::property);
         properties.forEach(app::property);
