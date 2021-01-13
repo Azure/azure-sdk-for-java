@@ -54,6 +54,7 @@ public class DataLakeServiceClientBuilder {
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
     private AzureSasCredential azureSasCredential;
+    private String sasToken;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -87,14 +88,15 @@ public class DataLakeServiceClientBuilder {
      */
     public DataLakeServiceAsyncClient buildAsyncClient() {
         if (Objects.isNull(storageSharedKeyCredential) && Objects.isNull(tokenCredential)
-            && Objects.isNull(azureSasCredential)) {
+            && Objects.isNull(azureSasCredential) && Objects.isNull(sasToken)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Data Lake Service Client cannot be accessed "
                 + "anonymously. Please provide a form of authentication"));
         }
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, endpoint, retryOptions, logOptions,
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new DataLakeServiceAsyncClient(pipeline, endpoint, serviceVersion, accountName,
@@ -168,8 +170,12 @@ public class DataLakeServiceClientBuilder {
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public DataLakeServiceClientBuilder sasToken(String sasToken) {
-        return this.credential(new AzureSasCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.")));
+        blobServiceClientBuilder.sasToken(sasToken);
+        this.sasToken = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
+        this.storageSharedKeyCredential = null;
+        this.tokenCredential = null;
+        return this;
     }
 
     /**
