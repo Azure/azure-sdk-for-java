@@ -859,8 +859,7 @@ public final class DigitalTwinsAsyncClient {
                 modelId,
                 includeModelDefinitionOnGet,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE)
-                    .addData(MODEL_ID_TRACING_KEY, modelId))
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(response -> {
                 com.azure.digitaltwins.core.implementation.models.DigitalTwinsModelData modelData = response.getValue();
                 return new SimpleResponse<>(
