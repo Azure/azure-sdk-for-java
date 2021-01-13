@@ -3,8 +3,6 @@
 
 package com.azure.messaging.eventhubs;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
@@ -13,18 +11,21 @@ import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.Exceptions;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * This class contains all code snippets that are used in Event Hubs JavaDocs.
@@ -66,8 +67,10 @@ public class EventHubsJavaDocCodeSamples {
             .consumerGroup("my-consumer-group")
             .buildAsyncConsumerClient();
         // END: com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation
-    }
 
+        producer.close();
+        consumer.close();
+    }
 
     public void instantiateConsumerAsyncClient() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
@@ -191,7 +194,6 @@ public class EventHubsJavaDocCodeSamples {
         // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions
     }
 
-
     /**
      * Code snippet for creating an EventHubConsumer
      */
@@ -199,8 +201,8 @@ public class EventHubsJavaDocCodeSamples {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
         // The required parameters are `consumerGroup`, and a way to authenticate with Event Hubs using credentials.
         EventHubConsumerClient consumer = new EventHubClientBuilder()
-            .connectionString(
-                "Endpoint={eh-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key};Entity-Path={hub-name}")
+            .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
+                + "SharedAccessKey={key};Entity-Path={hub-name}")
             .consumerGroup("$DEFAULT")
             .buildConsumerClient();
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
@@ -245,7 +247,6 @@ public class EventHubsJavaDocCodeSamples {
         }
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration
     }
-
 
     /**
      * Code snippet demonstrating how to create an {@link EventHubProducerAsyncClient}.
@@ -342,13 +343,12 @@ public class EventHubsJavaDocCodeSamples {
         secondEvent.getProperties().put("telemetry", "cpu-temperature");
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-int
-        final Flux<EventData> telemetryEvents = Flux.just(firstEvent, secondEvent);
+        Flux<EventData> telemetryEvents = Flux.just(firstEvent, secondEvent);
 
         // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
         // In this case, all the batches created with these options are limited to 256 bytes.
-        final CreateBatchOptions options = new CreateBatchOptions()
-            .setMaximumSizeInBytes(256);
-        final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
+        CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(256);
+        AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>(
             producer.createBatch(options).block());
 
         // The sample Flux contains two events, but it could be an infinite stream of telemetry events.
@@ -518,14 +518,11 @@ public class EventHubsJavaDocCodeSamples {
         thirdEvent.getProperties().put("telemetry", "fps");
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-int
-
-
-        final List<EventData> telemetryEvents = Arrays.asList(firstEvent, secondEvent, thirdEvent);
+        List<EventData> telemetryEvents = Arrays.asList(firstEvent, secondEvent, thirdEvent);
 
         // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
         // In this case, all the batches created with these options are limited to 256 bytes.
-        final CreateBatchOptions options = new CreateBatchOptions()
-            .setMaximumSizeInBytes(256);
+        CreateBatchOptions options = new CreateBatchOptions().setMaximumSizeInBytes(256);
 
         EventDataBatch currentBatch = producer.createBatch(options);
 
@@ -585,11 +582,12 @@ public class EventHubsJavaDocCodeSamples {
             .consumerGroup("consumer-group")
             .checkpointStore(new SampleCheckpointStore())
             .processEvent(eventContext -> {
-                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId()
-                    + "and sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                System.out.printf("Partition id = %s and sequence number of event = %s%n",
+                    eventContext.getPartitionContext().getPartitionId(),
+                    eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition {}, {}",
+                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
@@ -612,12 +610,13 @@ public class EventHubsJavaDocCodeSamples {
             .checkpointStore(new SampleCheckpointStore())
             .processEventBatch(eventBatchContext -> {
                 eventBatchContext.getEvents().forEach(eventData -> {
-                    System.out.println("Partition id = " + eventBatchContext.getPartitionContext().getPartitionId()
-                        + "and sequence number of event = " + eventData.getSequenceNumber());
+                    System.out.printf("Partition id = %s and sequence number of event = %s%n",
+                        eventBatchContext.getPartitionContext().getPartitionId(),
+                        eventData.getSequenceNumber());
                 });
             }, 50, Duration.ofSeconds(30))
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition {}, {}",
+                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
@@ -635,11 +634,12 @@ public class EventHubsJavaDocCodeSamples {
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .connectionString(connectionString)
             .processEvent(eventContext -> {
-                System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                    + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                System.out.printf("Partition id = %s and sequence number of event = %s%n",
+                    eventContext.getPartitionContext().getPartitionId(),
+                    eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
-                System.out.printf("Error occurred in partition processor for partition {}, {}",
+                System.out.printf("Error occurred in partition processor for partition %s, %s%n",
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })

@@ -3,7 +3,7 @@
 package com.microsoft.azure.test.storage;
 
 
-import com.azure.test.utils.AppRunner;
+import com.azure.spring.test.AppRunner;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 

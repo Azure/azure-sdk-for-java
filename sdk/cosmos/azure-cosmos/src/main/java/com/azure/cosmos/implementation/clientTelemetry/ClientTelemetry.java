@@ -59,7 +59,7 @@ public class ClientTelemetry {
     private HttpClient httpClient;
     private final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1, new DaemonThreadFactory());
     private final Scheduler scheduler = Schedulers.fromExecutor(scheduledExecutorService);
-    private static final Logger logger = LoggerFactory.getLogger(GlobalEndpointManager.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClientTelemetry.class);
     private volatile boolean isClosed;
     private volatile boolean isClientTelemetryEnabled;
     private static String AZURE_VM_METADATA = "http://169.254.169.254:80/metadata/instance?api-version=2020-06-01";
@@ -94,7 +94,7 @@ public class ClientTelemetry {
         return clientTelemetryInfo;
     }
 
-    public static void recordValue(DoubleHistogram doubleHistogram, long value) {
+    public static void recordValue(ConcurrentDoubleHistogram doubleHistogram, long value) {
         try {
             doubleHistogram.recordValue(value);
         } catch (Exception ex) {
@@ -102,7 +102,7 @@ public class ClientTelemetry {
         }
     }
 
-    public static void recordValue(DoubleHistogram doubleHistogram, double value) {
+    public static void recordValue(ConcurrentDoubleHistogram doubleHistogram, double value) {
         try {
             doubleHistogram.recordValue(value);
         } catch (Exception ex) {
@@ -178,7 +178,7 @@ public class ClientTelemetry {
     private void clearDataForNextRun() {
         this.clientTelemetryInfo.getOperationInfoMap().clear();
         this.clientTelemetryInfo.getCacheRefreshInfoMap().clear();
-        for (DoubleHistogram histogram : this.clientTelemetryInfo.getSystemInfoMap().values()) {
+        for (ConcurrentDoubleHistogram histogram : this.clientTelemetryInfo.getSystemInfoMap().values()) {
             histogram.reset();
         }
     }
@@ -217,17 +217,18 @@ public class ClientTelemetry {
         }
     }
 
-    private void fillMetricsInfo(ReportPayload payload, DoubleHistogram histogram) {
-        payload.getMetricInfo().setCount(histogram.getTotalCount());
-        payload.getMetricInfo().setMax(histogram.getMaxValue());
-        payload.getMetricInfo().setMin(histogram.getMinValue());
-        payload.getMetricInfo().setMean(histogram.getMean());
+    private void fillMetricsInfo(ReportPayload payload, ConcurrentDoubleHistogram histogram) {
+        DoubleHistogram copyHistogram = histogram.copy();
+        payload.getMetricInfo().setCount(copyHistogram.getTotalCount());
+        payload.getMetricInfo().setMax(copyHistogram.getMaxValue());
+        payload.getMetricInfo().setMin(copyHistogram.getMinValue());
+        payload.getMetricInfo().setMean(copyHistogram.getMean());
         Map<Double, Double> percentile = new HashMap<>();
-        percentile.put(PERCENTILE_50, histogram.getValueAtPercentile(PERCENTILE_50));
-        percentile.put(PERCENTILE_90, histogram.getValueAtPercentile(PERCENTILE_90));
-        percentile.put(PERCENTILE_95, histogram.getValueAtPercentile(PERCENTILE_95));
-        percentile.put(PERCENTILE_99, histogram.getValueAtPercentile(PERCENTILE_99));
-        percentile.put(PERCENTILE_999, histogram.getValueAtPercentile(PERCENTILE_999));
+        percentile.put(PERCENTILE_50, copyHistogram.getValueAtPercentile(PERCENTILE_50));
+        percentile.put(PERCENTILE_90, copyHistogram.getValueAtPercentile(PERCENTILE_90));
+        percentile.put(PERCENTILE_95, copyHistogram.getValueAtPercentile(PERCENTILE_95));
+        percentile.put(PERCENTILE_99, copyHistogram.getValueAtPercentile(PERCENTILE_99));
+        percentile.put(PERCENTILE_999, copyHistogram.getValueAtPercentile(PERCENTILE_999));
         payload.getMetricInfo().setPercentiles(percentile);
     }
 

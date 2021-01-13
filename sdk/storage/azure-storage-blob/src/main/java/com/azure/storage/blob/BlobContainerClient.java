@@ -145,7 +145,7 @@ public final class BlobContainerClient {
      *
      * @return {@link BlobServiceClient}
      */
-    public BlobServiceClient getServiceAsyncClient() {
+    public BlobServiceClient getServiceClient() {
         return this.client.getServiceClientBuilder().buildClient();
     }
 

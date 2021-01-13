@@ -10,7 +10,7 @@ trigger:
     include:
       - sdk/monitor/
     exclude:
-      - sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor
+      - sdk/monitor/azure-opentelemetry-exporter-azuremonitor
 
 pr:
   branches:
@@ -23,7 +23,7 @@ pr:
     include:
       - sdk/monitor/
     exclude:
-      - sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor
+      - sdk/monitor/azure-opentelemetry-exporter-azuremonitor
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-management.yml
