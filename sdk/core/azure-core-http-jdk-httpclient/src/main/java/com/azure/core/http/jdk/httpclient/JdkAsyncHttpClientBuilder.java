@@ -17,14 +17,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.Executor;
-import java.util.stream.Collectors;
 
 /**
  * Builder to configure and build an instance of the azure-core {@link HttpClient} type using the JDK HttpClient APIs,
@@ -209,15 +207,13 @@ public class JdkAsyncHttpClientBuilder {
         Set<String> allowRestrictedHeaders = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 
         // Combine the set of all allowed restricted headers from both sources
-        allowRestrictedHeaders.addAll(
-            Arrays.stream(allowRestrictedHeadersSystemProperties)
-                .map(String::trim)
-                .collect(Collectors.toSet()));
+        for (String header : allowRestrictedHeadersSystemProperties) {
+            allowRestrictedHeaders.add(header.trim());
+        }
 
-        allowRestrictedHeaders.addAll(
-            Arrays.stream(allowRestrictedHeadersNetProperties)
-                .map(String::trim)
-                .collect(Collectors.toSet()));
+        for (String header : allowRestrictedHeadersNetProperties) {
+            allowRestrictedHeaders.add(header.trim());
+        }
 
         return allowRestrictedHeaders;
     }
