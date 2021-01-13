@@ -203,7 +203,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getDigitalTwin(String digitalTwinId, Class<T> clazz)
     {
-        return getDigitalTwinWithResponse(digitalTwinId, clazz, null)
+        return getDigitalTwinWithResponse(digitalTwinId, clazz)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -459,7 +459,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getRelationship(String digitalTwinId, String relationshipId, Class<T> clazz) {
-        return getRelationshipWithResponse(digitalTwinId, relationshipId, clazz, null)
+        return getRelationshipWithResponse(digitalTwinId, relationshipId, clazz)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -629,7 +629,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public <T> PagedFlux<T> listRelationships(String digitalTwinId, Class<T> clazz) {
-        return listRelationships(digitalTwinId, null, clazz, null);
+        return listRelationships(digitalTwinId, null, clazz);
     }
 
     /**
@@ -797,7 +797,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Mono<Iterable<DigitalTwinsModelData>> createModels(Iterable<String> dtdlModels) {
-        return createModelsWithResponse(dtdlModels, null)
+        return createModelsWithResponse(dtdlModels)
             .map(Response::getValue);
     }
 
@@ -854,7 +854,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsModelData> getModel(String modelId) {
-        return getModelWithResponse(modelId, null)
+        return getModelWithResponse(modelId)
             .map(Response::getValue);
     }
 
@@ -1000,7 +1000,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteModel(String modelId) {
-        return deleteModelWithResponse(modelId, null)
+        return deleteModelWithResponse(modelId)
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -1040,7 +1040,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> decommissionModel(String modelId) {
-        return decommissionModelWithResponse(modelId, null)
+        return decommissionModelWithResponse(modelId)
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -1090,7 +1090,7 @@ public final class DigitalTwinsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Mono<T> getComponent(String digitalTwinId, String componentName, Class<T> clazz) {
-        return getComponentWithResponse(digitalTwinId, componentName, clazz, null)
+        return getComponentWithResponse(digitalTwinId, componentName, clazz)
             .map(DigitalTwinsResponse::getValue);
     }
 
@@ -1332,7 +1332,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createOrReplaceEventRoute(String eventRouteId, DigitalTwinsEventRoute eventRoute)
     {
-        return createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute, null)
+        return createOrReplaceEventRouteWithResponse(eventRouteId, eventRoute)
             .flatMap(voidResponse -> Mono.empty());
     }
 
@@ -1372,7 +1372,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DigitalTwinsEventRoute> getEventRoute(String eventRouteId)
     {
-        return getEventRouteWithResponse(eventRouteId, null)
+        return getEventRouteWithResponse(eventRouteId)
             .map(Response::getValue);
     }
 
@@ -1419,7 +1419,7 @@ public final class DigitalTwinsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteEventRoute(String eventRouteId)
     {
-        return deleteEventRouteWithResponse(eventRouteId, null)
+        return deleteEventRouteWithResponse(eventRouteId)
             .flatMap(voidResponse -> Mono.empty());
     }
 
