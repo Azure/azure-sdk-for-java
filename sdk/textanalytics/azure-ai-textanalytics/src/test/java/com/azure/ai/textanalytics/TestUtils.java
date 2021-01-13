@@ -9,7 +9,7 @@ import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResult
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultPropertiesHelper;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -549,7 +549,7 @@ final class TestUtils {
         Map<HealthcareEntity, HealthcareEntityRelationType> relationTypeMap = new HashMap<>();
         relationTypeMap.put(healthcareEntity3, HealthcareEntityRelationType.QUALIFIER_OF_CONDITION);
         relationTypeMap.put(healthcareEntity5, HealthcareEntityRelationType.TIME_OF_CONDITION);
-        HealthcareEntityPropertiesHelper.setRelatedHealthcareEntities(healthcareEntity4, relationTypeMap);
+        HealthcareEntityPropertiesHelper.setRelatedEntities(healthcareEntity4, relationTypeMap);
 
         // RecognizeHealthcareEntitiesResult
         final AnalyzeHealthcareEntitiesResult healthcareEntitiesResult1 = new AnalyzeHealthcareEntitiesResult(documentId,
@@ -619,7 +619,7 @@ final class TestUtils {
         Map<HealthcareEntity, HealthcareEntityRelationType> relationTypeMap = new HashMap<>();
         relationTypeMap.put(healthcareEntity1, HealthcareEntityRelationType.TIME_OF_CONDITION);
         relationTypeMap.put(healthcareEntity2, HealthcareEntityRelationType.QUALIFIER_OF_CONDITION);
-        HealthcareEntityPropertiesHelper.setRelatedHealthcareEntities(healthcareEntity3, relationTypeMap);
+        HealthcareEntityPropertiesHelper.setRelatedEntities(healthcareEntity3, relationTypeMap);
 
         // RecognizeHealthcareEntitiesResult
         final AnalyzeHealthcareEntitiesResult healthcareEntitiesResult = new AnalyzeHealthcareEntitiesResult("1",
@@ -696,19 +696,19 @@ final class TestUtils {
     /**
      * Helper method that get the expected AnalyzeTasksResult result.
      */
-    static AnalyzeBatchResult getExpectedAnalyzeTasksResult(
+    static AnalyzeBatchTasksResult getExpectedAnalyzeTasksResult(
         IterableStream<RecognizeEntitiesResultCollection> recognizeEntitiesResults,
         IterableStream<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesResults,
         IterableStream<ExtractKeyPhrasesResultCollection> extractKeyPhraseResults) {
 
         // Analyze Tasks result
-        final AnalyzeBatchResult analyzeBatchResult = new AnalyzeBatchResult();
-        AnalyzeBatchResultPropertiesHelper.setStatistics(analyzeBatchResult,
+        final AnalyzeBatchTasksResult analyzeBatchTasksResult = new AnalyzeBatchTasksResult();
+        AnalyzeBatchResultPropertiesHelper.setStatistics(analyzeBatchTasksResult,
             new TextDocumentBatchStatistics(1, 1, 0, 1));
-        AnalyzeBatchResultPropertiesHelper.setEntityRecognitionResults(analyzeBatchResult, recognizeEntitiesResults);
-        AnalyzeBatchResultPropertiesHelper.setPiiEntityRecognitionResults(analyzeBatchResult, recognizePiiEntitiesResults);
-        AnalyzeBatchResultPropertiesHelper.setKeyPhraseExtractionResults(analyzeBatchResult, extractKeyPhraseResults);
-        return analyzeBatchResult;
+        AnalyzeBatchResultPropertiesHelper.setEntityRecognitionResults(analyzeBatchTasksResult, recognizeEntitiesResults);
+        AnalyzeBatchResultPropertiesHelper.setPiiEntityRecognitionResults(analyzeBatchTasksResult, recognizePiiEntitiesResults);
+        AnalyzeBatchResultPropertiesHelper.setKeyPhraseExtractionResults(analyzeBatchTasksResult, extractKeyPhraseResults);
+        return analyzeBatchTasksResult;
     }
 
     /**
@@ -768,11 +768,11 @@ final class TestUtils {
     /**
      * Helper method that get a multiple-pages (AnalyzeTasksResult) list.
      */
-    static List<AnalyzeBatchResult> getExpectedAnalyzeTaskResultListForMultiplePages(int startIndex,
+    static List<AnalyzeBatchTasksResult> getExpectedAnalyzeTaskResultListForMultiplePages(int startIndex,
         int firstPage, int secondPage) {
-        List<AnalyzeBatchResult> analyzeBatchResults = new ArrayList<>();
+        List<AnalyzeBatchTasksResult> analyzeBatchTasksResults = new ArrayList<>();
         // First Page
-        analyzeBatchResults.add(getExpectedAnalyzeTasksResult(
+        analyzeBatchTasksResults.add(getExpectedAnalyzeTasksResult(
             IterableStream.of(asList(getRecognizeEntitiesResultCollectionForPagination(startIndex, firstPage))),
             IterableStream.of(asList(getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage))),
             IterableStream.of(asList(getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage)))
@@ -780,12 +780,12 @@ final class TestUtils {
 
         // Second Page
         startIndex += firstPage;
-        analyzeBatchResults.add(getExpectedAnalyzeTasksResult(
+        analyzeBatchTasksResults.add(getExpectedAnalyzeTasksResult(
             IterableStream.of(asList(getRecognizeEntitiesResultCollectionForPagination(startIndex, secondPage))),
             IterableStream.of(asList(getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage))),
             IterableStream.of(asList(getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage)))
         ));
-        return analyzeBatchResults;
+        return analyzeBatchTasksResults;
     }
 
     /**

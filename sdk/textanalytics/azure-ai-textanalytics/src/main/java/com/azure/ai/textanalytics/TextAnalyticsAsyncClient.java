@@ -7,9 +7,9 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksResult;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
@@ -43,7 +43,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -81,8 +80,8 @@ public final class TextAnalyticsAsyncClient {
     final RecognizeEntityAsyncClient recognizeEntityAsyncClient;
     final RecognizePiiEntityAsyncClient recognizePiiEntityAsyncClient;
     final RecognizeLinkedEntityAsyncClient recognizeLinkedEntityAsyncClient;
-    final AnalyzeHealthcareAsyncClient analyzeHealthcareAsyncClient;
-    final AnalyzeTasksAsyncClient analyzeTasksAsyncClient;
+    final AnalyzeHealthcareEntityAsyncClient analyzeHealthcareEntityAsyncClient;
+    final AnalyzeBatchTasksAsyncClient analyzeBatchTasksAsyncClient;
 
     /**
      * Create a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics services's endpoint. Each
@@ -105,8 +104,8 @@ public final class TextAnalyticsAsyncClient {
         this.recognizeEntityAsyncClient = new RecognizeEntityAsyncClient(service);
         this.recognizePiiEntityAsyncClient = new RecognizePiiEntityAsyncClient(service);
         this.recognizeLinkedEntityAsyncClient = new RecognizeLinkedEntityAsyncClient(service);
-        this.analyzeHealthcareAsyncClient = new AnalyzeHealthcareAsyncClient(service);
-        this.analyzeTasksAsyncClient = new AnalyzeTasksAsyncClient(service);
+        this.analyzeHealthcareEntityAsyncClient = new AnalyzeHealthcareEntityAsyncClient(service);
+        this.analyzeBatchTasksAsyncClient = new AnalyzeBatchTasksAsyncClient(service);
     }
 
     /**
@@ -1089,7 +1088,7 @@ public final class TextAnalyticsAsyncClient {
     public PollerFlux<AnalyzeHealthcareEntitiesOperationResult, PagedFlux<AnalyzeHealthcareEntitiesResultCollection>>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents,
             AnalyzeHealthcareEntitiesOptions options) {
-        return analyzeHealthcareAsyncClient.beginAnalyzeHealthcare(documents, options, Context.NONE);
+        return analyzeHealthcareEntityAsyncClient.beginAnalyzeHealthcare(documents, options, Context.NONE);
     }
 
 
@@ -1105,20 +1104,20 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
      * @param tasks
-     * @param options The additional configurable {@link AnalyzeBatchOptions options} that may be passed when
+     * @param options The additional configurable {@link AnalyzeBatchTasksOptions options} that may be passed when
      * analyzing a collection of tasks.
      *
      * @return A {@link PollerFlux} that polls the analyze a collection of tasks operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
-     * {@link AnalyzeBatchResult}.
+     * {@link AnalyzeBatchTasksResult}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeBatchOperationResult, PagedFlux<AnalyzeBatchResult>> beginAnalyzeBatchTasks(
-        Iterable<String> documents, String language, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options) {
+    public PollerFlux<AnalyzeBatchTasksOperationResult, PagedFlux<AnalyzeBatchTasksResult>> beginAnalyzeBatchTasks(
+        Iterable<String> documents, String language, AnalyzeBatchTasks tasks, AnalyzeBatchTasksOptions options) {
         return beginAnalyzeBatchTasks(
             mapByIndex(documents, (index, value) -> {
                 final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
@@ -1138,20 +1137,20 @@ public final class TextAnalyticsAsyncClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * @param tasks
-     * @param options The additional configurable {@link AnalyzeBatchOptions options} that may be passed when
+     * @param options The additional configurable {@link AnalyzeBatchTasksOptions options} that may be passed when
      * analyzing a collection of tasks.
      *
      * @return A {@link PollerFlux} that polls the analyze a collection of tasks operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
-     * {@link AnalyzeBatchResult}.
+     * {@link AnalyzeBatchTasksResult}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeBatchOperationResult, PagedFlux<AnalyzeBatchResult>> beginAnalyzeBatchTasks(
-        Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options) {
-        return analyzeTasksAsyncClient.beginAnalyzeTasks(documents, tasks, options, Context.NONE);
+    public PollerFlux<AnalyzeBatchTasksOperationResult, PagedFlux<AnalyzeBatchTasksResult>> beginAnalyzeBatchTasks(
+        Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchTasksOptions options) {
+        return analyzeBatchTasksAsyncClient.beginAnalyzeTasks(documents, tasks, options, Context.NONE);
     }
 }

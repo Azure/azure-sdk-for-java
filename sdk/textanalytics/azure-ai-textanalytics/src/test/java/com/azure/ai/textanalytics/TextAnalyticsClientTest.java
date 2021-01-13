@@ -4,12 +4,12 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
-import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationResult;
@@ -1603,12 +1603,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeTasksWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeTasksLroRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>> syncPoller =
+            SyncPoller<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>> syncPoller =
                 client.beginAnalyzeBatchTasks(documents, tasks,
-                    new AnalyzeBatchOptions().setName("Test1").setIncludeStatistics(false),
+                    new AnalyzeBatchTasksOptions().setName("Test1").setIncludeStatistics(false),
                     Context.NONE);
             syncPoller.waitForCompletion();
-            PagedIterable<AnalyzeBatchResult> result = syncPoller.getFinalResult();
+            PagedIterable<AnalyzeBatchTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(false,
                 Arrays.asList(getExpectedAnalyzeTasksResult(
                     IterableStream.of(asList(getRecognizeEntitiesResultCollection())),
@@ -1623,13 +1623,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeTasksPagination(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyzeTasksPaginationRunner((documents, tasks) -> {
-            SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>>
+            SyncPoller<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>>
                 syncPoller = client.beginAnalyzeBatchTasks(documents, tasks,
-                new AnalyzeBatchOptions().setName("Test1")
+                new AnalyzeBatchTasksOptions().setName("Test1")
                     .setIncludeStatistics(false),
                 Context.NONE);
             syncPoller.waitForCompletion();
-            PagedIterable<AnalyzeBatchResult> result = syncPoller.getFinalResult();
+            PagedIterable<AnalyzeBatchTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(false,
                 getExpectedAnalyzeTaskResultListForMultiplePages(0, 20, 2),
                 result.stream().collect(Collectors.toList()));

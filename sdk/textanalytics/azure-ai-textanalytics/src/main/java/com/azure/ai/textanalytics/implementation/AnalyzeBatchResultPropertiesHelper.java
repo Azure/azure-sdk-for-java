@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -11,7 +11,7 @@ import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.util.IterableStream;
 
 /**
- * The helper class to set the non-public properties of an {@link AnalyzeBatchResult} instance.
+ * The helper class to set the non-public properties of an {@link AnalyzeBatchTasksResult} instance.
  */
 public final class AnalyzeBatchResultPropertiesHelper {
     private static AnalyzeTasksResultAccessor accessor;
@@ -19,21 +19,21 @@ public final class AnalyzeBatchResultPropertiesHelper {
     private AnalyzeBatchResultPropertiesHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link AnalyzeBatchResult} instance.
+     * Type defining the methods to set the non-public properties of an {@link AnalyzeBatchTasksResult} instance.
      */
     public interface AnalyzeTasksResultAccessor {
-        void setStatistics(AnalyzeBatchResult analyzeBatchResult,
+        void setStatistics(AnalyzeBatchTasksResult analyzeBatchTasksResult,
             TextDocumentBatchStatistics operationStatistics);
-        void setEntitiesRecognitionResults(AnalyzeBatchResult analyzeBatchResult,
+        void setEntitiesRecognitionResults(AnalyzeBatchTasksResult analyzeBatchTasksResult,
             IterableStream<RecognizeEntitiesResultCollection> entitiesRecognitionResults);
-        void setPiiEntitiesRecognitionResults(AnalyzeBatchResult analyzeBatchResult,
+        void setPiiEntitiesRecognitionResults(AnalyzeBatchTasksResult analyzeBatchTasksResult,
             IterableStream<RecognizePiiEntitiesResultCollection> piiEntitiesRecognitionResults);
-        void setKeyPhrasesExtractionResults(AnalyzeBatchResult analyzeBatchResult,
+        void setKeyPhrasesExtractionResults(AnalyzeBatchTasksResult analyzeBatchTasksResult,
             IterableStream<ExtractKeyPhrasesResultCollection> keyPhrasesExtractionResults);
     }
 
     /**
-     * The method called from {@link AnalyzeBatchResult} to set it's accessor.
+     * The method called from {@link AnalyzeBatchTasksResult} to set it's accessor.
      *
      * @param analyzeTasksResultAccessor The accessor.
      */
@@ -41,23 +41,23 @@ public final class AnalyzeBatchResultPropertiesHelper {
         accessor = analyzeTasksResultAccessor;
     }
 
-    public static void setStatistics(AnalyzeBatchResult analyzeBatchResult,
+    public static void setStatistics(AnalyzeBatchTasksResult analyzeBatchTasksResult,
         TextDocumentBatchStatistics operationStatistics) {
-        accessor.setStatistics(analyzeBatchResult, operationStatistics);
+        accessor.setStatistics(analyzeBatchTasksResult, operationStatistics);
     }
 
-    public static void setEntityRecognitionResults(AnalyzeBatchResult analyzeBatchResult,
+    public static void setEntityRecognitionResults(AnalyzeBatchTasksResult analyzeBatchTasksResult,
         IterableStream<RecognizeEntitiesResultCollection> entityRecognitionResults) {
-        accessor.setEntitiesRecognitionResults(analyzeBatchResult, entityRecognitionResults);
+        accessor.setEntitiesRecognitionResults(analyzeBatchTasksResult, entityRecognitionResults);
     }
 
-    public static void setPiiEntityRecognitionResults(AnalyzeBatchResult analyzeBatchResult,
+    public static void setPiiEntityRecognitionResults(AnalyzeBatchTasksResult analyzeBatchTasksResult,
         IterableStream<RecognizePiiEntitiesResultCollection> piiEntityRecognitionResults) {
-        accessor.setPiiEntitiesRecognitionResults(analyzeBatchResult, piiEntityRecognitionResults);
+        accessor.setPiiEntitiesRecognitionResults(analyzeBatchTasksResult, piiEntityRecognitionResults);
     }
 
-    public static void setKeyPhraseExtractionResults(AnalyzeBatchResult analyzeBatchResult,
+    public static void setKeyPhraseExtractionResults(AnalyzeBatchTasksResult analyzeBatchTasksResult,
         IterableStream<ExtractKeyPhrasesResultCollection> keyPhraseExtractionResults) {
-        accessor.setKeyPhrasesExtractionResults(analyzeBatchResult, keyPhraseExtractionResults);
+        accessor.setKeyPhrasesExtractionResults(analyzeBatchTasksResult, keyPhraseExtractionResults);
     }
 }

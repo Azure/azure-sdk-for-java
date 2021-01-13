@@ -25,12 +25,13 @@ public final class HealthcareEntityPropertiesHelper {
     public interface HealthcareEntityAccessor {
         void setText(HealthcareEntity healthcareEntity, String text);
         void setCategory(HealthcareEntity healthcareEntity, EntityCategory category);
+        void setSubcategory(HealthcareEntity healthcareEntity, String subcategory);
         void setConfidenceScore(HealthcareEntity healthcareEntity, double confidenceScore);
         void setOffset(HealthcareEntity healthcareEntity, int offset);
         void setNegated(HealthcareEntity healthcareEntity, boolean negated);
         void setDataSources(HealthcareEntity healthcareEntity, IterableStream<HealthcareEntityDataSource> dataSources);
-        void setRelatedHealthcareEntities(HealthcareEntity healthcareEntity,
-            Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities);
+        void setRelatedEntities(HealthcareEntity healthcareEntity,
+            Map<HealthcareEntity, HealthcareEntityRelationType> relatedEntities);
     }
 
     /**
@@ -50,6 +51,10 @@ public final class HealthcareEntityPropertiesHelper {
         accessor.setCategory(healthcareEntity, category);
     }
 
+    public static void setSubcategory(HealthcareEntity healthcareEntity, String subcategory) {
+        accessor.setSubcategory(healthcareEntity, subcategory);
+    }
+
     public static void setConfidenceScore(HealthcareEntity healthcareEntity, double confidenceScore) {
         accessor.setConfidenceScore(healthcareEntity, confidenceScore);
     }
@@ -67,8 +72,8 @@ public final class HealthcareEntityPropertiesHelper {
         accessor.setDataSources(healthcareEntity, dataSources);
     }
 
-    public static void setRelatedHealthcareEntities(HealthcareEntity healthcareEntity,
-        Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities) {
-        accessor.setRelatedHealthcareEntities(healthcareEntity, relatedHealthcareEntities);
+    public static void setRelatedEntities(HealthcareEntity healthcareEntity,
+        Map<HealthcareEntity, HealthcareEntityRelationType> relatedEntities) {
+        accessor.setRelatedEntities(healthcareEntity, relatedEntities);
     }
 }

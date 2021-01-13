@@ -9,12 +9,9 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationResul
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.PollerFlux;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Sample demonstrates how to asynchronously cancel a healthcare job.
  */
-public class CancelHealthcareTaskAsync {
+public class CancelAnalyzeHealthcareEntitiesAsync {
     /**
      * Main method to invoke this demo about how to cancel the healthcare long-running operation.
      *

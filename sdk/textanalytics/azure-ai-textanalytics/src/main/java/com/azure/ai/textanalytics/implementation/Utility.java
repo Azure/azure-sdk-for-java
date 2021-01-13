@@ -453,15 +453,15 @@ public final class Utility {
                                 .map(healthcareEntityLink -> {
                                     final HealthcareEntityDataSource healthcareEntityDataSourceOrigin =
                                         new HealthcareEntityDataSource();
-                                    HealthcareEntityDataSourcePropertiesHelper.setDataSource(healthcareEntityDataSourceOrigin,
+                                    HealthcareEntityDataSourcePropertiesHelper.setName(healthcareEntityDataSourceOrigin,
                                         healthcareEntityLink.getDataSource());
-                                    HealthcareEntityDataSourcePropertiesHelper.setDataSourceId(
+                                    HealthcareEntityDataSourcePropertiesHelper.setId(
                                         healthcareEntityDataSourceOrigin, healthcareEntityLink.getId());
                                     return healthcareEntityDataSourceOrigin;
                                 })
                                 .collect(Collectors.toList())));
                         // TODO: can we keep 'null' value for the map or by default we need to use an empty map
-                        HealthcareEntityPropertiesHelper.setRelatedHealthcareEntities(healthcareEntity,
+                        HealthcareEntityPropertiesHelper.setRelatedEntities(healthcareEntity,
                             new HashMap<>());
                         return healthcareEntity;
                     }).collect(Collectors.toList());
@@ -492,7 +492,7 @@ public final class Utility {
                 }
                 healthcareEntities.forEach(healthcareEntity -> {
                     if (entityRelationMap.containsKey(healthcareEntity)) {
-                        HealthcareEntityPropertiesHelper.setRelatedHealthcareEntities(healthcareEntity,
+                        HealthcareEntityPropertiesHelper.setRelatedEntities(healthcareEntity,
                             entityRelationMap.get(healthcareEntity));
                     }
                 });

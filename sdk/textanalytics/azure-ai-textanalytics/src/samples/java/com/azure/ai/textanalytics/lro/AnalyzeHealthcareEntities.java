@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Sample demonstrates how to analyze a healthcare task.
  */
-public class AnalyzeHealthcareTask {
+public class AnalyzeHealthcareEntities {
     /**
      * Main method to invoke this demo about how to begin recognizing the healthcare long-running operation.
      *
@@ -94,11 +94,11 @@ public class AnalyzeHealthcareTask {
                         if (dataSources != null) {
                             dataSources.forEach(dataSource -> System.out.printf(
                                 "\t\tHealthcare data source ID: %s, data source: %s.%n",
-                                dataSource.getDataSourceId(), dataSource.getDataSource()));
+                                dataSource.getId(), dataSource.getName()));
                         }
                         // Entities relationship
                         Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
-                            healthcareEntity.getRelatedHealthcareEntities();
+                            healthcareEntity.getRelatedEntities();
                         if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
                             relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
                                 "\t\tRelated entity: %s, relation type: %s.%n",

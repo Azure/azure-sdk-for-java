@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Sample demonstrates how to cancel a healthcare job.
  */
-public class CancelHealthcareTask {
+public class CancelAnalyzeHealthcareEntities {
     /**
      * Main method to invoke this demo about how to cancel the healthcare long-running operation.
      *

@@ -12,7 +12,7 @@ import com.azure.core.util.IterableStream;
 /**
  * The AnalyzeTasksResult model.
  */
-public final class AnalyzeBatchResult {
+public final class AnalyzeBatchTasksResult {
     private TextDocumentBatchStatistics statistics;
     private IterableStream<RecognizeEntitiesResultCollection> entitiesRecognitionResults;
     private IterableStream<RecognizePiiEntitiesResultCollection> piiEntitiesRecognitionResults;
@@ -22,28 +22,28 @@ public final class AnalyzeBatchResult {
         AnalyzeBatchResultPropertiesHelper.setAccessor(
             new AnalyzeBatchResultPropertiesHelper.AnalyzeTasksResultAccessor() {
                 @Override
-                public void setStatistics(AnalyzeBatchResult analyzeBatchResult,
+                public void setStatistics(AnalyzeBatchTasksResult analyzeBatchTasksResult,
                     TextDocumentBatchStatistics operationStatistics) {
-                    analyzeBatchResult.setStatistics(operationStatistics);
+                    analyzeBatchTasksResult.setStatistics(operationStatistics);
                 }
 
                 @Override
-                public void setEntitiesRecognitionResults(AnalyzeBatchResult analyzeBatchResult,
+                public void setEntitiesRecognitionResults(AnalyzeBatchTasksResult analyzeBatchTasksResult,
                     IterableStream<RecognizeEntitiesResultCollection> entitiesRecognitionResults) {
-                    analyzeBatchResult.setEntitiesRecognitionResults(
+                    analyzeBatchTasksResult.setEntitiesRecognitionResults(
                         entitiesRecognitionResults);
                 }
 
                 @Override
-                public void setPiiEntitiesRecognitionResults(AnalyzeBatchResult analyzeBatchResult,
+                public void setPiiEntitiesRecognitionResults(AnalyzeBatchTasksResult analyzeBatchTasksResult,
                     IterableStream<RecognizePiiEntitiesResultCollection> piiEntitiesRecognitionResults) {
-                    analyzeBatchResult.setPiiEntitiesRecognitionResults(piiEntitiesRecognitionResults);
+                    analyzeBatchTasksResult.setPiiEntitiesRecognitionResults(piiEntitiesRecognitionResults);
                 }
 
                 @Override
-                public void setKeyPhrasesExtractionResults(AnalyzeBatchResult analyzeBatchResult,
+                public void setKeyPhrasesExtractionResults(AnalyzeBatchTasksResult analyzeBatchTasksResult,
                     IterableStream<ExtractKeyPhrasesResultCollection> keyPhrasesExtractionResults) {
-                    analyzeBatchResult.setKeyPhrasesExtractionResults(keyPhrasesExtractionResults);
+                    analyzeBatchTasksResult.setKeyPhrasesExtractionResults(keyPhrasesExtractionResults);
                 }
             });
     }

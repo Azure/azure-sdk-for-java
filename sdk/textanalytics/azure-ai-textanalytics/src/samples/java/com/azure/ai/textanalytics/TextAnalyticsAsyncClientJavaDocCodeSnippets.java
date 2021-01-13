@@ -5,7 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
 import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
@@ -852,10 +852,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                 if (healthcareEntityDataSources != null) {
                                     healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
                                         "\t\tHealthcare data source ID: %s, data source: %s.%n",
-                                        healthcareEntityLink.getDataSourceId(), healthcareEntityLink.getDataSource()));
+                                        healthcareEntityLink.getId(), healthcareEntityLink.getName()));
                                 }
                                 Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
-                                    healthcareEntity.getRelatedHealthcareEntities();
+                                    healthcareEntity.getRelatedEntities();
                                 if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
                                     relatedHealthcareEntities.forEach(
                                         (relatedHealthcareEntity, entityRelationType) -> System.out.printf(
@@ -886,7 +886,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Analyze Tasks
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginAnalyzeBatchTasks(Iterable, com.azure.ai.textanalytics.models.AnalyzeBatchTasks, AnalyzeBatchOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginAnalyzeBatchTasks(Iterable, com.azure.ai.textanalytics.models.AnalyzeBatchTasks, AnalyzeBatchTasksOptions)}
      */
     public void analyzeTasksMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeBatchTasks#Iterable-AnalyzeTasksOptions
@@ -897,7 +897,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         textAnalyticsAsyncClient.beginAnalyzeBatchTasks(documents,
             new AnalyzeBatchTasks().setRecognizeEntityOptions(new RecognizeEntityOptions())
                 .setExtractKeyPhraseOptions(new ExtractKeyPhrasesOptions()),
-            new AnalyzeBatchOptions().setName("{tasks_display_name}"))
+            new AnalyzeBatchTasksOptions().setName("{tasks_display_name}"))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeTasksResultPagedFlux ->
                 analyzeTasksResultPagedFlux.subscribe(analyzeTasksResult -> {

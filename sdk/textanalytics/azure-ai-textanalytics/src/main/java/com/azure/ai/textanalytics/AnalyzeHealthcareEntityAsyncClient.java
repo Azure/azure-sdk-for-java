@@ -52,21 +52,20 @@ import static com.azure.ai.textanalytics.implementation.Utility.parseModelId;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeHealthcareEntitiesResults;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
-class AnalyzeHealthcareAsyncClient {
-    private final ClientLogger logger = new ClientLogger(AnalyzeHealthcareAsyncClient.class);
+class AnalyzeHealthcareEntityAsyncClient {
+    private final ClientLogger logger = new ClientLogger(AnalyzeHealthcareEntityAsyncClient.class);
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create an {@link AnalyzeHealthcareAsyncClient} that sends requests to the Text Analytics services's healthcare
+     * Create an {@link AnalyzeHealthcareEntityAsyncClient} that sends requests to the Text Analytics services's healthcare
      * LRO endpoint.
      *
      * @param service The proxy service used to perform REST calls.
      */
-    AnalyzeHealthcareAsyncClient(TextAnalyticsClientImpl service) {
+    AnalyzeHealthcareEntityAsyncClient(TextAnalyticsClientImpl service) {
         this.service = service;
     }
 

@@ -6,25 +6,20 @@ package com.azure.ai.textanalytics.lro;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
-import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
-import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,7 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Sample demonstrates how to asynchronously analyze a batch of tasks.
  */
-public class AnalyzeTasksAsync {
+public class AnalyzeBatchTasksAsync {
     /**
      * Main method to invoke this demo about how to analyze a batch of tasks.
      *
@@ -63,9 +58,9 @@ public class AnalyzeTasksAsync {
                 .setExtractKeyPhraseOptions(
                     new ExtractKeyPhrasesOptions().setModelVersion("invalidVersion"),
                     new ExtractKeyPhrasesOptions().setModelVersion("latest")),
-            new AnalyzeBatchOptions().setName("{tasks_display_name}"))
+            new AnalyzeBatchTasksOptions().setName("{tasks_display_name}"))
             .flatMap(result -> {
-                AnalyzeBatchOperationResult operationResult = result.getValue();
+                AnalyzeBatchTasksOperationResult operationResult = result.getValue();
                 System.out.printf("Job display name: %s, Successfully completed tasks: %d, in-process tasks: %d, failed tasks: %d, total tasks: %d%n",
                     operationResult.getName(), operationResult.getSuccessfullyCompletedTasksCount(),
                     operationResult.getInProgressTaskCount(), operationResult.getFailedTasksCount(), operationResult.getTotalTasksCount());

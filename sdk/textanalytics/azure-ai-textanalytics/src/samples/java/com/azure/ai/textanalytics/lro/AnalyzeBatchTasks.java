@@ -5,10 +5,9 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
-import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
@@ -32,7 +31,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Sample demonstrates how to analyze a batch of tasks.
  */
-public class AnalyzeTasks {
+public class AnalyzeBatchTasks {
 
     /**
      * Main method to invoke this demo about how to analyze a batch of tasks.
@@ -58,19 +57,19 @@ public class AnalyzeTasks {
             ));
         }
 
-        SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>> syncPoller =
+        SyncPoller<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>> syncPoller =
             client.beginAnalyzeBatchTasks(documents,
-                new AnalyzeBatchTasks()
+                new com.azure.ai.textanalytics.models.AnalyzeBatchTasks()
                     .setRecognizeEntityOptions(new RecognizeEntityOptions())
                     .setExtractKeyPhraseOptions(
                         new ExtractKeyPhrasesOptions().setModelVersion("invalidVersion"),
                         new ExtractKeyPhrasesOptions().setModelVersion("latest")),
-                new AnalyzeBatchOptions().setName("{tasks_display_name}"),
+                new AnalyzeBatchTasksOptions().setName("{tasks_display_name}"),
                 Context.NONE);
 
         // Task operation statistics
         while (syncPoller.poll().getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
-            final AnalyzeBatchOperationResult operationResult = syncPoller.poll().getValue();
+            final AnalyzeBatchTasksOperationResult operationResult = syncPoller.poll().getValue();
             System.out.printf("Job display name: %s, Successfully completed tasks: %d, in-process tasks: %d, failed tasks: %d, total tasks: %d%n",
                 operationResult.getName(), operationResult.getSuccessfullyCompletedTasksCount(),
                 operationResult.getInProgressTaskCount(), operationResult.getFailedTasksCount(),
@@ -79,8 +78,8 @@ public class AnalyzeTasks {
 
         syncPoller.waitForCompletion();
 
-        Iterable<PagedResponse<AnalyzeBatchResult>> pagedResults = syncPoller.getFinalResult().iterableByPage();
-        for (PagedResponse<AnalyzeBatchResult> page : pagedResults) {
+        Iterable<PagedResponse<AnalyzeBatchTasksResult>> pagedResults = syncPoller.getFinalResult().iterableByPage();
+        for (PagedResponse<AnalyzeBatchTasksResult> page : pagedResults) {
             System.out.printf("Response code: %d, Continuation Token: %s.%n", page.getStatusCode(), page.getContinuationToken());
             page.getElements().forEach(analyzeTasksResult -> {
                 IterableStream<RecognizeEntitiesResultCollection> entitiesRecognitionResults =

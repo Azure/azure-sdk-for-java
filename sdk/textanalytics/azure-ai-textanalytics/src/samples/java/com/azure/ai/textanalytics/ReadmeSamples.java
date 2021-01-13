@@ -6,9 +6,9 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
@@ -222,10 +222,10 @@ public class ReadmeSamples {
                     if (healthcareEntityDataSources != null) {
                         healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
                             "\t\tHealthcare data source ID: %s, data source: %s.%n",
-                            healthcareEntityLink.getDataSourceId(), healthcareEntityLink.getDataSource()));
+                            healthcareEntityLink.getId(), healthcareEntityLink.getName()));
                     }
                     Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
-                        healthcareEntity.getRelatedHealthcareEntities();
+                        healthcareEntity.getRelatedEntities();
                     if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
                         relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
                             "\t\tRelated entity: %s, relation type: %s.%n",
@@ -261,12 +261,12 @@ public class ReadmeSamples {
                     + " only complaint I have is the food didn't come fast enough. Overall I highly recommend it!")
         );
 
-        SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>> syncPoller =
+        SyncPoller<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>> syncPoller =
             textAnalyticsClient.beginAnalyzeBatchTasks(documents,
                 new AnalyzeBatchTasks()
                     .setExtractKeyPhraseOptions(new ExtractKeyPhrasesOptions())
                     .setRecognizePiiEntityOptions(new RecognizePiiEntityOptions()),
-                new AnalyzeBatchOptions().setName("{tasks_display_name}"),
+                new AnalyzeBatchTasksOptions().setName("{tasks_display_name}"),
                 Context.NONE);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(analyzeJobState -> {

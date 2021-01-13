@@ -15,11 +15,12 @@ import java.util.Map;
 public final class HealthcareEntity {
     private String text;
     private EntityCategory category;
+    private String subcategory;
     private double confidenceScore;
     private int offset;
     private boolean negated;
     private IterableStream<HealthcareEntityDataSource> dataSources;
-    private Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities;
+    private Map<HealthcareEntity, HealthcareEntityRelationType> relatedEntities;
 
     static {
         HealthcareEntityPropertiesHelper.setAccessor(new HealthcareEntityPropertiesHelper.HealthcareEntityAccessor() {
@@ -31,6 +32,11 @@ public final class HealthcareEntity {
             @Override
             public void setCategory(HealthcareEntity healthcareEntity, EntityCategory category) {
                 healthcareEntity.setCategory(category);
+            }
+
+            @Override
+            public void setSubcategory(HealthcareEntity healthcareEntity, String subcategory) {
+                healthcareEntity.setSubcategory(subcategory);
             }
 
             @Override
@@ -55,9 +61,9 @@ public final class HealthcareEntity {
             }
 
             @Override
-            public void setRelatedHealthcareEntities(HealthcareEntity healthcareEntity,
-                Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities) {
-                healthcareEntity.setRelatedHealthcareEntities(relatedHealthcareEntities);
+            public void setRelatedEntities(HealthcareEntity healthcareEntity,
+                Map<HealthcareEntity, HealthcareEntityRelationType> relatedEntities) {
+                healthcareEntity.setRelatedEntities(relatedEntities);
             }
         });
     }
@@ -78,6 +84,15 @@ public final class HealthcareEntity {
      */
     public EntityCategory getCategory() {
         return this.category;
+    }
+
+    /**
+     * Get the subcategory property: Healthcare entity subcategory, such as DateTime etc.
+     *
+     * @return The subcategory value.
+     */
+    public String getSubcategory() {
+        return this.subcategory;
     }
 
     /**
@@ -122,8 +137,8 @@ public final class HealthcareEntity {
      *
      * @return the related healthcare entities and relation type.
      */
-    public Map<HealthcareEntity, HealthcareEntityRelationType> getRelatedHealthcareEntities() {
-        return Collections.unmodifiableMap(relatedHealthcareEntities);
+    public Map<HealthcareEntity, HealthcareEntityRelationType> getRelatedEntities() {
+        return Collections.unmodifiableMap(relatedEntities);
     }
 
     private void setText(String text) {
@@ -132,6 +147,10 @@ public final class HealthcareEntity {
 
     private void setCategory(EntityCategory category) {
         this.category = category;
+    }
+
+    private void setSubcategory(String subcategory) {
+        this.subcategory = subcategory;
     }
 
     private void setConfidenceScore(double confidenceScore) {
@@ -150,8 +169,7 @@ public final class HealthcareEntity {
         this.dataSources = dataSources;
     }
 
-    private void setRelatedHealthcareEntities(
-        Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities) {
-        this.relatedHealthcareEntities = relatedHealthcareEntities;
+    private void setRelatedEntities(Map<HealthcareEntity, HealthcareEntityRelationType> relatedEntities) {
+        this.relatedEntities = relatedEntities;
     }
 }

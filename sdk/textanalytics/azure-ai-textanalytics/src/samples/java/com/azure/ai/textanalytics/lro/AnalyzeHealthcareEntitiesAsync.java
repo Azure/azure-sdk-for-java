@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * Sample demonstrates how to asynchronously analyze a healthcare task.
  */
-public class AnalyzeHealthcareTaskAsync {
+public class AnalyzeHealthcareEntitiesAsync {
     /**
      * Main method to invoke this demo about how to begin recognizing the healthcare long-running operation.
      *
@@ -80,11 +80,11 @@ public class AnalyzeHealthcareTaskAsync {
                             if (dataSources != null) {
                                 dataSources.forEach(dataSource -> System.out.printf(
                                     "\t\tHealthcare data source ID: %s, data source: %s.%n",
-                                    dataSource.getDataSourceId(), dataSource.getDataSource()));
+                                    dataSource.getId(), dataSource.getName()));
                             }
                             // Entities relationship
                             Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
-                                healthcareEntity.getRelatedHealthcareEntities();
+                                healthcareEntity.getRelatedEntities();
                             if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
                                 relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
                                     "\t\tRelated entity: %s, relation type: %s.%n",

@@ -5,9 +5,9 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOperationResult;
-import com.azure.ai.textanalytics.models.AnalyzeBatchOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
@@ -39,7 +39,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.time.Duration;
 import java.util.Objects;
 
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
@@ -945,7 +944,7 @@ public final class TextAnalyticsClient {
                              PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
         beginAnalyzeHealthcareEntities(Iterable<TextDocumentInput> documents, AnalyzeHealthcareEntitiesOptions options,
             Context context) {
-        return client.analyzeHealthcareAsyncClient.beginAnalyzeHealthcarePagedIterable(documents, options, context)
+        return client.analyzeHealthcareEntityAsyncClient.beginAnalyzeHealthcarePagedIterable(documents, options, context)
             .getSyncPoller();
     }
 
@@ -961,21 +960,21 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
      * @param tasks
-     * @param options The additional configurable {@link AnalyzeBatchOptions options} that may be passed when
+     * @param options The additional configurable {@link AnalyzeBatchTasksOptions options} that may be passed when
      * analyzing a collection of tasks.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the analyze a collection of tasks operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
-     * {@link AnalyzeBatchResult}.
+     * {@link AnalyzeBatchTasksResult}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>> beginAnalyzeBatchTasks(
-        Iterable<String> documents, String language, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options,
+    public SyncPoller<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>> beginAnalyzeBatchTasks(
+        Iterable<String> documents, String language, AnalyzeBatchTasks tasks, AnalyzeBatchTasksOptions options,
         Context context) {
         return null;
     }
@@ -991,23 +990,23 @@ public final class TextAnalyticsClient {
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * @param tasks
-     * @param options The additional configurable {@link AnalyzeBatchOptions options} that may be passed when
+     * @param options The additional configurable {@link AnalyzeBatchTasksOptions options} that may be passed when
      * analyzing a collection of tasks.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
      * @return A {@link SyncPoller} that polls the analyze a collection of tasks operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedIterable} of
-     * {@link AnalyzeBatchResult}.
+     * {@link AnalyzeBatchTasksResult}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<AnalyzeBatchOperationResult, PagedIterable<AnalyzeBatchResult>> beginAnalyzeBatchTasks(
-        Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchOptions options,
+    public SyncPoller<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>> beginAnalyzeBatchTasks(
+        Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchTasksOptions options,
         Context context) {
-        return client.analyzeTasksAsyncClient.beginAnalyzeTasksIterable(documents, tasks, options, context)
+        return client.analyzeBatchTasksAsyncClient.beginAnalyzeTasksIterable(documents, tasks, options, context)
                    .getSyncPoller();
     }
 }

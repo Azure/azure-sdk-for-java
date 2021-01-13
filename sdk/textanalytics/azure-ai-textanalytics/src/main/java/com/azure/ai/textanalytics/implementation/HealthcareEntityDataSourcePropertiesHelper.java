@@ -17,8 +17,8 @@ public final class HealthcareEntityDataSourcePropertiesHelper {
      * Type defining the methods to set the non-public properties of an {@link HealthcareEntityDataSource} instance.
      */
     public interface HealthcareEntityDataSourceAccessor {
-        void setDataSource(HealthcareEntityDataSource healthcareEntityDataSource, String dataSource);
-        void setDataSourceId(HealthcareEntityDataSource healthcareEntityDataSource, String dataSourceId);
+        void setName(HealthcareEntityDataSource healthcareEntityDataSource, String name);
+        void setId(HealthcareEntityDataSource healthcareEntityDataSource, String id);
     }
 
     /**
@@ -30,11 +30,11 @@ public final class HealthcareEntityDataSourcePropertiesHelper {
         accessor = healthcareEntityDataSourceAccessor;
     }
 
-    public static void setDataSource(HealthcareEntityDataSource healthcareEntityDataSource, String dataSource) {
-        accessor.setDataSource(healthcareEntityDataSource, dataSource);
+    public static void setName(HealthcareEntityDataSource healthcareEntityDataSource, String name) {
+        accessor.setName(healthcareEntityDataSource, name);
     }
 
-    public static void setDataSourceId(HealthcareEntityDataSource healthcareEntityDataSource, String dataSourceId) {
-        accessor.setDataSourceId(healthcareEntityDataSource, dataSourceId);
+    public static void setId(HealthcareEntityDataSource healthcareEntityDataSource, String id) {
+        accessor.setId(healthcareEntityDataSource, id);
     }
 }

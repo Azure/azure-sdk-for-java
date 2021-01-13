@@ -11,64 +11,64 @@ public final class HealthcareEntityDataSource {
     /*
      * Entity id in the given source catalog.
      */
-    private String dataSourceId;
+    private String id;
 
     /*
      * Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
      */
-    private String dataSource;
+    private String name;
 
     static {
         HealthcareEntityDataSourcePropertiesHelper.setAccessor(
             new HealthcareEntityDataSourcePropertiesHelper.HealthcareEntityDataSourceAccessor() {
                 @Override
-                public void setDataSource(HealthcareEntityDataSource healthcareEntityDataSource, String dataSource) {
-                    healthcareEntityDataSource.setDataSource(dataSource);
+                public void setName(HealthcareEntityDataSource healthcareEntityDataSource, String name) {
+                    healthcareEntityDataSource.setName(name);
                 }
 
                 @Override
-                public void setDataSourceId(HealthcareEntityDataSource healthcareEntityDataSource,
-                    String dataSourceId) {
-                    healthcareEntityDataSource.setDataSourceId(dataSourceId);
+                public void setId(HealthcareEntityDataSource healthcareEntityDataSource,
+                    String id) {
+                    healthcareEntityDataSource.setId(id);
                 }
             });
     }
 
     /**
-     * Get the dataSource property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
+     * Get the data source name property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
      *
-     * @return the dataSource value.
+     * @return the data source name.
      */
-    public String getDataSource() {
-        return this.dataSource;
+    public String getName() {
+        return this.name;
     }
 
     /**
-     * Get the id property: Entity id in the given source catalog.
+     * Get the data source ID property: data source ID in the given source catalog.
      *
-     * @return the id value.
+     * @return the data source iD.
      */
-    public String getDataSourceId() {
-        return this.dataSourceId;
+    public String getId() {
+        return this.id;
     }
 
     /**
-     * The private setter to set the dataSource property
+     * The private setter to set the data source name property
      * via {@link HealthcareEntityDataSourcePropertiesHelper.HealthcareEntityDataSourceAccessor}.
      *
-     * @param dataSource the dataSource property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
+     * @param name the data source name property: Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
      */
-    private void setDataSource(String dataSource) {
-        this.dataSource = dataSource;
+    private void setName(String name) {
+        this.name = name;
     }
 
     /**
-     * The private setter to set the dataSourceId property
+     * The private setter to set the data source ID property
      * via {@link HealthcareEntityDataSourcePropertiesHelper.HealthcareEntityDataSourceAccessor}.
      *
-     * @param dataSourceId The entity id in the given source catalog.
+     * @param id The data source ID in the given source catalog.
      */
-    private void setDataSourceId(String dataSourceId) {
-        this.dataSourceId = dataSourceId;
+    private void setId(String id) {
+        this.id = id;
     }
 }

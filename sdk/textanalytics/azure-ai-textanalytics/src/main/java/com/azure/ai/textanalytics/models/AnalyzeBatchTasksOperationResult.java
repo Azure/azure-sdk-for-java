@@ -8,9 +8,9 @@ import com.azure.ai.textanalytics.implementation.AnalyzeBatchOperationResultProp
 import java.time.OffsetDateTime;
 
 /**
- * The {@link AnalyzeBatchOperationResult} model.
+ * The {@link AnalyzeBatchTasksOperationResult} model.
  */
-public final class AnalyzeBatchOperationResult {
+public final class AnalyzeBatchTasksOperationResult {
     private String operationId;
     private String name;
     private int failedTasksCount;
@@ -25,52 +25,52 @@ public final class AnalyzeBatchOperationResult {
         AnalyzeBatchOperationResultPropertiesHelper.setAccessor(
             new AnalyzeBatchOperationResultPropertiesHelper.AnalyzeTasksOperationResultAccessor() {
                 @Override
-                public void setOperationId(AnalyzeBatchOperationResult operationResult, String operationId) {
+                public void setOperationId(AnalyzeBatchTasksOperationResult operationResult, String operationId) {
                     operationResult.setOperationId(operationId);
                 }
 
                 @Override
-                public void setName(AnalyzeBatchOperationResult operationResult, String name) {
+                public void setName(AnalyzeBatchTasksOperationResult operationResult, String name) {
                     operationResult.setName(name);
                 }
 
                 @Override
-                public void setFailedTasksCount(AnalyzeBatchOperationResult operationResult,
+                public void setFailedTasksCount(AnalyzeBatchTasksOperationResult operationResult,
                     int failedTasksCount) {
                     operationResult.setFailedTasksCount(failedTasksCount);
                 }
 
                 @Override
-                public void setInProgressTaskCount(AnalyzeBatchOperationResult operationResult,
+                public void setInProgressTaskCount(AnalyzeBatchTasksOperationResult operationResult,
                     int inProgressTaskCount) {
                     operationResult.setInProgressTaskCount(inProgressTaskCount);
                 }
 
                 @Override
-                public void setSuccessfullyCompletedTasksCount(AnalyzeBatchOperationResult operationResult,
+                public void setSuccessfullyCompletedTasksCount(AnalyzeBatchTasksOperationResult operationResult,
                     int successfullyCompletedTasksCount) {
                     operationResult.setSuccessfullyCompletedTasksCount(successfullyCompletedTasksCount);
                 }
 
                 @Override
-                public void setTotalTasksCount(AnalyzeBatchOperationResult operationResult, int totalTasksCount) {
+                public void setTotalTasksCount(AnalyzeBatchTasksOperationResult operationResult, int totalTasksCount) {
                     operationResult.setTotalTasksCount(totalTasksCount);
                 }
 
                 @Override
-                public void setExpiresAt(AnalyzeBatchOperationResult operationResult,
+                public void setExpiresAt(AnalyzeBatchTasksOperationResult operationResult,
                     OffsetDateTime expiresAt) {
                     operationResult.setExpiresAt(expiresAt);
                 }
 
                 @Override
-                public void setCreatedAt(AnalyzeBatchOperationResult operationResult,
+                public void setCreatedAt(AnalyzeBatchTasksOperationResult operationResult,
                     OffsetDateTime createdAt) {
                     operationResult.setCreatedAt(createdAt);
                 }
 
                 @Override
-                public void setUpdatedAt(AnalyzeBatchOperationResult operationResult,
+                public void setUpdatedAt(AnalyzeBatchTasksOperationResult operationResult,
                     OffsetDateTime updatedAt) {
                     operationResult.setUpdatedAt(updatedAt);
                 }
@@ -78,18 +78,18 @@ public final class AnalyzeBatchOperationResult {
     }
 
     /**
-     * Gets the operationId property of the {@link AnalyzeBatchOperationResult}.
+     * Gets the operationId property of the {@link AnalyzeBatchTasksOperationResult}.
      *
-     * @return the operationId property of the {@link AnalyzeBatchOperationResult}.
+     * @return the operationId property of the {@link AnalyzeBatchTasksOperationResult}.
      */
     public String getOperationId() {
         return operationId;
     }
 
     /**
-     * Gets the displayName property of the {@link AnalyzeBatchOperationResult}.
+     * Gets the displayName property of the {@link AnalyzeBatchTasksOperationResult}.
      *
-     * @return the displayName property of the {@link AnalyzeBatchOperationResult}.
+     * @return the displayName property of the {@link AnalyzeBatchTasksOperationResult}.
      */
     public String getName() {
         return name;

@@ -6,7 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
-import com.azure.ai.textanalytics.models.AnalyzeBatchResult;
+import com.azure.ai.textanalytics.models.AnalyzeBatchTasksResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
@@ -1105,16 +1105,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Analyze tasks
-    static void validateAnalyzeTasksResultList(boolean showStatistics, List<AnalyzeBatchResult> expected,
-        List<AnalyzeBatchResult> actual) {
+    static void validateAnalyzeTasksResultList(boolean showStatistics, List<AnalyzeBatchTasksResult> expected,
+        List<AnalyzeBatchTasksResult> actual) {
         assertEquals(expected.size(), actual.size());
         for (int i = 0; i < actual.size(); i++) {
             validateAnalyzeTasksResult(showStatistics, expected.get(i), actual.get(i));
         }
     }
 
-    static void validateAnalyzeTasksResult(boolean showStatistics, AnalyzeBatchResult expected,
-        AnalyzeBatchResult actual) {
+    static void validateAnalyzeTasksResult(boolean showStatistics, AnalyzeBatchTasksResult expected,
+        AnalyzeBatchTasksResult actual) {
         final TextDocumentBatchStatistics expectedOperationStatistics = expected.getStatistics();
         final TextDocumentBatchStatistics actualOperationStatistics = actual.getStatistics();
 
