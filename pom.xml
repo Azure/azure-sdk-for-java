@@ -572,6 +572,7 @@
         <module>sdk/mysql</module>
         <module>sdk/postgresql</module>
         <module>sdk/recoveryservices</module>
+        <module>sdk/recoveryservicessiterecovery</module>
         <module>sdk/relay</module>
         <module>sdk/resourcemanager</module>
         <module>sdk/schemaregistry</module>
