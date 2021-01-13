@@ -18,7 +18,7 @@ To use this package, add the following to your _pom.xml_.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
-  <version>1.5.1</version>
+  <version>1.5.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -120,8 +120,7 @@ Other useful packages are:
 
 ## Contributing
 
-If you would like to become an active contributor to this project please follow the instructions provided in
-[Microsoft Azure Projects Contribution Guidelines](https://azure.github.io/guidelines.html).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
 
 1. Fork it
 1. Create your feature branch (`git checkout -b my-new-feature`)

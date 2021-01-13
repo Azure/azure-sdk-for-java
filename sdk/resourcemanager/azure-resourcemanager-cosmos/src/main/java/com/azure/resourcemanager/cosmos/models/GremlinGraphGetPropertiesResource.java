@@ -25,7 +25,7 @@ public final class GremlinGraphGetPropertiesResource extends GremlinGraphResourc
      * the resource.
      */
     @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
-    private Object ts;
+    private Float ts;
 
     /*
      * A system generated property representing the resource etag required for
@@ -48,7 +48,7 @@ public final class GremlinGraphGetPropertiesResource extends GremlinGraphResourc
      *
      * @return the ts value.
      */
-    public Object ts() {
+    public Float ts() {
         return this.ts;
     }
 
@@ -60,6 +60,49 @@ public final class GremlinGraphGetPropertiesResource extends GremlinGraphResourc
      */
     public String etag() {
         return this.etag;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GremlinGraphGetPropertiesResource withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GremlinGraphGetPropertiesResource withIndexingPolicy(IndexingPolicy indexingPolicy) {
+        super.withIndexingPolicy(indexingPolicy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GremlinGraphGetPropertiesResource withPartitionKey(ContainerPartitionKey partitionKey) {
+        super.withPartitionKey(partitionKey);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GremlinGraphGetPropertiesResource withDefaultTtl(Integer defaultTtl) {
+        super.withDefaultTtl(defaultTtl);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GremlinGraphGetPropertiesResource withUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
+        super.withUniqueKeyPolicy(uniqueKeyPolicy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GremlinGraphGetPropertiesResource withConflictResolutionPolicy(
+        ConflictResolutionPolicy conflictResolutionPolicy) {
+        super.withConflictResolutionPolicy(conflictResolutionPolicy);
+        return this;
     }
 
     /**

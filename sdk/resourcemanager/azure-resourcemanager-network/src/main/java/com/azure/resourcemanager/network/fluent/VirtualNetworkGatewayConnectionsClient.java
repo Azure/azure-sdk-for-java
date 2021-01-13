@@ -420,6 +420,20 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualNetworkGatewayConnectionInner updateTags(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Updates a virtual network gateway connection tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -433,20 +447,6 @@ public interface VirtualNetworkGatewayConnectionsClient
         String virtualNetworkGatewayConnectionName,
         Map<String, String> tags,
         Context context);
-
-    /**
-     * Updates a virtual network gateway connection tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkGatewayConnectionInner updateTags(
-        String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
     /**
      * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
@@ -897,6 +897,19 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String startPacketCapture(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Starts packet capture on virtual network gateway connection in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param filterData Start Packet capture parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -907,19 +920,6 @@ public interface VirtualNetworkGatewayConnectionsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     String startPacketCapture(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, String filterData, Context context);
-
-    /**
-     * Starts packet capture on virtual network gateway connection in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    String startPacketCapture(String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
     /**
      * Stops packet capture on virtual network gateway connection in the specified resource group.
@@ -1029,6 +1029,19 @@ public interface VirtualNetworkGatewayConnectionsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    String stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+
+    /**
+     * Stops packet capture on virtual network gateway connection in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
      * @param sasUrl SAS url for packet capture on virtual network gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1039,17 +1052,4 @@ public interface VirtualNetworkGatewayConnectionsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     String stopPacketCapture(
         String resourceGroupName, String virtualNetworkGatewayConnectionName, String sasUrl, Context context);
-
-    /**
-     * Stops packet capture on virtual network gateway connection in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway Connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    String stopPacketCapture(String resourceGroupName, String virtualNetworkGatewayConnectionName);
 }

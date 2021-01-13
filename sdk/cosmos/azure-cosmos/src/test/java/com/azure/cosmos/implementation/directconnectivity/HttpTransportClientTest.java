@@ -460,6 +460,7 @@ public class HttpTransportClientTest {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "dbs/db/colls/col", ResourceType.Document);
         request.setContentBytes(new byte[0]);
+        request.requestContext.resourcePhysicalAddress = "dbs/db/colls/col";
 
         Mono<StoreResponse> storeResp = transportClient.invokeStoreAsync(
                 Uri.create(physicalAddress),

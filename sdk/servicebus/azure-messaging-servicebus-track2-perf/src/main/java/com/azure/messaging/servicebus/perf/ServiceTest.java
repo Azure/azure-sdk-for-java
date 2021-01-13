@@ -13,7 +13,7 @@ import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.PerfStressTest;
 
@@ -44,7 +44,7 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
      * @param receiveMode to receive messages.
      * @throws IllegalArgumentException if environment variable not being available.
      */
-    ServiceTest(TOptions options, ReceiveMode receiveMode) {
+    ServiceTest(TOptions options, ServiceBusReceiveMode receiveMode) {
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {

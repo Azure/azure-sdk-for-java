@@ -5,9 +5,11 @@ package com.azure.storage.file.datalake.implementation.util;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -15,6 +17,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -24,6 +27,7 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
+import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -55,6 +59,7 @@ public final class BuilderHelper {
      * @param endpoint The endpoint for the client.
      * @param retryOptions Retry options to set in the retry policy.
      * @param logOptions Logging options to set in the logging policy.
+     * @param clientOptions Client options.
      * @param httpClient HttpClient to use in the builder.
      * @param perCallPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per call.
      * @param perRetryPolicies Additional {@link HttpPipelinePolicy policies} to set in the pipeline per retry.
@@ -64,13 +69,13 @@ public final class BuilderHelper {
      */
     public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
         TokenCredential tokenCredential, SasTokenCredential sasTokenCredential, String endpoint,
-        RequestRetryOptions retryOptions, HttpLogOptions logOptions, HttpClient httpClient,
+        RequestRetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
         Configuration configuration, ClientLogger logger) {
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        policies.add(getUserAgentPolicy(configuration, logOptions));
+        policies.add(getUserAgentPolicy(configuration, logOptions, clientOptions));
         policies.add(new RequestIdPolicy());
 
         policies.addAll(perCallPolicies);
@@ -78,6 +83,15 @@ public final class BuilderHelper {
         policies.add(new RequestRetryPolicy(retryOptions));
 
         policies.add(new AddDatePolicy());
+
+        // We need to place this policy right before the credential policy since headers may affect the string to sign
+        // of the request.
+        HttpHeaders headers = new HttpHeaders();
+        clientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
+        policies.add(new MetadataValidationPolicy());
 
         HttpPipelinePolicy credentialPolicy;
         if (storageSharedKeyCredential != null) {
@@ -143,15 +157,18 @@ public final class BuilderHelper {
      *
      * @param configuration Configuration store used to determine whether telemetry information should be included.
      * @param logOptions Logging options to set in the logging policy.
+     * @param clientOptions Client options.
      * @return The default {@link UserAgentPolicy} for the module.
      */
-    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, HttpLogOptions logOptions) {
+    private static UserAgentPolicy getUserAgentPolicy(Configuration configuration, HttpLogOptions logOptions,
+        ClientOptions clientOptions) {
         configuration = (configuration == null) ? Configuration.NONE : configuration;
 
         String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-        return new UserAgentPolicy(logOptions.getApplicationId(), clientName, clientVersion,
-            configuration);
+        String applicationId = clientOptions.getApplicationId() != null ? clientOptions.getApplicationId()
+            : logOptions.getApplicationId();
+        return new UserAgentPolicy(applicationId, clientName, clientVersion, configuration);
     }
 
     /*

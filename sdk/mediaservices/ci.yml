@@ -9,12 +9,7 @@ trigger:
   paths:
     include:
       - sdk/mediaservices/
-    exclude:
-      - sdk/mediaservices/mgmt-v2015_10_01
-      - sdk/mediaservices/mgmt-v2018_03_30_preview
-      - sdk/mediaservices/mgmt-v2018_06_01_preview
-      - sdk/mediaservices/mgmt-v2018_07_01
-      - sdk/mediaservices/mgmt-v2019_05_01_preview
+
 pr:
   branches:
     include:
@@ -25,19 +20,12 @@ pr:
   paths:
     include:
       - sdk/mediaservices/
-    exclude:
-      - sdk/mediaservices/mgmt-v2015_10_01
-      - sdk/mediaservices/mgmt-v2018_03_30_preview
-      - sdk/mediaservices/mgmt-v2018_06_01_preview
-      - sdk/mediaservices/mgmt-v2018_07_01
-      - sdk/mediaservices/mgmt-v2019_05_01_preview
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    SDKType: data
     ServiceDirectory: mediaservices
     Artifacts:
-      - name: azure-media
-        groupId: com.microsoft.azure
-        safeName: azuremedia
+      - name: azure-resourcemanager-mediaservices
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagermediaservices

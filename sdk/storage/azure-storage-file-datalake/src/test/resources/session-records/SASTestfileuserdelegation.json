@@ -108,7 +108,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsfileuserdelegation0sastestfileuserdelegation8e35921902a/javapathfileuserdelegation1sastestfileuserdelegation8e3136400?sv=2020-02-10&spr=https%2Chttp&st=2020-08-26T20%3A23%3A04Z&se=2020-08-28T20%3A23%3A04Z&sip=0.0.0.0-255.255.255.255&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2020-08-26T20%3A23%3A04Z&ske=2020-08-28T20%3A23%3A04Z&sks=b&skv=2020-02-10&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsfileuserdelegation0sastestfileuserdelegation8e35921902a/javapathfileuserdelegation1sastestfileuserdelegation8e3136400?sv=2020-04-08&spr=https%2Chttp&st=2020-08-26T20%3A23%3A04Z&se=2020-08-28T20%3A23%3A04Z&sip=0.0.0.0-255.255.255.255&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2020-08-26T20%3A23%3A04Z&ske=2020-08-28T20%3A23%3A04Z&sks=b&skv=2020-02-10&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",
@@ -140,7 +140,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsfileuserdelegation0sastestfileuserdelegation8e35921902a/javapathfileuserdelegation1sastestfileuserdelegation8e3136400?sv=2020-02-10&spr=https%2Chttp&st=2020-08-26T20%3A23%3A04Z&se=2020-08-28T20%3A23%3A04Z&sip=0.0.0.0-255.255.255.255&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2020-08-26T20%3A23%3A04Z&ske=2020-08-28T20%3A23%3A04Z&sks=b&skv=2020-02-10&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsfileuserdelegation0sastestfileuserdelegation8e35921902a/javapathfileuserdelegation1sastestfileuserdelegation8e3136400?sv=2020-04-08&spr=https%2Chttp&st=2020-08-26T20%3A23%3A04Z&se=2020-08-28T20%3A23%3A04Z&sip=0.0.0.0-255.255.255.255&skoid=c4f48289-bb84-4086-b250-6f94a8f64cee&sktid=72f988bf-86f1-41af-91ab-2d7cd011db47&skt=2020-08-26T20%3A23%3A04Z&ske=2020-08-28T20%3A23%3A04Z&sks=b&skv=2020-02-10&sr=b&sp=racwdlmeop&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",

@@ -14,8 +14,8 @@ import com.microsoft.azure.arm.collection.InnerSupportsListing;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspacePatchInfo;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
@@ -117,7 +117,7 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;WorkspaceInner&gt; object if successful.
      */
@@ -220,10 +220,10 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
             });
     }
 
-    private ServiceResponse<PageImpl<WorkspaceInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkspaceInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<WorkspaceInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkspaceInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<WorkspaceInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -233,7 +233,7 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the WorkspaceInner object if successful.
      */
@@ -306,10 +306,10 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
             });
     }
 
-    private ServiceResponse<WorkspaceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<WorkspaceInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<WorkspaceInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkspaceInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<WorkspaceInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -320,7 +320,7 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
      * @param workspaceName The name of the workspace
      * @param workspacePatchInfo Workspace patch request properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the WorkspaceInner object if successful.
      */
@@ -397,7 +397,7 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
      * @param workspaceName The name of the workspace
      * @param workspacePatchInfo Workspace patch request properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the WorkspaceInner object if successful.
      */
@@ -477,11 +477,11 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
             });
     }
 
-    private ServiceResponse<WorkspaceInner> beginUpdateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<WorkspaceInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<WorkspaceInner> beginUpdateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkspaceInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<WorkspaceInner>() { }.getType())
                 .register(201, new TypeToken<WorkspaceInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -492,7 +492,7 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
      * @param workspaceName The name of the workspace
      * @param workspaceInfo Workspace create or update request properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the WorkspaceInner object if successful.
      */
@@ -569,7 +569,7 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
      * @param workspaceName The name of the workspace
      * @param workspaceInfo Workspace create or update request properties
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the WorkspaceInner object if successful.
      */
@@ -649,11 +649,11 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
             });
     }
 
-    private ServiceResponse<WorkspaceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<WorkspaceInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<WorkspaceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<WorkspaceInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<WorkspaceInner>() { }.getType())
                 .register(201, new TypeToken<WorkspaceInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -663,7 +663,7 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -732,7 +732,7 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Object object if successful.
      */
@@ -805,12 +805,12 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
             });
     }
 
-    private ServiceResponse<Object> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Object, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<Object> beginDeleteDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Object, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
                 .register(202, new TypeToken<Object>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -818,7 +818,7 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
      * Returns a list of workspaces in a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;WorkspaceInner&gt; object if successful.
      */
@@ -914,10 +914,10 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
             });
     }
 
-    private ServiceResponse<PageImpl<WorkspaceInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkspaceInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<WorkspaceInner>> listDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkspaceInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<WorkspaceInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -926,7 +926,7 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;WorkspaceInner&gt; object if successful.
      */
@@ -1025,10 +1025,10 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
             });
     }
 
-    private ServiceResponse<PageImpl<WorkspaceInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkspaceInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<WorkspaceInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkspaceInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<WorkspaceInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -1037,7 +1037,7 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;WorkspaceInner&gt; object if successful.
      */
@@ -1136,10 +1136,10 @@ public class WorkspacesInner implements InnerSupportsGet<WorkspaceInner>, InnerS
             });
     }
 
-    private ServiceResponse<PageImpl<WorkspaceInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkspaceInner>, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<PageImpl<WorkspaceInner>> listNextDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<WorkspaceInner>, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<WorkspaceInner>>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

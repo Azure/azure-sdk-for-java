@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -61,7 +62,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     private interface CollectionPartitionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}/partitions"
@@ -77,9 +78,10 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
             @PathParam("collectionRid") String collectionRid,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/databases/{databaseRid}/collections/{collectionRid}/partitions"
@@ -95,13 +97,14 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
             @PathParam("collectionRid") String collectionRid,
             @QueryParam("api-version") String apiVersion,
             @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Retrieves the metrics determined by the given filter for the given collection, split by partition.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -144,7 +147,8 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -158,6 +162,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
                             collectionRid,
                             apiVersion,
                             filter,
+                            accept,
                             context))
             .<PagedResponse<PartitionMetricInner>>map(
                 res ->
@@ -169,7 +174,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     /**
      * Retrieves the metrics determined by the given filter for the given collection, split by partition.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -218,7 +223,8 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
         if (filter == null) {
             return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listMetrics(
@@ -230,6 +236,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
                 collectionRid,
                 apiVersion,
                 filter,
+                accept,
                 context)
             .map(
                 res ->
@@ -240,7 +247,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     /**
      * Retrieves the metrics determined by the given filter for the given collection, split by partition.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -262,7 +269,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     /**
      * Retrieves the metrics determined by the given filter for the given collection, split by partition.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -292,7 +299,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     /**
      * Retrieves the metrics determined by the given filter for the given collection, split by partition.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -314,7 +321,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     /**
      * Retrieves the metrics determined by the given filter for the given collection, split by partition.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -342,7 +349,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     /**
      * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -381,7 +388,8 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
         if (collectionRid == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionRid is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -395,6 +403,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
                             collectionRid,
                             apiVersion,
                             filter,
+                            accept,
                             context))
             .<PagedResponse<PartitionUsageInner>>map(
                 res ->
@@ -406,7 +415,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     /**
      * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -451,7 +460,8 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
         if (collectionRid == null) {
             return Mono.error(new IllegalArgumentException("Parameter collectionRid is required and cannot be null."));
         }
-        final String apiVersion = "2019-08-01";
+        final String apiVersion = "2020-09-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listUsages(
@@ -463,6 +473,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
                 collectionRid,
                 apiVersion,
                 filter,
+                accept,
                 context)
             .map(
                 res ->
@@ -473,7 +484,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     /**
      * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -494,7 +505,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     /**
      * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -514,7 +525,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     /**
      * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -542,7 +553,26 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
     /**
      * Retrieves the usages (most recent storage data) for the given collection, split by partition.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @param collectionRid Cosmos DB collection rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list partition level usage request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PartitionUsageInner> listUsages(
+        String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
+        final String filter = null;
+        return new PagedIterable<>(listUsagesAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
+    }
+
+    /**
+     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param collectionRid Cosmos DB collection rid.
@@ -564,24 +594,5 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
         Context context) {
         return new PagedIterable<>(
             listUsagesAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter, context));
-    }
-
-    /**
-     * Retrieves the usages (most recent storage data) for the given collection, split by partition.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @param collectionRid Cosmos DB collection rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PartitionUsageInner> listUsages(
-        String resourceGroupName, String accountName, String databaseRid, String collectionRid) {
-        final String filter = null;
-        return new PagedIterable<>(listUsagesAsync(resourceGroupName, accountName, databaseRid, collectionRid, filter));
     }
 }

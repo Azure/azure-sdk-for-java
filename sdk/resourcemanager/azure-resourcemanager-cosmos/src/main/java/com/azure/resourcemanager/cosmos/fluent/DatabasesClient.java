@@ -18,7 +18,7 @@ public interface DatabasesClient {
     /**
      * Retrieves the metrics determined by the given filter for the given database account and database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
@@ -36,7 +36,7 @@ public interface DatabasesClient {
     /**
      * Retrieves the metrics determined by the given filter for the given database account and database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
@@ -54,7 +54,7 @@ public interface DatabasesClient {
     /**
      * Retrieves the metrics determined by the given filter for the given database account and database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
@@ -73,7 +73,7 @@ public interface DatabasesClient {
     /**
      * Retrieves the usages (most recent data) for the given database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
@@ -90,7 +90,7 @@ public interface DatabasesClient {
     /**
      * Retrieves the usages (most recent data) for the given database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,7 +104,21 @@ public interface DatabasesClient {
     /**
      * Retrieves the usages (most recent data) for the given database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param databaseRid Cosmos DB database rid.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list usage request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<UsageInner> listUsages(String resourceGroupName, String accountName, String databaseRid);
+
+    /**
+     * Retrieves the usages (most recent data) for the given database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
@@ -120,23 +134,9 @@ public interface DatabasesClient {
         String resourceGroupName, String accountName, String databaseRid, String filter, Context context);
 
     /**
-     * Retrieves the usages (most recent data) for the given database.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Cosmos DB database account name.
-     * @param databaseRid Cosmos DB database rid.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UsageInner> listUsages(String resourceGroupName, String accountName, String databaseRid);
-
-    /**
      * Retrieves metric definitions for the given database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +151,7 @@ public interface DatabasesClient {
     /**
      * Retrieves metric definitions for the given database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,7 +166,7 @@ public interface DatabasesClient {
     /**
      * Retrieves metric definitions for the given database.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param databaseRid Cosmos DB database rid.
      * @param context The context to associate with this operation.

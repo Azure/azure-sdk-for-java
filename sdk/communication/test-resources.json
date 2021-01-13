@@ -66,6 +66,10 @@
         "type": "string",
         "value": "[listKeys(resourceId('Microsoft.Communication/CommunicationServices',variables('uniqueSubDomainName')), '2020-08-20-preview').primaryKey]"
       },
+      "COMMUNICATION_SERVICES_ACCESS_KEY": {
+        "type": "string",
+        "value": "[listKeys(resourceId('Microsoft.Communication/CommunicationServices',variables('uniqueSubDomainName')), '2020-08-20-preview').primaryKey]"
+      },
       "RESOURCE_GROUP_NAME": {
         "type": "string",
         "value": "[resourceGroup().Name]"

@@ -4,8 +4,7 @@ package com.azure.communication.administration;
 
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
-import com.azure.communication.administration.models.CreateSearchOptions;
-import com.azure.communication.administration.models.CreateSearchResponse;
+import com.azure.communication.administration.models.CreateReservationOptions;
 import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.LocationOptionsResponse;
 import com.azure.communication.administration.models.NumberConfigurationResponse;
@@ -17,9 +16,9 @@ import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
-import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -135,7 +134,7 @@ public final class PhoneNumberClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UpdateNumberCapabilitiesResponse updateCapabilities(
-        Map<PhoneNumber, NumberUpdateCapabilities> phoneNumberCapabilitiesUpdate) {
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> phoneNumberCapabilitiesUpdate) {
         return phoneNumberAsyncClient.updateCapabilities(phoneNumberCapabilitiesUpdate).block();
     }
 
@@ -149,7 +148,7 @@ public final class PhoneNumberClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UpdateNumberCapabilitiesResponse> updateCapabilitiesWithResponse(
-        Map<PhoneNumber, NumberUpdateCapabilities> phoneNumberCapabilitiesUpdate, Context context) {
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> phoneNumberCapabilitiesUpdate, Context context) {
         return phoneNumberAsyncClient.updateCapabilitiesWithResponse(phoneNumberCapabilitiesUpdate, context).block();
     }
 
@@ -179,72 +178,72 @@ public final class PhoneNumberClient {
     /**
      * Gets the configuration of a given phone number.
      *
-     * @param phoneNumber A {@link PhoneNumber} representing the phone number.
+     * @param phoneNumber A {@link PhoneNumberIdentifier} representing the phone number.
      * @return A {@link NumberConfigurationResponse} representing the configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NumberConfigurationResponse getNumberConfiguration(PhoneNumber phoneNumber) {
+    public NumberConfigurationResponse getNumberConfiguration(PhoneNumberIdentifier phoneNumber) {
         return phoneNumberAsyncClient.getNumberConfiguration(phoneNumber).block();
     }
 
     /**
      * Gets the configuration of a given phone number.
      *
-     * @param phoneNumber A {@link PhoneNumber} representing the phone number.
+     * @param phoneNumber A {@link PhoneNumberIdentifier} representing the phone number.
      * @param context A {@link Context} representing the request context.
      * @return A {@link Response} whose {@link Response#getValue()} value returns
      * a {@link NumberConfigurationResponse} representing the configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NumberConfigurationResponse> getNumberConfigurationWithResponse(
-        PhoneNumber phoneNumber, Context context) {
+        PhoneNumberIdentifier phoneNumber, Context context) {
         return phoneNumberAsyncClient.getNumberConfigurationWithResponse(phoneNumber, context).block();
     }
 
     /**
      * Associates a phone number with a PSTN Configuration.
      *
-     * @param phoneNumber A {@link PhoneNumber} representing the phone number.
+     * @param phoneNumber A {@link PhoneNumberIdentifier} representing the phone number.
      * @param pstnConfiguration A {@link PstnConfiguration} containing the pstn number configuration options.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void configureNumber(PhoneNumber phoneNumber, PstnConfiguration pstnConfiguration) {
+    public void configureNumber(PhoneNumberIdentifier phoneNumber, PstnConfiguration pstnConfiguration) {
         phoneNumberAsyncClient.configureNumber(phoneNumber, pstnConfiguration).block();
     }
 
     /**
      * Associates a phone number with a PSTN Configuration.
      *
-     * @param phoneNumber A {@link PhoneNumber} representing the phone number.
+     * @param phoneNumber A {@link PhoneNumberIdentifier} representing the phone number.
      * @param pstnConfiguration A {@link PstnConfiguration} containing the pstn number configuration options.
      * @param context A {@link Context} representing the request context.
      * @return A {@link Response} for the operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> configureNumberWithResponse(
-        PhoneNumber phoneNumber, PstnConfiguration pstnConfiguration, Context context) {
+        PhoneNumberIdentifier phoneNumber, PstnConfiguration pstnConfiguration, Context context) {
         return phoneNumberAsyncClient.configureNumberWithResponse(phoneNumber, pstnConfiguration, context).block();
     }
 
     /**
      * Removes the PSTN Configuration from a phone number.
      *
-     * @param phoneNumber A {@link PhoneNumber} representing the phone number.
+     * @param phoneNumber A {@link PhoneNumberIdentifier} representing the phone number.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void unconfigureNumber(PhoneNumber phoneNumber) {
+    public void unconfigureNumber(PhoneNumberIdentifier phoneNumber) {
         phoneNumberAsyncClient.unconfigureNumber(phoneNumber).block();
     }
 
     /**
      * Removes the PSTN Configuration from a phone number.
      *
-     * @param phoneNumber A {@link PhoneNumber} representing the phone number.
+     * @param phoneNumber A {@link PhoneNumberIdentifier} representing the phone number.
      * @param context A {@link Context} representing the request context.
      * @return A {@link Response} for the operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> unconfigureNumberWithResponse(PhoneNumber phoneNumber, Context context) {
+    public Response<Void> unconfigureNumberWithResponse(PhoneNumberIdentifier phoneNumber, Context context) {
         return phoneNumberAsyncClient.unconfigureNumberWithResponse(phoneNumber, context).block();
     }
 
@@ -388,138 +387,114 @@ public final class PhoneNumberClient {
     }
 
     /**
-     * Gets a search by ID.
+     * Gets a reservation by ID.
      *
-     * @param searchId ID of the search
-     * @return A {@link PhoneNumberSearch} representing the search.
+     * @param reservationId ID of the reservation
+     * @return A {@link PhoneNumberReservation} representing the reservation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumberSearch getSearchById(String searchId) {
-        return phoneNumberAsyncClient.getSearchById(searchId).block();
+    public PhoneNumberReservation getReservationById(String reservationId) {
+        return phoneNumberAsyncClient.getReservationById(reservationId).block();
     }
 
     /**
-     * Gets a search by ID.
+     * Gets a reservation by ID.
      *
-     * @param searchId ID of the search
+     * @param reservationId ID of the reservation
      * @param context A {@link Context} representing the request context.
      * @return A {@link Response} whose {@link Response#getValue()} value returns
-     * a {@link PhoneNumberSearch} representing the search.
+     * a {@link PhoneNumberReservation} representing the reservation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumberSearch> getSearchByIdWithResponse(String searchId, Context context) {
-        return phoneNumberAsyncClient.getSearchByIdWithResponse(searchId, context).block();
+    public Response<PhoneNumberReservation> getReservationByIdWithResponse(String reservationId, Context context) {
+        return phoneNumberAsyncClient.getReservationByIdWithResponse(reservationId, context).block();
     }
 
     /**
-     * Create a phone number search.
+     * Gets the list of all reservations
      *
-     * @param searchOptions A {@link CreateSearchOptions} with the search options
-     * @return A {@link CreateSearchResponse} representing the search.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateSearchResponse createSearch(CreateSearchOptions searchOptions) {
-        return phoneNumberAsyncClient.createSearch(searchOptions).block();
-    }
-
-    /**
-     * Create a phone number search.
-     *
-     * @param searchOptions A {@link CreateSearchOptions} with the search options
-     * @param context A {@link Context} representing the request context.
-     * @return A {@link Response} whose {@link Response#getValue()} value returns
-     * a {@link CreateSearchResponse} representing the search.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CreateSearchResponse> createSearchWithResponse(CreateSearchOptions searchOptions, Context context) {
-        return phoneNumberAsyncClient.createSearchWithResponse(searchOptions, context).block();
-    }
-
-    /**
-     * Gets the list of all searches
-     *
-     * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing searches.
+     * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing reservations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberEntity> listAllSearches() {
-        return new PagedIterable<>(phoneNumberAsyncClient.listAllSearches());
+    public PagedIterable<PhoneNumberEntity> listAllReservations() {
+        return new PagedIterable<>(phoneNumberAsyncClient.listAllReservations());
     }
 
     /**
-     * Gets the list of all searches
+     * Gets the list of all reservationes
      *
      * @param context A {@link Context} representing the request context.
-     * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing searches.
+     * @return A {@link PagedIterable} of {@link PhoneNumberEntity} instances representing reservations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumberEntity> listAllSearches(Context context) {
-        return new PagedIterable<>(phoneNumberAsyncClient.listAllSearches(context));
+    public PagedIterable<PhoneNumberEntity> listAllReservations(Context context) {
+        return new PagedIterable<>(phoneNumberAsyncClient.listAllReservations(context));
     }
 
     /**
-     * Cancels the search. This means existing numbers in the search will be made available.
+     * Cancels the reservation. This means existing numbers in the reservation will be made available.
      *
-     * @param searchId ID of the search
+     * @param reservationId ID of the reservation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelSearch(String searchId) {
-        phoneNumberAsyncClient.cancelSearch(searchId).block();
+    public void cancelReservation(String reservationId) {
+        phoneNumberAsyncClient.cancelReservation(reservationId).block();
     }
 
     /**
-     * Cancels the search. This means existing numbers in the search will be made available.
+     * Cancels the reservation. This means existing numbers in the reservation will be made available.
      *
-     * @param searchId ID of the search
+     * @param reservationId ID of the reservation
      * @param context A {@link Context} representing the request context.
      * @return A {@link Response} for the operation
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelSearchWithResponse(String searchId, Context context) {
-        return phoneNumberAsyncClient.cancelSearchWithResponse(searchId, context).block();
+    public Response<Void> cancelReservationWithResponse(String reservationId, Context context) {
+        return phoneNumberAsyncClient.cancelReservationWithResponse(reservationId, context).block();
     }
 
     /**
-     * Initiates a search and returns a {@link PhoneNumberSearch} usable by other functions
+     * Initiates a reservation and returns a {@link PhoneNumberReservation} usable by other functions
      * This function returns a Long Running Operation poller.
-     * 
-     * @param options A {@link CreateSearchOptions} with the search options
-     * @param pollInterval The time our long running operation will keep on polling 
+     *
+     * @param options A {@link CreateReservationOptions} with the reservation options
+     * @param pollInterval The time our long running operation will keep on polling
      * until it gets a result from the server
-     * @return A {@link SyncPoller} object with the search result
+     * @return A {@link SyncPoller} object with the reservation result
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<PhoneNumberSearch, PhoneNumberSearch> beginCreateSearch(
-        CreateSearchOptions options, Duration pollInterval) {
-        return phoneNumberAsyncClient.beginCreateSearch(options, pollInterval).getSyncPoller();
+    public SyncPoller<PhoneNumberReservation, PhoneNumberReservation> beginCreateReservation(
+        CreateReservationOptions options, Duration pollInterval) {
+        return phoneNumberAsyncClient.beginCreateReservation(options, pollInterval).getSyncPoller();
     }
 
     /**
      * Initiates a purchase process and polls until a terminal state is reached
      * This function returns a Long Running Operation poller
-     * 
-     * @param searchId ID of the search     
-     * @param pollInterval The time our long running operation will keep on polling 
+     *
+     * @param reservationId ID of the reservation
+     * @param pollInterval The time our long running operation will keep on polling
      * until it gets a result from the server
-     * @return A {@link SyncPoller} object with the search result
+     * @return A {@link SyncPoller} object with the reservation result
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<Void, Void> beginPurchaseSearch(
-        String searchId, Duration pollInterval) {
-        return phoneNumberAsyncClient.beginPurchaseSearch(searchId, pollInterval).getSyncPoller();
+    public SyncPoller<Void, Void> beginPurchaseReservation(
+        String reservationId, Duration pollInterval) {
+        return phoneNumberAsyncClient.beginPurchaseReservation(reservationId, pollInterval).getSyncPoller();
     }
 
  /**
      * Releases the given phone numbers.
      * This function returns a Long Running Operation poller
-     * 
-     * @param phoneNumbers A list of {@link PhoneNumber} with the desired numbers to release
-     * @param pollInterval The time our long running operation will keep on polling 
+     *
+     * @param phoneNumbers A list of {@link PhoneNumberIdentifier} with the desired numbers to release
+     * @param pollInterval The time our long running operation will keep on polling
      * until it gets a result from the server
-     * @return A {@link SyncPoller} object with the search result
+     * @return A {@link SyncPoller} object with the reservation result
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<PhoneNumberRelease, PhoneNumberRelease> beginReleasePhoneNumbers(
-        List<PhoneNumber> phoneNumbers, Duration pollInterval) {
+        List<PhoneNumberIdentifier> phoneNumbers, Duration pollInterval) {
         return phoneNumberAsyncClient.beginReleasePhoneNumbers(phoneNumbers, pollInterval).getSyncPoller();
     }
 }

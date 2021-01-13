@@ -9,12 +9,14 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AutomaticOSUpgradeProperties;
 import com.azure.resourcemanager.compute.models.DataDiskImage;
+import com.azure.resourcemanager.compute.models.DisallowedConfiguration;
 import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.OSDiskImage;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Describes a Virtual Machine Image. */
 @JsonFlatten
@@ -52,6 +54,13 @@ public class VirtualMachineImageInner extends VirtualMachineImageResourceInner {
      */
     @JsonProperty(value = "properties.hyperVGeneration")
     private HyperVGenerationTypes hyperVGeneration;
+
+    /*
+     * Specifies disallowed configuration for the VirtualMachine created from
+     * the image
+     */
+    @JsonProperty(value = "properties.disallowed")
+    private DisallowedConfiguration disallowed;
 
     /**
      * Get the plan property: Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
@@ -155,6 +164,54 @@ public class VirtualMachineImageInner extends VirtualMachineImageResourceInner {
     }
 
     /**
+     * Get the disallowed property: Specifies disallowed configuration for the VirtualMachine created from the image.
+     *
+     * @return the disallowed value.
+     */
+    public DisallowedConfiguration disallowed() {
+        return this.disallowed;
+    }
+
+    /**
+     * Set the disallowed property: Specifies disallowed configuration for the VirtualMachine created from the image.
+     *
+     * @param disallowed the disallowed value to set.
+     * @return the VirtualMachineImageInner object itself.
+     */
+    public VirtualMachineImageInner withDisallowed(DisallowedConfiguration disallowed) {
+        this.disallowed = disallowed;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineImageInner withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineImageInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineImageInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineImageInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -173,6 +230,9 @@ public class VirtualMachineImageInner extends VirtualMachineImageResourceInner {
         }
         if (automaticOSUpgradeProperties() != null) {
             automaticOSUpgradeProperties().validate();
+        }
+        if (disallowed() != null) {
+            disallowed().validate();
         }
     }
 }

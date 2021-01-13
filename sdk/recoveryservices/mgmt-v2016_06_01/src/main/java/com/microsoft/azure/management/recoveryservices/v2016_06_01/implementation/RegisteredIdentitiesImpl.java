@@ -27,8 +27,6 @@ class RegisteredIdentitiesImpl extends WrapperImpl<RegisteredIdentitiesInner> im
 
     @Override
     public Completable deleteAsync(String resourceGroupName, String vaultName, String identityName) {
-        return this.manager.inner().registeredIdentities()
-            .deleteAsync(resourceGroupName, vaultName, identityName)
-            .toCompletable();
+        return inner().deleteAsync(resourceGroupName, vaultName, identityName).toCompletable();
     }
 }

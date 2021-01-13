@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -72,7 +73,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface ConnectionMonitorsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
@@ -85,10 +86,12 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             @PathParam("connectionMonitorName") String connectionMonitorName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("migrate") String migrate,
             @BodyParam("application/json") ConnectionMonitorInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
@@ -101,9 +104,10 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             @PathParam("connectionMonitorName") String connectionMonitorName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
@@ -116,9 +120,10 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             @PathParam("connectionMonitorName") String connectionMonitorName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}")
@@ -132,9 +137,10 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") TagsObject parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/stop")
@@ -147,9 +153,10 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             @PathParam("connectionMonitorName") String connectionMonitorName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/start")
@@ -162,9 +169,10 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             @PathParam("connectionMonitorName") String connectionMonitorName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/connectionMonitors/{connectionMonitorName}/query")
@@ -177,9 +185,10 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             @PathParam("connectionMonitorName") String connectionMonitorName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/connectionMonitors")
@@ -191,6 +200,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
             @PathParam("networkWatcherName") String networkWatcherName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -201,6 +211,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
      * @param parameters Parameters that define the operation to create a connection monitor.
+     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -211,7 +222,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         String resourceGroupName,
         String networkWatcherName,
         String connectionMonitorName,
-        ConnectionMonitorInner parameters) {
+        ConnectionMonitorInner parameters,
+        String migrate) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -241,7 +253,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -253,7 +266,9 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                             connectionMonitorName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            migrate,
                             parameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -265,6 +280,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
      * @param parameters Parameters that define the operation to create a connection monitor.
+     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -277,6 +293,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         String networkWatcherName,
         String connectionMonitorName,
         ConnectionMonitorInner parameters,
+        String migrate,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -307,7 +324,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -317,7 +335,9 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 connectionMonitorName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                migrate,
                 parameters,
+                accept,
                 context);
     }
 
@@ -328,6 +348,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
      * @param parameters Parameters that define the operation to create a connection monitor.
+     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -338,9 +359,11 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         String resourceGroupName,
         String networkWatcherName,
         String connectionMonitorName,
-        ConnectionMonitorInner parameters) {
+        ConnectionMonitorInner parameters,
+        String migrate) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters);
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate);
         return this
             .client
             .<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResult(
@@ -358,6 +381,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
      * @param parameters Parameters that define the operation to create a connection monitor.
+     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -370,11 +394,12 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         String networkWatcherName,
         String connectionMonitorName,
         ConnectionMonitorInner parameters,
+        String migrate,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             createOrUpdateWithResponseAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, context);
+                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate, context);
         return this
             .client
             .<ConnectionMonitorResultInner, ConnectionMonitorResultInner>getLroResult(
@@ -392,6 +417,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
      * @param parameters Parameters that define the operation to create a connection monitor.
+     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -402,8 +428,10 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         String resourceGroupName,
         String networkWatcherName,
         String connectionMonitorName,
-        ConnectionMonitorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
+        ConnectionMonitorInner parameters,
+        String migrate) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate)
             .getSyncPoller();
     }
 
@@ -414,6 +442,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
      * @param parameters Parameters that define the operation to create a connection monitor.
+     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -426,10 +455,37 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         String networkWatcherName,
         String connectionMonitorName,
         ConnectionMonitorInner parameters,
+        String migrate,
         Context context) {
         return beginCreateOrUpdateAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, context)
+                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate, context)
             .getSyncPoller();
+    }
+
+    /**
+     * Create or update a connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group containing Network Watcher.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @param parameters Parameters that define the operation to create a connection monitor.
+     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the connection monitor.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ConnectionMonitorResultInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String networkWatcherName,
+        String connectionMonitorName,
+        ConnectionMonitorInner parameters,
+        String migrate) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -450,7 +506,9 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         String networkWatcherName,
         String connectionMonitorName,
         ConnectionMonitorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters)
+        final String migrate = null;
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -462,6 +520,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
      * @param parameters Parameters that define the operation to create a connection monitor.
+     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -474,11 +533,36 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         String networkWatcherName,
         String connectionMonitorName,
         ConnectionMonitorInner parameters,
+        String migrate,
         Context context) {
         return beginCreateOrUpdateAsync(
-                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, context)
+                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create or update a connection monitor.
+     *
+     * @param resourceGroupName The name of the resource group containing Network Watcher.
+     * @param networkWatcherName The name of the Network Watcher resource.
+     * @param connectionMonitorName The name of the connection monitor.
+     * @param parameters Parameters that define the operation to create a connection monitor.
+     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the connection monitor.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConnectionMonitorResultInner createOrUpdate(
+        String resourceGroupName,
+        String networkWatcherName,
+        String connectionMonitorName,
+        ConnectionMonitorInner parameters,
+        String migrate) {
+        return createOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate)
+            .block();
     }
 
     /**
@@ -499,7 +583,9 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         String networkWatcherName,
         String connectionMonitorName,
         ConnectionMonitorInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters).block();
+        final String migrate = null;
+        return createOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate)
+            .block();
     }
 
     /**
@@ -509,6 +595,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
      * @param parameters Parameters that define the operation to create a connection monitor.
+     * @param migrate Value indicating whether connection monitor V1 should be migrated to V2 format.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -521,8 +608,10 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
         String networkWatcherName,
         String connectionMonitorName,
         ConnectionMonitorInner parameters,
+        String migrate,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, networkWatcherName, connectionMonitorName, parameters, context)
+        return createOrUpdateAsync(
+                resourceGroupName, networkWatcherName, connectionMonitorName, parameters, migrate, context)
             .block();
     }
 
@@ -564,7 +653,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -576,6 +666,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                             connectionMonitorName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -619,7 +710,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -629,6 +721,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 connectionMonitorName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -730,7 +823,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -742,6 +836,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                             connectionMonitorName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -785,7 +880,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -795,6 +891,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 connectionMonitorName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -986,7 +1083,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -1001,6 +1099,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1049,7 +1148,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         context = this.client.mergeContext(context);
@@ -1062,6 +1162,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -1197,7 +1298,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1209,6 +1311,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                             connectionMonitorName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1252,7 +1355,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .stop(
@@ -1262,6 +1366,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 connectionMonitorName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1452,7 +1557,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1464,6 +1570,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                             connectionMonitorName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1507,7 +1614,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .start(
@@ -1517,6 +1625,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 connectionMonitorName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1707,7 +1816,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1719,6 +1829,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                             connectionMonitorName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1762,7 +1873,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .query(
@@ -1772,6 +1884,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 connectionMonitorName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1972,7 +2085,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1983,6 +2097,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                             networkWatcherName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<ConnectionMonitorResultInner>>map(
                 res ->
@@ -2025,7 +2140,8 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -2034,6 +2150,7 @@ public final class ConnectionMonitorsClientImpl implements ConnectionMonitorsCli
                 networkWatcherName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->

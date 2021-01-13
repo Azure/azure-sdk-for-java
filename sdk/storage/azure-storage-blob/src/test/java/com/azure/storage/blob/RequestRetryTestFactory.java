@@ -24,7 +24,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.concurrent.TimeoutException;
@@ -288,9 +287,9 @@ class RequestRetryTestFactory {
                     switch (this.factory.tryNumber) {
                         case 1:
                         case 2:
-                            return RETRY_TEST_OK_RESPONSE.delaySubscription(Duration.ofSeconds(options.getTryTimeout() + 1));
+                            return RETRY_TEST_OK_RESPONSE.delaySubscription(options.getTryTimeoutDuration().plusSeconds(1));
                         case 3:
-                            return RETRY_TEST_OK_RESPONSE.delaySubscription(Duration.ofSeconds(options.getTryTimeout() - 1));
+                            return RETRY_TEST_OK_RESPONSE.delaySubscription(options.getTryTimeoutDuration().minusSeconds(1));
                         default:
                             throw new IllegalArgumentException("Continued retrying after success");
                     }
@@ -362,9 +361,9 @@ class RequestRetryTestFactory {
             switch (this.factory.retryTestScenario) {
                 case RETRY_TEST_SCENARIO_EXPONENTIAL_TIMING:
                     return (long) Math.ceil(
-                        ((pow(2L, tryNumber - 1) - 1L) * this.factory.options.getRetryDelayInMs()) / 1000);
+                        ((pow(2L, tryNumber - 1) - 1L) * this.factory.options.getRetryDelay().toMillis()) / 1000);
                 case RETRY_TEST_SCENARIO_FIXED_TIMING:
-                    return (long) Math.ceil(this.factory.options.getRetryDelayInMs() / 1000);
+                    return (long) Math.ceil(this.factory.options.getRetryDelay().toMillis() / 1000);
                 default:
                     throw new IllegalArgumentException("Invalid test scenario");
             }
@@ -408,9 +407,9 @@ class RequestRetryTestFactory {
         private Mono<HttpResponse> testMaxDelayBounds(Mono<HttpResponse> response) {
             return Mono.defer(() -> Mono.fromCallable(() -> {
                 OffsetDateTime now = OffsetDateTime.now();
-                if (now.isAfter(factory.time.plusSeconds((long) Math.ceil((factory.options.getMaxRetryDelayInMs() / 1000) + 1)))) {
+                if (now.isAfter(factory.time.plusSeconds((long) Math.ceil((factory.options.getMaxRetryDelay().toMillis() / 1000) + 1)))) {
                     throw new IllegalArgumentException("Max retry delay exceeded");
-                } else if (now.isBefore(factory.time.plusSeconds((long) Math.ceil((factory.options.getMaxRetryDelayInMs() / 1000) - 1)))) {
+                } else if (now.isBefore(factory.time.plusSeconds((long) Math.ceil((factory.options.getMaxRetryDelay().toMillis() / 1000) - 1)))) {
                     throw new IllegalArgumentException("Retry did not delay long enough");
                 }
 

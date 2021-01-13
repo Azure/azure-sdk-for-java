@@ -207,45 +207,6 @@
         </executions>
       </plugin>
 
-      <!-- This plugin exports spotbugs reports in html form -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>xml-maven-plugin</artifactId>
-        <version>1.0</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <phase>verify</phase>
-            <goals>
-              <goal>transform</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <transformationSets>
-            <transformationSet>
-              <dir>${project.build.directory}/spotbugs</dir>
-              <includes>
-                <include>spotbugsXml.xml</include>
-              </includes>
-              <outputDir>${project.build.directory}/spotbugs</outputDir>
-              <stylesheet>fancy-hist.xsl</stylesheet>
-              <fileMappers>
-                <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
-                  <targetExtension>.html</targetExtension>
-                </fileMapper>
-              </fileMappers>
-            </transformationSet>
-          </transformationSets>
-        </configuration>
-        <dependencies>
-          <dependency>
-            <groupId>com.github.spotbugs</groupId>
-            <artifactId>spotbugs</artifactId>
-            <version>4.0.0-beta3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
-          </dependency>
-        </dependencies>
-      </plugin>
-
       <!-- Configure the jar plugin -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -1620,6 +1581,57 @@
                 <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
               </systemPropertyVariables>
             </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>transform-spotbugs</id>
+      <activation>
+        <file>
+          <exists>${project.build.directory}/spotbugs/spotbugsXml.xml</exists>
+        </file>
+      </activation>
+      <build>
+        <plugins>
+          <!-- This plugin exports spotbugs reports in html form -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>xml-maven-plugin</artifactId>
+            <version>1.0.2</version> <!-- {x-version-update;org.codehaus.mojo:xml-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>transform</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <transformationSets>
+                <transformationSet>
+                  <dir>${project.build.directory}/spotbugs</dir>
+                  <includes>
+                    <include>spotbugsXml.xml</include>
+                  </includes>
+                  <outputDir>${project.build.directory}/spotbugs</outputDir>
+                  <stylesheet>fancy-hist.xsl</stylesheet>
+                  <fileMappers>
+                    <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                      <targetExtension>.html</targetExtension>
+                    </fileMapper>
+                  </fileMappers>
+                </transformationSet>
+              </transformationSets>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs</artifactId>
+                <version>4.0.0-beta3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+              </dependency>
+            </dependencies>
           </plugin>
         </plugins>
       </build>
