@@ -45,6 +45,7 @@ public class TableClientBuilder {
     private HttpPipeline httpPipeline;
     private TablesSharedKeyCredential tablesSharedKeyCredential;
     private AzureSasCredential azureSasCredential;
+    private String sasToken;
     private TablesServiceVersion version;
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
 
@@ -77,7 +78,8 @@ public class TableClientBuilder {
         TablesServiceVersion serviceVersion = version != null ? version : TablesServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            tablesSharedKeyCredential, tokenCredential, azureSasCredential, endpoint, retryOptions, httpLogOptions,
+            tablesSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, httpLogOptions,
             httpClient, policies, configuration, logger);
 
         return new TableAsyncClient(tableName, pipeline, endpoint, serviceVersion, TABLES_SERIALIZER);
@@ -164,8 +166,11 @@ public class TableClientBuilder {
      * @throws NullPointerException if {@code sasToken} is {@code null}.
      */
     public TableClientBuilder sasToken(String sasToken) {
-        return this.credential(new AzureSasCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null.")));
+        this.sasToken = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
+        this.tablesSharedKeyCredential = null;
+        this.tokenCredential = null;
+        return this;
     }
 
     /**
@@ -178,8 +183,6 @@ public class TableClientBuilder {
     public TableClientBuilder credential(AzureSasCredential credential) {
         this.azureSasCredential = Objects.requireNonNull(credential,
             "'credential' cannot be null.");
-        this.tablesSharedKeyCredential = null;
-        this.tokenCredential = null;
         return this;
     }
 
@@ -193,7 +196,7 @@ public class TableClientBuilder {
     public TableClientBuilder credential(TablesSharedKeyCredential credential) {
         this.tablesSharedKeyCredential = Objects.requireNonNull(credential, "credential cannot be null.");
         this.tokenCredential = null;
-        this.azureSasCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -207,7 +210,7 @@ public class TableClientBuilder {
     public TableClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "credential cannot be null.");
         this.tablesSharedKeyCredential = null;
-        this.azureSasCredential = null;
+        this.sasToken = null;
         return this;
     }
 
