@@ -76,7 +76,7 @@
     "dir": "azure-resourcemanager-compute",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.compute",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-12-01"
+    "args": "--payload-flattening-threshold=1 --tag=package-2020-06-30 --rename-model=UserAssignedIdentitiesValue:VirtualMachineIdentityUserAssignedIdentities,VirtualMachineScaleSetIdentityUserAssignedIdentitiesValue:VirtualMachineScaleSetIdentityUserAssignedIdentities"
   },
   "consumption": {
     "dir": "azure-resourcemanager-consumption",
@@ -167,10 +167,11 @@
     "args": "--tag=package-features-2015-12"
   },
   "graphrbac": {
+    "spec": "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager",
     "dir": "azure-resourcemanager-authorization",
-    "source": "specification/graphrbac/data-plane/readme.md",
+    "source": "azure-resourcemanager-authorization/swagger/swagger.md",
     "package": "com.azure.resourcemanager.authorization",
-    "args": "--payload-flattening-threshold=1 --tag=1.6"
+    "args": "--tag=v1.0 --title=MicrosoftGraphClient --models-subpackage=fluent.models"
   },
   "iothub": {
     "dir": "azure-resourcemanager-devices",
@@ -212,7 +213,7 @@
     "dir": "azure-resourcemanager-network",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.network",
-    "args": "--payload-flattening-threshold=1 --tag=package-2020-05 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
+    "args": "--payload-flattening-threshold=1 --tag=package-2020-07 --add-inner=ApplicationGatewayIpConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIpConfiguration,ConnectionMonitor,PacketCapture"
   },
   "notificationhubs": {
     "dir": "azure-resourcemanager-notificationhubs",

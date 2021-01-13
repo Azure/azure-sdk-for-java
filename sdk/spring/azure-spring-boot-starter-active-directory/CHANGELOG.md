@@ -1,6 +1,9 @@
 # Release History
 
-## 3.0.0-beta.2 (Unreleased)
+## 3.2.0-beta.1 (Unreleased)
+
+
+## 3.0.0 (2020-12-30)
 ### Breaking Changes
 - Change group id from `com.microsoft.azure` to `com.azure.spring`.
 - Change artifact id from `azure-active-directory-spring-boot-starter` to `azure-spring-boot-starter-active-directory`.

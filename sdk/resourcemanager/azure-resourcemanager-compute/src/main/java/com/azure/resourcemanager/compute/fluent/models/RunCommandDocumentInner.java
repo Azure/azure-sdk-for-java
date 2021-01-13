@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.RunCommandParameterDefinition;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -65,6 +66,41 @@ public final class RunCommandDocumentInner extends RunCommandDocumentBaseInner {
      */
     public RunCommandDocumentInner withParameters(List<RunCommandParameterDefinition> parameters) {
         this.parameters = parameters;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RunCommandDocumentInner withSchema(String schema) {
+        super.withSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RunCommandDocumentInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RunCommandDocumentInner withOsType(OperatingSystemTypes osType) {
+        super.withOsType(osType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RunCommandDocumentInner withLabel(String label) {
+        super.withLabel(label);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RunCommandDocumentInner withDescription(String description) {
+        super.withDescription(description);
         return this;
     }
 

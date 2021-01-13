@@ -4,7 +4,6 @@ package com.azure.spring.autoconfigure.b2c;
 
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
@@ -74,10 +73,6 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
         return null;
     }
 
-    private void cleanupSecurityContextAuthentication() {
-        SecurityContextHolder.getContext().setAuthentication(null);
-    }
-
     private OAuth2AuthorizationRequest getB2CAuthorizationRequest(@Nullable OAuth2AuthorizationRequest request,
                                                                   String userFlow) {
         Assert.hasText(userFlow, "User flow should contain text.");
@@ -86,14 +81,16 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
             return null;
         }
 
-        cleanupSecurityContextAuthentication();
-
         final Map<String, Object> additionalParameters = new HashMap<>();
         Optional.ofNullable(this.properties)
                 .map(AADB2CProperties::getAuthenticateAdditionalParameters)
                 .ifPresent(additionalParameters::putAll);
         additionalParameters.put("p", userFlow);
         additionalParameters.put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);
+
+        // OAuth2AuthorizationRequest.Builder.additionalParameters() in spring-security-oauth2-core 5.2.7.RELEASE
+        // and 5.3.5.RELEASE implementation way is different, so we to compatible with them.
+        additionalParameters.putAll(request.getAdditionalParameters());
 
         return OAuth2AuthorizationRequest.from(request).additionalParameters(additionalParameters).build();
     }

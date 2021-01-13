@@ -204,8 +204,54 @@ public interface P2SVpnGatewaysClient
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<P2SVpnGatewayInner>> updateTagsWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String gatewayName, Map<String, String> tags);
+
+    /**
+     * Updates virtual wan p2s vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTagsAsync(
+        String resourceGroupName, String gatewayName, Map<String, String> tags);
+
+    /**
+     * Updates virtual wan p2s vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(
+        String resourceGroupName, String gatewayName, Map<String, String> tags);
+
+    /**
+     * Updates virtual wan p2s vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param tags Resource tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(
+        String resourceGroupName, String gatewayName, Map<String, String> tags, Context context);
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
@@ -239,6 +285,20 @@ public interface P2SVpnGatewaysClient
      *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    P2SVpnGatewayInner updateTags(String resourceGroupName, String gatewayName, Map<String, String> tags);
+
+    /**
+     * Updates virtual wan p2s vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -260,7 +320,7 @@ public interface P2SVpnGatewaysClient
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<P2SVpnGatewayInner> updateTagsWithResponse(
+    P2SVpnGatewayInner updateTags(
         String resourceGroupName, String gatewayName, Map<String, String> tags, Context context);
 
     /**
@@ -424,6 +484,102 @@ public interface P2SVpnGatewaysClient
     PagedIterable<P2SVpnGatewayInner> list(Context context);
 
     /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> resetWithResponseAsync(String resourceGroupName, String gatewayName);
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginResetAsync(
+        String resourceGroupName, String gatewayName);
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginReset(
+        String resourceGroupName, String gatewayName);
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginReset(
+        String resourceGroupName, String gatewayName, Context context);
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<P2SVpnGatewayInner> resetAsync(String resourceGroupName, String gatewayName);
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    P2SVpnGatewayInner reset(String resourceGroupName, String gatewayName);
+
+    /**
+     * Resets the primary of the p2s vpn gateway in the specified resource group.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    P2SVpnGatewayInner reset(String resourceGroupName, String gatewayName, Context context);
+
+    /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
@@ -532,6 +688,19 @@ public interface P2SVpnGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpn Profile Response for package generation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VpnProfileResponseInner generateVpnProfile(String resourceGroupName, String gatewayName);
+
+    /**
+     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param gatewayName The name of the P2SVpnGateway.
      * @param authenticationMethod VPN client authentication method.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -542,19 +711,6 @@ public interface P2SVpnGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     VpnProfileResponseInner generateVpnProfile(
         String resourceGroupName, String gatewayName, AuthenticationMethod authenticationMethod, Context context);
-
-    /**
-     * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param gatewayName The name of the P2SVpnGateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpn Profile Response for package generation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnProfileResponseInner generateVpnProfile(String resourceGroupName, String gatewayName);
 
     /**
      * Gets the connection health of P2S clients of the virtual wan P2SVpnGateway in the specified resource group.
@@ -884,6 +1040,18 @@ public interface P2SVpnGatewaysClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void disconnectP2SVpnConnections(String resourceGroupName, String p2SVpnGatewayName);
+
+    /**
+     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
      * @param vpnConnectionIds List of p2s vpn connection Ids.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -893,16 +1061,4 @@ public interface P2SVpnGatewaysClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     void disconnectP2SVpnConnections(
         String resourceGroupName, String p2SVpnGatewayName, List<String> vpnConnectionIds, Context context);
-
-    /**
-     * Disconnect P2S vpn connections of the virtual wan P2SVpnGateway in the specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param p2SVpnGatewayName The name of the P2S Vpn Gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void disconnectP2SVpnConnections(String resourceGroupName, String p2SVpnGatewayName);
 }

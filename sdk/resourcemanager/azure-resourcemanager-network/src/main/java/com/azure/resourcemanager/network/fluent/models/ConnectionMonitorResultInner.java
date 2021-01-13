@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 /** Information about the connection monitor. */
 @JsonFlatten
@@ -336,6 +337,20 @@ public class ConnectionMonitorResultInner extends Resource {
      */
     public ConnectionMonitorType connectionMonitorType() {
         return this.connectionMonitorType;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectionMonitorResultInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ConnectionMonitorResultInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

@@ -32,6 +32,7 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
+import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -771,5 +772,10 @@ public final class BridgeInternal {
         List<TransactionalBatchOperationResult> transactionalBatchOperationResults) {
 
         transactionalBatchResponse.addAll(transactionalBatchOperationResults);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static List<PatchOperation> getPatchOperationsFromCosmosPatch(CosmosPatchOperations cosmosPatchOperations) {
+        return cosmosPatchOperations.getPatchOperations();
     }
 }
