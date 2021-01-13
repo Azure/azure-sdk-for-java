@@ -8,8 +8,11 @@ import com.azure.core.http.HttpClientProvider;
 
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on native JDK HttpClient.
+ * <p>
+ * NOTE: This implementation is only available in Java 11+ as that is when {@link java.net.http.HttpClient} was
+ * introduced.
  */
-public class JdkHttpClientProvider implements HttpClientProvider {
+public final class JdkHttpClientProvider implements HttpClientProvider {
 
     @Override
     public HttpClient createInstance() {

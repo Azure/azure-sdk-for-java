@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClientProvider;
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on OkHttp.
  */
-public class OkHttpClientProvider implements HttpClientProvider {
+public final class OkHttpClientProvider implements HttpClientProvider {
 
     @Override
     public HttpClient createInstance() {

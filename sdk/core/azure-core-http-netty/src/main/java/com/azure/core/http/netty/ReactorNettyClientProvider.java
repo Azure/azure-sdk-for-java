@@ -9,7 +9,7 @@ import com.azure.core.http.HttpClientProvider;
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on Netty.
  */
-public class ReactorNettyClientProvider implements HttpClientProvider {
+public final class ReactorNettyClientProvider implements HttpClientProvider {
 
     @Override
     public HttpClient createInstance() {

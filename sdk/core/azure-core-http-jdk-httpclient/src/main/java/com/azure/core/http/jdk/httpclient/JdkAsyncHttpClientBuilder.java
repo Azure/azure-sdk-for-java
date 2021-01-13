@@ -7,7 +7,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 import com.azure.core.util.Configuration;
-
 import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
@@ -84,9 +83,8 @@ public class JdkAsyncHttpClientBuilder {
 
     /**
      * Sets the executor to be used for asynchronous and dependent tasks. This cannot be null.
-     *
-     * <p> If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for
-     * each
+     * <p>
+     * If this method is not invoked prior to {@linkplain #build() building}, a default executor is created for each
      * newly built {@code HttpClient}.
      *
      * @param executor the executor to be used for asynchronous and dependent tasks
