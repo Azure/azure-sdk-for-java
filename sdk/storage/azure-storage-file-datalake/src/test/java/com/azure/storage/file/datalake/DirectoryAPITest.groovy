@@ -3004,19 +3004,23 @@ class DirectoryAPITest extends APISpec {
     @Unroll
     def "Get file and subdirectory client"() {
         setup:
-        dc = fsc.getDirectoryClient(resourcePrefix +  generatePathName())
+        def dirName = generatePathName()
+        def subPath = generatePathName()
+        dc = fsc.getDirectoryClient(resourcePrefix +  dirName)
 
         when:
-        dc.getFileClient(subResourcePrefix + generatePathName())
+        def fileClient = dc.getFileClient(subResourcePrefix + subPath)
 
         then:
         notThrown(IllegalArgumentException)
+        fileClient.getFilePath() == Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath
 
         when:
-        dc.getSubdirectoryClient(subResourcePrefix + generatePathName())
+        def subDirectoryClient = dc.getSubdirectoryClient(subResourcePrefix + subPath)
 
         then:
         notThrown(IllegalArgumentException)
+        subDirectoryClient.getDirectoryPath() == Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath
 
         where:
         resourcePrefix          | subResourcePrefix         || _
