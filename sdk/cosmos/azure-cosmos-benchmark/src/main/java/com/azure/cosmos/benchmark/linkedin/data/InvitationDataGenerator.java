@@ -1,6 +1,5 @@
 package com.azure.cosmos.benchmark.linkedin.data;
 
-import com.azure.cosmos.benchmark.linkedin.Constants;
 import com.fasterxml.jackson.databind.node.BooleanNode;
 import com.fasterxml.jackson.databind.node.IntNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -13,11 +12,13 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import static com.azure.cosmos.benchmark.linkedin.impl.Constants.*;
+
 
 public class InvitationDataGenerator {
 
     private static final String ID = "id";
-    private static final String PARTITIONING_KEY = Constants.PARTITION_KEY;
+    private static final String PARTITIONING_KEY = PARTITION_KEY;
     private static final String ACTIVE = "active";
     private static final String INVITATION_ID = "invitationId";
     private static final String INVITER = "inviter";

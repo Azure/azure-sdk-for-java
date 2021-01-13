@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.azure.cosmos.benchmark.linkedin.impl.Constants.*;
 import static com.azure.cosmos.models.ThroughputProperties.*;
 
 
@@ -65,7 +66,7 @@ public class ResourceManager {
         try {
             LOGGER.info("Creating container {} in the database {}", containerName, database.getId());
             final CosmosContainerProperties containerProperties =
-                new CosmosContainerProperties(containerName, Constants.PARTITION_KEY_PATH);
+                new CosmosContainerProperties(containerName, PARTITION_KEY_PATH);
             database.createContainerIfNotExists(containerProperties, containerThroughput)
                 .block(RESOURCE_CRUD_WAIT_TIME);
         } catch (CosmosException e) {
