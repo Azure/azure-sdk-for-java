@@ -28,8 +28,8 @@ import java.net.URI;
 import java.util.Arrays;
 
 /**
- * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
- * take effect.
+ * Abstract configuration class, used to make AzureClientRegistrationRepository
+ * and AuthzCodeGrantRequestEntityConverter take effect.
  */
 public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
@@ -93,7 +93,7 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     }
 
     /**
-     * Fix the default error info not displayed when the setting failureHandler in configure
+     * Fix the default error info not displayed when the setting failureHandler in securityConfigure
      */
     private static final class AADHttpConfigurer extends AbstractHttpConfigurer<AADHttpConfigurer, HttpSecurity> {
         @Override
