@@ -51,15 +51,16 @@ In Event Hubs, the modern client libraries have packages and namespaces that beg
 ### Client hierarchy
 
 In the interest of simplifying the API surface, we've made separate clients for sending and receiving events:
+
 - [EventHubProducerClient][EventHubProducerClient] is the sync client to send events. [EventHubProducerAsyncClient][EventHubProducerAsyncClient] is the corresponding async client.
 - [EventProcessorClient][EventProcessorClient] is what you would typically use to read events from all partitions with an optional, but recommended checkpointing feature.
 - [EventHubConsumerClient][EventHubConsumerClient] is the sync client you would use for lower-level control of [EventData][EventData] consumption from a single partition. [EventHubConsumerAsyncClient][EventHubConsumerAsyncClient] is the corresponding async client.
 
 #### Instantiating clients
 
-In v3, the `EventHubClient` was instantiated via static overloads. The client contained both sync and async methods. A `PartitionReceiver` or `PartitionSender` could be created from this client. `EventHubClient
+In v3, the `EventHubClient` was instantiated via static overloads. The client contained both sync and async methods. A `PartitionReceiver` or `PartitionSender` could be created from this client. Reading events from all partitions was done via the `EventProcessorHost`.
 
-In v5, the creation of producer and consumer clients is done through the [EventHubClientBuilder][EventHubClientBuilder] while the [EventProcessorClient][EventProcessorClient] is created through the [EventProcessorClientBuilder][EventProcessorClientBuilder].
+In v5, the creation of producer and consumer clients is done through the [EventHubClientBuilder][EventHubClientBuilder]. Reading events from all partitions is done through [EventProcessorClient][EventProcessorClient]. The processor is created via [EventProcessorClientBuilder][EventProcessorClientBuilder].
 
 In v3:
 
@@ -107,7 +108,7 @@ You can send a list of events or create and send an event batch as before. Inste
 - Passing a list of events to the `send` method with no options makes use of automatic routing. If `partitionId` is passed in the options to this method, the events are sent to the given partition.
 - Creating a batch of events using the `createBatch` method without setting the `partitionId` in the options makes use of automatic routing. If `partitionId` is passed in the options to this method, the events are sent to the given partition.
 
-Additionally, we consolidate send into an efficient `send(EventDataBatch)` method on the producer client. Batching merges information from multiple events into a single sent message, reducing the amount of network communication needed vs sending events one at a time.
+Batching merges information from multiple events into a single sent message, reducing the amount of network communication needed vs sending events one at a time.
 
 The code below assumes all events fit into a single batch. For a more complete example, see sample: [Publishing events to specific partition][PublishEventsToSpecificPartition].
 
@@ -455,6 +456,7 @@ More examples can be found at:
 [EventDataBatch]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventDataBatch.html
 [EventHubClientBuilder]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubClientBuilder.html
 [EventHubConsumerAsyncClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubConsumerAsyncClient.html
+[EventHubConsumerClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubConsumerClient.html
 [EventHubProducerAsyncClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubProducerAsyncClient.html
 [EventHubProducerClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventHubProducerClient.html
 [EventProcessorClient]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventhubs/latest/com/azure/messaging/eventhubs/EventProcessorClient.html
