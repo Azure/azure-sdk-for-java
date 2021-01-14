@@ -24,9 +24,8 @@ pr:
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    SDKType: data
     ServiceDirectory: batch
     Artifacts:
-      - name: azure-batch
-        groupId: com.microsoft.azure
-        safeName: azurebatch
+      - name: azure-resourcemanager-batch
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerbatch
