@@ -30,11 +30,7 @@ object CosmosRowConverter
     val objectMapper = new ObjectMapper();
 
     def fromObjectNodeToRow(schema: StructType, objectNode: ObjectNode): Row = {
-        val values: Seq[Any] = schema.fields.map {
-            case StructField(name, dataType, _, _) =>
-                Option(objectNode.get(name)).map(convertToSparkDataType(_, dataType)).orNull
-        }
-
+        val values: Seq[Any] = convertStructToSparkDataType(schema, objectNode)
         new GenericRowWithSchema(values.toArray, schema)
     }
 
@@ -44,18 +40,24 @@ object CosmosRowConverter
         objectNode
     }
 
+    private def convertStructToSparkDataType(schema: StructType, objectNode: ObjectNode) : Seq[Any] =
+        schema.fields.map {
+            case StructField(name, dataType, _, _) =>
+            Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _)).orNull
+        }
+
     // scalastyle:off
-    private def convertToSparkDataType(value: JsonNode, dataType: DataType): Any = (value, dataType) match {
-        case (_ : NullNode, _) | (_, _ : NullType)=> null
+    private def convertToSparkDataType(dataType: DataType, value: JsonNode): Any = (value, dataType) match {
+        case (_ : NullNode, _) | (_, _ : NullType) => null
         case (jsonNode: ObjectNode, struct: StructType) =>
-            fromObjectNodeToRow(struct, jsonNode)
-        case (_, map: MapType) =>
-            (value match {
-                case document: ObjectNode => documentToMap(document)
-                case _ => value.asInstanceOf[java.util.HashMap[String, AnyRef]].asScala.toMap
-            }).map(element => (toSQL(element._1, map.keyType), toSQL(element._2, map.valueType)))
+            convertStructToSparkDataType(struct, jsonNode)
+        case (jsonNode: ObjectNode, map: MapType) =>
+            jsonNode.fields().asScala
+                .map(element => (
+                    element.getKey(),
+                    convertToSparkDataType(map.valueType, element.getValue())))
         case (arrayNode: ArrayNode, array: ArrayType) =>
-            arrayNode.elements().asScala.map(convertToSparkDataType(_, array.elementType))
+            arrayNode.elements().asScala.map(convertToSparkDataType(array.elementType, _))
         case (binaryNode: BinaryNode, _: BinaryType) =>
             binaryNode.binaryValue()
         case (arrayNode: ArrayNode, _: BinaryType) =>
@@ -63,25 +65,39 @@ object CosmosRowConverter
             objectMapper.convertValue(arrayNode, classOf[Array[Byte]])
         case (_, _: BooleanType) => value.asBoolean()
         case (_, _: StringType) => value.asText()
+        case (_, _: DateType) => toDate(value)
+        case (_, _: TimestampType) => toTimestamp(value)
         case (isJsonNumber(), DoubleType) => value.asDouble()
         case (isJsonNumber(), DecimalType()) => value.decimalValue()
         case (isJsonNumber(), FloatType) => value.asDouble()
         case (isJsonNumber(), LongType) => value.asLong()
         case (isJsonNumber(), _) => value.asInt()
-        case (_, _: DateType) => toDate(value)
-        case (_, _: TimestampType) => toTimestamp(value)
         case _ =>
             this.logError(s"Unsupported datatype conversion [Value: $value] of ${value.getClass}] to $dataType]")
-            value
+            value.asText() // Defaulting to a string representation for values that we cannot convert
+    }
+
+    private def toTimestamp(value: JsonNode): Timestamp = {
+        value match {
+            case isJsonNumber() => new Timestamp(value.asLong())
+            case _ => Timestamp.valueOf(value.asText())
+        }
+    }
+
+    private def toDate(value: JsonNode): Date = {
+        value match {
+            case isJsonNumber() => new Date(value.asLong())
+            case _ => Date.valueOf(value.asText())
+        }
     }
 
     private object isJsonNumber {
         def unapply(x: JsonNode): Boolean = x match {
-            case com.fasterxml.jackson.databind.node.IntNode
-                 | com.fasterxml.jackson.databind.node.DecimalNode
-                 | com.fasterxml.jackson.databind.node.DoubleNode
-                 | com.fasterxml.jackson.databind.node.FloatNode
-                 | com.fasterxml.jackson.databind.node.LongNode => true
+            case _: com.fasterxml.jackson.databind.node.IntNode
+                 | _: com.fasterxml.jackson.databind.node.DecimalNode
+                 | _: com.fasterxml.jackson.databind.node.DoubleNode
+                 | _: com.fasterxml.jackson.databind.node.FloatNode
+                 | _: com.fasterxml.jackson.databind.node.LongNode => true
             case _ => false
     }
 
