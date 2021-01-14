@@ -214,7 +214,9 @@ public class EventProcessorClientBuilder {
     }
 
     /**
-     * Sets the client options for the processor client.
+     * Sets the client options for the processor client. The application id set on the client options will be used
+     * for tracing. The headers set on {@code ClientOptions} are currently not used but can be used in later releases
+     * to add to AMQP message.
      *
      * @param clientOptions The client options.
      * @return The updated {@link EventProcessorClientBuilder} object.

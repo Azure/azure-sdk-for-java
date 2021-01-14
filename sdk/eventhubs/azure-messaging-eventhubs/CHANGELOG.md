@@ -2,6 +2,15 @@
 
 ## 5.4.0-beta.2 (Unreleased)
 
+### New features
+- Add `clientOptions` to `EventProcessorClientBuilder` to support setting user's application id used in user-agent
+ property of the amqp connection.
+
+### Dependency Updates
+- Update `azure-core` dependency to `1.12.0`.
+- Update `azure-core-amqp` dependency to `2.0.1`.
+- Update `azure-identity` dependency to `1.2.2`.
+
 ## 5.4.0-beta.1 (2020-11-12)
 ### Breaking changes
 - Removed `ObjectBatch` and related `createBatch()` and `send()` operations in favor of
