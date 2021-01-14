@@ -26,9 +26,11 @@ public class AADMultipleTenantIT {
 
     @Test
     public void multipleTenantTest() throws InterruptedException {
-        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(AADMultipleTenantIT.DumbApp.class,
-            Collections.emptyMap(), AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
+        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap(),
+            AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
+        LOGGER.info(httpResponse);
+        LOGGER.info(AAD_USER_NAME_2);
         Assert.assertTrue(httpResponse.contains("home"));
     }
 
