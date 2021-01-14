@@ -14,7 +14,7 @@ OUTPUT_FOLDER_FORMAT = None
 # Constant parameters
 SDK_ROOT = '../../../'  # related to file dir
 AUTOREST_CORE_VERSION = '3.0.6350'
-AUTOREST_JAVA = '@autorest/java@4.0.8'
+AUTOREST_JAVA = '@autorest/java@4.0.9'
 DEFAULT_VERSION = '1.0.0-beta.1'
 GROUP_ID = 'com.azure.resourcemanager'
 API_SPECS_FILE = 'api-specs.yaml'
