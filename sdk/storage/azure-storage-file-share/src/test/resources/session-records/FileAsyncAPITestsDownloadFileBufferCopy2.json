@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/fileasyncapitestsdownloadfilebuffercopy2923214c1e412?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ae34630c-8765-4916-bd8f-c1ce4e1925b5"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-04-08",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D8B81F25FCDDB0",
+      "Last-Modified" : "Wed, 13 Jan 2021 23:58:39 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "b0ee52c1-401a-0096-5808-ea9853000000",
+      "Date" : "Wed, 13 Jan 2021 23:58:38 GMT",
+      "x-ms-client-request-id" : "ae34630c-8765-4916-bd8f-c1ce4e1925b5"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fileasyncapitestsdownloadfilebuffercopy2923214c1e412", "fileasyncapitestsdownloadfilebuffercopy22279177a50d2", "fileasyncapitestsdownloadfilebuffercopy277515f930d5f" ]
+}

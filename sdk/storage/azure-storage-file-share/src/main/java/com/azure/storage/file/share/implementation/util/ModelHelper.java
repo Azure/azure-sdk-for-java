@@ -4,17 +4,26 @@
 package com.azure.storage.file.share.implementation.util;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
+import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 
+import java.io.IOException;
+
 public class ModelHelper {
+
+    private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
+    private static final ClientLogger logger = new ClientLogger(ModelHelper.class);
 
     /**
      * Converts an internal type to a public type.
@@ -32,7 +41,7 @@ public class ModelHelper {
             case INCLUDE_WITH_LEASED:
                 return DeleteSnapshotsOptionType.INCLUDE_LEASED;
             default:
-                throw new IllegalArgumentException("Invalid " + option.getClass());
+                throw logger.logExceptionAsError(new IllegalArgumentException("Invalid " + option.getClass()));
         }
     }
 
@@ -114,7 +123,21 @@ public class ModelHelper {
         if (headers == null) {
             return null;
         }
-        // TODO : Finish this.
-        return new ServicesListSharesSegmentHeaders();
+        try {
+            return SERIALIZER.deserialize(headers, ServicesListSharesSegmentHeaders.class);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
+    }
+
+    public static ShareFileDownloadHeaders transformFileDownloadHeaders(HttpHeaders headers) {
+        if (headers == null) {
+            return null;
+        }
+        try {
+            return SERIALIZER.deserialize(headers, ShareFileDownloadHeaders.class);
+        } catch (IOException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
     }
 }

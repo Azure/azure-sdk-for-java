@@ -40,6 +40,7 @@ import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromUR
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeResponse;
 import com.azure.storage.file.share.implementation.models.ShareFileRangeWriteType;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.CopyStatusType;
@@ -148,6 +149,15 @@ public class ShareFileAsyncClient {
         this.azureFileStorageClient = azureFileStorageClient;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
+    }
+
+    /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return azureFileStorageClient.getUrl();
     }
 
     /**
@@ -817,7 +827,7 @@ public class ShareFileAsyncClient {
             .downloadWithResponseAsync(shareName, filePath, null, rangeString, rangeGetContentMD5,
                 requestConditions.getLeaseId(), context)
             .map(response -> new ShareFileDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), response.getValue(), transformHeaders(response.getHeaders())));
+                response.getHeaders(), response.getValue(), ModelHelper.transformFileDownloadHeaders(response.getHeaders())));
     }
 
     /**

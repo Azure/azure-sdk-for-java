@@ -1,54 +1,54 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/fileasyncapitestscreatefilewithargsfp459223e7f1e5d9?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/fileasyncapitestscreatefilewithargsfp58171d0c5fb690?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "1b0fdea6-fa5d-46a1-bff7-a1656162e738"
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "667cbaee-b548-4318-81df-8c60f528face"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-04-08",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D77911D8E43C4B",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:29:45 GMT",
+      "ETag" : "0x8D8B81F2411CB89",
+      "Last-Modified" : "Wed, 13 Jan 2021 23:58:36 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "77a675ef-f01a-002d-80fa-aa2148000000",
-      "Date" : "Wed, 04 Dec 2019 23:29:44 GMT",
-      "x-ms-client-request-id" : "1b0fdea6-fa5d-46a1-bff7-a1656162e738"
+      "x-ms-request-id" : "b0ee522d-401a-0096-5008-ea9853000000",
+      "Date" : "Wed, 13 Jan 2021 23:58:35 GMT",
+      "x-ms-client-request-id" : "667cbaee-b548-4318-81df-8c60f528face"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/fileasyncapitestscreatefilewithargsfp459223e7f1e5d9/fileasyncapitestscreatefilewithargsfp02576fb124be14",
+    "Uri" : "https://REDACTED.file.core.windows.net/fileasyncapitestscreatefilewithargsfp58171d0c5fb690/fileasyncapitestscreatefilewithargsfp070253f3f38cdf",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "8717a325-249d-4856-9b4b-78c12bb4ab9d"
+      "x-ms-version" : "2020-04-08",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "27fd0d20-a389-47a9-b64a-0cc68f1019d7"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
-      "x-ms-file-permission-key" : "10431655103412740186*8280205063999649007",
+      "x-ms-version" : "2020-04-08",
+      "x-ms-file-permission-key" : "1002397126372455288*17277118026500876237",
       "x-ms-file-id" : "13835128424026341376",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "x-ms-file-creation-time" : "2019-12-04T23:29:45.6533095Z",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:29:45 GMT",
+      "x-ms-file-creation-time" : "2021-01-13T23:58:36.3199658Z",
+      "Last-Modified" : "Wed, 13 Jan 2021 23:58:36 GMT",
       "retry-after" : "0",
       "StatusCode" : "201",
       "x-ms-request-server-encrypted" : "true",
-      "Date" : "Wed, 04 Dec 2019 23:29:44 GMT",
-      "ETag" : "0x8D77911D8E56A67",
+      "Date" : "Wed, 13 Jan 2021 23:58:35 GMT",
+      "ETag" : "0x8D8B81F242AB0AA",
       "x-ms-file-attributes" : "Archive",
-      "x-ms-file-change-time" : "2019-12-04T23:29:45.6533095Z",
+      "x-ms-file-change-time" : "2021-01-13T23:58:36.3199658Z",
       "x-ms-file-parent-id" : "0",
       "Content-Length" : "0",
-      "x-ms-request-id" : "77a675f1-f01a-002d-01fa-aa2148000000",
-      "x-ms-client-request-id" : "8717a325-249d-4856-9b4b-78c12bb4ab9d",
-      "x-ms-file-last-write-time" : "2019-12-04T23:29:45.6533095Z"
+      "x-ms-request-id" : "b0ee5232-401a-0096-5408-ea9853000000",
+      "x-ms-client-request-id" : "27fd0d20-a389-47a9-b64a-0cc68f1019d7",
+      "x-ms-file-last-write-time" : "2021-01-13T23:58:36.3199658Z"
     },
     "Exception" : null
   } ],
-  "variables" : [ "fileasyncapitestscreatefilewithargsfp459223e7f1e5d9", "fileasyncapitestscreatefilewithargsfp02576fb124be14", "2019-12-04T23:29:45.653309500Z", "2019-12-04T23:29:45.653309500Z" ]
+  "variables" : [ "fileasyncapitestscreatefilewithargsfp58171d0c5fb690", "fileasyncapitestscreatefilewithargsfp070253f3f38cdf", "2021-01-13T23:58:36.319965800Z", "2021-01-13T23:58:36.319965800Z" ]
 }

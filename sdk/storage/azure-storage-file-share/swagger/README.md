@@ -27,7 +27,7 @@ license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy
+custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings
 customization-jar-path: target/azure-storage-file-share-customization-1.0.0-beta.1.jar
 customization-class: com.azure.storage.file.share.customization.ShareStorageCustomization
 ```
@@ -646,22 +646,7 @@ directive:
     delete $["x-ms-enum"];
     $["x-ms-parameter-location"] = "method";
 ```
-
-### Add the CustomFileAndDirectoryListingDeserializer attribute
-``` yaml
-directive:
-- from: FilesAndDirectoriesListSegment.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "import com.fasterxml.jackson.annotation.JsonProperty;",
-        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
-      replace(
-        "public final class FilesAndDirectoriesListSegment {",
-        "@JsonDeserialize(using = CustomFileAndDirectoryListingDeserializer.class)\npublic final class FilesAndDirectoriesListSegment {");
-```
-
+F
 ### ShareErrorCode
 ``` yaml
 directive:
@@ -759,16 +744,6 @@ directive:
       delete $.ShareAccessPolicy.properties.Permission;
     }
     $.ShareSignedIdentifier.properties.AccessPolicy["$ref"] = "#/definitions/ShareAccessPolicy";
-```
-
-### ShareServiceProperties Annotation Fix
-``` yaml
-directive:
-- from: ShareServiceProperties.java
-  where: $
-  transform: >
-    return $.replace('@JsonProperty(value = "Metrics")\n    private ShareMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private ShareMetrics hourMetrics;').
-      replace('@JsonProperty(value = "Metrics")\n    private ShareMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private ShareMetrics minuteMetrics;');
 ```
 
 ### Rename FileHTTPHeaders to FileHttpHeader and remove file prefix from properties

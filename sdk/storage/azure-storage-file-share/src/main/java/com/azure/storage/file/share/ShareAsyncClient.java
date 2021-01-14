@@ -105,6 +105,15 @@ public class ShareAsyncClient {
     }
 
     /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return azureFileStorageClient.getUrl();
+    }
+
+    /**
      * Get the url of the storage share client.
      *
      * @return the url of the Storage Share.
