@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -552,6 +553,14 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static void setQueryRequestOptionsMaxItemCount(CosmosQueryRequestOptions cosmosQueryRequestOptions, Integer maxItemCount) {
         cosmosQueryRequestOptions.setMaxItemCount(maxItemCount);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosChangeFeedRequestOptions getEffectiveChangeFeedRequestOptions(
+        CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
+        CosmosPagedFluxOptions pagedFlexOptions) {
+
+        return cosmosChangeFeedRequestOptions.withCosmosPagedFluxOptions(pagedFlexOptions);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.util.concurrent.Queues;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -64,7 +65,8 @@ public class Paginator {
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
         Class<T> resourceType,
         int top,
-        int maxPageSize) {
+        int maxPageSize,
+        int preFetchCount) {
 
         return getPaginatedQueryResultAsObservable(
             () -> new ChangeFeedFetcher<>(
@@ -72,11 +74,13 @@ public class Paginator {
                 executeFunc,
                 changeFeedState,
                 top,
-                maxPageSize));
+                maxPageSize),
+            preFetchCount);
     }
 
     private static <T extends Resource> Flux<FeedResponse<T>> getPaginatedQueryResultAsObservable(
-        Supplier<Fetcher<T>> fetcherFactory) {
+        Supplier<Fetcher<T>> fetcherFactory,
+        int preFetchCount) {
 
         return Flux.defer(() -> {
             Flux<Flux<FeedResponse<T>>> generate = Flux.generate(
@@ -92,7 +96,10 @@ public class Paginator {
                     return tFetcher;
                 });
 
-            return generate.flatMapSequential(feedResponseFlux -> feedResponseFlux, 1);
+            return generate.flatMapSequential(
+                feedResponseFlux -> feedResponseFlux,
+                1,
+                preFetchCount);
         });
     }
 
@@ -112,6 +119,7 @@ public class Paginator {
                 continuationToken,
                 isChangeFeed,
                 top,
-                maxPageSize));
+                maxPageSize),
+                Queues.XS_BUFFER_SIZE);
     }
 }

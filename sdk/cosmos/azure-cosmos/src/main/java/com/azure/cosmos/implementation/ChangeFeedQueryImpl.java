@@ -76,16 +76,14 @@ class ChangeFeedQueryImpl<T extends Resource> {
 
     public Flux<FeedResponse<T>> executeAsync() {
 
-        final int maxPageSize = this.options.getMaxItemCount() != null ?
-            options.getMaxItemCount() : -1;
-
         return Paginator.getChangeFeedQueryResultAsObservable(
             this.changeFeedState,
             this.createRequestFunc,
             this.executeFunc,
             this.klass,
             INITIAL_TOP_VALUE,
-            maxPageSize);
+            this.options.getMaxItemCount(),
+            this.options.getMaxPrefetchPageCount());
     }
 
     private RxDocumentServiceRequest createDocumentServiceRequest() {

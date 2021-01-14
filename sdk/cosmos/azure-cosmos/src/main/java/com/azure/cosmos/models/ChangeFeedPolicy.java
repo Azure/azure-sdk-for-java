@@ -50,7 +50,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * }
  * </pre>
  */
-@Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+@Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
+    warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ChangeFeedPolicy {
 
     private final JsonSerializable jsonSerializable;
@@ -65,7 +66,8 @@ public final class ChangeFeedPolicy {
      *
      * @return ChangeFeedPolicy for full fidelity change feed.
      */
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
+        warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static ChangeFeedPolicy createFullFidelityPolicy(int retentionDurationInMinutes) {
 
         if (retentionDurationInMinutes <= 0) {
@@ -88,7 +90,8 @@ public final class ChangeFeedPolicy {
      *
      * @return ChangeFeedPolicy for default/incremental change feed without full fidelity.
      */
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
+        warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static ChangeFeedPolicy createIncrementalPolicy() {
 
         ChangeFeedPolicy policy = new ChangeFeedPolicy();
@@ -129,7 +132,8 @@ public final class ChangeFeedPolicy {
      *
      * @return full fidelity retention duration in minutes.
      */
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
+        warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getFullFidelityRetentionDurationInMinutes() {
 
         Integer intValue = this.jsonSerializable.getInt(Constants.Properties.LOG_RETENTION_DURATION);

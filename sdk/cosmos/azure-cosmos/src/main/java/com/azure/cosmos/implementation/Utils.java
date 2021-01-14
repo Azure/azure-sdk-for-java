@@ -15,6 +15,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeInternalDeserializer;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
 import com.azure.cosmos.implementation.uuid.impl.TimeBasedGenerator;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonParser;
@@ -53,6 +54,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -688,6 +691,19 @@ public class Utils {
         if (pagedFluxOptions.getMaxItemCount() != null) {
             ModelBridgeInternal.setQueryRequestOptionsMaxItemCount(cosmosQueryRequestOptions, pagedFluxOptions.getMaxItemCount());
         }
+    }
+
+    public static CosmosChangeFeedRequestOptions getEffectiveCosmosChangeFeedRequestOptions(
+        CosmosPagedFluxOptions pagedFluxOptions,
+        CosmosChangeFeedRequestOptions cosmosChangeFeedRequestRequestOptions) {
+
+        checkNotNull(
+            cosmosChangeFeedRequestRequestOptions,
+            "Argument 'cosmosChangeFeedRequestRequestOptions' must not be null");
+
+        return ModelBridgeInternal
+            .getEffectiveChangeFeedRequestOptions(
+                cosmosChangeFeedRequestRequestOptions, pagedFluxOptions);
     }
 
     static String escapeNonAscii(String partitionKeyJson) {

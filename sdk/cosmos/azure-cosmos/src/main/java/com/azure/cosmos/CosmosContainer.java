@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -27,6 +28,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
@@ -259,6 +261,25 @@ public class CosmosContainer {
         }
     }
 
+    /**
+     * Block on first feed response.
+     *
+     * @param feedResponseFlux the feed response flux mono.
+     * @return the cosmos item response.
+     */
+    <T> FeedResponse<T> blockFirstFeedResponse(Flux<FeedResponse<T>> feedResponseFlux) {
+        try {
+            return feedResponseFlux.blockFirst();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
     private CosmosItemResponse<Object> blockDeleteItemResponse(Mono<CosmosItemResponse<Object>> deleteItemMono) {
         try {
             return deleteItemMono.block();
@@ -336,6 +357,32 @@ public class CosmosContainer {
      */
     public <T> CosmosPagedIterable<T> queryItems(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> classType) {
         return getCosmosPagedIterable(this.asyncContainer.queryItems(querySpec, options, classType));
+    }
+
+    /**
+     * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
+     * <p>
+     * The next page can be retrieved by calling queryChangeFeed again with a new instance of
+     * {@Link CosmosChangeFeedRequestOptions} created from the continuation token of the previously returned
+     * {@Link FeedResponse<T>} instance.
+     *
+     * @param <T> the type parameter.
+     * @param options the change feed request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one feed response page
+     */
+    public <T> FeedResponse<T> queryChangeFeed(
+        CosmosChangeFeedRequestOptions options,
+        Class<T> classType) {
+
+        checkNotNull(options, "Argument 'options' must not be null.");
+
+        options.setMaxPrefetchPageCount(0);
+
+        return this.blockFirstFeedResponse(
+            this.asyncContainer
+                .queryChangeFeed(options, classType)
+                .byPage());
     }
 
     /**

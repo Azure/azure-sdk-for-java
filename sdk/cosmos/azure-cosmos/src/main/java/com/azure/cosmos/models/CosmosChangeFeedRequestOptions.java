@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
@@ -17,13 +18,16 @@ import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-@Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+@Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+    Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosChangeFeedRequestOptions {
     private static final Integer DEFAULT_MAX_ITEM_COUNT = 1000;
+    private static final Integer DEFAULT_MAX_PREFETCH_PAGE_COUNT = 1;
     private final ChangeFeedState continuationState;
     private final FeedRangeInternal feedRangeInternal;
     private final Map<String, Object> properties;
     private Integer maxItemCount;
+    private Integer maxPrefetchPageCount;
     private ChangeFeedMode mode;
     private ChangeFeedStartFromInternal startFromInternal;
 
@@ -44,6 +48,7 @@ public final class CosmosChangeFeedRequestOptions {
         }
 
         this.maxItemCount = DEFAULT_MAX_ITEM_COUNT;
+        this.maxPrefetchPageCount = DEFAULT_MAX_PREFETCH_PAGE_COUNT;
         this.feedRangeInternal = feedRange;
         this.startFromInternal = startFromInternal;
         this.continuationState = continuationState;
@@ -63,7 +68,8 @@ public final class CosmosChangeFeedRequestOptions {
         return this.continuationState;
     }
 
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FeedRange getFeedRange() {
         return this.feedRangeInternal;
     }
@@ -74,7 +80,8 @@ public final class CosmosChangeFeedRequestOptions {
      *
      * @return the max number of items.
      */
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getMaxItemCount() {
         return this.maxItemCount;
     }
@@ -86,9 +93,50 @@ public final class CosmosChangeFeedRequestOptions {
      * @param maxItemCount the max number of items.
      * @return the FeedOptionsBase.
      */
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions setMaxItemCount(Integer maxItemCount) {
-        this.maxItemCount = maxItemCount;
+        this.maxItemCount = maxItemCount != null ? maxItemCount : DEFAULT_MAX_ITEM_COUNT;
+        return this;
+    }
+
+    /**
+     * Gets the maximum number of pages that will be prefetched from the backend asynchronously
+     * in the background. By pre-fetching these changes the throughput of processing the
+     * change feed records can be increased because the processing doesn't have to stop while
+     * waiting for the IO operations to retrieve a new page form the backend to complete. The
+     * only scenario where it can be useful to disable prefetching pages (with
+     * setMaxPrefetchPageCount(0))
+     * would be when the caller only plans to retrieve just one page - so any prefetched pages
+     * would not be used anyway.
+     *
+     * @return the modified change feed request options.
+     */
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Integer getMaxPrefetchPageCount() {
+        return this.maxPrefetchPageCount;
+    }
+
+    /**
+     * Sets the maximum number of pages that will be prefetched from the backend asynchronously
+     * in the background. By pre-fetching these changes the throughput of processing the
+     * change feed records can be increased because the processing doesn't have to stop while
+     * waiting for the IO operations to retrieve a new page form the backend to complete. The
+     * only scenario where it can be useful to disable prefetching pages (with
+     * setMaxPrefetchPageCount(0))
+     * would be when the caller only plans to retrieve just one page - so any prefetched pages
+     * would not be used anyway.
+     *
+     * @param maxPrefetchPageCount the max number of pages that will be prefetched from the backend
+     *                             asynchronously in the background
+     * @return the modified change feed request options.
+     */
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosChangeFeedRequestOptions setMaxPrefetchPageCount(Integer maxPrefetchPageCount) {
+        this.maxPrefetchPageCount =
+            maxPrefetchPageCount != null ? maxPrefetchPageCount : DEFAULT_MAX_PREFETCH_PAGE_COUNT;
         return this;
     }
 
@@ -109,7 +157,16 @@ public final class CosmosChangeFeedRequestOptions {
         return this.startFromInternal;
     }
 
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    /**
+     * Creates a new {@link CosmosChangeFeedRequestOptions} instance to start processing
+     * change feed items from the beginning of the change feed
+     *
+     * @param feedRange The {@link FeedRange} that is used to define the scope (entire container,
+     *                  logical partition or subset of a container)
+     * @return a new {@link CosmosChangeFeedRequestOptions} instance
+     */
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosChangeFeedRequestOptions createForProcessingFromBeginning(FeedRange feedRange) {
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
@@ -120,7 +177,16 @@ public final class CosmosChangeFeedRequestOptions {
             null);
     }
 
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    /**
+     * Creates a new {@link CosmosChangeFeedRequestOptions} instance to start processing
+     * change feed items from a previous continuation
+     *
+     * @param continuation The continuation that was retrieved from a previously retrieved
+     *                     FeedResponse
+     * @return a new {@link CosmosChangeFeedRequestOptions} instance
+     */
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
         String continuation) {
 
@@ -182,7 +248,17 @@ public final class CosmosChangeFeedRequestOptions {
             null);
     }
 
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    /**
+     * Creates a new {@link CosmosChangeFeedRequestOptions} instance to start processing
+     * change feed items from the current time - so only events for all future changes will be
+     * retrieved
+     *
+     * @param feedRange The {@link FeedRange} that is used to define the scope (entire container,
+     *                  logical partition or subset of a container)
+     * @return a new {@link CosmosChangeFeedRequestOptions} instance
+     */
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosChangeFeedRequestOptions createForProcessingFromNow(FeedRange feedRange) {
         if (feedRange == null) {
             throw new NullPointerException("feedRange");
@@ -195,7 +271,17 @@ public final class CosmosChangeFeedRequestOptions {
             null);
     }
 
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    /**
+     * Creates a new {@link CosmosChangeFeedRequestOptions} instance to start processing
+     * change feed items from a certain point in time
+     *
+     * @param pointInTime The point in time from which processing of change feed events should start
+     * @param feedRange   The {@link FeedRange} that is used to define the scope (entire container,
+     *                    logical partition or subset of a container)
+     * @return a new {@link CosmosChangeFeedRequestOptions} instance
+     */
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static CosmosChangeFeedRequestOptions createForProcessingFromPointInTime(
         Instant pointInTime,
         FeedRange feedRange) {
@@ -221,7 +307,56 @@ public final class CosmosChangeFeedRequestOptions {
             this.feedRangeInternal);
     }
 
-    @Beta(Beta.SinceVersion.WHATEVER_NEW_VERSION)
+    CosmosChangeFeedRequestOptions withCosmosPagedFluxOptions(
+        CosmosPagedFluxOptions pagedFluxOptions) {
+
+        if (pagedFluxOptions == null) {
+            return this;
+        }
+
+        CosmosChangeFeedRequestOptions effectiveRequestOptions = this;
+
+        if (pagedFluxOptions.getRequestContinuation() != null) {
+            effectiveRequestOptions =
+                CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(
+                    pagedFluxOptions.getRequestContinuation());
+            effectiveRequestOptions.setMaxPrefetchPageCount(this.getMaxPrefetchPageCount());
+        }
+
+        if (pagedFluxOptions.getMaxItemCount() != null) {
+            effectiveRequestOptions.setMaxItemCount(pagedFluxOptions.getMaxItemCount());
+        }
+
+        return effectiveRequestOptions;
+    }
+
+    /**
+     * Changes the change feed mode so that the change feed will contain events for creations,
+     * deletes as well as all intermediary snapshots for updates. Enabling full fidelity change feed
+     * mode requires configuring a retention duration in the change feed policy of the
+     * container. <see>{@link ChangeFeedPolicy}</see>
+     * <p>
+     * intermediary snapshots of changes as well as deleted documents would be
+     * * available for processing for 8 minutes before they vanish.
+     * When enabling full fidelity mode you will only be able to process change feed events
+     * within the retention window configured in the change feed policy of the container.
+     * Processing the change feed with full fidelity mode will only be able within this retention
+     * window - if you attempt to process a change feed after more than the retention window
+     * an error will be returned because the events for intermediary updates and deletes have
+     * vanished.
+     * It would still be possible to process changes using Incremental mode even when
+     * configuring a full fidelity change feed policy with retention window on the container
+     * and when using Incremental mode it doesn't matter whether your are out of the retention
+     * window or not - but no events for deletes or intermediary updates would be included.
+     * When events are not getting processed within the retention window it is also possible
+     * to continue processing future events in full fidelity mode by querying the change feed
+     * with a new CosmosChangeFeedRequestOptions instance.
+     * </p>
+     *
+     * @return a {@link CosmosChangeFeedRequestOptions} instance with full fidelity mode enabled
+     */
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions withFullFidelity() {
 
         if (!this.startFromInternal.supportsFullFidelityRetention()) {

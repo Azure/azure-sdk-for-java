@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.BatchExecutor;
 import com.azure.cosmos.implementation.batch.BulkExecutor;
 import com.azure.cosmos.implementation.query.QueryInfo;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosConflictProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -46,6 +47,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.cosmos.implementation.Utils.getEffectiveCosmosChangeFeedRequestOptions;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -71,6 +73,7 @@ public class CosmosAsyncContainer {
     private final String createItemSpanName;
     private final String readAllItemsSpanName;
     private final String queryItemsSpanName;
+    private final String queryChangeFeedSpanName;
     private final String readAllConflictsSpanName;
     private final String queryConflictsSpanName;
     private final String batchSpanName;
@@ -93,6 +96,7 @@ public class CosmosAsyncContainer {
         this.createItemSpanName = "createItem." + this.id;
         this.readAllItemsSpanName = "readAllItems." + this.id;
         this.queryItemsSpanName = "queryItems." + this.id;
+        this.queryChangeFeedSpanName = "queryChangeFeed." + this.id;
         this.readAllConflictsSpanName = "readAllConflicts." + this.id;
         this.queryConflictsSpanName = "queryConflicts." + this.id;
         this.batchSpanName = "transactionalBatch." + this.id;
@@ -472,6 +476,61 @@ public class CosmosAsyncContainer {
                 return getDatabase().getDocClientWrapper()
                              .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions)
                              .map(response -> prepareFeedResponse(response, classType));
+        });
+
+        return pagedFluxOptionsFluxFunction;
+    }
+
+    /**
+     * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
+     * <p>
+     * After subscription the operation will be performed. The {@link Flux} will
+     * contain one or several feed response of the obtained items. In case of
+     * failure the {@link CosmosPagedFlux} will error.
+     *
+     * @param <T> the type parameter.
+     * @param options the change feed request options.
+     * @param classType the class type.
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained
+     * items or an error.
+     */
+    public <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
+        checkNotNull(options, "Argument 'options' must not be null.");
+        checkNotNull(classType, "Argument 'classType' must not be null.");
+
+        return queryChangeFeedInternal(options, classType);
+    }
+
+    <T> CosmosPagedFlux<T> queryChangeFeedInternal(
+        CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
+        Class<T> classType) {
+
+        return UtilBridgeInternal.createCosmosPagedFlux(
+            queryChangeFeedInternalFunc(cosmosChangeFeedRequestOptions, classType));
+    }
+
+    <T> Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> queryChangeFeedInternalFunc(
+        CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
+        Class<T> classType) {
+
+        checkNotNull(
+            cosmosChangeFeedRequestOptions,
+            "Argument 'cosmosChangeFeedRequestOptions' must not be null.");
+
+        Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction = (pagedFluxOptions -> {
+
+            checkNotNull(
+                pagedFluxOptions,
+                "Argument 'pagedFluxOptions' must not be null.");
+
+            String spanName = this.queryChangeFeedSpanName;
+            pagedFluxOptions.setTracerAndTelemetryInformation(spanName, database.getId(),
+                this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
+            getEffectiveCosmosChangeFeedRequestOptions(pagedFluxOptions, cosmosChangeFeedRequestOptions);
+
+            return getDatabase().getDocClientWrapper()
+                                .queryDocumentChangeFeed(CosmosAsyncContainer.this.getLink(), cosmosChangeFeedRequestOptions)
+                                .map(response -> prepareFeedResponse(response, classType));
         });
 
         return pagedFluxOptionsFluxFunction;

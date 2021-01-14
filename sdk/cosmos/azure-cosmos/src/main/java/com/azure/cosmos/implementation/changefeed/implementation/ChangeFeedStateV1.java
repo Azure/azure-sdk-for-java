@@ -73,6 +73,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
             "null");
 
         if (this.continuation == null) {
+            // TODO fabianm fix this before merge
             this.continuation = FeedRangeContinuation.createForFullFeedRange(this.containerRid,
                 this.feedRange);
         }
