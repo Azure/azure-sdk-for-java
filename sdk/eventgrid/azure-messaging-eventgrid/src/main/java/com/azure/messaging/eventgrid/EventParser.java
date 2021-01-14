@@ -13,6 +13,12 @@ import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+/**
+ * This is convenience class that has methods to parse json into events.
+ * {@link #parseCloudEvents(String)} parses a JSON string into a list of {@link CloudEvent} instances.
+ * {@link #parseEventGridEvents(String)} parses a JSON string into a list of {@link EventGridEvent} instances.
+ *
+ */
 public final class EventParser {
     private EventParser() {
         // Hide the constructor

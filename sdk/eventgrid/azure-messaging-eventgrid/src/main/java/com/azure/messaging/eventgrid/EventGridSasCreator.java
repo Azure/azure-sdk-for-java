@@ -17,6 +17,15 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
+/**
+ * This is a utility to create a SAS, or Shared Access Signature token, from the endpoint and key of an
+ * Event Grid Topic or Domain.
+ *
+ * If you would like to grant somebody to publish events to your Event Grid Topic/Domain resource for a limited time,
+ * you could use this utility class to create a SAS token and share the token to them. They can then use
+ * {@link EventGridPublisherClientBuilder#credential(AzureSasCredential)} to to create a client to publish events.
+ *
+ */
 public final class EventGridSasCreator {
     private EventGridSasCreator() {
         // Hide the constructor
@@ -33,7 +42,7 @@ public final class EventGridSasCreator {
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
      */
-    public static String createSas(String endpoint, OffsetDateTime expirationTime, AzureKeyCredential keyCredential) {
+    public static String createSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
         // TODO: To discuss. option 2: instance method instead of static. option 3: in a separate class. Refer to other
         //  libraries.
         try {
