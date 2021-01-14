@@ -193,10 +193,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient);
 
         // Action & Assert
-        PagedIterable<ChatThreadMember> membersResponse = chatThreadClient.listMembers(Context.NONE);
+        PagedIterable<ChatParticipant> membersResponse = chatThreadClient.listParticipants(Context.NONE);
 
         // process the iterableByPage
-        List<ChatThreadMember> returnedMembers = new ArrayList<ChatThreadMember>();
+        List<ChatParticipant> returnedMembers = new ArrayList<ChatParticipant>();
         membersResponse.iterableByPage().forEach(resp -> {
             assertEquals(resp.getStatusCode(), 200);
             resp.getItems().forEach(item -> returnedMembers.add(item));
@@ -530,10 +530,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             }
         };
         setupUnitTest(mockHttpClient);
-        PagedIterable<ReadReceipt> readReceipts = chatThreadClient.listReadReceipts(Context.NONE);
+        PagedIterable<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts(Context.NONE);
 
         // // process the iterableByPage
-        List<ReadReceipt> readReceiptList = new ArrayList<ReadReceipt>();
+        List<ChatMessageReadReceipt> readReceiptList = new ArrayList<ChatMessageReadReceipt>();
         readReceipts.iterableByPage().forEach(resp -> {
             assertEquals(resp.getStatusCode(), 200);
             resp.getItems().forEach(item -> readReceiptList.add(item));
@@ -554,10 +554,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
             }
         };
         setupUnitTest(mockHttpClient);
-        PagedIterable<ReadReceipt> readReceipts = chatThreadClient.listReadReceipts();
+        PagedIterable<ChatMessageReadReceipt> readReceipts = chatThreadClient.listReadReceipts();
 
         // // process the iterableByPage
-        List<ReadReceipt> readReceiptList = new ArrayList<ReadReceipt>();
+        List<ChatMessageReadReceipt> readReceiptList = new ArrayList<ChatMessageReadReceipt>();
         readReceipts.iterableByPage().forEach(resp -> {
             assertEquals(resp.getStatusCode(), 200);
             resp.getItems().forEach(item -> readReceiptList.add(item));
@@ -575,10 +575,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient);
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
-        SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
+        String id = chatThreadClient.sendMessage(messageRequest);
 
         // Action & Assert
-        chatThreadClient.sendReadReceipt(response.getId());
+        chatThreadClient.sendReadReceipt(id);
     }
 
     @ParameterizedTest
@@ -588,10 +588,10 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         setupTest(httpClient);
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
-        SendChatMessageResult response = chatThreadClient.sendMessage(messageRequest);
+        String id = chatThreadClient.sendMessage(messageRequest);
 
         // Action & Assert
-        Response<Void> sendResponse = chatThreadClient.sendReadReceiptWithResponse(response.getId(), Context.NONE);
+        Response<Void> sendResponse = chatThreadClient.sendReadReceiptWithResponse(id, Context.NONE);
         assertEquals(201, sendResponse.getStatusCode());
     }
 }
