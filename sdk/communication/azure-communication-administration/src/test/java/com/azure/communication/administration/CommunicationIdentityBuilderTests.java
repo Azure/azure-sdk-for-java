@@ -56,7 +56,6 @@ public class CommunicationIdentityBuilderTests {
             });
         CommunicationIdentityAsyncClient asyncClient = builder.buildAsyncClient();
         assertNotNull(asyncClient);
-        asyncClient.createUser();
     }
 
     @Test
@@ -81,7 +80,6 @@ public class CommunicationIdentityBuilderTests {
             });
         CommunicationIdentityClient syncClient = builder.buildClient();
         assertNotNull(syncClient);
-        syncClient.createUser();
     }
 
     @Test
@@ -105,7 +103,6 @@ public class CommunicationIdentityBuilderTests {
             });
         CommunicationIdentityAsyncClient asyncClient = builder.buildAsyncClient();
         assertNotNull(asyncClient);
-        asyncClient.createUser();
     }
 
     @Test

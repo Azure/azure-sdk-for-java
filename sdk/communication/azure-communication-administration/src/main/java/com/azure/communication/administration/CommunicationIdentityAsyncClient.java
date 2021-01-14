@@ -5,30 +5,17 @@ package com.azure.communication.administration;
 
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.administration.implementation.CommunicationIdentityImpl;
-import com.azure.communication.administration.models.CommunicationIdentity;
-import com.azure.communication.administration.models.CommunicationIdentityAccessTokenResult;
-import com.azure.communication.administration.models.CommunicationIdentityCreateRequest;
+import com.azure.communication.administration.models.CommunicationIdentityAccessToken;
 import com.azure.communication.administration.models.CommunicationIdentityTokenScope;
-import com.azure.communication.administration.models.CommunicationTokenRequest;
-import com.azure.communication.administration.models.CommunicationIdentityUpdateRequest;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
-import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Objects;
-
 import reactor.core.publisher.Mono;
-
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * Asynchronous client interface for Azure Communication Services identity operations
@@ -44,18 +31,18 @@ public final class CommunicationIdentityAsyncClient {
     }
 
     /**
-     * Creates a new CommunicationUser.
+     * Creates a new CommunicationUserIdentifier.
      *
+     * @param scopes the list of scopes for the identity access token
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CommunicationUserIdentifier> createIdentity(List<CommunicationIdentityTokenScope> scopes) {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));
-
     }
 
     /**
-     * Creates a new CommunicationUser.
+     * Creates a new CommunicationUserIdentifier with response.
      *
      * @param scopes the list of scopes for the identity access token
      * @return the created Communication User.
@@ -66,194 +53,70 @@ public final class CommunicationIdentityAsyncClient {
     }
 
     /**
-     * Creates a new CommunicationUserIdentifier.
+     * Deletes a CommunicationUserIdentifier, revokes its tokens and deletes its data.
      *
-     * @param scopes the list of scopes for the identity access token
-     * @param context the context of the request. Can also be null or Context.NONE.
-     * @return the created Communication User.
+     * @param communicationUser the identity to be deleted.
+     * @return the response.
      */
-    public Mono<Response<CommunicationUserIdentifier>> createIdentity(List<CommunicationIdentityTokenScope> scopes, Context context) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteIdentity(CommunicationUserIdentifier communicationUser) {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 
     /**
-     * Deletes a CommunicationUser, revokes its tokens and deletes its data.
+     * Deletes a CommunicationUserIdentifier, revokes its tokens and deletes its data with response.
+     * @return the response.
      *
      * @param communicationUser The user to be deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIdentityWithResponse(CommunicationUserIdentifier communicationUser) {
+        return Mono.error(new UnsupportedOperationException("not yet implemented"));  
+    }
+
+    /**
+     * Revokes all the access tokens created for an identifier.
+     * 
+     * @param communicationUser The user to be revoked access tokens.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteUser(CommunicationUserIdentifier communicationUser) {
-        try {
-            Objects.requireNonNull(communicationUser);
-            return withContext(context -> deleteUser(communicationUser, context)
-                .flatMap(
-                    (Response<Void> res) -> {
-                        return Mono.empty();
-                    }));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }    
+    public Mono<Void> revokeAccessTokens(CommunicationUserIdentifier communicationUser) {
+        return Mono.error(new UnsupportedOperationException("not yet implemented"));  
     }
 
     /**
-     * Deletes a CommunicationUser, revokes its tokens and deletes its data.
+     * Revokes all the access tokens created for an identifier with response.
      *
-     * @param communicationUser The user to be deleted.
-     * @return the response.
+     * @param communicationUser The user to be revoked access tokens.
+     * @return the response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteUserWithResponse(CommunicationUserIdentifier communicationUser) {
-        try {
-            Objects.requireNonNull(communicationUser);
-            return withContext(context -> deleteUser(communicationUser, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }    
+    public Mono<Response<Void>> revokeAccessTokensWithResponse(CommunicationUserIdentifier communicationUser) {
+        return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 
     /**
-     * Deletes a CommunicationUser, revokes its tokens and deletes its data.
+     * Generates a new access token for an identity.
      *
-     * @param communicationUser The user to be deleted.
-     * @param context the context of the request. Can also be null or Context.NONE.
-     * @return the response.
-     */
-    public Mono<Response<Void>> deleteUser(CommunicationUserIdentifier communicationUser, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return client.deleteIdentityWithResponseAsync(communicationUser.getId(), context);
-    }
-
-    /**
-     * Revokes all the tokens created for a user before a specific date.
-     *
-     * @param communicationUser The CommunicationUser whose tokens will be revoked.
-     * @param issuedBefore All tokens that are issued prior to this time should get revoked.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> revokeTokens(CommunicationUserIdentifier communicationUser, OffsetDateTime issuedBefore) {
-        try {
-            Objects.requireNonNull(communicationUser);
-            return withContext(context -> revokeTokens(communicationUser, issuedBefore, context)
-                .flatMap(
-                    (Response<Void> res) -> {
-                        return Mono.empty();
-                    }));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Revokes all the tokens created for a user before a specific date.
-     *
-     * @param communicationUser The CommunicationUser whose tokens will be revoked.
-     * @param issuedBefore All tokens that are issued prior to this time should get revoked.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> revokeTokensWithResponse(
-        CommunicationUserIdentifier communicationUser, OffsetDateTime issuedBefore) {
-        try {
-            Objects.requireNonNull(communicationUser);
-            return withContext(context -> revokeTokens(communicationUser, issuedBefore, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }    
-    }
-
-    /**
-     * Revokes all the tokens created for a user before a specific date.
-     *
-     * @param communicationUser The CommunicationUser whose tokens will be revoked.
-     * @param issuedBefore All tokens that are issued prior to this time should get revoked.
-     * @param context the context of the request. Can also be null or Context.NONE.
-     * @return the response.
-     */
-    public Mono<Response<Void>> revokeTokens(
-        CommunicationUserIdentifier communicationUser, OffsetDateTime issuedBefore, Context context) {
-        context = context == null ? Context.NONE : context;
-        if (issuedBefore == null) {
-            issuedBefore = OffsetDateTime.now();
-        }
-        CommunicationIdentityUpdateRequest tokenRevocationRequest = new CommunicationIdentityUpdateRequest();
-        tokenRevocationRequest.setTokensValidFrom(issuedBefore);
-        return client.updateWithResponseAsync(communicationUser.getId(), tokenRevocationRequest, context);
-    }
-
-    /**
-     * Generates a new token for an identity.
-     *
-     * @param communicationUser The CommunicationUser from whom to issue a token.
+     * @param communicationUser The user to be issued access tokens.
      * @param scopes The scopes that the token should have.
-     * @return the object with the issued token.
+     * @return the issued access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationUserToken> issueToken(
-        CommunicationUserIdentifier communicationUser, List<String> scopes) {
-        try {
-            Objects.requireNonNull(communicationUser);
-            Objects.requireNonNull(scopes);
-            return withContext(context -> issueToken(communicationUser, scopes, context)
-                .flatMap(
-                    (Response<CommunicationUserToken> res) -> {
-                        if (res.getValue() != null) {
-                            return Mono.just(res.getValue());
-                        }
-                        return Mono.empty();
-                    }));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Mono<CommunicationIdentityAccessToken> issueAccessToken(CommunicationUserIdentifier communicationUser, List<CommunicationIdentityTokenScope> scopes) {
+        return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 
     /**
-     * Generates a new token for an identity.
+     * Generates a new access token for an identity with response.
      *
-     * @param communicationUser The CommunicationUser from whom to issue a token. 
+     * @param communicationUser The user to be issued access tokens.
      * @param scopes The scopes that the token should have.
-     * @return the object with the issued token.
+     * @return the issued access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationUserToken>> issueTokenWithResponse(
-        CommunicationUserIdentifier communicationUser, List<String> scopes) {
-        try {
-            Objects.requireNonNull(communicationUser);
-            Objects.requireNonNull(scopes);
-            return withContext(context -> issueToken(communicationUser, scopes, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }    
-    }
-
-
-    /**
-     * Generates a new token for an identity.
-     *
-     * @param communicationUser The CommunicationUser from whom to issue a token. 
-     * @param scopes The scopes that the token should have.
-     * @param context the context of the request. Can also be null or Context.NONE.
-     * @return the object with the issued token.
-     */
-    public Mono<Response<CommunicationUserToken>> issueToken(
-        CommunicationUserIdentifier communicationUser, List<String> scopes, Context context) {
-        context = context == null ? Context.NONE : context;
-
-        CommunicationTokenRequest communicationTokenRequest = new CommunicationTokenRequest();
-        communicationTokenRequest.setScopes(scopes);
-        return client.issueTokenWithResponseAsync(communicationUser.getId(), communicationTokenRequest, context)
-        .flatMap(res -> {
-            if (res.getValue() != null) {
-                CommunicationUserToken userToken = new CommunicationUserToken();
-                userToken.setUser(new CommunicationUserIdentifier(res.getValue().getId()))
-                    .setToken(res.getValue().getToken())
-                    .setExpiresOn(res.getValue().getExpiresOn());
-                return Mono.just(new ResponseBase<HttpHeaders, CommunicationUserToken>(res.getRequest(), 
-                    res.getStatusCode(), res.getHeaders(), userToken, null));
-            } 
-            return Mono.empty();
-        });
+    public Mono<Response<CommunicationIdentityAccessToken>> issueAccessTokenWithResponse(CommunicationUserIdentifier communicationUser, List<CommunicationIdentityTokenScope> scopes) {
+        return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 }
