@@ -5,47 +5,20 @@ package com.azure.security.attestation;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.security.attestation.models.JsonWebKeySet;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-public class AttestationTest extends AttestationClientTestBase {
+/**
+ * Test for Attestation Signing Certificates APIs.
+ */
+public class AttestationSignersTest extends AttestationClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getAttestationClients")
-    public void testGetMetadataConfiguration(HttpClient client, String clientUri) {
-
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
-
-        Object metadataConfigResponse = attestationBuilder.buildMetadataConfigurationClient().get();
-
-        verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse);
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getAttestationClients")
-    public void testGetMetadataConfigurationAsync(HttpClient client, String clientUri) {
-
-        AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
-
-        Object metadataConfigResponse = attestationBuilder.buildMetadataConfigurationAsyncClient().get().block();
-
-        verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse);
-    }
-
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
