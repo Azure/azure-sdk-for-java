@@ -154,7 +154,7 @@ public final class PhoneNumbersAsyncClient {
     }
 
     /**
-     * Starts the update of capabilities for an acquired phone number.
+     * Begins release of an acquired phone number.
      *
      * This function returns a Long Running Operation poller that allows you to wait indefinitely until the 
      * operation is complete.

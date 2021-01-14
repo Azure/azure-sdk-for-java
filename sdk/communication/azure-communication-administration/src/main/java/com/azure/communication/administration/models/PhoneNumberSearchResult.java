@@ -4,8 +4,8 @@
 
 package com.azure.communication.administration.models;
 
-import com.azure.communication.administration.implementation.models.PhoneNumberAssignmentType;
-import com.azure.communication.administration.implementation.models.PhoneNumberType;
+import com.azure.communication.administration.models.PhoneNumberAssignmentType;
+import com.azure.communication.administration.models.PhoneNumberType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
