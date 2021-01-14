@@ -81,7 +81,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
             regionalSuffix1.add(getRegionalSuffix(accountLocation.getEndpoint(), TestConfigurations.HOST));
         }
 
-        //putting preference in opposite direction than what came from database account api
+        //putting preferences in opposite direction than what came from database account api
         for (int i = preferredLocations1.size() - 1; i >= 0; i--) {
             preferredLocations2.add(preferredLocations1.get(i));
             regionalSuffix2.add(regionalSuffix1.get(i));
