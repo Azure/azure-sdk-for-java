@@ -82,8 +82,9 @@ public final class ChatThreadAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateTopic(String topic) {
         try {
-            Objects.requireNonNull(options, "'options' cannot be null.");
-            return withContext(context -> updateTopic(topic, context)                .flatMap((Response<Void> res) -> {
+            Objects.requireNonNull(topic, "'topic' cannot be null.");
+            return withContext(context -> updateTopic(topic, context)
+                .flatMap((Response<Void> res) -> {
                     return Mono.empty();
                 }));
         } catch (RuntimeException ex) {
@@ -100,8 +101,9 @@ public final class ChatThreadAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateTopicWithResponse(String topic) {
         try {
-            Objects.requireNonNull(options, "'options' cannot be null.");
-            return withContext(context -> updateTopic(topic, context));        } catch (RuntimeException ex) {
+            Objects.requireNonNull(topic, "'topic' cannot be null.");
+            return withContext(context -> updateTopic(topic, context));
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
@@ -218,7 +220,8 @@ public final class ChatThreadAsyncClient {
         try {
             Objects.requireNonNull(user, "'user' cannot be null.");
             Objects.requireNonNull(user.getId(), "'user.getId()' cannot be null.");
-            return withContext(context -> removeParticipant(user, context)                .flatMap((Response<Void> res) -> {
+            return withContext(context -> removeParticipant(user, context)
+                .flatMap((Response<Void> res) -> {
                     return Mono.empty();
                 }));
         } catch (RuntimeException ex) {
@@ -238,7 +241,8 @@ public final class ChatThreadAsyncClient {
         try {
             Objects.requireNonNull(user, "'user' cannot be null.");
             Objects.requireNonNull(user.getId(), "'user.getId()' cannot be null.");
-            return withContext(context -> removeParticipant(user, context));        } catch (RuntimeException ex) {
+            return withContext(context -> removeParticipant(user, context));
+        } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
