@@ -1,4 +1,18 @@
 # Release History
+## 5.0.2 (2021-01-14)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.12.0 and `azure-core-http-netty` to 1.7.1.
+
+## 5.1.0-beta.3 (2020-11-19)
+### New features
+- Added support for healthcare recognition feature. It is represented as a long-running operation. Cancellation supported.
+- Added support for analyze tasks feature, It analyzes multiple tasks (such as, entity recognition, PII entity recognition
+  and key phrases extraction) simultaneously in a list of document.
+- Currently, Azure Active Directory (AAD) is not supported in the Healthcare recognition feature. For more information, see
+  [here](https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview).
+- Both new features listed above are available in `West US2`, `East US2`, `Central US`, `North Europe` and `West Europe`
+  regions and in Standard tier.
+
 ## 5.0.1 (2020-11-12)
 ### Dependency updates 
 - Update dependency version, `azure-core` to 1.10.0 and `azure-core-http-netty` to 1.6.3. 
