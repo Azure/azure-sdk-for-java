@@ -38,17 +38,22 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         smsOptions.setEnableDeliveryReport(true);        
     }
 
+    private SmsClient getTestSmsClientWithConnectionString(HttpClient httpClient, String testName) {
+        SmsClientBuilder builder = getSmsClientBuilderWithConnectionString(httpClient);
+        return addLoggingPolicy(builder, testName).buildClient();
+    }
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsRequest(HttpClient httpClient) throws NoSuchAlgorithmException {
-        SendSmsResponse response = getTestSmsClient(httpClient, "sendSmsRequestSync").sendMessage(from, to, body, smsOptions);
+        SendSmsResponse response = getTestSmsClientWithConnectionString(httpClient, "sendSmsRequestSync").sendMessage(from, to, body, smsOptions);
         verifyResponse(response);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsMessageWithResponse(HttpClient httpClient) throws NoSuchAlgorithmException {
-        Response<SendSmsResponse> response = getTestSmsClient(httpClient, "sendSmsMessageWithResponseSync")
+        Response<SendSmsResponse> response = getTestSmsClientWithConnectionString(httpClient, "sendSmsMessageWithResponseSync")
             .sendMessageWithResponse(from, to, body, smsOptions, Context.NONE);
         
         verifyResponse(response);  
@@ -57,7 +62,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsMessageWithResponseNullContext(HttpClient httpClient) throws NoSuchAlgorithmException {
-        Response<SendSmsResponse> response = getTestSmsClient(httpClient, "sendSmsMessageWithResponseNullContextSync")
+        Response<SendSmsResponse> response = getTestSmsClientWithConnectionString(httpClient, "sendSmsMessageWithResponseNullContextSync")
             .sendMessageWithResponse(from, to, body, smsOptions, null);
 
         verifyResponse(response);           
@@ -68,7 +73,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
     public void sendSmsRequestNoDeliverReport(HttpClient httpClient) throws NoSuchAlgorithmException {
         smsOptions.setEnableDeliveryReport(false); 
 
-        SendSmsResponse response = getTestSmsClient(httpClient, "sendSmsRequestNoDeliverReportSync").sendMessage(from, to, body);
+        SendSmsResponse response = getTestSmsClientWithConnectionString(httpClient, "sendSmsRequestNoDeliverReportSync").sendMessage(from, to, body);
         verifyResponse(response);
     }
 
@@ -98,7 +103,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         boolean http404ExceptionThrown = false;
 
         try {
-            getTestSmsClient(httpClient, "sendSmsRequestUnownedNumberSync").sendMessage(from, to, body);
+            getTestSmsClientWithConnectionString(httpClient, "sendSmsRequestUnownedNumberSync").sendMessage(from, to, body);
         } catch (HttpResponseException ex) {
             assertEquals(404, ex.getResponse().getStatusCode());
             http404ExceptionThrown = true;
@@ -115,7 +120,7 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
         boolean http400ExceptionThrown = false;
 
         try {
-            getTestSmsClient(httpClient, "sendSmsRequestMalformedNumberSync").sendMessage(from, to, body);
+            getTestSmsClientWithConnectionString(httpClient, "sendSmsRequestMalformedNumberSync").sendMessage(from, to, body);
         } catch (HttpResponseException ex) {
             assertEquals(400, ex.getResponse().getStatusCode());
             http400ExceptionThrown = true;
@@ -123,9 +128,4 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
 
         assertTrue(http400ExceptionThrown);
     }
-
-    private SmsClient getTestSmsClient(HttpClient httpClient, String testName) {
-        SmsClientBuilder builder = getSmsClientBuilderWithConnectionString(httpClient);
-        return addLoggingPolicy(builder, testName).buildClient();
-    }  
 }
