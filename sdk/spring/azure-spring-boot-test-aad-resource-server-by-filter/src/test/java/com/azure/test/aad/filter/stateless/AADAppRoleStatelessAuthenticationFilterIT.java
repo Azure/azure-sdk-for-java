@@ -23,8 +23,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE;
 import static org.junit.Assert.assertEquals;
 
 public class AADAppRoleStatelessAuthenticationFilterIT {
