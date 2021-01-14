@@ -275,7 +275,7 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             coupled with async network behavior can result in the data being overwritten as the buffer is reused.
              */
             byte[] buffer = new byte[length];
-            if (length >= 0) System.arraycopy(data, offset, buffer, 0, length);
+            System.arraycopy(data, offset, buffer, 0, length);
             sink.next(ByteBuffer.wrap(buffer));
         }
 
