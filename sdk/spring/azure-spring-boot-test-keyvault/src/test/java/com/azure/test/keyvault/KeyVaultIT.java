@@ -3,14 +3,24 @@
 
 package com.azure.test.keyvault;
 
+import static com.azure.spring.test.EnvironmentVariable.AZURE_KEYVAULT_URI;
+import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT_SECRET_NAME;
+import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT_SECRET_VALUE;
+import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.SPRING_RESOURCE_GROUP;
+import static com.azure.spring.test.EnvironmentVariable.SPRING_SUBSCRIPTION_ID;
+import static com.azure.spring.test.EnvironmentVariable.SPRING_TENANT_ID;
 import static org.junit.Assert.assertEquals;
 
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.compute.RunCommandInput;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.azure.spring.test.management.ClientSecretAccess;
 import com.azure.spring.test.AppRunner;
 import com.azure.spring.test.MavenBasedProject;
 import java.io.File;
@@ -33,23 +43,27 @@ import org.springframework.web.client.RestTemplate;
 public class KeyVaultIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultIT.class);
-    private static final String AZURE_KEYVAULT_URI = System.getenv("AZURE_KEYVAULT_URI");
-    private static final String KEY_VAULT_SECRET_VALUE = System.getenv("KEY_VAULT_SECRET_VALUE");
-    private static final String KEY_VAULT_SECRET_NAME = System.getenv("KEY_VAULT_SECRET_NAME");
-    private static final String SPRING_RESOURCE_GROUP = System.getenv("SPRING_RESOURCE_GROUP");
     private static final String APP_SERVICE_NAME = System.getenv("APP_SERVICE_NAME");
     private static final String VM_NAME = System.getenv("VM_NAME");
     private static final String VM_USER_USERNAME = System.getenv("VM_USER_USERNAME");
     private static final String VM_USER_PASSWORD = System.getenv("VM_USER_PASSWORD");
     private static final int DEFAULT_MAX_RETRY_TIMES = 3;
     private static final Azure AZURE;
-    private static final ClientSecretAccess CLIENT_SECRET_ACCESS;
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
 
     static {
-        CLIENT_SECRET_ACCESS = ClientSecretAccess.load();
-        AZURE = Azure.authenticate(CLIENT_SECRET_ACCESS.credentials())
-            .withSubscription(CLIENT_SECRET_ACCESS.subscription());
+        AZURE = Azure.authenticate(credentials())
+            .withSubscription(SPRING_SUBSCRIPTION_ID);
+    }
+
+
+
+    private static AzureTokenCredentials credentials() {
+        return new ApplicationTokenCredentials(
+            SPRING_CLIENT_ID,
+            SPRING_TENANT_ID,
+            SPRING_CLIENT_SECRET,
+            AzureEnvironment.AZURE);
     }
 
     @Test
@@ -58,9 +72,9 @@ public class KeyVaultIT {
         try (AppRunner app = new AppRunner(DummyApp.class)) {
             app.property("azure.keyvault.enabled", "true");
             app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
-            app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
-            app.property("azure.keyvault.client-key", CLIENT_SECRET_ACCESS.clientSecret());
-            app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
+            app.property("azure.keyvault.client-id", SPRING_CLIENT_ID);
+            app.property("azure.keyvault.client-key", SPRING_CLIENT_SECRET);
+            app.property("azure.keyvault.tenant-id", SPRING_TENANT_ID);
 
             LOGGER.info("app begin to start.");
             final ConfigurableApplicationContext dummy = app.start();
@@ -81,9 +95,9 @@ public class KeyVaultIT {
         try (AppRunner app = new AppRunner(DummyApp.class)) {
             app.property("azure.keyvault.enabled", "true");
             app.property("azure.keyvault.uri", AZURE_KEYVAULT_URI);
-            app.property("azure.keyvault.client-id", CLIENT_SECRET_ACCESS.clientId());
-            app.property("azure.keyvault.client-key", CLIENT_SECRET_ACCESS.clientSecret());
-            app.property("azure.keyvault.tenant-id", CLIENT_SECRET_ACCESS.tenantId());
+            app.property("azure.keyvault.client-id", SPRING_CLIENT_ID);
+            app.property("azure.keyvault.client-key", SPRING_CLIENT_SECRET);
+            app.property("azure.keyvault.tenant-id", SPRING_TENANT_ID);
             app.property("azure.keyvault.secret-keys", KEY_VAULT_SECRET_NAME);
             LOGGER.info("====" + KEY_VAULT_SECRET_NAME );
             app.start();

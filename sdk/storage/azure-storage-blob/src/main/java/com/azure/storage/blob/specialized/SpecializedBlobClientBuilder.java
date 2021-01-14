@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -28,7 +29,6 @@ import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -70,7 +70,8 @@ public final class SpecializedBlobClientBuilder {
     private EncryptionScope encryptionScope;
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
-    private SasTokenCredential sasTokenCredential;
+    private AzureSasCredential azureSasCredential;
+    private String sasToken;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -90,6 +91,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link AppendBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public AppendBlobClient buildAppendBlobClient() {
         return new AppendBlobClient(buildAppendBlobAsyncClient());
@@ -102,6 +104,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link AppendBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public AppendBlobAsyncClient buildAppendBlobAsyncClient() {
         validateConstruction();
@@ -119,6 +122,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link BlockBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlockBlobClient buildBlockBlobClient() {
         return new BlockBlobClient(buildBlockBlobAsyncClient());
@@ -133,6 +137,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link BlockBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public BlockBlobAsyncClient buildBlockBlobAsyncClient() {
         validateConstruction();
@@ -150,6 +155,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link PageBlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public PageBlobClient buildPageBlobClient() {
         return new PageBlobClient(buildPageBlobAsyncClient());
@@ -163,6 +169,7 @@ public final class SpecializedBlobClientBuilder {
      *
      * @return a {@link PageBlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint}, {@code containerName}, or {@code blobName} is {@code null}.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public PageBlobAsyncClient buildPageBlobAsyncClient() {
         validateConstruction();
@@ -200,7 +207,8 @@ public final class SpecializedBlobClientBuilder {
 
     private HttpPipeline getHttpPipeline() {
         return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
     }
 
@@ -367,7 +375,7 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -381,7 +389,7 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -393,10 +401,23 @@ public final class SpecializedBlobClientBuilder {
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public SpecializedBlobClientBuilder sasToken(String sasToken) {
-        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
+        this.sasToken = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
+     * @return the updated SpecializedBlobClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public SpecializedBlobClientBuilder credential(AzureSasCredential credential) {
+        this.azureSasCredential = Objects.requireNonNull(credential,
+            "'credential' cannot be null.");
         return this;
     }
 
@@ -410,7 +431,8 @@ public final class SpecializedBlobClientBuilder {
     public SpecializedBlobClientBuilder setAnonymousAccess() {
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.azureSasCredential = null;
+        this.sasToken = null;
         return this;
     }
 

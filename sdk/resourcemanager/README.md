@@ -3,6 +3,14 @@
 The Azure Management Libraries for Java is a higher-level, object-oriented API for *managing* Azure resources,
 that is optimized for ease of use, succinctness and consistency.
 
+## We'd love to hear your feedback
+
+We're always working on improving our products and the way we communicate with our users. So we'd love to learn what's working and how we can do better. 
+
+If you haven't already, please take a few minutes to [complete this short survey](https://microsoft.qualtrics.com/jfe/form/SV_ehN0lIk2FKEBkwd?Q_CHL=DOCS) we have put together.
+
+Thank you in advance for your collaboration. We really appreciate your time!
+
 ## Documentation
 
 Various documentation is available to help you get started
