@@ -37,7 +37,7 @@ public final class CommunicationIdentityClient {
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationUserIdentifier createIdentity(List<CommunicationIdentityTokenScope> scopes) {
+    public CommunicationUserIdentifier createUser(List<CommunicationIdentityTokenScope> scopes) {
         return null;
     }
 
@@ -49,7 +49,7 @@ public final class CommunicationIdentityClient {
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationUserIdentifier> createIdentityWithResponse(List<CommunicationIdentityTokenScope> scopes, Context context) {
+    public Response<CommunicationUserIdentifier> createUserWithResponse(List<CommunicationIdentityTokenScope> scopes, Context context) {
         return null;
     }
 
@@ -59,7 +59,7 @@ public final class CommunicationIdentityClient {
      * @param communicationUser The user to be deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteIdentity(CommunicationUserIdentifier communicationUser) {
+    public void deleteUser(CommunicationUserIdentifier communicationUser) {
         return;
     }
 
@@ -71,7 +71,7 @@ public final class CommunicationIdentityClient {
      * @return the response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteIdentityWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
+    public Response<Void> deleteUserWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         return null;
     }
 
