@@ -48,8 +48,13 @@ class ChangeFeedQueryImpl<T extends Resource> {
         checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
         checkNotNull(collectionLink, "Argument 'collectionLink' must not be null.");
         checkNotNull(collectionRid, "Argument 'collectionRid' must not be null.");
+
         if (Strings.isNullOrWhiteSpace(collectionLink)) {
             throw new IllegalArgumentException("Argument 'collectionLink' must not be empty");
+        }
+
+        if (Strings.isNullOrWhiteSpace(collectionRid)) {
+            throw new IllegalArgumentException("Argument 'collectionRid' must not be empty");
         }
 
         this.createRequestFunc = this::createDocumentServiceRequest;

@@ -122,9 +122,9 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                         false,
                         null)
                     .flatMap(pkRangeHolder -> {
-                        ArrayList<String> rangeList = new ArrayList<>();
+                        ArrayList<String> rangeList = new ArrayList<>(1);
 
-                        if (pkRangeHolder != null) {
+                        if (pkRangeHolder.v != null) {
                             String rangeId = pkRangeHolder.v.get(0).getId();
                             rangeList.add(rangeId);
                         }

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedRangeContinuationDeserializer extends StdDeserializer<FeedRangeContinuation>  {
+public class FeedRangeContinuationDeserializer extends StdDeserializer<FeedRangeContinuation> {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,9 +30,9 @@ public class FeedRangeContinuationDeserializer extends StdDeserializer<FeedRange
     }
 
     @Override
-    public FeedRangeContinuation deserialize(final JsonParser parser,
-                                         final DeserializationContext context)
-        throws IOException {
+    public FeedRangeContinuation deserialize(
+        final JsonParser parser,
+        final DeserializationContext context) throws IOException {
 
         final JsonNode rootNode = parser.getCodec().readTree(parser);
         final ObjectMapper mapper = (ObjectMapper)parser.getCodec();
@@ -45,7 +45,8 @@ public class FeedRangeContinuationDeserializer extends StdDeserializer<FeedRange
         ObjectMapper mapper,
         JsonParser parser) throws JsonMappingException {
 
-        JsonNode versionNode = rootNode.get(Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_VERSION);
+        JsonNode versionNode =
+            rootNode.get(Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_VERSION);
         if (versionNode == null || !versionNode.isInt()) {
             throw JsonMappingException.from(
                 parser,
@@ -54,7 +55,8 @@ public class FeedRangeContinuationDeserializer extends StdDeserializer<FeedRange
                     Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_VERSION));
         }
 
-        JsonNode ridNode = rootNode.get(Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_RESOURCE_ID);
+        JsonNode ridNode =
+            rootNode.get(Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_RESOURCE_ID);
         if (ridNode == null || !ridNode.isTextual()) {
             throw JsonMappingException.from(
                 parser,
@@ -64,7 +66,8 @@ public class FeedRangeContinuationDeserializer extends StdDeserializer<FeedRange
         }
         String containerRid = ridNode.textValue();
 
-        JsonNode continuationNode = rootNode.get(Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION);
+        JsonNode continuationNode =
+            rootNode.get(Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION);
         if (continuationNode == null ||
             !continuationNode.isArray() ||
             continuationNode.size() == 0) {
@@ -82,7 +85,8 @@ public class FeedRangeContinuationDeserializer extends StdDeserializer<FeedRange
                 throw JsonMappingException.from(
                     parser,
                     String.format(
-                        "Required property '%s' at index '%d' missing or does not have a valid value.",
+                        "Required property '%s' at index '%d' missing or does not have a valid " +
+                            "value.",
                         Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION,
                         i));
             }

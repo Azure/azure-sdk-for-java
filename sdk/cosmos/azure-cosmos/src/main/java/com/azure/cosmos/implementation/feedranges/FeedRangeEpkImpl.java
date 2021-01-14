@@ -115,7 +115,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                     .flatMap(pkRangeHolder -> {
                         final ArrayList<String> rangeList = new ArrayList<>();
 
-                        if (pkRangeHolder != null) {
+                        if (pkRangeHolder.v != null) {
                             final List<PartitionKeyRange> pkRanges = pkRangeHolder.v;
                             for (final PartitionKeyRange pkRange : pkRanges) {
                                 rangeList.add(pkRange.getId());
