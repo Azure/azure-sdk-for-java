@@ -42,7 +42,7 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
     /**
      * @return the string identifier representing the MicrosoftTeamsUserIdentifier object
      */
-    public String getId() {
+    public String getUserId() {
         return this.userId;
     }
 
