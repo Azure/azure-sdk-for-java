@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,7 +18,7 @@ public final class EffectiveRoutesParameters {
      * The resource whose effective routes are being requested.
      */
     @JsonProperty(value = "resourceId")
-    private Resource resourceId;
+    private String resourceId;
 
     /*
      * The type of the specified resource like RouteTable,
@@ -34,7 +33,7 @@ public final class EffectiveRoutesParameters {
      *
      * @return the resourceId value.
      */
-    public Resource resourceId() {
+    public String resourceId() {
         return this.resourceId;
     }
 
@@ -44,7 +43,7 @@ public final class EffectiveRoutesParameters {
      * @param resourceId the resourceId value to set.
      * @return the EffectiveRoutesParameters object itself.
      */
-    public EffectiveRoutesParameters withResourceId(Resource resourceId) {
+    public EffectiveRoutesParameters withResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
     }

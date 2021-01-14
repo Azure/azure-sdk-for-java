@@ -13,6 +13,7 @@ import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.ImageStorageProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /**
  * The source user image virtual hard disk. The virtual hard disk will be copied before being attached to the virtual
@@ -114,6 +115,20 @@ public class ImageInner extends Resource {
      */
     public ImageInner withHyperVGeneration(HyperVGenerationTypes hyperVGeneration) {
         this.hyperVGeneration = hyperVGeneration;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

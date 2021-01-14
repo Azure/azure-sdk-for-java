@@ -6,7 +6,7 @@ package com.azure.communication.administration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -23,7 +23,6 @@ public final class CommunicationIdentityClient {
     private final CommunicationIdentityAsyncClient asyncClient;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClient.class);
 
-
     CommunicationIdentityClient(CommunicationIdentityAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
     }
@@ -33,8 +32,8 @@ public final class CommunicationIdentityClient {
      *
      * @return the created Communication User.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)    
-    public CommunicationUser createUser() {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationUserIdentifier createUser() {
         return this.asyncClient.createUser().block();
     }
 
@@ -45,7 +44,7 @@ public final class CommunicationIdentityClient {
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
-    public Response<CommunicationUser> createUserWithResponse(Context context) {
+    public Response<CommunicationUserIdentifier> createUserWithResponse(Context context) {
         return this.asyncClient.createUser(context).block();
     }
 
@@ -55,7 +54,7 @@ public final class CommunicationIdentityClient {
      * @param communicationUser The user to be deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
-    public void deleteUser(CommunicationUser communicationUser) {
+    public void deleteUser(CommunicationUserIdentifier communicationUser) {
         this.asyncClient.deleteUser(communicationUser).block();
     }
 
@@ -67,7 +66,7 @@ public final class CommunicationIdentityClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
-    public Response<Void> deleteUserWithResponse(CommunicationUser communicationUser, Context context) {
+    public Response<Void> deleteUserWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         return this.asyncClient.deleteUser(communicationUser, context).block();
     }
 
@@ -78,7 +77,7 @@ public final class CommunicationIdentityClient {
      * @param issuedBefore All tokens that are issued prior to this time should get revoked.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
-    public void revokeTokens(CommunicationUser communicationUser, OffsetDateTime issuedBefore) {
+    public void revokeTokens(CommunicationUserIdentifier communicationUser, OffsetDateTime issuedBefore) {
         this.asyncClient.revokeTokens(communicationUser, issuedBefore).block();
     }
 
@@ -92,7 +91,7 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
     public Response<Void> revokeTokensWithResponse(
-        CommunicationUser communicationUser, OffsetDateTime issuedBefore, Context context) {
+        CommunicationUserIdentifier communicationUser, OffsetDateTime issuedBefore, Context context) {
         return this.asyncClient.revokeTokens(communicationUser, issuedBefore, context).block();
     }
 
@@ -105,7 +104,7 @@ public final class CommunicationIdentityClient {
      * @return the created CommunicationUserToken.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
-    public CommunicationUserToken issueToken(CommunicationUser communicationUser, List<String> scopes) {
+    public CommunicationUserToken issueToken(CommunicationUserIdentifier communicationUser, List<String> scopes) {
         return this.asyncClient.issueToken(communicationUser, scopes).block();
     }
 
@@ -119,7 +118,7 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
     public Response<CommunicationUserToken> issueTokenWithResponse(
-        CommunicationUser communicationUser, List<String> scopes, Context context) {
+        CommunicationUserIdentifier communicationUser, List<String> scopes, Context context) {
         return this.asyncClient.issueToken(communicationUser, scopes, context).block();
     }
 }

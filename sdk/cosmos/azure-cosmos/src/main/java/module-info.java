@@ -25,8 +25,9 @@ module com.azure.cosmos {
     requires micrometer.core;
     //  This is only required by guava shaded libraries
     requires java.logging;
+	requires HdrHistogram;
 
-    // public API surface area
+	// public API surface area
     exports com.azure.cosmos;
     exports com.azure.cosmos.models;
     exports com.azure.cosmos.util;
@@ -46,6 +47,7 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.query.metrics to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.orderbyquery to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.clientTelemetry to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
 

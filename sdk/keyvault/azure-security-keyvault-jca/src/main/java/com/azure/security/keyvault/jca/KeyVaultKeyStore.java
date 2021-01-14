@@ -71,22 +71,25 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      *
      * <p>
      * The constructor uses System.getProperty for
-     * <code>azure.keyvault.uri</code>, <code>azure.keyvault.tenantId</code>,
+     * <code>azure.keyvault.uri</code>, 
+     * <code>azure.keyvault.aadAuthenticationUrl</code>, 
+     * <code>azure.keyvault.tenantId</code>,
      * <code>azure.keyvault.clientId</code>,
      * <code>azure.keyvault.clientSecret</code> and
-     * <code>azure.keyvault.userAssignedIdentity</code> to initialize the
-     * keyvault client.
+     * <code>azure.keyvault.managedIdentity</code> to initialize the
+     * Key Vault client.
      * </p>
      */
     public KeyVaultKeyStore() {
         creationDate = new Date();
         String keyVaultUri = System.getProperty("azure.keyvault.uri");
-        String tenantId = System.getProperty("azure.keyvault.tenantId");
-        String clientId = System.getProperty("azure.keyvault.clientId");
-        String clientSecret = System.getProperty("azure.keyvault.clientSecret");
-        String managedIdentity = System.getProperty("azure.keyvault.managedIdentity");
+        String aadAuthenticationUrl = System.getProperty("azure.keyvault.aad-authentication-url");
+        String tenantId = System.getProperty("azure.keyvault.tenant-id");
+        String clientId = System.getProperty("azure.keyvault.client-id");
+        String clientSecret = System.getProperty("azure.keyvault.client-secret");
+        String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
         if (clientId != null) {
-            keyVaultClient = new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret);
+            keyVaultClient = new KeyVaultClient(keyVaultUri, aadAuthenticationUrl, tenantId, clientId, clientSecret);
         } else {
             keyVaultClient = new KeyVaultClient(keyVaultUri, managedIdentity);
         }
@@ -179,6 +182,9 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             key = keyVaultClient.getKey(alias, password);
             if (key != null) {
                 certificateKeys.put(alias, key);
+                if (aliases == null) {
+                    aliases = keyVaultClient.getAliases();
+                }
                 if (!aliases.contains(alias)) {
                     aliases.add(alias);
                 }
@@ -207,13 +213,14 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
             if (parameter.getClientId() != null) {
                 keyVaultClient = new KeyVaultClient(
                         parameter.getUri(),
+                        parameter.getAadAuthenticationUrl(),
                         parameter.getTenantId(),
                         parameter.getClientId(),
                         parameter.getClientSecret());
-            } else if (parameter.getUserAssignedIdentity() != null) {
+            } else if (parameter.getManagedIdentity() != null) {
                 keyVaultClient = new KeyVaultClient(
                         parameter.getUri(),
-                        parameter.getUserAssignedIdentity()
+                        parameter.getManagedIdentity()
                 );
             } else {
                 keyVaultClient = new KeyVaultClient(parameter.getUri());

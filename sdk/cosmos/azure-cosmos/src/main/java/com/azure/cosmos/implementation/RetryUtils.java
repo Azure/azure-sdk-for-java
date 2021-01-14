@@ -28,7 +28,7 @@ public class RetryUtils {
                 return Flux.error(t);
             }
             policy.captureStartTimeIfNotSet();
-            Flux<IRetryPolicy.ShouldRetryResult> shouldRetryResultFlux = policy.shouldRetry(e).flux();
+            Flux<ShouldRetryResult> shouldRetryResultFlux = policy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(s -> {
                 CosmosException clientException = Utils.as(e, CosmosException.class);
                 if(clientException != null) {
@@ -76,7 +76,7 @@ public class RetryUtils {
                 return Mono.error(throwable);
             }
             retryPolicy.captureStartTimeIfNotSet();
-            Mono<IRetryPolicy.ShouldRetryResult> shouldRetryResultFlux = retryPolicy.shouldRetry(e);
+            Mono<ShouldRetryResult> shouldRetryResultFlux = retryPolicy.shouldRetry(e);
             return shouldRetryResultFlux.flatMap(shouldRetryResult -> {
                 CosmosException clientException = Utils.as(e, CosmosException.class);
                 if(clientException != null) {
@@ -140,7 +140,7 @@ public class RetryUtils {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod,
         IRetryPolicy retryPolicy,
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod,
-        IRetryPolicy.ShouldRetryResult shouldRetryResult,
+        ShouldRetryResult shouldRetryResult,
         Duration minBackoffForInBackoffCallback,
         RxDocumentServiceRequest rxDocumentServiceRequest,
         AddressSelector addressSelector) {
@@ -153,7 +153,7 @@ public class RetryUtils {
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod,
         IRetryPolicy retryPolicy,
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> inBackoffAlternateCallbackMethod,
-        IRetryPolicy.ShouldRetryResult shouldRetryResult,
+        ShouldRetryResult shouldRetryResult,
         StopWatch stopwatch,
         Duration minBackoffForInBackoffCallback,
         RxDocumentServiceRequest rxDocumentServiceRequest,

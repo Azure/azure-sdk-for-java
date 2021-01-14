@@ -4,13 +4,9 @@
 This sample project demonstrates how to use Service Bus with Spring Boot. 
 
 ## Getting started
-### Prerequisites
 
-* An Azure subscription; if you don't already have an Azure subscription, you can activate your [MSDN subscriber benefits](https://azure.microsoft.com/pricing/member-offers/msdn-benefits-details/) or sign up for a [free Azure account](https://azure.microsoft.com/free/).
-
-* A [Java Development Kit (JDK)][jdk_link], version 1.8.
-
-* [Apache Maven](https://maven.apache.org/), version 3.0 or later.
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
 
 ### Create Service Bus on Azure
 1. Go to [Azure portal](https://portal.azure.com/) and create the service by following this [link](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal). 
@@ -25,11 +21,8 @@ This sample project demonstrates how to use Service Bus with Spring Boot.
 2. Fill in the `connection-string`, `queue-name`, `topic-name`, and `subscription-name`. 
 
 ### Run with Maven
-First, we need to ensure that this [instruction] is completed before run.
 
 ```
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-servicebus
 mvn spring-boot:run
 ```
@@ -47,4 +40,4 @@ Type | Reference Link
 
 <!-- LINKS -->
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist

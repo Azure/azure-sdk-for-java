@@ -269,6 +269,96 @@
         "code": "java.annotation.added",
         "new": "class com.azure.storage.blob.models.PageList",
         "justification": "Annotation required to resolve deserialization bug."
+      },{
+        "code": "java.method.returnTypeChanged",
+        "old": "method com.azure.core.util.IterableStream<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
+        "new": "method java.util.List<byte[]> com.azure.core.amqp.models.AmqpDataBody::getData()",
+        "justification": "Updated "
+      },
+      {
+        "code": "java.class.removed",
+        "old": "class com.azure.core.amqp.models.AmqpDataBody",
+        "justification": "Renamed as AmqpMessageBody."
+      },
+      {
+        "code": "java.class.kindChanged",
+        "old": "interface com.azure.core.amqp.models.AmqpMessageBody",
+        "new": "class com.azure.core.amqp.models.AmqpMessageBody",
+        "justification": "AmqpMessageBody is class representing all the new AMQP data types."
+      },
+      {
+        "code": "java.class.nowFinal",
+        "old": "interface com.azure.core.amqp.models.AmqpMessageBody",
+        "new": "class com.azure.core.amqp.models.AmqpMessageBody",
+        "justification": "Made it final."
+      },
+      {
+        "code": "java.class.removed",
+        "old": "enum com.azure.core.amqp.models.AmqpBodyType",
+        "justification": "Because It is renamed to AmqpMessageBodyType"
+      },
+      {
+        "code": "java.method.returnTypeChanged",
+        "old": "method com.azure.core.amqp.models.AmqpBodyType com.azure.core.amqp.models.AmqpMessageBody::getBodyType()",
+        "new": "method com.azure.core.amqp.models.AmqpMessageBodyType com.azure.core.amqp.models.AmqpMessageBody::getBodyType()",
+        "justification": "Renamed to match AmqpMessage prefix."
+      },
+      {
+        "code": "java.method.returnTypeChanged",
+        "old": "method java.lang.String com.azure.core.amqp.models.AmqpMessageProperties::getCorrelationId()",
+        "new": "method com.azure.core.amqp.models.AmqpMessageId com.azure.core.amqp.models.AmqpMessageProperties::getCorrelationId()",
+        "justification": "New return type AmqpMessageId."
+      },
+      {
+        "code": "java.method.returnTypeChanged",
+        "old": "method java.lang.String com.azure.core.amqp.models.AmqpMessageProperties::getMessageId()",
+        "new": "method com.azure.core.amqp.models.AmqpMessageId com.azure.core.amqp.models.AmqpMessageProperties::getMessageId()",
+        "justification": "New return type."
+      },
+      {
+        "code": "java.method.returnTypeChanged",
+        "old": "method java.lang.String com.azure.core.amqp.models.AmqpMessageProperties::getReplyTo()",
+        "new": "method com.azure.core.amqp.models.AmqpAddress com.azure.core.amqp.models.AmqpMessageProperties::getReplyTo()",
+        "justification": "New return type."
+      },
+      {
+        "code": "java.method.returnTypeChanged",
+        "old": "method java.lang.String com.azure.core.amqp.models.AmqpMessageProperties::getTo()",
+        "new": "method com.azure.core.amqp.models.AmqpAddress com.azure.core.amqp.models.AmqpMessageProperties::getTo()",
+        "justification": "New return type."
+      },
+      {
+        "code": "java.method.parameterTypeChanged",
+        "old": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setCorrelationId(===java.lang.String===)",
+        "new": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setCorrelationId(===com.azure.core.amqp.models.AmqpMessageId===)",
+        "justification": "Introduced new type AmqpMessageId."
+      },
+      {
+        "code": "java.method.parameterTypeChanged",
+        "old": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setMessageId(===java.lang.String===)",
+        "new": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setMessageId(===com.azure.core.amqp.models.AmqpMessageId===)",
+        "justification":"Introduced new type AmqpMessageId."
+      },
+      {
+        "code": "java.method.parameterTypeChanged",
+        "old": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setReplyTo(===java.lang.String===)",
+        "new": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setReplyTo(===com.azure.core.amqp.models.AmqpAddress===)",
+        "justification": "Introduced new type AmqpAddress."
+      },
+      {
+        "code": "java.method.parameterTypeChanged",
+        "old": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setTo(===java.lang.String===)",
+        "new": "parameter com.azure.core.amqp.models.AmqpMessageProperties com.azure.core.amqp.models.AmqpMessageProperties::setTo(===com.azure.core.amqp.models.AmqpAddress===)",
+        "justification": "Introduced new type AmqpAddress."
+      },
+      {
+        "code": "java.method.removed",
+        "old": "method void com.azure.core.amqp.models.AmqpAnnotatedMessage::<init>(com.azure.core.amqp.models.AmqpAnnotatedMessage)",
+        "justification": "Removed copy constructor, It is not required for Service bus message."
+      },      {
+        "code": "java.method.defaultMethodAddedToInterface",
+        "new": "method reactor.core.publisher.Mono<com.azure.core.http.HttpResponse> com.azure.core.http.HttpClient::send(com.azure.core.http.HttpRequest, com.azure.core.util.Context)",
+        "justification": "Default interface method"
       }
     ]
   }

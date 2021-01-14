@@ -51,7 +51,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesasclienttestsfilesasnetworktestuploadfails00112a510/filename?comp=range&sv=2020-02-10&spr=https%2Chttp&st=2020-08-12T19%3A19%3A59Z&se=2020-08-14T19%3A19%3A59Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesasclienttestsfilesasnetworktestuploadfails00112a510/filename?comp=range&sv=2020-04-08&spr=https%2Chttp&st=2020-08-12T19%3A19%3A59Z&se=2020-08-14T19%3A19%3A59Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -74,7 +74,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesasclienttestsfilesasnetworktestuploadfails00112a510/filename?sv=2020-02-10&spr=https%2Chttp&st=2020-08-12T19%3A19%3A59Z&se=2020-08-14T19%3A19%3A59Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesasclienttestsfilesasnetworktestuploadfails00112a510/filename?sv=2020-04-08&spr=https%2Chttp&st=2020-08-12T19%3A19%3A59Z&se=2020-08-14T19%3A19%3A59Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.6.0-beta.2 (11.0.7; Windows 10; 10.0)",

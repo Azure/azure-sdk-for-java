@@ -54,7 +54,6 @@ async function defaultInfo() {
 }
 
 const maxParallelism = parseInt(args['parallel'], 10) || os.cpus().length;
-var specRoot = args['spec-root'] || defaultSpecRoot;
 var projects = args['projects'];
 var autoRestVersion = 'latest'; // default
 if (args['autorest'] !== undefined) {
@@ -108,7 +107,8 @@ function codegen(project, cb) {
     }
 
     // path.join won't work if specRoot is a URL
-    const readmeFile = specRoot + '/' + mappings[project].source;
+    let projectSpecRoot = args['spec-root'] || mappings[project].spec || defaultSpecRoot;
+    const readmeFile = projectSpecRoot + '/' + mappings[project].source;
 
     console.log('Generating "' + project + '" from spec file ' + readmeFile);
     var generator = '--fluent';
@@ -122,16 +122,11 @@ function codegen(project, cb) {
 
     const regenManager = args['regenerate-manager'] ? ' --regenerate-manager ' : '';
 
-    // use following option in api-specs.json, if modelerfour reports PreCheck error (current seems occur to containerinstance, sql).
-    //--pipeline.modelerfour.additional-checks=false
-    //--pipeline.modelerfour.lenient-model-deduplication=true
-
     const outDir = path.resolve(mappings[project].dir);
     cmd = autoRestExe + ' ' + readmeFile +
                         ' --java ' +
                         ' --azure-arm ' +
-                        ' --pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true ' +
-                        ' --track1-naming --generate-client-interfaces --sync-methods=all --required-parameter-client-methods --add-context-parameter --context-client-method-parameter --client-side-validations --client-logger ' +
+                        ' --pipeline.modelerfour.additional-checks=false --pipeline.modelerfour.lenient-model-deduplication=true --pipeline.modelerfour.flatten-payloads=true ' +
                         generator +
                         ` --java.namespace=${mappings[project].package} ` +
                         ` --java.output-folder=${outDir} ` +

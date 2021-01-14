@@ -39,11 +39,11 @@ import java.time.Duration;
 public final class CosmosDBManagementClientImpl extends AzureServiceClient implements CosmosDBManagementClient {
     private final ClientLogger logger = new ClientLogger(CosmosDBManagementClientImpl.class);
 
-    /** Azure subscription ID. */
+    /** The ID of the target subscription. */
     private final String subscriptionId;
 
     /**
-     * Gets Azure subscription ID.
+     * Gets The ID of the target subscription.
      *
      * @return the subscriptionId value.
      */
@@ -358,7 +358,7 @@ public final class CosmosDBManagementClientImpl extends AzureServiceClient imple
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
-     * @param subscriptionId Azure subscription ID.
+     * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
     CosmosDBManagementClientImpl(

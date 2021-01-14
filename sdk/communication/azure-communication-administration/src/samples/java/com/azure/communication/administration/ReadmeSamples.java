@@ -9,23 +9,23 @@ import java.util.Arrays;
 import java.util.List;
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
-import com.azure.communication.administration.models.CreateSearchOptions;
-import com.azure.communication.administration.models.CreateSearchResponse;
+import com.azure.communication.administration.models.CreateReservationOptions;
 import com.azure.communication.administration.models.LocationOptions;
 import com.azure.communication.administration.models.LocationOptionsDetails;
 import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.PhoneNumberCountry;
 import com.azure.communication.administration.models.PhoneNumberRelease;
-import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
-import com.azure.communication.common.CommunicationUser;
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReadmeSamples {
     /**
@@ -75,9 +75,9 @@ public class ReadmeSamples {
      *
      * @return the created user
      */
-    public CommunicationUser createNewUser() {
+    public CommunicationUserIdentifier createNewUser() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        CommunicationUser user = communicationIdentityClient.createUser();
+        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         System.out.println("User id: " + user.getId());
         return user;
     }
@@ -89,7 +89,7 @@ public class ReadmeSamples {
      */
     public CommunicationUserToken issueUserToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        CommunicationUser user = communicationIdentityClient.createUser();
+        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
         CommunicationUserToken userToken = communicationIdentityClient.issueToken(user, scopes);
         System.out.println("Token: " + userToken.getToken());
@@ -102,7 +102,7 @@ public class ReadmeSamples {
       */
     public void revokeUserToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        CommunicationUser user = createNewUser();
+        CommunicationUserIdentifier user = createNewUser();
         List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
         communicationIdentityClient.issueToken(user, scopes);
         // revoke tokens issued for the user prior to now
@@ -114,7 +114,7 @@ public class ReadmeSamples {
      */
     public void deleteUser() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        CommunicationUser user = communicationIdentityClient.createUser();
+        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         // delete a previously created user
         communicationIdentityClient.deleteUser(user);
     }
@@ -295,42 +295,10 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code to create a phone number search
-     *
-     * @return PhoneNumberSearch for the phone plan
-     */
-    public PhoneNumberSearch createPhoneNumberSearch() {
-        String phonePlanId = "PHONE_PLAN_ID";
-
-        List<String> phonePlanIds = new ArrayList<>();
-        phonePlanIds.add(phonePlanId);
-
-        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
-        createSearchOptions
-            .setAreaCode("AREA_CODE_FOR_SEARCH")
-            .setDescription("DESCRIPTION_FOR_SEARCH")
-            .setDisplayName("NAME_FOR_SEARCH")
-            .setPhonePlanIds(phonePlanIds)
-            .setQuantity(2);
-        PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
-        CreateSearchResponse createSearchResponse = phoneNumberClient.createSearch(createSearchOptions);
-
-        System.out.println("SearchId: " + createSearchResponse.getSearchId());
-        PhoneNumberSearch phoneNumberSearch = phoneNumberClient.getSearchById(createSearchResponse.getSearchId());
-
-        for (String phoneNumber
-            : phoneNumberSearch.getPhoneNumbers()) {
-            System.out.println("Phone Number: " + phoneNumber);
-        }
-
-        return phoneNumberSearch;
-    }
-
-    /**
      * Sample code to configure a phone number
      */
     public void configurePhoneNumber() {
-        PhoneNumber phoneNumber = new PhoneNumber("PHONENUMBER_TO_CONFIGURE");
+        PhoneNumberIdentifier phoneNumber = new PhoneNumberIdentifier("PHONENUMBER_TO_CONFIGURE");
         PstnConfiguration pstnConfiguration = new PstnConfiguration();
         pstnConfiguration.setApplicationId("APPLICATION_ID");
         pstnConfiguration.setCallbackUrl("CALLBACK_URL");
@@ -339,46 +307,46 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code to create a search as a long running operation
+     * Sample code to create a reservation as a long running operation
      */
-    public void beginCreateSearch() {
+    public void beginCreateReservation() {
         String phonePlanId = "PHONE_PLAN_ID";
 
         List<String> phonePlanIds = new ArrayList<>();
         phonePlanIds.add(phonePlanId);
 
-        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
-        createSearchOptions
-            .setAreaCode("AREA_CODE_FOR_SEARCH")
-            .setDescription("DESCRIPTION_FOR_SEARCH")
-            .setDisplayName("NAME_FOR_SEARCH")
+        CreateReservationOptions createReservationOptions = new CreateReservationOptions();
+        createReservationOptions
+            .setAreaCode("AREA_CODE_FOR_RESERVATION")
+            .setDescription("DESCRIPTION_FOR_RESERVATION")
+            .setDisplayName("NAME_FOR_RESERVATION")
             .setPhonePlanIds(phonePlanIds)
             .setQuantity(2);
-        
+
         Duration duration = Duration.ofSeconds(1);
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-        SyncPoller<PhoneNumberSearch, PhoneNumberSearch> res = 
-            phoneNumberClient.beginCreateSearch(createSearchOptions, duration);
+        SyncPoller<PhoneNumberReservation, PhoneNumberReservation> res =
+            phoneNumberClient.beginCreateReservation(createReservationOptions, duration);
         res.waitForCompletion();
-        PhoneNumberSearch result = res.getFinalResult();
+        PhoneNumberReservation result = res.getFinalResult();
 
-        System.out.println("Search Id: " + result.getSearchId());
+        System.out.println("Reservation Id: " + result.getReservationId());
         for (String phoneNumber: result.getPhoneNumbers()) {
             System.out.println("Phone Number: " + phoneNumber);
         }
     }
 
     /**
-     * Sample code to purchase a search as a long running operation
+     * Sample code to purchase a reservation as a long running operation
      */
-    public void beginPurchaseSearch() {
+    public void beginPurchaseReservation() {
         Duration duration = Duration.ofSeconds(1);
-        String phoneNumberSearchId = "SEARCH_ID_TO_PURCHASE";
+        String phoneNumberReservationId = "RESERVATION_ID_TO_PURCHASE";
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-        SyncPoller<Void, Void> res = 
-            phoneNumberClient.beginPurchaseSearch(phoneNumberSearchId, duration);
+        SyncPoller<Void, Void> res =
+            phoneNumberClient.beginPurchaseReservation(phoneNumberReservationId, duration);
         res.waitForCompletion();
     }
 
@@ -387,15 +355,36 @@ public class ReadmeSamples {
      */
     public void beginReleasePhoneNumbers() {
         Duration duration = Duration.ofSeconds(1);
-        PhoneNumber phoneNumber = new PhoneNumber("PHONE_NUMBER_TO_RELEASE");
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
+        PhoneNumberIdentifier phoneNumber = new PhoneNumberIdentifier("PHONE_NUMBER_TO_RELEASE");
+        List<PhoneNumberIdentifier> phoneNumbers = new ArrayList<>();
         phoneNumbers.add(phoneNumber);
         PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
-        SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res = 
+        SyncPoller<PhoneNumberRelease, PhoneNumberRelease> res =
             phoneNumberClient.beginReleasePhoneNumbers(phoneNumbers, duration);
         res.waitForCompletion();
         PhoneNumberRelease result = res.getFinalResult();
         System.out.println("Phone number release status: " + result.getStatus());
+    }
+
+    /**
+     * Sample code for creating a sync Communication Identity Client using AAD authentication.
+     *
+     * @return the Communication Identity Client.
+     */
+    public CommunicationIdentityClient createCommunicationIdentityClientWithAAD() {
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+
+        // Create an HttpClient builder of your choice and customize it
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+        CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .httpClient(httpClient)
+            .buildClient();
+
+        return communicationIdentityClient;
     }
 }

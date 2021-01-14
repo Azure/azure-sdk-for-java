@@ -69,7 +69,7 @@ public class IntegrationRuntimeAuthKeysOperationsInner {
      * Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -85,7 +85,7 @@ public class IntegrationRuntimeAuthKeysOperationsInner {
      * Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -100,7 +100,7 @@ public class IntegrationRuntimeAuthKeysOperationsInner {
      * Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IntegrationRuntimeAuthKeysInner object
@@ -119,7 +119,7 @@ public class IntegrationRuntimeAuthKeysOperationsInner {
      * Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IntegrationRuntimeAuthKeysInner object
@@ -162,7 +162,7 @@ public class IntegrationRuntimeAuthKeysOperationsInner {
      * Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param keyName The name of the authentication key to regenerate. Possible values include: 'authKey1', 'authKey2'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -179,7 +179,7 @@ public class IntegrationRuntimeAuthKeysOperationsInner {
      * Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param keyName The name of the authentication key to regenerate. Possible values include: 'authKey1', 'authKey2'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -195,7 +195,7 @@ public class IntegrationRuntimeAuthKeysOperationsInner {
      * Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param keyName The name of the authentication key to regenerate. Possible values include: 'authKey1', 'authKey2'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -215,7 +215,7 @@ public class IntegrationRuntimeAuthKeysOperationsInner {
      * Regenerate the authentication key for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param keyName The name of the authentication key to regenerate. Possible values include: 'authKey1', 'authKey2'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -265,7 +265,7 @@ public class IntegrationRuntimeAuthKeysOperationsInner {
      * List authentication keys in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -281,7 +281,7 @@ public class IntegrationRuntimeAuthKeysOperationsInner {
      * List authentication keys in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -296,7 +296,7 @@ public class IntegrationRuntimeAuthKeysOperationsInner {
      * List authentication keys in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IntegrationRuntimeAuthKeysInner object
@@ -315,7 +315,7 @@ public class IntegrationRuntimeAuthKeysOperationsInner {
      * List authentication keys in an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IntegrationRuntimeAuthKeysInner object
