@@ -1,5 +1,6 @@
 package com.azure.cosmos.benchmark.linkedin.impl.models;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import java.util.Objects;
 
@@ -46,5 +47,14 @@ public class Entity<T> {
     @Override
     public int hashCode() {
         return Objects.hash(_data, _attributes);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+            .omitNullValues()
+            .add("data", get())
+            .add("attributes", getAttributes())
+            .toString();
     }
 }

@@ -1,6 +1,7 @@
 package com.azure.cosmos.benchmark.linkedin;
 
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -23,8 +24,8 @@ public class AsyncClientFactory {
 
     private static final DirectConnectionConfig DIRECT_CONNECTION_CONFIG = defaultDirectConfig();
     private static final GatewayConnectionConfig GATEWAY_CONNECTION_CONFIG = defaultGatewayConfig();
-    private static final ThrottlingRetryOptions THROTTLING_RETRY_OPTIONS = defaultThrottlingRetryOptions();
-
+    private static final ThrottlingRetryOptions DEFAULT_THROTTLING_RETRY_OPTIONS = defaultThrottlingRetryOptions();
+    private static final ThrottlingRetryOptions BULKLOAD_THROTTLING_RETRY_OPTIONS = bulkloadThrottlingRetryOptions();
     /**
      * Prevent direct initialization
      */
@@ -43,7 +44,37 @@ public class AsyncClientFactory {
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
             .consistencyLevel(cfg.getConsistencyLevel())
-            .throttlingRetryOptions(THROTTLING_RETRY_OPTIONS)
+            .throttlingRetryOptions(DEFAULT_THROTTLING_RETRY_OPTIONS)
+            .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));
+
+        // Configure the Direct/Gateway mode
+        if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
+            cosmosClientBuilder.directMode(DIRECT_CONNECTION_CONFIG, GATEWAY_CONNECTION_CONFIG);
+        } else {
+
+            cosmosClientBuilder.gatewayMode(GATEWAY_CONNECTION_CONFIG);
+        }
+
+        return cosmosClientBuilder
+            .endpointDiscoveryEnabled(false)
+            .multipleWriteRegionsEnabled(false)
+            .buildAsyncClient();
+    }
+
+    /**
+     * Builds a Cosmos async client used for bulk loading the data in the collection. The throttling
+     * and the direct connection configs will be set differently for this.
+     *
+     * @param cfg Configuration encapsulating options for configuring the Bulkload AsyncClient
+     * @return CosmosAsyncClient for Bulk loading the data into the collection
+     */
+    public static CosmosAsyncClient buildBulkLoadAsyncClient(final Configuration cfg) {
+        Preconditions.checkNotNull(cfg, "The Workload configuration defining the parameters can not be null");
+        final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(cfg.getServiceEndpoint())
+            .key(cfg.getMasterKey())
+            .consistencyLevel(ConsistencyLevel.EVENTUAL)
+            .throttlingRetryOptions(BULKLOAD_THROTTLING_RETRY_OPTIONS)
             .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));
 
         // Configure the Direct/Gateway mode
@@ -80,5 +111,11 @@ public class AsyncClientFactory {
         return new ThrottlingRetryOptions()
             .setMaxRetryAttemptsOnThrottledRequests(0) // Custom
             .setMaxRetryWaitTime(Duration.ofMillis(0)); // Custom
+    }
+
+    private static ThrottlingRetryOptions bulkloadThrottlingRetryOptions() {
+        return new ThrottlingRetryOptions()
+            .setMaxRetryAttemptsOnThrottledRequests(5) // Custom
+            .setMaxRetryWaitTime(Duration.ofSeconds(60)); // Custom
     }
 }

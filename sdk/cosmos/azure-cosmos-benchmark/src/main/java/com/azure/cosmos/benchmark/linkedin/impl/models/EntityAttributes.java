@@ -1,5 +1,6 @@
 package com.azure.cosmos.benchmark.linkedin.impl.models;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Preconditions;
 import java.time.Duration;
 import java.util.Objects;
@@ -79,6 +80,17 @@ public class EntityAttributes {
     @Override
     public int hashCode() {
         return Objects.hash(_etag, _ttl, _ts, _isTombstoned);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+            .omitNullValues()
+            .add("_etag", _etag)
+            .add("_ttl", _ttl)
+            .add("_ts", _ts)
+            .add("_isTombstoned", _isTombstoned)
+            .toString();
     }
 
     public static class Builder {

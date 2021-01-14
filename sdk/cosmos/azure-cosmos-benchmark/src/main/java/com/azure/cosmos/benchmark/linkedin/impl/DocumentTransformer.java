@@ -44,7 +44,7 @@ public interface DocumentTransformer<T, V> {
     default <W> DocumentTransformer<T, W> andThen(final DocumentTransformer<V, W> after) {
         Objects.requireNonNull(after);
 
-        return new DocumentTransformer<>() {
+        return new DocumentTransformer<T, W>() {
             @Override
             public W serialize(T object) {
                 V serialized = DocumentTransformer.this.serialize(object);

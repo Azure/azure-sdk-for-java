@@ -1,5 +1,9 @@
 package com.azure.cosmos.benchmark.linkedin.impl.models;
 
+import com.google.common.base.MoreObjects;
+import java.util.Objects;
+
+
 /**
  * Set of properties to uniquely identify a CosmosDB Collection. A CosmosDB Account can have multiple databases,
  * and each database can have multiple collections
@@ -37,5 +41,35 @@ public class CollectionKey {
 
     public String getCollectionName() {
         return _collectionName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        CollectionKey that = (CollectionKey) o;
+        return Objects.equals(_accountName, that._accountName)
+            && Objects.equals(_databaseName, that._databaseName)
+            && Objects.equals(_collectionName, that._collectionName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(_accountName, _databaseName, _collectionName);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+            .omitNullValues()
+            .add("Database", getDatabaseName())
+            .add("Collection", getCollectionName())
+            .toString();
     }
 }

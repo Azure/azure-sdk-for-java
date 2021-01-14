@@ -59,7 +59,7 @@ public class ResourceManager {
      *
      * @throws CosmosException if the container could not be created
      */
-    public void createContainers() throws CosmosException {
+    public void createContainer() throws CosmosException {
         final String containerName = _configuration.getCollectionId();
         final CosmosAsyncDatabase database = _client.getDatabase(_configuration.getDatabaseId());
         final ThroughputProperties containerThroughput = createManualThroughput(_configuration.getThroughput());

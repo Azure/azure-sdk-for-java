@@ -1,5 +1,6 @@
 package com.azure.cosmos.benchmark.linkedin.data;
 
+import com.google.common.base.MoreObjects;
 import java.util.Objects;
 
 
@@ -44,4 +45,13 @@ public class Key {
     public int hashCode() {
         return Objects.hash(_id, _partitioningKey);
     }
-}
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("id", getId())
+                .add("partitioningKey", getPartitioningKey())
+                .toString();
+        }
+    }

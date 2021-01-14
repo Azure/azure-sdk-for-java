@@ -8,6 +8,7 @@ import com.azure.cosmos.benchmark.linkedin.impl.models.Result;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Preconditions;
 import java.time.Clock;
+import javax.annotation.concurrent.ThreadSafe;
 
 
 /**
@@ -16,6 +17,7 @@ import java.time.Clock;
  * @param <K> The key for the entity stored in the data store
  * @param <V> The entity stored in the data store
  */
+@ThreadSafe
 public class CosmosDBDataAccessor<K, V> implements Accessor<K, V> {
 
   private final DataLocator _dataLocator;

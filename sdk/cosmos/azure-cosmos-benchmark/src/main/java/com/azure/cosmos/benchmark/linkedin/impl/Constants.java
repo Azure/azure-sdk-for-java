@@ -1,6 +1,7 @@
 package com.azure.cosmos.benchmark.linkedin.impl;
 
 public class Constants {
+    public static final String ID = "id";
     public static final String PARTITION_KEY = "partitioningKey";
     public static final String PARTITION_KEY_PATH = "/" + PARTITION_KEY;
 

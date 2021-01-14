@@ -14,6 +14,7 @@ import com.google.common.base.Preconditions;
 import com.microsoft.applicationinsights.core.dependencies.http.HttpStatus;
 import java.time.Clock;
 import java.util.Objects;
+import javax.annotation.concurrent.ThreadSafe;
 
 
 /**
@@ -22,6 +23,7 @@ import java.util.Objects;
  * @param <K> The key for the entity stored in the data store
  * @param <V> The entity stored in the data store
  */
+@ThreadSafe
 class GetExecutor<K, V> {
 
     private static final String ERROR_MESSAGE_FORMAT = "Exception reading the document: %s from: %s";
