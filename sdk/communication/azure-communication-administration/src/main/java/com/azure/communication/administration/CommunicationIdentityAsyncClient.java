@@ -37,7 +37,7 @@ public final class CommunicationIdentityAsyncClient {
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationUserIdentifier> createIdentity(List<CommunicationIdentityTokenScope> scopes) {
+    public Mono<CommunicationUserIdentifier> createUser(List<CommunicationIdentityTokenScope> scopes) {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 
@@ -48,18 +48,18 @@ public final class CommunicationIdentityAsyncClient {
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationUserIdentifier>> createIdentityWithResponse(List<CommunicationIdentityTokenScope> scopes) {
+    public Mono<Response<CommunicationUserIdentifier>> createUserWithResponse(List<CommunicationIdentityTokenScope> scopes) {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 
     /**
      * Deletes a CommunicationUserIdentifier, revokes its tokens and deletes its data.
      *
-     * @param communicationUser the identity to be deleted.
+     * @param communicationUser the user to be deleted.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteIdentity(CommunicationUserIdentifier communicationUser) {
+    public Mono<Void> deleteUser(CommunicationUserIdentifier communicationUser) {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 
@@ -70,7 +70,7 @@ public final class CommunicationIdentityAsyncClient {
      * @param communicationUser The user to be deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteIdentityWithResponse(CommunicationUserIdentifier communicationUser) {
+    public Mono<Response<Void>> deleteUserWithResponse(CommunicationUserIdentifier communicationUser) {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));  
     }
 
