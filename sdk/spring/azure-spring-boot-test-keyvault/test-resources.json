@@ -230,16 +230,6 @@
                 "list"
               ]
             }
-          },
-          {
-            "tenantId": "[parameters('tenantId')]",
-            "objectId": "[reference(resourceId('Microsoft.Compute/virtualMachines', variables('vmName')), '2019-03-01', 'Full').identity.principalId]",
-            "permissions": {
-              "secrets": [
-                "get",
-                "list"
-              ]
-            }
           }
         ],
         "enabledForDeployment": false,
