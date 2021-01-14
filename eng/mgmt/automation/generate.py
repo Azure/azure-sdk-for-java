@@ -8,6 +8,8 @@ import yaml
 import shutil
 import logging
 import argparse
+import requests
+import tempfile
 import subprocess
 import collections
 import urllib.parse
@@ -78,6 +80,91 @@ def generate(
             return False
 
     return True
+
+
+def generate_changelog_and_breaking_change(
+    sdk_root,
+    old_jar,
+    new_jar,
+    **kwargs,
+) -> (bool, str):
+    stdout = subprocess.run(
+        'mvn clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'
+        .format(sdk_root, old_jar, new_jar),
+        stdout = subprocess.PIPE,
+        shell = True,
+    ).stdout
+    logging.info('changelog output: {0}'.format(stdout))
+
+    config = json.loads(stdout)
+    return (config.get('breaking', False), config.get('changelog', ''))
+
+
+def update_changelog(changelog_file, changelog):
+    version_pattern = '^## (\d+\.\d+\.\d+(?:-[\w\d\.]+)?) \((.*?)\)'
+    with open(changelog_file, 'r') as fin:
+        old_changelog = fin.read()
+
+    first_version = re.search(version_pattern, old_changelog, re.M)
+    if not first_version:
+        logging.error(
+            '[Changelog][Skip] Cannot read first version from {}'.format(
+                changelog_file))
+        return
+
+    left = old_changelog[first_version.end():]
+    second_version = re.search(version_pattern, left, re.M)
+    if not second_version:
+        logging.error(
+            '[Changelog][Skip] Cannot read second version from {}'.format(
+                changelog_file))
+        return
+
+    first_version_part = old_changelog[:first_version.end() +
+                                       second_version.start()]
+    first_version_part = re.sub('\s+$', '', first_version_part)
+    first_version_part += '\n\n' + changelog.strip() + '\n\n'
+
+    with open(changelog_file, 'w') as fout:
+        fout.write(first_version_part +
+                   old_changelog[first_version.end() + second_version.start():])
+
+    logging.info('[Changelog][Success] Write to changelog')
+
+
+def compare_with_maven_package(sdk_root, service, stable_version,
+                               current_version):
+    if stable_version == current_version:
+        logging.info('[Changelog][Skip] no previous version')
+        return
+
+    module = ARTIFACT_FORMAT.format(service)
+    r = requests.get(
+        MAVEN_URL.format(group_id = GROUP_ID.replace('.', '/'),
+                         artifact_id = module,
+                         version = stable_version))
+    r.raise_for_status()
+    old_jar_fd, old_jar = tempfile.mkstemp('.jar')
+    try:
+        with os.fdopen(old_jar_fd, 'wb') as tmp:
+            tmp.write(r.content)
+        new_jar = os.path.join(
+            sdk_root,
+            JAR_FORMAT.format(service = service,
+                              artifact_id = module,
+                              version = current_version))
+        if not os.path.exists(new_jar):
+            raise Exception('Cannot found built jar in {0}'.format(new_jar))
+        breaking, changelog = generate_changelog_and_breaking_change(
+            sdk_root, old_jar, new_jar)
+        if changelog and changelog.strip() != '':
+            changelog_file = CHANGELOG_FORMAT.format(service = service,
+                                                     artifact_id = module)
+            update_changelog(changelog_file, changelog)
+        else:
+            logging.error('[Changelog][Skip] Cannot get changelog')
+    finally:
+        os.remove(old_jar)
 
 
 def add_module_to_modules(modules: str, module: str) -> str:
@@ -203,7 +290,9 @@ def update_service_ci_and_pom(sdk_root: str, service: str):
         with open(pom_xml_file, 'r') as fin:
             pom_xml = fin.read()
     else:
-        pom_xml = POM_FORMAT.format(service = service, group_id = GROUP_ID, artifact_id = module)
+        pom_xml = POM_FORMAT.format(service = service,
+                                    group_id = GROUP_ID,
+                                    artifact_id = module)
 
     logging.info('[POM][Process] dealing with pom.xml')
     success, pom_xml = add_module_to_pom(pom_xml, module)
@@ -211,6 +300,25 @@ def update_service_ci_and_pom(sdk_root: str, service: str):
         with open(pom_xml_file, 'w') as fout:
             fout.write(pom_xml)
         logging.info('[POM][Success] Write to pom.xml')
+
+
+def get_version(
+    sdk_root: str,
+    service: str,
+) -> str:
+    version_file = os.path.join(sdk_root, 'eng/versioning/version_client.txt')
+    module = ARTIFACT_FORMAT.format(service)
+    project = '{0}:{1}'.format(GROUP_ID, module)
+
+    with open(version_file, 'r') as fin:
+        for line in fin.readlines():
+            version_line = line.strip()
+            if version_line.startswith('#'):
+                continue
+            versions = version_line.split(';')
+            if versions[0] == project:
+                return version_line
+    return None
 
 
 def update_version(sdk_root: str, service: str):
@@ -252,7 +360,7 @@ def set_or_increase_version_and_generate(
     preview = True,
     version = None,
     **kwargs,
-):
+) -> (str, str):
     version_file = os.path.join(sdk_root, 'eng/versioning/version_client.txt')
     module = ARTIFACT_FORMAT.format(service)
     project = '{0}:{1}'.format(GROUP_ID, module)
@@ -297,13 +405,13 @@ def set_or_increase_version_and_generate(
     # version is given, set and return
     if version:
         if not stable_version:
-            stable_version = current_version
+            stable_version = version
         logging.info(
             '[VERSION][Set] set to given version "{0}"'.format(version))
         write_version(version_file, lines, version_index, project,
-                      stable_version, current_version)
+                      stable_version, version)
         generate(sdk_root, service, version = version, **kwargs)
-        return
+        return stable_version, version
 
     current_versions = list(re.findall(version_pattern, current_version)[0])
     stable_versions = re.findall(version_pattern, stable_version)
@@ -333,6 +441,8 @@ def set_or_increase_version_and_generate(
         write_version(version_file, lines, version_index, project,
                       stable_version, current_version)
         generate(sdk_root, service, version = current_version, **kwargs)
+
+    return stable_version, current_version
 
 
 def parse_args() -> argparse.Namespace:
@@ -366,11 +476,6 @@ def parse_args() -> argparse.Namespace:
         '--autorest',
         default = AUTOREST_CORE_VERSION,
         help = 'Autorest version',
-    )
-    parser.add_argument(
-        '--compile',
-        action = 'store_true',
-        help = 'Do compile after generation or not',
     )
     parser.add_argument('--suffix', help = 'Suffix for namespace and artifact')
     parser.add_argument(
@@ -579,7 +684,10 @@ def main():
     service = get_and_update_service_from_api_specs(api_specs_file, spec,
                                                     args['service'])
     args['service'] = service
-    set_or_increase_version_and_generate(sdk_root, **args)
+    stable_version, current_version = set_or_increase_version_and_generate(
+        sdk_root, **args)
+    compare_with_maven_package(sdk_root, service, stable_version,
+                               current_version)
 
     if args.get('auto_commit_external_change') and args.get(
             'user_name') and args.get('user_email'):
@@ -598,7 +706,7 @@ def main():
 
 if __name__ == '__main__':
     logging.basicConfig(
-        level = logging.DEBUG,
+        level = logging.INFO,
         format = '%(asctime)s %(levelname)s %(message)s',
         datefmt = '%Y-%m-%d %X',
     )
