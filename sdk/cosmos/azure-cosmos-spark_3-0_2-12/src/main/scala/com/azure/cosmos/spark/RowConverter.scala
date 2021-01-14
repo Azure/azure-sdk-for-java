@@ -4,8 +4,7 @@ package com.azure.cosmos.spark
 
 import java.sql.{Date, Timestamp}
 import java.util
-
-import com.fasterxml.jackson.databind.node.{ArrayNode, ObjectNode}
+import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, ObjectNode, NullNode}
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import com.microsoft.azure.cosmosdb.spark.schema.JsonSupport
 import org.apache.spark.sql.Row
@@ -22,25 +21,78 @@ import scala.collection.JavaConverters._
 
 import org.apache.spark.unsafe.types.UTF8String
 
-// TODO: moderakh more discussion is required to decide how to do row conversion
-// see https://github.com/Azure/azure-sdk-for-java/pull/17532#discussion_r522749612 for more info
-
-// TODO add more unit tests for this class to CosmosRowConverterSpec.
-
 // scalastyle:off multiple.string.literals
 // scalastyle:off null
 object CosmosRowConverter
   extends JsonSupport
     with CosmosLoggingTrait {
 
-  def toInternalRow(schema: StructType, objectNode: ObjectNode): InternalRow = {
-    val row = recordAsRow(documentToMap(objectNode), schema)
+    val objectMapper = new ObjectMapper();
 
-    RowEncoder(schema).createSerializer().apply(row)
-  }
+    def fromObjectNodeToRow(schema: StructType, objectNode: ObjectNode): Row = {
+        val values: Seq[Any] = schema.fields.map {
+            case StructField(name, dataType, _, _) =>
+                Option(objectNode.get(name)).map(convertToSparkDataType(_, dataType)).orNull
+        }
 
-  // TODO moderakh make this configurable
-  val objectMapper = new ObjectMapper();
+        new GenericRowWithSchema(values.toArray, schema)
+    }
+
+    def fromRowToObjectNode(row: Row): ObjectNode = {
+        val objectNode: ObjectNode = objectMapper.createObjectNode();
+
+        objectNode
+    }
+
+    // scalastyle:off
+    private def convertToSparkDataType(value: JsonNode, dataType: DataType): Any = (value, dataType) match {
+        case (_ : NullNode, _) | (_, _ : NullType)=> null
+        case (jsonNode: ObjectNode, struct: StructType) =>
+            fromObjectNodeToRow(struct, jsonNode)
+        case (_, map: MapType) =>
+            (value match {
+                case document: ObjectNode => documentToMap(document)
+                case _ => value.asInstanceOf[java.util.HashMap[String, AnyRef]].asScala.toMap
+            }).map(element => (toSQL(element._1, map.keyType), toSQL(element._2, map.valueType)))
+        case (arrayNode: ArrayNode, array: ArrayType) =>
+            arrayNode.elements().asScala.map(convertToSparkDataType(_, array.elementType))
+        case (binaryNode: BinaryNode, _: BinaryType) =>
+            binaryNode.binaryValue()
+        case (arrayNode: ArrayNode, _: BinaryType) =>
+            // Assuming the array is of bytes
+            objectMapper.convertValue(arrayNode, classOf[Array[Byte]])
+        case (_, _: BooleanType) => value.asBoolean()
+        case (_, _: StringType) => value.asText()
+        case (isJsonNumber(), DoubleType) => value.asDouble()
+        case (isJsonNumber(), DecimalType()) => value.decimalValue()
+        case (isJsonNumber(), FloatType) => value.asDouble()
+        case (isJsonNumber(), LongType) => value.asLong()
+        case (isJsonNumber(), _) => value.asInt()
+        case (_, _: DateType) => toDate(value)
+        case (_, _: TimestampType) => toTimestamp(value)
+        case _ =>
+            this.logError(s"Unsupported datatype conversion [Value: $value] of ${value.getClass}] to $dataType]")
+            value
+    }
+
+    private object isJsonNumber {
+        def unapply(x: JsonNode): Boolean = x match {
+            case com.fasterxml.jackson.databind.node.IntNode
+                 | com.fasterxml.jackson.databind.node.DecimalNode
+                 | com.fasterxml.jackson.databind.node.DoubleNode
+                 | com.fasterxml.jackson.databind.node.FloatNode
+                 | com.fasterxml.jackson.databind.node.LongNode => true
+            case _ => false
+    }
+
+
+    // ------------------------------------------------------
+    def toInternalRow(schema: StructType, objectNode: ObjectNode): InternalRow = {
+        val asMap = documentToMap(objectNode)
+        val row = recordAsRow(asMap, schema)
+
+        RowEncoder(schema).createSerializer().apply(row)
+    }
 
   // TODO: moderakh this method requires a rewrite
   // this is borrowed from old OLTP spark connector
