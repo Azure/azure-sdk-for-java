@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.2 (2021-01-14)
+## 1.4.0 (2021-01-14)
 ### Dependency Updates
 - Update `azure-messaging-eventhubs` dependency to `5.3.2`.
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 5.3.2 (2021-01-14)
+## 5.4.0 (2021-01-14)
 ### New features
 - Add `clientOptions` to `EventProcessorClientBuilder` to support setting user's application id used in user-agent
  property of the amqp connection.
