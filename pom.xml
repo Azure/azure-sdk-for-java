@@ -553,6 +553,7 @@
         <module>sdk/boms</module>
         <module>sdk/cognitiveservices</module>
         <module>sdk/communication</module>
+        <module>sdk/confluent</module>
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
@@ -561,6 +562,7 @@
         <module>sdk/eventhubs</module>
         <module>sdk/formrecognizer</module>
         <module>sdk/hdinsight</module>
+        <module>sdk/healthbot</module>
         <module>sdk/identity</module>
         <module>sdk/keyvault</module>
         <module>sdk/kusto</module>
