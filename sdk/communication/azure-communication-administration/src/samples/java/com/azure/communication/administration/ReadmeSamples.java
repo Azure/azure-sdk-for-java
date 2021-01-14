@@ -56,55 +56,6 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for creating a user
-     *
-     * @return the created user
-     */
-    public CommunicationUserIdentifier createNewUser() {
-        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
-        System.out.println("User id: " + user.getId());
-        return user;
-    }
-
-    /**
-     * Sample code for issuing a user token
-     *
-     * @return the issued user token
-     */
-    public CommunicationUserToken issueUserToken() {
-        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
-        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
-        CommunicationUserToken userToken = communicationIdentityClient.issueToken(user, scopes);
-        System.out.println("Token: " + userToken.getToken());
-        System.out.println("Expires On: " + userToken.getExpiresOn());
-        return userToken;
-    }
-
-     /**
-      * Sample code for revoking user token
-      */
-    public void revokeUserToken() {
-        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        CommunicationUserIdentifier user = createNewUser();
-        List<String> scopes = new ArrayList<>(Arrays.asList("chat"));
-        communicationIdentityClient.issueToken(user, scopes);
-        // revoke tokens issued for the user prior to now
-        communicationIdentityClient.revokeTokens(user, OffsetDateTime.now());
-    }
-
-    /**
-     * Sample code for deleting user
-     */
-    public void deleteUser() {
-        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
-        CommunicationUserIdentifier user = communicationIdentityClient.createUser();
-        // delete a previously created user
-        communicationIdentityClient.deleteUser(user);
-    }
-
-    /**
      * Sample code for creating a sync Phone Number Client.
      *
      * @return the Phone Number Client.

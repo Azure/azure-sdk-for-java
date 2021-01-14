@@ -3,9 +3,12 @@
 
 package com.azure.communication.administration;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 
+import com.azure.communication.administration.implementation.CommunicationIdentityClientImpl;
+import com.azure.communication.administration.implementation.CommunicationIdentityImpl;
+import com.azure.communication.administration.models.CommunicationIdentityAccessToken;
+import com.azure.communication.administration.models.CommunicationIdentityTokenScope;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -20,92 +23,91 @@ import com.azure.core.util.logging.ClientLogger;
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = false)
 public final class CommunicationIdentityClient {
 
-    private final CommunicationIdentityAsyncClient asyncClient;
+    private final CommunicationIdentityImpl client;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClient.class);
 
-    CommunicationIdentityClient(CommunicationIdentityAsyncClient asyncClient) {
-        this.asyncClient = asyncClient;
+    CommunicationIdentityClient(CommunicationIdentityClientImpl communicationIdentityClient) {
+        client = communicationIdentityClient.getCommunicationIdentity();
     }
 
-    /**
-     * Creates a new CommunicationUser.
+     /**
+     * Creates a new CommunicationUserIdentifier.
      *
+     * @param scopes the list of scopes for the identity access token
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationUserIdentifier createUser() {
-        return this.asyncClient.createUser().block();
+    public CommunicationUserIdentifier createIdentity(List<CommunicationIdentityTokenScope> scopes) {
+        return null;
     }
 
     /**
-     * Creates a new CommunicationUser.
+     * Creates a new CommunicationUserIdentifier with response.
      *
-     * @param context the context of the request. Can also be null or Context.NONE.
+     * @param scopes the list of scopes for the identity access token
+     * @param context A {@link Context} representing the request context.
      * @return the created Communication User.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)    
-    public Response<CommunicationUserIdentifier> createUserWithResponse(Context context) {
-        return this.asyncClient.createUser(context).block();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CommunicationUserIdentifier> createIdentityWithResponse(List<CommunicationIdentityTokenScope> scopes, Context context) {
+        return null;
     }
 
     /**
-     * Deletes a CommunicationUser, revokes its tokens and deletes its data.
+     * Deletes a CommunicationUserIdentifier, revokes its tokens and deletes its data.
      *
      * @param communicationUser The user to be deleted.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)    
-    public void deleteUser(CommunicationUserIdentifier communicationUser) {
-        this.asyncClient.deleteUser(communicationUser).block();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIdentity(CommunicationUserIdentifier communicationUser) {
+        return;
     }
 
     /**
-     * Deletes a CommunicationUser, revokes its tokens and deletes its data.
+     * Deletes a CommunicationUserIdentifier, revokes its tokens and deletes its data with response.
      *
      * @param communicationUser The user to be deleted.
      * @param context A {@link Context} representing the request context.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)    
-    public Response<Void> deleteUserWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
-        return this.asyncClient.deleteUser(communicationUser, context).block();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteIdentityWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
+        return null;
     }
 
-    /**
-     * Revokes all the tokens created for a user before a specific date.
-     *
-     * @param communicationUser The CommunicationUser whose tokens will be revoked.
-     * @param issuedBefore All tokens that are issued prior to this time should get revoked.
+      /**
+     * Revokes all the access tokens created for an identifier.
+     * 
+     * @param communicationUser The user to be revoked access token.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)    
-    public void revokeTokens(CommunicationUserIdentifier communicationUser, OffsetDateTime issuedBefore) {
-        this.asyncClient.revokeTokens(communicationUser, issuedBefore).block();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void revokeAccessTokens(CommunicationUserIdentifier communicationUser) {
+        return;
     }
+
 
     /**
      * Revokes all the tokens created for a user before a specific date.
      *
-     * @param communicationUser The CommunicationUser whose tokens will be revoked.
-     * @param issuedBefore All tokens that are issued prior to this time should get revoked.
+     * @param communicationUser The user to be revoked access token.
      * @param context the context of the request. Can also be null or Context.NONE.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
-    public Response<Void> revokeTokensWithResponse(
-        CommunicationUserIdentifier communicationUser, OffsetDateTime issuedBefore, Context context) {
-        return this.asyncClient.revokeTokens(communicationUser, issuedBefore, context).block();
+    public Response<Void> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
+        return null;
     }
 
-
     /**
-     * Generates a new token for an identity.
+     * Generates a new access token for an identity.
      *
-     * @param communicationUser The CommunicationUser from whom to issue a token.
+     * @param communicationUser The user to be issued access tokens.
      * @param scopes The scopes that the token should have.
-     * @return the created CommunicationUserToken.
+     * @return the issued access token.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)    
-    public CommunicationUserToken issueToken(CommunicationUserIdentifier communicationUser, List<String> scopes) {
-        return this.asyncClient.issueToken(communicationUser, scopes).block();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationIdentityAccessToken issueAccessToken(CommunicationUserIdentifier communicationUser, List<CommunicationIdentityTokenScope> scopes) {
+        return null;
     }
 
     /**
@@ -117,8 +119,8 @@ public final class CommunicationIdentityClient {
      * @return the created CommunicationUserToken.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
-    public Response<CommunicationUserToken> issueTokenWithResponse(
-        CommunicationUserIdentifier communicationUser, List<String> scopes, Context context) {
-        return this.asyncClient.issueToken(communicationUser, scopes, context).block();
+    public Response<CommunicationIdentityAccessToken> issueAccessTokenWithResponse(
+        CommunicationUserIdentifier communicationUser, List<CommunicationIdentityTokenScope> scopes, Context context) {
+        return null;
     }
 }

@@ -195,7 +195,7 @@ public final class CommunicationIdentityClientBuilder {
      * @return CommunicationIdentityClient instance
      */
     public CommunicationIdentityClient buildClient() {
-        return new CommunicationIdentityClient(buildAsyncClient());
+        return new CommunicationIdentityClient(createServiceImpl());
     }
 
     private CommunicationIdentityClientImpl createServiceImpl() {
