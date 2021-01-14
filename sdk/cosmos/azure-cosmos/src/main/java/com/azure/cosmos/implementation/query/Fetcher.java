@@ -92,6 +92,10 @@ abstract class Fetcher<T extends Resource> {
         }
     }
 
+    protected void reenableShouldFetchMoreForRetry() {
+        this.shouldFetchMore = true;
+    }
+
     private RxDocumentServiceRequest createRequest() {
         if (!shouldFetchMore) {
             // this should never happen

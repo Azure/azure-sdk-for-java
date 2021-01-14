@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
@@ -121,5 +122,5 @@ public abstract class FeedRangeContinuation extends JsonSerializable {
 
     public abstract Mono<ShouldRetryResult> handleSplit(
         RxDocumentClientImpl client,
-        RxDocumentServiceResponse responseMessage);
+        GoneException goneException);
 }

@@ -83,6 +83,11 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
     }
 
     @Override
+    public String getContainerRid() {
+        return this.containerRid;
+    }
+
+    @Override
     public void populateEffectiveRangeAndStartFromSettingsToRequest(
         RxDocumentServiceRequest request
     ) {

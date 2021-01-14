@@ -420,7 +420,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
 
             Thread.sleep(1000);
             Flux<FeedResponse<Document>> queryObservable = asyncClientWithTokenResolver
-                    .queryDocumentChangeFeed(createdCollection.getSelfLink(), options);
+                    .queryDocumentChangeFeed(createdCollection, options);
             FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                     .exactlyContainsInAnyOrder(expectedIds).build();
             validateQuerySuccess(queryObservable, validator, TIMEOUT);

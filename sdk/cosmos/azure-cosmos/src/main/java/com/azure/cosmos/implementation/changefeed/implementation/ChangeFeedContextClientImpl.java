@@ -79,20 +79,40 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
-                                                                      CosmosChangeFeedRequestOptions requestOptions) {
+    public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(
+        CosmosAsyncContainer collectionLink,
+        CosmosChangeFeedRequestOptions requestOptions) {
+
         AsyncDocumentClient clientWrapper =
             CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
         Flux<FeedResponse<JsonNode>> feedResponseFlux =
-            clientWrapper.queryDocumentChangeFeed(BridgeInternal.extractContainerSelfLink(collectionLink), requestOptions)
-                                                                    .map(response -> {
-                                                                        List<JsonNode> results = response.getResults()
-                                                                                                                     .stream()
-                                                                                                                     .map(document ->
-                                                                                                                         ModelBridgeInternal.toObjectFromJsonSerializable(document, JsonNode.class))
-                                                                                                                     .collect(Collectors.toList());
-                                                                        return BridgeInternal.toFeedResponsePage(results, response.getResponseHeaders(), false);
-                                                                    });
+            clientWrapper
+                .getCollectionCache()
+                .resolveByNameAsync(
+                    null,
+                    BridgeInternal.extractContainerSelfLink(collectionLink),
+                    null)
+                .flatMapMany((collection) -> {
+                    if (collection == null) {
+                        throw new IllegalStateException("Collection cannot be null");
+                    }
+
+                    return clientWrapper
+                        .queryDocumentChangeFeed(collection, requestOptions)
+                        .map(response -> {
+                            List<JsonNode> results = response.getResults()
+                                                             .stream()
+                                                             .map(document ->
+                                                                 ModelBridgeInternal.toObjectFromJsonSerializable(
+                                                                     document,
+                                                                     JsonNode.class))
+                                                             .collect(Collectors.toList());
+                            return BridgeInternal.toFeedResponsePage(
+                                results,
+                                response.getResponseHeaders(),
+                                false);
+                        });
+                });
         return feedResponseFlux.publishOn(this.rxScheduler);
     }
 

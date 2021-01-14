@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Integers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -197,21 +198,17 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     @Override
     public Mono<ShouldRetryResult> handleSplit(final RxDocumentClientImpl client,
-                                               final RxDocumentServiceResponse response) {
+                                               final GoneException goneException) {
 
         checkNotNull(client, "Argument 'client' must not be null");
-        checkNotNull(response, "Argument 'response' must not be null");
+        checkNotNull(goneException, "Argument 'goeException' must not be null");
 
-        Integer nSubStatus = 0;
-        final String valueSubStatus =
-            response.getResponseHeaders().get(HttpConstants.HttpHeaders.SUB_STATUS);
-        if (!Strings.isNullOrEmpty(valueSubStatus)) {
-            nSubStatus = Integers.tryParse(valueSubStatus);
-        }
+        Integer nSubStatus = goneException.getSubStatusCode();
 
         final boolean partitionSplit =
-            response.getStatusCode() == HttpConstants.StatusCodes.GONE && nSubStatus != null
-                && (nSubStatus == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
+            goneException.getStatusCode() == HttpConstants.StatusCodes.GONE &&
+                nSubStatus != null &&
+                (nSubStatus == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE
                 || nSubStatus == HttpConstants.SubStatusCodes.COMPLETING_SPLIT);
 
         if (!partitionSplit) {
@@ -221,7 +218,8 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         final RxPartitionKeyRangeCache partitionKeyRangeCache = client.getPartitionKeyRangeCache();
         final Mono<Utils.ValueHolder<List<PartitionKeyRange>>> resolvedRangesTask =
             this.tryGetOverlappingRanges(
-                partitionKeyRangeCache, this.currentToken.getRange().getMin(),
+                partitionKeyRangeCache,
+                this.currentToken.getRange().getMin(),
                 this.currentToken.getRange().getMax(),
                 true);
 
@@ -350,6 +348,10 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
         try {
             final ObjectMapper mapper = Utils.getSimpleObjectMapper();
+
+            if (providedContinuation == null) {
+                return null;
+            }
 
             if (providedContinuation.trim().startsWith("[")) {
                 final List<CompositeContinuationToken> compositeContinuationTokens = Arrays

@@ -29,6 +29,8 @@ public abstract class ChangeFeedState extends JsonSerializable {
 
     public abstract String applyServerResponseContinuation(String serverContinuationToken);
 
+    public abstract String getContainerRid();
+
     public static ChangeFeedState fromJson(String json) {
         checkNotNull(json, "Argument 'json' must not be null");
 

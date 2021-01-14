@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Document;
@@ -528,9 +529,23 @@ public class CosmosAsyncContainer {
                 this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
             getEffectiveCosmosChangeFeedRequestOptions(pagedFluxOptions, cosmosChangeFeedRequestOptions);
 
-            return getDatabase().getDocClientWrapper()
-                                .queryDocumentChangeFeed(CosmosAsyncContainer.this.getLink(), cosmosChangeFeedRequestOptions)
-                                .map(response -> prepareFeedResponse(response, classType));
+            final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
+            return clientWrapper
+                .getCollectionCache()
+                .resolveByNameAsync(
+                    null,
+                    this.link,
+                    null)
+                .flatMapMany(
+                    collection -> {
+                        if (collection == null) {
+                            throw new IllegalStateException("Collection cannot be null");
+                        }
+
+                        return clientWrapper
+                            .queryDocumentChangeFeed(collection, cosmosChangeFeedRequestOptions)
+                            .map(response -> prepareFeedResponse(response, classType));
+                    });
         });
 
         return pagedFluxOptionsFluxFunction;

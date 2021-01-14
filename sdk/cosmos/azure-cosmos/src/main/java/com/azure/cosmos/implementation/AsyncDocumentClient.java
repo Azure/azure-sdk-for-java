@@ -677,12 +677,12 @@ public interface AsyncDocumentClient {
      * The {@link Flux} will contain one or several feed response pages of the obtained documents.
      * In case of failure the {@link Flux} will error.
      *
-     * @param collectionLink    the link to the parent document collection.
+     * @param collection    the parent document collection.
      * @param requestOptions the change feed request options.
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
     Flux<FeedResponse<Document>> queryDocumentChangeFeed(
-        String collectionLink,
+        DocumentCollection collection,
         CosmosChangeFeedRequestOptions requestOptions);
 
     /**

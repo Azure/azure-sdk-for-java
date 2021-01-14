@@ -39,6 +39,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
         ResourceType resourceType,
         Class<T> klass,
         String collectionLink,
+        String collectionRid,
         CosmosChangeFeedRequestOptions requestOptions) {
 
         checkNotNull(client, "Argument 'client' must not be null.");
@@ -46,6 +47,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
         checkNotNull(klass, "Argument 'klass' must not be null.");
         checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
         checkNotNull(collectionLink, "Argument 'collectionLink' must not be null.");
+        checkNotNull(collectionRid, "Argument 'collectionRid' must not be null.");
         if (Strings.isNullOrWhiteSpace(collectionLink)) {
             throw new IllegalArgumentException("Argument 'collectionLink' must not be empty");
         }
@@ -65,7 +67,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
         if ((state = ModelBridgeInternal.getChangeFeedContinuationState(requestOptions)) == null)
         {
             state = new ChangeFeedStateV1(
-                collectionLink,
+                collectionRid,
                 feedRange,
                 ModelBridgeInternal.getChangeFeedMode(requestOptions),
                 ModelBridgeInternal.getChangeFeedStartFromSettings(requestOptions),
@@ -77,6 +79,7 @@ class ChangeFeedQueryImpl<T extends Resource> {
     public Flux<FeedResponse<T>> executeAsync() {
 
         return Paginator.getChangeFeedQueryResultAsObservable(
+            this.client,
             this.changeFeedState,
             this.createRequestFunc,
             this.executeFunc,
