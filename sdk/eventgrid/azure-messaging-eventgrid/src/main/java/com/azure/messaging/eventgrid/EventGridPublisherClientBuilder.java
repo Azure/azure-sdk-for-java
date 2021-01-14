@@ -18,6 +18,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -55,6 +56,8 @@ public final class EventGridPublisherClientBuilder {
     private final ClientLogger logger = new ClientLogger(EventGridPublisherClientBuilder.class);
 
     private final List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+    private ClientOptions clientOptions;
 
     private Configuration configuration;
 
@@ -183,6 +186,21 @@ public final class EventGridPublisherClientBuilder {
      */
     public EventGridPublisherClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
+     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     *
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     *
+     * @param clientOptions the {@link ClientOptions} to be set on the client.
+     * @return The updated EventGridPublisherClientBuilder object.
+     */
+    public EventGridPublisherClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
         return this;
     }
 
