@@ -8,12 +8,12 @@ import com.azure.core.util.ServiceVersion;
 /**
  * The versions of Phone Number Admin Service supported by this client library.
  */
-public enum PhoneNumberServiceVersion implements ServiceVersion {
+public enum PhoneNumbersServiceVersion implements ServiceVersion {
     V2020_07_20_PREVIEW_1("2020-07-20-preview1");
 
     private final String version;
 
-    PhoneNumberServiceVersion(String version) {
+    PhoneNumbersServiceVersion(String version) {
 
         this.version = version;
     }
@@ -30,9 +30,9 @@ public enum PhoneNumberServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library
      *
-     * @return the latest {@link PhoneNumberServiceVersion}
+     * @return the latest {@link PhoneNumbersServiceVersion}
      */
-    public static PhoneNumberServiceVersion getLatest() {
+    public static PhoneNumbersServiceVersion getLatest() {
 
         return V2020_07_20_PREVIEW_1;
     }

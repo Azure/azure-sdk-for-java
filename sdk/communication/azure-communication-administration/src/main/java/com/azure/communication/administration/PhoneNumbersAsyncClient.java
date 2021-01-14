@@ -28,12 +28,12 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
 /**
  * Asynchronous client for Communication service phone number operations
  */
-@ServiceClient(builder = PhoneNumberClientBuilder.class, isAsync = true)
-public final class PhoneNumberAsyncClient {
-    private final ClientLogger logger = new ClientLogger(PhoneNumberAsyncClient.class);
+@ServiceClient(builder = PhoneNumbersClientBuilder.class, isAsync = true)
+public final class PhoneNumbersAsyncClient {
+    private final ClientLogger logger = new ClientLogger(PhoneNumbersAsyncClient.class);
     private final PhoneNumbersImpl phoneNumbersImpl;
 
-    PhoneNumberAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
+    PhoneNumbersAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
         this.phoneNumbersImpl = phoneNumberAdminClient.getPhoneNumbers();
     }
 

@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @Execution(value = ExecutionMode.SAME_THREAD)
-public class PhoneNumberClientBuilderTest {
+public class PhoneNumbersClientBuilderTest {
     private static final String ENDPOINT = "https://mycommunication.eastus.dev.communications.azure.net/";
     private static final String ACCESSKEY = "QWNjZXNzS2V5";
     private static final Map<String, String> PROPERTIES =
@@ -37,12 +37,12 @@ public class PhoneNumberClientBuilderTest {
     private static final String SDK_VERSION = "version";
 
     private HttpClient httpClient;
-    private PhoneNumberClientBuilder clientBuilder;
+    private PhoneNumbersClientBuilder clientBuilder;
 
     @BeforeEach
     void setUp() {
         this.httpClient = mock(HttpClient.class);
-        this.clientBuilder = Mockito.spy(new PhoneNumberClientBuilder());
+        this.clientBuilder = Mockito.spy(new PhoneNumbersClientBuilder());
     }
 
     @AfterEach
@@ -55,7 +55,7 @@ public class PhoneNumberClientBuilderTest {
         ClientBuilderSpyHelper spyHelper = new ClientBuilderSpyHelper(this.clientBuilder);
 
         // Build client with required settings
-        PhoneNumberClient phoneNumberClient =
+        PhoneNumbersClient phoneNumberClient =
             this.setupBuilderWithHttpClientWithCredential(this.clientBuilder).buildClient();
 
         // Validate client created with expected settings
@@ -69,7 +69,7 @@ public class PhoneNumberClientBuilderTest {
         HttpPipeline httpPipeline = mock(HttpPipeline.class);
 
         // Build client with custom pipeline
-        PhoneNumberClient phoneNumberClient =
+        PhoneNumbersClient phoneNumberClient =
             this.setupBuilderCustomPipeline(httpPipeline).buildClient();
 
         // Validate client created with expected settings
@@ -83,7 +83,7 @@ public class PhoneNumberClientBuilderTest {
         HttpLogOptions logOptions = mock(HttpLogOptions.class);
 
         // Build client with required settings and mock log options
-        PhoneNumberClient phoneNumberClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+        PhoneNumbersClient phoneNumberClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
             .httpLogOptions(logOptions)
             .buildClient();
 
@@ -98,7 +98,7 @@ public class PhoneNumberClientBuilderTest {
         Configuration configuration = mock(Configuration.class);
 
         // Build client with required settings and mock configuration
-        PhoneNumberClient phoneNumberClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+        PhoneNumbersClient phoneNumberClient = this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
             .configuration(configuration)
             .buildClient();
 
@@ -114,7 +114,7 @@ public class PhoneNumberClientBuilderTest {
         additionalPolicies.add(mock(HttpPipelinePolicy.class));
 
         // Build client with required settings and mock policies
-        PhoneNumberClient phoneNumberClient =
+        PhoneNumbersClient phoneNumberClient =
             this.setupBuilderWithPolicies(this.clientBuilder, additionalPolicies)
                 .buildClient();
 
@@ -132,7 +132,7 @@ public class PhoneNumberClientBuilderTest {
         additionalPolicies.add(mock(HttpPipelinePolicy.class));
 
         // Build client with required settings and mock policies
-        PhoneNumberClient phoneNumberClient =
+        PhoneNumbersClient phoneNumberClient =
             this.setupBuilderWithPolicies(this.clientBuilder, additionalPolicies)
                 .buildClient();
 
@@ -167,7 +167,7 @@ public class PhoneNumberClientBuilderTest {
         ClientBuilderSpyHelper spyHelper = new ClientBuilderSpyHelper(this.clientBuilder);
 
         // Build client with required settings
-        PhoneNumberAsyncClient phoneNumberAsyncClient =
+        PhoneNumbersAsyncClient phoneNumberAsyncClient =
             this.setupBuilderWithHttpClientWithCredential(this.clientBuilder).buildAsyncClient();
 
         // Validate client created with expected settings
@@ -181,7 +181,7 @@ public class PhoneNumberClientBuilderTest {
         HttpPipeline httpPipeline = mock(HttpPipeline.class);
 
         // Build client with custom pipeline
-        PhoneNumberAsyncClient phoneNumberAsyncClient =
+        PhoneNumbersAsyncClient phoneNumberAsyncClient =
             this.setupBuilderCustomPipeline(httpPipeline).buildAsyncClient();
 
         // Validate client created with expected settings
@@ -195,7 +195,7 @@ public class PhoneNumberClientBuilderTest {
         HttpLogOptions logOptions = mock(HttpLogOptions.class);
 
         // Build client with required settings and mock log options
-        PhoneNumberAsyncClient phoneNumberAsyncClient =
+        PhoneNumbersAsyncClient phoneNumberAsyncClient =
             this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
                 .httpLogOptions(logOptions)
                 .buildAsyncClient();
@@ -211,7 +211,7 @@ public class PhoneNumberClientBuilderTest {
         Configuration configuration = mock(Configuration.class);
 
         // Build client with required settings and mock configuration
-        PhoneNumberAsyncClient phoneNumberAsyncClient =
+        PhoneNumbersAsyncClient phoneNumberAsyncClient =
             this.setupBuilderWithHttpClientWithCredential(this.clientBuilder)
                 .configuration(configuration)
                 .buildAsyncClient();
@@ -228,7 +228,7 @@ public class PhoneNumberClientBuilderTest {
         additionalPolicies.add(mock(HttpPipelinePolicy.class));
 
         // Build client with required settings and mock policies
-        PhoneNumberAsyncClient phoneNumberAsyncClient =
+        PhoneNumbersAsyncClient phoneNumberAsyncClient =
             this.setupBuilderWithPolicies(this.clientBuilder, additionalPolicies)
                 .buildAsyncClient();
 
@@ -246,7 +246,7 @@ public class PhoneNumberClientBuilderTest {
         additionalPolicies.add(mock(HttpPipelinePolicy.class));
 
         // Build client with required settings and mock policies
-        PhoneNumberAsyncClient phoneNumberAsyncClient =
+        PhoneNumbersAsyncClient phoneNumberAsyncClient =
             this.setupBuilderWithPolicies(this.clientBuilder, additionalPolicies)
                 .buildAsyncClient();
 
@@ -298,15 +298,15 @@ public class PhoneNumberClientBuilderTest {
         });
     }
 
-    private PhoneNumberClientBuilder setupBuilderWithHttpClientWithCredential(PhoneNumberClientBuilder clientBuilder) {
+    private PhoneNumbersClientBuilder setupBuilderWithHttpClientWithCredential(PhoneNumbersClientBuilder clientBuilder) {
         return clientBuilder
             .endpoint(ENDPOINT)
             .httpClient(this.httpClient)
             .accessKey(ACCESSKEY);
     }
 
-    private PhoneNumberClientBuilder setupBuilderWithPolicies(
-        PhoneNumberClientBuilder clientBuilder, List<HttpPipelinePolicy> policies) {
+    private PhoneNumbersClientBuilder setupBuilderWithPolicies(
+        PhoneNumbersClientBuilder clientBuilder, List<HttpPipelinePolicy> policies) {
         clientBuilder = this.setupBuilderWithHttpClientWithCredential(clientBuilder);
         for (HttpPipelinePolicy policy : policies) {
             clientBuilder.addPolicy(policy);
@@ -315,7 +315,7 @@ public class PhoneNumberClientBuilderTest {
         return clientBuilder;
     }
 
-    private PhoneNumberClientBuilder setupBuilderCustomPipeline(HttpPipeline pipeline) {
+    private PhoneNumbersClientBuilder setupBuilderCustomPipeline(HttpPipeline pipeline) {
         return clientBuilder
             .endpoint(ENDPOINT)
             .pipeline(pipeline);
@@ -400,7 +400,7 @@ public class PhoneNumberClientBuilderTest {
     }
 
     private class ClientBuilderSpyHelper {
-        final PhoneNumberClientBuilder clientBuilder;
+        final PhoneNumbersClientBuilder clientBuilder;
 
         final AtomicReference<HmacAuthenticationPolicy> authenticationPolicyRef = new AtomicReference<>();
         final AtomicReference<UserAgentPolicy> userAgentPolicyRef = new AtomicReference<>();
@@ -416,7 +416,7 @@ public class PhoneNumberClientBuilderTest {
         final ArgumentCaptor<Configuration> uaPolicyConfigArg = ArgumentCaptor.forClass(Configuration.class);
         final ArgumentCaptor<HttpLogOptions> httpLogOptionsArg = ArgumentCaptor.forClass(HttpLogOptions.class);
 
-        ClientBuilderSpyHelper(PhoneNumberClientBuilder clientBuilder) {
+        ClientBuilderSpyHelper(PhoneNumbersClientBuilder clientBuilder) {
             this.clientBuilder = clientBuilder;
             this.initializeSpies();
         }

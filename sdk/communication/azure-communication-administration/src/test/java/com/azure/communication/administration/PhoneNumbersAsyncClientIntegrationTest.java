@@ -5,7 +5,7 @@ package com.azure.communication.administration;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegrationTestBase {
+public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
 
     @Test
     public void sampleTest() {

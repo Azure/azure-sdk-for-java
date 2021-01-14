@@ -23,7 +23,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import reactor.core.publisher.Mono;
 
-public class PhoneNumberIntegrationTestBase extends TestBase {
+public class PhoneNumbersIntegrationTestBase extends TestBase {
     private static final String ENV_ACCESS_KEY =
         Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ACCESS_KEY", "QWNjZXNzS2V5");
     private static final String ENV_ENDPOINT =
@@ -57,12 +57,12 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
         Pattern.CASE_INSENSITIVE);
 
-    protected PhoneNumberClientBuilder getClientBuilder(HttpClient httpClient) {
+    protected PhoneNumbersClientBuilder getClientBuilder(HttpClient httpClient) {
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
         }
 
-        PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
+        PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
             .httpClient(httpClient)
             .endpoint(ENV_ENDPOINT)
@@ -77,13 +77,13 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         return builder;
     }
 
-    protected PhoneNumberClientBuilder getClientBuilderWithConnectionString(HttpClient httpClient) {
+    protected PhoneNumbersClientBuilder getClientBuilderWithConnectionString(HttpClient httpClient) {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
         }
 
-        PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
+        PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
             .httpClient(httpClient)
             .connectionString(CONNECTION_STRING);
@@ -97,8 +97,8 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         return builder;
     }
 
-    protected PhoneNumberClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
-        PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
+    protected PhoneNumbersClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
+        PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder();
         builder
             .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
@@ -127,7 +127,7 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         return content;
     }
 
-    protected PhoneNumberClientBuilder addLoggingPolicy(PhoneNumberClientBuilder builder, String testName) {
+    protected PhoneNumbersClientBuilder addLoggingPolicy(PhoneNumbersClientBuilder builder, String testName) {
         return builder.addPolicy(new CommunicationLoggerPolicy(testName));
     }
     static class FakeCredentials implements TokenCredential {
