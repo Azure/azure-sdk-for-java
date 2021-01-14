@@ -306,11 +306,11 @@ private static void onEvent(EventContext eventContext) {
 
 ### Receive events from a single partition
 
-In v3, events were received by creating a `PartitionReceiver` and invoking `receive(int)` multiple times to receive
-events up to a certain number.
+In v3, events were received by creating a `PartitionReceiver` and setting the `PartitionReceiveHandler` in
+`setReceiveHandler()`.
 
-In v5, [project Reactor][project-reactor] is used, so events can be streamed as they come in without having to use a
-batched receive approach.
+In v5, [project Reactor][project-reactor] is used, so events can be streamed as they come in. Project Reactor offers
+many reactive transformations that can be applied to the stream of events.
 
 This code which receives from a partition in v3:
 
@@ -321,31 +321,31 @@ EventHubClient client = EventHubClient.createFromConnectionStringSync(
 PartitionReceiver consumer = client.createReceiverSync("my-consumer-group", "my-partition-id",
     EventPosition.fromStartOfStream());
 
-AtomicBoolean isStopped = new AtomicBoolean(false);
+consumer.setReceiveHandler(new PartitionReceiveHandler() {
+    @Override
+    public int getMaxEventCount() {
+        return 100;
+    }
 
-// Runs an async receive loop until someone presses enter.
-CompletableFuture<Void> receiveFuture = CompletableFuture.runAsync(() -> {
-    while (!isStopped.get()) {
-        // Gets 100 events or until the receive timeout elapses.
-        try {
-            consumer.receive(100).thenAccept(events -> {
-                for (EventData event : events) {
-                    System.out.println("Sequence number: " + event.getSystemProperties().getSequenceNumber());
-                    System.out.println("Contents: " + new String(event.getBytes(), StandardCharsets.UTF_8));
-                }
-            }).get();
-        } catch (InterruptedException | ExecutionException e) {
-            System.err.println("Error waiting for next batch of messages.");
+    @Override
+    public void onReceive(Iterable<EventData> events) {
+        for (EventData event : events) {
+            System.out.println("Sequence number: " + event.getSystemProperties().getSequenceNumber());
+            System.out.println("Contents: " + new String(event.getBytes(), StandardCharsets.UTF_8));
         }
+    }
+
+    @Override
+    public void onError(Throwable error) {
+        System.err.println("Error while receiving messages: " + error);
     }
 });
 
 System.out.println("Enter any key to stop.");
 System.in.read();
-isStopped.set(true);
 
-// Wait for the last iteration to complete.
-receiveFuture.get();
+// Setting to null will stop the partition pump.
+consumer.setReceiveHandler(null);
 
 // Dispose of any resources.
 consumer.closeSync();
