@@ -3,6 +3,8 @@
 
 package com.azure.test.aad.selenium.logout;
 
+import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import java.security.Principal;
 import java.util.Collections;
@@ -24,8 +26,8 @@ public class AADLogoutIT {
 
     @Test
     public void logoutTest() {
-        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-        aadSeleniumITHelper.login();
+        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, createDefaultProperties());
+        aadSeleniumITHelper.logIn();
         aadSeleniumITHelper.logoutTest();
     }
 

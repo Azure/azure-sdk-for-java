@@ -3,11 +3,11 @@
 
 package com.azure.test.aad.b2c.selenium;
 
+import static com.azure.test.aad.b2c.selenium.AADB2CSeleniumITHelper.createDefaultProperteis;
 import static com.azure.test.aad.b2c.utils.AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN;
 
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
 import com.azure.test.aad.b2c.utils.AADB2CTestUtils;
-import java.util.Collections;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -31,8 +31,8 @@ public class AADB2CIT {
 
     @Before
     public void initAndSignIn() {
-        aadb2cSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-        aadb2cSeleniumITHelper.signIn();
+        aadb2cSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, createDefaultProperteis());
+        aadb2cSeleniumITHelper.logIn();
     }
 
     @Test

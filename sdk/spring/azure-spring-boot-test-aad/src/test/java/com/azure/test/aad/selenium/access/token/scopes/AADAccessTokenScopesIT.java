@@ -3,8 +3,9 @@
 
 package com.azure.test.aad.selenium.access.token.scopes;
 
+import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -25,16 +26,16 @@ public class AADAccessTokenScopesIT {
 
     @Test
     public void testAccessTokenScopes() {
-        Map<String, String> arguments = new HashMap<>();
-        arguments.put(
+        Map<String, String> properties = createDefaultProperties();
+        properties.put(
             "azure.activedirectory.authorization-clients.office.scopes",
             "https://manage.office.com/ActivityFeed.Read, https://manage.office.com/ActivityFeed.ReadDlp, "
                 + "https://manage.office.com/ServiceHealth.Read");
-        arguments.put(
+        properties.put(
             "azure.activedirectory.authorization-clients.graph.scopes",
             "https://graph.microsoft.com/User.Read, https://graph.microsoft.com/Directory.AccessAsUser.All");
-        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, arguments);
-        aadSeleniumITHelper.login();
+        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties);
+        aadSeleniumITHelper.logIn();
         String httpResponse = aadSeleniumITHelper.httpGet("accessTokenScopes/azure");
         Assert.assertTrue(httpResponse.contains("profile"));
         Assert.assertTrue(httpResponse.contains("https://graph.microsoft.com/Directory.AccessAsUser.All"));

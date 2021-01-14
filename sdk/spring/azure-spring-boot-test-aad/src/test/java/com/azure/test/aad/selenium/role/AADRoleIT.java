@@ -3,9 +3,10 @@
 
 package com.azure.test.aad.selenium.role;
 
+import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
 import java.security.Principal;
-import java.util.Collections;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,8 +27,8 @@ public class AADRoleIT {
 
     @Test
     public void roleTest() {
-        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-        aadSeleniumITHelper.login();
+        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, createDefaultProperties());
+        aadSeleniumITHelper.logIn();
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
         Assert.assertTrue(httpResponse.contains("home"));
         httpResponse = aadSeleniumITHelper.httpGet("api/group1");

@@ -6,8 +6,6 @@ package com.azure.test.aad.common;
 import com.azure.spring.test.AppRunner;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 import org.openqa.selenium.WebDriver;
@@ -17,13 +15,18 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SeleniumITHelper {
+
     protected AppRunner app;
     protected WebDriver driver;
     protected WebDriverWait wait;
-    protected static Map<String, String> DEFAULT_PROPERTIES = new HashMap<>();
 
     static {
         init();
+    }
+
+    public SeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
+        createDriver();
+        createAppRunner(appClass, properties);
     }
 
     private static void init() {
@@ -70,11 +73,13 @@ public class SeleniumITHelper {
 
     protected void createAppRunner(Class<?> appClass, Map<String, String> properties) {
         app = new AppRunner(appClass);
-        DEFAULT_PROPERTIES.forEach(app::property);
         properties.forEach(app::property);
         app.start();
     }
 
+    /**
+     * Manually invoke destroy to complete resource release.
+     */
     public void destroy() {
         driver.quit();
         app.close();

@@ -8,6 +8,7 @@ import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_1
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 import com.azure.test.aad.common.SeleniumITHelper;
+import java.util.HashMap;
 import java.util.Map;
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -19,22 +20,23 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
     private String username;
     private String password;
 
-    static {
-        DEFAULT_PROPERTIES.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
-        DEFAULT_PROPERTIES.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
-        DEFAULT_PROPERTIES.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
-        DEFAULT_PROPERTIES.put("azure.activedirectory.user-group.allowed-groups", "group1");
-        DEFAULT_PROPERTIES.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
+    public static Map<String, String> createDefaultProperties() {
+        Map<String, String> defaultProperties = new HashMap<>();
+        defaultProperties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
+        defaultProperties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
+        defaultProperties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
+        defaultProperties.put("azure.activedirectory.user-group.allowed-groups", "group1");
+        defaultProperties.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
+        return defaultProperties;
     }
 
     public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
+        super(appClass, properties);
         username = AAD_USER_NAME_1;
         password = AAD_USER_PASSWORD_1;
-        createDriver();
-        createAppRunner(appClass, properties);
     }
 
-    public void login() {
+    public void logIn() {
         driver.get(app.root() + "oauth2/authorization/azure");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("loginfmt"))).sendKeys(username + Keys.ENTER);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("passwd"))).sendKeys(password + Keys.ENTER);
