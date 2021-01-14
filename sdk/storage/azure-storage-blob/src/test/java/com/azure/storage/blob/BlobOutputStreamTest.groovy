@@ -133,12 +133,10 @@ class BlobOutputStreamTest extends APISpec {
         when:
         def outputStream = blockBlobClient.getBlobOutputStream()
         for (int i=0; i<10; i++) {
-            System.out.println(i)
             inputStream.read(buffer)
             outputStream.write(buffer)
         }
         outputStream.close()
-        System.out.println("closed")
 
         then:
         blockBlobClient.getProperties().getBlobSize() == data.length
