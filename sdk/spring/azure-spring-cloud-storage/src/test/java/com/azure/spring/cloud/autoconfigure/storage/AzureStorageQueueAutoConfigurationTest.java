@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.storage;
 
 import com.azure.spring.integration.storage.queue.factory.DefaultStorageQueueClientFactory;
-import com.microsoft.azure.storage.queue.CloudQueueClient;
+import com.azure.storage.queue.QueueServiceClient;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -30,7 +30,7 @@ public class AzureStorageQueueAutoConfigurationTest {
 
     @Test
     public void testWithoutCloudQueueClient() {
-        this.contextRunner.withClassLoader(new FilteredClassLoader(CloudQueueClient.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(QueueServiceClient.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureStorageProperties.class));
     }
 

@@ -515,7 +515,7 @@ public final class QueueServiceAsyncClient {
 
     /**
      * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to
@@ -524,10 +524,29 @@ public final class QueueServiceAsyncClient {
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
-        return new AccountSasImplUtil(accountSasSignatureValues)
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+        return generateAccountSas(accountSasSignatureValues, Context.NONE);
     }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to
+     * queues and file shares.</p>
+     * {@codesnippet com.azure.storage.queue.QueueServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+        return new AccountSasImplUtil(accountSasSignatureValues)
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
+    }
+
 }

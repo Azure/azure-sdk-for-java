@@ -3,7 +3,7 @@
 
 package com.azure.spring.aad;
 
-import com.azure.spring.aad.webapp.AzureOAuth2Configuration;
+import com.azure.spring.aad.webapp.AADWebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -17,7 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
  */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class AADOAuth2LoginConfigSample extends AzureOAuth2Configuration {
+public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

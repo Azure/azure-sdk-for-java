@@ -55,7 +55,7 @@ public class ComponentsAsyncTests extends ComponentsTestBase {
                 })
                 .verifyComplete();
 
-            StepVerifier.create(asyncClient.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName, String.class, null))
+            StepVerifier.create(asyncClient.getComponentWithResponse(roomWithWifiTwinId, wifiComponentName, String.class))
                 .assertNext(createResponse -> {
                     assertEquals(createResponse.getStatusCode(), HttpURLConnection.HTTP_OK);
                     logger.info("Got component successfully");

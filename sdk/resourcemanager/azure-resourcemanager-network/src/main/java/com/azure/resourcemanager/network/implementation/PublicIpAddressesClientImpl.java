@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -76,7 +77,7 @@ public final class PublicIpAddressesClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface PublicIpAddressesService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/publicIPAddresses/{publicIpAddressName}")
@@ -88,9 +89,10 @@ public final class PublicIpAddressesClientImpl
             @PathParam("publicIpAddressName") String publicIpAddressName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/publicIPAddresses/{publicIpAddressName}")
@@ -103,9 +105,10 @@ public final class PublicIpAddressesClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/publicIPAddresses/{publicIpAddressName}")
@@ -118,9 +121,10 @@ public final class PublicIpAddressesClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") PublicIpAddressInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/publicIPAddresses/{publicIpAddressName}")
@@ -133,9 +137,10 @@ public final class PublicIpAddressesClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") TagsObject parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/publicIPAddresses")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -143,9 +148,10 @@ public final class PublicIpAddressesClientImpl
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/publicIPAddresses")
@@ -156,9 +162,10 @@ public final class PublicIpAddressesClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{virtualMachineScaleSetName}/publicipaddresses")
@@ -170,9 +177,10 @@ public final class PublicIpAddressesClientImpl
             @PathParam("virtualMachineScaleSetName") String virtualMachineScaleSetName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}"
@@ -188,9 +196,10 @@ public final class PublicIpAddressesClientImpl
             @PathParam("ipConfigurationName") String ipConfigurationName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}"
@@ -209,35 +218,124 @@ public final class PublicIpAddressesClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/cloudServices/{cloudServiceName}/publicipaddresses")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PublicIpAddressListResult>> listCloudServicePublicIpAddresses(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudServiceName") String cloudServiceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces"
+                + "/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PublicIpAddressListResult>> listCloudServiceRoleInstancePublicIpAddresses(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudServiceName") String cloudServiceName,
+            @PathParam("roleInstanceName") String roleInstanceName,
+            @PathParam("networkInterfaceName") String networkInterfaceName,
+            @PathParam("ipConfigurationName") String ipConfigurationName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/cloudServices/{cloudServiceName}/roleInstances/{roleInstanceName}/networkInterfaces"
+                + "/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses"
+                + "/{publicIpAddressName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PublicIpAddressInner>> getCloudServicePublicIpAddress(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("cloudServiceName") String cloudServiceName,
+            @PathParam("roleInstanceName") String roleInstanceName,
+            @PathParam("networkInterfaceName") String networkInterfaceName,
+            @PathParam("ipConfigurationName") String ipConfigurationName,
+            @PathParam("publicIpAddressName") String publicIpAddressName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PublicIpAddressListResult>> listAllNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PublicIpAddressListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PublicIpAddressListResult>> listVirtualMachineScaleSetPublicIpAddressesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PublicIpAddressListResult>> listVirtualMachineScaleSetVMPublicIpAddressesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PublicIpAddressListResult>> listCloudServicePublicIpAddressesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<PublicIpAddressListResult>> listCloudServiceRoleInstancePublicIpAddressesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -273,7 +371,8 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -284,6 +383,7 @@ public final class PublicIpAddressesClientImpl
                             publicIpAddressName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -322,7 +422,8 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -331,6 +432,7 @@ public final class PublicIpAddressesClientImpl
                 publicIpAddressName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -504,7 +606,8 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -516,6 +619,7 @@ public final class PublicIpAddressesClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             expand,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -555,7 +659,8 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -565,6 +670,7 @@ public final class PublicIpAddressesClientImpl
                 apiVersion,
                 this.client.getSubscriptionId(),
                 expand,
+                accept,
                 context);
     }
 
@@ -690,7 +796,8 @@ public final class PublicIpAddressesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -702,6 +809,7 @@ public final class PublicIpAddressesClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -746,7 +854,8 @@ public final class PublicIpAddressesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -756,6 +865,7 @@ public final class PublicIpAddressesClientImpl
                 apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -952,7 +1062,8 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -966,6 +1077,7 @@ public final class PublicIpAddressesClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1005,7 +1117,8 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         context = this.client.mergeContext(context);
@@ -1017,6 +1130,7 @@ public final class PublicIpAddressesClientImpl
                 apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -1124,11 +1238,13 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context))
+                    service
+                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1164,10 +1280,11 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1259,7 +1376,8 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1269,6 +1387,7 @@ public final class PublicIpAddressesClientImpl
                             resourceGroupName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<PublicIpAddressInner>>map(
                 res ->
@@ -1311,11 +1430,17 @@ public final class PublicIpAddressesClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
-                this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
+                this.client.getEndpoint(),
+                resourceGroupName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1424,6 +1549,7 @@ public final class PublicIpAddressesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-10-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1434,6 +1560,7 @@ public final class PublicIpAddressesClientImpl
                             virtualMachineScaleSetName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<PublicIpAddressInner>>map(
                 res ->
@@ -1484,6 +1611,7 @@ public final class PublicIpAddressesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-10-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listVirtualMachineScaleSetPublicIpAddresses(
@@ -1492,6 +1620,7 @@ public final class PublicIpAddressesClientImpl
                 virtualMachineScaleSetName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1637,6 +1766,7 @@ public final class PublicIpAddressesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-10-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1650,6 +1780,7 @@ public final class PublicIpAddressesClientImpl
                             ipConfigurationName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<PublicIpAddressInner>>map(
                 res ->
@@ -1722,6 +1853,7 @@ public final class PublicIpAddressesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-10-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listVirtualMachineScaleSetVMPublicIpAddresses(
@@ -1733,6 +1865,7 @@ public final class PublicIpAddressesClientImpl
                 ipConfigurationName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context)
             .map(
                 res ->
@@ -1942,6 +2075,7 @@ public final class PublicIpAddressesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-10-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1957,6 +2091,7 @@ public final class PublicIpAddressesClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             expand,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -2026,6 +2161,7 @@ public final class PublicIpAddressesClientImpl
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-10-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getVirtualMachineScaleSetPublicIpAddress(
@@ -2039,6 +2175,7 @@ public final class PublicIpAddressesClientImpl
                 apiVersion,
                 this.client.getSubscriptionId(),
                 expand,
+                accept,
                 context);
     }
 
@@ -2198,6 +2335,790 @@ public final class PublicIpAddressesClientImpl
     }
 
     /**
+     * Gets information about all public IP addresses on a cloud service level.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses on a cloud service level.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServicePublicIpAddressesSinglePageAsync(
+        String resourceGroupName, String cloudServiceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listCloudServicePublicIpAddresses(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            cloudServiceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .<PagedResponse<PublicIpAddressInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Gets information about all public IP addresses on a cloud service level.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses on a cloud service level.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServicePublicIpAddressesSinglePageAsync(
+        String resourceGroupName, String cloudServiceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listCloudServicePublicIpAddresses(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                cloudServiceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets information about all public IP addresses on a cloud service level.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses on a cloud service level.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PublicIpAddressInner> listCloudServicePublicIpAddressesAsync(
+        String resourceGroupName, String cloudServiceName) {
+        return new PagedFlux<>(
+            () -> listCloudServicePublicIpAddressesSinglePageAsync(resourceGroupName, cloudServiceName),
+            nextLink -> listCloudServicePublicIpAddressesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets information about all public IP addresses on a cloud service level.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses on a cloud service level.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PublicIpAddressInner> listCloudServicePublicIpAddressesAsync(
+        String resourceGroupName, String cloudServiceName, Context context) {
+        return new PagedFlux<>(
+            () -> listCloudServicePublicIpAddressesSinglePageAsync(resourceGroupName, cloudServiceName, context),
+            nextLink -> listCloudServicePublicIpAddressesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets information about all public IP addresses on a cloud service level.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses on a cloud service level.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PublicIpAddressInner> listCloudServicePublicIpAddresses(
+        String resourceGroupName, String cloudServiceName) {
+        return new PagedIterable<>(listCloudServicePublicIpAddressesAsync(resourceGroupName, cloudServiceName));
+    }
+
+    /**
+     * Gets information about all public IP addresses on a cloud service level.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses on a cloud service level.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PublicIpAddressInner> listCloudServicePublicIpAddresses(
+        String resourceGroupName, String cloudServiceName, Context context) {
+        return new PagedIterable<>(
+            listCloudServicePublicIpAddressesAsync(resourceGroupName, cloudServiceName, context));
+    }
+
+    /**
+     * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The network interface name.
+     * @param ipConfigurationName The IP configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses in a role instance IP configuration in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServiceRoleInstancePublicIpAddressesSinglePageAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String ipConfigurationName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        if (roleInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
+        }
+        if (networkInterfaceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+        }
+        if (ipConfigurationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter ipConfigurationName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listCloudServiceRoleInstancePublicIpAddresses(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            cloudServiceName,
+                            roleInstanceName,
+                            networkInterfaceName,
+                            ipConfigurationName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .<PagedResponse<PublicIpAddressInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The network interface name.
+     * @param ipConfigurationName The IP configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses in a role instance IP configuration in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServiceRoleInstancePublicIpAddressesSinglePageAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String ipConfigurationName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        if (roleInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
+        }
+        if (networkInterfaceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+        }
+        if (ipConfigurationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter ipConfigurationName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listCloudServiceRoleInstancePublicIpAddresses(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                cloudServiceName,
+                roleInstanceName,
+                networkInterfaceName,
+                ipConfigurationName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The network interface name.
+     * @param ipConfigurationName The IP configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses in a role instance IP configuration in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddressesAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String ipConfigurationName) {
+        return new PagedFlux<>(
+            () ->
+                listCloudServiceRoleInstancePublicIpAddressesSinglePageAsync(
+                    resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, ipConfigurationName),
+            nextLink -> listCloudServiceRoleInstancePublicIpAddressesNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The network interface name.
+     * @param ipConfigurationName The IP configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses in a role instance IP configuration in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddressesAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String ipConfigurationName,
+        Context context) {
+        return new PagedFlux<>(
+            () ->
+                listCloudServiceRoleInstancePublicIpAddressesSinglePageAsync(
+                    resourceGroupName,
+                    cloudServiceName,
+                    roleInstanceName,
+                    networkInterfaceName,
+                    ipConfigurationName,
+                    context),
+            nextLink -> listCloudServiceRoleInstancePublicIpAddressesNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The network interface name.
+     * @param ipConfigurationName The IP configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses in a role instance IP configuration in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddresses(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String ipConfigurationName) {
+        return new PagedIterable<>(
+            listCloudServiceRoleInstancePublicIpAddressesAsync(
+                resourceGroupName, cloudServiceName, roleInstanceName, networkInterfaceName, ipConfigurationName));
+    }
+
+    /**
+     * Gets information about all public IP addresses in a role instance IP configuration in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The name of role instance.
+     * @param networkInterfaceName The network interface name.
+     * @param ipConfigurationName The IP configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all public IP addresses in a role instance IP configuration in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddresses(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String ipConfigurationName,
+        Context context) {
+        return new PagedIterable<>(
+            listCloudServiceRoleInstancePublicIpAddressesAsync(
+                resourceGroupName,
+                cloudServiceName,
+                roleInstanceName,
+                networkInterfaceName,
+                ipConfigurationName,
+                context));
+    }
+
+    /**
+     * Get the specified public IP address in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The role instance name.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified public IP address in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PublicIpAddressInner>> getCloudServicePublicIpAddressWithResponseAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String ipConfigurationName,
+        String publicIpAddressName,
+        String expand) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        if (roleInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
+        }
+        if (networkInterfaceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+        }
+        if (ipConfigurationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter ipConfigurationName is required and cannot be null."));
+        }
+        if (publicIpAddressName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getCloudServicePublicIpAddress(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            cloudServiceName,
+                            roleInstanceName,
+                            networkInterfaceName,
+                            ipConfigurationName,
+                            publicIpAddressName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            expand,
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the specified public IP address in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The role instance name.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified public IP address in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<PublicIpAddressInner>> getCloudServicePublicIpAddressWithResponseAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String ipConfigurationName,
+        String publicIpAddressName,
+        String expand,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (cloudServiceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter cloudServiceName is required and cannot be null."));
+        }
+        if (roleInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter roleInstanceName is required and cannot be null."));
+        }
+        if (networkInterfaceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+        }
+        if (ipConfigurationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter ipConfigurationName is required and cannot be null."));
+        }
+        if (publicIpAddressName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .getCloudServicePublicIpAddress(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                cloudServiceName,
+                roleInstanceName,
+                networkInterfaceName,
+                ipConfigurationName,
+                publicIpAddressName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                expand,
+                accept,
+                context);
+    }
+
+    /**
+     * Get the specified public IP address in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The role instance name.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified public IP address in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PublicIpAddressInner> getCloudServicePublicIpAddressAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String ipConfigurationName,
+        String publicIpAddressName,
+        String expand) {
+        return getCloudServicePublicIpAddressWithResponseAsync(
+                resourceGroupName,
+                cloudServiceName,
+                roleInstanceName,
+                networkInterfaceName,
+                ipConfigurationName,
+                publicIpAddressName,
+                expand)
+            .flatMap(
+                (Response<PublicIpAddressInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get the specified public IP address in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The role instance name.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified public IP address in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PublicIpAddressInner> getCloudServicePublicIpAddressAsync(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String ipConfigurationName,
+        String publicIpAddressName) {
+        final String expand = null;
+        return getCloudServicePublicIpAddressWithResponseAsync(
+                resourceGroupName,
+                cloudServiceName,
+                roleInstanceName,
+                networkInterfaceName,
+                ipConfigurationName,
+                publicIpAddressName,
+                expand)
+            .flatMap(
+                (Response<PublicIpAddressInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Get the specified public IP address in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The role instance name.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified public IP address in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PublicIpAddressInner getCloudServicePublicIpAddress(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String ipConfigurationName,
+        String publicIpAddressName) {
+        final String expand = null;
+        return getCloudServicePublicIpAddressAsync(
+                resourceGroupName,
+                cloudServiceName,
+                roleInstanceName,
+                networkInterfaceName,
+                ipConfigurationName,
+                publicIpAddressName,
+                expand)
+            .block();
+    }
+
+    /**
+     * Get the specified public IP address in a cloud service.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cloudServiceName The name of the cloud service.
+     * @param roleInstanceName The role instance name.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified public IP address in a cloud service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PublicIpAddressInner> getCloudServicePublicIpAddressWithResponse(
+        String resourceGroupName,
+        String cloudServiceName,
+        String roleInstanceName,
+        String networkInterfaceName,
+        String ipConfigurationName,
+        String publicIpAddressName,
+        String expand,
+        Context context) {
+        return getCloudServicePublicIpAddressWithResponseAsync(
+                resourceGroupName,
+                cloudServiceName,
+                roleInstanceName,
+                networkInterfaceName,
+                ipConfigurationName,
+                publicIpAddressName,
+                expand,
+                context)
+            .block();
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -2211,8 +3132,15 @@ public final class PublicIpAddressesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listAllNext(nextLink, context))
+            .withContext(context -> service.listAllNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2240,9 +3168,16 @@ public final class PublicIpAddressesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listAllNext(nextLink, context)
+            .listAllNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2268,8 +3203,15 @@ public final class PublicIpAddressesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2297,9 +3239,16 @@ public final class PublicIpAddressesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2326,8 +3275,19 @@ public final class PublicIpAddressesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listVirtualMachineScaleSetPublicIpAddressesNext(nextLink, context))
+            .withContext(
+                context ->
+                    service
+                        .listVirtualMachineScaleSetPublicIpAddressesNext(
+                            nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2356,9 +3316,16 @@ public final class PublicIpAddressesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listVirtualMachineScaleSetPublicIpAddressesNext(nextLink, context)
+            .listVirtualMachineScaleSetPublicIpAddressesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -2385,8 +3352,19 @@ public final class PublicIpAddressesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listVirtualMachineScaleSetVMPublicIpAddressesNext(nextLink, context))
+            .withContext(
+                context ->
+                    service
+                        .listVirtualMachineScaleSetVMPublicIpAddressesNext(
+                            nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<PublicIpAddressInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -2415,9 +3393,168 @@ public final class PublicIpAddressesClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listVirtualMachineScaleSetVMPublicIpAddressesNext(nextLink, context)
+            .listVirtualMachineScaleSetVMPublicIpAddressesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListPublicIpAddresses API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServicePublicIpAddressesNextSinglePageAsync(
+        String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service.listCloudServicePublicIpAddressesNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PublicIpAddressInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListPublicIpAddresses API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServicePublicIpAddressesNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listCloudServicePublicIpAddressesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListPublicIpAddresses API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServiceRoleInstancePublicIpAddressesNextSinglePageAsync(
+        String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listCloudServiceRoleInstancePublicIpAddressesNext(
+                            nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PublicIpAddressInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListPublicIpAddresses API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<PublicIpAddressInner>> listCloudServiceRoleInstancePublicIpAddressesNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listCloudServiceRoleInstancePublicIpAddressesNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -32,7 +32,9 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
         RegistryCredentials registryCredentials = registry.getCredentials();
         Assertions.assertNotNull(registryCredentials);
-        Assertions.assertEquals(newName + "1", registryCredentials.username());
+        if (TestUtils.isRecordMode()) {
+            Assertions.assertEquals(newName + "1", registryCredentials.username());
+        }
         Assertions.assertEquals(2, registryCredentials.accessKeys().size());
         Assertions.assertEquals(0, registry.webhooks().list().stream().count());
 
@@ -65,7 +67,9 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
         RegistryCredentials registryCredentials2 = registry2.getCredentials();
         Assertions.assertNotNull(registryCredentials2);
-        Assertions.assertEquals(newName + "2", registryCredentials2.username());
+        if (TestUtils.isRecordMode()) {
+            Assertions.assertEquals(newName + "2", registryCredentials2.username());
+        }
         Assertions.assertEquals(2, registryCredentials2.accessKeys().size());
 
         PagedIterable<Webhook> webhooksList = registry2.webhooks().list();

@@ -60,6 +60,18 @@ public class SnapshotUpdate {
     @JsonProperty(value = "properties.encryption")
     private Encryption encryption;
 
+    /*
+     * Policy for accessing the disk via network.
+     */
+    @JsonProperty(value = "properties.networkAccessPolicy")
+    private NetworkAccessPolicy networkAccessPolicy;
+
+    /*
+     * ARM id of the DiskAccess resource for using private endpoints on disks.
+     */
+    @JsonProperty(value = "properties.diskAccessId")
+    private String diskAccessId;
+
     /**
      * Get the tags property: Resource tags.
      *
@@ -187,6 +199,46 @@ public class SnapshotUpdate {
      */
     public SnapshotUpdate withEncryption(Encryption encryption) {
         this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Get the networkAccessPolicy property: Policy for accessing the disk via network.
+     *
+     * @return the networkAccessPolicy value.
+     */
+    public NetworkAccessPolicy networkAccessPolicy() {
+        return this.networkAccessPolicy;
+    }
+
+    /**
+     * Set the networkAccessPolicy property: Policy for accessing the disk via network.
+     *
+     * @param networkAccessPolicy the networkAccessPolicy value to set.
+     * @return the SnapshotUpdate object itself.
+     */
+    public SnapshotUpdate withNetworkAccessPolicy(NetworkAccessPolicy networkAccessPolicy) {
+        this.networkAccessPolicy = networkAccessPolicy;
+        return this;
+    }
+
+    /**
+     * Get the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
+     *
+     * @return the diskAccessId value.
+     */
+    public String diskAccessId() {
+        return this.diskAccessId;
+    }
+
+    /**
+     * Set the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
+     *
+     * @param diskAccessId the diskAccessId value to set.
+     * @return the SnapshotUpdate object itself.
+     */
+    public SnapshotUpdate withDiskAccessId(String diskAccessId) {
+        this.diskAccessId = diskAccessId;
         return this;
     }
 

@@ -4,6 +4,7 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -17,7 +18,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
@@ -57,7 +57,8 @@ public class DataLakeFileSystemClientBuilder {
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
-    private SasTokenCredential sasTokenCredential;
+    private AzureSasCredential azureSasCredential;
+    private String sasToken;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -86,6 +87,7 @@ public class DataLakeFileSystemClientBuilder {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClientBuilder.buildClient}
      *
      * @return a {@link DataLakeFileSystemClient} created from the configurations in this builder.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public DataLakeFileSystemClient buildClient() {
         return new DataLakeFileSystemClient(buildAsyncClient(),
@@ -98,6 +100,7 @@ public class DataLakeFileSystemClientBuilder {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClientBuilder.buildAsyncClient}
      *
      * @return a {@link DataLakeFileSystemAsyncClient} created from the configurations in this builder.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public DataLakeFileSystemAsyncClient buildAsyncClient() {
         /*
@@ -111,7 +114,8 @@ public class DataLakeFileSystemClientBuilder {
         DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, logOptions,
             clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         return new DataLakeFileSystemAsyncClient(pipeline, String.format("%s/%s", endpoint, dataLakeFileSystemName),
@@ -160,7 +164,7 @@ public class DataLakeFileSystemClientBuilder {
         blobContainerClientBuilder.credential(credential);
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -175,7 +179,7 @@ public class DataLakeFileSystemClientBuilder {
         blobContainerClientBuilder.credential(credential);
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -188,10 +192,24 @@ public class DataLakeFileSystemClientBuilder {
      */
     public DataLakeFileSystemClientBuilder sasToken(String sasToken) {
         blobContainerClientBuilder.sasToken(sasToken);
-        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
+        this.sasToken = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
+     * @return the updated DataLakeFileSystemClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public DataLakeFileSystemClientBuilder credential(AzureSasCredential credential) {
+        blobContainerClientBuilder.credential(credential);
+        this.azureSasCredential = Objects.requireNonNull(credential,
+            "'credential' cannot be null.");
         return this;
     }
 
@@ -206,7 +224,8 @@ public class DataLakeFileSystemClientBuilder {
         blobContainerClientBuilder.setAnonymousAccess();
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.azureSasCredential = null;
+        this.sasToken = null;
         return this;
     }
 
