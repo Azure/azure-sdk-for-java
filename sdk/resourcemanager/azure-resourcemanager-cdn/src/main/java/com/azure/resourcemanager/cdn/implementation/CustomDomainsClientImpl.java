@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -69,7 +70,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientC")
     private interface CustomDomainsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/customDomains")
@@ -82,9 +83,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             @PathParam("endpointName") String endpointName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}")
@@ -98,9 +100,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             @PathParam("customDomainName") String customDomainName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}")
@@ -115,9 +118,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CustomDomainParameters customDomainProperties,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}")
@@ -131,9 +135,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             @PathParam("customDomainName") String customDomainName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/disableCustomHttps")
@@ -147,9 +152,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             @PathParam("customDomainName") String customDomainName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/customDomains/{customDomainName}/enableCustomHttps")
@@ -164,14 +170,18 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CustomDomainHttpsParameters customDomainHttpsParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomDomainListResult>> listByEndpointNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -210,6 +220,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -221,6 +232,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             endpointName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<CustomDomainInner>>map(
                 res ->
@@ -271,6 +283,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByEndpoint(
@@ -280,6 +293,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                 endpointName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -407,6 +421,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -419,6 +434,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             customDomainName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -465,6 +481,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -475,6 +492,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                 customDomainName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -584,6 +602,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         CustomDomainParameters customDomainProperties = new CustomDomainParameters();
         customDomainProperties.withHostname(hostname);
         return FluxUtil
@@ -599,6 +618,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             customDomainProperties,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -652,6 +672,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         CustomDomainParameters customDomainProperties = new CustomDomainParameters();
         customDomainProperties.withHostname(hostname);
         context = this.client.mergeContext(context);
@@ -665,6 +686,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 customDomainProperties,
+                accept,
                 context);
     }
 
@@ -802,6 +824,28 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CustomDomainInner> createAsync(
+        String resourceGroupName, String profileName, String endpointName, String customDomainName) {
+        final String hostname = null;
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a new custom domain within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
      * @param hostname The host name of the custom domain. Must be a domain name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -819,28 +863,6 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String hostname,
         Context context) {
         return beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates a new custom domain within an endpoint.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainInner> createAsync(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        final String hostname = null;
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -872,6 +894,26 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CustomDomainInner create(
+        String resourceGroupName, String profileName, String endpointName, String customDomainName) {
+        final String hostname = null;
+        return createAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname).block();
+    }
+
+    /**
+     * Creates a new custom domain within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
      * @param hostname The host name of the custom domain. Must be a domain name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -889,26 +931,6 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String hostname,
         Context context) {
         return createAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname, context).block();
-    }
-
-    /**
-     * Creates a new custom domain within an endpoint.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainInner create(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName) {
-        final String hostname = null;
-        return createAsync(resourceGroupName, profileName, endpointName, customDomainName, hostname).block();
     }
 
     /**
@@ -952,6 +974,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -964,6 +987,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             customDomainName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1010,6 +1034,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1020,6 +1045,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                 customDomainName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1228,6 +1254,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1240,6 +1267,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             customDomainName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1286,6 +1314,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .disableCustomHttps(
@@ -1296,6 +1325,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                 customDomainName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -1413,6 +1443,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         if (customDomainHttpsParameters != null) {
             customDomainHttpsParameters.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1426,6 +1457,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             customDomainHttpsParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1481,6 +1513,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         if (customDomainHttpsParameters != null) {
             customDomainHttpsParameters.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .enableCustomHttps(
@@ -1492,6 +1525,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 customDomainHttpsParameters,
+                accept,
                 context);
     }
 
@@ -1617,8 +1651,15 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByEndpointNext(nextLink, context))
+            .withContext(context -> service.listByEndpointNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<CustomDomainInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1646,9 +1687,16 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByEndpointNext(nextLink, context)
+            .listByEndpointNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

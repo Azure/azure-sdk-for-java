@@ -7,10 +7,10 @@ import com.azure.ai.metricsadvisor.implementation.models.AnomalyResult;
 import com.azure.ai.metricsadvisor.implementation.models.DetectionAnomalyFilterCondition;
 import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.SeverityFilterCondition;
-import com.azure.ai.metricsadvisor.models.Anomaly;
+import com.azure.ai.metricsadvisor.models.AnomalySeverity;
+import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedFilter;
-import com.azure.ai.metricsadvisor.models.Severity;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -25,8 +25,8 @@ public class AnomalyTransforms {
     public static DetectionAnomalyFilterCondition toInnerFilter(ListAnomaliesDetectedFilter filter,
                                                                 ClientLogger logger) {
         DetectionAnomalyFilterCondition innerFilter = new DetectionAnomalyFilterCondition();
-        Severity minSeverity = filter.getMinSeverity();
-        Severity maxSeverity = filter.getMaxSeverity();
+        AnomalySeverity minSeverity = filter.getMinSeverity();
+        AnomalySeverity maxSeverity = filter.getMaxSeverity();
         if ((minSeverity != null) ^ (maxSeverity != null)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Both min and max severity are required if anomalies needs to be filtered based on 'severity'"));
@@ -52,62 +52,62 @@ public class AnomalyTransforms {
         }
     }
 
-    public static PagedResponse<Anomaly> fromInnerPagedResponse(PagedResponse<AnomalyResult> innerResponse) {
-        List<Anomaly> anomalyList;
+    public static PagedResponse<DataPointAnomaly> fromInnerPagedResponse(PagedResponse<AnomalyResult> innerResponse) {
+        List<DataPointAnomaly> dataPointAnomalyList;
         final List<AnomalyResult> innerAnomalyList = innerResponse.getValue();
         if (innerAnomalyList == null || innerAnomalyList.isEmpty()) {
-            anomalyList = new ArrayList<>();
+            dataPointAnomalyList = new ArrayList<>();
         } else {
-            anomalyList = innerAnomalyList
+            dataPointAnomalyList = innerAnomalyList
                 .stream()
                 .map(innerAnomaly -> fromInner(innerAnomaly))
                 .collect(Collectors.toList());
         }
 
-        final IterableStream<Anomaly> pageElements
-            = new IterableStream<>(anomalyList);
+        final IterableStream<DataPointAnomaly> pageElements
+            = new IterableStream<>(dataPointAnomalyList);
 
-        return new PagedResponseBase<Void, Anomaly>(innerResponse.getRequest(),
+        return new PagedResponseBase<Void, DataPointAnomaly>(innerResponse.getRequest(),
             innerResponse.getStatusCode(),
             innerResponse.getHeaders(),
             new AnomalyPage(pageElements, innerResponse.getContinuationToken()),
             null);
     }
 
-    private static Anomaly fromInner(AnomalyResult innerAnomaly) {
-        Anomaly anomaly = new Anomaly();
+    private static DataPointAnomaly fromInner(AnomalyResult innerAnomaly) {
+        DataPointAnomaly dataPointAnomaly = new DataPointAnomaly();
         if (innerAnomaly.getMetricId() != null) {
-            AnomalyHelper.setMetricId(anomaly, innerAnomaly.getMetricId().toString());
+            AnomalyHelper.setMetricId(dataPointAnomaly, innerAnomaly.getMetricId().toString());
         }
         if (innerAnomaly.getAnomalyDetectionConfigurationId() != null) {
-            AnomalyHelper.setDetectionConfigurationId(anomaly,
+            AnomalyHelper.setDetectionConfigurationId(dataPointAnomaly,
                 innerAnomaly.getAnomalyDetectionConfigurationId().toString());
         }
         if (innerAnomaly.getDimension() != null) {
-            AnomalyHelper.setSeriesKey(anomaly, new DimensionKey(innerAnomaly.getDimension()));
+            AnomalyHelper.setSeriesKey(dataPointAnomaly, new DimensionKey(innerAnomaly.getDimension()));
         }
         if (innerAnomaly.getProperty() != null) {
-            AnomalyHelper.setSeverity(anomaly, innerAnomaly.getProperty().getAnomalySeverity());
-            AnomalyHelper.setStatus(anomaly, innerAnomaly.getProperty().getAnomalyStatus());
+            AnomalyHelper.setSeverity(dataPointAnomaly, innerAnomaly.getProperty().getAnomalySeverity());
+            AnomalyHelper.setStatus(dataPointAnomaly, innerAnomaly.getProperty().getAnomalyStatus());
         }
 
-        AnomalyHelper.setTimeStamp(anomaly, innerAnomaly.getTimestamp());
-        AnomalyHelper.setCreatedTime(anomaly, innerAnomaly.getCreatedTime());
-        AnomalyHelper.setModifiedTime(anomaly, innerAnomaly.getModifiedTime());
-        return anomaly;
+        AnomalyHelper.setTimeStamp(dataPointAnomaly, innerAnomaly.getTimestamp());
+        AnomalyHelper.setCreatedTime(dataPointAnomaly, innerAnomaly.getCreatedTime());
+        AnomalyHelper.setModifiedTime(dataPointAnomaly, innerAnomaly.getModifiedTime());
+        return dataPointAnomaly;
     }
 
-    private static final class AnomalyPage implements Page<Anomaly> {
-        private final IterableStream<Anomaly> elements;
+    private static final class AnomalyPage implements Page<DataPointAnomaly> {
+        private final IterableStream<DataPointAnomaly> elements;
         private final String continuationTToken;
 
-        private AnomalyPage(IterableStream<Anomaly> elements, String continuationTToken) {
+        private AnomalyPage(IterableStream<DataPointAnomaly> elements, String continuationTToken) {
             this.elements = elements;
             this.continuationTToken = continuationTToken;
         }
 
         @Override
-        public IterableStream<Anomaly> getElements() {
+        public IterableStream<DataPointAnomaly> getElements() {
             return this.elements;
         }
 

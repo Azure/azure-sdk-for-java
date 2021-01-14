@@ -48,6 +48,20 @@ public final class UserManagedHttpsParameters extends CustomDomainHttpsParameter
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public UserManagedHttpsParameters withProtocolType(ProtocolType protocolType) {
+        super.withProtocolType(protocolType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UserManagedHttpsParameters withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        super.withMinimumTlsVersion(minimumTlsVersion);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

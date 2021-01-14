@@ -14,20 +14,20 @@ public final class SeverityCondition {
      * min alert severity
      */
     @JsonProperty(value = "minAlertSeverity", required = true)
-    private Severity minAlertSeverity;
+    private AnomalySeverity minAlertSeverity;
 
     /*
      * max alert severity
      */
     @JsonProperty(value = "maxAlertSeverity", required = true)
-    private Severity maxAlertSeverity;
+    private AnomalySeverity maxAlertSeverity;
 
     /**
      * Get the minAlertSeverity property: min alert severity.
      *
      * @return the minAlertSeverity value.
      */
-    public Severity getMinAlertSeverity() {
+    public AnomalySeverity getMinAlertSeverity() {
         return this.minAlertSeverity;
     }
 
@@ -37,7 +37,7 @@ public final class SeverityCondition {
      * @param minAlertSeverity the minAlertSeverity value to set.
      * @return the SeverityCondition object itself.
      */
-    public SeverityCondition setMinAlertSeverity(Severity minAlertSeverity) {
+    public SeverityCondition setMinAlertSeverity(AnomalySeverity minAlertSeverity) {
         this.minAlertSeverity = minAlertSeverity;
         return this;
     }
@@ -47,7 +47,7 @@ public final class SeverityCondition {
      *
      * @return the maxAlertSeverity value.
      */
-    public Severity getMaxAlertSeverity() {
+    public AnomalySeverity getMaxAlertSeverity() {
         return this.maxAlertSeverity;
     }
 
@@ -57,7 +57,7 @@ public final class SeverityCondition {
      * @param maxAlertSeverity the maxAlertSeverity value to set.
      * @return the SeverityCondition object itself.
      */
-    public SeverityCondition setMaxAlertSeverity(Severity maxAlertSeverity) {
+    public SeverityCondition setMaxAlertSeverity(AnomalySeverity maxAlertSeverity) {
         this.maxAlertSeverity = maxAlertSeverity;
         return this;
     }

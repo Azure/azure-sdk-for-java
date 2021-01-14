@@ -16,12 +16,14 @@ import com.azure.resourcemanager.appservice.models.WebApps;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.BatchDeletionImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 /** The implementation for WebApps. */
 public class WebAppsImpl
@@ -108,8 +110,8 @@ public class WebAppsImpl
 
     @Override
     public PagedFlux<WebAppBasic> listByResourceGroupAsync(String resourceGroupName) {
-        return inner().listByResourceGroupAsync(resourceGroupName)
-            .mapPage(inner -> new WebAppBasicImpl(inner, this.manager()));
+        return PagedConverter.flatMapPage(inner().listByResourceGroupAsync(resourceGroupName),
+            inner -> isWebApp(inner) ? Mono.just(new WebAppBasicImpl(inner, this.manager())) : Mono.empty());
     }
 
     @Override
@@ -119,7 +121,20 @@ public class WebAppsImpl
 
     @Override
     public PagedFlux<WebAppBasic> listAsync() {
-        return inner().listAsync()
-            .mapPage(inner -> new WebAppBasicImpl(inner, this.manager()));
+        return PagedConverter.flatMapPage(inner().listAsync(),
+            inner -> isWebApp(inner) ? Mono.just(new WebAppBasicImpl(inner, this.manager())) : Mono.empty());
+    }
+
+    private static boolean isWebApp(SiteInner inner) {
+        boolean ret = false;
+        if (inner.kind() == null) {
+            ret = true;
+        } else {
+            List<String> kinds = Arrays.asList(inner.kind().split(","));
+            if (kinds.contains("app") || kinds.contains("api")) {
+                ret = true;
+            }
+        }
+        return ret;
     }
 }

@@ -256,7 +256,35 @@ public final class DataFeed {
      */
     public DataFeed setOptions(DataFeedOptions dataFeedOptions) {
         this.dataFeedOptions = dataFeedOptions;
-        return null;
+        return this;
+    }
+
+    void setId(String id) {
+        this.id = id;
+    }
+
+    void setMetricIds(List<String> metricIds) {
+        this.metricIds = metricIds;
+    }
+
+    void setCreatedTime(OffsetDateTime createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    void setStatus(DataFeedStatus dataFeedStatus) {
+        this.dataFeedStatus = dataFeedStatus;
+    }
+
+    void setSourceType(DataFeedSourceType dataFeedSourceType) {
+        this.dataFeedSourceType = dataFeedSourceType;
+    }
+
+    void setIsAdmin(boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
+    void setCreator(String creator) {
+        this.creator = creator;
     }
 
     void setId(String id) {

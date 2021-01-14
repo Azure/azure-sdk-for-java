@@ -87,7 +87,7 @@ public class BlockBlobSimpleUploadOptions {
 
     /**
      * @param headers {@link BlobHttpHeaders}
-     * @return The updated {@code AppendBlobCreateOptions}
+     * @return The updated options
      */
     public BlockBlobSimpleUploadOptions setHeaders(BlobHttpHeaders headers) {
         this.headers = headers;
@@ -143,7 +143,7 @@ public class BlockBlobSimpleUploadOptions {
     }
 
     /**
-     * @return An MD5 hash of the block content. This hash is used to verify the integrity of the block during
+     * @return An MD5 hash of the content. This hash is used to verify the integrity of the content during
      * transport. When this header is specified, the storage service compares the hash of the content that has arrived
      * with this header value. Note that this MD5 hash is not stored with the blob. If the two hashes do not match, the
      * operation will fail.

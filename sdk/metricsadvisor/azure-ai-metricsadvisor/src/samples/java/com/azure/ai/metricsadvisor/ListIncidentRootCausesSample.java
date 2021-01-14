@@ -19,7 +19,7 @@ public class ListIncidentRootCausesSample {
         // List root causes for an incident under a detection configuration Id.
         //   - The id of the DetectionConfiguration resource.
         final String detectionConfigurationId = "tyu3dvhkl-bbbb-41ec-a637-78877b813gt";
-        //   - The id of the Incident resource.
+        //   - The id of the AnomalyIncident resource.
         final String incidentId = "yufrjo3bs-jjjj-41ec-kldn-opn67d2bs";
 
         advisorClient.listIncidentRootCauses(detectionConfigurationId, incidentId)
@@ -28,7 +28,7 @@ public class ListIncidentRootCausesSample {
                 System.out.printf("Series Key: %s%n");
                 System.out.println(incidentRootCause.getSeriesKey().asMap());
                 System.out.printf("Confidence for the detected incident root cause : %.2f%n",
-                    incidentRootCause.getConfidenceScore());
+                    incidentRootCause.getContributionScore());
                 System.out.printf("Trace the path for the incident root cause: %s%n");
                 incidentRootCause.getPaths().forEach(System.out::println);
             });

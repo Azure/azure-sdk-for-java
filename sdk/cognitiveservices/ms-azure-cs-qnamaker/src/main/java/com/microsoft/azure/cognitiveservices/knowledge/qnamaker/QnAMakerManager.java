@@ -27,7 +27,7 @@ public class QnAMakerManager {
      * @return the QnA Maker API client
      */
     public static QnAMakerClient authenticate(String subscriptionKey) {
-        return authenticate("https://{Endpoint}/qnamaker/v4.0", subscriptionKey);
+        return authenticate("https://{Endpoint}/qnamaker/v5.0-preview.1", subscriptionKey);
     }
 
     /**
@@ -67,7 +67,7 @@ public class QnAMakerManager {
      * @return the QnA Maker API client
      */
     public static QnAMakerClient authenticate(ServiceClientCredentials credentials, String endpoint) {
-        return authenticate("https://{Endpoint}/qnamaker/v4.0", credentials)
+        return authenticate("https://{Endpoint}/qnamaker/v5.0-preview.1", credentials)
                 .withEndpoint(endpoint);
     }
 

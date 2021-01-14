@@ -58,7 +58,7 @@ public class VirtualMachineEncryptionOperationsTests extends ComputeManagementTe
                 .withLatestLinuxImage("RedHat", "RHEL", "7.2")
                 .withRootUsername(uname)
                 .withRootPassword(password)
-                .withSize(VirtualMachineSizeTypes.STANDARD_D5_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();
 

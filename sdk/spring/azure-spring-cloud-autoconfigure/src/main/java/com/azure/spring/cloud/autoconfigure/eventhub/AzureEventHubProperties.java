@@ -4,10 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.eventhub;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
-import javax.annotation.PostConstruct;
 import javax.validation.constraints.Pattern;
 
 /**
@@ -69,16 +67,4 @@ public class AzureEventHubProperties {
         this.checkpointContainer = checkpointContainer;
     }
 
-    /**
-     * Validate Event Hubs properties.
-     *
-     * @throws IllegalArgumentException If namespace or connectionString is empty.
-     */
-    @PostConstruct
-    public void validate() {
-        if (!StringUtils.hasText(namespace) && !StringUtils.hasText(connectionString)) {
-            throw new IllegalArgumentException("Either 'spring.cloud.azure.eventhub.namespace' or "
-                + "'spring.cloud.azure.eventhub.connection-string' should be provided");
-        }
-    }
 }

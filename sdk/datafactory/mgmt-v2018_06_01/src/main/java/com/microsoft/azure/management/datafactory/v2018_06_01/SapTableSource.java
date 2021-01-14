@@ -71,12 +71,12 @@ public class SapTableSource extends TabularSource {
 
     /**
      * The partition mechanism that will be used for SAP table read in
-     * parallel. Possible values include: 'None', 'PartitionOnInt',
-     * 'PartitionOnCalendarYear', 'PartitionOnCalendarMonth',
-     * 'PartitionOnCalendarDate', 'PartitionOnTime'.
+     * parallel. Possible values include: "None", "PartitionOnInt",
+     * "PartitionOnCalendarYear", "PartitionOnCalendarMonth",
+     * "PartitionOnCalendarDate", "PartitionOnTime".
      */
     @JsonProperty(value = "partitionOption")
-    private SapTablePartitionOption partitionOption;
+    private Object partitionOption;
 
     /**
      * The settings that will be leveraged for SAP table source partitioning.
@@ -225,21 +225,21 @@ public class SapTableSource extends TabularSource {
     }
 
     /**
-     * Get the partition mechanism that will be used for SAP table read in parallel. Possible values include: 'None', 'PartitionOnInt', 'PartitionOnCalendarYear', 'PartitionOnCalendarMonth', 'PartitionOnCalendarDate', 'PartitionOnTime'.
+     * Get the partition mechanism that will be used for SAP table read in parallel. Possible values include: "None", "PartitionOnInt", "PartitionOnCalendarYear", "PartitionOnCalendarMonth", "PartitionOnCalendarDate", "PartitionOnTime".
      *
      * @return the partitionOption value
      */
-    public SapTablePartitionOption partitionOption() {
+    public Object partitionOption() {
         return this.partitionOption;
     }
 
     /**
-     * Set the partition mechanism that will be used for SAP table read in parallel. Possible values include: 'None', 'PartitionOnInt', 'PartitionOnCalendarYear', 'PartitionOnCalendarMonth', 'PartitionOnCalendarDate', 'PartitionOnTime'.
+     * Set the partition mechanism that will be used for SAP table read in parallel. Possible values include: "None", "PartitionOnInt", "PartitionOnCalendarYear", "PartitionOnCalendarMonth", "PartitionOnCalendarDate", "PartitionOnTime".
      *
      * @param partitionOption the partitionOption value to set
      * @return the SapTableSource object itself.
      */
-    public SapTableSource withPartitionOption(SapTablePartitionOption partitionOption) {
+    public SapTableSource withPartitionOption(Object partitionOption) {
         this.partitionOption = partitionOption;
         return this;
     }

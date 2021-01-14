@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.EnrichmentStatus;
 import com.azure.ai.metricsadvisor.models.ListMetricDimensionValuesOptions;
-import com.azure.ai.metricsadvisor.models.ListMetricSeriesDataOptions;
 import com.azure.ai.metricsadvisor.models.ListMetricSeriesDefinitionOptions;
 import com.azure.ai.metricsadvisor.models.MetricSeriesDefinition;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
@@ -20,6 +19,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -76,14 +76,13 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     public void listMetricSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
-        client.listMetricSeriesData(METRIC_ID,  Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
-            new ListMetricSeriesDataOptions(TIME_SERIES_START_TIME,
-                TIME_SERIES_END_TIME))
+        client.listMetricSeriesData(METRIC_ID, Collections.singletonList(new DimensionKey(SERIES_KEY_FILTER)),
+            TIME_SERIES_START_TIME, TIME_SERIES_END_TIME)
             .forEach(metricSeriesData -> {
                 assertEquals(METRIC_ID, metricSeriesData.getMetricId());
                 assertEquals(SERIES_KEY_FILTER, metricSeriesData.getSeriesKey().asMap());
-                assertNotNull(metricSeriesData.getTimestampList());
-                assertNotNull(metricSeriesData.getValueList());
+                assertNotNull(metricSeriesData.getTimestamps());
+                assertNotNull(metricSeriesData.getMetricValues());
             });
     }
 
@@ -95,7 +94,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     public void listMetricSeriesDefinitions(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         client.listMetricSeriesDefinitions(METRIC_ID,
-            new ListMetricSeriesDefinitionOptions(TIME_SERIES_START_TIME))
+                TIME_SERIES_START_TIME)
             .forEach(metricSeriesDefinition -> {
                 assertNotNull(metricSeriesDefinition.getMetricId());
                 assertNotNull(metricSeriesDefinition.getSeriesKey());
@@ -110,11 +109,12 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
     public void listMetricSeriesDefinitionsDimensionFilter(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion) {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
-        List<MetricSeriesDefinition> actualMetricSeriesDefinitions = client.listMetricSeriesDefinitions(METRIC_ID,
-            new ListMetricSeriesDefinitionOptions(TIME_SERIES_START_TIME)
+        List<MetricSeriesDefinition> actualMetricSeriesDefinitions
+            = client.listMetricSeriesDefinitions(METRIC_ID, TIME_SERIES_START_TIME,
+            new ListMetricSeriesDefinitionOptions()
                 .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
                         put("city", Collections.singletonList("Miami"));
-                    }}))
+                    }}), Context.NONE)
             .stream().collect(Collectors.toList());
 
         actualMetricSeriesDefinitions.forEach(metricSeriesDefinition -> {
@@ -133,7 +133,7 @@ public class MetricsSeriesTest extends MetricsSeriesTestBase {
         client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
         List<EnrichmentStatus> enrichmentStatuses =
             client.listMetricEnrichmentStatus(ListEnrichmentStatusInput.INSTANCE.metricId,
-                ListEnrichmentStatusInput.INSTANCE.options)
+                OffsetDateTime.parse("2020-10-01T00:00:00Z"), OffsetDateTime.parse("2020-10-30T00:00:00Z"))
                 .stream()
                 .collect(Collectors.toList());
 

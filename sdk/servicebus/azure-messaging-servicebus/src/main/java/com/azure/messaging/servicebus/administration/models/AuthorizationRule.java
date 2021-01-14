@@ -10,6 +10,8 @@ import java.util.List;
  * Represents an authorization rule to access Service Bus entities.
  *
  * @see SharedAccessAuthorizationRule
+ * @see CreateQueueOptions#getAuthorizationRules()
+ * @see CreateTopicOptions#getAuthorizationRules()
  */
 public interface AuthorizationRule {
     /**

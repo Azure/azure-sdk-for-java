@@ -21,16 +21,16 @@ public final class CacheExpirationActionParameters {
     private String odataType;
 
     /*
-     * Caching behavior for the requests that include query strings.
+     * Caching behavior for the requests
      */
     @JsonProperty(value = "cacheBehavior", required = true)
-    private CacheExpirationActionParametersCacheBehavior cacheBehavior;
+    private CacheBehavior cacheBehavior;
 
     /*
      * The level at which the content needs to be cached.
      */
     @JsonProperty(value = "cacheType", required = true)
-    private String cacheType;
+    private CacheType cacheType;
 
     /*
      * The duration for which the content needs to be cached. Allowed format is
@@ -41,8 +41,7 @@ public final class CacheExpirationActionParameters {
 
     /** Creates an instance of CacheExpirationActionParameters class. */
     public CacheExpirationActionParameters() {
-        odataType = "Microsoft.Azure.Cdn.Models.DeliveryRuleCacheExpirationActionParameters";
-        cacheType = "All";
+        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleCacheExpirationActionParameters";
     }
 
     /**
@@ -66,22 +65,21 @@ public final class CacheExpirationActionParameters {
     }
 
     /**
-     * Get the cacheBehavior property: Caching behavior for the requests that include query strings.
+     * Get the cacheBehavior property: Caching behavior for the requests.
      *
      * @return the cacheBehavior value.
      */
-    public CacheExpirationActionParametersCacheBehavior cacheBehavior() {
+    public CacheBehavior cacheBehavior() {
         return this.cacheBehavior;
     }
 
     /**
-     * Set the cacheBehavior property: Caching behavior for the requests that include query strings.
+     * Set the cacheBehavior property: Caching behavior for the requests.
      *
      * @param cacheBehavior the cacheBehavior value to set.
      * @return the CacheExpirationActionParameters object itself.
      */
-    public CacheExpirationActionParameters withCacheBehavior(
-        CacheExpirationActionParametersCacheBehavior cacheBehavior) {
+    public CacheExpirationActionParameters withCacheBehavior(CacheBehavior cacheBehavior) {
         this.cacheBehavior = cacheBehavior;
         return this;
     }
@@ -91,7 +89,7 @@ public final class CacheExpirationActionParameters {
      *
      * @return the cacheType value.
      */
-    public String cacheType() {
+    public CacheType cacheType() {
         return this.cacheType;
     }
 
@@ -101,7 +99,7 @@ public final class CacheExpirationActionParameters {
      * @param cacheType the cacheType value to set.
      * @return the CacheExpirationActionParameters object itself.
      */
-    public CacheExpirationActionParameters withCacheType(String cacheType) {
+    public CacheExpirationActionParameters withCacheType(CacheType cacheType) {
         this.cacheType = cacheType;
         return this;
     }
@@ -139,6 +137,12 @@ public final class CacheExpirationActionParameters {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property cacheBehavior in model CacheExpirationActionParameters"));
+        }
+        if (cacheType() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property cacheType in model CacheExpirationActionParameters"));
         }
     }
 }

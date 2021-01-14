@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.RetryPolicyWithDiagnostics;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,10 +164,12 @@ public class GoneAndRetryWithRetryPolicy extends RetryPolicyWithDiagnostics{
                 return Mono.just(ShouldRetryResult.noRetry());
             } else if (exception instanceof GoneException &&
                 !request.isReadOnly() &&
-                BridgeInternal.hasSendingRequestStarted((CosmosException)exception)) {
+                BridgeInternal.hasSendingRequestStarted((CosmosException)exception) &&
+                !((GoneException)exception).isBasedOn410ResponseFromService()) {
 
                 logger.warn(
-                    "Operation will NOT be retried. Write operations can not be retried safely when sending the request " +
+                    "Operation will NOT be retried. Write operations which failed due to transient transport errors " +
+                        "can not be retried safely when sending the request " +
                         "to the service because they aren't idempotent. Current attempt {}, Exception: ",
                     this.attemptCount,
                     exception);

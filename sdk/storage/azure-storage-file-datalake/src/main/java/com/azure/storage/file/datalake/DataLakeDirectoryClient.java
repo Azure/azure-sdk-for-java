@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -13,6 +14,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
+import com.azure.storage.file.datalake.models.PathItem;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -189,7 +191,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the file.
+     * @param metadata Metadata to associate with the file. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -313,7 +316,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * others.
      * @param umask Restricts permissions of the sub-directory to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the sub-directory.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -421,5 +425,47 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
 
         Response<DataLakePathClient> resp = StorageImplUtils.blockWithOptionalTimeout(response, timeout);
         return new SimpleResponse<>(resp, new DataLakeDirectoryClient(resp.getValue()));
+    }
+
+    /**
+     * Returns a lazy loaded list of files/directories in this directory. The returned {@link PagedIterable} can be
+     * consumed while new items are automatically retrieved as needed. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.listPaths}
+     *
+     * @return The list of files/directories.
+     */
+    public PagedIterable<PathItem> listPaths() {
+        return this.listPaths(false, false, null, null);
+    }
+
+    /**
+     * Returns a lazy loaded list of files/directories in this directory. The returned {@link PagedIterable} can be
+     * consumed while new items are automatically retrieved as needed. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list#filesystem">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryClient.listPaths#boolean-boolean-Integer-Duration}
+     *
+     * @param recursive Specifies if the call should recursively include all paths.
+     * @param userPrincipleNameReturned If "true", the user identity values returned in the x-ms-owner, x-ms-group,
+     * and x-ms-acl response headers will be transformed from Azure Active Directory Object IDs to User Principal Names.
+     * If "false", the values will be returned as Azure Active Directory Object IDs.
+     * The default value is false. Note that group and application Object IDs are not translated because they do not
+     * have unique friendly names.
+     * @param maxResults Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the
+     * request does not specify maxResults or specifies a value greater than 5,000, the server will return up to
+     * 5,000 items.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @return The list of files/directories.
+     */
+    public PagedIterable<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults,
+        Duration timeout) {
+        return new PagedIterable<>(dataLakeDirectoryAsyncClient.listPathsWithOptionalTimeout(recursive,
+            userPrincipleNameReturned, maxResults, timeout));
     }
 }

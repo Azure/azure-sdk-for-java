@@ -143,7 +143,7 @@ public class ManageDns {
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
                         .withAdminPassword("12NewPA$$w0rd!")
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
+                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .create();
             System.out.println("Virtual machine created");
 
@@ -225,7 +225,7 @@ public class ManageDns {
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
                         .withAdminPassword("12NewPA$$w0rd!")
-                        .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
+                        .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                         .create();
             System.out.println("Virtual machine created");
 

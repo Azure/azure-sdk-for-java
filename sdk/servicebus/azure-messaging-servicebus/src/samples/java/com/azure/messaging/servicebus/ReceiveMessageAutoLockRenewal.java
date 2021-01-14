@@ -38,21 +38,18 @@ public class ReceiveMessageAutoLockRenewal {
             .connectionString(connectionString)
             .receiver()
             .queueName("<<queue-name>>")
+            .maxAutoLockRenewDuration(Duration.ofMinutes(2))
             .buildAsyncClient();
 
         Disposable subscription = receiver.receiveMessages()
-            .flatMap(message -> {
-                receiver.renewMessageLock(message, Duration.ofSeconds(120));
-                boolean messageProcessed = false;
-                // Process the context and its message here.
-                // Change the `messageProcessed` according to you business logic and if you are able to process the
-                // message successfully.
-                if (messageProcessed) {
-                    return receiver.complete(message);
-                } else {
-                    return receiver.abandon(message);
-                }
-            }).subscribe();
+            .subscribe(message -> {
+                // Process message. The message lock is renewed for up to 2 minutes.
+                // If an exception is thrown from this consumer, the message is abandoned. Otherwise, it is completed.
+                // Automatic message settlement can be disabled via disableAutoComplete() when creating the receiver
+                // client. Consequently, messages have to be manually settled.
+                System.out.printf("Sequence #: %s. Contents: %s%n", message.getSequenceNumber(),
+                    message.getBody());
+            });
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
         TimeUnit.SECONDS.sleep(60);

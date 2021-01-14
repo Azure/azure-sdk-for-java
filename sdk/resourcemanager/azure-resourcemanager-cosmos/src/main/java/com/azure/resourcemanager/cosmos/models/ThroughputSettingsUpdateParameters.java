@@ -9,6 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Parameters to update Cosmos DB resource throughput. */
 @JsonFlatten
@@ -39,6 +40,20 @@ public class ThroughputSettingsUpdateParameters extends ArmResourceProperties {
      */
     public ThroughputSettingsUpdateParameters withResource(ThroughputSettingsResource resource) {
         this.resource = resource;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ThroughputSettingsUpdateParameters withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ThroughputSettingsUpdateParameters withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

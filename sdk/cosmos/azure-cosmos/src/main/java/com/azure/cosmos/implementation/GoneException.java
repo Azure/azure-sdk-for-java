@@ -18,6 +18,8 @@ import java.util.Map;
  */
 public class GoneException extends CosmosException {
 
+    private boolean basedOn410ResponseFromService = false;
+
     /**
      * Instantiates a new Gone exception.
      *
@@ -158,5 +160,13 @@ public class GoneException extends CosmosException {
                          Map<String, String> headers,
                          String requestUriString) {
         super(message, innerException, headers, HttpConstants.StatusCodes.GONE, requestUriString);
+    }
+
+    public boolean isBasedOn410ResponseFromService() {
+        return this.basedOn410ResponseFromService;
+    }
+
+    public void setIsBasedOn410ResponseFromService() {
+        this.basedOn410ResponseFromService = true;
     }
 }

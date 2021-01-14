@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** The ModelInfo model. */
+/** Basic custom model information. */
 @Fluent
 public final class ModelInfo {
     /*

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
 
-/** The TrainResult model. */
+/** Custom model training result. */
 @Fluent
 public final class TrainResult {
     /*

@@ -5,6 +5,9 @@ This sample illustrates how to use `azure-spring-boot-starter-active-directory-b
 
 ## Getting started
 
+### Environment checklist
+We need to ensure that this [environment checklist][ready-to-run-checklist] is completed before the run.
+
 ### Create your Azure Active Directory B2C tenant
 
 Follow the guide of [AAD B2C tenant creation](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-create-tenant).
@@ -12,7 +15,7 @@ Follow the guide of [AAD B2C tenant creation](https://docs.microsoft.com/azure/a
 ### Register your Azure Active Directory B2C application
 
 Follow the guide of [AAD B2C application registry](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-register-applications).
-Please make sure that your b2c application `reply URL` contains `http://localhost:8080/home`.
+Please make sure that your b2c application `reply URL` contains `http://localhost:8080/login/oauth2/code`.
 
 ### Create user flows
 
@@ -23,7 +26,7 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
 
 #### Application.yml
 
-1. Fill in `${your-tenant-name}` from Azure AD B2C portal `Overviews` domain name (format may looks like
+1. Fill in `${your-tenant-name}` from **Azure AD B2C** portal `Overviews` domain name (format may looks like
 `${your-tenant-name}.onmicrosoft.com`).
 2. Select one registered instance under `Applications` from portal, and then:
     1. Fill in `${your-client-id}` from `Application ID`.
@@ -32,14 +35,14 @@ Follow the guide of [AAD B2C user flows creation](https://docs.microsoft.com/azu
     1. Fill in the `${your-sign-up-or-in-user-flow}` with the name of `sign-in-or-up` user flow.
     2. Fill in the `${your-profile-edit-user-flow}` with the name of `profile-edit` user flow.
     3. Fill in the `${your-password-reset-user-flow}` with the name of `password-reset` user flow.
-4. Replace `${your-reply-url}` to `http://localhost:8080/home`.
+4. Replace `${your-reply-url}` to `http://localhost:8080/login/oauth2/code`.
 5. Replace `${your-logout-success-url}` to `http://localhost:8080/login`.
 
 ```yaml
 azure:
   activedirectory:
     b2c:
-      tenant: ${your-tenant-name}
+      tenant: ${your-tenant-name} # ❗not tenant id
       client-id: ${your-client-id}
       client-secret: ${your-client-secret}
       reply-url: ${your-reply-url} # should be absolute url.
@@ -55,16 +58,13 @@ azure:
 Please make sure that these two placeholders should be the same as `application.yml` respectively.
 
 ### Run with Maven
-First, we need to ensure that this [instruction] is completed before run.
 ```
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
 mvn spring-boot:run
 ```
 
 ### Validation
-	
+
 1. Access `http://localhost:8080/` as index page.
 2. Sign up/in.
 3. Access greeting button.
@@ -76,7 +76,22 @@ mvn spring-boot:run
 9. Sign in.
 
 ## Troubleshooting
+- `Missing attribute 'name' in attributes `
+
+  ```
+  java.lang.IllegalArgumentException: Missing attribute 'name' in attributes
+  	at org.springframework.security.oauth2.core.user.DefaultOAuth2User.<init>(DefaultOAuth2User.java:67) ~[spring-security-oauth2-core-5.3.6.RELEASE.jar:5.3.6.RELEASE]
+  	at org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser.<init>(DefaultOidcUser.java:89) ~[spring-security-oauth2-core-5.3.6.RELEASE.jar:5.3.6.RELEASE]
+  	at org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService.loadUser(OidcUserService.java:144) ~[spring-security-oauth2-client-5.3.6.RELEASE.jar:5.3.6.RELEASE]
+  	at org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService.loadUser(OidcUserService.java:63) ~[spring-security-oauth2-client-5.3.6.RELEASE.jar:5.3.6.RELEASE]
+  ```
+
+  While running sample, if error occurs with logs above:
+
+  - make sure that while creating user workflow by following this [guide](https://docs.microsoft.com/azure/active-directory-b2c/tutorial-create-user-flows), for **User attributes and claims** , attributes and claims for **Display Name** should be chosen.
+
 ### FAQ
+
 #### Sign in with loops to B2C endpoint ?
 This issue almost due to polluted cookies of `localhost`. Clean up cookies of `localhost` and try it again.
 
@@ -87,4 +102,5 @@ And also available for Amazon, Azure AD, FaceBook, Github, Linkedin and Twitter.
 ## Next steps
 ## Contributing
 <!-- LINKS -->
-[instruction]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/CONTRIBUTING.md#building-from-source
+
+[ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist

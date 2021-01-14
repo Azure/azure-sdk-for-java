@@ -3,11 +3,11 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Anomaly;
+import com.azure.ai.metricsadvisor.models.DataPointAnomaly;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedFilter;
 import com.azure.ai.metricsadvisor.models.ListAnomaliesDetectedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.Severity;
+import com.azure.ai.metricsadvisor.models.AnomalySeverity;
 import com.azure.core.http.rest.PagedIterable;
 
 import java.time.OffsetDateTime;
@@ -27,17 +27,17 @@ public class ListsAnomaliesForDetectionConfigSample {
         final OffsetDateTime startTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
         final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T12:00:00Z");
         final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter()
-            .setSeverity(Severity.LOW, Severity.MEDIUM);
-        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions(startTime, endTime)
+            .setSeverityRange(AnomalySeverity.LOW, AnomalySeverity.MEDIUM);
+        final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions()
             .setTop(10)
             .setFilter(filter);
-        PagedIterable<Anomaly> anomaliesIterable
-            = advisorClient.listAnomaliesForDetectionConfiguration(detectionConfigurationId,
-            options);
+        PagedIterable<DataPointAnomaly> anomaliesIterable
+            = advisorClient.listAnomaliesForDetectionConfig(detectionConfigurationId,
+                startTime, endTime);
 
-        for (Anomaly anomaly : anomaliesIterable) {
-            System.out.printf("Anomaly Severity: %s%n", anomaly.getSeverity());
-            System.out.printf("Series Key: %s%n", anomaly.getSeriesKey().asMap().entrySet());
+        for (DataPointAnomaly dataPointAnomaly : anomaliesIterable) {
+            System.out.printf("DataPoint Anomaly Severity: %s%n", dataPointAnomaly.getSeverity());
+            System.out.printf("Series Key: %s%n", dataPointAnomaly.getSeriesKey().asMap().entrySet());
         }
     }
 }

@@ -87,6 +87,10 @@ class RxGatewayStoreModel implements RxStoreModel {
         return this.performRequest(request, HttpMethod.POST);
     }
 
+    private Mono<RxDocumentServiceResponse> patch(RxDocumentServiceRequest request) {
+        return this.performRequest(request, HttpMethod.PATCH);
+    }
+
     private Mono<RxDocumentServiceResponse> upsert(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.POST);
     }
@@ -147,6 +151,7 @@ class RxGatewayStoreModel implements RxStoreModel {
             }
 
             URI uri = getUri(request);
+            request.requestContext.resourcePhysicalAddress = uri.toString();
 
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
@@ -300,7 +305,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                        if (!(exception instanceof CosmosException)) {
                            // wrap in CosmosException
                            logger.error("Network failure", exception);
-                           dce = BridgeInternal.createCosmosException(0, exception);
+                           dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, 0, exception);
                            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
                        } else {
                            dce = (CosmosException) exception;
@@ -342,7 +347,7 @@ class RxGatewayStoreModel implements RxStoreModel {
                     String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                     cosmosError.getPartitionedQueryExecutionInfo());
 
-            CosmosException dce = BridgeInternal.createCosmosException(statusCode, cosmosError, headers.toMap());
+            CosmosException dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, statusCode, cosmosError, headers.toMap());
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }
@@ -353,6 +358,8 @@ class RxGatewayStoreModel implements RxStoreModel {
             case Create:
             case Batch:
                 return this.create(request);
+            case Patch:
+                return this.patch(request);
             case Upsert:
                 return this.upsert(request);
             case Delete:

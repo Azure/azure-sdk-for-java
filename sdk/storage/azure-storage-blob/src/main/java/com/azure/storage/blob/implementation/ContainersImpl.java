@@ -426,8 +426,8 @@ public final class ContainersImpl {
      * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
-     * @param deletedContainerName Optional.  Version 2019-12-12 and laster.  Specifies the name of the deleted container to restore.
-     * @param deletedContainerVersion Optional.  Version 2019-12-12 and laster.  Specifies the version of the deleted container to restore.
+     * @param deletedContainerName Optional.  Version 2019-12-12 and later.  Specifies the name of the deleted container to restore.
+     * @param deletedContainerVersion Optional.  Version 2019-12-12 and later.  Specifies the version of the deleted container to restore.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.

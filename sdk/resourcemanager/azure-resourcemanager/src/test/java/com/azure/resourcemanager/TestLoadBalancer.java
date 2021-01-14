@@ -44,7 +44,7 @@ import org.junit.jupiter.api.Assertions;
 /** Test of load balancer management. */
 public class TestLoadBalancer {
     String testId = "";
-    Region region = Region.US_NORTH_CENTRAL;
+    Region region = Region.US_WEST;
     String groupName = "";
     String lbName = "";
     String[] pipNames = null;
@@ -1068,7 +1068,7 @@ public class TestLoadBalancer {
                     .withRootUsername(userName)
                     .withRootPassword("Abcdef.123456")
                     .withNewAvailabilitySet(availabilitySetDefinition)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_A1);
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"));
 
             vmDefinitions.add(vm);
         }

@@ -12,7 +12,7 @@ Azure Communication SMS is used to send simple text messages.
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
 - [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource.
+- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
 
@@ -21,7 +21,7 @@ Azure Communication SMS is used to send simple text messages.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-sms</artifactId>
-  <version>1.0.0-beta.2</version> 
+  <version>1.0.0-beta.3</version> 
 </dependency>
 ```
 
@@ -78,8 +78,8 @@ properties such as the message id with the `response.getMessageId()` function.
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L41-L57 -->
 ```java
 // Currently Sms services only supports one phone number
-List<PhoneNumber> to = new ArrayList<PhoneNumber>();
-to.add(new PhoneNumber("<to-phone-number>"));
+List<PhoneNumberIdentifier> to = new ArrayList<PhoneNumberIdentifier>();
+to.add(new PhoneNumberIdentifier("<to-phone-number>"));
 
 // SendSmsOptions is an optional field. It can be used
 // to enable a delivery report to the Azure Event Grid
@@ -88,7 +88,7 @@ options.setEnableDeliveryReport(true);
 
 // Send the message and check the response for a message id
 SendSmsResponse response = smsClient.sendMessage(
-    new PhoneNumber("<leased-phone-number>"), 
+    new PhoneNumberIdentifier("<leased-phone-number>"), 
     to, 
     "your message",
     options /* Optional */);

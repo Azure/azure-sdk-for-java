@@ -22,13 +22,13 @@ public final class MetricEnrichedSeriesDataHelper {
      */
     public interface MetricEnrichedSeriesDataAccessor {
         void setSeriesKey(MetricEnrichedSeriesData seriesData, DimensionKey seriesKey);
-        void setTimestampList(MetricEnrichedSeriesData seriesData, List<OffsetDateTime> timestampList);
-        void setValueList(MetricEnrichedSeriesData seriesData, List<Double> valueList);
-        void setIsAnomalyList(MetricEnrichedSeriesData seriesData, List<Boolean> isAnomalyList);
-        void setPeriodList(MetricEnrichedSeriesData seriesData, List<Integer> periodList);
-        void setExpectedValueList(MetricEnrichedSeriesData seriesData, List<Double> expectedValueList);
-        void setLowerBoundaryList(MetricEnrichedSeriesData seriesData, List<Double> lowerBoundaryList);
-        void setUpperBoundaryList(MetricEnrichedSeriesData seriesData, List<Double> upperBoundaryList);
+        void setTimestamps(MetricEnrichedSeriesData seriesData, List<OffsetDateTime> timestamps);
+        void setMetricValues(MetricEnrichedSeriesData seriesData, List<Double> metricValues);
+        void setIsAnomalyList(MetricEnrichedSeriesData seriesData, List<Boolean> isAnomaly);
+        void setPeriods(MetricEnrichedSeriesData seriesData, List<Integer> periods);
+        void setExpectedMetricValues(MetricEnrichedSeriesData seriesData, List<Double> expectedMetricValues);
+        void setLowerBoundaryValues(MetricEnrichedSeriesData seriesData, List<Double> lowerBoundaryValues);
+        void setUpperBoundaryValues(MetricEnrichedSeriesData seriesData, List<Double> upperBoundaryValues);
     }
 
     /**
@@ -44,31 +44,31 @@ public final class MetricEnrichedSeriesDataHelper {
         accessor.setSeriesKey(seriesData, seriesKey);
     }
 
-    static void setTimestampList(MetricEnrichedSeriesData seriesData, List<OffsetDateTime> timestampList) {
-        accessor.setTimestampList(seriesData, timestampList);
+    static void setTimestamps(MetricEnrichedSeriesData seriesData, List<OffsetDateTime> timestamps) {
+        accessor.setTimestamps(seriesData, timestamps);
     }
 
-    static void setValueList(MetricEnrichedSeriesData seriesData, List<Double> valueList) {
-        accessor.setValueList(seriesData, valueList);
+    static void setMetricValues(MetricEnrichedSeriesData seriesData, List<Double> metricValues) {
+        accessor.setMetricValues(seriesData, metricValues);
     }
 
-    static void setIsAnomalyList(MetricEnrichedSeriesData seriesData, List<Boolean> isAnomalyList) {
-        accessor.setIsAnomalyList(seriesData, isAnomalyList);
+    static void setIsAnomalyList(MetricEnrichedSeriesData seriesData, List<Boolean> isAnomaly) {
+        accessor.setIsAnomalyList(seriesData, isAnomaly);
     }
 
-    static void setPeriodList(MetricEnrichedSeriesData seriesData, List<Integer> periodList) {
-        accessor.setPeriodList(seriesData, periodList);
+    static void setPeriods(MetricEnrichedSeriesData seriesData, List<Integer> periods) {
+        accessor.setPeriods(seriesData, periods);
     }
 
-    static void setExpectedValueList(MetricEnrichedSeriesData seriesData, List<Double> expectedValueList) {
-        accessor.setExpectedValueList(seriesData, expectedValueList);
+    static void setExpectedMetricValues(MetricEnrichedSeriesData seriesData, List<Double> expectedMetricValues) {
+        accessor.setExpectedMetricValues(seriesData, expectedMetricValues);
     }
 
-    static void setLowerBoundaryList(MetricEnrichedSeriesData seriesData, List<Double> lowerBoundaryList) {
-        accessor.setLowerBoundaryList(seriesData, lowerBoundaryList);
+    static void setLowerBoundaryValues(MetricEnrichedSeriesData seriesData, List<Double> lowerBoundaryValues) {
+        accessor.setLowerBoundaryValues(seriesData, lowerBoundaryValues);
     }
 
-    static void setUpperBoundaryList(MetricEnrichedSeriesData seriesData, List<Double> upperBoundaryList) {
-        accessor.setUpperBoundaryList(seriesData, upperBoundaryList);
+    static void setUpperBoundaryValues(MetricEnrichedSeriesData seriesData, List<Double> upperBoundaryValues) {
+        accessor.setUpperBoundaryValues(seriesData, upperBoundaryValues);
     }
 }

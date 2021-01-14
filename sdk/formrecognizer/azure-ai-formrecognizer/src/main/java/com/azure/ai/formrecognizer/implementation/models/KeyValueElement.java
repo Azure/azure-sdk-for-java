@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The KeyValueElement model. */
+/** Information about the extracted key or value in a key-value pair. */
 @Fluent
 public final class KeyValueElement {
     /*
