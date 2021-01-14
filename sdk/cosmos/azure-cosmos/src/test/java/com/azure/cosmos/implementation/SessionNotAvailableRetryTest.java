@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.ReplicatedResourceClient;
-import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -42,12 +41,13 @@ import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.Mockito.doAnswer;
 
 public class SessionNotAvailableRetryTest extends TestSuiteBase {
+    private static final int TIMEOUT = 60000;
     private CosmosAsyncClient client;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private DatabaseAccount databaseAccount;
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
-    public void beforeClass() throws IllegalAccessException {
+    @BeforeClass(groups = {"multi-region", "multi-master"}, timeOut = SETUP_TIMEOUT)
+    public void beforeClass() {
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -63,7 +63,7 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
     }
 
-    @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"multi-region", "multi-master"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
@@ -106,9 +106,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"multi-master"}, dataProvider = "preferredRegions")
+    @Test(groups = {"multi-master"}, dataProvider = "preferredRegions", timeOut = TIMEOUT)
     public void sessionNotAvailableRetryMultiMaster(List<String> preferredLocations, List<String> regionalSuffix,
-                                                    OperationType operationType) throws IllegalAccessException {
+                                                    OperationType operationType) {
         CosmosAsyncClient preferredListClient = null;
         try {
             preferredListClient = new CosmosClientBuilder()
@@ -121,20 +121,17 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(preferredListClient);
             RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-            ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
-            StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
+            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
             ReplicatedResourceClient replicatedResourceClient =
-                (ReplicatedResourceClient) FieldUtils.readField(storeClient, "replicatedResourceClient", true);
-            ConsistencyReader consistencyReader = (ConsistencyReader) FieldUtils.readField(replicatedResourceClient,
-                "consistencyReader", true);
-            ConsistencyWriter consistencyWriter = (ConsistencyWriter) FieldUtils.readField(replicatedResourceClient,
-                "consistencyWriter", true);
-            StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
+                ReflectionUtils.getReplicatedResourceClient(storeClient);
+            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
 
             RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
             RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
-            FieldUtils.writeField(storeReader, "transportClient", spyRntbdTransportClient, true);
-            FieldUtils.writeField(consistencyWriter, "transportClient", spyRntbdTransportClient, true);
+            ReflectionUtils.setTransportClient(storeReader, spyRntbdTransportClient);
+            ReflectionUtils.setTransportClient(consistencyWriter, spyRntbdTransportClient);
 
             cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
 
@@ -204,9 +201,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "preferredRegions")
+    @Test(groups = {"multi-region"}, dataProvider = "preferredRegions", timeOut = TIMEOUT)
     public void sessionNotAvailableRetrySingleMaster(List<String> preferredLocations, List<String> regionalSuffix,
-                                                     OperationType operationType) throws IllegalAccessException {
+                                                     OperationType operationType) {
         CosmosAsyncClient preferredListClient = null;
         try {
             preferredListClient = new CosmosClientBuilder()
@@ -219,20 +216,17 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(preferredListClient);
             RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-            ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
-            StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
+            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
             ReplicatedResourceClient replicatedResourceClient =
-                (ReplicatedResourceClient) FieldUtils.readField(storeClient, "replicatedResourceClient", true);
-            ConsistencyReader consistencyReader = (ConsistencyReader) FieldUtils.readField(replicatedResourceClient,
-                "consistencyReader", true);
-            ConsistencyWriter consistencyWriter = (ConsistencyWriter) FieldUtils.readField(replicatedResourceClient,
-                "consistencyWriter", true);
-            StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
+                ReflectionUtils.getReplicatedResourceClient(storeClient);
+            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
 
             RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
             RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
-            FieldUtils.writeField(storeReader, "transportClient", spyRntbdTransportClient, true);
-            FieldUtils.writeField(consistencyWriter, "transportClient", spyRntbdTransportClient, true);
+            ReflectionUtils.setTransportClient(storeReader, spyRntbdTransportClient);
+            ReflectionUtils.setTransportClient(consistencyWriter, spyRntbdTransportClient);
 
             cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
 
@@ -324,8 +318,8 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple", "multi-master"}, dataProvider = "operations")
-    public void sessionNotAvailableRetryWithoutPreferredList(OperationType operationType) throws IllegalAccessException {
+    @Test(groups = {"multi-region", "multi-master"}, dataProvider = "operations", timeOut = TIMEOUT)
+    public void sessionNotAvailableRetryWithoutPreferredList(OperationType operationType) {
         CosmosAsyncClient preferredListClient = null;
         try {
             preferredListClient = new CosmosClientBuilder()
@@ -337,20 +331,17 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             AsyncDocumentClient asyncDocumentClient = ReflectionUtils.getAsyncDocumentClient(preferredListClient);
             RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) asyncDocumentClient;
-            ServerStoreModel storeModel = (ServerStoreModel) FieldUtils.readField(rxDocumentClient, "storeModel", true);
-            StoreClient storeClient = (StoreClient) FieldUtils.readField(storeModel, "storeClient", true);
+            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
             ReplicatedResourceClient replicatedResourceClient =
-                (ReplicatedResourceClient) FieldUtils.readField(storeClient, "replicatedResourceClient", true);
-            ConsistencyReader consistencyReader = (ConsistencyReader) FieldUtils.readField(replicatedResourceClient,
-                "consistencyReader", true);
-            ConsistencyWriter consistencyWriter = (ConsistencyWriter) FieldUtils.readField(replicatedResourceClient,
-                "consistencyWriter", true);
-            StoreReader storeReader = (StoreReader) FieldUtils.readField(consistencyReader, "storeReader", true);
+                ReflectionUtils.getReplicatedResourceClient(storeClient);
+            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
 
             RntbdTransportClientTest rntbdTransportClient = new RntbdTransportClientTest();
             RntbdTransportClientTest spyRntbdTransportClient = Mockito.spy(rntbdTransportClient);
-            FieldUtils.writeField(storeReader, "transportClient", spyRntbdTransportClient, true);
-            FieldUtils.writeField(consistencyWriter, "transportClient", spyRntbdTransportClient, true);
+            ReflectionUtils.setTransportClient(storeReader, spyRntbdTransportClient);
+            ReflectionUtils.setTransportClient(consistencyWriter, spyRntbdTransportClient);
 
             cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(preferredListClient);
 
