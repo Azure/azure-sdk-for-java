@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.10.0-beta.2 (Unreleased)
-
+- Fixed a bug that would throw if uploading using a stream that returned a number > 0 from available() after the stream had ended
 
 ## 12.10.0-beta.1 (2020-12-07)
 - Added ability to specify timeout units in RequestRetryOptions.
