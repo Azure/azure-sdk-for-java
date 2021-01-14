@@ -5,9 +5,6 @@ package com.azure.cosmos.implementation.cpu;
 
 
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
-import org.HdrHistogram.ConcurrentDoubleHistogram;
-import org.HdrHistogram.DoubleHistogram;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -179,12 +179,7 @@ public class ConsistencyWriter {
                                                    try {
                                                        Throwable unwrappedException = Exceptions.unwrap(t);
                                                        CosmosException ex = Utils.as(unwrappedException, CosmosException.class);
-                                                       try {
-                                                           BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request,
-                                                               storeReader.createStoreResult(null, ex, false, false, primaryUri));
-                                                       } catch (Exception e) {
-                                                           logger.error("Error occurred while recording response", e);
-                                                       }
+                                                       storeReader.createAndRecordStoreResult(request, null, ex, false, false, primaryUri);
                                                        String value = ex.getResponseHeaders().get(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH);
                                                        if (!Strings.isNullOrWhiteSpace(value)) {
                                                            Integer result = Integers.tryParse(value);
@@ -200,12 +195,7 @@ public class ConsistencyWriter {
                                            );
 
             }).flatMap(response -> {
-                try {
-                    BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request,
-                        storeReader.createStoreResult(response, null, false, false, primaryURI.get()));
-                } catch (Exception e) {
-                    logger.error("Error occurred while recording response", e);
-                }
+                storeReader.createAndRecordStoreResult(request, response, null, false, false, primaryURI.get());
                 return barrierForGlobalStrong(request, response);
             });
         } else {

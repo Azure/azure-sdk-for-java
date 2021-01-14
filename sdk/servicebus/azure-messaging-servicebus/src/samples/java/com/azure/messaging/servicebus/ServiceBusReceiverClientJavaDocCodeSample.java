@@ -19,7 +19,6 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
 
     /**
      * Code snippet for creating an ServiceBusReceiverClient
-     *
      */
     public void instantiate() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation

@@ -10,13 +10,14 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosPatchOperations;
+import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
-import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -34,6 +35,7 @@ import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.SharedGatewayHttpClient;
+import com.azure.cosmos.implementation.patch.PatchUtil;
 import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactory;
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
@@ -1400,6 +1402,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
         }
 
+        if (RequestVerb.PATCH.equals(httpMethod) &&
+            !request.getHeaders().containsKey(HttpConstants.HttpHeaders.CONTENT_TYPE)) {
+            request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON_PATCH);
+        }
+
         if (!request.getHeaders().containsKey(HttpConstants.HttpHeaders.ACCEPT)) {
             request.getHeaders().put(HttpConstants.HttpHeaders.ACCEPT, RuntimeConstants.MediaTypes.JSON);
         }
@@ -1532,6 +1539,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 return getStoreProxy(requestPopulated).processMessage(requestPopulated);
             });
+    }
+
+    private Mono<RxDocumentServiceResponse> patch(RxDocumentServiceRequest request, DocumentClientRetryPolicy documentClientRetryPolicy) {
+        populateHeaders(request, RequestVerb.PATCH);
+        if(request.requestContext != null && documentClientRetryPolicy.getRetryCount() > 0) {
+            documentClientRetryPolicy.updateEndTime();
+            request.requestContext.updateRetryContext(documentClientRetryPolicy, true);
+        }
+
+        return getStoreProxy(request).processMessage(request);
     }
 
     @Override
@@ -1694,6 +1711,71 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return requestObs.flatMap(req -> {
             return replace(request, retryPolicyInstance)
+                .map(resp -> toResourceResponse(resp, Document.class));} );
+    }
+
+    @Override
+    public Mono<ResourceResponse<Document>> patchDocument(String documentLink,
+                                                          CosmosPatchOperations cosmosPatchOperations,
+                                                          RequestOptions options) {
+        DocumentClientRetryPolicy documentClientRetryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
+        return ObservableHelper.inlineIfPossibleAsObs(() -> patchDocumentInternal(documentLink, cosmosPatchOperations, options, documentClientRetryPolicy), documentClientRetryPolicy);
+    }
+
+    private Mono<ResourceResponse<Document>> patchDocumentInternal(String documentLink,
+                                                                   CosmosPatchOperations cosmosPatchOperations,
+                                                                   RequestOptions options,
+                                                                   DocumentClientRetryPolicy retryPolicyInstance) {
+
+        checkArgument(StringUtils.isNotEmpty(documentLink), "expected non empty documentLink");
+        checkNotNull(cosmosPatchOperations, "expected non null cosmosPatchOperations");
+
+        logger.debug("Running patch operations on Document. documentLink: [{}]", documentLink);
+
+        final String path = Utils.joinPath(documentLink, null);
+
+        final Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Document, OperationType.Patch);
+        Instant serializationStartTimeUTC = Instant.now();
+
+        ByteBuffer content = ByteBuffer.wrap(PatchUtil.serializeCosmosPatchToByteArray(cosmosPatchOperations));
+
+        Instant serializationEndTime = Instant.now();
+        SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+            serializationStartTimeUTC,
+            serializationEndTime,
+            SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
+
+        final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
+            this,
+            OperationType.Patch,
+            ResourceType.Document,
+            path,
+            requestHeaders,
+            options,
+            content);
+
+        if (retryPolicyInstance != null) {
+            retryPolicyInstance.onBeforeSendRequest(request);
+        }
+
+        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosDiagnostics);
+        if (serializationDiagnosticsContext != null) {
+            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
+
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
+
+        // options will always have partition key info, so contentAsByteBuffer can be null and is not needed.
+        Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(
+            request,
+            null,
+            null,
+            options,
+            collectionObs);
+
+        return requestObs.flatMap(req -> {
+            return patch(request, retryPolicyInstance)
                 .map(resp -> toResourceResponse(resp, Document.class));} );
     }
 

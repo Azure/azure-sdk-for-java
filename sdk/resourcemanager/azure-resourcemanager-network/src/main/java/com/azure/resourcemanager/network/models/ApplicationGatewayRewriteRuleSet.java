@@ -101,6 +101,13 @@ public class ApplicationGatewayRewriteRuleSet extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayRewriteRuleSet withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -60,7 +61,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface VpnSitesConfigurationsService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
                 + "/{virtualWANName}/vpnConfiguration")
@@ -73,6 +74,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
             @PathParam("virtualWANName") String virtualWanName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GetVpnSitesConfigurationRequest request,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -114,7 +116,8 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -126,6 +129,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
                             virtualWanName,
                             apiVersion,
                             request,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -169,7 +173,8 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
         } else {
             request.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .download(
@@ -179,6 +184,7 @@ public final class VpnSitesConfigurationsClientImpl implements VpnSitesConfigura
                 virtualWanName,
                 apiVersion,
                 request,
+                accept,
                 context);
     }
 

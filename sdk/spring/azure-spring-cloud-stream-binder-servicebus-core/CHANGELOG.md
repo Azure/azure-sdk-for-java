@@ -1,7 +1,9 @@
 # Release History
 
-## 2.0.0-beta.2 (Unreleased)
+## 2.2.0-beta.1 (Unreleased)
 
+
+## 2.0.0 (2020-12-30)
 
 ## 2.0.0-beta.1 (2020-11-18)
 ### Breaking Changes

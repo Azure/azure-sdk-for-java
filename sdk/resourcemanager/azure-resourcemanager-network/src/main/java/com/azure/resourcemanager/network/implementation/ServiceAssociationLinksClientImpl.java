@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -54,7 +55,7 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface ServiceAssociationLinksService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/ServiceAssociationLinks")
@@ -67,6 +68,7 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
             @PathParam("subnetName") String subnetName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -107,7 +109,8 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -119,6 +122,7 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
                             subnetName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -161,7 +165,8 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(
@@ -171,6 +176,7 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
                 subnetName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 

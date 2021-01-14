@@ -19,7 +19,7 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
         String spName = generateRandomResourceName("sp", 20);
 
         ServicePrincipal sp =
-            authorizationManager.servicePrincipals().define(spName).withNewApplication("http://" + spName).create();
+            authorizationManager.servicePrincipals().define(spName).withNewApplication().create();
 
         ResourceManagerUtils.sleep(Duration.ofSeconds(15));
 

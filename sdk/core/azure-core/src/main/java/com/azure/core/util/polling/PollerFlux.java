@@ -44,12 +44,12 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
 
     private final ClientLogger logger = new ClientLogger(PollerFlux.class);
     private final PollingContext<T> rootContext = new PollingContext<>();
-    private final Duration defaultPollInterval;
     private final Function<PollingContext<T>, Mono<PollResponse<T>>> pollOperation;
     private final BiFunction<PollingContext<T>, PollResponse<T>, Mono<T>> cancelOperation;
     private final Function<PollingContext<T>, Mono<U>> fetchResultOperation;
     private final Mono<Boolean> oneTimeActivationMono;
     private final Function<PollingContext<T>, PollResponse<T>> syncActivationOperation;
+    private volatile Duration pollInterval;
 
     /**
      * Creates PollerFlux.
@@ -81,7 +81,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
-        this.defaultPollInterval = pollInterval;
+        this.pollInterval = pollInterval;
         Objects.requireNonNull(activationOperation, "'activationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
@@ -146,11 +146,11 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                        Function<PollingContext<T>, Mono<U>> fetchResultOperation,
                        boolean ignored) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
-        if (pollInterval.compareTo(Duration.ZERO) <= 0) {
+        if (pollInterval.isNegative() || pollInterval.isZero()) {
             throw logger.logExceptionAsWarning(new IllegalArgumentException(
                 "Negative or zero value for 'pollInterval' is not allowed."));
         }
-        this.defaultPollInterval = pollInterval;
+        this.pollInterval = pollInterval;
         Objects.requireNonNull(activationOperation, "'activationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
@@ -179,6 +179,25 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
             (context, response) -> Mono.error(ex), context -> Mono.error(ex));
     }
 
+    /**
+     * Sets the poll interval for this poller. The new interval will be used for all subsequent polling operations
+     * including the subscriptions that are already in progress.
+     *
+     * @param pollInterval The new poll interval for this poller.
+     * @return The updated instance of {@link PollerFlux}.
+     * @throws NullPointerException if the {@code pollInterval} is null.
+     * @throws IllegalArgumentException if the {@code pollInterval} is zero or negative.
+     */
+    public PollerFlux<T, U> setPollInterval(Duration pollInterval) {
+        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
+        if (pollInterval.isNegative() || pollInterval.isZero()) {
+            throw logger.logExceptionAsWarning(new IllegalArgumentException(
+                "Negative or zero value for 'pollInterval' is not allowed."));
+        }
+        this.pollInterval = pollInterval;
+        return this;
+    }
+
     @Override
     public void subscribe(CoreSubscriber<? super AsyncPollResponse<T, U>> actual) {
         this.oneTimeActivationMono
@@ -199,7 +218,7 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
      * @return a synchronous blocking poller.
      */
     public SyncPoller<T, U> getSyncPoller() {
-        return new DefaultSyncPoller<>(this.defaultPollInterval,
+        return new DefaultSyncPoller<>(this.pollInterval,
                 this.syncActivationOperation,
                 this.pollOperation,
                 this.cancelOperation,
@@ -246,11 +265,11 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
     private Duration getDelay(PollResponse<T> pollResponse) {
         Duration retryAfter = pollResponse.getRetryAfter();
         if (retryAfter == null) {
-            return this.defaultPollInterval;
+            return this.pollInterval;
         } else {
             return retryAfter.compareTo(Duration.ZERO) > 0
                 ? retryAfter
-                : this.defaultPollInterval;
+                : this.pollInterval;
         }
     }
 
