@@ -196,6 +196,7 @@ public interface Server {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithIdentity,
             DefinitionStages.WithProperties,
             DefinitionStages.WithCreate {
     }
@@ -230,7 +231,17 @@ public interface Server {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithProperties withExistingResourceGroup(String resourceGroupName);
+            WithIdentity withExistingResourceGroup(String resourceGroupName);
+        }
+        /** The stage of the Server definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The Azure Active Directory identity of the server..
+             *
+             * @param identity The Azure Active Directory identity of the server.
+             * @return the next definition stage.
+             */
+            WithProperties withIdentity(ResourceIdentity identity);
         }
         /** The stage of the Server definition allowing to specify properties. */
         interface WithProperties {
@@ -246,8 +257,7 @@ public interface Server {
          * The stage of the Server definition which contains all the minimum required properties for the resource to be
          * created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithSku {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSkus {
             /**
              * Executes the create request.
              *
@@ -273,25 +283,15 @@ public interface Server {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the Server definition allowing to specify identity. */
-        interface WithIdentity {
+        /** The stage of the Server definition allowing to specify skus. */
+        interface WithSkus {
             /**
-             * Specifies the identity property: The Azure Active Directory identity of the server..
+             * Specifies the skus property: The SKU (pricing tier) of the server..
              *
-             * @param identity The Azure Active Directory identity of the server.
+             * @param skus The SKU (pricing tier) of the server.
              * @return the next definition stage.
              */
-            WithCreate withIdentity(ResourceIdentity identity);
-        }
-        /** The stage of the Server definition allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The SKU (pricing tier) of the server..
-             *
-             * @param sku The SKU (pricing tier) of the server.
-             * @return the next definition stage.
-             */
-            WithCreate withSku(Sku sku);
+            WithCreate withSkus(Sku skus);
         }
     }
     /**

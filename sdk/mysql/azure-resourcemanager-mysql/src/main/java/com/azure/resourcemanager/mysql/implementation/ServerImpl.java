@@ -244,6 +244,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this;
     }
 
+    public ServerImpl withIdentity(ResourceIdentity identity) {
+        if (isInCreateMode()) {
+            this.createParameters.withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
     public ServerImpl withProperties(ServerPropertiesForCreate properties) {
         this.createParameters.withProperties(properties);
         return this;
@@ -259,24 +269,14 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
-    public ServerImpl withIdentity(ResourceIdentity identity) {
-        if (isInCreateMode()) {
-            this.createParameters.withIdentity(identity);
-            return this;
-        } else {
-            this.updateParameters.withIdentity(identity);
-            return this;
-        }
+    public ServerImpl withSkus(Sku skus) {
+        this.createParameters.withSkus(skus);
+        return this;
     }
 
     public ServerImpl withSku(Sku sku) {
-        if (isInCreateMode()) {
-            this.createParameters.withSku(sku);
-            return this;
-        } else {
-            this.updateParameters.withSku(sku);
-            return this;
-        }
+        this.updateParameters.withSku(sku);
+        return this;
     }
 
     public ServerImpl withStorageProfile(StorageProfile storageProfile) {

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mysql.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -52,6 +53,19 @@ public final class ServerSecurityAlertPoliciesImpl implements ServerSecurityAler
         } else {
             return null;
         }
+    }
+
+    public PagedIterable<ServerSecurityAlertPolicy> listByServer(String resourceGroupName, String serverName) {
+        PagedIterable<ServerSecurityAlertPolicyInner> inner =
+            this.serviceClient().listByServer(resourceGroupName, serverName);
+        return inner.mapPage(inner1 -> new ServerSecurityAlertPolicyImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ServerSecurityAlertPolicy> listByServer(
+        String resourceGroupName, String serverName, Context context) {
+        PagedIterable<ServerSecurityAlertPolicyInner> inner =
+            this.serviceClient().listByServer(resourceGroupName, serverName, context);
+        return inner.mapPage(inner1 -> new ServerSecurityAlertPolicyImpl(inner1, this.manager()));
     }
 
     public ServerSecurityAlertPolicy getById(String id) {

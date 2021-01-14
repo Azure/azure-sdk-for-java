@@ -18,14 +18,14 @@ public final class ServerForCreate {
     /*
      * The Azure Active Directory identity of the server.
      */
-    @JsonProperty(value = "identity")
+    @JsonProperty(value = "identity", required = true)
     private ResourceIdentity identity;
 
     /*
      * The SKU (pricing tier) of the server.
      */
-    @JsonProperty(value = "sku")
-    private Sku sku;
+    @JsonProperty(value = "skus")
+    private Sku skus;
 
     /*
      * Properties of the server.
@@ -66,22 +66,22 @@ public final class ServerForCreate {
     }
 
     /**
-     * Get the sku property: The SKU (pricing tier) of the server.
+     * Get the skus property: The SKU (pricing tier) of the server.
      *
-     * @return the sku value.
+     * @return the skus value.
      */
-    public Sku sku() {
-        return this.sku;
+    public Sku skus() {
+        return this.skus;
     }
 
     /**
-     * Set the sku property: The SKU (pricing tier) of the server.
+     * Set the skus property: The SKU (pricing tier) of the server.
      *
-     * @param sku the sku value to set.
+     * @param skus the skus value to set.
      * @return the ServerForCreate object itself.
      */
-    public ServerForCreate withSku(Sku sku) {
-        this.sku = sku;
+    public ServerForCreate withSkus(Sku skus) {
+        this.skus = skus;
         return this;
     }
 
@@ -151,11 +151,15 @@ public final class ServerForCreate {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
+        if (identity() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property identity in model ServerForCreate"));
+        } else {
             identity().validate();
         }
-        if (sku() != null) {
-            sku().validate();
+        if (skus() != null) {
+            skus().validate();
         }
         if (properties() == null) {
             throw logger
