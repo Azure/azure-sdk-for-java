@@ -271,7 +271,8 @@ jobs:
         Session_Integration:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
           DisplayName: Session Integration
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu1804
           ProfileFlag: '-P integration-test-azure'
 
       EnvVars:
