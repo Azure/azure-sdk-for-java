@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.VpnClientConnectionHealth;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** P2SVpnGateway Resource. */
 @JsonFlatten
@@ -69,6 +70,13 @@ public class P2SVpnGatewayInner extends Resource {
      */
     @JsonProperty(value = "properties.customDnsServers")
     private List<String> customDnsServers;
+
+    /*
+     * Enable Routing Preference property for the Public IP Interface of the
+     * P2SVpnGateway.
+     */
+    @JsonProperty(value = "properties.isRoutingPreferenceInternet")
+    private Boolean isRoutingPreferenceInternet;
 
     /*
      * Resource ID.
@@ -205,6 +213,28 @@ public class P2SVpnGatewayInner extends Resource {
     }
 
     /**
+     * Get the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
+     * the P2SVpnGateway.
+     *
+     * @return the isRoutingPreferenceInternet value.
+     */
+    public Boolean isRoutingPreferenceInternet() {
+        return this.isRoutingPreferenceInternet;
+    }
+
+    /**
+     * Set the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
+     * the P2SVpnGateway.
+     *
+     * @param isRoutingPreferenceInternet the isRoutingPreferenceInternet value to set.
+     * @return the P2SVpnGatewayInner object itself.
+     */
+    public P2SVpnGatewayInner withIsRoutingPreferenceInternet(Boolean isRoutingPreferenceInternet) {
+        this.isRoutingPreferenceInternet = isRoutingPreferenceInternet;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -221,6 +251,20 @@ public class P2SVpnGatewayInner extends Resource {
      */
     public P2SVpnGatewayInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public P2SVpnGatewayInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public P2SVpnGatewayInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

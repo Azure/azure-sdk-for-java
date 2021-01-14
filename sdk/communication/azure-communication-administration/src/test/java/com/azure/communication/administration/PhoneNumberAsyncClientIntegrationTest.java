@@ -5,24 +5,23 @@ package com.azure.communication.administration;
 import com.azure.communication.administration.models.AcquiredPhoneNumber;
 import com.azure.communication.administration.models.AreaCodes;
 import com.azure.communication.administration.models.Capability;
-import com.azure.communication.administration.models.CreateSearchOptions;
-import com.azure.communication.administration.models.CreateSearchResponse;
+import com.azure.communication.administration.models.CreateReservationOptions;
 import com.azure.communication.administration.models.LocationOptionsQuery;
 import com.azure.communication.administration.models.LocationOptionsResponse;
+import com.azure.communication.administration.models.LocationType;
 import com.azure.communication.administration.models.NumberConfigurationResponse;
 import com.azure.communication.administration.models.NumberUpdateCapabilities;
 import com.azure.communication.administration.models.PhoneNumberCountry;
 import com.azure.communication.administration.models.PhoneNumberEntity;
 import com.azure.communication.administration.models.PhoneNumberRelease;
-import com.azure.communication.administration.models.PhoneNumberSearch;
+import com.azure.communication.administration.models.PhoneNumberReservation;
 import com.azure.communication.administration.models.PhonePlan;
 import com.azure.communication.administration.models.PhonePlanGroup;
 import com.azure.communication.administration.models.PstnConfiguration;
 import com.azure.communication.administration.models.ReleaseStatus;
-import com.azure.communication.administration.models.SearchStatus;
 import com.azure.communication.administration.models.UpdateNumberCapabilitiesResponse;
 import com.azure.communication.administration.models.UpdatePhoneNumberCapabilitiesResponse;
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
@@ -30,6 +29,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.Context;
+
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -47,11 +47,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@DisabledIfEnvironmentVariable(
-    named = "SKIP_PHONENUMBER_INTEGRATION_TESTS",
-    matches = "(?i)(true)")
 public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegrationTestBase {
-   
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void createAsyncPhoneNumberClientWithConnectionString(HttpClient httpClient) {
@@ -66,11 +63,11 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
             })
             .verifyComplete();
     }
-    
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listAllPhoneNumbers(HttpClient httpClient) {
-        PagedFlux<AcquiredPhoneNumber> pagedFlux = this.getClient(httpClient).listAllPhoneNumbers(LOCALE);
+        PagedFlux<AcquiredPhoneNumber> pagedFlux = this.getClient(httpClient, "listAllPhoneNumbers").listAllPhoneNumbers(LOCALE);
 
         StepVerifier.create(pagedFlux.next())
             .assertNext(item -> {
@@ -83,7 +80,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listPhonePlanGroups(HttpClient httpClient) {
         PagedFlux<PhonePlanGroup> pagedFlux =
-            this.getClient(httpClient).listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
+            this.getClient(httpClient, "listPhonePlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true);
 
         StepVerifier.create(pagedFlux.next())
             .assertNext(item -> {
@@ -95,12 +92,13 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listPhonePlans(HttpClient httpClient) {
-        PagedFlux<PhonePlan> pagedFlux =
-            this.getClient(httpClient).listPhonePlans(COUNTRY_CODE, PHONE_PLAN_GROUP_ID, LOCALE);
-
-        StepVerifier.create(pagedFlux.next())
-            .assertNext(item -> {
-                assertNotNull(item.getPhonePlanId());
+        StepVerifier.create(
+            this.getClient(httpClient, "listPhonePlans_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+                .flatMap((PhonePlanGroup phonePlanGroup) -> {
+                    return this.getClient(httpClient, "listPhonePlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next();
+                }))
+            .assertNext((PhonePlan phonePlan) -> {
+                assertNotNull(phonePlan.getPhonePlanId());
             })
             .verifyComplete();
     }
@@ -108,7 +106,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listAllReleases(HttpClient httpClient) {
-        PagedFlux<PhoneNumberEntity> pagedFlux = this.getClient(httpClient).listAllReleases();
+        PagedFlux<PhoneNumberEntity> pagedFlux = this.getClient(httpClient, "listAllReleases").listAllReleases();
 
         StepVerifier.create(pagedFlux.next())
             .assertNext(item -> {
@@ -119,8 +117,8 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void listAllSearches(HttpClient httpClient) {
-        PagedFlux<PhoneNumberEntity> pagedFlux = this.getClient(httpClient).listAllSearches();
+    public void listAllReservations(HttpClient httpClient) {
+        PagedFlux<PhoneNumberEntity> pagedFlux = this.getClient(httpClient, "listAllReservations").listAllReservations();
 
         StepVerifier.create(pagedFlux.next())
             .assertNext(item -> {
@@ -132,7 +130,7 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listAllSupportedCountries(HttpClient httpClient) {
-        PagedFlux<PhoneNumberCountry> pagedFlux = this.getClient(httpClient).listAllSupportedCountries(LOCALE);
+        PagedFlux<PhoneNumberCountry> pagedFlux = this.getClient(httpClient, "listAllSupportedCountries").listAllSupportedCountries(LOCALE);
 
         StepVerifier.create(pagedFlux.next())
             .assertNext(item -> {
@@ -144,10 +142,14 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPhonePlanLocationOptions(HttpClient httpClient) {
-        Mono<LocationOptionsResponse> mono =
-            this.getClient(httpClient).getPhonePlanLocationOptions(COUNTRY_CODE, PHONE_PLAN_GROUP_ID, PHONE_PLAN_ID, LOCALE);
-
-        StepVerifier.create(mono)
+        StepVerifier.create(
+            this.getClient(httpClient, "getPhonePlanLocationOptions_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+                .flatMap((PhonePlanGroup phonePlanGroup) -> {
+                    return this.getClient(httpClient, "getPhonePlanLocationOptions_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
+                    .flatMap((PhonePlan phonePlan) -> {
+                        return this.getClient(httpClient, "getPhonePlanLocationOptions").getPhonePlanLocationOptions(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), phonePlan.getPhonePlanId(), LOCALE);
+                    });
+                }))
             .assertNext(item -> {
                 assertNotNull(item.getLocationOptions().getLabelId());
             })
@@ -168,10 +170,14 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         query.setOptionsValue(LOCATION_OPTION_CITY);
         locationOptions.add(query);
 
-        Mono<AreaCodes> mono =
-            this.getClient(httpClient).getAllAreaCodes("selection", COUNTRY_CODE, PHONE_PLAN_ID, locationOptions);
-
-        StepVerifier.create(mono)
+        StepVerifier.create(
+            this.getClient(httpClient, "getAllAreaCodes_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+                .flatMap(phonePlanGroups -> {
+                    return this.getClient(httpClient, "getAllAreaCodes_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroups.getPhonePlanGroupId(), LOCALE).next()
+                    .flatMap(phonePlans -> {
+                        return this.getClient(httpClient, "getAllAreaCodes").getAllAreaCodes(LocationType.SELECTION.toString(), COUNTRY_CODE, phonePlans.getPhonePlanId(), locationOptions);
+                    });
+                }))
             .assertNext(item -> {
                 assertTrue(item.getPrimaryAreaCodes().size() > 0);
             })
@@ -192,10 +198,15 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         query.setOptionsValue(LOCATION_OPTION_CITY);
         locationOptions.add(query);
 
-        Mono<Response<AreaCodes>> mono = this.getClient(httpClient).getAllAreaCodesWithResponse(
-            "selection", COUNTRY_CODE, PHONE_PLAN_ID, locationOptions, Context.NONE);
-
-        StepVerifier.create(mono)
+        StepVerifier.create(
+            this.getClient(httpClient, "getAllAreaCodesWithResponse_listPlanGroups")
+            .listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+                .flatMap(phonePlanGroups -> {
+                    return this.getClient(httpClient, "getAllAreaCodesWithResponse_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroups.getPhonePlanGroupId(), LOCALE).next()
+                    .flatMap(phonePlans -> {
+                        return this.getClient(httpClient, "getAllAreaCodesWithResponse").getAllAreaCodesWithResponse(LocationType.SELECTION.toString(), COUNTRY_CODE, phonePlans.getPhonePlanId(), locationOptions, Context.NONE);
+                    });
+                }))
             .assertNext(item -> {
                 assertEquals(200, item.getStatusCode());
                 assertTrue(item.getValue().getPrimaryAreaCodes().size() > 0);
@@ -205,314 +216,421 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updateCapabilities(HttpClient httpClient) {
-        List<Capability> capabilitiesToAdd = new ArrayList<>();
-        capabilitiesToAdd.add(Capability.INBOUND_CALLING);
-
-        NumberUpdateCapabilities update = new NumberUpdateCapabilities();
-        update.setAdd(capabilitiesToAdd);
-
-        Map<PhoneNumber, NumberUpdateCapabilities> updateMap = new HashMap<>();
-        updateMap.put(new PhoneNumber(PHONENUMBER_FOR_CAPABILITIES), update);
-
-        Mono<UpdateNumberCapabilitiesResponse> mono = this.getClient(httpClient).updateCapabilities(updateMap);
-
-        StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertNotNull(item.getCapabilitiesUpdateId());
-            })
-            .verifyComplete();
+    public void beginCreateReservationGetReservationByIdCancelReservation(HttpClient httpClient) {
+        StepVerifier.create(
+            // Setting up for phone number reservation creation
+            this.getClient(httpClient, "reservationTests_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+                .flatMap((PhonePlanGroup phonePlanGroup) -> {
+                    return this.getClient(httpClient, "reservationTests_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
+                    .flatMap((PhonePlan phonePlan) -> {
+                        // Create Reservation
+                        return beginCreateReservation(httpClient, phonePlan, "reservationTests_beginCreateReservation").last()
+                        .flatMap((AsyncPollResponse<PhoneNumberReservation, PhoneNumberReservation> createdRes) -> {
+                            assertEquals(createdRes.getValue().getPhoneNumbers().size(), 1);
+                            assertNotNull(createdRes.getValue().getReservationId());
+                            // Get Reservation by id
+                            return this.getClient(httpClient, "reservationTests_getReservationById").getReservationById(createdRes.getValue().getReservationId()).
+                            flatMap(reservation -> {
+                                assertEquals(createdRes.getValue().getReservationId(), reservation.getReservationId());
+                                // Cancel Reservation
+                                return this.getClient(httpClient, "reservationTests_cancelReservation").cancelReservation(reservation.getReservationId());
+                            });
+                        });
+                    });
+                }))
+                .verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void updateCapabilitiesWithResponse(HttpClient httpClient) {
+    public void beginCreateReservationGetReservationByIdCancelReservationWithResponse(HttpClient httpClient) {
+        StepVerifier.create(
+            // Setting up for phone number reservation creation
+            this.getClient(httpClient, "reservationWithResponseTests_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+                .flatMap((PhonePlanGroup phonePlanGroup) -> {
+                    return this.getClient(httpClient, "reservationWithResponseTests_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
+                    .flatMap((PhonePlan phonePlan) -> {
+                        // Create Reservation
+                        return beginCreateReservation(httpClient, phonePlan, "reservationWithResponseTests_beginCreateReservation").last()
+                        .flatMap((AsyncPollResponse<PhoneNumberReservation, PhoneNumberReservation> createdRes) -> {
+                            assertEquals(createdRes.getValue().getPhoneNumbers().size(), 1);
+                            assertNotNull(createdRes.getValue().getReservationId());
+                            // Get Reservation by id with response
+                            return this.getClient(httpClient, "reservationWithResponseTests_getResponseById").getReservationByIdWithResponse(createdRes.getValue().getReservationId())
+                            .flatMap((Response<PhoneNumberReservation> reservationResponse) -> {
+                                assertEquals(200, reservationResponse.getStatusCode());
+                                assertEquals(createdRes.getValue().getReservationId(), reservationResponse.getValue().getReservationId());
+                                // Cancel Reservation with response
+                                return this.getClient(httpClient, "reservationWithResponseTests_cancelReservation").cancelReservationWithResponse(reservationResponse.getValue().getReservationId());
+                            });
+                        });
+                    });
+                }))
+                .assertNext(cancelReservationResponse -> {
+                    assertEquals(202, cancelReservationResponse.getStatusCode());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_LIVE_TEST",
+        matches = "(?i)(true)")
+    public void purchaseReservationBeginReleasePhoneNumber(HttpClient httpClient) {
+        StepVerifier.create(
+            // Setting up for phone number reservation creation
+            this.getClient(httpClient, "purchaseReleaseNumberTests_listPlanGroups").listPhonePlanGroups(COUNTRY_CODE, LOCALE, true).next()
+                .flatMap((PhonePlanGroup phonePlanGroup) -> {
+                    return this.getClient(httpClient, "purchaseReleaseNumberTests_listPlans").listPhonePlans(COUNTRY_CODE, phonePlanGroup.getPhonePlanGroupId(), LOCALE).next()
+                    .flatMap((PhonePlan phonePlan) -> {
+                        // Create Reservation
+                        return beginCreateReservation(httpClient, phonePlan, "purchaseReleaseNumberTests_beginCreateReservation").last()
+                        .flatMap((AsyncPollResponse<PhoneNumberReservation, PhoneNumberReservation> createdRes) -> {
+                            assertEquals(createdRes.getValue().getPhoneNumbers().size(), 1);
+                            String purchasedNumber = createdRes.getValue().getPhoneNumbers().get(0);
+                            // Purchase Reservation
+                            return beginPurchaseReservation(httpClient, createdRes.getValue().getReservationId(), "purchaseReleaseNumberTests_beginPurchaseReservation").last()
+                            .flatMap((AsyncPollResponse<Void, Void> response) -> {
+                                assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED.toString(), response.getStatus().toString());
+                                return beginReleasePhoneNumbers(httpClient, purchasedNumber, "purchaseReleaseNumberTests_beginReleasePhoneNumbers").last();
+                            });
+                        });
+                    });
+                }))
+                .assertNext((AsyncPollResponse<PhoneNumberRelease, PhoneNumberRelease> releaseNumberResponse) -> {
+                    assertEquals(ReleaseStatus.COMPLETE, releaseNumberResponse.getValue().getStatus());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void configureNumberGetNumberConfigurationUnconfigureNumberWithResponse(HttpClient httpClient) {          
+        // Configuring purchased number
+        PhoneNumberIdentifier number = new PhoneNumberIdentifier(PHONE_NUMBER);
+        PstnConfiguration pstnConfiguration = new PstnConfiguration();
+        pstnConfiguration.setApplicationId("ApplicationId");
+        pstnConfiguration.setCallbackUrl("https://callbackurl");
+        StepVerifier.create(
+            this.getClient(httpClient, "configureNumberWithResponseTests_configureNumber").configureNumberWithResponse(number, pstnConfiguration)
+                .flatMap((Response<Void> configResponse) -> {
+                    assertEquals(200, configResponse.getStatusCode());
+                    // Get configurations of purchased number
+                    return this.getClient(httpClient, "configureNumberWithResponseTests_getNumberConfig").getNumberConfigurationWithResponse(number)
+                    .flatMap((Response<NumberConfigurationResponse> getConfigResponse) -> {
+                        assertEquals(200, getConfigResponse.getStatusCode());
+                        assertNotNull(getConfigResponse.getValue().getPstnConfiguration().getApplicationId());
+                        assertNotNull(getConfigResponse.getValue().getPstnConfiguration().getCallbackUrl());
+                        // Unconfigure the purchased number
+                        return this.getClient(httpClient, "configureNumberWithResponseTests_unconfigureNumber").unconfigureNumberWithResponse(number);
+                    });
+                }))
+                .assertNext((Response<Void> unconfigureResponse) -> {
+                    assertEquals(200, unconfigureResponse.getStatusCode());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void configureNumberGetNumberConfigurationUnconfigureNumber(HttpClient httpClient) {          
+        // Configuring purchased number
+        PhoneNumberIdentifier number = new PhoneNumberIdentifier(PHONE_NUMBER);
+        PstnConfiguration pstnConfiguration = new PstnConfiguration();
+        pstnConfiguration.setApplicationId("ApplicationId");
+        pstnConfiguration.setCallbackUrl("https://callbackurl");
+        StepVerifier.create(
+            this.getClient(httpClient, "configureNumberTests_configureNumber").configureNumber(number, pstnConfiguration)
+                .flatMap(response -> {
+                    // Get configurations of purchased number
+                    return this.getClient(httpClient, "configureNumberTests_getNumberConfig").getNumberConfiguration(number)
+                    .flatMap((NumberConfigurationResponse configResponse) -> {
+                        assertNotNull(configResponse.getPstnConfiguration().getApplicationId());
+                        assertNotNull(configResponse.getPstnConfiguration().getCallbackUrl());
+                        // Unconfigure the purchased number
+                        return this.getClient(httpClient, "configureNumberTests_unconfigureNumber").unconfigureNumber(number);
+                    });
+                }))
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateCapabilitiesGetCapabilitiesUpdateWithResponse(HttpClient httpClient) {
         List<Capability> capabilitiesToAdd = new ArrayList<>();
         capabilitiesToAdd.add(Capability.INBOUND_CALLING);
-
         NumberUpdateCapabilities update = new NumberUpdateCapabilities();
         update.setAdd(capabilitiesToAdd);
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> updateMap = new HashMap<>();
+        updateMap.put(new PhoneNumberIdentifier(PHONE_NUMBER), update);
 
-        Map<PhoneNumber, NumberUpdateCapabilities> updateMap = new HashMap<>();
-        updateMap.put(new PhoneNumber(PHONENUMBER_FOR_CAPABILITIES), update);
+        StepVerifier.create(
+            this.getClient(httpClient, "capabilitiesWithResponseTests_updateCapabilities").updateCapabilitiesWithResponse(updateMap)
+                .flatMap((Response<UpdateNumberCapabilitiesResponse> updateResponse) -> {
+                    assertEquals(200, updateResponse.getStatusCode());
+                    // Get capabilities update
+                    String capabilitiesUpdateId = updateResponse.getValue().getCapabilitiesUpdateId();
+                    assertNotNull(capabilitiesUpdateId);
+                    return this.getClient(httpClient, "capabilitiesWithResponseTests_getCapabilitiesUpdate").getCapabilitiesUpdateWithResponse(capabilitiesUpdateId);
+                }))
+                .assertNext((Response<UpdatePhoneNumberCapabilitiesResponse> retrievedUpdateResponse) -> {
+                    assertEquals(200, retrievedUpdateResponse.getStatusCode());
+                    assertNotNull(retrievedUpdateResponse.getValue().getCapabilitiesUpdateId());
+                })
+                .verifyComplete();
+    }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateCapabilitiesGetCapabilitiesUpdate(HttpClient httpClient) {
+        List<Capability> capabilitiesToAdd = new ArrayList<>();
+        capabilitiesToAdd.add(Capability.INBOUND_CALLING);
+        NumberUpdateCapabilities update = new NumberUpdateCapabilities();
+        update.setAdd(capabilitiesToAdd);
+        Map<PhoneNumberIdentifier, NumberUpdateCapabilities> updateMap = new HashMap<>();
+        updateMap.put(new PhoneNumberIdentifier(PHONE_NUMBER), update);
+
+        StepVerifier.create(
+            this.getClient(httpClient, "capabilitiesTests_updateCapabilities").updateCapabilities(updateMap)
+                .flatMap((UpdateNumberCapabilitiesResponse updateResponse) -> {
+                    // Get capabilities update
+                    String capabilitiesUpdateId = updateResponse.getCapabilitiesUpdateId();
+                    assertNotNull(capabilitiesUpdateId);
+                    return this.getClient(httpClient, "capabilitiesTests_getCapabilitiesUpdate").getCapabilitiesUpdate(capabilitiesUpdateId);
+                }))
+                .assertNext((UpdatePhoneNumberCapabilitiesResponse retrievedUpdateResponse) -> {
+                    assertNotNull(retrievedUpdateResponse.getCapabilitiesUpdateId());
+                })
+                .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listPhonePlansNullCountryCode(HttpClient httpClient) {
+        PagedFlux<PhonePlan> pagedFlux = this.getClient(httpClient, "listPhonePlansNullCountryCode")
+            .listPhonePlans(null, "PHONE_PLAN_GROUP_ID", LOCALE);
+
+        StepVerifier.create(pagedFlux.next())
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listPhonePlansNullPhonePlanGroupId(HttpClient httpClient) {
+        PagedFlux<PhonePlan> phonePlans =
+            this.getClient(httpClient, "listPhonePlansNullPhonePlanGroupId").listPhonePlans(COUNTRY_CODE, null, LOCALE);
+
+        StepVerifier.create(phonePlans)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getPhonePlanLocationOptionsWithResponseNullCountryCode(HttpClient httpClient) {
+        Mono<LocationOptionsResponse> mono =
+            this.getClient(httpClient, "getPhonePlanLocationOptionsWithResponseNullCountryCode")
+                .getPhonePlanLocationOptions(null, "PHONE_PLAN_GROUP_ID", "PHONE_PLAN_ID", LOCALE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getPhonePlanLocationOptionsWithResponseNullPhonePlanGroupId(HttpClient httpClient) {
+        Mono<LocationOptionsResponse> mono =
+            this.getClient(httpClient, "getPhonePlanLocationOptionsWithResponseNullPhonePlanGroupId")
+                .getPhonePlanLocationOptions(COUNTRY_CODE, null, "PHONE_PLAN_ID", LOCALE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getPhonePlanLocationOptionsWithResponseNullPhonePlanId(HttpClient httpClient) {
+        Mono<LocationOptionsResponse> mono =
+            this.getClient(httpClient, "getPhonePlanLocationOptionsWithResponseNullPhonePlanId")
+                .getPhonePlanLocationOptions(COUNTRY_CODE, "PHONE_PLAN_GROUP_ID", null, LOCALE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getAllAreaCodesWithResponseNullLocationType(HttpClient httpClient) {
+        List<LocationOptionsQuery> locationOptions = new ArrayList<>();
+        Mono<Response<AreaCodes>> mono = this.getClient(httpClient, "getAllAreaCodesWithResponseNullLocationType")
+            .getAllAreaCodesWithResponse(null, COUNTRY_CODE, "PHONE_PLAN_ID", locationOptions, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(java.lang.RuntimeException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getAllAreaCodesWithResponseNullCountryCode(HttpClient httpClient) {
+        List<LocationOptionsQuery> locationOptions = new ArrayList<>();
+        Mono<Response<AreaCodes>> mono = this.getClient(httpClient, "getAllAreaCodesWithResponseNullCountryCode")
+            .getAllAreaCodesWithResponse("selection", null, "PHONE_PLAN_ID", locationOptions, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(java.lang.RuntimeException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getAllAreaCodesWithResponseNullPhonePlanId(HttpClient httpClient) {
+        List<LocationOptionsQuery> locationOptions = new ArrayList<>();
+        Mono<Response<AreaCodes>> mono = this.getClient(httpClient, "getAllAreaCodesWithResponseNullPhonePlanId")
+            .getAllAreaCodesWithResponse("selection", COUNTRY_CODE, null, locationOptions, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(java.lang.RuntimeException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updateCapabilitiesWithResponseNullPhoneNumberCapabilitiesUpdate(HttpClient httpClient) {
         Mono<Response<UpdateNumberCapabilitiesResponse>> mono =
-            this.getClient(httpClient).updateCapabilitiesWithResponse(updateMap, Context.NONE);
+            this.getClient(httpClient, "updateCapabilitiesWithResponseNullPhoneNumberCapabilitiesUpdate")
+                .updateCapabilitiesWithResponse(null, Context.NONE);
 
         StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals(200, item.getStatusCode());
-                assertNotNull(item.getValue().getCapabilitiesUpdateId());
-            })
-            .verifyComplete();
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getCapabilitiesUpdate(HttpClient httpClient) {
-        Mono<UpdatePhoneNumberCapabilitiesResponse> mono =
-            this.getClient(httpClient).getCapabilitiesUpdate(CAPABILITIES_ID);
+    public void getReservationByIdWithResponseNullSearchId(HttpClient httpClient) {
+        Mono<Response<PhoneNumberReservation>> mono = this.getClient(httpClient, "getReservationByIdWithResponseNullSearchId")
+            .getReservationByIdWithResponse(null, Context.NONE);
 
         StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertNotNull(item.getCapabilitiesUpdateId());
-            })
-            .verifyComplete();
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getCapabilitiesUpdateWithResponse(HttpClient httpClient) {
-        Mono<Response<UpdatePhoneNumberCapabilitiesResponse>> mono =
-            this.getClient(httpClient).getCapabilitiesUpdateWithResponse(CAPABILITIES_ID, Context.NONE);
+    public void cancelReservationWithResponseNullReservationId(HttpClient httpClient) {
+        Mono<Response<Void>> mono = this.getClient(httpClient, "cancelReservationWithResponseNullReservationId")
+            .cancelReservationWithResponse(null, Context.NONE);
 
         StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals(200, item.getStatusCode());
-                assertNotNull(item.getValue().getCapabilitiesUpdateId());
-            })
-            .verifyComplete();
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createSearch(HttpClient httpClient) {
-        List<String> phonePlanIds = new ArrayList<>();
-        phonePlanIds.add(PHONE_PLAN_ID);
-
-        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
-        createSearchOptions
-            .setAreaCode(AREA_CODE_FOR_SEARCH)
-            .setDescription("testsearch20200014")
-            .setDisplayName("testsearch20200014")
-            .setPhonePlanIds(phonePlanIds)
-            .setQuantity(1);
-
-        Mono<CreateSearchResponse> mono = this.getClient(httpClient).createSearch(createSearchOptions);
-
-        StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertNotNull(item.getSearchId());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void createSearchWithResponse(HttpClient httpClient) {
-        List<String> phonePlanIds = new ArrayList<>();
-        phonePlanIds.add(PHONE_PLAN_ID);
-
-        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
-        createSearchOptions
-            .setAreaCode(AREA_CODE_FOR_SEARCH)
-            .setDescription("testsearch20200014")
-            .setDisplayName("testsearch20200014")
-            .setPhonePlanIds(phonePlanIds)
-            .setQuantity(1);
-
-        Mono<Response<CreateSearchResponse>> mono =
-            this.getClient(httpClient).createSearchWithResponse(createSearchOptions, Context.NONE);
-
-        StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals(201, item.getStatusCode());
-                assertNotNull(item.getValue().getSearchId());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getSearchById(HttpClient httpClient) {
-        Mono<PhoneNumberSearch> mono = this.getClient(httpClient).getSearchById(SEARCH_ID);
-
-        StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals(SEARCH_ID, item.getSearchId());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getSearchByIdWithResponse(HttpClient httpClient) {
-        Mono<Response<PhoneNumberSearch>> mono = this.getClient(httpClient).getSearchByIdWithResponse(SEARCH_ID, Context.NONE);
-
-        StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals(200, item.getStatusCode());
-                assertEquals(SEARCH_ID, item.getValue().getSearchId());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void cancelSearch(HttpClient httpClient) {
-        Mono<Void> mono = this.getClient(httpClient).cancelSearch(SEARCH_ID_TO_CANCEL);
-
-        StepVerifier.create(mono).verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void cancelSearchWithResponse(HttpClient httpClient) {
-        Mono<Response<Void>> mono = this.getClient(httpClient).cancelSearchWithResponse(SEARCH_ID_TO_CANCEL, Context.NONE);
-
-        StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals(202, item.getStatusCode());
-            })
-            .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void configureNumber(HttpClient httpClient) {
-        PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_CONFIGURE);
+    public void configureNumberWithResponseNullPhoneNumber(HttpClient httpClient) {
         PstnConfiguration pstnConfiguration = new PstnConfiguration();
         pstnConfiguration.setApplicationId("ApplicationId");
         pstnConfiguration.setCallbackUrl("https://callbackurl");
 
-        Mono<Void> mono = this.getClient(httpClient).configureNumber(number, pstnConfiguration);
-
-        StepVerifier.create(mono).verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void configureNumberWithResponse(HttpClient httpClient) {
-        PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_CONFIGURE);
-        PstnConfiguration pstnConfiguration = new PstnConfiguration();
-        pstnConfiguration.setApplicationId("ApplicationId");
-        pstnConfiguration.setCallbackUrl("https://callbackurl");
-
-        Mono<Response<Void>> mono = this.getClient(httpClient).configureNumberWithResponse(number, pstnConfiguration, Context.NONE);
+        Mono<Response<Void>> mono = this.getClient(httpClient, "configureNumberWithResponseNullPhoneNumber")
+            .configureNumberWithResponse(null, pstnConfiguration, Context.NONE);
 
         StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals(200, item.getStatusCode());
-            })
-            .verifyComplete();
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getNumberConfiguration(HttpClient httpClient) {
-        PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_GET_CONFIG);
-
-        Mono<NumberConfigurationResponse> mono = this.getClient(httpClient).getNumberConfiguration(number);
+    public void configureNumberWithResponseNullPstnConfig(HttpClient httpClient) {
+        PhoneNumberIdentifier number = new PhoneNumberIdentifier("PHONENUMBER_TO_CONFIGURE");
+        Mono<Response<Void>> mono = this.getClient(httpClient, "configureNumberWithResponseNullPstnConfig")
+            .configureNumberWithResponse(number, null, Context.NONE);
 
         StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals("ApplicationId", item.getPstnConfiguration().getApplicationId());
-            })
-            .verifyComplete();
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getNumberConfigurationWithResponse(HttpClient httpClient) {
-        PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_GET_CONFIG);
-
+    public void getNumberConfigurationWithResponseNullPhoneNumber(HttpClient httpClient) {
         Mono<Response<NumberConfigurationResponse>> mono =
-            this.getClient(httpClient).getNumberConfigurationWithResponse(number, Context.NONE);
+            this.getClient(httpClient, "getNumberConfigurationWithResponseNullPhoneNumber")
+                .getNumberConfigurationWithResponse(null, Context.NONE);
 
         StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals(200, item.getStatusCode());
-                assertEquals("ApplicationId", item.getValue().getPstnConfiguration().getApplicationId());
-            })
-            .verifyComplete();
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void unconfigureNumber(HttpClient httpClient) {
-        PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_UNCONFIGURE);
-
-        Mono<Void> mono = this.getClient(httpClient).unconfigureNumber(number);
-
-        StepVerifier.create(mono).verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void unconfigureNumberWithResponse(HttpClient httpClient) {
-        PhoneNumber number = new PhoneNumber(PHONENUMBER_TO_UNCONFIGURE);
-
-        Mono<Response<Void>> mono = this.getClient(httpClient).unconfigureNumberWithResponse(number, Context.NONE);
+    public void getCapabilitiesUpdateWithResponseNullCapabilitiesId(HttpClient httpClient) {
+        Mono<Response<UpdatePhoneNumberCapabilitiesResponse>> mono = this.getClient(httpClient, "getCapabilitiesUpdateWithResponseNullCapabilitiesId")
+            .getCapabilitiesUpdateWithResponse(null, Context.NONE);
 
         StepVerifier.create(mono)
-            .assertNext(item -> {
-                assertEquals(200, item.getStatusCode());
-            })
-            .verifyComplete();
+            .verifyError(NullPointerException.class);
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void beginCreateSearch(HttpClient httpClient) {
+    public void unconfigureNumberWithResponseNullPhoneNumber(HttpClient httpClient) {
+        Mono<Response<Void>> mono = this.getClient(httpClient, "unconfigureNumberWithResponseNullPhoneNumber")
+            .unconfigureNumberWithResponse(null, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listPhonePlanGroupsNullCountryCode(HttpClient httpClient) {
+        PagedFlux<PhonePlanGroup> phonePlanGroups = this.getClient(httpClient, "listPhonePlanGroupsNullCountryCode")
+            .listPhonePlanGroups(null, LOCALE, true, Context.NONE);
+
+        StepVerifier.create(phonePlanGroups)
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getReleaseByIdWithResponseNullReleaseId(HttpClient httpClient) {
+        Mono<Response<PhoneNumberRelease>> mono = this.getClient(httpClient, "getReleaseByIdWithResponseNullReleaseId")
+            .getReleaseByIdWithResponse(null, Context.NONE);
+
+        StepVerifier.create(mono)
+            .verifyError(NullPointerException.class);
+    }
+
+
+    private PollerFlux<PhoneNumberRelease, PhoneNumberRelease> beginReleasePhoneNumbers(HttpClient httpClient, String phoneNumber, String testName) {
+        PhoneNumberIdentifier releasedPhoneNumber = new PhoneNumberIdentifier(phoneNumber);
+        List<PhoneNumberIdentifier> phoneNumbers = new ArrayList<>();
+        phoneNumbers.add(releasedPhoneNumber);
+        Duration pollInterval = Duration.ofSeconds(1);
+        return this.getClient(httpClient, testName).beginReleasePhoneNumbers(phoneNumbers, pollInterval);
+    }
+
+    private PollerFlux<PhoneNumberReservation, PhoneNumberReservation> beginCreateReservation(HttpClient httpClient, PhonePlan phonePlan, String testName) {
         List<String> phonePlanIds = new ArrayList<>();
-        phonePlanIds.add(PHONE_PLAN_ID);
+        phonePlanIds.add(phonePlan.getPhonePlanId());
 
-        CreateSearchOptions createSearchOptions = new CreateSearchOptions();
-        createSearchOptions
-            .setAreaCode(AREA_CODE_FOR_SEARCH)
-            .setDescription(SEARCH_OPTIONS_DESCRIPTION)
-            .setDisplayName(SEARCH_OPTIONS_NAME)
+        CreateReservationOptions createReservationOptions = new CreateReservationOptions();
+        createReservationOptions
+            .setAreaCode(AREA_CODE)
+            .setDescription(RESERVATION_OPTIONS_DESCRIPTION)
+            .setDisplayName(RESERVATION_OPTIONS_NAME)
             .setPhonePlanIds(phonePlanIds)
-            .setQuantity(2);
+            .setQuantity(1);
 
         Duration duration = Duration.ofSeconds(1);
-        PhoneNumberAsyncClient client = this.getClient(httpClient);
-        PollerFlux<PhoneNumberSearch, PhoneNumberSearch> poller = 
-            client.beginCreateSearch(createSearchOptions, duration);
-        Mono<AsyncPollResponse<PhoneNumberSearch, PhoneNumberSearch>> asyncRes = poller.last();
-        StepVerifier.create(asyncRes)
-            .assertNext(item -> {
-                assertEquals(item.getValue().getPhoneNumbers().size(), 2);
-                assertNotNull(item.getValue().getSearchId());
-            })
-            .verifyComplete();        
+        return this.getClient(httpClient, testName).beginCreateReservation(createReservationOptions, duration);
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void beginPurchaseSearch(HttpClient httpClient) {
+    private  PollerFlux<Void, Void> beginPurchaseReservation(HttpClient httpClient, String reservationId, String testName) {
         Duration pollInterval = Duration.ofSeconds(1);
-        PhoneNumberAsyncClient client = this.getClient(httpClient);
-        PollerFlux<Void, Void> poller =
-            client.beginPurchaseSearch(SEARCH_ID, pollInterval); 
-        poller.takeUntil(apr -> apr.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
-            .blockLast();
-        Mono<PhoneNumberSearch> testResult = client.getSearchById(SEARCH_ID);
-        StepVerifier.create(testResult)
-            .assertNext(item -> {
-                assertEquals(SearchStatus.SUCCESS, item.getStatus());
-            })
-            .verifyComplete();
+        return this.getClient(httpClient, testName)
+            .beginPurchaseReservation(reservationId, pollInterval);
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void beginReleasePhoneNumbers(HttpClient httpClient) {
-        PhoneNumber phoneNumber = new PhoneNumber(PHONENUMBER_TO_RELEASE);
-        List<PhoneNumber> phoneNumbers = new ArrayList<>();
-        phoneNumbers.add(phoneNumber);
-        Duration pollInterval = Duration.ofSeconds(1);
-        PollerFlux<PhoneNumberRelease, PhoneNumberRelease> poller =
-            this.getClient(httpClient).beginReleasePhoneNumbers(phoneNumbers, pollInterval);
-        Mono<AsyncPollResponse<PhoneNumberRelease, PhoneNumberRelease>> asyncRes = poller.last();
-        StepVerifier.create(asyncRes)
-            .assertNext(item -> {
-                assertEquals(ReleaseStatus.COMPLETE, item.getValue().getStatus());
-            })
-            .verifyComplete();        
-    }
-
-    private PhoneNumberAsyncClient getClient(HttpClient httpClient) {
-        return super.getClientBuilder(httpClient).buildAsyncClient();
+    private PhoneNumberAsyncClient getClient(HttpClient httpClient, String testName) {
+        PhoneNumberClientBuilder builder = super.getClientBuilderWithConnectionString(httpClient);
+        return addLoggingPolicy(builder, testName).buildAsyncClient();
     }
 }

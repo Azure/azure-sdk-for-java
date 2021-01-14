@@ -144,7 +144,8 @@ public class StoreReader {
         return storeRespAndURI.getLeft()
                 .flatMap(storeResponse -> {
                             try {
-                                StoreResult storeResult = this.createStoreResult(
+                                StoreResult storeResult = this.createAndRecordStoreResult(
+                                        request,
                                         storeResponse,
                                         null, requiresValidLsn,
                                         readMode != ReadMode.Strong,
@@ -167,11 +168,12 @@ public class StoreReader {
                         }
 
 //                    Exception storeException = readTask.Exception != null ? readTask.Exception.InnerException : null;
-                        StoreResult storeResult = this.createStoreResult(
+                        StoreResult storeResult = this.createAndRecordStoreResult(
+                                request,
                                 null,
                                 storeException, requiresValidLsn,
                                 readMode != ReadMode.Strong,
-                                null);
+                                storeRespAndURI.getRight());
                         if (storeException instanceof TransportException) {
                             BridgeInternal.getFailedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                         }
@@ -245,13 +247,6 @@ public class StoreReader {
             return Mono.error(e);
         }).map(newStoreResults -> {
             for (StoreResult srr : newStoreResults) {
-
-                entity.requestContext.requestChargeTracker.addCharge(srr.requestCharge);
-                try {
-                    BridgeInternal.recordResponse(entity.requestContext.cosmosDiagnostics, entity, srr);
-                } catch (Exception e) {
-                    logger.error("Unexpected failure while recording response", e);
-                }
                 if (srr.isValid) {
 
                     try {
@@ -522,11 +517,14 @@ public class StoreReader {
                                 storeResponse -> {
 
                                     try {
-                                        StoreResult storeResult = this.createStoreResult(
-                                                storeResponse != null ? storeResponse : null,
-                                                null, requiresValidLsn,
-                                                true,
-                                                storeResponse != null ? storeResponseObsAndUri.getRight() : null);
+                                        StoreResult storeResult = this.createAndRecordStoreResult(
+                                            entity,
+                                            storeResponse != null ? storeResponse : null,
+                                            null,
+                                            requiresValidLsn,
+                                            true,
+                                            storeResponse != null ? storeResponseObsAndUri.getRight() : null);
+
                                         return Mono.just(storeResult);
                                     } catch (CosmosException e) {
                                         return Mono.error(e);
@@ -551,9 +549,11 @@ public class StoreReader {
             }
 
             try {
-                StoreResult storeResult = this.createStoreResult(
+                StoreResult storeResult = this.createAndRecordStoreResult(
+                        entity,
                         null,
-                        storeTaskException, requiresValidLsn,
+                        storeTaskException,
+                        requiresValidLsn,
                         true,
                         null);
                 return Mono.just(storeResult);
@@ -564,13 +564,6 @@ public class StoreReader {
         });
 
         return storeResultObs.map(storeResult -> {
-            try {
-                BridgeInternal.recordResponse(entity.requestContext.cosmosDiagnostics, entity, storeResult);
-            } catch (Exception e) {
-                logger.error("Unexpected failure while recording response", e);
-            }
-            entity.requestContext.requestChargeTracker.addCharge(storeResult.requestCharge);
-
             if (storeResult.isGoneException && !storeResult.isInvalidPartitionException) {
                 return new ReadReplicaResult(true, Collections.emptyList());
             }
@@ -656,6 +649,32 @@ public class StoreReader {
         return task;
     }
 
+    StoreResult createAndRecordStoreResult(
+        RxDocumentServiceRequest request,
+        StoreResponse storeResponse,
+        Exception responseException,
+        boolean requiresValidLsn,
+        boolean useLocalLSNBasedHeaders,
+        Uri storePhysicalAddress) {
+
+        StoreResult storeResult = this.createStoreResult(storeResponse, responseException, requiresValidLsn, useLocalLSNBasedHeaders, storePhysicalAddress);
+
+        try {
+            BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request, storeResult);
+            if (request.requestContext.requestChargeTracker != null) {
+                request.requestContext.requestChargeTracker.addCharge(storeResult.requestCharge);
+            }
+        } catch (Exception e){
+            logger.error("Unexpected failure while recording response", e);
+        }
+
+        if (responseException !=null) {
+            verifyCanContinueOnException(storeResult.getException());
+        }
+
+        return storeResult;
+    }
+
     StoreResult createStoreResult(StoreResponse storeResponse,
                                   Exception responseException,
                                   boolean requiresValidLsn,
@@ -736,7 +755,6 @@ public class StoreReader {
             Throwable unwrappedResponseExceptions = Exceptions.unwrap(responseException);
             CosmosException cosmosException = Utils.as(unwrappedResponseExceptions, CosmosException.class);
             if (cosmosException != null) {
-                StoreReader.verifyCanContinueOnException(cosmosException);
                 long quorumAckedLSN = -1;
                 int currentReplicaSetSize = -1;
                 int currentWriteQuorum = -1;

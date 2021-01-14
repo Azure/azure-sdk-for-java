@@ -3,17 +3,17 @@
 
 package com.azure.spring.cloud.context.core.impl;
 
+import com.azure.core.management.exception.ManagementException;
 import com.azure.spring.cloud.context.core.api.ResourceManager;
-import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.Azure;
 import com.azure.spring.cloud.context.core.config.AzureProperties;
-import org.apache.commons.lang3.time.StopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
+import org.springframework.util.StopWatch;
 
 /**
  * Abstract Azure resource manager.
+ *
  * @param <T> The type of resource.
  * @param <K> The type of resource key.
  */
@@ -21,12 +21,14 @@ public abstract class AzureManager<T, K> implements ResourceManager<T, K> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureManager.class);
 
-    protected final AzureProperties azureProperties;
-    protected final Azure azure;
+    private final AzureProperties azureProperties;
+    protected final String resourceGroup;
+    protected final String region;
 
-    public AzureManager(@NonNull Azure azure, @NonNull AzureProperties azureProperties) {
-        this.azure = azure;
+    public AzureManager(@NonNull AzureProperties azureProperties) {
         this.azureProperties = azureProperties;
+        this.resourceGroup = azureProperties.getResourceGroup();
+        this.region = azureProperties.getRegion();
     }
 
     @Override
@@ -38,21 +40,20 @@ public abstract class AzureManager<T, K> implements ResourceManager<T, K> {
     public T get(K key) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        String name = getResourceName(key);
+
+        final String resourceType = getResourceType();
+        final String name = getResourceName(key);
 
         try {
-            LOGGER.info("Fetching {} with name '{}' ...", getResourceType(), name);
+            LOGGER.info("Fetching {} with name '{}' ...", resourceType, name);
             return internalGet(key);
-        } catch (CloudException e) {
-            String errorMessage = String.join(", ", e.getMessage(), e.body().code(), e.body().message());
-            String message = String.format("Fetching %s with name '%s' failed due to: %s", getResourceType(), name,
-                errorMessage);
-            LOGGER.error(message);
-            throw new RuntimeException(message);
+        } catch (ManagementException e) {
+            LOGGER.error("Fetching {} with name '{}' failed due to: {}", resourceType, name, e.toString());
+            throw new RuntimeException(e.getMessage(), e);
         } finally {
             stopWatch.stop();
-            LOGGER.info("Fetching {} with name '{}' finished in {} seconds", getResourceType(), name,
-                stopWatch.getTime() / 1000);
+            LOGGER.info("Fetching {} with name '{}' finished in {} seconds", resourceType, name,
+                stopWatch.getTotalTimeMillis() / 1000);
         }
     }
 
@@ -60,21 +61,20 @@ public abstract class AzureManager<T, K> implements ResourceManager<T, K> {
     public T create(K key) {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
-        String name = getResourceName(key);
+
+        final String resourceType = getResourceType();
+        final String name = getResourceName(key);
 
         try {
-            LOGGER.info("Creating {} with name '{}' ...", getResourceType(), name);
+            LOGGER.info("Creating {} with name '{}' ...", resourceType, name);
             return internalCreate(key);
-        } catch (CloudException e) {
-            String errorMessage = String.join(", ", e.getMessage(), e.body().code(), e.body().message());
-            String message = String.format("Creating %s with name '%s' failed due to: %s", getResourceType(), name,
-                errorMessage);
-            LOGGER.error(message);
-            throw new RuntimeException(message);
+        } catch (ManagementException e) {
+            LOGGER.error("Creating {} with name '{}' failed due to: {}", resourceType, name, e.toString());
+            throw new RuntimeException(e.getMessage(), e);
         } finally {
             stopWatch.stop();
             LOGGER.info("Creating {} with name '{}' finished in {} seconds", getResourceType(), name,
-                stopWatch.getTime() / 1000);
+                stopWatch.getTotalTimeMillis() / 1000);
         }
     }
 

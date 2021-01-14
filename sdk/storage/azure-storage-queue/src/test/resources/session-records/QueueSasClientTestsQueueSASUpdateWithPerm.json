@@ -42,7 +42,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasupdatewithperm69120b0/messages/0fa0e602-75d7-4960-bf4f-e5080611a3dd?popreceipt=AgAAAAMAAAAAAAAAT7dF3gM61gE%3D&visibilitytimeout=0&sv=2020-02-10&spr=https%2Chttp&st=2020-06-03T00%3A05%3A34Z&se=2020-06-05T00%3A05%3A34Z&sip=0.0.0.0-255.255.255.255&sp=raup&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasupdatewithperm69120b0/messages/0fa0e602-75d7-4960-bf4f-e5080611a3dd?popreceipt=AgAAAAMAAAAAAAAAT7dF3gM61gE%3D&visibilitytimeout=0&sv=2020-04-08&spr=https%2Chttp&st=2020-06-03T00%3A05%3A34Z&se=2020-06-05T00%3A05%3A34Z&sip=0.0.0.0-255.255.255.255&sp=raup&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
@@ -64,7 +64,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasupdatewithperm69120b0/messages?numofmessages=1&visibilitytimeout=30&sv=2020-02-10&spr=https%2Chttp&st=2020-06-03T00%3A05%3A34Z&se=2020-06-05T00%3A05%3A34Z&sip=0.0.0.0-255.255.255.255&sp=raup&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasupdatewithperm69120b0/messages?numofmessages=1&visibilitytimeout=30&sv=2020-04-08&spr=https%2Chttp&st=2020-06-03T00%3A05%3A34Z&se=2020-06-05T00%3A05%3A34Z&sip=0.0.0.0-255.255.255.255&sp=raup&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasupdatewithperm69120b0?sv=2020-02-10&spr=https%2Chttp&st=2020-06-03T00%3A05%3A34Z&se=2020-06-05T00%3A05%3A34Z&sip=0.0.0.0-255.255.255.255&sp=raup&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasupdatewithperm69120b0?sv=2020-04-08&spr=https%2Chttp&st=2020-06-03T00%3A05%3A34Z&se=2020-06-05T00%3A05%3A34Z&sip=0.0.0.0-255.255.255.255&sp=raup&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",

@@ -11,14 +11,13 @@ package com.azure.spring.cloud.context.core.api;
  */
 public interface CredentialSupplier {
 
-    /**
-     * Supplies credential file path
-     *
-     * @return credential file path
-     */
-    String getCredentialFilePath();
+    String getClientId();
+
+    String getClientSecret();
 
     boolean isMsiEnabled();
+
+    String getTenantId();
 
     String getSubscriptionId();
 }

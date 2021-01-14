@@ -7,7 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Attributes model. */
+/** Optional model attributes. */
 @Fluent
 public final class Attributes {
     /*

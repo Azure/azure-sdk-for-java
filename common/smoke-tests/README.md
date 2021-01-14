@@ -74,7 +74,7 @@ All the classes in this sample not depend on each other.
 
 It is possible to run them individually:
 ```java
-package com.azure;
+package com.azure.smoketest;
 import java.io.IOException;
 
 public class App {

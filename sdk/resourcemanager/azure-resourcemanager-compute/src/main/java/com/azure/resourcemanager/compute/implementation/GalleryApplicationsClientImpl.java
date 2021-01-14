@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -68,7 +69,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface GalleryApplicationsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/applications/{galleryApplicationName}")
@@ -82,9 +83,10 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
             @PathParam("galleryApplicationName") String galleryApplicationName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GalleryApplicationInner galleryApplication,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/applications/{galleryApplicationName}")
@@ -98,9 +100,10 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
             @PathParam("galleryApplicationName") String galleryApplicationName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GalleryApplicationUpdate galleryApplication,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/applications/{galleryApplicationName}")
@@ -113,9 +116,10 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
             @PathParam("galleryName") String galleryName,
             @PathParam("galleryApplicationName") String galleryApplicationName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/applications/{galleryApplicationName}")
@@ -128,9 +132,10 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
             @PathParam("galleryName") String galleryName,
             @PathParam("galleryApplicationName") String galleryApplicationName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/applications")
@@ -142,14 +147,18 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("galleryName") String galleryName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<GalleryApplicationList>> listByGalleryNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -205,6 +214,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
             galleryApplication.validate();
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -217,6 +227,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                             galleryApplicationName,
                             apiVersion,
                             galleryApplication,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -276,6 +287,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
             galleryApplication.validate();
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -286,6 +298,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                 galleryApplicationName,
                 apiVersion,
                 galleryApplication,
+                accept,
                 context);
     }
 
@@ -578,6 +591,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
             galleryApplication.validate();
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -590,6 +604,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                             galleryApplicationName,
                             apiVersion,
                             galleryApplication,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -648,6 +663,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
             galleryApplication.validate();
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -658,6 +674,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                 galleryApplicationName,
                 apiVersion,
                 galleryApplication,
+                accept,
                 context);
     }
 
@@ -927,6 +944,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -938,6 +956,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                             galleryName,
                             galleryApplicationName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -983,6 +1002,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -992,6 +1012,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                 galleryName,
                 galleryApplicationName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1097,6 +1118,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1108,6 +1130,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                             galleryName,
                             galleryApplicationName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1153,6 +1176,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                     new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1162,6 +1186,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                 galleryName,
                 galleryApplicationName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1355,6 +1380,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1365,6 +1391,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                             resourceGroupName,
                             galleryName,
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<GalleryApplicationInner>>map(
                 res ->
@@ -1413,6 +1440,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
             return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByGallery(
@@ -1421,6 +1449,7 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
                 resourceGroupName,
                 galleryName,
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -1519,8 +1548,15 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByGalleryNext(nextLink, context))
+            .withContext(context -> service.listByGalleryNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<GalleryApplicationInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1549,9 +1585,16 @@ public final class GalleryApplicationsClientImpl implements GalleryApplicationsC
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByGalleryNext(nextLink, context)
+            .listByGalleryNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

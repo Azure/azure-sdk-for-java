@@ -129,4 +129,44 @@ public class CommunicationIdentityBuilderTests {
             builder.buildAsyncClient();
         });
     }
+
+    @Test
+    public void nullPipelineTest() {
+        assertThrows(NullPointerException.class, () -> {
+            builder
+                .connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .pipeline(null);
+        });
+    }
+
+    @Test
+    public void nullCustomPolicyTest() {
+        assertThrows(NullPointerException.class, () -> {
+            builder
+                .connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .addPolicy(null);
+        });
+    }
+
+    @Test
+    public void nullConfigurationTest() {
+        assertThrows(NullPointerException.class, () -> {
+            builder
+                .connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .configuration(null);
+        });
+    }
+
+    @Test
+    public void nullHttpLogOptionsTest() {
+        assertThrows(NullPointerException.class, () -> {
+            builder
+                .connectionString(MOCK_CONNECTION_STRING)
+                .httpClient(new NoOpHttpClient())
+                .httpLogOptions(null);
+        });
+    }
 }

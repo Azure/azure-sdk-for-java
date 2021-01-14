@@ -1,4 +1,5 @@
 # NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
 trigger:
   branches:
     include:
@@ -46,3 +47,6 @@ extends:
       - name: azure-messaging-eventgrid
         groupId: com.azure
         safeName: azuremessagingeventgrid
+      - name: azure-resourcemanager-eventgrid
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagereventgrid

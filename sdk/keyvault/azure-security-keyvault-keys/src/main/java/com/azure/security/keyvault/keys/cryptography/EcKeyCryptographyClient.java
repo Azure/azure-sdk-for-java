@@ -6,7 +6,6 @@ package com.azure.security.keyvault.keys.cryptography;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
-import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.KeyWrapAlgorithm;
@@ -56,14 +55,13 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plaintext, Context context, JsonWebKey key) {
+    Mono<EncryptResult> encryptAsync(EncryptOptions options, Context context, JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Encrypt operation is not supported for EC key"));
     }
 
     @Override
-    Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] cipherText, Context context,
-                                     JsonWebKey key) {
+    Mono<DecryptResult> decryptAsync(DecryptOptions options, Context context, JsonWebKey key) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
             "Decrypt operation is not supported for EC key"));
     }

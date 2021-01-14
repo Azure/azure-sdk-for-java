@@ -26,10 +26,11 @@ public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidc
     @Override
     public void init(HttpSecurity http) throws Exception {
         http.logout()
-            .logoutSuccessHandler(handler)
-            .and()
+                .logoutSuccessHandler(handler)
+                .and()
             .oauth2Login()
-            .loginProcessingUrl(properties.getLoginProcessingUrl())
-            .authorizationEndpoint().authorizationRequestResolver(resolver);
+                .loginProcessingUrl(properties.getLoginProcessingUrl())
+                .authorizationEndpoint()
+                    .authorizationRequestResolver(resolver);
     }
 }

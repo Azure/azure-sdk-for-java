@@ -1,6 +1,6 @@
-# Guide for migrating to azure-messaging-servicebus
+# Guide for migrating to com.azure:azure-messaging-servicebus from com.microsoft.azure:azure-servicebus
 
-This guide assists in the migration to version 7 of the Service Bus client library
+This guide is intended to assist in the migration to
 [`com.azure:azure-messaging-servicebus`](https://search.maven.org/artifact/com.azure/azure-messaging-servicebus) from
 version 3 of
 [`com.microsoft.azure:azure-servicebus`](https://search.maven.org/artifact/com.microsoft.azure/azure-servicebus/). It
@@ -11,24 +11,24 @@ library for Java, please refer to the
 [README](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/servicebus/azure-messaging-servicebus/README.md)
 and [Service Bus
 samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus)
-for the `azure-messaging-servicebus` library rather than this guide.
+for the `com.azure:azure-messaging-servicebus` library rather than this guide.
 
 ## Table of contents
 
-- [Guide for migrating to azure-messaging-servicebus](#guide-for-migrating-to-azure-messaging-servicebus)
-  - [Table of contents](#table-of-contents)
-  - [Migration benefits](#migration-benefits)
-  - [General changes](#general-changes)
-    - [Group id, artifact id, and package names](#group-id-artifact-id-and-package-names)
-    - [Client hierarchy](#client-hierarchy)
-    - [Async programming model](#async-programming-model)
-    - [Connection Pooling](#connection-pooling)
-  - [Migration Samples](#migration-samples)
-    - [Instantiating clients](#instantiating-clients)
-    - [Sending messages](#sending-messages)
-    - [Receiving messages](#receiving-messages)
-    - [Working with sessions](#working-with-sessions)
-  - [Additional samples](#additional-samples)
+- [Migration benefits](#migration-benefits)
+  - [Cross Service SDK improvements](#cross-service-sdk-improvements)
+  - [New features](#new-features)
+- [Important changes](#important-changes)
+  - [Group id, artifact id, and package names](#group-id-artifact-id-and-package-names)
+  - [Client hierarchy](#client-hierarchy)
+  - [Async programming model](#async-programming-model)
+  - [Connection Pooling](#connection-pooling)
+  - [Instantiating clients](#instantiating-clients)
+  - [Sending messages](#sending-messages)
+  - [Receiving messages](#receiving-messages)
+  - [Working with sessions](#working-with-sessions)
+- [Upcoming features](#upcoming-features)
+- [Additional samples](#additional-samples)
 
 ## Migration benefits
 
@@ -43,24 +43,36 @@ naming, and API structure. Additionally, many developers have felt that the lear
 did not offer a good, approachable, and consistent onboarding story for those learning Azure or exploring a specific
 Azure service.
 
-To improve the development experience across Azure services, including Service Bus, a set of uniform [design
+To try and improve the development experience across Azure services, including Service Bus, a set of uniform [design
 guidelines](https://azure.github.io/azure-sdk/general_introduction.html) was created for all languages to drive a
 consistent experience with established API patterns for all services. A set of [Java specific
 guidelines](https://azure.github.io/azure-sdk/java_introduction.html) was also introduced to ensure that Java clients
 have a natural and idiomatic feel that mirrors that of Java developers. Further details are available in the guidelines
 for those interested.
 
+### Cross Service SDK improvements
+
 The new Service Bus library `azure-messaging-servicebus` provides the ability to share in some of the cross-service
-improvements made to the Azure development experience, such as using the new `azure-identity` library to share a single
-authentication between clients and a unified diagnostics pipeline offering a common view of the activities across each
-of the client libraries.
+improvements made to the Azure development experience, such as 
+
+ - Using the new `azure-identity` library to share a single authentication between clients. 
+ - Dedicated clients for sync and async operations with the client.
+ - Use of builders to build the client.
+ - A unified diagnostics pipeline offering a common view of the activities across each of the client libraries.
+ 
 
 While we believe that there is significant benefit to adopting the new Service Bus library `azure-messaging-servicebus`,
 it is important to be aware that the previous version `azure-servicebus` have not been officially deprecated. They will
 continue to be supported with security and bug fixes as well as receiving some minor refinements. However, in the near
 future they will not be under active development and new features are unlikely to be added to them.
 
-## General changes
+### New features
+
+- Ability to create a batch of messages with the smarter `ServiceBusSenderClient.createMessageBatch()` and 
+`ServiceBusMessageBatch.tryAddMessage()` APIs. This will help manage the messages to be sent in the most optimal way.
+- The clients created using one `ServiceBusClientBuilder` instance shares AMQP connection implicitly.
+
+## Important changes
 
 ### Group id, artifact id, and package names
 
@@ -79,8 +91,15 @@ As part of the new Java SDK guidelines, all clients are instantiated from a buil
 Each client is expected to have a sync and async version that can be instantiated via `buildAsyncClient()` or `buildClient()` methods
 on the builder.
 
-In the new Service Bus library, this single entry point is the `ServiceBusClientBuilder` which can be used to create sender and receiver
-clients to the queue/topic/subscription/session of your choice and start sending/receiving messages.
+#### Approachability
+
+By having a single entry point, the `ServiceBusClientBuilder` which can be used to create sender, receiver and processor
+ clients to the queue/topic/subscription/session of your choice and start sending/receiving messages.
+
+#### Consistency
+
+We now have methods with similar names, signature and location to create senders, receivers and processor. This provides 
+consistency and predictability on the various features of the library.
 
 ### Async programming model
 
@@ -102,20 +121,26 @@ By making this connection sharing be implicit to a `ServiceBusClientBuilder` ins
 applications will not use multiple connections unless they explicitly opt in by creating multiple client builder
 instances.
 
-## Migration Samples
-
 ### Instantiating clients
 
 While we continue to support connection strings when constructing a client, the main difference is when using Azure
 Active Directory. We now use the new [azure-identity](https://search.maven.org/artifact/com.azure/azure-identity)
 library to share a single authentication solution between clients of different Azure services.
 
+Previously, in `azure-servicebus`, you can create client as shown below.
+
+```java
+        String connectionString = "Endpoint=sb://yournamespace.servicebus.windows.net/;SharedAccessKeyName=your-key-name;SharedAccessKey=your-key";
+        QueueClient client = new QueueClient(new ConnectionStringBuilder(connectionString, "my-queue"), ReceiveMode.PEEKLOCK);
+```
+Now in `azure-messaging-servicebus`, you start with `ServiceBusClientBuilder` and create all the clients.
+
 ```java
 // Create a sender client that will authenticate through Active Directory
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .build();
 String fullyQualifiedNamespace = "yournamespace.servicebus.windows.net";
-ServiceBusSenderClient client = new ServiceBusClientBuilder()
+ServiceBusSenderClient senderUsingTokenCredential = new ServiceBusClientBuilder()
     .credential(fullyQualifiedNamespace, credential)
     .sender()
     .queueName("my-queue")
@@ -123,7 +148,7 @@ ServiceBusSenderClient client = new ServiceBusClientBuilder()
 
 // Create a sender client that will authenticate using a connection string
 String connectionString = "Endpoint=sb://yournamespace.servicebus.windows.net/;SharedAccessKeyName=your-key-name;SharedAccessKey=your-key";
-ServiceBusSenderClient client = new ServiceBusClientBuilder()
+ServiceBusSenderClient senderUsingConnectionString = new ServiceBusClientBuilder()
     .connectionString(connectionString)
     .sender()
     .queueName("my-queue")
@@ -139,6 +164,8 @@ While the `IQueueClient` supported the simple send operation, the `IMessageSende
 like scheduling to send messages at a later time and cancelling such scheduled messages.
 
 ```java
+// NOTE: this example is using code for the older package
+
 String queueName = "my-queue";
 String connectionString = "Endpoint=sb://yournamespace.servicebus.windows.net/;"
     + "SharedAccessKeyName=your-key-name;SharedAccessKey=your-key";
@@ -166,9 +193,11 @@ We continue to support sending bytes in the message. Though, if you are working 
 message directly without having to convert it to bytes first. The snippet below demonstrates the sync sender client.
 
 ```java
+// code using the latest package.
+
 // create the sync sender via the builder and its sub-builder
-ServiceBusSenderClient client = new ServiceBusClientBuilder()
-    .connectionString(connectionString)
+ServiceBusSenderClient sender = new ServiceBusClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
     .sender()
     .queueName("my-queue")
     .buildClient();
@@ -192,13 +221,17 @@ send. This uses the sync sender as well.
 
 ```java
 // create the sync sender via the builder and its sub-builder
-ServiceBusSenderClient client = new ServiceBusClientBuilder()
-    .connectionString(connectionString)
+ServiceBusSenderClient sender = new ServiceBusClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
     .sender()
     .queueName("my-queue")
     .buildClient();
 
-ServiceBusMessage[] inputMessageArray = new ServiceBusMessage[10];
+ServiceBusMessage[] inputMessageArray = new ServiceBusMessage[] {
+    new ServiceBusMessage("example message"),
+    new ServiceBusMessage("example message 2")
+};
+
 ServiceBusMessageBatch messageBatch = sender.createBatch();
 
 for (int i = 0; i < inputMessageArray.length; i++) {
@@ -233,6 +266,8 @@ handlers/callbacks, the `IMessageReceiver` provided you with ways to receive mes
 batches, settle messages and renew locks.
 
 ```java
+// NOTE: this example is using code for the older package
+
 QueueClient client = new QueueClient(new ConnectionStringBuilder(connectionString, queueName),
     ReceiveMode.PEEKLOCK);
 
@@ -275,27 +310,23 @@ For a more fine grained control and advanced features, you still have the `Servi
 counterpart `ServiceBusReceiverAsyncClient`.
 
 ```java
+// code using the latest package.
 
 // Sample code that processes a single message
 Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
-    try {
-        System.out.println(messageContext.getMessage().getMessageId());
-        // other message processing code
-        messageContext.complete(); 
-    } catch (Exception ex) {
-        messageContext.abandon(); 
-    }
-}   
+    System.out.println(messageContext.getMessage().getMessageId());
+    // other message processing code
+};
 
 // Sample code that gets called if there's an error
-Consumer<Throwable> processError = throwable -> {
-    logError(throwable);
-    metrics.recordError(throwable);
-}
+Consumer<ServiceBusErrorContext> processError = errorContext -> {
+    logError(errorContext.getException());
+    metrics.recordError(errorContext.getException());
+};
 
 // create the processor client via the builder and its sub-builder
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-                                .connectionString("connection-string")
+                                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
                                 .processor()
                                 .queueName("queue-name")
                                 .processMessage(processMessage)
@@ -304,7 +335,6 @@ ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
 
 // Starts the processor in the background and returns immediately
 processorClient.start();
-
 ```
 
 ### Working with sessions
@@ -324,25 +354,20 @@ The below code snippet shows you how to use the processor client to receive mess
 ```java
 // Sample code that processes a single message
 Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
-    try {
-        System.out.println(messageContext.getMessage().getMessageId());
-        // other message processing code
-        messageContext.complete(); 
-    } catch (Exception ex) {
-        messageContext.abandon(); 
-    }
-}   
+    System.out.println(messageContext.getMessage().getMessageId());
+    // other message processing code
+};
 
 // Sample code that gets called if there's an error
-Consumer<Throwable> processError = throwable -> {
-    logError(throwable);
-    metrics.recordError(throwable);
-}
+Consumer<ServiceBusErrorContext> processError = errorContext -> {
+    logError(errorContext.getException());
+    metrics.recordError(errorContext.getException());
+};
 
 // create the processor client via the builder and its sub-builder
 ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-                                .connectionString("connection-string")
-                                .processor()
+                                .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+                                .sessionProcessor()
                                 .queueName("queue-name")
                                 .maxConcurrentSessions(3)
                                 .processMessage(processMessage)
@@ -363,15 +388,21 @@ While the below code uses `acceptSession()` that takes a sessionId, you can also
 
 ```java
 ServiceBusSessionReceiverClient sessionClient = new ServiceBusClientBuilder()
-    .connectionString(connectionString)
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
     .sessionReceiver()
     .queueName("queue")
     .buildClient();
 
 ServiceBusReceiverClient receiverClient = sessionClient.acceptSession("my-session-id");
 ```
+## Upcoming features
+ - [Cross entity transactions](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via) 
+ to support transaction across different entities.
+ - [Different AMQP body section](https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-amqp-sequence) 
+ support for 'Amqp Sequence' and 'Amqp Value'. 
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fservice-bus%2FMIGRATIONGUIDE.png)
 
 ## Additional samples
 
-More examples can be found at:
-- [Service Bus samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus)
+More examples can be found at [Service Bus samples](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/servicebus/azure-messaging-servicebus/src/samples/java/com/azure/messaging/servicebus).

@@ -14,6 +14,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Nat Gateway resource. */
 @JsonFlatten
@@ -236,6 +237,20 @@ public class NatGatewayInner extends Resource {
      */
     public NatGatewayInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NatGatewayInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NatGatewayInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

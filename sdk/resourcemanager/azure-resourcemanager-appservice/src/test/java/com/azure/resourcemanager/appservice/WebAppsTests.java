@@ -6,6 +6,8 @@ package com.azure.resourcemanager.appservice;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.FunctionApp;
+import com.azure.resourcemanager.appservice.models.FunctionAppBasic;
 import com.azure.resourcemanager.appservice.models.LogLevel;
 import com.azure.resourcemanager.appservice.models.NetFrameworkVersion;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
@@ -192,5 +194,36 @@ public class WebAppsTests extends AppServiceTest {
 
         Assertions.assertNotNull(webApp1.windowsFxVersion());
         Assertions.assertTrue(webApp1.windowsFxVersion().contains(imageAndTag));
+    }
+
+    @Test
+    public void canListWebAppAndFunctionApp() {
+        rgName2 = null;
+
+        WebApp webApp1 = appServiceManager.webApps()
+            .define(webappName1)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName1)
+            .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
+            .create();
+
+        FunctionApp functionApp1 = appServiceManager.functionApps()
+            .define(webappName2)
+            .withRegion(Region.US_WEST)
+            .withExistingResourceGroup(rgName1)
+            .withNewFreeAppServicePlan()
+            .create();
+
+        PagedIterable<WebAppBasic> webApps = appServiceManager.webApps().listByResourceGroup(rgName1);
+
+        PagedIterable<FunctionAppBasic> functionApps = appServiceManager.functionApps().listByResourceGroup(rgName1);
+
+        Assertions.assertEquals(1, TestUtilities.getSize(webApps));
+
+        Assertions.assertEquals(1, TestUtilities.getSize(functionApps));
+
+        Assertions.assertEquals(webappName1, webApps.iterator().next().name());
+
+        Assertions.assertEquals(webappName2, functionApps.iterator().next().name());
     }
 }

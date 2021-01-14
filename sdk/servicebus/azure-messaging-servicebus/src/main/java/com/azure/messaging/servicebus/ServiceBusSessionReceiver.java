@@ -63,14 +63,23 @@ class ServiceBusSessionReceiver implements AutoCloseable {
         this.receiveLink = receiveLink;
         this.lockContainer = new LockContainer<>(ServiceBusConstants.OPERATION_TIMEOUT);
 
-        receiveLink.setEmptyCreditListener(() -> 1);
+        receiveLink.setEmptyCreditListener(() -> 0);
 
         final Flux<ServiceBusMessageContext> receivedMessagesFlux = receiveLink
             .receive()
             .publishOn(scheduler)
             .doOnSubscribe(subscription -> {
                 logger.verbose("Adding prefetch to receive link.");
-                receiveLink.addCredits(prefetch);
+                if (prefetch > 0) {
+                    receiveLink.addCredits(prefetch);
+                }
+            })
+            .doOnRequest(request -> {  // request is of type long.
+                if (prefetch == 0) {  //  add "request" number of credits
+                    receiveLink.addCredits((int) request);
+                } else {  // keep total credits "prefetch" if prefetch is not 0.
+                    receiveLink.addCredits(Math.max(0, prefetch - receiveLink.getCredits()));
+                }
             })
             .takeUntilOther(cancelReceiveProcessor)
             .map(message -> {
