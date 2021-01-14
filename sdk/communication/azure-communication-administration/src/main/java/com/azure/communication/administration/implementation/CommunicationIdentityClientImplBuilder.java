@@ -15,12 +15,13 @@ import com.azure.core.http.policy.UserAgentPolicy;
 @ServiceClientBuilder(serviceClients = {CommunicationIdentityClientImpl.class})
 public final class CommunicationIdentityClientImplBuilder {
     /*
-     * Auth and Identity endpoint
+     * The communication resource, for example
+     * https://my-resource.communication.azure.com
      */
     private String endpoint;
 
     /**
-     * Sets Auth and Identity endpoint.
+     * Sets The communication resource, for example https://my-resource.communication.azure.com.
      *
      * @param endpoint the endpoint value.
      * @return the CommunicationIdentityClientImplBuilder.
