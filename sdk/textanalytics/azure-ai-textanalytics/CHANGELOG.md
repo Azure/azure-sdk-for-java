@@ -1,4 +1,8 @@
 # Release History
+## 5.0.2 (2021-01-14)
+### Dependency updates
+- Update dependency version, `azure-core` to 1.12.0 and `azure-core-http-netty` to 1.7.1.
+
 ## 5.0.1 (2020-11-12)
 ### Dependency updates 
 - Update dependency version, `azure-core` to 1.10.0 and `azure-core-http-netty` to 1.6.3. 
