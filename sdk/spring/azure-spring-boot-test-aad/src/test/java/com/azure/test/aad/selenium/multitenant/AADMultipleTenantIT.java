@@ -19,10 +19,10 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_NAME_2;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_2;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_2;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_2;
 
 public class AADMultipleTenantIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADMultipleTenantIT.class);
@@ -35,8 +35,8 @@ public class AADMultipleTenantIT {
         AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties,
             AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
-        LOGGER.info(httpResponse);
         LOGGER.info(AAD_USER_NAME_2);
+        LOGGER.info(httpResponse);
         Assert.assertTrue(httpResponse.contains("home"));
     }
 

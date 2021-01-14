@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.3 (Unreleased)
+
+
 ## 1.0.0-beta.2 (2021-01-12)
 ### Breaking changes
 - Renamed artifact to `azure-opentelemetry-exporter-azuremonitor`.

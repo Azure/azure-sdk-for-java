@@ -1,18 +1,18 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:Ward;1896709?includeModelDefinition=true&api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:Ward;1499878?includeModelDefinition=true&api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f60a0f97-0ef5-4007-a04b-c491e2c940f7"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8a679c4e-5e7a-4960-b623-811e4115cb72"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "210",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Ward;1896709. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
-      "Date" : "Fri, 30 Oct 2020 16:34:53 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:Ward;1499878. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:47 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -20,8 +20,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "945f0e70-d443-4c10-bdae-eddc599fe70d",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "39e54c81-4cf2-4f42-a8b7-5f589e785212",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -29,8 +29,8 @@
       "retry-after" : "0",
       "Content-Length" : "213",
       "StatusCode" : "201",
-      "Body" : "[{\"id\":\"dtmi:example:Ward;1896709\",\"description\":{\"en\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\"},\"displayName\":{\"en\":\"Ward\"},\"decommissioned\":false,\"uploadTime\":\"2020-10-30T16:34:54.2864047+00:00\"}]",
-      "Date" : "Fri, 30 Oct 2020 16:34:54 GMT",
+      "Body" : "[{\"id\":\"dtmi:example:Ward;1499878\",\"description\":{\"en\":\"Aseparatepartitioninabuilding,madeofroomsandhallways.\"},\"displayName\":{\"en\":\"Ward\"},\"decommissioned\":false,\"uploadTime\":\"2021-01-13T20:05:48.0720751+00:00\"}]",
+      "Date" : "Wed, 13 Jan 2021 20:05:47 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -38,8 +38,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.0.0 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2e0f8df1-d8df-407d-9e22-25f4a2190203",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9dd5bab8-f9c6-4faf-b5c5-1820aaa4895a",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -47,11 +47,11 @@
       "retry-after" : "0",
       "Content-Length" : "228",
       "StatusCode" : "409",
-      "Body" : "{\"error\":{\"code\":\"ModelIdAlreadyExists\",\"message\":\"Some of the model ids already exist: dtmi:example:Ward;1896709. Use Model_List API to view models that already exist. See the Swagger example (http://aka.ms/ModelListSwSmpl).\"}}",
-      "Date" : "Fri, 30 Oct 2020 16:34:53 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelIdAlreadyExists\",\"message\":\"Some of the model ids already exist: dtmi:example:Ward;1499878. Use Model_List API to view models that already exist. See the Swagger example (http://aka.ms/ModelListSwSmpl).\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:48 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
-  "variables" : [ "01892c" ]
+  "variables" : [ "61109b" ]
 }
