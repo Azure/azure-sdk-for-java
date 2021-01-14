@@ -4,7 +4,6 @@
 package com.azure.test.aad.selenium.multitenant;
 
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
-import com.azure.test.aad.selenium.role.AADRoleIT;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -27,7 +26,7 @@ public class AADMultipleTenantIT {
 
     @Test
     public void multipleTenantTest() throws InterruptedException {
-        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(AADRoleIT.DumbApp.class,
+        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(AADMultipleTenantIT.DumbApp.class,
             Collections.emptyMap(), AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
         Assert.assertTrue(httpResponse.contains("home"));
