@@ -4,7 +4,7 @@
 
 package com.azure.communication.administration.models;
 
-import com.azure.communication.administration.implementation.models.PhoneNumberCapabilityValue;
+import com.azure.communication.administration.models.PhoneNumberCapabilityValue;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
