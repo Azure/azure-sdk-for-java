@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.sms.models.SendSmsOptions;
 
 import java.util.ArrayList;
@@ -15,16 +15,16 @@ import reactor.test.StepVerifier;
 
 public class SmsAsyncClientTests extends SmsTestBase {
 
-    private List<PhoneNumber> to;
-    private PhoneNumber from;
+    private List<PhoneNumberIdentifier> to;
+    private PhoneNumberIdentifier from;
     private String body;
 
     @BeforeEach
     public void beforeEach() {
-        to = new ArrayList<PhoneNumber>();
+        to = new ArrayList<PhoneNumberIdentifier>();
         body = "Hello";
-        from = new PhoneNumber("+18443394604");
-        to.add(new PhoneNumber("+18006427676"));
+        from = new PhoneNumberIdentifier("+18443394604");
+        to.add(new PhoneNumberIdentifier("+18006427676"));
     }
 
     @Test
@@ -68,7 +68,7 @@ public class SmsAsyncClientTests extends SmsTestBase {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(false);        
         SmsAsyncClient smsClient = getTestSmsClient(from, to, body, smsOptions);
-        PhoneNumber toNull = null;
+        PhoneNumberIdentifier toNull = null;
         StepVerifier.create(smsClient.sendMessage(from, toNull, body))
             .verifyError(NullPointerException.class);
     }    
@@ -78,12 +78,12 @@ public class SmsAsyncClientTests extends SmsTestBase {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(false);        
         SmsAsyncClient smsClient = getTestSmsClient(from, to, body, smsOptions);
-        List<PhoneNumber> toNull = null;
+        List<PhoneNumberIdentifier> toNull = null;
         StepVerifier.create(smsClient.sendMessage(from, toNull, body))
             .verifyError(NullPointerException.class);
     }   
 
-    private SmsAsyncClient getTestSmsClient(PhoneNumber from, List<PhoneNumber> to, String body, 
+    private SmsAsyncClient getTestSmsClient(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, 
         SendSmsOptions smsOptions) {
         return getTestSmsClientBuilder(from, to, body, smsOptions).buildAsyncClient();
     }  

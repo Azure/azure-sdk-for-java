@@ -10,9 +10,11 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
 import java.io.IOException;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
@@ -58,7 +60,7 @@ public class SqlPoolMetadataSyncConfigsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolMetadataSyncConfigs create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/metadataSync/config")
-        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("sqlPoolName") String sqlPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body MetadataSyncConfigInner metadataSyncConfiguration, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("sqlPoolName") String sqlPoolName, @Query("api-version") String apiVersion, @Body MetadataSyncConfigInner metadataSyncConfiguration, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -70,7 +72,7 @@ public class SqlPoolMetadataSyncConfigsInner {
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the MetadataSyncConfigInner object if successful.
      */
@@ -152,11 +154,11 @@ public class SqlPoolMetadataSyncConfigsInner {
             });
     }
 
-    private ServiceResponse<MetadataSyncConfigInner> getDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MetadataSyncConfigInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<MetadataSyncConfigInner> getDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MetadataSyncConfigInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<MetadataSyncConfigInner>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -167,13 +169,14 @@ public class SqlPoolMetadataSyncConfigsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
+     * @param metadataSyncConfiguration Metadata sync configuration
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the MetadataSyncConfigInner object if successful.
      */
-    public MetadataSyncConfigInner create(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return createWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName).toBlocking().single().body();
+    public MetadataSyncConfigInner create(String resourceGroupName, String workspaceName, String sqlPoolName, MetadataSyncConfigInner metadataSyncConfiguration) {
+        return createWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration).toBlocking().single().body();
     }
 
     /**
@@ -183,12 +186,13 @@ public class SqlPoolMetadataSyncConfigsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
+     * @param metadataSyncConfiguration Metadata sync configuration
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MetadataSyncConfigInner> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName, final ServiceCallback<MetadataSyncConfigInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName), serviceCallback);
+    public ServiceFuture<MetadataSyncConfigInner> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName, MetadataSyncConfigInner metadataSyncConfiguration, final ServiceCallback<MetadataSyncConfigInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration), serviceCallback);
     }
 
     /**
@@ -198,11 +202,12 @@ public class SqlPoolMetadataSyncConfigsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
+     * @param metadataSyncConfiguration Metadata sync configuration
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the MetadataSyncConfigInner object
      */
-    public Observable<MetadataSyncConfigInner> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        return createWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName).map(new Func1<ServiceResponse<MetadataSyncConfigInner>, MetadataSyncConfigInner>() {
+    public Observable<MetadataSyncConfigInner> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName, MetadataSyncConfigInner metadataSyncConfiguration) {
+        return createWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName, metadataSyncConfiguration).map(new Func1<ServiceResponse<MetadataSyncConfigInner>, MetadataSyncConfigInner>() {
             @Override
             public MetadataSyncConfigInner call(ServiceResponse<MetadataSyncConfigInner> response) {
                 return response.body();
@@ -217,10 +222,11 @@ public class SqlPoolMetadataSyncConfigsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @param sqlPoolName SQL pool name
+     * @param metadataSyncConfiguration Metadata sync configuration
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the MetadataSyncConfigInner object
      */
-    public Observable<ServiceResponse<MetadataSyncConfigInner>> createWithServiceResponseAsync(String resourceGroupName, String workspaceName, String sqlPoolName) {
+    public Observable<ServiceResponse<MetadataSyncConfigInner>> createWithServiceResponseAsync(String resourceGroupName, String workspaceName, String sqlPoolName, MetadataSyncConfigInner metadataSyncConfiguration) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -236,10 +242,11 @@ public class SqlPoolMetadataSyncConfigsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        final Boolean enabled = null;
-        MetadataSyncConfigInner metadataSyncConfiguration = new MetadataSyncConfigInner();
-        metadataSyncConfiguration.withEnabled(null);
-        return service.create(this.client.subscriptionId(), resourceGroupName, workspaceName, sqlPoolName, this.client.apiVersion(), this.client.acceptLanguage(), metadataSyncConfiguration, this.client.userAgent())
+        if (metadataSyncConfiguration == null) {
+            throw new IllegalArgumentException("Parameter metadataSyncConfiguration is required and cannot be null.");
+        }
+        Validator.validate(metadataSyncConfiguration);
+        return service.create(this.client.subscriptionId(), resourceGroupName, workspaceName, sqlPoolName, this.client.apiVersion(), metadataSyncConfiguration, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MetadataSyncConfigInner>>>() {
                 @Override
                 public Observable<ServiceResponse<MetadataSyncConfigInner>> call(Response<ResponseBody> response) {
@@ -253,107 +260,11 @@ public class SqlPoolMetadataSyncConfigsInner {
             });
     }
 
-    /**
-     * Set SQL pool metadata sync config.
-     * Set the metadata sync configuration for a SQL pool.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
-     * @param sqlPoolName SQL pool name
-     * @param enabled Indicates whether the metadata sync is enabled or disabled
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MetadataSyncConfigInner object if successful.
-     */
-    public MetadataSyncConfigInner create(String resourceGroupName, String workspaceName, String sqlPoolName, Boolean enabled) {
-        return createWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName, enabled).toBlocking().single().body();
-    }
-
-    /**
-     * Set SQL pool metadata sync config.
-     * Set the metadata sync configuration for a SQL pool.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
-     * @param sqlPoolName SQL pool name
-     * @param enabled Indicates whether the metadata sync is enabled or disabled
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<MetadataSyncConfigInner> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName, Boolean enabled, final ServiceCallback<MetadataSyncConfigInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName, enabled), serviceCallback);
-    }
-
-    /**
-     * Set SQL pool metadata sync config.
-     * Set the metadata sync configuration for a SQL pool.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
-     * @param sqlPoolName SQL pool name
-     * @param enabled Indicates whether the metadata sync is enabled or disabled
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MetadataSyncConfigInner object
-     */
-    public Observable<MetadataSyncConfigInner> createAsync(String resourceGroupName, String workspaceName, String sqlPoolName, Boolean enabled) {
-        return createWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName, enabled).map(new Func1<ServiceResponse<MetadataSyncConfigInner>, MetadataSyncConfigInner>() {
-            @Override
-            public MetadataSyncConfigInner call(ServiceResponse<MetadataSyncConfigInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Set SQL pool metadata sync config.
-     * Set the metadata sync configuration for a SQL pool.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
-     * @param sqlPoolName SQL pool name
-     * @param enabled Indicates whether the metadata sync is enabled or disabled
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MetadataSyncConfigInner object
-     */
-    public Observable<ServiceResponse<MetadataSyncConfigInner>> createWithServiceResponseAsync(String resourceGroupName, String workspaceName, String sqlPoolName, Boolean enabled) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (workspaceName == null) {
-            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
-        }
-        if (sqlPoolName == null) {
-            throw new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        MetadataSyncConfigInner metadataSyncConfiguration = new MetadataSyncConfigInner();
-        metadataSyncConfiguration.withEnabled(enabled);
-        return service.create(this.client.subscriptionId(), resourceGroupName, workspaceName, sqlPoolName, this.client.apiVersion(), this.client.acceptLanguage(), metadataSyncConfiguration, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MetadataSyncConfigInner>>>() {
-                @Override
-                public Observable<ServiceResponse<MetadataSyncConfigInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<MetadataSyncConfigInner> clientResponse = createDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<MetadataSyncConfigInner> createDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MetadataSyncConfigInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<MetadataSyncConfigInner> createDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<MetadataSyncConfigInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<MetadataSyncConfigInner>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

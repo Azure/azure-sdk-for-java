@@ -5,7 +5,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-bom</artifactId>
-  <version>3.0.0-beta.1</version>
+  <version>3.0.0</version>
   <packaging>pom</packaging>
 
   <name>Azure Spring Boot BOM</name>
@@ -47,11 +47,6 @@
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>com.azure</groupId>
-        <artifactId>azure-spring-data-cosmos</artifactId>
-        <version>3.0.0-beta.1</version>
-      </dependency>
 
       <!-- Azure Dependencies Bom -->
       <dependency>

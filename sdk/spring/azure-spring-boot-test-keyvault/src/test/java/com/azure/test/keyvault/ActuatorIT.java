@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.test.keyvault;
 
-import com.azure.test.management.ClientSecretAccess;
-import com.azure.test.utils.AppRunner;
+import com.azure.spring.test.management.ClientSecretAccess;
+import com.azure.spring.test.AppRunner;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

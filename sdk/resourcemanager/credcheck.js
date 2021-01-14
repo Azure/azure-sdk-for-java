@@ -18,6 +18,7 @@ function credcheck(dir) {
     redactDict.set(/;SharedAccessKey=(.*?)(;|\\")/g, ';SharedAccessKey=***REMOVED***$2');
     redactDict.set(/\\"primaryKey\\":\\"(.*?)\\"/g, '\\"primaryKey\\":\\"***REMOVED***\\"');
     redactDict.set(/\\"secondaryKey\\":\\"(.*?)\\"/g, '\\"secondaryKey\\":\\"***REMOVED***\\"');
+    redactDict.set(/\\"secretText\\":\\"(.*?)\\"/g, '\\"secretText\\":\\"***REMOVED***\\"');
     
     credcheckRecursive(dir, redactDict);
 }

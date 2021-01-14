@@ -5,6 +5,8 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
 import com.azure.messaging.servicebus.implementation.models.EntityAvailabilityStatus;
@@ -19,7 +21,12 @@ import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimitive;
 
-/** Represents the static properties of the topic.. */
+/**
+ * Represents the static properties of the topic.
+ *
+ * @see ServiceBusAdministrationAsyncClient#getTopic(String)
+ * @see ServiceBusAdministrationClient#getTopic(String)
+ */
 @Fluent
 public final class TopicProperties {
     private Duration autoDeleteOnIdle;

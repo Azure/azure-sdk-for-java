@@ -8,6 +8,7 @@ import com.azure.core.util.CoreUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.UUID;
@@ -28,7 +29,9 @@ public class RecordingRedactor {
     private static final Pattern PASSWORD_KEY_PATTERN = Pattern.compile("(?:Password=)(.*?)(?:;)");
     private static final Pattern USER_ID_KEY_PATTERN = Pattern.compile("(?:User ID=)(.*?)(?:;)");
 
-    private static final List<Function<String, String>> RECORDING_REDACTORS = loadRedactor();
+    private static final List<Function<String, String>> DEFAULT_RECORDING_REDACTORS = loadRedactor();
+
+    private final List<Function<String, String>> recordingRedactors = new ArrayList<>();
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -49,6 +52,24 @@ public class RecordingRedactor {
         Pattern.CASE_INSENSITIVE);
 
     /**
+     * Creates an instance of {@link RecordingRedactor} with a default set of redactors.
+     */
+    public RecordingRedactor() {
+        this(Collections.emptyList());
+    }
+
+    /**
+     * Creates an instance of {@link RecordingRedactor} with a default set of redactors and additionally include the
+     * provided list of custom redactor functions.
+     *
+     * @param customRedactors A list of custom redactor functions.
+     */
+    public RecordingRedactor(List<Function<String, String>> customRedactors) {
+        this.recordingRedactors.addAll(DEFAULT_RECORDING_REDACTORS);
+        this.recordingRedactors.addAll(customRedactors == null ? Collections.emptyList() : customRedactors);
+    }
+
+    /**
      * Redact the sensitive information.
      *
      * @param redactableString the content that will be scan through
@@ -56,7 +77,7 @@ public class RecordingRedactor {
      */
     public String redact(String redactableString) {
         String redactedString = redactableString;
-        for (Function<String, String> redactor : RECORDING_REDACTORS) {
+        for (Function<String, String> redactor : recordingRedactors) {
             redactedString = redactor.apply(redactedString);
         }
         return redactedString;

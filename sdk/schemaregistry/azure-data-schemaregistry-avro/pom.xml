@@ -35,11 +35,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <!-- SchemaRegistrySkip temporarily relaxing code coverage -->
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -49,14 +44,14 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-avro-apache</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;dependency} -->
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.11.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.12.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -80,7 +75,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

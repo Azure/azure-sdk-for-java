@@ -19,7 +19,9 @@ public class AADB2CAutoConfigurationTest {
                     String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
                     String.format("%s=%s", AADB2CConstants.REPLY_URL, AADB2CConstants.TEST_REPLY_URL),
                     String.format("%s=%s", AADB2CConstants.LOGOUT_SUCCESS_URL, AADB2CConstants.TEST_LOGOUT_SUCCESS_URL),
-                    String.format("%s=%s", AADB2CConstants.SIGN_UP_OR_SIGN_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME)
+                    String.format("%s=%s", AADB2CConstants.SIGN_UP_OR_SIGN_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
+                    String.format("%s=%s", AADB2CConstants.CONFIG_PROMPT, AADB2CConstants.TEST_PROMPT),
+                    String.format("%s=%s", AADB2CConstants.CONFIG_LOGIN_HINT, AADB2CConstants.TEST_LOGIN_HINT)
             );
 
     @Test
@@ -43,8 +45,12 @@ public class AADB2CAutoConfigurationTest {
             assertThat(properties.getReplyUrl()).isEqualTo(AADB2CConstants.TEST_REPLY_URL);
 
             final String signUpOrSignIn = properties.getUserFlows().getSignUpOrSignIn();
+            final Object prompt = properties.getAuthenticateAdditionalParameters().get(AADB2CConstants.PROMPT);
+            final String loginHint = String.valueOf(properties.getAuthenticateAdditionalParameters().get(AADB2CConstants.LOGIN_HINT));
 
             assertThat(signUpOrSignIn).isEqualTo(AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME);
+            assertThat(prompt).isEqualTo(AADB2CConstants.TEST_PROMPT);
+            assertThat(loginHint).isEqualTo(AADB2CConstants.TEST_LOGIN_HINT);
         });
     }
 

@@ -38,6 +38,12 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
     private String taskQueueId;
 
     /**
+     * The node communication Channel encryption mode.
+     */
+    @JsonProperty(value = "typeProperties.nodeCommunicationChannelEncryptionMode", access = JsonProperty.Access.WRITE_ONLY)
+    private String nodeCommunicationChannelEncryptionMode;
+
+    /**
      * It is used to set the encryption mode for node-node communication
      * channel (when more than 2 self-hosted integration runtime nodes exist).
      * Possible values include: 'NotSet', 'SslEncrypted', 'NotEncrypted'.
@@ -145,6 +151,15 @@ public class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntimeStatus
      */
     public String taskQueueId() {
         return this.taskQueueId;
+    }
+
+    /**
+     * Get the node communication Channel encryption mode.
+     *
+     * @return the nodeCommunicationChannelEncryptionMode value
+     */
+    public String nodeCommunicationChannelEncryptionMode() {
+        return this.nodeCommunicationChannelEncryptionMode;
     }
 
     /**

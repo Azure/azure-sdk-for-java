@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.common.HmacAuthenticationPolicy;
 import com.azure.communication.sms.models.SendSmsOptions;
@@ -28,17 +28,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SmsClientTests extends SmsTestBase {
 
-    private List<PhoneNumber> to;
-    private PhoneNumber from;
+    private List<PhoneNumberIdentifier> to;
+    private PhoneNumberIdentifier from;
     private String body;
     private SendSmsOptions smsOptions; 
 
     @BeforeEach
     public void beforeEach() {
-        to = new ArrayList<PhoneNumber>();
+        to = new ArrayList<PhoneNumberIdentifier>();
         body = "Hello";
-        from = new PhoneNumber("+18443394604");
-        to.add(new PhoneNumber("+18006427676"));
+        from = new PhoneNumberIdentifier("+18443394604");
+        to.add(new PhoneNumberIdentifier("+18006427676"));
         smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(true);        
     }
@@ -146,7 +146,7 @@ public class SmsClientTests extends SmsTestBase {
     @Test
     public void sendSmsRequestNullTo() {
         boolean threwException = false;
-        PhoneNumber toNull = null;
+        PhoneNumberIdentifier toNull = null;
 
         try {
             getTestSmsClient(from, to, body, smsOptions, null)
@@ -158,7 +158,7 @@ public class SmsClientTests extends SmsTestBase {
         assertTrue(threwException);
     } 
 
-    private SmsClient getTestSmsClient(PhoneNumber from, List<PhoneNumber> to, String body, SendSmsOptions smsOptions,
+    private SmsClient getTestSmsClient(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, SendSmsOptions smsOptions,
             HttpPipelinePolicy policy) {
   
         return getTestSmsClientBuilder(from, to, body, smsOptions, policy)

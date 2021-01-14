@@ -107,7 +107,8 @@ public class EncryptedBlobClient extends BlobClient {
      *
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      *
@@ -181,7 +182,8 @@ public class EncryptedBlobClient extends BlobClient {
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the uploaded blob
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

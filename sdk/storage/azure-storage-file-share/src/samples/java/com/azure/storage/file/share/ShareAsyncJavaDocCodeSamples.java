@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.storage.file.share;
 
+import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareAccessTier;
@@ -754,5 +755,22 @@ public class ShareAsyncJavaDocCodeSamples {
 
         shareAsyncClient.generateSas(values); // Client must be authenticated via StorageSharedKeyCredential
         // END: com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues
+    }
+
+    /**
+     * Code snippet for {@link ShareAsyncClient#generateSas(ShareServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        ShareAsyncClient shareAsyncClient = createAsyncClientWithCredential();
+        // BEGIN: com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        ShareSasPermission permission = new ShareSasPermission().setReadPermission(true);
+
+        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        shareAsyncClient.generateSas(values, new Context("key", "value"));
+        // END: com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context
     }
 }

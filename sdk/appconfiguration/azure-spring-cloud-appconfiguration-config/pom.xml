@@ -13,7 +13,7 @@
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
   <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-appconfiguration-config;current} -->
-  <name>Spring Cloud Azure App Configuration Config</name>
+  <name>Azure Spring Cloud App Configuration Config</name>
   <description>Integration of Spring Cloud Config and Azure App Configuration Service</description>
 
   <dependencies>
@@ -57,7 +57,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.10.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -67,17 +67,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.2.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.2.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.hibernate.validator</groupId>
