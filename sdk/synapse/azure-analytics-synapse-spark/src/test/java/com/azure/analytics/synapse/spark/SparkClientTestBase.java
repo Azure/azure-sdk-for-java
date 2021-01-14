@@ -5,13 +5,23 @@ package com.azure.analytics.synapse.spark;
 
 import com.azure.analytics.synapse.spark.models.SparkBatchJob;
 import com.azure.analytics.synapse.spark.models.SparkSession;
+import com.azure.analytics.synapse.spark.models.SparkStatement;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -130,5 +140,10 @@ public abstract class SparkClientTestBase extends TestBase {
         assertEquals(expectedSparkSession.getAppId(), actualSparkSession.getAppId());
         assertEquals(expectedSparkSession.getSubmitterId(), actualSparkSession.getSubmitterId());
         assertEquals(expectedSparkSession.getArtifactId(), actualSparkSession.getArtifactId());
+    }
+
+    void assertSparkStatementEquals(SparkStatement expectedSparkStatement, SparkStatement actualSparkStatement) {
+        assertEquals(expectedSparkStatement.getId(), actualSparkStatement.getId());
+        assertEquals(expectedSparkStatement.getCode(), actualSparkStatement.getCode());
     }
 }

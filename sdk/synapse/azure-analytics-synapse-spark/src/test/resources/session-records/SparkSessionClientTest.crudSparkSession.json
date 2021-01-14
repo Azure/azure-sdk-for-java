@@ -1,0 +1,91 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/testsparkpool//sessions?detailed=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-spark/1.0.0-beta.2 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ffc32e3c-ed59-4cc0-be31-de723b7a2053",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "Kestrel Microsoft-HTTPAPI/2.0",
+      "x-ms-job-submitted-by-name" : "jianghlu@microsoft.com",
+      "x-ms-job-ended-on" : "",
+      "retry-after" : "0",
+      "x-ms-job-submitted-on" : "1/13/2021 5:34:54 PM +00:00",
+      "x-ms-job-queued-on" : "1/1/0001 12:00:00 AM +00:00",
+      "StatusCode" : "200",
+      "x-ms-job-clusterrequested-on" : "1/1/0001 12:00:00 AM +00:00",
+      "Date" : "Wed, 13 Jan 2021 17:34:54 GMT",
+      "x-ms-activity-id" : "d2e43eec-5381-4c63-9ea3-fb9432c0e976",
+      "x-ms-job-result" : "Uncertain",
+      "x-ms-response-time-ms" : "82",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-ms-job-internal-id" : "66",
+      "x-ms-job-scheduled-on" : "1/1/0001 12:00:00 AM +00:00",
+      "x-ms-job-type" : "SparkServiceSession",
+      "x-ms-job-livysubmission-on" : "1/1/0001 12:00:00 AM +00:00",
+      "x-ms-request-id" : "8da1a058-37d7-4c80-979a-07ad611ff9a5",
+      "Body" : "{\"livyInfo\":{\"notStartedAt\":null,\"startingAt\":null,\"idleAt\":null,\"deadAt\":null,\"shuttingDownAt\":null,\"killedAt\":null,\"recoveringAt\":null,\"busyAt\":null,\"errorAt\":null,\"currentState\":\"not_started\",\"jobCreationRequest\":{\"name\":\"92c69b8f8d\",\"conf\":{},\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2}},\"name\":\"92c69b8f8d\",\"workspaceName\":\"xysynapsetest\",\"computeName\":\"testsparkpool\",\"sparkPoolName\":\"testsparkpool\",\"submitterName\":\"jianghlu@microsoft.com\",\"submitterId\":\"794b8347-c398-4fd8-b557-37b60946e830\",\"artifactId\":\"Livy\",\"jobType\":\"SparkSession\",\"result\":\"Uncertain\",\"schedulerInfo\":{\"submittedAt\":\"2021-01-13T17:34:54.8258451+00:00\",\"scheduledAt\":null,\"endedAt\":null,\"cancellationRequestedAt\":null,\"currentState\":\"Queued\"},\"pluginInfo\":{\"preparationStartedAt\":null,\"resourceAcquisitionStartedAt\":null,\"submissionStartedAt\":null,\"monitoringStartedAt\":null,\"cleanupStartedAt\":null,\"currentState\":\"Preparation\"},\"tags\":{},\"id\":66,\"appId\":null,\"appInfo\":null,\"state\":\"not_started\",\"log\":null}",
+      "x-ms-client-request-id" : "ffc32e3c-ed59-4cc0-be31-de723b7a2053",
+      "Content-Type" : "application/json; charset=utf-8",
+      "x-ms-job-scheduler-state" : "Queued"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/testsparkpool//sessions/66?detailed=true",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-spark/1.0.0-beta.2 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "657dfe6e-c575-4923-a9a1-4df98cfc93bf"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Server" : "Kestrel Microsoft-HTTPAPI/2.0",
+      "x-ms-job-submitted-by-name" : "jianghlu@microsoft.com",
+      "x-ms-job-ended-on" : "",
+      "retry-after" : "0",
+      "x-ms-job-submitted-on" : "1/13/2021 5:34:54 PM +00:00",
+      "x-ms-job-queued-on" : "1/1/0001 12:00:00 AM +00:00",
+      "StatusCode" : "200",
+      "x-ms-job-clusterrequested-on" : "1/1/0001 12:00:00 AM +00:00",
+      "Date" : "Wed, 13 Jan 2021 17:34:54 GMT",
+      "x-ms-activity-id" : "2f632d46-4805-416f-a447-5a2170b4c1e7",
+      "x-ms-job-result" : "Uncertain",
+      "x-ms-response-time-ms" : "21",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "x-ms-job-internal-id" : "66",
+      "x-ms-job-scheduled-on" : "1/1/0001 12:00:00 AM +00:00",
+      "x-ms-job-type" : "SparkServiceSession",
+      "x-ms-job-livysubmission-on" : "1/1/0001 12:00:00 AM +00:00",
+      "x-ms-request-id" : "852557a3-1f8b-4c2d-a343-b06377f70bc5",
+      "Body" : "{\"livyInfo\":{\"notStartedAt\":null,\"startingAt\":null,\"idleAt\":null,\"deadAt\":null,\"shuttingDownAt\":null,\"killedAt\":null,\"recoveringAt\":null,\"busyAt\":null,\"errorAt\":null,\"currentState\":\"not_started\",\"jobCreationRequest\":{\"name\":\"92c69b8f8d\",\"conf\":{},\"driverMemory\":\"28g\",\"driverCores\":4,\"executorMemory\":\"28g\",\"executorCores\":4,\"numExecutors\":2}},\"name\":\"92c69b8f8d\",\"workspaceName\":\"xysynapsetest\",\"computeName\":\"testsparkpool\",\"sparkPoolName\":\"testsparkpool\",\"submitterName\":\"jianghlu@microsoft.com\",\"submitterId\":\"794b8347-c398-4fd8-b557-37b60946e830\",\"artifactId\":\"Livy\",\"jobType\":\"SparkSession\",\"result\":\"Uncertain\",\"schedulerInfo\":{\"submittedAt\":\"2021-01-13T17:34:54.8258451+00:00\",\"scheduledAt\":null,\"endedAt\":null,\"cancellationRequestedAt\":null,\"currentState\":\"Queued\"},\"pluginInfo\":{\"preparationStartedAt\":null,\"resourceAcquisitionStartedAt\":null,\"submissionStartedAt\":null,\"monitoringStartedAt\":null,\"cleanupStartedAt\":null,\"currentState\":\"Preparation\"},\"tags\":{},\"id\":66,\"appId\":null,\"appInfo\":null,\"state\":\"not_started\",\"log\":null}",
+      "x-ms-client-request-id" : "657dfe6e-c575-4923-a9a1-4df98cfc93bf",
+      "Content-Type" : "application/json; charset=utf-8",
+      "x-ms-job-scheduler-state" : "Queued"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/testsparkpool//sessions/66",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-analytics-synapse-spark/1.0.0-beta.2 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "722ad5dd-d15b-4045-8d16-7b75dcaf438c"
+    },
+    "Response" : {
+      "x-ms-response-time-ms" : "33",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Server" : "Kestrel Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "1abe052f-5634-4c3e-81e5-cc64d83f1e9f",
+      "Date" : "Wed, 13 Jan 2021 17:34:54 GMT",
+      "x-ms-activity-id" : "760d8dbf-1f56-4b60-9f3b-e085642d5510",
+      "x-ms-client-request-id" : "722ad5dd-d15b-4045-8d16-7b75dcaf438c"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "92c69b8f8d" ]
+}

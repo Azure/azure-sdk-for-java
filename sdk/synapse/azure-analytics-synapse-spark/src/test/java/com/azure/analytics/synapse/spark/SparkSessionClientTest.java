@@ -7,6 +7,9 @@ import com.azure.analytics.synapse.spark.models.SparkBatchJob;
 import com.azure.analytics.synapse.spark.models.SparkBatchJobOptions;
 import com.azure.analytics.synapse.spark.models.SparkSession;
 import com.azure.analytics.synapse.spark.models.SparkSessionOptions;
+import com.azure.analytics.synapse.spark.models.SparkStatement;
+import com.azure.analytics.synapse.spark.models.SparkStatementLanguageType;
+import com.azure.analytics.synapse.spark.models.SparkStatementOptions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -30,7 +33,9 @@ public class SparkSessionClientTest extends SparkClientTestBase {
     @Test
     public void getSparkSession() {
         for (SparkSession expectedSparkSession : client.getSparkSessions().getSessions()) {
+            // act
             SparkSession actualSparkSession = client.getSparkSession(expectedSparkSession.getId());
+            // assert
             assertSparkSessionEquals(expectedSparkSession, actualSparkSession);
         }
     }
@@ -39,34 +44,73 @@ public class SparkSessionClientTest extends SparkClientTestBase {
     public void crudSparkSession() {
         // arrange
         String sessionName = testResourceNamer.randomName("spark-session-", 10);
-        String file = String.format("abfss://%s@%s.dfs.core.windows.net/wordcount.jar", getStorageContainerName(), getStorageAccountName());
         SparkSessionOptions options = new SparkSessionOptions()
             .setName(sessionName)
-            .setFile(file)
-            .setClassName("WordCount")
-            .setArguments(Arrays.asList(
-                String.format("abfss://%s@%s.dfs.core.windows.net/shakespeare.txt", getStorageContainerName(), getStorageAccountName()),
-                String.format("abfss://%s@%s.dfs.core.windows.net/java-result/", getStorageContainerName(), getStorageAccountName())
-            ))
             .setDriverMemory("28g")
             .setDriverCores(4)
             .setExecutorMemory("28g")
             .setExecutorCores(4)
             .setExecutorCount(2);
 
+        SparkSession expected = null;
+
+        try {
+            // act
+            expected = client.createSparkSession(options, true);
+
+            // assert
+            assertNotNull(expected);
+            assertEquals(sessionName, expected.getName());
+            assertEquals(getSparkPoolName(), expected.getSparkPoolName());
+
+            // act
+            SparkSession actual = client.getSparkSession(expected.getId(), true);
+
+            // assert
+            assertSparkSessionEquals(expected, actual);
+        } finally {
+            // clean up
+            if (expected != null) {
+                client.cancelSparkSession(expected.getId());
+            }
+        }
+    }
+
+    @Test
+    public void crudSparkStatement() throws Exception {
+        // arrange
+        SparkBatchClient = clientSetup(httpPipeline -> new SparkClientBuilder()
+            .endpoint(getEndpoint())
+            .pipeline(httpPipeline)
+            .sparkPoolName(getSparkPoolName())
+            .buildSparkBatchClient());
+
+        String sessionName = testResourceNamer.randomName("spark-session-", 10);
+        SparkSessionOptions sessionOptions = new SparkSessionOptions()
+            .setName(sessionName)
+            .setDriverMemory("28g")
+            .setDriverCores(4)
+            .setExecutorMemory("28g")
+            .setExecutorCores(4)
+            .setExecutorCount(2);
+
+        SparkSession session = client.createSparkSession(sessionOptions, true);
+
+        SparkStatementOptions options = new SparkStatementOptions()
+            .setKind(SparkStatementLanguageType.SPARK);
+
         // act
-        SparkSession expected = client.createSparkSession(options, true);
+        SparkStatement expected = client.createSparkStatement(session.getId(), options);
 
         // assert
         assertNotNull(expected);
-        assertEquals(sessionName, expected.getName());
-        assertEquals(getSparkPoolName(), expected.getSparkPoolName());
+        assertEquals(session.getId(), expected.getId());
 
         // act
-        SparkSession actual = client.getSparkSession(expected.getId(), true);
+        SparkStatement actual = client.getSparkStatement(expected.getId(), expected.getId());
 
         // assert
-        assertSparkSessionEquals(expected, actual);
+        assertSparkStatementEquals(expected, actual);
 
         // clean up
         client.cancelSparkSession(expected.getId());
