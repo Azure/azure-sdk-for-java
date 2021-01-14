@@ -4,6 +4,9 @@
 
 package com.azure.communication.administration.models;
 
+import com.azure.communication.administration.implementation.models.CommunicationError;
+import com.azure.communication.administration.implementation.models.OperationKind;
+import com.azure.communication.administration.implementation.models.PhoneNumberOperationStatusCodes;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
