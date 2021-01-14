@@ -13,7 +13,7 @@ Acquired phone numbers can come with many capabilities, depending on the country
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
 - [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource.
+- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
 
@@ -36,7 +36,7 @@ The `DefaultAzureCredential` object must be passed to the `CommunicationIdentity
 the credential() funtion. Endpoint and httpClient must also be set
 via the endpoint() and httpClient() functions respectively.
 
-`CLIENT_SECRET`, `CLIENT_ID` and `TENANT_ID` environment variables 
+`AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables 
 are needed to create a DefaultAzureCredential object.
 
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L377-L389 -->
