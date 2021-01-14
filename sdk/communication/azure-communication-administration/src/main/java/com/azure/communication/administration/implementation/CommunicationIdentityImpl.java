@@ -4,16 +4,15 @@
 
 package com.azure.communication.administration.implementation;
 
-import com.azure.communication.administration.models.CommunicationIdentity;
-import com.azure.communication.administration.models.CommunicationIdentityToken;
-import com.azure.communication.administration.models.CommunicationIdentityUpdateRequest;
-import com.azure.communication.administration.models.CommunicationTokenRequest;
+import com.azure.communication.administration.models.CommunicationIdentityAccessToken;
+import com.azure.communication.administration.models.CommunicationIdentityAccessTokenRequest;
+import com.azure.communication.administration.models.CommunicationIdentityAccessTokenResult;
+import com.azure.communication.administration.models.CommunicationIdentityCreateRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
@@ -37,7 +36,7 @@ public final class CommunicationIdentityImpl {
     private final CommunicationIdentityClientImpl client;
 
     /**
-     * Initializes an instance of CommunicationIdentityImpl.
+     * Initializes an instance of CommunicationIdentitysImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
@@ -47,7 +46,7 @@ public final class CommunicationIdentityImpl {
     }
 
     /**
-     * The interface defining all the services for CommunicationIdentityClientCommunicationIdentitys to be used by the
+     * The interface defining all the services for CommunicationIdentityClientCommunicationIdentity to be used by the
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
@@ -56,363 +55,88 @@ public final class CommunicationIdentityImpl {
         @Post("/identities")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<CommunicationIdentity>> create(
-                @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, Context context);
+        Mono<Response<CommunicationIdentityAccessTokenResult>> createIdentity(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") CommunicationIdentityCreateRequest body,
+                Context context);
 
         @Delete("/identities/{id}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> delete(
+        Mono<Response<Void>> deleteIdentity(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 Context context);
 
-        @Patch("/identities/{id}")
+        @Post("/identities/{id}/:revokeAccessTokens")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> update(
+        Mono<Response<Void>> revokeAccessTokens(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") CommunicationIdentityUpdateRequest body,
                 Context context);
 
-        @Post("/identities/{id}/token")
+        @Post("/identities/{id}/:issueAccessToken")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<CommunicationIdentityToken>> issueToken(
+        Mono<Response<CommunicationIdentityAccessToken>> issueAccessToken(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") CommunicationTokenRequest body,
+                @BodyParam("application/json") CommunicationIdentityAccessTokenRequest body,
                 Context context);
     }
 
     /**
      * Create a new identity.
      *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationIdentity>> createWithResponseAsync() {
-        return FluxUtil.withContext(
-                context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), context));
-    }
-
-    /**
-     * Create a new identity.
-     *
-     * @param context The context to associate with this operation.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity.
+     * @return a communication identity with access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationIdentity>> createWithResponseAsync(Context context) {
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Create a new identity.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationIdentity> createAsync() {
-        return createWithResponseAsync()
-                .flatMap(
-                        (Response<CommunicationIdentity> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Create a new identity.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationIdentity> createAsync(Context context) {
-        return createWithResponseAsync(context)
-                .flatMap(
-                        (Response<CommunicationIdentity> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
-    }
-
-    /**
-     * Create a new identity.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationIdentity create() {
-        return createAsync().block();
-    }
-
-    /**
-     * Create a new identity.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a communication identity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationIdentity create(Context context) {
-        return createAsync(context).block();
-    }
-
-    /**
-     * Delete the identity, revoke all tokens of the identity and delete all associated data.
-     *
-     * @param id Identifier of the identity to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String id) {
-        return FluxUtil.withContext(
-                context -> service.delete(this.client.getEndpoint(), id, this.client.getApiVersion(), context));
-    }
-
-    /**
-     * Delete the identity, revoke all tokens of the identity and delete all associated data.
-     *
-     * @param id Identifier of the identity to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String id, Context context) {
-        return service.delete(this.client.getEndpoint(), id, this.client.getApiVersion(), context);
-    }
-
-    /**
-     * Delete the identity, revoke all tokens of the identity and delete all associated data.
-     *
-     * @param id Identifier of the identity to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String id) {
-        return deleteWithResponseAsync(id).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete the identity, revoke all tokens of the identity and delete all associated data.
-     *
-     * @param id Identifier of the identity to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String id, Context context) {
-        return deleteWithResponseAsync(id, context).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Delete the identity, revoke all tokens of the identity and delete all associated data.
-     *
-     * @param id Identifier of the identity to be deleted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String id) {
-        deleteAsync(id).block();
-    }
-
-    /**
-     * Delete the identity, revoke all tokens of the identity and delete all associated data.
-     *
-     * @param id Identifier of the identity to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String id, Context context) {
-        deleteAsync(id, context).block();
-    }
-
-    /**
-     * Update an Identity.
-     *
-     * @param id Identifier of the identity.
-     * @param body The properties of the identity to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(String id, CommunicationIdentityUpdateRequest body) {
-        return FluxUtil.withContext(
-                context -> service.update(this.client.getEndpoint(), id, this.client.getApiVersion(), body, context));
-    }
-
-    /**
-     * Update an Identity.
-     *
-     * @param id Identifier of the identity.
-     * @param body The properties of the identity to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(
-            String id, CommunicationIdentityUpdateRequest body, Context context) {
-        return service.update(this.client.getEndpoint(), id, this.client.getApiVersion(), body, context);
-    }
-
-    /**
-     * Update an Identity.
-     *
-     * @param id Identifier of the identity.
-     * @param body The properties of the identity to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateAsync(String id, CommunicationIdentityUpdateRequest body) {
-        return updateWithResponseAsync(id, body).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Update an Identity.
-     *
-     * @param id Identifier of the identity.
-     * @param body The properties of the identity to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateAsync(String id, CommunicationIdentityUpdateRequest body, Context context) {
-        return updateWithResponseAsync(id, body, context).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Update an Identity.
-     *
-     * @param id Identifier of the identity.
-     * @param body The properties of the identity to be updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String id, CommunicationIdentityUpdateRequest body) {
-        updateAsync(id, body).block();
-    }
-
-    /**
-     * Update an Identity.
-     *
-     * @param id Identifier of the identity.
-     * @param body The properties of the identity to be updated.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String id, CommunicationIdentityUpdateRequest body, Context context) {
-        updateAsync(id, body, context).block();
-    }
-
-    /**
-     * Generate a new token for an identity.
-     *
-     * @param id Identifier of the identity to issue token for.
-     * @param body Requesting scopes for the new token.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationIdentityToken>> issueTokenWithResponseAsync(
-            String id, CommunicationTokenRequest body) {
+    public Mono<Response<CommunicationIdentityAccessTokenResult>> createIdentityWithResponseAsync(
+            CommunicationIdentityCreateRequest body) {
         return FluxUtil.withContext(
                 context ->
-                        service.issueToken(this.client.getEndpoint(), id, this.client.getApiVersion(), body, context));
+                        service.createIdentity(this.client.getEndpoint(), this.client.getApiVersion(), body, context));
     }
 
     /**
-     * Generate a new token for an identity.
+     * Create a new identity.
      *
-     * @param id Identifier of the identity to issue token for.
-     * @param body Requesting scopes for the new token.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a communication identity with access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationIdentityToken>> issueTokenWithResponseAsync(
-            String id, CommunicationTokenRequest body, Context context) {
-        return service.issueToken(this.client.getEndpoint(), id, this.client.getApiVersion(), body, context);
+    public Mono<Response<CommunicationIdentityAccessTokenResult>> createIdentityWithResponseAsync(
+            CommunicationIdentityCreateRequest body, Context context) {
+        return service.createIdentity(this.client.getEndpoint(), this.client.getApiVersion(), body, context);
     }
 
     /**
-     * Generate a new token for an identity.
+     * Create a new identity.
      *
-     * @param id Identifier of the identity to issue token for.
-     * @param body Requesting scopes for the new token.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a communication identity with access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationIdentityToken> issueTokenAsync(String id, CommunicationTokenRequest body) {
-        return issueTokenWithResponseAsync(id, body)
+    public Mono<CommunicationIdentityAccessTokenResult> createIdentityAsync(CommunicationIdentityCreateRequest body) {
+        return createIdentityWithResponseAsync(body)
                 .flatMap(
-                        (Response<CommunicationIdentityToken> res) -> {
+                        (Response<CommunicationIdentityAccessTokenResult> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -422,22 +146,21 @@ public final class CommunicationIdentityImpl {
     }
 
     /**
-     * Generate a new token for an identity.
+     * Create a new identity.
      *
-     * @param id Identifier of the identity to issue token for.
-     * @param body Requesting scopes for the new token.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a communication identity with access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationIdentityToken> issueTokenAsync(
-            String id, CommunicationTokenRequest body, Context context) {
-        return issueTokenWithResponseAsync(id, body, context)
+    public Mono<CommunicationIdentityAccessTokenResult> createIdentityAsync(
+            CommunicationIdentityCreateRequest body, Context context) {
+        return createIdentityWithResponseAsync(body, context)
                 .flatMap(
-                        (Response<CommunicationIdentityToken> res) -> {
+                        (Response<CommunicationIdentityAccessTokenResult> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -447,22 +170,230 @@ public final class CommunicationIdentityImpl {
     }
 
     /**
-     * Generate a new token for an identity.
+     * Create a new identity.
+     *
+     * @param body The body parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a communication identity with access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationIdentityAccessTokenResult createIdentity(CommunicationIdentityCreateRequest body) {
+        return createIdentityAsync(body).block();
+    }
+
+    /**
+     * Create a new identity.
+     *
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a communication identity with access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationIdentityAccessTokenResult createIdentity(
+            CommunicationIdentityCreateRequest body, Context context) {
+        return createIdentityAsync(body, context).block();
+    }
+
+    /**
+     * Delete the identity, revoke all tokens for the identity and delete all associated data.
+     *
+     * @param id Identifier of the identity to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIdentityWithResponseAsync(String id) {
+        return FluxUtil.withContext(
+                context -> service.deleteIdentity(this.client.getEndpoint(), id, this.client.getApiVersion(), context));
+    }
+
+    /**
+     * Delete the identity, revoke all tokens for the identity and delete all associated data.
+     *
+     * @param id Identifier of the identity to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteIdentityWithResponseAsync(String id, Context context) {
+        return service.deleteIdentity(this.client.getEndpoint(), id, this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Delete the identity, revoke all tokens for the identity and delete all associated data.
+     *
+     * @param id Identifier of the identity to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteIdentityAsync(String id) {
+        return deleteIdentityWithResponseAsync(id).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Delete the identity, revoke all tokens for the identity and delete all associated data.
+     *
+     * @param id Identifier of the identity to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteIdentityAsync(String id, Context context) {
+        return deleteIdentityWithResponseAsync(id, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Delete the identity, revoke all tokens for the identity and delete all associated data.
+     *
+     * @param id Identifier of the identity to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIdentity(String id) {
+        deleteIdentityAsync(id).block();
+    }
+
+    /**
+     * Delete the identity, revoke all tokens for the identity and delete all associated data.
+     *
+     * @param id Identifier of the identity to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteIdentity(String id, Context context) {
+        deleteIdentityAsync(id, context).block();
+    }
+
+    /**
+     * Revoke all access tokens for the specific identity.
+     *
+     * @param id Identifier of the identity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> revokeAccessTokensWithResponseAsync(String id) {
+        return FluxUtil.withContext(
+                context ->
+                        service.revokeAccessTokens(
+                                this.client.getEndpoint(), id, this.client.getApiVersion(), context));
+    }
+
+    /**
+     * Revoke all access tokens for the specific identity.
+     *
+     * @param id Identifier of the identity.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> revokeAccessTokensWithResponseAsync(String id, Context context) {
+        return service.revokeAccessTokens(this.client.getEndpoint(), id, this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Revoke all access tokens for the specific identity.
+     *
+     * @param id Identifier of the identity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> revokeAccessTokensAsync(String id) {
+        return revokeAccessTokensWithResponseAsync(id).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Revoke all access tokens for the specific identity.
+     *
+     * @param id Identifier of the identity.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> revokeAccessTokensAsync(String id, Context context) {
+        return revokeAccessTokensWithResponseAsync(id, context).flatMap((Response<Void> res) -> Mono.empty());
+    }
+
+    /**
+     * Revoke all access tokens for the specific identity.
+     *
+     * @param id Identifier of the identity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void revokeAccessTokens(String id) {
+        revokeAccessTokensAsync(id).block();
+    }
+
+    /**
+     * Revoke all access tokens for the specific identity.
+     *
+     * @param id Identifier of the identity.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void revokeAccessTokens(String id, Context context) {
+        revokeAccessTokensAsync(id, context).block();
+    }
+
+    /**
+     * Issue a new token for an identity.
      *
      * @param id Identifier of the identity to issue token for.
      * @param body Requesting scopes for the new token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationIdentityToken issueToken(String id, CommunicationTokenRequest body) {
-        return issueTokenAsync(id, body).block();
+    public Mono<Response<CommunicationIdentityAccessToken>> issueAccessTokenWithResponseAsync(
+            String id, CommunicationIdentityAccessTokenRequest body) {
+        return FluxUtil.withContext(
+                context ->
+                        service.issueAccessToken(
+                                this.client.getEndpoint(), id, this.client.getApiVersion(), body, context));
     }
 
     /**
-     * Generate a new token for an identity.
+     * Issue a new token for an identity.
      *
      * @param id Identifier of the identity to issue token for.
      * @param body Requesting scopes for the new token.
@@ -470,10 +401,92 @@ public final class CommunicationIdentityImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationIdentityToken issueToken(String id, CommunicationTokenRequest body, Context context) {
-        return issueTokenAsync(id, body, context).block();
+    public Mono<Response<CommunicationIdentityAccessToken>> issueAccessTokenWithResponseAsync(
+            String id, CommunicationIdentityAccessTokenRequest body, Context context) {
+        return service.issueAccessToken(this.client.getEndpoint(), id, this.client.getApiVersion(), body, context);
+    }
+
+    /**
+     * Issue a new token for an identity.
+     *
+     * @param id Identifier of the identity to issue token for.
+     * @param body Requesting scopes for the new token.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CommunicationIdentityAccessToken> issueAccessTokenAsync(
+            String id, CommunicationIdentityAccessTokenRequest body) {
+        return issueAccessTokenWithResponseAsync(id, body)
+                .flatMap(
+                        (Response<CommunicationIdentityAccessToken> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Issue a new token for an identity.
+     *
+     * @param id Identifier of the identity to issue token for.
+     * @param body Requesting scopes for the new token.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CommunicationIdentityAccessToken> issueAccessTokenAsync(
+            String id, CommunicationIdentityAccessTokenRequest body, Context context) {
+        return issueAccessTokenWithResponseAsync(id, body, context)
+                .flatMap(
+                        (Response<CommunicationIdentityAccessToken> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
+    }
+
+    /**
+     * Issue a new token for an identity.
+     *
+     * @param id Identifier of the identity to issue token for.
+     * @param body Requesting scopes for the new token.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationIdentityAccessToken issueAccessToken(String id, CommunicationIdentityAccessTokenRequest body) {
+        return issueAccessTokenAsync(id, body).block();
+    }
+
+    /**
+     * Issue a new token for an identity.
+     *
+     * @param id Identifier of the identity to issue token for.
+     * @param body Requesting scopes for the new token.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an access token.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationIdentityAccessToken issueAccessToken(
+            String id, CommunicationIdentityAccessTokenRequest body, Context context) {
+        return issueAccessTokenAsync(id, body, context).block();
     }
 }

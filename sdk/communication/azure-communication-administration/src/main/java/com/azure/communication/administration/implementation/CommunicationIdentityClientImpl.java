@@ -12,11 +12,11 @@ import com.azure.core.http.policy.UserAgentPolicy;
 
 /** Initializes a new instance of the CommunicationIdentityClient type. */
 public final class CommunicationIdentityClientImpl {
-    /** Auth and Identity endpoint. */
+    /** The communication resource, for example https://my-resource.communication.azure.com. */
     private final String endpoint;
 
     /**
-     * Gets Auth and Identity endpoint.
+     * Gets The communication resource, for example https://my-resource.communication.azure.com.
      *
      * @return the endpoint value.
      */
@@ -77,7 +77,7 @@ public final class CommunicationIdentityClientImpl {
     CommunicationIdentityClientImpl(HttpPipeline httpPipeline, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-07-20-preview2";
+        this.apiVersion = "2021-03-07";
         this.communicationIdentity = new CommunicationIdentityImpl(this);
     }
 }

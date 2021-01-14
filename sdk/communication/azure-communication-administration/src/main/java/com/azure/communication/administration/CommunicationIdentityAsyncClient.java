@@ -5,7 +5,10 @@ package com.azure.communication.administration;
 
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.administration.implementation.CommunicationIdentityImpl;
-import com.azure.communication.administration.models.CommunicationIdentity; 
+import com.azure.communication.administration.models.CommunicationIdentity;
+import com.azure.communication.administration.models.CommunicationIdentityAccessTokenResult;
+import com.azure.communication.administration.models.CommunicationIdentityCreateRequest;
+import com.azure.communication.administration.models.CommunicationIdentityTokenScope;
 import com.azure.communication.administration.models.CommunicationTokenRequest;
 import com.azure.communication.administration.models.CommunicationIdentityUpdateRequest;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -46,54 +49,31 @@ public final class CommunicationIdentityAsyncClient {
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationUserIdentifier> createUser() {
-        try {
-            return withContext(context -> createUser(context)
-                .flatMap(
-                    (Response<CommunicationUserIdentifier> res) -> {
-                        if (res.getValue() != null) {
-                            return Mono.just(res.getValue());
-                        }
-                        return Mono.empty();
-                    }));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Mono<CommunicationUserIdentifier> createIdentity(List<CommunicationIdentityTokenScope> scopes) {
+        return Mono.error(new UnsupportedOperationException("not yet implemented"));
+
     }
 
     /**
      * Creates a new CommunicationUser.
      *
+     * @param scopes the list of scopes for the identity access token
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationUserIdentifier>> createUserWithResponse() {
-        try {
-            return withContext(context -> createUser(context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
+    public Mono<Response<CommunicationUserIdentifier>> createIdentityWithResponse(List<CommunicationIdentityTokenScope> scopes) {
+        return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 
     /**
-     * Creates a new CommunicationUser.
+     * Creates a new CommunicationUserIdentifier.
      *
+     * @param scopes the list of scopes for the identity access token
      * @param context the context of the request. Can also be null or Context.NONE.
      * @return the created Communication User.
      */
-    public Mono<Response<CommunicationUserIdentifier>> createUser(Context context) {
-        context = context == null ? Context.NONE : context;
-
-        return client.createWithResponseAsync(context)
-            .flatMap(
-                (Response<CommunicationIdentity> res) -> {
-                    if (res.getValue() != null) {
-                        CommunicationUserIdentifier user = new CommunicationUserIdentifier(res.getValue().getId());
-                        return Mono.just(new ResponseBase<HttpHeaders, CommunicationUserIdentifier>(res.getRequest(), 
-                        res.getStatusCode(), res.getHeaders(), user, null));
-                    } 
-                    return Mono.empty();
-                });
+    public Mono<Response<CommunicationUserIdentifier>> createIdentity(List<CommunicationIdentityTokenScope> scopes, Context context) {
+        return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 
     /**
@@ -142,7 +122,7 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<Response<Void>> deleteUser(CommunicationUserIdentifier communicationUser, Context context) {
         context = context == null ? Context.NONE : context;
 
-        return client.deleteWithResponseAsync(communicationUser.getId(), context);
+        return client.deleteIdentityWithResponseAsync(communicationUser.getId(), context);
     }
 
     /**
