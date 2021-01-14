@@ -60,7 +60,7 @@ public final class ConvertVirtualMachineToManagedDisks {
                         .withNewVhd(50)
                         .withLun(2)
                         .attach()
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             System.out.println("Created a Linux VM with un-managed OS and data disks: " + linuxVM.id());

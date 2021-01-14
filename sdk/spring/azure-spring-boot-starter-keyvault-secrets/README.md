@@ -1,5 +1,5 @@
 # Azure Key Vault Secrets Spring Boot starter client library for Java
-Azure Key Vault Secrets Spring boot starter is Spring starter for [Azure Key Vault Secrets](https://docs.microsoft.com/rest/api/keyvault/about-keys--secrets-and-certificates#BKMK_WorkingWithSecrets). With this starter, Azure Key Vault is added as one of Spring PropertySource, so secrets stored in Azure Key Vault could be easily used and conveniently accessed like other externalized configuration property, e.g. properties in files.
+Azure Key Vault Secrets Spring Boot Starter is Spring starter for [Azure Key Vault Secrets](https://docs.microsoft.com/rest/api/keyvault/about-keys--secrets-and-certificates#BKMK_WorkingWithSecrets). With this starter, Azure Key Vault is added as one of Spring PropertySource, so secrets stored in Azure Key Vault could be easily used and conveniently accessed like other externalized configuration property, e.g. properties in files.
 
 [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
@@ -15,7 +15,7 @@ Azure Key Vault Secrets Spring boot starter is Spring starter for [Azure Key Vau
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
-    <version>3.0.0-beta.1</version>
+    <version>3.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -204,7 +204,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-key-vault
-[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#azure-keyvault-secrets-spring-boot-starter
+[refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-keyvault-secrets-spring-boot-starter
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-keyvault-secrets
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application

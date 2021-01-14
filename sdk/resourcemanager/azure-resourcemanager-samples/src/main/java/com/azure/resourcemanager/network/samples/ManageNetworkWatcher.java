@@ -140,7 +140,7 @@ public final class ManageNetworkWatcher {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                     .withRootUsername(userName)
                     .withRootPassword("Abcdef.123456")
-                    .withSize(VirtualMachineSizeTypes.STANDARD_A1)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     // This extension is needed to enable packet capture
                     .defineNewExtension("packetCapture")
                     .withPublisher("Microsoft.Azure.NetworkWatcher")

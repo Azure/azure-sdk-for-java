@@ -109,9 +109,9 @@ public final class KeyAsyncClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
-     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC
-     * EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM} and
-     * {@link KeyType#OCT OCT}.</p>
+     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include:
+     * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM},
+     * {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when
@@ -140,9 +140,9 @@ public final class KeyAsyncClient {
      * key vault. If the named key already exists, Azure Key Vault creates a new version of the key. It requires the
      * {@code keys/create} permission.
      *
-     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include: {@link KeyType#EC
-     * EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM} and
-     * {@link KeyType#OCT OCT}.</p>
+     * <p>The {@link KeyType keyType} indicates the type of key to create. Possible values include:
+     * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM},
+     * {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new EC key. Subscribes to the call asynchronously and prints out the newly created key details when
@@ -183,9 +183,9 @@ public final class KeyAsyncClient {
      * CreateKeyOptions#getNotBefore() notBefore} values are optional. The {@link CreateKeyOptions#isEnabled() enabled}
      * field is set to true by Azure Key Vault, if not specified.</p>
      *
-     * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values include:
-     * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM}
-     * and {@link KeyType#OCT OCT}.</p>
+     * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of key to create. Possible values
+     * include: {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA},
+     * {@link KeyType#RSA_HSM RSA-HSM}, {@link KeyType#OCT OCT} and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new Rsa key which activates in one day and expires in one year. Subscribes to the call
@@ -213,7 +213,8 @@ public final class KeyAsyncClient {
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createKeyOptions.getKeyType())
             .setKeyOps(createKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(createKeyOptions))
+            .setReleasePolicy(createKeyOptions.getReleasePolicy());
         return service.createKey(vaultUrl, createKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Creating key - {}", createKeyOptions.getName()))
@@ -293,7 +294,9 @@ public final class KeyAsyncClient {
             .setKty(createRsaKeyOptions.getKeyType())
             .setKeySize(createRsaKeyOptions.getKeySize())
             .setKeyOps(createRsaKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createRsaKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(createRsaKeyOptions))
+            .setReleasePolicy(createRsaKeyOptions.getReleasePolicy())
+            .setPublicExponent(createRsaKeyOptions.getPublicExponent());
         return service.createKey(vaultUrl, createRsaKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Creating Rsa key - {}", createRsaKeyOptions.getName()))
@@ -379,7 +382,8 @@ public final class KeyAsyncClient {
             .setKty(createEcKeyOptions.getKeyType())
             .setCurve(createEcKeyOptions.getCurveName())
             .setKeyOps(createEcKeyOptions.getKeyOperations())
-            .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(createEcKeyOptions))
+            .setReleasePolicy(createEcKeyOptions.getReleasePolicy());
         return service.createKey(vaultUrl, createEcKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Creating Ec key - {}", createEcKeyOptions.getName()))
@@ -492,12 +496,106 @@ public final class KeyAsyncClient {
         KeyImportRequestParameters parameters = new KeyImportRequestParameters()
             .setKey(importKeyOptions.getKey())
             .setHsm(importKeyOptions.isHardwareProtected())
-            .setKeyAttributes(new KeyRequestAttributes(importKeyOptions));
+            .setKeyAttributes(new KeyRequestAttributes(importKeyOptions))
+            .setReleasePolicy(importKeyOptions.getReleasePolicy());
         return service.importKey(vaultUrl, importKeyOptions.getName(), apiVersion, ACCEPT_LANGUAGE, parameters,
             CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
             .doOnRequest(ignored -> logger.info("Importing key - {}", importKeyOptions.getName()))
             .doOnSuccess(response -> logger.info("Imported key - {}", response.getValue().getName()))
             .doOnError(error -> logger.warning("Failed to import key - {}", importKeyOptions.getName(), error));
+    }
+
+    /**
+     * Exports the latest version of a key from the key vault. The export key operation may be used to import any key
+     * from the Azure Key Vault as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#String-String}
+     *
+     * @param name The name of the key to be exported.
+     * @param environment The target environment assertion.
+     * @return A {@link Mono} containing the {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name} or {@code environment} are {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultKey> exportKey(String name, String environment) {
+        try {
+            return exportKeyWithResponse(name, "", environment).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
+     * as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKey#String-String-String}
+     *
+     * @param name The name of the key to be exported.
+     * @param version The key version.
+     * @param environment The target environment assertion.
+     * @return A {@link Mono} containing the {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
+     * {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultKey> exportKey(String name, String version, String environment) {
+        try {
+            return exportKeyWithResponse(name, version, environment).flatMap(FluxUtil::toMono);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Exports a key from the key vault. The export key operation may be used to import any key from the Azure Key Vault
+     * as long as it is marked as exportable and its release policy is satisfied.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Exports a key from a key vault. Subscribes to the call asynchronously and prints out the newly exported key
+     * details when a response has been received.</p>
+     *
+     * {@codesnippet com.azure.security.keyvault.keys.keyasyncclient.exportKeyWithResponse#String-String-String}
+     *
+     * @param name The name of the key to be exported.
+     * @param version The key version.
+     * @param environment The target environment assertion.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * {@link KeyVaultKey exported key}.
+     * @throws NullPointerException If the specified {@code name}, {@code version} or {@code environment} are
+     * {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyVaultKey>> exportKeyWithResponse(String name, String version, String environment) {
+        try {
+            return withContext(context -> exportKeyWithResponse(name, version, environment, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<KeyVaultKey>> exportKeyWithResponse(String name, String version, String environment,
+                                                      Context context) {
+        Objects.requireNonNull(name, "The key name cannot be null.");
+        Objects.requireNonNull(version, "The key version cannot be null.");
+        Objects.requireNonNull(environment, "The environment parameter cannot be null.");
+
+        context = context == null ? Context.NONE : context;
+        KeyExportRequestParameters parameters = new KeyExportRequestParameters().setEnvironment(environment);
+
+        return service.exportKey(vaultUrl, name, version, apiVersion, ACCEPT_LANGUAGE, parameters,
+            CONTENT_TYPE_HEADER_VALUE, context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE))
+            .doOnRequest(ignored -> logger.info("Exporting key - {}", name))
+            .doOnSuccess(response -> logger.info("Exported key - {}", response.getValue().getName()))
+            .doOnError(error -> logger.warning("Failed to export key - {}", name, error));
     }
 
     /**
@@ -659,7 +757,8 @@ public final class KeyAsyncClient {
         context = context == null ? Context.NONE : context;
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setTags(keyProperties.getTags())
-            .setKeyAttributes(new KeyRequestAttributes(keyProperties));
+            .setKeyAttributes(new KeyRequestAttributes(keyProperties))
+            .setReleasePolicy(keyProperties.getReleasePolicy());
         if (keyOperations.length > 0) {
             parameters.setKeyOps(Arrays.asList(keyOperations));
         }

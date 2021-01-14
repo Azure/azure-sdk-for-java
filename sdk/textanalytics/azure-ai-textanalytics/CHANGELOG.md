@@ -1,31 +1,45 @@
 # Release History
-## 5.1.0-beta.3 (Unreleased)
+## 5.1.0-beta.4 (Unreleased)
 
 
-## 5.1.0-beta.2 (2020-10-06)
-### Breaking changes
-- Removed property `length` from `CategorizedEntity`, `SentenceSentiment`, `LinkedEntityMatch`, `AspectSentiment`, 
-`OpinionSentiment`, and `PiiEntity` because the length information can be accessed from the text property itself
- using the string's length property.
+## 5.1.0-beta.3 (2020-11-19)
+### New features
+- Added support for healthcare recognition feature. It is represented as a long-running operation. Cancellation supported. 
+- Added support for analyze tasks feature, It analyzes multiple tasks (such as, entity recognition, PII entity recognition 
+and key phrases extraction) simultaneously in a list of document.
+- Currently, Azure Active Directory (AAD) is not supported in the Healthcare recognition feature. For more information, see
+[here](https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-for-health?tabs=ner#request-access-to-the-public-preview).
+- Both new features listed above are available in `West US2`, `East US2`, `Central US`, `North Europe` and `West Europe` 
+regions and in Standard tier.
 
-### Dependency updates
-- Update dependency version, `azure-core` to 1.9.0 and `azure-core-http-netty` to 1.6.2.
+## 5.0.1 (2020-11-12)
+### Dependency updates 
+- Update dependency version, `azure-core` to 1.10.0 and `azure-core-http-netty` to 1.6.3. 
 
-## 5.1.0-beta.1 (2020-09-17)
-- Added `offset` and `length` properties for `CategorizedEntity`, `LinkedEntityMatch` and `SentenceSentiment`
-  - `length` is the number of characters in the text of these models
-  - `offset` is the offset of the text from the start of the document
-  
-**New features**
-- Updated Text Analytics SDK's default service API version to `v3.1-preview.2` from `v3.0`.
-- Added support for Personally Identifiable Information(PII) entity recognition feature.
-  To use this feature, you need to make sure you are using the service's v3.1-preview.1 API.
-- Added support for the Opinion Mining feature. To use this feature, you need to make sure you are using the 
-service's v3.1-preview.1 and above API. To get this support pass `includeOpinionMining` as `true` in 
-`AnalyzeSentimentOptions` when calling the sentiment analysis endpoints.
-- Add property `bingEntitySearchApiId` to the `LinkedEntity` class. This property is only available for v3.1-preview.2
-and up, and it is to be used in conjunction with the Bing Entity Search API to fetch additional relevant information
-about the returned entity.
+## 5.1.0-beta.2 (2020-10-06) 
+### Breaking changes 
+- Removed property `length` from `CategorizedEntity`, `SentenceSentiment`, `LinkedEntityMatch`, `AspectSentiment`,  
+`OpinionSentiment`, and `PiiEntity` because the length information can be accessed from the text property itself 
+using the string's length property. 
+ 
+### Dependency updates 
+- Update dependency version, `azure-core` to 1.9.0 and `azure-core-http-netty` to 1.6.2. 
+ 
+## 5.1.0-beta.1 (2020-09-17) 
+- Added `offset` and `length` properties for `CategorizedEntity`, `LinkedEntityMatch` and `SentenceSentiment` 
+  - `length` is the number of characters in the text of these models 
+  - `offset` is the offset of the text from the start of the document 
+   
+**New features** 
+- Updated Text Analytics SDK's default service API version to `v3.1-preview.2` from `v3.0`. 
+- Added support for Personally Identifiable Information(PII) entity recognition feature. 
+  To use this feature, you need to make sure you are using the service's v3.1-preview.1 API. 
+- Added support for the Opinion Mining feature. To use this feature, you need to make sure you are using the  
+service's v3.1-preview.1 and above API. To get this support pass `includeOpinionMining` as `true` in  
+`AnalyzeSentimentOptions` when calling the sentiment analysis endpoints. 
+- Add property `bingEntitySearchApiId` to the `LinkedEntity` class. This property is only available for v3.1-preview.2 
+and up, and it is to be used in conjunction with the Bing Entity Search API to fetch additional relevant information 
+about the returned entity. 
 
 ## 5.0.0 (2020-07-27)
 - Re-release of version `1.0.1` with updated version `5.0.0`.
@@ -37,14 +51,14 @@ about the returned entity.
 - First stable release of `azure-ai-textanalytics`.
 
 ## 1.0.0-beta.5 (2020-05-27)
-**New features**
+### New features
 - Added Text property and `getText()` to `SentenceSentiment`.
 - `Warnings` property added to each document-level response object returned from the endpoints. It is a list of `TextAnalyticsWarnings`.
 - Added `CategorizedEntityCollection`, `KeyPhrasesCollection`, `LinkedEntityCollection` for having `getWarnings()` to retrieve warnings. 
 - Added a new enum value `ADDRESS` to `EntityCategory`.
 - Text analytics SDK update the service to version `v3.0` from `v3.0-preview.1`.
 
-**Breaking changes**
+### Breaking changes
 - Removed pagination feature, which removed `TextAnalyticsPagedIterable`, `TextAnalyticsPagedFlux` and `TextAnalyticsPagedResponse`
 - Removed overload methods for API that takes a list of String, only keep max-overload API that has a list of String, language or country hint, and `TextAnalyticsRequestOption`.
 - Renamed `apiKey()` to `credential()` on TextAnalyticsClientBuilder.
@@ -72,18 +86,18 @@ about the returned entity.
 ## 1.0.0-beta.4 (2020-04-07)
 - Throws an illegal argument exception when the given list of documents is an empty list.
 
-**Breaking changes**
+### Breaking changes
 - Renamed all input parameters `text` to `document`, and `inputTexts` to `documents`.
 - Removed all PII endpoints and update with related changes, such as remove related models, samples, codesnippets, docstrings, etc from this library. 
 - Replaced `TextAnalyticsApiKeyCredential` with `AzureKeyCredential`.
 
 ## 1.0.0-beta.3 (2020-03-10)
-**New features**
+### New features
 - Introduced `TextAnalyticsPagedFlux`, `TextAnalyticsPagedIterable`, and `TextAnalyticsPagedResponse` type. Moved `modelVersion` amd `TextDocumentBatchStatistics` into `TextAnalyticsPagedResponse`. All collection APIs are return `TextAnalyticsPagedFlux` and `TextAnalyticsPagedIterable` in the asynchronous and synchronous client, respectively. So `DocumentResultCollection` is no longer required. Most of existing API surface are changes. Please check up `TextAnalyticsAsyncClient` and `TextAnalyticsClient` for more detail.
 - Introduced `EntityCategory` class to support major entity categories that the service supported.
 - Added `getDefaultCountryHint()`, `getDefaultLanguage()` and `getServiceVersion()` to `TextAnalyticsClient`
 
-**Breaking changes**
+### Breaking changes
 - Supported `Iterable<T>` instead of `List<T>` text inputs.
 - Default language and country hint can only be assigned value when building a Text Analytics client.
 - Renamed `showStatistics()` to `isIncludeStatistics()` in the `TextAnalyticsRequestOptions`.
@@ -96,7 +110,7 @@ about the returned entity.
 
 ## 1.0.0-beta.2 (2020-02-12)
 
-**Breaking changes**
+### Breaking changes
 
 - The single text, module-level operations return an atomic type of the operation result. For example, `detectLanguage(String text)` returns a `DetectedLanguage` rather than a `DetectLanguageResult`.
 
@@ -136,11 +150,11 @@ about the returned entity.
 - `getLinkedEntities()` to `getEntities()` and variable `linkedEntities` to `entities`.
 - Added suffix of `batch` to all operations' method name that takes a collection of input.
  
-**New features**
+### New features
 
 - Credential class `TextAnalyticsApiKeyCredential` provides an `updateCredential()` method which allows you to update the API key for long-lived clients.
 
-**Fixes and improvements**
+### Breaking changes
 
 - If you try to access a result attribute on a `DocumentError` object, a `TextAnalyticsException` is raised with a custom error message that provides the document ID and error of the invalid document.
 

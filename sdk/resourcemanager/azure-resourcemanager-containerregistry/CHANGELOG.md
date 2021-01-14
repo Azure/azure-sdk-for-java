@@ -1,7 +1,14 @@
 # Release History
 
-## 2.0.0-beta.6 (Unreleased)
+## 2.2.0-beta.1 (Unreleased)
 
+
+## 2.1.0 (2020-11-24)
+
+
+## 2.0.0-beta.5 (2020-10-19)
+
+- Updated `api-version` to `2019-05-01`
 
 ## 2.0.0-beta.5 (2020-10-19)
 

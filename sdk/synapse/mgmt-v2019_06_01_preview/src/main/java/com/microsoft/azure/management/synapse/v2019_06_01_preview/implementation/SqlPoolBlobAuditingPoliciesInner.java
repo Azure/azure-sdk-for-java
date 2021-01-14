@@ -10,12 +10,17 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -24,6 +29,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -61,6 +67,14 @@ public class SqlPoolBlobAuditingPoliciesInner {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolBlobAuditingPolicies createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/auditingSettings/{blobAuditingPolicyName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("sqlPoolName") String sqlPoolName, @Path("blobAuditingPolicyName") String blobAuditingPolicyName, @Query("api-version") String apiVersion, @Body SqlPoolBlobAuditingPolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolBlobAuditingPolicies listBySqlPool" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/auditingSettings")
+        Observable<Response<ResponseBody>> listBySqlPool(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("sqlPoolName") String sqlPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.SqlPoolBlobAuditingPolicies listBySqlPoolNext" })
+        @GET
+        Observable<Response<ResponseBody>> listBySqlPoolNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -265,6 +279,248 @@ public class SqlPoolBlobAuditingPoliciesInner {
         return this.client.restClient().responseBuilderFactory().<SqlPoolBlobAuditingPolicyInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SqlPoolBlobAuditingPolicyInner>() { }.getType())
                 .register(201, new TypeToken<SqlPoolBlobAuditingPolicyInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists auditing settings of a Sql pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SqlPoolBlobAuditingPolicyInner&gt; object if successful.
+     */
+    public PagedList<SqlPoolBlobAuditingPolicyInner> listBySqlPool(final String resourceGroupName, final String workspaceName, final String sqlPoolName) {
+        ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>> response = listBySqlPoolSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName).toBlocking().single();
+        return new PagedList<SqlPoolBlobAuditingPolicyInner>(response.body()) {
+            @Override
+            public Page<SqlPoolBlobAuditingPolicyInner> nextPage(String nextPageLink) {
+                return listBySqlPoolNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists auditing settings of a Sql pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SqlPoolBlobAuditingPolicyInner>> listBySqlPoolAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName, final ListOperationCallback<SqlPoolBlobAuditingPolicyInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listBySqlPoolSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName),
+            new Func1<String, Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>> call(String nextPageLink) {
+                    return listBySqlPoolNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists auditing settings of a Sql pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SqlPoolBlobAuditingPolicyInner&gt; object
+     */
+    public Observable<Page<SqlPoolBlobAuditingPolicyInner>> listBySqlPoolAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName) {
+        return listBySqlPoolWithServiceResponseAsync(resourceGroupName, workspaceName, sqlPoolName)
+            .map(new Func1<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>, Page<SqlPoolBlobAuditingPolicyInner>>() {
+                @Override
+                public Page<SqlPoolBlobAuditingPolicyInner> call(ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists auditing settings of a Sql pool.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SqlPoolBlobAuditingPolicyInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>> listBySqlPoolWithServiceResponseAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName) {
+        return listBySqlPoolSinglePageAsync(resourceGroupName, workspaceName, sqlPoolName)
+            .concatMap(new Func1<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>, Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>> call(ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listBySqlPoolNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists auditing settings of a Sql pool.
+     *
+    ServiceResponse<PageImpl<SqlPoolBlobAuditingPolicyInner>> * @param resourceGroupName The name of the resource group. The name is case insensitive.
+    ServiceResponse<PageImpl<SqlPoolBlobAuditingPolicyInner>> * @param workspaceName The name of the workspace
+    ServiceResponse<PageImpl<SqlPoolBlobAuditingPolicyInner>> * @param sqlPoolName SQL pool name
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SqlPoolBlobAuditingPolicyInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>> listBySqlPoolSinglePageAsync(final String resourceGroupName, final String workspaceName, final String sqlPoolName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (sqlPoolName == null) {
+            throw new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listBySqlPool(this.client.subscriptionId(), resourceGroupName, workspaceName, sqlPoolName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SqlPoolBlobAuditingPolicyInner>> result = listBySqlPoolDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SqlPoolBlobAuditingPolicyInner>> listBySqlPoolDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlPoolBlobAuditingPolicyInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SqlPoolBlobAuditingPolicyInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists auditing settings of a Sql pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;SqlPoolBlobAuditingPolicyInner&gt; object if successful.
+     */
+    public PagedList<SqlPoolBlobAuditingPolicyInner> listBySqlPoolNext(final String nextPageLink) {
+        ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>> response = listBySqlPoolNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<SqlPoolBlobAuditingPolicyInner>(response.body()) {
+            @Override
+            public Page<SqlPoolBlobAuditingPolicyInner> nextPage(String nextPageLink) {
+                return listBySqlPoolNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Lists auditing settings of a Sql pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<SqlPoolBlobAuditingPolicyInner>> listBySqlPoolNextAsync(final String nextPageLink, final ServiceFuture<List<SqlPoolBlobAuditingPolicyInner>> serviceFuture, final ListOperationCallback<SqlPoolBlobAuditingPolicyInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listBySqlPoolNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>> call(String nextPageLink) {
+                    return listBySqlPoolNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists auditing settings of a Sql pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SqlPoolBlobAuditingPolicyInner&gt; object
+     */
+    public Observable<Page<SqlPoolBlobAuditingPolicyInner>> listBySqlPoolNextAsync(final String nextPageLink) {
+        return listBySqlPoolNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>, Page<SqlPoolBlobAuditingPolicyInner>>() {
+                @Override
+                public Page<SqlPoolBlobAuditingPolicyInner> call(ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Lists auditing settings of a Sql pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;SqlPoolBlobAuditingPolicyInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>> listBySqlPoolNextWithServiceResponseAsync(final String nextPageLink) {
+        return listBySqlPoolNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>, Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>> call(ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listBySqlPoolNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists auditing settings of a Sql pool.
+     *
+    ServiceResponse<PageImpl<SqlPoolBlobAuditingPolicyInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;SqlPoolBlobAuditingPolicyInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>> listBySqlPoolNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listBySqlPoolNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SqlPoolBlobAuditingPolicyInner>> result = listBySqlPoolNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SqlPoolBlobAuditingPolicyInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<SqlPoolBlobAuditingPolicyInner>> listBySqlPoolNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SqlPoolBlobAuditingPolicyInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SqlPoolBlobAuditingPolicyInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

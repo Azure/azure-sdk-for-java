@@ -204,7 +204,8 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.createWithResponse#Map-PublicAccessType-Duration-Context}
      *
-     * @param metadata Metadata to associate with the file system.
+     * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param accessType Specifies how the data in this file system is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -295,7 +296,8 @@ public class DataLakeFileSystemClient {
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadata#Map}
      *
-     * @param metadata Metadata to associate with the file system.
+     * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      */
     public void setMetadata(Map<String, String> metadata) {
         setMetadataWithResponse(metadata, null, null, Context.NONE);
@@ -308,7 +310,8 @@ public class DataLakeFileSystemClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.setMetadataWithResponse#Map-DataLakeRequestConditions-Duration-Context}
-     * @param metadata Metadata to associate with the file system.
+     * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -404,7 +407,8 @@ public class DataLakeFileSystemClient {
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the file.
+     * @param metadata Metadata to associate with the file. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -511,7 +515,8 @@ public class DataLakeFileSystemClient {
      * @param permissions POSIX access permissions for the directory owner, the directory owning group, and others.
      * @param umask Restricts permissions of the directory to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the directory.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -674,10 +679,10 @@ public class DataLakeFileSystemClient {
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
-     * @see DataLakeServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to
-     * get a user delegation key.
+     * See {@link DataLakeServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information
+     * on how to get a user delegation key.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
@@ -686,8 +691,33 @@ public class DataLakeFileSystemClient {
     }
 
     /**
+     * Generates a user delegation SAS for the file system using the specified
+     * {@link DataLakeServiceSasSignatureValues}.
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a user delegation SAS.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link DataLakeServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information
+     * on how to get a user delegation key.
+     * @param accountName The account name.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, String accountName, Context context) {
+        return dataLakeFileSystemAsyncClient.generateUserDelegationSas(dataLakeServiceSasSignatureValues,
+            userDelegationKey, accountName, context);
+    }
+
+    /**
      * Generates a service SAS for the file system using the specified {@link DataLakeServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -696,10 +726,28 @@ public class DataLakeFileSystemClient {
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues) {
         return dataLakeFileSystemAsyncClient.generateSas(dataLakeServiceSasSignatureValues);
+    }
+
+    /**
+     * Generates a service SAS for the file system using the specified {@link DataLakeServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeFileSystemClient.generateSas#DataLakeServiceSasSignatureValues-Context}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues, Context context) {
+        return dataLakeFileSystemAsyncClient.generateSas(dataLakeServiceSasSignatureValues, context);
     }
 
 }

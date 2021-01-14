@@ -12,6 +12,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Route Filter Resource. */
 @JsonFlatten
@@ -128,6 +129,20 @@ public class RouteFilterInner extends Resource {
      */
     public RouteFilterInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RouteFilterInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RouteFilterInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

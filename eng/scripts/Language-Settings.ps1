@@ -25,7 +25,7 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 }
 
 # Returns the maven (really sonatype) publish status of a package id and version.
-function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId) 
+function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 {
   try 
   {
@@ -58,7 +58,8 @@ function IsMavenPackageVersionPublished($pkgId, $pkgVersion, $groupId)
 }
 
 # Parse out package publishing information given a maven POM file
-function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory) {
+function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory)
+{
   [xml]$contentXML = Get-Content $pkg
 
   $pkgId = $contentXML.project.artifactId
@@ -86,6 +87,7 @@ function Get-java-PackageInfoFromPackageFile ($pkg, $workingDirectory) {
     PackageId      = $pkgId
     GroupId        = $groupId
     PackageVersion = $pkgVersion
+    ReleaseTag     = "$($pkgId)_$($pkgVersion)"
     Deployable     = $forceCreate -or !(IsMavenPackageVersionPublished -pkgId $pkgId -pkgVersion $pkgVersion -groupId $groupId.Replace(".", "/"))
     ReleaseNotes   = $releaseNotes
     ReadmeContent  = $readmeContent
@@ -137,7 +139,7 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
       Write-Host "DocDir $($UnjarredDocumentationPath)"
       Write-Host "PkgName $($ArtifactId)"
       Write-Host "DocVersion $($Version)"
-      $releaseTag = RetrieveReleaseTag "Maven" $PublicArtifactLocation 
+      $releaseTag = RetrieveReleaseTag $PublicArtifactLocation 
       Upload-Blobs -DocDir $UnjarredDocumentationPath -PkgName $ArtifactId -DocVersion $Version -ReleaseTag $releaseTag
 
     }
@@ -155,7 +157,10 @@ function Publish-java-GithubIODocs ($DocLocation, $PublicArtifactLocation)
   }
 }
 
-function Get-java-GithubIoDocIndex() {
+function Get-java-GithubIoDocIndex()
+{
+  # Update the main.js and docfx.json language content
+  UpdateDocIndexFiles -appTitleLang "Java"
   # Fetch out all package metadata from csv file.
   $metadata = Get-CSVMetadata -MetadataUri $MetadataUri
   # Leave the track 2 packages if multiple packages fetched out.
@@ -168,4 +173,86 @@ function Get-java-GithubIoDocIndex() {
   $tocContent = Get-TocMapping -metadata $uniquePackages -artifacts $artifacts
   # Generate yml/md toc files and build site.
   GenerateDocfxTocContent -tocContent $tocContent -lang "Java"
+}
+
+# a "package.json configures target packages for all the monikers in a Repository, it also has a slightly different
+# schema than the moniker-specific json config that is seen in python and js
+function Update-java-CIConfig($pkgs, $ciRepo, $locationInDocRepo, $monikerId=$null)
+{
+  $pkgJsonLoc = (Join-Path -Path $ciRepo -ChildPath $locationInDocRepo)
+  
+  if (-not (Test-Path $pkgJsonLoc)) {
+    Write-Error "Unable to locate package json at location $pkgJsonLoc, exiting."
+    exit(1)
+  }
+
+  $allJsonData = Get-Content $pkgJsonLoc | ConvertFrom-Json
+
+  $visibleInCI = @{}
+
+  for ($i=0; $i -lt $allJsonData[$monikerId].packages.Length; $i++) {
+    $pkgDef = $allJsonData[$monikerId].packages[$i]
+    $visibleInCI[$pkgDef.packageArtifactId] = $i
+  }
+
+  foreach ($releasingPkg in $pkgs) {
+    if ($visibleInCI.ContainsKey($releasingPkg.PackageId)) {
+      $packagesIndex = $visibleInCI[$releasingPkg.PackageId]
+      $existingPackageDef = $allJsonData[$monikerId].packages[$packagesIndex]
+      $existingPackageDef.packageVersion = $releasingPkg.PackageVersion
+    }
+    else {
+      $newItem = New-Object PSObject -Property @{ 
+        packageDownloadUrl = "https://repo1.maven.org/maven2"
+        packageGroupId = $releasingPkg.GroupId
+        packageArtifactId = $releasingPkg.PackageId
+        packageVersion = $releasingPkg.PackageVersion
+        inputPath = @()
+        excludePath = @()
+      }
+
+      $allJsonData[$monikerId].packages += $newItem
+    }
+  }
+
+  $jsonContent = $allJsonData | ConvertTo-Json -Depth 10 | % {$_ -replace "(?m)  (?<=^(?:  )*)", "    " }
+
+  Set-Content -Path $pkgJsonLoc -Value $jsonContent
+}
+
+# function is used to filter packages to submit to API view tool
+function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName = "")
+{
+  Write-Host "Checking for source jar in artifact path $($artifactDir)"
+  # Find all source jar files in given artifact directory
+  $files = Get-ChildItem "${artifactDir}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")}
+  if (!$files)
+  {
+    Write-Host "$($artifactDir) does not have any package"
+    return $null
+  }
+  elseif($files.Count -ne 1)
+  {
+    Write-Host "$($artifactDir) should contain only one (1) published source jar package"
+    Write-Host "No of Packages $($files.Count)"
+    return $null
+  }
+  
+  $packages = @{
+    $files[0].Name = $files[0].FullName
+  }
+
+  return $packages
+}
+
+function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $BuildType, $GroupId)
+{
+  if($null -eq $ReleaseDate)
+  {
+    $ReleaseDate = Get-Date -Format "yyyy-MM-dd"
+  }
+  python "$EngDir/versioning/set_versions.py" --build-type $BuildType --new-version $Version --ai $PackageName --gi $GroupId
+  python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --sr
+  & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
+  -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
 }

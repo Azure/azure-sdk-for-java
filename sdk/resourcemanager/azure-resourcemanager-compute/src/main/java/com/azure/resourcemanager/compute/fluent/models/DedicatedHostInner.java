@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 /** Specifies information about the Dedicated host. */
 @JsonFlatten
@@ -218,6 +219,20 @@ public class DedicatedHostInner extends Resource {
      */
     public DedicatedHostInstanceView instanceView() {
         return this.instanceView;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DedicatedHostInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DedicatedHostInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

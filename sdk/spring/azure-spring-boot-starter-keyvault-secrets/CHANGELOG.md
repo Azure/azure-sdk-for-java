@@ -1,6 +1,12 @@
 # Release History
 
-## 3.0.0-beta.1 (Unreleased)
+## 3.2.0-beta.1 (Unreleased)
+
+
+## 3.0.0 (2020-12-30)
+
+
+## 3.0.0-beta.1 (2020-11-18)
 ### Breaking Changes 
  - Change configure item from `azure.keyvault.secret.keys` to `azure.keyvault.secret-keys`
  - Change configure item from `azure.keyvault.allow.telemetry` to `azure.keyvault.allow-telemetry`

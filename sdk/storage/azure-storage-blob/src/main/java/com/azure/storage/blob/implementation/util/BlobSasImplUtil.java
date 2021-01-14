@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.UserDelegationKey;
@@ -84,6 +85,10 @@ public class BlobSasImplUtil {
 
     private String contentType;
 
+    private String authorizedAadObjectId;
+
+    private String correlationId;
+
     /**
      * Creates a new {@link BlobSasImplUtil} with the specified parameters
      *
@@ -126,22 +131,27 @@ public class BlobSasImplUtil {
         this.contentEncoding = sasValues.getContentEncoding();
         this.contentLanguage = sasValues.getContentLanguage();
         this.contentType = sasValues.getContentType();
+        this.authorizedAadObjectId = sasValues.getPreauthorizedAgentObjectId();
+        this.correlationId = sasValues.getCorrelationId();
     }
 
     /**
      * Generates a Sas signed with a {@link StorageSharedKeyCredential}
      *
      * @param storageSharedKeyCredentials {@link StorageSharedKeyCredential}
+     * @param context Additional context that is passed through the code when generating a SAS.
      * @return A String representing the Sas
      */
-    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials) {
+    public String generateSas(StorageSharedKeyCredential storageSharedKeyCredentials, Context context) {
         StorageImplUtils.assertNotNull("storageSharedKeyCredentials", storageSharedKeyCredentials);
 
         ensureState();
 
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(storageSharedKeyCredentials.getAccountName());
-        final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(canonicalName));
+        final String stringToSign = stringToSign(canonicalName);
+        StorageImplUtils.logStringToSign(logger, stringToSign, context);
+        final String signature = storageSharedKeyCredentials.computeHmac256(stringToSign);
 
         return encode(null /* userDelegationKey */, signature);
     }
@@ -151,9 +161,10 @@ public class BlobSasImplUtil {
      *
      * @param delegationKey {@link UserDelegationKey}
      * @param accountName The account name
+     * @param context Additional context that is passed through the code when generating a SAS.
      * @return A String representing the Sas
      */
-    public String generateUserDelegationSas(UserDelegationKey delegationKey, String accountName) {
+    public String generateUserDelegationSas(UserDelegationKey delegationKey, String accountName, Context context) {
         StorageImplUtils.assertNotNull("delegationKey", delegationKey);
         StorageImplUtils.assertNotNull("accountName", accountName);
 
@@ -161,8 +172,9 @@ public class BlobSasImplUtil {
 
         // Signature is generated on the un-url-encoded values.
         final String canonicalName = getCanonicalName(accountName);
-        String signature = StorageImplUtils.computeHMac256(
-            delegationKey.getValue(), stringToSign(delegationKey, canonicalName));
+        final String stringToSign = stringToSign(delegationKey, canonicalName);
+        StorageImplUtils.logStringToSign(logger, stringToSign, context);
+        String signature = StorageImplUtils.computeHMac256(delegationKey.getValue(), stringToSign);
 
         return encode(delegationKey, signature);
     }
@@ -199,6 +211,10 @@ public class BlobSasImplUtil {
                 userDelegationKey.getSignedService());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
                 userDelegationKey.getSignedVersion());
+
+            /* Only parameters relevant for user delegation SAS. */
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_PREAUTHORIZED_AGENT_OBJECT_ID, this.authorizedAadObjectId);
+            tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
         }
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
@@ -314,9 +330,9 @@ public class BlobSasImplUtil {
             key.getSignedExpiry() == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(key.getSignedExpiry()),
             key.getSignedService() == null ? "" : key.getSignedService(),
             key.getSignedVersion() == null ? "" : key.getSignedVersion(),
-            "", /* saoid - empty since this applies to HNS only accounts. */
+            this.authorizedAadObjectId == null ? "" : this.authorizedAadObjectId,
             "", /* suoid - empty since this applies to HNS only accounts. */
-            "", /* cid - empty since this applies to HNS only accounts. */
+            this.correlationId == null ? "" : this.correlationId,
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
             version,

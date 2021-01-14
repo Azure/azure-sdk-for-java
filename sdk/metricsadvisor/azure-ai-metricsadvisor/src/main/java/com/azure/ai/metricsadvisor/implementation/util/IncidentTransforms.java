@@ -4,8 +4,8 @@
 package com.azure.ai.metricsadvisor.implementation.util;
 
 import com.azure.ai.metricsadvisor.implementation.models.IncidentResult;
+import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.DimensionKey;
-import com.azure.ai.metricsadvisor.models.Incident;
 import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -16,22 +16,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class IncidentTransforms {
-    public static PagedResponse<Incident> fromInnerPagedResponse(PagedResponse<IncidentResult> innerResponse) {
-        List<Incident> incidentList;
+    public static PagedResponse<AnomalyIncident> fromInnerPagedResponse(PagedResponse<IncidentResult> innerResponse) {
+        List<AnomalyIncident> anomalyIncidentList;
         final List<IncidentResult> innerIncidentList = innerResponse.getValue();
         if (innerIncidentList == null || innerIncidentList.isEmpty()) {
-            incidentList = new ArrayList<>();
+            anomalyIncidentList = new ArrayList<>();
         } else {
-            incidentList = innerIncidentList
+            anomalyIncidentList = innerIncidentList
                 .stream()
                 .map(innerConfiguration -> fromInner(innerConfiguration))
                 .collect(Collectors.toList());
         }
 
-        final IterableStream<Incident> pageElements
-            = new IterableStream<>(incidentList);
+        final IterableStream<AnomalyIncident> pageElements
+            = new IterableStream<>(anomalyIncidentList);
 
-        return new PagedResponseBase<Void, Incident>(innerResponse.getRequest(),
+        return new PagedResponseBase<Void, AnomalyIncident>(innerResponse.getRequest(),
             innerResponse.getStatusCode(),
             innerResponse.getHeaders(),
             new IncidentPage(pageElements, innerResponse.getContinuationToken()),
@@ -39,8 +39,8 @@ public class IncidentTransforms {
     }
 
 
-    private static Incident fromInner(IncidentResult innerIncident) {
-        Incident incident = new Incident();
+    private static AnomalyIncident fromInner(IncidentResult innerIncident) {
+        AnomalyIncident incident = new AnomalyIncident();
         IncidentHelper.setId(incident, innerIncident.getIncidentId());
         if (innerIncident.getMetricId() != null) {
             IncidentHelper.setMetricId(incident, innerIncident.getMetricId().toString());
@@ -63,17 +63,17 @@ public class IncidentTransforms {
         return incident;
     }
 
-    private static final class IncidentPage implements Page<Incident> {
-        private final IterableStream<Incident> elements;
+    private static final class IncidentPage implements Page<AnomalyIncident> {
+        private final IterableStream<AnomalyIncident> elements;
         private final String continuationTToken;
 
-        private IncidentPage(IterableStream<Incident> elements, String continuationTToken) {
+        private IncidentPage(IterableStream<AnomalyIncident> elements, String continuationTToken) {
             this.elements = elements;
             this.continuationTToken = continuationTToken;
         }
 
         @Override
-        public IterableStream<Incident> getElements() {
+        public IterableStream<AnomalyIncident> getElements() {
             return this.elements;
         }
 

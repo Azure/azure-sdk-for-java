@@ -22,17 +22,19 @@ public class ListSeriesDefinitionsForMetricAsyncSample {
                 .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"))
                 .buildAsyncClient();
 
-        String metricId = "b460abfc-7a58-47d7-9d99-21ee21fdfc6e";
+        final String metricId = "b460abfc-7a58-47d7-9d99-21ee21fdfc6e";
+        final OffsetDateTime activeSince = OffsetDateTime.parse("2020-07-10T00:00:00Z");
+
         final ListMetricSeriesDefinitionOptions options
-            = new ListMetricSeriesDefinitionOptions(OffsetDateTime.parse("2020-07-10T00:00:00Z"))
+            = new ListMetricSeriesDefinitionOptions()
             .setTop(10)
             .setDimensionCombinationToFilter(new HashMap<String, List<String>>() {{
-                    put("Dim2", Collections.singletonList("Angelfish"));
+                    put("city", Collections.singletonList("Redmond"));
                 }});
 
-        advisorAsyncClient.listMetricSeriesDefinitions(metricId, options)
+        advisorAsyncClient.listMetricSeriesDefinitions(metricId, activeSince, options)
             .doOnNext(metricSeriesDefinition -> {
-                System.out.printf("Metric Id : %s%n", metricSeriesDefinition.getMetricId());
+                System.out.printf("Data Feed Metric Id : %s%n", metricSeriesDefinition.getMetricId());
                 System.out.printf("Series Key: %s%n", metricSeriesDefinition.getSeriesKey().asMap());
             }).blockLast();
             /*

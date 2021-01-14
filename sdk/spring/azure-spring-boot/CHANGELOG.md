@@ -1,17 +1,47 @@
 # Release History
 
-## 3.0.0-beta.1 (Unreleased)
+## 3.2.0-beta.1 (Unreleased)
+
+
+## 3.0.0 (2020-12-30)
 ### Breaking Changes
-- Configuration items like `spring.security.oauth2.client.xxx` is not supported anymore. Please use the following configuration items instead:
+- Deprecate `AADAppRoleStatelessAuthenticationFilter` and `AADAuthenticationFilter`.
+- Change artifact id from `azure-active-directory-spring-boot-starter` to `azure-spring-boot-starter-active-directory`.
+- Deprecate following `azure-spring-boot-starter-active-directory` configuration properties:
     ```
-    azure.activedirectory.tenant-id=xxxxxx-your-tenant-id-xxxxxx
-    azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
-    azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
-    azure.activedirectory.user-group.allowed-groups=group1, group2
-    azure.activedirectory.scope = your-customized-scope1, your-customized-scope2
-    azure.activedirectory.redirect-uri-template=xxxxxx-your-redirect-uri-xxxxxx
+    spring.security.oauth2.client.provider.azure.*
+    spring.security.oauth2.client.registration.azure.*
+    azure.activedirectory.environment
+    azure.activedirectory.user-group.key
+    azure.activedirectory.user-group.value
+    azure.activedirectory.user-group.object-id-key
     ```
-- Check scope parameter for AAD authorization requests before configuration. Necessary permissions would be automatically added if needed.
+- Stop support of Azure Active Directory Endpoints.
+
+### New Features
+- Support consent of multiple client registrations during user login.
+- Support on-demand client registrations.
+- Support the use of `@RegisteredOAuth2AuthorizedClient` annotation to get `OAuth2AuthorizedClient`.
+- Support access control through users' membership information.
+- Support on-behalf-of flow in the resource server.
+- Provide AAD specific token validation methods of audience validation and issuer validation.
+- Expose a flag `isPersonalAccount` in `AADOAuth2AuthenticatedPrincipal` to specify the account type in use: work account or personal account.
+- Enable loading transitive membership information from Microsoft Graph API.
+- Enable following `azure-spring-boot-starter-active-directory` configuration properties:
+    ```yaml
+    # Redirect URI of authorization server
+    azure.activedirectory.redirect-uri-template
+    # Refresh time of the cached JWK set before it expires, default value is 5 minutes.
+    azure.activedirectory.jwk-set-cache-refresh-time
+    # Logout redirect URI
+    azure.activedirectory.post-logout-redirect-uri
+    # base URI for authorization server, default value is "https://login.microsoftonline.com/"
+    azure.activedirectory.base-uri
+    # Membership URI of Microsoft Graph API to get users' group information, default value is "https://graph.microsoft.com/v1.0/me/memberOf"
+    azure.activedirectory.graph-membership-uri
+    ```
+## 3.0.0-beta.1 (2020-11-18)
+### Breaking Changes
 - Update `com.azure` group id to `com.azure.spring`.
 - Deprecated azure-spring-boot-metrics-starter.
 - Change group id from `com.microsoft.azure` to `com.azure.spring`.

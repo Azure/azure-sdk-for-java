@@ -465,7 +465,7 @@ public final class PollingState {
         }
         if (this.isPutOrPatchLro()) {
             String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody, this.serializerAdapter);
-            if (value != null) {
+            if (value != null && !ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
                 return this.setData(new ProvisioningStateData(this.lroOperationUri, value));
             } else {
                 return this.setData(new SynchronouslySucceededLroData(lroResponseBody));

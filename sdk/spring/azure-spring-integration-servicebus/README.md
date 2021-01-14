@@ -19,7 +19,7 @@ Service Bus offers a reliable and secure platform for asynchronous transfer of d
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-integration-servicebus</artifactId>
-    <version>2.0.0-beta.1</version>
+    <version>2.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -65,7 +65,7 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
 [maven]: https://maven.apache.org
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-integration-servicebus
-[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#spring-integration-servicebus
+[refdocs]: https://azure.github.io/azure-sdk-for-java/springcloud.html#spring-integration-servicebus
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-integration-sample-servicebus
 [spring_boot_logging]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
 [spring_integration]: https://spring.io/projects/spring-integration

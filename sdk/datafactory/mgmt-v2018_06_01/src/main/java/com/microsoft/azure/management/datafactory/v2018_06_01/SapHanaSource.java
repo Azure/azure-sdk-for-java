@@ -33,11 +33,11 @@ public class SapHanaSource extends TabularSource {
 
     /**
      * The partition mechanism that will be used for SAP HANA read in parallel.
-     * Possible values include: 'None', 'PhysicalPartitionsOfTable',
-     * 'SapHanaDynamicRange'.
+     * Possible values include: "None", "PhysicalPartitionsOfTable",
+     * "SapHanaDynamicRange".
      */
     @JsonProperty(value = "partitionOption")
-    private SapHanaPartitionOption partitionOption;
+    private Object partitionOption;
 
     /**
      * The settings that will be leveraged for SAP HANA source partitioning.
@@ -86,21 +86,21 @@ public class SapHanaSource extends TabularSource {
     }
 
     /**
-     * Get the partition mechanism that will be used for SAP HANA read in parallel. Possible values include: 'None', 'PhysicalPartitionsOfTable', 'SapHanaDynamicRange'.
+     * Get the partition mechanism that will be used for SAP HANA read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable", "SapHanaDynamicRange".
      *
      * @return the partitionOption value
      */
-    public SapHanaPartitionOption partitionOption() {
+    public Object partitionOption() {
         return this.partitionOption;
     }
 
     /**
-     * Set the partition mechanism that will be used for SAP HANA read in parallel. Possible values include: 'None', 'PhysicalPartitionsOfTable', 'SapHanaDynamicRange'.
+     * Set the partition mechanism that will be used for SAP HANA read in parallel. Possible values include: "None", "PhysicalPartitionsOfTable", "SapHanaDynamicRange".
      *
      * @param partitionOption the partitionOption value to set
      * @return the SapHanaSource object itself.
      */
-    public SapHanaSource withPartitionOption(SapHanaPartitionOption partitionOption) {
+    public SapHanaSource withPartitionOption(Object partitionOption) {
         this.partitionOption = partitionOption;
         return this;
     }

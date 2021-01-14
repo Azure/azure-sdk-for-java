@@ -27,7 +27,6 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * @return An updated instance of this builder.
      */
     public ClientCertificateCredentialBuilder pemCertificate(String certificatePath) {
-        ValidationUtil.validateFilePath(getClass().getSimpleName(), certificatePath, "Pem Certificate Path");
         this.clientCertificatePath = certificatePath;
         return this;
     }
@@ -52,7 +51,6 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      */
     public ClientCertificateCredentialBuilder pfxCertificate(String certificatePath,
                                                              String clientCertificatePassword) {
-        ValidationUtil.validateFilePath(getClass().getSimpleName(), certificatePath, "Pfx Certificate Path");
         this.clientCertificatePath = certificatePath;
         this.clientCertificatePassword = clientCertificatePassword;
         return this;
@@ -99,11 +97,12 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      * Specifies if the x5c claim (public key of the certificate) should be sent as part of the authentication request
      * and enable subject name / issuer based authentication. The default value is false.
      *
-     * @param includeX5c the flag to indicate if x5c should be sent as part of authentication request.
+     * @param sendCertificateChain the flag to indicate if certificate chain should be sent as part of authentication
+     * request.
      * @return An updated instance of this builder.
      */
-    public ClientCertificateCredentialBuilder includeX5c(boolean includeX5c) {
-        this.identityClientOptions.setIncludeX5c(includeX5c);
+    public ClientCertificateCredentialBuilder sendCertificateChain(boolean sendCertificateChain) {
+        this.identityClientOptions.setIncludeX5c(sendCertificateChain);
         return this;
     }
 

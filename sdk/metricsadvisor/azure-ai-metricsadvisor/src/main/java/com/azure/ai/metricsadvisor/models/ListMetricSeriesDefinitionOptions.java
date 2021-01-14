@@ -5,7 +5,6 @@ package com.azure.ai.metricsadvisor.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -14,19 +13,9 @@ import java.util.Map;
  */
 @Fluent
 public final class ListMetricSeriesDefinitionOptions {
-    private final OffsetDateTime activeSince;
     private Map<String, List<String>> dimensionCombinations;
     private Integer top;
     private Integer skip;
-
-    /**
-     * Create an instance of ListMetricSeriesDefinitionOptions object.
-     *
-     * @param activeSince the start time for querying series ingested after this time.
-     */
-    public ListMetricSeriesDefinitionOptions(OffsetDateTime activeSince) {
-        this.activeSince = activeSince;
-    }
 
     /**
      * Gets the dimension key and values.
@@ -103,12 +92,4 @@ public final class ListMetricSeriesDefinitionOptions {
         return this;
     }
 
-    /**
-     * Get the start time for querying series ingested after this time.
-     *
-     * @return the activeSince value.
-     */
-    public OffsetDateTime getActiveSince() {
-        return this.activeSince;
-    }
 }

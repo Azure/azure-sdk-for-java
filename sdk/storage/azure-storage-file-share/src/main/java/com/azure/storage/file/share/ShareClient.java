@@ -1163,7 +1163,7 @@ public class ShareClient {
 
     /**
      * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -1172,9 +1172,27 @@ public class ShareClient {
      *
      * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
         return this.client.generateSas(shareServiceSasSignatureValues);
+    }
+
+    /**
+     * Generates a service sas for the queue using the specified {@link ShareServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link ShareServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareAsyncClient.generateSas#ShareServiceSasSignatureValues-Context}
+     *
+     * @param shareServiceSasSignatureValues {@link ShareServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
+        return this.client.generateSas(shareServiceSasSignatureValues, context);
     }
 }

@@ -12,7 +12,11 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSettings;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
+import com.azure.resourcemanager.containerservice.models.KubeletConfig;
+import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
+import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OSType;
+import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -49,10 +53,25 @@ public class AgentPoolInner extends SubResource {
     private Integer osDiskSizeGB;
 
     /*
-     * VNet SubnetID specifies the VNet's subnet identifier.
+     * OS disk type to be used for machines in a given agent pool. Allowed
+     * values are 'Ephemeral' and 'Managed'. Defaults to 'Managed'. May not be
+     * changed after creation.
+     */
+    @JsonProperty(value = "properties.osDiskType")
+    private OSDiskType osDiskType;
+
+    /*
+     * VNet SubnetID specifies the VNet's subnet identifier for nodes and maybe
+     * pods
      */
     @JsonProperty(value = "properties.vnetSubnetID")
     private String vnetSubnetId;
+
+    /*
+     * Pod SubnetID specifies the VNet's subnet identifier for pods.
+     */
+    @JsonProperty(value = "properties.podSubnetID")
+    private String podSubnetId;
 
     /*
      * Maximum number of pods that can run on a node.
@@ -106,7 +125,7 @@ public class AgentPoolInner extends SubResource {
     /*
      * Version of node image
      */
-    @JsonProperty(value = "properties.nodeImageVersion")
+    @JsonProperty(value = "properties.nodeImageVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String nodeImageVersion;
 
     /*
@@ -121,6 +140,12 @@ public class AgentPoolInner extends SubResource {
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
+
+    /*
+     * Describes whether the Agent Pool is Running or Stopped
+     */
+    @JsonProperty(value = "properties.powerState", access = JsonProperty.Access.WRITE_ONLY)
+    private PowerState powerState;
 
     /*
      * Availability zones for nodes. Must use VirtualMachineScaleSets
@@ -182,6 +207,18 @@ public class AgentPoolInner extends SubResource {
      */
     @JsonProperty(value = "properties.proximityPlacementGroupID")
     private String proximityPlacementGroupId;
+
+    /*
+     * KubeletConfig specifies the configuration of kubelet on agent nodes.
+     */
+    @JsonProperty(value = "properties.kubeletConfig")
+    private KubeletConfig kubeletConfig;
+
+    /*
+     * LinuxOSConfig specifies the OS configuration of linux agent nodes.
+     */
+    @JsonProperty(value = "properties.linuxOSConfig")
+    private LinuxOSConfig linuxOSConfig;
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -263,7 +300,29 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Get the osDiskType property: OS disk type to be used for machines in a given agent pool. Allowed values are
+     * 'Ephemeral' and 'Managed'. Defaults to 'Managed'. May not be changed after creation.
+     *
+     * @return the osDiskType value.
+     */
+    public OSDiskType osDiskType() {
+        return this.osDiskType;
+    }
+
+    /**
+     * Set the osDiskType property: OS disk type to be used for machines in a given agent pool. Allowed values are
+     * 'Ephemeral' and 'Managed'. Defaults to 'Managed'. May not be changed after creation.
+     *
+     * @param osDiskType the osDiskType value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withOsDiskType(OSDiskType osDiskType) {
+        this.osDiskType = osDiskType;
+        return this;
+    }
+
+    /**
+     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier for nodes and maybe pods.
      *
      * @return the vnetSubnetId value.
      */
@@ -272,13 +331,33 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier for nodes and maybe pods.
      *
      * @param vnetSubnetId the vnetSubnetId value to set.
      * @return the AgentPoolInner object itself.
      */
     public AgentPoolInner withVnetSubnetId(String vnetSubnetId) {
         this.vnetSubnetId = vnetSubnetId;
+        return this;
+    }
+
+    /**
+     * Get the podSubnetId property: Pod SubnetID specifies the VNet's subnet identifier for pods.
+     *
+     * @return the podSubnetId value.
+     */
+    public String podSubnetId() {
+        return this.podSubnetId;
+    }
+
+    /**
+     * Set the podSubnetId property: Pod SubnetID specifies the VNet's subnet identifier for pods.
+     *
+     * @param podSubnetId the podSubnetId value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withPodSubnetId(String podSubnetId) {
+        this.podSubnetId = podSubnetId;
         return this;
     }
 
@@ -452,17 +531,6 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Set the nodeImageVersion property: Version of node image.
-     *
-     * @param nodeImageVersion the nodeImageVersion value to set.
-     * @return the AgentPoolInner object itself.
-     */
-    public AgentPoolInner withNodeImageVersion(String nodeImageVersion) {
-        this.nodeImageVersion = nodeImageVersion;
-        return this;
-    }
-
-    /**
      * Get the upgradeSettings property: Settings for upgrading the agentpool.
      *
      * @return the upgradeSettings value.
@@ -490,6 +558,15 @@ public class AgentPoolInner extends SubResource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the powerState property: Describes whether the Agent Pool is Running or Stopped.
+     *
+     * @return the powerState value.
+     */
+    public PowerState powerState() {
+        return this.powerState;
     }
 
     /**
@@ -683,6 +760,46 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
+     * Get the kubeletConfig property: KubeletConfig specifies the configuration of kubelet on agent nodes.
+     *
+     * @return the kubeletConfig value.
+     */
+    public KubeletConfig kubeletConfig() {
+        return this.kubeletConfig;
+    }
+
+    /**
+     * Set the kubeletConfig property: KubeletConfig specifies the configuration of kubelet on agent nodes.
+     *
+     * @param kubeletConfig the kubeletConfig value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withKubeletConfig(KubeletConfig kubeletConfig) {
+        this.kubeletConfig = kubeletConfig;
+        return this;
+    }
+
+    /**
+     * Get the linuxOSConfig property: LinuxOSConfig specifies the OS configuration of linux agent nodes.
+     *
+     * @return the linuxOSConfig value.
+     */
+    public LinuxOSConfig linuxOSConfig() {
+        return this.linuxOSConfig;
+    }
+
+    /**
+     * Set the linuxOSConfig property: LinuxOSConfig specifies the OS configuration of linux agent nodes.
+     *
+     * @param linuxOSConfig the linuxOSConfig value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withLinuxOSConfig(LinuxOSConfig linuxOSConfig) {
+        this.linuxOSConfig = linuxOSConfig;
+        return this;
+    }
+
+    /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
      *
@@ -701,6 +818,13 @@ public class AgentPoolInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public AgentPoolInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -709,6 +833,15 @@ public class AgentPoolInner extends SubResource {
     public void validate() {
         if (upgradeSettings() != null) {
             upgradeSettings().validate();
+        }
+        if (powerState() != null) {
+            powerState().validate();
+        }
+        if (kubeletConfig() != null) {
+            kubeletConfig().validate();
+        }
+        if (linuxOSConfig() != null) {
+            linuxOSConfig().validate();
         }
     }
 }

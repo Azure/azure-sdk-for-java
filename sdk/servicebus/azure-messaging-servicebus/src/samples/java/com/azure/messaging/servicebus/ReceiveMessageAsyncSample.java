@@ -5,12 +5,16 @@ package com.azure.messaging.servicebus;
 
 import reactor.core.Disposable;
 
-import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Sample demonstrates how to receive {@link ServiceBusReceivedMessage messages} from an Azure Service Bus Queue using
  * connection string.
+ *
+ * By default, messages are <b>settled automatically</b> via {@link ServiceBusReceiverAsyncClient#complete(ServiceBusReceivedMessage)
+ * complete} or {@link ServiceBusReceiverAsyncClient#abandon(ServiceBusReceivedMessage) abandon}.
+ *
+ * A message is abandoned if an exception occurs downstream while the message is processed.
  */
 public class ReceiveMessageAsyncSample {
     /**
@@ -18,6 +22,7 @@ public class ReceiveMessageAsyncSample {
      * Service Bus Queue.
      *
      * @param args Unused arguments to the program.
+     *
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
     public static void main(String[] args) throws InterruptedException {
@@ -39,25 +44,15 @@ public class ReceiveMessageAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        Disposable subscription = receiver.receiveMessages()
-            .flatMap(message -> {
-
-                // process message
-                System.out.println("Received Message Id: " + message.getMessageId());
-                System.out.println("Received Message: " + message.getBody().toString());
-
-                boolean isSuccessfullyProcessed = processMessage(message);
-
-                // When we are finished processing the message, then complete or abandon it.
-                if (isSuccessfullyProcessed) {
-                    return receiver.complete(message).thenReturn("Completed: " + message.getMessageId());
-                } else {
-                    return receiver.abandon(message).thenReturn("Abandoned: " + message.getMessageId());
-                }
-            })
-            .subscribe(message -> System.out.printf("Processed at %s. %s%n", Instant.now(), message),
-                error -> System.err.println("Error occurred while receiving message: " + error),
-                () -> System.out.println("Receiving complete."));
+        Disposable subscription = receiver.receiveMessages().subscribe(message -> {
+            // Process message. If an exception is thrown from this consumer, the message is abandoned.
+            // Otherwise, it is completed.
+            // Automatic message settlement can be disabled via disableAutoComplete() when creating the receiver
+            // client. Consequently, messages have to be manually settled.
+            System.out.printf("Sequence #: %s. Contents: %s%n", message.getSequenceNumber(), message.getBody());
+        },
+            error -> System.err.println("Error occurred while receiving message: " + error),
+            () -> System.out.println("Receiving complete."));
 
         // Receiving messages from the queue for a duration of 20 seconds.
         // Subscribe is not a blocking call so we sleep here so the program does not end.
@@ -68,9 +63,5 @@ public class ReceiveMessageAsyncSample {
 
         // Close the receiver.
         receiver.close();
-    }
-
-    private static boolean processMessage(ServiceBusReceivedMessage message) {
-        return true;
     }
 }

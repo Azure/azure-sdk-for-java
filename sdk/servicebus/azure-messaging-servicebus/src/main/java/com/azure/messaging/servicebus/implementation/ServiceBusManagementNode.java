@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -63,12 +63,12 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      *
      * @return The received {@link ServiceBusReceivedMessage} message for given sequence number.
      */
-    Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ReceiveMode receiveMode, String sessionId,
+    Flux<ServiceBusReceivedMessage> receiveDeferredMessages(ServiceBusReceiveMode receiveMode, String sessionId,
         String associatedLinkName, Iterable<Long> sequenceNumbers);
 
     /**
      * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on
-     * the setting specified on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode,
+     * the setting specified on the entity. When a message is received in {@link ServiceBusReceiveMode#PEEK_LOCK} mode,
      * the message is locked on the server for this receiver instance for a duration as specified during the
      * Queue/Subscription creation (LockDuration). If processing of the message requires longer than this duration,
      * the lock needs to be renewed. For each renewal, the lock is reset to the entity's LockDuration value.

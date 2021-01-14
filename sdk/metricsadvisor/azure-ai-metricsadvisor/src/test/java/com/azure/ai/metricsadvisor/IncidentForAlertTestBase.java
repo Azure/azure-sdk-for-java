@@ -3,7 +3,7 @@
 
 package com.azure.ai.metricsadvisor;
 
-import com.azure.ai.metricsadvisor.models.Incident;
+import com.azure.ai.metricsadvisor.models.AnomalyIncident;
 import com.azure.ai.metricsadvisor.models.ListIncidentsAlertedOptions;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.core.http.HttpClient;
@@ -28,7 +28,7 @@ public abstract class IncidentForAlertTestBase extends MetricsAdvisorClientTestB
         final int expectedIncidents = 2;
     }
 
-    protected void assertListIncidentsForAlertOutput(Incident incident) {
+    protected void assertListIncidentsForAlertOutput(AnomalyIncident incident) {
         Assertions.assertNotNull(incident);
         Assertions.assertNotNull(incident.getId());
         Assertions.assertNotNull(incident.getMetricId());

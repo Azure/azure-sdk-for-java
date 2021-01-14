@@ -224,6 +224,14 @@ public interface CdnProfile extends
              * @return the next stage of the definition.
              */
             WithPremiumVerizonCreate withPremiumVerizonSku();
+
+            /**
+             * Selects the SKU with SKU name.
+             *
+             * @param skuName the SKU name
+             * @return the next stage of the definition.
+             */
+            WithStandardCreate withSku(SkuName skuName);
         }
 
         /**

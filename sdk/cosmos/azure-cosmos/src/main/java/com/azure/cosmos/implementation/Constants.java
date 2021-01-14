@@ -201,6 +201,11 @@ public final class Constants {
         public static final String  KeyWrapMetadataValue = "value";
         public static final String  EncryptedInfo = "_ei";
 
+        // Feed Ranges
+        public static final String RANGE = "Range";
+        public static final String FEED_RANGE_PARTITION_KEY = "PartitionKey";
+        public static final String FEED_RANGE_PARTITION_KEY_RANGE_ID = "PKRangeId";
+
     }
 
     public static final class UrlEncodingInfo {

@@ -77,6 +77,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.Deployments;
 import com.azure.resourcemanager.resources.models.Features;
 import com.azure.resourcemanager.resources.models.GenericResources;
+import com.azure.resourcemanager.resources.models.ManagementLocks;
 import com.azure.resourcemanager.resources.models.PolicyAssignments;
 import com.azure.resourcemanager.resources.models.PolicyDefinitions;
 import com.azure.resourcemanager.resources.models.Providers;
@@ -84,6 +85,12 @@ import com.azure.resourcemanager.resources.models.ResourceGroups;
 import com.azure.resourcemanager.resources.models.Subscription;
 import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.models.Tenants;
+import com.azure.resourcemanager.search.SearchServiceManager;
+import com.azure.resourcemanager.search.models.SearchServices;
+import com.azure.resourcemanager.servicebus.ServiceBusManager;
+import com.azure.resourcemanager.servicebus.models.ServiceBusNamespaces;
+import com.azure.resourcemanager.sql.SqlServerManager;
+import com.azure.resourcemanager.sql.models.SqlServers;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.BlobContainers;
 import com.azure.resourcemanager.storage.models.BlobServices;
@@ -112,7 +119,7 @@ public final class AzureResourceManager {
 //    private final ContainerInstanceManager containerInstanceManager;
 //    private final ContainerRegistryManager containerRegistryManager;
     private final ContainerServiceManager containerServiceManager;
-    //    private final SearchServiceManager searchServiceManager;
+    private final SearchServiceManager searchServiceManager;
     private final CosmosManager cosmosManager;
     //    private final AuthorizationManager authorizationManager;
     private final MsiManager msiManager;
@@ -336,42 +343,40 @@ public final class AzureResourceManager {
         this.keyVaultManager = withHttpPipeline(httpPipeline, KeyVaultManager.configure())
             .authenticate(null, profile);
         //        this.batchManager = BatchManager.authenticate(restClient, subscriptionId, internalContext);
-//        this.trafficManager = withHttpPipeline(httpPipeline, TrafficManager.configure())
-//            .authenticate(null, profile);
-//        this.redisManager = withHttpPipeline(httpPipeline, RedisManager.configure())
-//            .authenticate(null, profile);
-//        this.cdnManager = withHttpPipeline(httpPipeline, CdnManager.configure())
-//            .authenticate(null, profile);
+        this.trafficManager = withHttpPipeline(httpPipeline, TrafficManager.configure())
+            .authenticate(null, profile);
+        this.redisManager = withHttpPipeline(httpPipeline, RedisManager.configure())
+            .authenticate(null, profile);
+        this.cdnManager = withHttpPipeline(httpPipeline, CdnManager.configure())
+            .authenticate(null, profile);
         this.dnsZoneManager = withHttpPipeline(httpPipeline, DnsZoneManager.configure())
             .authenticate(null, profile);
         this.appServiceManager = withHttpPipeline(httpPipeline, AppServiceManager.configure())
             .authenticate(null, profile);
-//        this.sqlServerManager = withHttpPipeline(httpPipeline, SqlServerManager.configure())
-//            .authenticate(null, profile);
-//        this.serviceBusManager = withHttpPipeline(httpPipeline, ServiceBusManager.configure())
-//            .authenticate(null, profile);
-//        this.containerInstanceManager = withHttpPipeline(httpPipeline, ContainerInstanceManager.configure())
-//            .authenticate(null, profile);
-//        this.containerRegistryManager = withHttpPipeline(httpPipeline, ContainerRegistryManager.configure())
-//            .authenticate(null, profile);
+        this.sqlServerManager = withHttpPipeline(httpPipeline, SqlServerManager.configure())
+            .authenticate(null, profile);
+        this.serviceBusManager = withHttpPipeline(httpPipeline, ServiceBusManager.configure())
+            .authenticate(null, profile);
+        this.containerInstanceManager = withHttpPipeline(httpPipeline, ContainerInstanceManager.configure())
+            .authenticate(null, profile);
+        this.containerRegistryManager = withHttpPipeline(httpPipeline, ContainerRegistryManager.configure())
+            .authenticate(null, profile);
         this.containerServiceManager = withHttpPipeline(httpPipeline, ContainerServiceManager.configure())
             .authenticate(null, profile);
         this.cosmosManager = withHttpPipeline(httpPipeline, CosmosManager.configure())
             .authenticate(null, profile);
-        //        this.searchServiceManager = SearchServiceManager
-        //        .authenticate(restClient, subscriptionId, internalContext);
-        //        this.authorizationManager = AuthorizationManager
-        //        .authenticate(restClient, subscriptionId, internalContext);
+        this.searchServiceManager = withHttpPipeline(httpPipeline, SearchServiceManager.configure())
+            .authenticate(null, profile);
         this.msiManager = withHttpPipeline(httpPipeline, MsiManager.configure())
             .authenticate(null, profile);
         this.monitorManager = withHttpPipeline(httpPipeline, MonitorManager.configure())
             .authenticate(null, profile);
-//        this.eventHubsManager = withHttpPipeline(httpPipeline, EventHubsManager.configure())
-//            .authenticate(null, profile);
-//        this.appPlatformManager = withHttpPipeline(httpPipeline, AppPlatformManager.configure())
-//            .authenticate(null, profile);
-//        this.privateDnsZoneManager = withHttpPipeline(httpPipeline, PrivateDnsZoneManager.configure())
-//            .authenticate(null, profile);
+        this.eventHubsManager = withHttpPipeline(httpPipeline, EventHubsManager.configure())
+            .authenticate(null, profile);
+        this.appPlatformManager = withHttpPipeline(httpPipeline, AppPlatformManager.configure())
+            .authenticate(null, profile);
+        this.privateDnsZoneManager = withHttpPipeline(httpPipeline, PrivateDnsZoneManager.configure())
+            .authenticate(null, profile);
         this.authenticated = authenticated;
         this.subscriptionId = profile.getSubscriptionId();
         this.tenantId = profile.getTenantId();
@@ -422,13 +427,6 @@ public final class AzureResourceManager {
         return resourceManager.genericResources();
     }
 
-    //    /**
-    //     * @return entry point to managing management locks
-    //     */
-    //    public ManagementLocks managementLocks() {
-    //        return this.authorizationManager.managementLocks();
-    //    }
-
     /** @return entry point to managing features */
     public Features features() {
         return resourceManager.features();
@@ -447,6 +445,11 @@ public final class AzureResourceManager {
     /** @return entry point to managing policy assignments. */
     public PolicyAssignments policyAssignments() {
         return resourceManager.policyAssignments();
+    }
+
+    /** @return entry point to managing locks. */
+    public ManagementLocks managementLocks() {
+        return resourceManager.managementLocks();
     }
 
     /** @return entry point to managing storage accounts */
@@ -709,13 +712,12 @@ public final class AzureResourceManager {
         return cosmosManager.databaseAccounts();
     }
 
-    //    /**
-    //     * @return entry point to managing Search services.
-    //     */
-    //    @Beta(SinceVersion.V1_2_0)
-    //    public SearchServices searchServices() {
-    //        return searchServiceManager.searchServices();
-    //    }
+    /**
+     * @return entry point to managing Search services.
+     */
+    public SearchServices searchServices() {
+        return searchServiceManager.searchServices();
+    }
 
     /** @return entry point to managing Managed Service Identity (MSI) identities. */
     public Identities identities() {

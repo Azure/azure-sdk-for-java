@@ -12,6 +12,7 @@ import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** Specifies information about the gallery Application Definition that you want to create or update. */
 @JsonFlatten
@@ -185,6 +186,20 @@ public class GalleryApplicationInner extends Resource {
      */
     public GalleryApplicationInner withSupportedOSType(OperatingSystemTypes supportedOSType) {
         this.supportedOSType = supportedOSType;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryApplicationInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

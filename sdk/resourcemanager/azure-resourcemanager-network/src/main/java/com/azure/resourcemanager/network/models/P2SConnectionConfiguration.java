@@ -45,6 +45,13 @@ public class P2SConnectionConfiguration extends SubResource {
     private RoutingConfiguration routingConfiguration;
 
     /*
+     * Flag indicating whether the enable internet security flag is turned on
+     * for the P2S Connections or not.
+     */
+    @JsonProperty(value = "properties.enableInternetSecurity")
+    private Boolean enableInternetSecurity;
+
+    /*
      * The provisioning state of the P2SConnectionConfiguration resource.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -126,12 +133,41 @@ public class P2SConnectionConfiguration extends SubResource {
     }
 
     /**
+     * Get the enableInternetSecurity property: Flag indicating whether the enable internet security flag is turned on
+     * for the P2S Connections or not.
+     *
+     * @return the enableInternetSecurity value.
+     */
+    public Boolean enableInternetSecurity() {
+        return this.enableInternetSecurity;
+    }
+
+    /**
+     * Set the enableInternetSecurity property: Flag indicating whether the enable internet security flag is turned on
+     * for the P2S Connections or not.
+     *
+     * @param enableInternetSecurity the enableInternetSecurity value to set.
+     * @return the P2SConnectionConfiguration object itself.
+     */
+    public P2SConnectionConfiguration withEnableInternetSecurity(Boolean enableInternetSecurity) {
+        this.enableInternetSecurity = enableInternetSecurity;
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the P2SConnectionConfiguration resource.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public P2SConnectionConfiguration withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**
