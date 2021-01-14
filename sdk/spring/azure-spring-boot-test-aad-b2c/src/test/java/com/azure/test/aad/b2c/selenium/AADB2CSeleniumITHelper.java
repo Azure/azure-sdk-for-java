@@ -1,8 +1,15 @@
 package com.azure.test.aad.b2c.selenium;
 
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_REPLY_URL;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_TENANT;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_USER_EMAIL;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_USER_PASSWORD;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
-import com.azure.test.aad.b2c.utils.AADB2CTestUtils;
 import com.azure.test.aad.common.SeleniumITHelper;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,21 +23,21 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
 
     public static Map<String, String> createDefaultProperteis() {
         Map<String, String> defaultProperteis = new HashMap<>();
-        defaultProperteis.put("azure.activedirectory.b2c.tenant", AADB2CTestUtils.AAD_B2C_TENANT);
-        defaultProperteis.put("azure.activedirectory.b2c.client-id", AADB2CTestUtils.AAD_B2C_CLIENT_ID);
-        defaultProperteis.put("azure.activedirectory.b2c.client-secret", AADB2CTestUtils.AAD_B2C_CLIENT_SECRET);
-        defaultProperteis.put("azure.activedirectory.b2c.reply-url", AADB2CTestUtils.AAD_B2C_REPLY_URL);
+        defaultProperteis.put("azure.activedirectory.b2c.tenant", AAD_B2C_TENANT);
+        defaultProperteis.put("azure.activedirectory.b2c.client-id", AAD_B2C_CLIENT_ID);
+        defaultProperteis.put("azure.activedirectory.b2c.client-secret", AAD_B2C_CLIENT_SECRET);
+        defaultProperteis.put("azure.activedirectory.b2c.reply-url", AAD_B2C_REPLY_URL);
         defaultProperteis
-            .put("azure.activedirectory.b2c.user-flows.profile-edit", AADB2CTestUtils.AAD_B2C_PROFILE_EDIT);
+            .put("azure.activedirectory.b2c.user-flows.profile-edit", AAD_B2C_PROFILE_EDIT);
         defaultProperteis
-            .put("azure.activedirectory.b2c.user-flows.sign-up-or-sign-in", AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
+            .put("azure.activedirectory.b2c.user-flows.sign-up-or-sign-in", AAD_B2C_SIGN_UP_OR_SIGN_IN);
         return defaultProperteis;
     }
 
     public AADB2CSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
         super(appClass, properties);
-        userEmail = AADB2CTestUtils.AAD_B2C_USER_EMAIL;
-        userPassword = AADB2CTestUtils.AAD_B2C_USER_PASSWORD;
+        userEmail = AAD_B2C_USER_EMAIL;
+        userPassword = AAD_B2C_USER_PASSWORD;
     }
 
     public void logIn() {
@@ -53,7 +60,7 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))).submit();
         manualRedirection();
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(
-            "a[href='/oauth2/authorization/" + AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN + "']"))).click();
+            "a[href='/oauth2/authorization/" + AAD_B2C_SIGN_UP_OR_SIGN_IN + "']"))).click();
     }
 
     private void manualRedirection() {

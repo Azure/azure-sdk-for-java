@@ -1,10 +1,10 @@
 package com.azure.test.aad.selenium;
 
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_TENANT_ID_1;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_NAME_1;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 import com.azure.test.aad.common.SeleniumITHelper;
@@ -22,6 +22,7 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
 
     public static Map<String, String> createDefaultProperties() {
         Map<String, String> defaultProperties = new HashMap<>();
+        System.out.println(AAD_TENANT_ID_1);
         defaultProperties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
         defaultProperties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
         defaultProperties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
