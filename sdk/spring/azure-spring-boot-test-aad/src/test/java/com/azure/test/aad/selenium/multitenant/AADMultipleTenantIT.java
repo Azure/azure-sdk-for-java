@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_NAME_2;
 import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_2;
 
@@ -26,7 +29,10 @@ public class AADMultipleTenantIT {
 
     @Test
     public void multipleTenantTest() throws InterruptedException {
-        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap(),
+        Map<String, String> properties = new HashMap<>();
+        properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
+        properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
+        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties,
             AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
         LOGGER.info(httpResponse);
