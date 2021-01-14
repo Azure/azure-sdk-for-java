@@ -50,4 +50,20 @@ class SqlPoolReplicationLinksImpl extends WrapperImpl<SqlPoolReplicationLinksInn
         });
     }
 
+    @Override
+    public Observable<ReplicationLink> getByNameAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String linkId) {
+        SqlPoolReplicationLinksInner client = this.inner();
+        return client.getByNameAsync(resourceGroupName, workspaceName, sqlPoolName, linkId)
+        .flatMap(new Func1<ReplicationLinkInner, Observable<ReplicationLink>>() {
+            @Override
+            public Observable<ReplicationLink> call(ReplicationLinkInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ReplicationLink)wrapModel(inner));
+                }
+            }
+       });
+    }
+
 }

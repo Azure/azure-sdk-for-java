@@ -17,7 +17,7 @@ public class BackupAndRestoreHelloWorldAsync {
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when an invalid key vault URL is passed.
      */
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         /* Instantiate a KeyVaultAccessControlClient that will be used to call the service. Notice that the client is
         using default Azure credentials. To make default credentials work, ensure that environment variables
         'AZURE_CLIENT_ID', 'AZURE_CLIENT_KEY' and 'AZURE_TENANT_ID' are set with the service principal credentials.
@@ -47,7 +47,7 @@ public class BackupAndRestoreHelloWorldAsync {
 
         /* Now let's restore the entire collection of keys from the backup. We will need the get the URI for the
         location the backup, as well as Shared Access Signature for accessing it. */
-        String backupFolderUrl = backupPollResponse.getValue().getAzureStorageBlobContainerUri();
+        String backupFolderUrl = backupPollResponse.getValue().getAzureStorageBlobContainerUrl();
 
         backupAsyncClient.beginRestore(backupFolderUrl, sasToken).blockLast();
 

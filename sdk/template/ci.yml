@@ -30,3 +30,4 @@ extends:
       - name: azure-sdk-template
         groupId: com.azure
         safeName: azuresdktemplate
+        

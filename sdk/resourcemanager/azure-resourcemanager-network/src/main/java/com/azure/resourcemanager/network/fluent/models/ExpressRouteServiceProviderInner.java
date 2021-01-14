@@ -13,6 +13,7 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** A ExpressRouteResourceProvider object. */
 @JsonFlatten
@@ -111,6 +112,20 @@ public class ExpressRouteServiceProviderInner extends Resource {
      */
     public ExpressRouteServiceProviderInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteServiceProviderInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ExpressRouteServiceProviderInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

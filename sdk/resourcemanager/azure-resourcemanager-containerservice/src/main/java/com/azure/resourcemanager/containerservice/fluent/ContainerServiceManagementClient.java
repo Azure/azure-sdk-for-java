@@ -79,4 +79,18 @@ public interface ContainerServiceManagementClient {
      * @return the PrivateEndpointConnectionsClient object.
      */
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the ResolvePrivateLinkServiceIdsClient object to access its operations.
+     *
+     * @return the ResolvePrivateLinkServiceIdsClient object.
+     */
+    ResolvePrivateLinkServiceIdsClient getResolvePrivateLinkServiceIds();
 }

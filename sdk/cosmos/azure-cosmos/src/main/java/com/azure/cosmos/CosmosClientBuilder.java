@@ -104,6 +104,7 @@ public class CosmosClientBuilder {
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
+    private boolean clientTelemetryEnabled = false;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -585,6 +586,21 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Sets the flag to enable client telemetry which will periodically collect
+     * database operations aggregation statistics, system information like cpu/memory
+     * and send it to cosmos monitoring service, which will be helpful during debugging.
+     *<p>
+     * DEFAULT value is false indicating this is opt in feature, by default no telemetry collection.
+     *
+     * @param clientTelemetryEnabled flag to enable client telemetry.
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
+        this.clientTelemetryEnabled = clientTelemetryEnabled;
+        return this;
+    }
+
+    /**
      * Sets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
      * DEFAULT value is true.
@@ -677,6 +693,15 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Gets the flag to enabled client telemetry.
+     *
+     * @return flag to enable client telemetry.
+     */
+    boolean isClientTelemetryEnabled() {
+        return clientTelemetryEnabled;
+    }
+
+    /**
      * Gets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
      * DEFAULT value is true.
@@ -738,6 +763,7 @@ public class CosmosClientBuilder {
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
+        this.connectionPolicy.setClientTelemetryEnabled(this.clientTelemetryEnabled);
     }
 
     private void validateConfig() {

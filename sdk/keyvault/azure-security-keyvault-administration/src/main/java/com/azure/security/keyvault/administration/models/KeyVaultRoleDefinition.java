@@ -3,9 +3,12 @@
 
 package com.azure.security.keyvault.administration.models;
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * A class that defines a role.
  */
+@Immutable
 public final class KeyVaultRoleDefinition {
     private final String id;
     private final String name;

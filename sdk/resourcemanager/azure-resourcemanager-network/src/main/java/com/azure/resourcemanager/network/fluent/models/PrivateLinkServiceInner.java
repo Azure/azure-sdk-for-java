@@ -13,6 +13,7 @@ import com.azure.resourcemanager.network.models.ResourceSet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Private link service resource. */
 @JsonFlatten
@@ -279,6 +280,20 @@ public class PrivateLinkServiceInner extends Resource {
      */
     public PrivateLinkServiceInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PrivateLinkServiceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PrivateLinkServiceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

@@ -1351,6 +1351,13 @@
     <Bug pattern="UWF_UNWRITTEN_FIELD" />
   </Match>
 
+  <!-- TextAnalyticsException fields re serializable -->
+  <Match>
+    <Class name="com.azure.ai.textanalytics.models.TextAnalyticsException" />
+    <Field name="errorInformationList" />
+    <Bug pattern="SE_BAD_FIELD" />
+  </Match>
+
   <!-- Exception is required to catch, ref: code comment in the OrderbyRowComparer::compare() method  -->
   <Match>
     <Class name="com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer"/>
@@ -1990,6 +1997,13 @@
     <Bug pattern="EQ_UNUSUAL"/>
   </Match>
 
+   <!-- False positive, equals method is implemented correctly by using equality of member variables  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.clientTelemetry.ReportPayload"/>
+    <Method name="equals"/>
+    <Bug pattern="EQ_UNUSUAL"/>
+  </Match>
+
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9106 -->
   <Match>
     <Class name="com.azure.cosmos.implementation.PathsHelper"/>
@@ -2193,7 +2207,7 @@
 
   <!-- Empty byte array is returned as null to reactor. Reactor transform null from Callable to downstream onComplete  -->
   <Match>
-    <Class name="~com\.azure\.core\.http\.okhttp\.OkHttpAsyncHttpClient\$OkHttpResponse(.*)"/>
+    <Class name="~com\.azure\.core\.http\.okhttp\.OkHttpResponse(.*)"/>
     <Method name="~(.*)\$(getBodyAsByteArray|null)\$(.*)"/>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
   </Match>
@@ -2222,17 +2236,6 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
-  <!-- Known issue in autorest of inner Enumeration for InputStream response -->
-  <!-- Not much can be done if spotbugs think the class is too big for analysis -->
-  <Match>
-    <Or>
-      <Class name="com.azure.resourcemanager.appservice.fluent.WebAppsClient"/>
-      <Class name="com.azure.resourcemanager.appservice.implementation.WebAppsClientImpl"/>
-      <Class name="~com\.azure\.resourcemanager\.appservice\.implementation\.WebAppsClientImpl(.+)"/>
-    </Or>
-    <Bug pattern="SKIPPED_CLASS_TOO_BIG,SIC_INNER_SHOULD_BE_STATIC_ANON"/>
-  </Match>
-
   <!-- Exclude REC_CATCH_EXCEPTION and false positive error for management samples. All samples in management catch Exception instead of throw it. -->
   <Match>
     <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.samples(\.[^.]+)*"/>
@@ -2250,12 +2253,42 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
-  <!-- Exclude for Fluent Lite generated code -->
+  <!-- Exclude NM_CLASS_NOT_EXCEPTION for all resource manager due to it is just naming -->
+  <Match>
+    <Class name="~com\.azure\.resourcemanager(\.[^.]+)*" />
+    <Bug pattern="NM_CLASS_NOT_EXCEPTION" />
+  </Match>
+
+  <!-- Exclude for Resource Manager generated code -->
+  <!-- NP_LOAD_OF_KNOWN_NULL_VALUE - Known issue in autorest of setting parameters when calling REST API -->
+  <!-- SIC_INNER_SHOULD_BE_STATIC_ANON - Known issue in autorest of inner Enumeration for InputStream response -->
+  <!-- UPM_UNCALLED_PRIVATE_METHOD - Known issue in autorest to generate method that might not be called -->
+  <!-- SKIPPED_CLASS_TOO_BIG - Nothing we can do about this -->
+  <!-- PZLA_PREFER_ZERO_LENGTH_ARRAYS - byte array will return null by generator -->
   <Match>
     <Or>
-      <Package name="~com\.azure\.resourcemanager(\.[^.]+)*\.generated(\.[^.]+)*"/>
+      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.fluent\.([^.]+)Client"/>
+      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.([^.]+)ClientImpl"/>
     </Or>
-    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SIC_INNER_SHOULD_BE_STATIC_ANON,SKIPPED_CLASS_TOO_BIG,UPM_UNCALLED_PRIVATE_METHOD"/>
+    <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE,SKIPPED_CLASS_TOO_BIG,UPM_UNCALLED_PRIVATE_METHOD"/>
+  </Match>
+  <Match>
+    <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.fluent(\.[^.]+)*"/>
+    <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS"/>
+  </Match>
+  <Match>
+    <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.([^.]+)ClientImpl([^.]*)"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+  <Match>
+    <And>
+      <Class name="~com\.azure\.resourcemanager(\.[^.]+)*\.implementation\.([^.]+)Impl"/>
+      <Or>
+        <Method name="manager"/>
+        <Method name="serviceClient"/>
+      </Or>
+    </And>
+    <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD"/>
   </Match>
 
   <!-- Exclude from spring related classes -->
@@ -2263,6 +2296,7 @@
     <Or>
       <Class name="com.azure.spring.utils.GetHashMac"/> <!-- false positive -->
       <Class name="com.azure.spring.utils.PropertyLoader"/> <!-- false positive -->
+      <Class name="com.azure.spring.cloud.telemetry.GetHashMac"/> <!-- false positive -->
     </Or>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE,
                   NP_LOAD_OF_KNOWN_NULL_VALUE,
@@ -2297,7 +2331,7 @@
       <Field name="authenticationRecord"/>
       <Bug pattern="SE_TRANSIENT_FIELD_NOT_RESTORED"/>
   </Match>
-  
+
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>
       <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError"/>
@@ -2390,7 +2424,7 @@
     <Method name="getUserName" />
     <Bug pattern="NM_CONFUSING" />
   </Match>
- 
+
   <!-- Disabling false positives in azure-core -->
   <!-- This Issue has been resolved as per spotbugs's recommended solution but the static checker still flags it, its a known issue with this rule. -->
   <Match>
@@ -2420,5 +2454,22 @@
       <Class name="com.azure.security.keyvault.jca.LegacyRestClient" />
       <Method name="~(get|post)" />
       <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE" />
+  </Match>
+
+  <!-- Conflicting APIs have already been GA'd with incorrect capitalization  -->
+  <Match>
+    <Or>
+      <Class name="com.azure.security.keyvault.keys.cryptography.DecryptOptions" />
+      <Class name="com.azure.security.keyvault.keys.cryptography.EncryptOptions" />
+    </Or>
+    <Bug pattern="NM_CONFUSING" />
+  </Match>
+  <!-- Returning a new copy of the object is not necessary for queuing system use cases.
+  Client do not change content of message once message is created. Array copy would degrade the performance.
+  https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-amqp/src/main/java/com/azure/core/amqp/models/AmqpMessageBody.java#L115 -->
+  <Match>
+    <Class name="com.azure.core.amqp.models.AmqpMessageBody"/>
+    <Field name="data"/>
+    <Bug pattern="EI_EXPOSE_REP"/>
   </Match>
 </FindBugsFilter>

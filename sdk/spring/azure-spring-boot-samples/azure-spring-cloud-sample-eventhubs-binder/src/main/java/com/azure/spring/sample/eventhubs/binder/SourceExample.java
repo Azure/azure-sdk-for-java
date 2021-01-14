@@ -29,11 +29,6 @@ public class SourceExample {
         return message;
     }
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello world";
-    }
-
     @GetMapping("/")
     public String welcome() {
         return "welcome";

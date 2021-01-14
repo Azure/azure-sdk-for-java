@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.stream.Stream;
 
-import static com.azure.core.http.netty.NettyAsyncHttpClient.ReactorNettyHttpResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;

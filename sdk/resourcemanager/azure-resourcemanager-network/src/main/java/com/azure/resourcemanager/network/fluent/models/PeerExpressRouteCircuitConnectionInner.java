@@ -250,6 +250,13 @@ public class PeerExpressRouteCircuitConnectionInner extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public PeerExpressRouteCircuitConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -4,6 +4,7 @@
 package com.azure.core.http;
 
 import com.azure.core.implementation.http.HttpClientProviders;
+import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
 
 /**
@@ -14,9 +15,20 @@ public interface HttpClient {
      * Send the provided request asynchronously.
      *
      * @param request The HTTP request to send.
-     * @return A {@link Mono} that emits response asynchronously.
+     * @return A {@link Mono} that emits the response asynchronously.
      */
     Mono<HttpResponse> send(HttpRequest request);
+
+    /**
+     * Sends the provided request asynchronously with contextual information.
+     *
+     * @param request The HTTP request to send.
+     * @param context Contextual information about the request.
+     * @return A {@link Mono} that emits the response asynchronously.
+     */
+    default Mono<HttpResponse> send(HttpRequest request, Context context) {
+        return send(request);
+    }
 
     /**
      * Create default {@link HttpClient} instance.

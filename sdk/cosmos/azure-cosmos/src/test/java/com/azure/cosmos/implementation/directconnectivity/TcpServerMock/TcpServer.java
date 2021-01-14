@@ -121,6 +121,8 @@ public class TcpServer {
                 logger.info("Server channel closed.");
             });
 
+        } catch (Exception e) {
+            promise.setFailure(e);
         } finally {
             parent.shutdownGracefully().sync();
             child.shutdownGracefully().sync();

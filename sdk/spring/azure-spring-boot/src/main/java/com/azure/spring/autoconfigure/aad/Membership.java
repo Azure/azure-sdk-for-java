@@ -18,7 +18,7 @@ import java.util.Objects;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Membership implements Serializable {
     private static final long serialVersionUID = 9064197572478554735L;
-    public static final String OBJECT_TYPE_GROUP = "Group";
+    public static final String OBJECT_TYPE_GROUP = "#microsoft.graph.group";
 
     private final String objectID;
     private final String objectType;
@@ -56,8 +56,8 @@ public class Membership implements Serializable {
         }
         final Membership group = (Membership) o;
         return this.getDisplayName().equals(group.getDisplayName())
-                && this.getObjectID().equals(group.getObjectID())
-                && this.getObjectType().equals(group.getObjectType());
+            && this.getObjectID().equals(group.getObjectID())
+            && this.getObjectType().equals(group.getObjectType());
     }
 
     @Override

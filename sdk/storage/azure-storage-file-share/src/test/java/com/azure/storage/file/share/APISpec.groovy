@@ -336,6 +336,26 @@ class APISpec extends Specification {
         }
     }
 
+    ShareDirectoryClient getDirectoryClient(StorageSharedKeyCredential credential, String endpoint, HttpPipelinePolicy... policies) {
+        ShareFileClientBuilder builder = new ShareFileClientBuilder()
+            .endpoint(endpoint)
+            .httpClient(getHttpClient())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy)
+        }
+
+        if (testMode == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+        }
+        if (credential != null) {
+            builder.credential(credential)
+        }
+
+        return builder.buildDirectoryClient()
+    }
+
     def fileBuilderHelper(final InterceptorManager interceptorManager, final String shareName, final String filePath) {
         ShareFileClientBuilder builder = new ShareFileClientBuilder()
         if (testMode != TestMode.PLAYBACK) {
