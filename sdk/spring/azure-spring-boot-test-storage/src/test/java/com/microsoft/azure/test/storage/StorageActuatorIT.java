@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class KeyVaultActuatorIT {
+public class StorageActuatorIT {
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
     private static final String AZURE_STORAGE_ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
     private static final String AZURE_STORAGE_ACCOUNT_KEY = System.getenv("AZURE_STORAGE_ACCOUNT_KEY");
