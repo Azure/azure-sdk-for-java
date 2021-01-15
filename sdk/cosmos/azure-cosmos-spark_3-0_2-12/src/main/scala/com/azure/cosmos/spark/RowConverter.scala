@@ -64,7 +64,7 @@ object CosmosRowConverter
     private def convertSparkDataTypeToJsonNode(fieldType: DataType, rowData: Any) : JsonNode = {
         fieldType match {
             case StringType if rowData.isInstanceOf[String] => objectMapper.convertValue(rowData.asInstanceOf[String], classOf[JsonNode])
-            case StringType if rowData.isInstanceOf[UTF8String] => objectMapper.convertValue(rowData.asInstanceOf[UTF8String], classOf[JsonNode])
+            case StringType if rowData.isInstanceOf[UTF8String] => objectMapper.convertValue(rowData.asInstanceOf[UTF8String].toString, classOf[JsonNode])
             case BinaryType => objectMapper.convertValue(rowData.asInstanceOf[Array[Byte]], classOf[JsonNode])
             case BooleanType => objectMapper.convertValue(rowData.asInstanceOf[Boolean], classOf[JsonNode])
             case DoubleType => objectMapper.convertValue(rowData.asInstanceOf[Double], classOf[JsonNode])
