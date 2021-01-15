@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.RowEncoder
-import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
+import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
 
 // scalastyle:off underscore.import
 import org.apache.spark.sql.types._
@@ -82,8 +82,10 @@ object CosmosRowConverter
             case _: StructType => rowTypeRouterToJsonArray(rowData)
             case mapType: MapType =>
                 mapType.keyType match {
-                    case StringType =>
+                    case StringType if rowData.isInstanceOf[Map[String, _]] =>
                         convertSparkMapToObjectNode(mapType.valueType, mapType.valueContainsNull, rowData.asInstanceOf[Map[String, _]])
+                    case StringType if rowData.isInstanceOf[UnsafeMapData] =>
+                        convertSparkMapToObjectNode(mapType.valueType, mapType.valueContainsNull, rowData.asInstanceOf[UnsafeMapData])
                     case _ =>
                         throw new Exception(s"Cannot cast $rowData into a Json value. MapTypes must have keys of StringType for conversion Json")
                 }
@@ -97,6 +99,23 @@ object CosmosRowConverter
         val objectNode = objectMapper.createObjectNode()
 
         data.foreach(x =>
+            if (containsNull && x._2 == null) {
+                objectNode.putNull(x._1)
+            }
+            else {
+                objectNode.set(x._1, convertSparkSubItemToJsonNode(elementType, containsNull, x._2))
+            })
+
+        objectNode
+    }
+
+    private def convertSparkMapToObjectNode(elementType: DataType, containsNull: Boolean, data: UnsafeMapData) : ObjectNode = {
+        val objectNode = objectMapper.createObjectNode()
+
+        val keys: Array[String] = data.keyArray().toArray[UTF8String](StringType).map(_.toString)
+        val values: Array[AnyRef] = data.valueArray().toObjectArray(elementType)
+
+        keys.zip(values).toMap.foreach(x =>
             if (containsNull && x._2 == null) {
                 objectNode.putNull(x._1)
             }
