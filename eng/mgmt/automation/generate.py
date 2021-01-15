@@ -168,6 +168,10 @@ def update_service_ci_and_pom(sdk_root: str, service: str):
     if os.path.exists(ci_yml_file):
         with open(ci_yml_file, 'r') as fin:
             ci_yml = yaml.safe_load(fin)
+        sdk_type: str = ci_yml.get('extends', dict()).get('parameters', dict()).get('SDKType', '')
+        if type(sdk_type) == str and sdk_type.lower() == 'data':
+            os.rename(ci_yml_file, os.path.join(os.path.dirname(ci_yml_file), 'ci.data.yml'))
+            ci_yml = yaml.safe_load(CI_FORMAT.format(service, module))
     else:
         ci_yml = yaml.safe_load(CI_FORMAT.format(service, module))
 
@@ -221,12 +225,16 @@ def update_version(sdk_root: str, service: str):
         subprocess.run(
             'python3 eng/versioning/update_versions.py --ut library --bt client --sr',
             stdout = subprocess.DEVNULL,
-            stderr = sys.stderr)
+            stderr = sys.stderr,
+            shell = True,
+        )
         subprocess.run(
             'python3 eng/versioning/update_versions.py --ut library --bt client --tf {0}/README.md'
             .format(OUTPUT_FOLDER_FORMAT.format(service)),
             stdout = subprocess.DEVNULL,
-            stderr = sys.stderr)
+            stderr = sys.stderr,
+            shell = True,
+        )
     finally:
         os.chdir(pwd)
 

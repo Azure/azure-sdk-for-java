@@ -474,7 +474,7 @@ public final class CosmosAsyncClient implements Closeable {
      *
      * @param groupList The throughput control group configuration list.
      */
-    @Beta(value = Beta.SinceVersion.V4_10_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableThroughputControl(List<ThroughputControlGroup> groupList) {
         // Validate no duplicate group definition.
         Set<ThroughputControlGroup> groupConfigSet = new HashSet<>();

@@ -13,7 +13,8 @@ public enum CosmosItemOperationType {
     DELETE(BatchRequestResponseConstants.OPERATION_DELETE),
     READ(BatchRequestResponseConstants.OPERATION_READ),
     REPLACE(BatchRequestResponseConstants.OPERATION_REPLACE),
-    UPSERT(BatchRequestResponseConstants.OPERATION_UPSERT);
+    UPSERT(BatchRequestResponseConstants.OPERATION_UPSERT),
+    PATCH(BatchRequestResponseConstants.OPERATION_PATCH);
 
     CosmosItemOperationType(String operationValue) {
         this.operationValue = operationValue;

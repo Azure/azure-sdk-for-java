@@ -3,25 +3,25 @@
 
 package com.azure.test.keyvault;
 
-import static org.junit.Assert.assertEquals;
-
-import com.azure.spring.test.management.ClientSecretAccess;
 import com.azure.spring.test.AppRunner;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import static com.azure.spring.test.EnvironmentVariable.AZURE_KEYVAULT2_URI;
+import static com.azure.spring.test.EnvironmentVariable.AZURE_KEYVAULT_URI;
+import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT1_COMMON_SECRET_VALUE;
+import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT1_SECRET_NAME;
+import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT1_SECRET_VALUE;
+import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT2_SECRET_NAME;
+import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT2_SECRET_VALUE;
+import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT_COMMON_SECRET_NAME;
+import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.SPRING_TENANT_ID;
+import static org.junit.Assert.assertEquals;
+
 public class MultipleKeyVaultsIT {
 
-    private static final String KEY_VAULT1_SECRET_VALUE = System.getenv("KEY_VAULT_SECRET_VALUE");
-    private static final String KEY_VAULT1_SECRET_NAME = System.getenv("KEY_VAULT_SECRET_NAME");
-    private static final String KEY_VAULT2_SECRET_VALUE = System.getenv("KEY_VAULT2_SECRET_VALUE");
-    private static final String KEY_VAULT2_SECRET_NAME = System.getenv("KEY_VAULT2_SECRET_NAME");
-    private static final String KEY_VAULT_COMMON_SECRET_NAME = System.getenv("KEY_VAULT_COMMON_SECRET_NAME");
-    private static final String KEY_VAULT1_COMMON_SECRET_VALUE = System.getenv("KEY_VAULT1_COMMON_SECRET_VALUE");
-    private static final String KEY_VAULT2_COMMON_SECRET_VALUE = System.getenv("KEY_VAULT2_COMMON_SECRET_VALUE");
-    private static final String AZURE_KEYVAULT_URI = System.getenv("AZURE_KEYVAULT_URI");
-    private static final String AZURE_KEYVAULT2_URI = System.getenv("AZURE_KEYVAULT2_URI");
-    private static final ClientSecretAccess CLIENT_SECRET_ACCESS = ClientSecretAccess.load();
     private static final String KEY_VAULT_NAME_1 = getKeyVaultName(AZURE_KEYVAULT_URI);
     private static final String KEY_VAULT_NAME_2 = getKeyVaultName(AZURE_KEYVAULT2_URI);
 
@@ -40,9 +40,9 @@ public class MultipleKeyVaultsIT {
             app.property("azure.keyvault.order", KEY_VAULT_NAME_1);
             app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".enabled", "true");
             app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".uri", AZURE_KEYVAULT_URI);
-            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-id", CLIENT_SECRET_ACCESS.clientId());
-            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-key", CLIENT_SECRET_ACCESS.clientSecret());
-            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".tenant-id", CLIENT_SECRET_ACCESS.tenantId());
+            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-id", SPRING_CLIENT_ID);
+            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-key", SPRING_CLIENT_SECRET);
+            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".tenant-id", SPRING_TENANT_ID);
             app.start();
             assertEquals(KEY_VAULT1_SECRET_VALUE, app.getProperty(KEY_VAULT1_SECRET_NAME));
         }
@@ -57,9 +57,9 @@ public class MultipleKeyVaultsIT {
             app.property("azure.keyvault.order", KEY_VAULT_NAME_2);
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".enabled", "true");
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".uri", AZURE_KEYVAULT2_URI);
-            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-id", CLIENT_SECRET_ACCESS.clientId());
-            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-key", CLIENT_SECRET_ACCESS.clientSecret());
-            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".tenant-id", CLIENT_SECRET_ACCESS.tenantId());
+            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-id", SPRING_CLIENT_ID);
+            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-key", SPRING_CLIENT_SECRET);
+            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".tenant-id", SPRING_TENANT_ID);
             app.start();
             assertEquals(KEY_VAULT2_SECRET_VALUE, app.getProperty(KEY_VAULT2_SECRET_NAME));
         }
@@ -75,14 +75,14 @@ public class MultipleKeyVaultsIT {
             app.property("azure.keyvault.order", String.join(",", KEY_VAULT_NAME_1, KEY_VAULT_NAME_2));
             app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".enabled", "true");
             app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".uri", AZURE_KEYVAULT_URI);
-            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-id", CLIENT_SECRET_ACCESS.clientId());
-            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-key", CLIENT_SECRET_ACCESS.clientSecret());
-            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".tenant-id", CLIENT_SECRET_ACCESS.tenantId());
+            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-id", SPRING_CLIENT_ID);
+            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-key", SPRING_CLIENT_SECRET);
+            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".tenant-id", SPRING_TENANT_ID);
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".enabled", "true");
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".uri", AZURE_KEYVAULT2_URI);
-            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-id", CLIENT_SECRET_ACCESS.clientId());
-            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-key", CLIENT_SECRET_ACCESS.clientSecret());
-            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".tenant-id", CLIENT_SECRET_ACCESS.tenantId());
+            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-id", SPRING_CLIENT_ID);
+            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-key", SPRING_CLIENT_SECRET);
+            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".tenant-id", SPRING_TENANT_ID);
             app.start();
             assertEquals(KEY_VAULT1_COMMON_SECRET_VALUE, app.getProperty(KEY_VAULT_COMMON_SECRET_NAME));
         }
@@ -97,14 +97,14 @@ public class MultipleKeyVaultsIT {
             app.property("azure.keyvault.order", String.join(",", KEY_VAULT_NAME_1, KEY_VAULT_NAME_2));
             app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".enabled", "true");
             app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".uri", AZURE_KEYVAULT_URI);
-            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-id", CLIENT_SECRET_ACCESS.clientId());
-            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-key", CLIENT_SECRET_ACCESS.clientSecret());
-            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".tenant-id", CLIENT_SECRET_ACCESS.tenantId());
+            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-id", SPRING_CLIENT_ID);
+            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".client-key", SPRING_CLIENT_SECRET);
+            app.property("azure.keyvault." + KEY_VAULT_NAME_1 + ".tenant-id", SPRING_TENANT_ID);
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".enabled", "true");
             app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".uri", AZURE_KEYVAULT2_URI);
-            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-id", CLIENT_SECRET_ACCESS.clientId());
-            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-key", CLIENT_SECRET_ACCESS.clientSecret());
-            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".tenant-id", CLIENT_SECRET_ACCESS.tenantId());
+            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-id", SPRING_CLIENT_ID);
+            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".client-key", SPRING_CLIENT_SECRET);
+            app.property("azure.keyvault." + KEY_VAULT_NAME_2 + ".tenant-id", SPRING_TENANT_ID);
             app.start();
             assertEquals(KEY_VAULT1_SECRET_VALUE, app.getProperty(KEY_VAULT1_SECRET_NAME));
             assertEquals(KEY_VAULT2_SECRET_VALUE, app.getProperty(KEY_VAULT2_SECRET_NAME));

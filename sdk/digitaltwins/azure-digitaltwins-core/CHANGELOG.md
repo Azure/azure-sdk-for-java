@@ -2,6 +2,7 @@
 
 ## 1.1.0-beta.1 (Unreleased)
 
+- Added diagnostic contexts to async APIs including service namespace.
 
 ## 1.0.1 (2020-11-05)
 

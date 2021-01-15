@@ -12,7 +12,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 /**
  * Group configuration which will be used in Throughput control.
  */
-@Beta(value = Beta.SinceVersion.V4_10_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class ThroughputControlGroup {
 
     private final static boolean DEFAULT_USE_BY_DEFAULT = false;

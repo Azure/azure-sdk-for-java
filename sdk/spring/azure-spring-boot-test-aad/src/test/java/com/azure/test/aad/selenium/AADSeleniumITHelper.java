@@ -16,11 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_TENANT_ID_1;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_NAME_1;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_USER_PASSWORD_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class AADSeleniumITHelper {
@@ -33,8 +33,8 @@ public class AADSeleniumITHelper {
 
     static {
         DEFAULT_PROPERTIES.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
-        DEFAULT_PROPERTIES.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
-        DEFAULT_PROPERTIES.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.client-id", AAD_SINGLE_TENANT_CLIENT_ID);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.client-secret", AAD_SINGLE_TENANT_CLIENT_SECRET);
         DEFAULT_PROPERTIES.put("azure.activedirectory.user-group.allowed-groups", "group1");
         DEFAULT_PROPERTIES.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
 
