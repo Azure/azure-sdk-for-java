@@ -1,5 +1,8 @@
 ## Release History
 
+## 3.4.0-beta.1 (Unreleased)
+
+
 ### 3.3.0 (2020-01-15)
 #### New Features
 * Support for composite indexes in `CosmosIndexPolicy` annotation.
