@@ -15,18 +15,21 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-04-08/blob.json
+input-file: C:\azure-rest-api-specs\specification\storage\data-plane\Microsoft.BlobStorage\preview\2020-04-08\blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
 enable-xml: true
+generate-client-as-impl: true
 generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
+context-client-method-parameter: true
 models-subpackage: implementation.models
 custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders
 custom-types-subpackage: models
+customization-jar-path: target/azure-storage-blob-customization-1.0.0-beta.1.jar
+customization-class: com.azure.storage.blob.customization.BlobStorageCustomization
 ```
 
 ### /{containerName}?restype=container
@@ -1023,83 +1026,6 @@ directive:
         $.get.responses["200"].schema = { "$ref": path };
     }
     $.get.operationId = "Service_ListBlobContainersSegment";
-```
-
-### Change StorageErrorException to StorageException
-``` yaml
-directive:
-- from: ServicesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: ContainersImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: BlobsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: AppendBlobsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: BlockBlobsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: PageBlobsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
 ```
 
 ### GeoReplication

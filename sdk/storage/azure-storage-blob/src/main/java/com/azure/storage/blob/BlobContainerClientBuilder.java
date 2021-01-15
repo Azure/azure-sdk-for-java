@@ -25,6 +25,7 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.policy.RequestRetryOptions;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -174,8 +175,7 @@ public final class BlobContainerClientBuilder {
         } else {
             this.customerProvidedKey = new CpkInfo()
                 .setEncryptionKey(customerProvidedKey.getKey())
-                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
-                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256());
         }
 
         return this;

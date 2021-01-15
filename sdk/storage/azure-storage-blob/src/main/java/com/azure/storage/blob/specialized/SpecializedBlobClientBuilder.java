@@ -30,13 +30,14 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import reactor.core.publisher.Flux;
+
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import reactor.core.publisher.Flux;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of specialized Storage Blob
@@ -341,8 +342,7 @@ public final class SpecializedBlobClientBuilder {
         } else {
             this.customerProvidedKey = new CpkInfo()
                 .setEncryptionKey(customerProvidedKey.getKey())
-                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
-                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256());
         }
 
         return this;

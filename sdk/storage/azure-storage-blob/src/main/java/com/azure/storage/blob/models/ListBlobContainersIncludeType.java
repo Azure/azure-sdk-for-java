@@ -7,23 +7,15 @@ package com.azure.storage.blob.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ListBlobContainersIncludeType.
- */
+/** Defines values for ListBlobContainersIncludeType. */
 public enum ListBlobContainersIncludeType {
-    /**
-     * Enum value metadata.
-     */
+    /** Enum value metadata. */
     METADATA("metadata"),
 
-    /**
-     * Enum value deleted.
-     */
+    /** Enum value deleted. */
     DELETED("deleted");
 
-    /**
-     * The actual serialized value for a ListBlobContainersIncludeType instance.
-     */
+    /** The actual serialized value for a ListBlobContainersIncludeType instance. */
     private final String value;
 
     ListBlobContainersIncludeType(String value) {
