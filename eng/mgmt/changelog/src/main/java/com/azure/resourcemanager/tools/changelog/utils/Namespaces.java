@@ -25,7 +25,7 @@ public class Namespaces {
         });
     }
 
-    public String base() {
+    public String getBase() {
         return baseNamespace;
     }
 

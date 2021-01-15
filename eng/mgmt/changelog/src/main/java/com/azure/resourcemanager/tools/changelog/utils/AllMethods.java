@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class AllMethods {
-    public JApiClass getjApiClass() {
+    public JApiClass getJApiClass() {
         return jApiClass;
     }
 

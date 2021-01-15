@@ -58,11 +58,11 @@ public class ChangeLog {
         return Stream.concat(changeLogForStage, changeLogForNonStage.stream()).collect(Collectors.toList());
     }
 
-    public JApiClass getjApiClass() {
-        return this.allMethods.getjApiClass();
+    public JApiClass getJApiClass() {
+        return this.allMethods.getJApiClass();
     }
 
-    public String newFeature() {
+    public String getNewFeature() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < this.newFeature.size(); ++i) {
             builder.append(this.newFeature.get(i)).append("\n");
@@ -73,7 +73,7 @@ public class ChangeLog {
         return builder.toString();
     }
 
-    public String breakingChange() {
+    public String getBreakingChange() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < this.breakingChange.size(); ++i) {
             builder.append(this.breakingChange.get(i)).append("\n");
@@ -85,7 +85,7 @@ public class ChangeLog {
     }
 
     public boolean isClassLevelChanged() {
-        return getjApiClass().getChangeStatus() == JApiChangeStatus.NEW || getjApiClass().getChangeStatus() == JApiChangeStatus.REMOVED;
+        return getJApiClass().getChangeStatus() == JApiChangeStatus.NEW || getJApiClass().getChangeStatus() == JApiChangeStatus.REMOVED;
     }
 
     protected void calcChangeLog() {
@@ -93,12 +93,12 @@ public class ChangeLog {
     }
 
     private void calcChangeLogForClass() {
-        switch (getjApiClass().getChangeStatus()) {
-            case NEW: newFeature.add(String.format("* `%s` was added", getjApiClass().getFullyQualifiedName())); break;
-            case REMOVED: breakingChange.add(String.format("* `%s` was removed", getjApiClass().getFullyQualifiedName())); break;
+        switch (getJApiClass().getChangeStatus()) {
+            case NEW: newFeature.add(String.format("* `%s` was added", getJApiClass().getFullyQualifiedName())); break;
+            case REMOVED: breakingChange.add(String.format("* `%s` was removed", getJApiClass().getFullyQualifiedName())); break;
             default:
                 AtomicBoolean checkReturnType = new AtomicBoolean(true);
-                if (ClassName.name(getjApiClass()).equals("Definition")) {
+                if (ClassName.name(getJApiClass()).equals("Definition")) {
                     checkReturnType.set(false);
                 }
                 allMethods.getMethods().forEach(method -> this.calcChangelogForMethod(method, checkReturnType.get()));
@@ -108,7 +108,7 @@ public class ChangeLog {
 
     protected void addClassTitle(List<String> list) {
         if (list.isEmpty()) {
-            list.add(String.format("#### `%s` was modified", getjApiClass().getFullyQualifiedName()));
+            list.add(String.format("#### `%s` was modified", getJApiClass().getFullyQualifiedName()));
             list.add("");
         }
     }
