@@ -363,8 +363,8 @@ public class CosmosContainer {
      * Query for items in the change feed of the current container using the {@link CosmosChangeFeedRequestOptions}.
      * <p>
      * The next page can be retrieved by calling queryChangeFeed again with a new instance of
-     * {@Link CosmosChangeFeedRequestOptions} created from the continuation token of the previously returned
-     * {@Link FeedResponse<T>} instance.
+     * {@link CosmosChangeFeedRequestOptions} created from the continuation token of the previously returned
+     * {@link FeedResponse<T>} instance.
      *
      * @param <T> the type parameter.
      * @param options the change feed request options.

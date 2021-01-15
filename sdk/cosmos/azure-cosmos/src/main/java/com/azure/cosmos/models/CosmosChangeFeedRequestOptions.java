@@ -334,7 +334,7 @@ public final class CosmosChangeFeedRequestOptions {
      * Changes the change feed mode so that the change feed will contain events for creations,
      * deletes as well as all intermediary snapshots for updates. Enabling full fidelity change feed
      * mode requires configuring a retention duration in the change feed policy of the
-     * container. <see>{@link ChangeFeedPolicy}</see>
+     * container. {@link ChangeFeedPolicy}
      * <p>
      * intermediary snapshots of changes as well as deleted documents would be
      * * available for processing for 8 minutes before they vanish.

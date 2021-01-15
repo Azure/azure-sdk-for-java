@@ -28,7 +28,7 @@ public interface FeedRange {
 
     /**
      * Gets a json representation of the feed range - the returned json string can be used
-     * to create a new feed range instance from it - <see>{@Link fromJsonString}</see>
+     * to create a new feed range instance from it - {@link fromJsonString}
      * @return a JSON string representing the feed range
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -36,7 +36,7 @@ public interface FeedRange {
 
     /**
      * Creates a range for a certain logical partition
-     * @param partitionKey
+     * @param partitionKey the logical partition key value
      * @return A feed range for a certain logical partition
      */
     @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
