@@ -13,6 +13,7 @@ import tempfile
 import subprocess
 import collections
 import urllib.parse
+from typing import Tuple
 
 pwd = os.getcwd()
 os.chdir(os.path.abspath(os.path.dirname(sys.argv[0])))
@@ -87,7 +88,7 @@ def generate_changelog_and_breaking_change(
     old_jar,
     new_jar,
     **kwargs,
-) -> (bool, str):
+) -> Tuple[bool, str]:
     stdout = subprocess.run(
         'mvn clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'
         .format(sdk_root, old_jar, new_jar),
@@ -182,7 +183,7 @@ def add_module_to_modules(modules: str, module: str) -> str:
     return '<modules>\n' + ''.join(all_module) + post_module.group()
 
 
-def add_module_to_default_profile(pom: str, module: str) -> (bool, str):
+def add_module_to_default_profile(pom: str, module: str) -> Tuple[bool, str]:
     for profile in re.finditer(r'<profile>[\s\S]*?</profile>', pom):
         profile_value = profile.group()
         if re.search(r'<id>default</id>', profile_value):
@@ -206,7 +207,7 @@ def add_module_to_default_profile(pom: str, module: str) -> (bool, str):
     return (False, '')
 
 
-def add_module_to_pom(pom: str, module: str) -> (bool, str):
+def add_module_to_pom(pom: str, module: str) -> Tuple[bool, str]:
     if pom.find('<module>{0}</module>'.format(module)) >= 0:
         logging.info('[POM][Skip] pom already has module {0}'.format(module))
         return (True, pom)
@@ -360,7 +361,7 @@ def set_or_increase_version_and_generate(
     preview = True,
     version = None,
     **kwargs,
-) -> (str, str):
+) -> Tuple[str, str]:
     version_file = os.path.join(sdk_root, 'eng/versioning/version_client.txt')
     module = ARTIFACT_FORMAT.format(service)
     project = '{0}:{1}'.format(GROUP_ID, module)
@@ -511,7 +512,7 @@ def valid_service(service: str):
     return re.sub('[^a-z0-9_]', '', service.lower())
 
 
-def read_api_specs(api_specs_file: str) -> (str, dict):
+def read_api_specs(api_specs_file: str) -> Tuple[str, dict]:
     # return comment and api_specs
 
     with open(api_specs_file) as fin:
