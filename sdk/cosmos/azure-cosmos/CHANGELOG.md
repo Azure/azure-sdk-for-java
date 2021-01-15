@@ -1,5 +1,8 @@
 ## Release History
 
+## 4.12.0-beta.1 (Unreleased)
+
+
 ### 4.11.0 (2021-01-15)
 #### New Features
 * Added Beta API for Patch support.
