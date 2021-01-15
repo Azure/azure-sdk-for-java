@@ -33,47 +33,47 @@
   <build>
     <plugins>
       <plugin>
-      <groupId>org.codehaus.mojo</groupId>
-      <artifactId>exec-maven-plugin</artifactId>
-      <version>1.2.1</version>
-      <executions>
-        <execution>
-          <goals>
-            <goal>java</goal>
-          </goals>
-        </execution>
-      </executions>
-      <configuration>
-        <mainClass>com.azure.resourcemanager.tools.changelog.Main</mainClass>
-        <systemProperties>
-          <systemProperty>
-            <key>PACKAGE_IGNORE</key>
-            <value>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*;com\.azure\.resourcemanager(\.[^.]+)+\.implementation</value>
-          </systemProperty>
-          <systemProperty>
-            <key>OLD_JAR</key>
-            <value></value> <!-- Jar File Path -->
-          </systemProperty>
-          <systemProperty>
-            <key>NEW_JAR</key>
-            <value></value> <!-- Jar File Path -->
-          </systemProperty>
-        </systemProperties>
-      </configuration>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>java</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <mainClass>com.azure.resourcemanager.tools.changelog.Main</mainClass>
+          <systemProperties>
+            <systemProperty>
+              <key>PACKAGE_IGNORE</key>
+              <value>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*;com\.azure\.resourcemanager(\.[^.]+)+\.implementation</value>
+            </systemProperty>
+            <systemProperty>
+              <key>OLD_JAR</key>
+              <value></value> <!-- Jar File Path -->
+            </systemProperty>
+            <systemProperty>
+              <key>NEW_JAR</key>
+              <value></value> <!-- Jar File Path -->
+            </systemProperty>
+          </systemProperties>
+        </configuration>
       </plugin>
       <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.5.1</version>
-            <configuration>
-              <compilerArgs>
-                <arg>-Xlint:unchecked</arg>
-              </compilerArgs>
-                <source>${maven.compiler.source}</source>
-                <target>${maven.compiler.target}</target>
-                <encoding>UTF-8</encoding>
-            </configuration>
-        </plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.5.1</version>
+        <configuration>
+          <compilerArgs>
+            <arg>-Xlint:unchecked</arg>
+          </compilerArgs>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
