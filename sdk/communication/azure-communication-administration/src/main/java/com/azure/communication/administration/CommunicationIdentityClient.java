@@ -94,7 +94,7 @@ public final class CommunicationIdentityClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)    
-    public Response<Void> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
+    public Response<Void> revokeAccessTokensWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         return null;
     }
 
