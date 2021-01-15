@@ -4,7 +4,7 @@
 #### New Features
 * Support for composite indexes in `CosmosIndexPolicy` annotation.
 * Support for changes in `CosmosIndexPolicy` annotation.
-* Updated azure-cosmos version to 4.10.1.
+* Updated azure-cosmos version to 4.11.0.
 
 #### Key Bug Fixes
 * Fixed query generation with sort and limit.
