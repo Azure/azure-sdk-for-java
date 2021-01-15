@@ -1,5 +1,17 @@
 # Release History
 
+## 11.1.2 (2020-11-10)
+
+### Dependency updates
+
+- Updated `azure-core` version.
+
+## 11.1.1 (2020-10-02)
+
+### Dependency updates
+
+- Updated `azure-core` version.
+
 ## 11.1.0 (2020-09-09)
 
 ### New Features

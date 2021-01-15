@@ -7,12 +7,12 @@ a rich search experience over private, heterogeneous content in web, mobile, and
 The Azure Cognitive Search service is well suited for the following application scenarios:
 
 * Consolidate varied content types into a single searchable index. To populate an index, you can push JSON documents
-that contain your content, or if your data is already in Azure, create an indexer to pull in data automatically.
+  that contain your content, or if your data is already in Azure, create an indexer to pull in data automatically.
 
 * Attach skillsets to an indexer to create searchable content from images and large text documents. A skillset leverages
-AI from Cognitive Services for built-in OCR, entity recognition, key phrase extraction, language detection, text
-translation, and sentiment analysis. You can also add custom skills to integrate external processing of your content
-during data ingestion.
+  AI from Cognitive Services for built-in OCR, entity recognition, key phrase extraction, language detection, text
+  translation, and sentiment analysis. You can also add custom skills to integrate external processing of your content
+  during data ingestion.
 
 * In a search client application, implement query logic and user experiences similar to commercial web search engines.
 
@@ -36,9 +36,9 @@ Use the Azure Cognitive Search client library to:
 [//]: # ({x-version-update-start;com.azure:azure-search-documents;current})
 ```xml
 <dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-search-documents</artifactId>
-    <version>11.1.0</version>
+  <groupId>com.azure</groupId>
+  <artifactId>azure-search-documents</artifactId>
+  <version>11.1.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -49,8 +49,8 @@ Use the Azure Cognitive Search client library to:
 * [Azure subscription][azure_subscription]
 * [Azure Cognitive Search service][search]
 * To create a new search service, you can use the [Azure portal][create_search_service_docs],
-[Azure PowerShell][create_search_service_ps], or the [Azure CLI][create_search_service_cli].
-Here's an example using the Azure CLI to create a free instance for getting started:
+  [Azure PowerShell][create_search_service_ps], or the [Azure CLI][create_search_service_cli].
+  Here's an example using the Azure CLI to create a free instance for getting started:
 
 ```bash
 az search service create --name <mysearch> --resource-group <mysearch-rg> --sku free --location westus
@@ -77,10 +77,10 @@ az search admin-key show --service-name <mysearch> --resource-group <mysearch-rg
 **Note:**
 
 * The example Azure CLI snippet above retrieves an admin key. This allows for easier access when exploring APIs,
-but it should be managed carefully.
+  but it should be managed carefully.
 * There are two types of keys used to access your search service: **admin** *(read-write)* and **query** *(read-only)*
-keys. Restricting access and operations in client apps is essential to safeguarding the search assets on your service.
-Always use a query key rather than an admin key for any query originating from a client app.
+  keys. Restricting access and operations in client apps is essential to safeguarding the search assets on your service.
+  Always use a query key rather than an admin key for any query originating from a client app.
 
 The SDK provides three clients.
 
@@ -322,7 +322,7 @@ SearchPagedIterable searchResultsIterable = searchClient.search("luxury", option
 
 ### Creating an index
 
-You can use the [`SearchIndexClient`](#Create-a-SearchIndexClient) to create a search index. Indexes can also define
+You can use the [`SearchIndexClient`](#create-a-searchindexclient) to create a search index. Indexes can also define
 suggesters, lexical analyzers, and more.
 
 There are multiple ways of preparing search fields for a search index. For basic needs, we provide a static helper method
@@ -425,7 +425,7 @@ to `false` to get a successful response with an `IndexDocumentsResult` for inspe
 ### Async APIs
 
 The examples so far have been using synchronous APIs, but we provide full support for async APIs as well. You'll need
-to use [SearchAsyncClient](#Create-a-SearchClient).
+to use [SearchAsyncClient](#create-a-searchclient).
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L201-L205 -->
 ```java
