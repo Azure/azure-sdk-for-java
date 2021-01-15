@@ -1,5 +1,8 @@
 # Release History
 
+## 11.2.0-beta.1 (Unreleased)
+
+
 ## 11.1.3 (2021-01-15)
 
 ### Dependency updates
