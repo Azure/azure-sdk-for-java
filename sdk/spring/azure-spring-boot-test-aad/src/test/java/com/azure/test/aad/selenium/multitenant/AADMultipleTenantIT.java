@@ -21,6 +21,7 @@ import java.util.Map;
 
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_2;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_2;
 
