@@ -1,10 +1,10 @@
 # Azure Search Documents for Java
-    
+
 > see https://aka.ms/autorest
 
 This is the AutoRest configuration file for SearchServiceClient and SearchIndexClient.
 ---
-## Getting Started 
+## Getting Started
 
 To build the SDK for SearchServiceClient and SearchIndexClient, simply [Install AutoRest](https://aka.ms/autorest) and in this folder, run:
 
@@ -41,7 +41,7 @@ autorest --use=C:/work/autorest.java --tag=package-2020-06-searchservice
 ```
 ## Configuration
 
-### Basic Information 
+### Basic Information
 These are the global settings for SearchServiceClient and SearchIndexClient.
 
 ``` yaml
