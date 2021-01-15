@@ -55,7 +55,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         paths.add("/zipcode");
         partitionKeyDefinition.setPaths(paths);
 
-        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName, partitionKeyDefinition);
+        CosmosContainerProperties containerProperties = getContainerDefinition(collectionName, partitionKeyDefinition);
 
         //MultiHash collection create
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
@@ -74,7 +74,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void itemCRUDTest() throws Exception {
+    public void itemCRUD() throws Exception {
 
         List<String> pkIds = new ArrayList<>();
         pkIds.add("Redmond");
@@ -96,7 +96,8 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         assertThat(readResponse1.getItem().equals(properties));
     }
 
-    private ObjectNode getDocumentDefinition(String documentId, List<String> pkIds) throws JsonProcessingException {
+    private ObjectNode getItem(String documentId, List<String> pkIds) throws JsonProcessingException {
+
 
         String json = String.format("{ "
                 + "\"id\": \"%s\", "

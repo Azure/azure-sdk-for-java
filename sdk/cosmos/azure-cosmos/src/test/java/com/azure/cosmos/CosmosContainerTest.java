@@ -259,7 +259,7 @@ public class CosmosContainerTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void crudMultiHashContainerTest() throws Exception{
+    public void crudMultiHashContainer() throws Exception {
         String collectionName = UUID.randomUUID().toString();
 
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
@@ -270,7 +270,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         paths.add("/zipcode");
         partitionKeyDefinition.setPaths(paths);
 
-        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName, partitionKeyDefinition);
+        CosmosContainerProperties containerProperties = getContainerDefinition(collectionName, partitionKeyDefinition);
 
         //MultiHash collection create
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
