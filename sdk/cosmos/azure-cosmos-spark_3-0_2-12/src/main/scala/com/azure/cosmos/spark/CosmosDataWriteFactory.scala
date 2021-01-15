@@ -31,7 +31,7 @@ class CosmosDataWriteFactory(userConfig: Map[String, String],
 
     override def write(internalRow: InternalRow): Unit = {
       // TODO moderakh: schema is hard coded for now to make end to end TestE2EMain work implement schema inference code
-      val objectNode = CosmosRowConverter.internalRowToObjectNode(internalRow, inputSchema)
+      val objectNode = CosmosRowConverter.fromInternalRowToObjectNode(internalRow, inputSchema)
       // TODO: moderakh how should we handle absence of id?
       if (!objectNode.has("id")) {
         objectNode.put("id", UUID.randomUUID().toString)
