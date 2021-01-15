@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -19,7 +20,6 @@ import reactor.core.publisher.Mono;
 import java.net.URISyntaxException;
 import java.net.http.HttpRequest.BodyPublisher;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Flow;
@@ -52,9 +52,28 @@ class JdkAsyncHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
+        return send(request, Context.NONE);
+    }
+
+    @Override
+    public Mono<HttpResponse> send(HttpRequest request, Context context) {
+        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+
         return toJdkHttpRequest(request)
             .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, ofPublisher()))
-                .map(innerResponse -> new JdkHttpResponse(request, innerResponse)));
+                .flatMap(innerResponse -> {
+                    if (eagerlyReadResponse) {
+                        int statusCode = innerResponse.statusCode();
+                        HttpHeaders headers = fromJdkHttpHeaders(innerResponse.headers());
+
+                        return FluxUtil.collectBytesInByteBufferStream(JdkFlowAdapter
+                            .flowPublisherToFlux(innerResponse.body())
+                            .flatMapSequential(Flux::fromIterable))
+                            .map(bytes -> new BufferedJdkHttpResponse(request, statusCode, headers, bytes));
+                    } else {
+                        return Mono.just(new JdkHttpResponse(request, innerResponse));
+                    }
+                }));
     }
 
     /**
@@ -158,88 +177,24 @@ class JdkAsyncHttpClient implements HttpClient {
         }
     }
 
-    private static class JdkHttpResponse extends HttpResponse {
-        private final int statusCode;
-        private final HttpHeaders headers;
-        private final Flux<ByteBuffer> contentFlux;
-        private volatile boolean disposed = false;
+    /**
+     * Converts the given JDK Http headers to azure-core Http header.
+     *
+     * @param headers the JDK Http headers
+     * @return the azure-core Http headers
+     */
+    static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
+        final HttpHeaders httpHeaders = new HttpHeaders();
 
-        protected JdkHttpResponse(final HttpRequest request,
-                                  java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> innerResponse) {
-            super(request);
-            this.statusCode = innerResponse.statusCode();
-            this.headers = fromJdkHttpHeaders(innerResponse.headers());
-            this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(innerResponse.body())
-                .flatMapSequential(Flux::fromIterable);
-        }
-
-        @Override
-        public int getStatusCode() {
-            return this.statusCode;
-        }
-
-        @Override
-        public String getHeaderValue(String name) {
-            return this.headers.getValue(name);
-        }
-
-        @Override
-        public HttpHeaders getHeaders() {
-            return this.headers;
-        }
-
-        @Override
-        public Flux<ByteBuffer> getBody() {
-            return this.contentFlux
-                .doFinally(signalType -> disposed = true);
-        }
-
-        @Override
-        public Mono<byte[]> getBodyAsByteArray() {
-            return FluxUtil.collectBytesInByteBufferStream(getBody())
-                .flatMap(bytes -> bytes.length == 0 ? Mono.empty() : Mono.just(bytes));
-        }
-
-        @Override
-        public Mono<String> getBodyAsString() {
-            return getBodyAsByteArray().map(bytes ->
-                CoreUtils.bomAwareToString(bytes, headers.getValue("Content-Type")));
-        }
-
-        @Override
-        public Mono<String> getBodyAsString(Charset charset) {
-            return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
-        }
-
-        @Override
-        public void close() {
-            if (!this.disposed) {
-                this.disposed = true;
-                this.contentFlux
-                    .subscribe()
-                    .dispose();
+        for (final String key : headers.map().keySet()) {
+            final List<String> values = headers.allValues(key);
+            if (CoreUtils.isNullOrEmpty(values)) {
+                continue;
             }
+
+            httpHeaders.put(key, values.size() == 1 ? values.get(0) : String.join(",", values));
         }
 
-        /**
-         * Converts the given JDK Http headers to azure-core Http header.
-         *
-         * @param headers the JDK Http headers
-         * @return the azure-core Http headers
-         */
-        private static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
-            final HttpHeaders httpHeaders = new HttpHeaders();
-            for (final String key : headers.map().keySet()) {
-                final List<String> values = headers.allValues(key);
-                if (CoreUtils.isNullOrEmpty(values)) {
-                    continue;
-                } else if (values.size() == 1) {
-                    httpHeaders.put(key, values.get(0));
-                } else {
-                    httpHeaders.put(key, String.join(",", values));
-                }
-            }
-            return httpHeaders;
-        }
+        return httpHeaders;
     }
 }

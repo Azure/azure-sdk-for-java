@@ -85,7 +85,7 @@ public final class CompositeContinuationToken extends JsonSerializable {
      * @param token
      *            the token to set
      */
-    private void setToken(String token) {
+    public void setToken(String token) {
         BridgeInternal.setProperty(this, TokenPropertyName, token);
     }
 
@@ -93,7 +93,7 @@ public final class CompositeContinuationToken extends JsonSerializable {
      * @param range
      *            the range to set
      */
-    private void setRange(Range<String> range) {
+    public void setRange(Range<String> range) {
         /* TODO: Don't stringify the range */
         BridgeInternal.setProperty(this, RangePropertyName, range.toString());
     }

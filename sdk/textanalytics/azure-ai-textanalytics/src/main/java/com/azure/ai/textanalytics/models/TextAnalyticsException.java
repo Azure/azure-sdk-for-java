@@ -3,7 +3,11 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.TextAnalyticsExceptionPropertiesHelper;
 import com.azure.core.exception.AzureException;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * General exception for Text Analytics related failures.
@@ -14,6 +18,12 @@ public class TextAnalyticsException extends AzureException {
 
     private final TextAnalyticsErrorCode errorCode;
     private final String target;
+
+    private List<TextAnalyticsErrorInformation> errorInformationList;
+
+    static {
+        TextAnalyticsExceptionPropertiesHelper.setAccessor(TextAnalyticsException::setErrorInformationList);
+    }
 
     /**
      * Initializes a new instance of the {@link TextAnalyticsException} class.
@@ -55,5 +65,24 @@ public class TextAnalyticsException extends AzureException {
      */
     public TextAnalyticsErrorCode getErrorCode() {
         return errorCode;
+    }
+
+    /**
+     * Get the error information list fot this exception.
+     *
+     * @return the unmodifiable error information list for this exception.
+     */
+    public List<TextAnalyticsErrorInformation> getErrorInformationList() {
+        return Collections.unmodifiableList(this.errorInformationList);
+    }
+
+    /**
+     * The private setter to set the errors property
+     * via {@link TextAnalyticsExceptionPropertiesHelper.TextAnalyticsExceptionAccessor}.
+     *
+     * @param errorInformationList the list of {@link TextAnalyticsErrorInformation}
+     */
+    private void setErrorInformationList(List<TextAnalyticsErrorInformation> errorInformationList) {
+        this.errorInformationList = errorInformationList;
     }
 }

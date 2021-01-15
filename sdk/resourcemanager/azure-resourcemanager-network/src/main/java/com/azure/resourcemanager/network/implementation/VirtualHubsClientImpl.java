@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -78,7 +79,7 @@ public final class VirtualHubsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface VirtualHubsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}")
@@ -90,9 +91,10 @@ public final class VirtualHubsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualHubName") String virtualHubName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}")
@@ -105,9 +107,10 @@ public final class VirtualHubsClientImpl
             @PathParam("virtualHubName") String virtualHubName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") VirtualHubInner virtualHubParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}")
@@ -120,9 +123,10 @@ public final class VirtualHubsClientImpl
             @PathParam("virtualHubName") String virtualHubName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") TagsObject virtualHubParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}")
@@ -134,9 +138,10 @@ public final class VirtualHubsClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("virtualHubName") String virtualHubName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualHubs")
@@ -147,9 +152,10 @@ public final class VirtualHubsClientImpl
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/virtualHubs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -157,9 +163,10 @@ public final class VirtualHubsClientImpl
             @HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
                 + "/{virtualHubName}/effectiveRoutes")
@@ -172,21 +179,28 @@ public final class VirtualHubsClientImpl
             @PathParam("virtualHubName") String virtualHubName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EffectiveRoutesParameters effectiveRoutesParameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVirtualHubsResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVirtualHubsResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -221,7 +235,8 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -232,6 +247,7 @@ public final class VirtualHubsClientImpl
                             resourceGroupName,
                             virtualHubName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -269,7 +285,8 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -278,6 +295,7 @@ public final class VirtualHubsClientImpl
                 resourceGroupName,
                 virtualHubName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -375,7 +393,8 @@ public final class VirtualHubsClientImpl
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -387,6 +406,7 @@ public final class VirtualHubsClientImpl
                             virtualHubName,
                             apiVersion,
                             virtualHubParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -431,7 +451,8 @@ public final class VirtualHubsClientImpl
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -441,6 +462,7 @@ public final class VirtualHubsClientImpl
                 virtualHubName,
                 apiVersion,
                 virtualHubParameters,
+                accept,
                 context);
     }
 
@@ -633,7 +655,8 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         TagsObject virtualHubParameters = new TagsObject();
         virtualHubParameters.withTags(tags);
         return FluxUtil
@@ -647,6 +670,7 @@ public final class VirtualHubsClientImpl
                             virtualHubName,
                             apiVersion,
                             virtualHubParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -685,7 +709,8 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         TagsObject virtualHubParameters = new TagsObject();
         virtualHubParameters.withTags(tags);
         context = this.client.mergeContext(context);
@@ -697,6 +722,7 @@ public final class VirtualHubsClientImpl
                 virtualHubName,
                 apiVersion,
                 virtualHubParameters,
+                accept,
                 context);
     }
 
@@ -814,7 +840,8 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -825,6 +852,7 @@ public final class VirtualHubsClientImpl
                             resourceGroupName,
                             virtualHubName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -862,7 +890,8 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -871,6 +900,7 @@ public final class VirtualHubsClientImpl
                 resourceGroupName,
                 virtualHubName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1036,7 +1066,8 @@ public final class VirtualHubsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1046,6 +1077,7 @@ public final class VirtualHubsClientImpl
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<VirtualHubInner>>map(
                 res ->
@@ -1088,11 +1120,17 @@ public final class VirtualHubsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
-                this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                apiVersion,
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1187,11 +1225,13 @@ public final class VirtualHubsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context))
+                    service
+                        .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context))
             .<PagedResponse<VirtualHubInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1227,10 +1267,11 @@ public final class VirtualHubsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, context)
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1332,7 +1373,8 @@ public final class VirtualHubsClientImpl
         if (effectiveRoutesParameters != null) {
             effectiveRoutesParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1344,6 +1386,7 @@ public final class VirtualHubsClientImpl
                             virtualHubName,
                             apiVersion,
                             effectiveRoutesParameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1389,7 +1432,8 @@ public final class VirtualHubsClientImpl
         if (effectiveRoutesParameters != null) {
             effectiveRoutesParameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getEffectiveVirtualHubRoutes(
@@ -1399,6 +1443,7 @@ public final class VirtualHubsClientImpl
                 virtualHubName,
                 apiVersion,
                 effectiveRoutesParameters,
+                accept,
                 context);
     }
 
@@ -1520,6 +1565,24 @@ public final class VirtualHubsClientImpl
      *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the effective routes configured for the Virtual Hub resource or the specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> getEffectiveVirtualHubRoutesAsync(String resourceGroupName, String virtualHubName) {
+        final EffectiveRoutesParameters effectiveRoutesParameters = null;
+        return beginGetEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
      * @param effectiveRoutesParameters The parameters specifying the resource whose effective routes are being
      *     requested.
      * @param context The context to associate with this operation.
@@ -1536,24 +1599,6 @@ public final class VirtualHubsClientImpl
         Context context) {
         return beginGetEffectiveVirtualHubRoutesAsync(
                 resourceGroupName, virtualHubName, effectiveRoutesParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the effective routes configured for the Virtual Hub resource or the specified resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getEffectiveVirtualHubRoutesAsync(String resourceGroupName, String virtualHubName) {
-        final EffectiveRoutesParameters effectiveRoutesParameters = null;
-        return beginGetEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1580,6 +1625,21 @@ public final class VirtualHubsClientImpl
      *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getEffectiveVirtualHubRoutes(String resourceGroupName, String virtualHubName) {
+        final EffectiveRoutesParameters effectiveRoutesParameters = null;
+        getEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters).block();
+    }
+
+    /**
+     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
+     *
+     * @param resourceGroupName The resource group name of the VirtualHub.
+     * @param virtualHubName The name of the VirtualHub.
      * @param effectiveRoutesParameters The parameters specifying the resource whose effective routes are being
      *     requested.
      * @param context The context to associate with this operation.
@@ -1598,21 +1658,6 @@ public final class VirtualHubsClientImpl
     }
 
     /**
-     * Gets the effective routes configured for the Virtual Hub resource or the specified resource .
-     *
-     * @param resourceGroupName The resource group name of the VirtualHub.
-     * @param virtualHubName The name of the VirtualHub.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEffectiveVirtualHubRoutes(String resourceGroupName, String virtualHubName) {
-        final EffectiveRoutesParameters effectiveRoutesParameters = null;
-        getEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters).block();
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -1626,8 +1671,16 @@ public final class VirtualHubsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<VirtualHubInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1656,9 +1709,16 @@ public final class VirtualHubsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1684,8 +1744,15 @@ public final class VirtualHubsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<VirtualHubInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1713,9 +1780,16 @@ public final class VirtualHubsClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

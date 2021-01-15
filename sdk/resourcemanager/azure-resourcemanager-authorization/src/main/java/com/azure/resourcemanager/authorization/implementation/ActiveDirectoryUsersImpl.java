@@ -5,18 +5,18 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.fluent.UsersClient;
-import com.azure.resourcemanager.authorization.fluent.models.UserInner;
+import com.azure.resourcemanager.authorization.fluent.UsersUsersClient;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphUserInner;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUser;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryUsers;
-import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Users and its parent interfaces. */
 public class ActiveDirectoryUsersImpl
-    extends CreatableWrappersImpl<ActiveDirectoryUser, ActiveDirectoryUserImpl, UserInner>
+    extends CreatableWrappersImpl<ActiveDirectoryUser, ActiveDirectoryUserImpl, MicrosoftGraphUserInner>
     implements ActiveDirectoryUsers {
     private final AuthorizationManager manager;
 
@@ -26,11 +26,11 @@ public class ActiveDirectoryUsersImpl
 
     @Override
     public PagedIterable<ActiveDirectoryUser> list() {
-        return wrapList(this.manager().serviceClient().getUsers().list());
+        return new PagedIterable<>(listAsync());
     }
 
     @Override
-    protected ActiveDirectoryUserImpl wrapModel(UserInner userInner) {
+    protected ActiveDirectoryUserImpl wrapModel(MicrosoftGraphUserInner userInner) {
         if (userInner == null) {
             return null;
         }
@@ -44,10 +44,7 @@ public class ActiveDirectoryUsersImpl
 
     @Override
     public Mono<ActiveDirectoryUser> getByIdAsync(String id) {
-        return manager()
-            .serviceClient()
-            .getUsers()
-            .getAsync(id)
+        return inner().getUserAsync(id)
             .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
     }
 
@@ -58,36 +55,26 @@ public class ActiveDirectoryUsersImpl
 
     @Override
     public Mono<ActiveDirectoryUser> getByNameAsync(final String name) {
-        return manager()
-            .serviceClient()
-            .getUsers()
-            .getAsync(name)
+        return inner().getUserAsync(name)
+            .map(userInner -> (ActiveDirectoryUser) new ActiveDirectoryUserImpl(userInner, manager()))
             .onErrorResume(
-                GraphErrorException.class,
+                ManagementException.class,
                 e -> {
                     if (name.contains("@")) {
-                        return manager()
-                            .serviceClient()
-                            .getUsers()
-                            .listAsync(
+                        return listByFilterAsync(
                                 String
-                                    .format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_")),
-                                null)
+                                    .format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_")))
                             .singleOrEmpty();
                     } else {
-                        return manager()
-                            .serviceClient()
-                            .getUsers()
-                            .listAsync(String.format("displayName eq '%s'", name), null)
+                        return listByFilterAsync(String.format("displayName eq '%s'", name))
                             .singleOrEmpty();
                     }
-                })
-            .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
+                });
     }
 
     @Override
     public PagedFlux<ActiveDirectoryUser> listAsync() {
-        return wrapPageAsync(this.inner().listAsync());
+        return wrapPageAsync(this.inner().listUserAsync());
     }
 
     @Override
@@ -97,12 +84,12 @@ public class ActiveDirectoryUsersImpl
 
     @Override
     protected ActiveDirectoryUserImpl wrapModel(String name) {
-        return new ActiveDirectoryUserImpl(new UserInner().withDisplayName(name), manager());
+        return new ActiveDirectoryUserImpl(new MicrosoftGraphUserInner().withDisplayName(name), manager());
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return manager().serviceClient().getUsers().deleteAsync(id);
+        return inner().deleteUserAsync(id);
     }
 
     @Override
@@ -110,8 +97,8 @@ public class ActiveDirectoryUsersImpl
         return this.manager;
     }
 
-    public UsersClient inner() {
-        return manager().serviceClient().getUsers();
+    public UsersUsersClient inner() {
+        return manager().serviceClient().getUsersUsers();
     }
 
     @Override
@@ -121,6 +108,7 @@ public class ActiveDirectoryUsersImpl
 
     @Override
     public PagedFlux<ActiveDirectoryUser> listByFilterAsync(String filter) {
-        return inner().listAsync(filter, null).mapPage(this::wrapModel);
+        return inner().listUserAsync(null, null, null, null, filter, null, null, null, null)
+            .mapPage(this::wrapModel);
     }
 }

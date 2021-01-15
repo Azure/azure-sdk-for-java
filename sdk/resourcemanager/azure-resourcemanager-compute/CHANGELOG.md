@@ -1,7 +1,13 @@
 # Release History
 
-## 2.1.0-beta.1 (Unreleased)
+## 2.2.0-beta.1 (Unreleased)
 
+- Updated `api-version` to `2020-06-01`
+- Supported virtual machines force delete
+
+## 2.1.0 (2020-11-24)
+
+- Updated core dependency from resources
 
 ## 2.0.0 (2020-10-19)
 

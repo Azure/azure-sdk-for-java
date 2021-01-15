@@ -10,6 +10,7 @@ package com.microsoft.azure.management.synapse.v2019_06_01_preview.implementatio
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.management.synapse.v2019_06_01_preview.ErrorContractException;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -62,6 +63,10 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/managedIdentitySqlControlSettings/default")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.WorkspaceManagedIdentitySqlControlSettings beginCreateOrUpdate" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/managedIdentitySqlControlSettings/default")
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings, @Header("User-Agent") String userAgent);
+
     }
 
     /**
@@ -70,7 +75,7 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ManagedIdentitySqlControlSettingsModelInner object if successful.
      */
@@ -143,10 +148,10 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
             });
     }
 
-    private ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> getDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ManagedIdentitySqlControlSettingsModelInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> getDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ManagedIdentitySqlControlSettingsModelInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ManagedIdentitySqlControlSettingsModelInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 
@@ -156,12 +161,12 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ManagedIdentitySqlControlSettingsModelInner object if successful.
      */
     public ManagedIdentitySqlControlSettingsModelInner createOrUpdate(String resourceGroupName, String workspaceName) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, workspaceName).toBlocking().single().body();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, workspaceName).toBlocking().last().body();
     }
 
     /**
@@ -183,7 +188,7 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ManagedIdentitySqlControlSettingsModelInner object
+     * @return the observable for the request
      */
     public Observable<ManagedIdentitySqlControlSettingsModelInner> createOrUpdateAsync(String resourceGroupName, String workspaceName) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, workspaceName).map(new Func1<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>() {
@@ -200,7 +205,7 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ManagedIdentitySqlControlSettingsModelInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String workspaceName) {
         if (this.client.subscriptionId() == null) {
@@ -218,20 +223,9 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
         final ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity = null;
         ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings = new ManagedIdentitySqlControlSettingsModelInner();
         managedIdentitySqlControlSettings.withGrantSqlControlToManagedIdentity(null);
-        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, workspaceName, this.client.apiVersion(), this.client.acceptLanguage(), managedIdentitySqlControlSettings, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> clientResponse = createOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, workspaceName, this.client.apiVersion(), this.client.acceptLanguage(), managedIdentitySqlControlSettings, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ManagedIdentitySqlControlSettingsModelInner>() { }.getType());
     }
-
     /**
      * Create or update Managed Identity Sql Control Settings.
      *
@@ -239,12 +233,12 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
      * @param workspaceName The name of the workspace
      * @param grantSqlControlToManagedIdentity Grant sql control to managed identity
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorContractInnerException thrown if the request is rejected by server
+     * @throws ErrorContractException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ManagedIdentitySqlControlSettingsModelInner object if successful.
      */
     public ManagedIdentitySqlControlSettingsModelInner createOrUpdate(String resourceGroupName, String workspaceName, ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, workspaceName, grantSqlControlToManagedIdentity).toBlocking().single().body();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, workspaceName, grantSqlControlToManagedIdentity).toBlocking().last().body();
     }
 
     /**
@@ -268,7 +262,7 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
      * @param workspaceName The name of the workspace
      * @param grantSqlControlToManagedIdentity Grant sql control to managed identity
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ManagedIdentitySqlControlSettingsModelInner object
+     * @return the observable for the request
      */
     public Observable<ManagedIdentitySqlControlSettingsModelInner> createOrUpdateAsync(String resourceGroupName, String workspaceName, ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, workspaceName, grantSqlControlToManagedIdentity).map(new Func1<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>() {
@@ -286,7 +280,7 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
      * @param workspaceName The name of the workspace
      * @param grantSqlControlToManagedIdentity Grant sql control to managed identity
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ManagedIdentitySqlControlSettingsModelInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String workspaceName, ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity) {
         if (this.client.subscriptionId() == null) {
@@ -304,12 +298,84 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
         Validator.validate(grantSqlControlToManagedIdentity);
         ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings = new ManagedIdentitySqlControlSettingsModelInner();
         managedIdentitySqlControlSettings.withGrantSqlControlToManagedIdentity(grantSqlControlToManagedIdentity);
-        return service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, workspaceName, this.client.apiVersion(), this.client.acceptLanguage(), managedIdentitySqlControlSettings, this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, workspaceName, this.client.apiVersion(), this.client.acceptLanguage(), managedIdentitySqlControlSettings, this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ManagedIdentitySqlControlSettingsModelInner>() { }.getType());
+    }
+
+    /**
+     * Create or update Managed Identity Sql Control Settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ManagedIdentitySqlControlSettingsModelInner object if successful.
+     */
+    public ManagedIdentitySqlControlSettingsModelInner beginCreateOrUpdate(String resourceGroupName, String workspaceName) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, workspaceName).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update Managed Identity Sql Control Settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ManagedIdentitySqlControlSettingsModelInner> beginCreateOrUpdateAsync(String resourceGroupName, String workspaceName, final ServiceCallback<ManagedIdentitySqlControlSettingsModelInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, workspaceName), serviceCallback);
+    }
+
+    /**
+     * Create or update Managed Identity Sql Control Settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ManagedIdentitySqlControlSettingsModelInner object
+     */
+    public Observable<ManagedIdentitySqlControlSettingsModelInner> beginCreateOrUpdateAsync(String resourceGroupName, String workspaceName) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, workspaceName).map(new Func1<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>() {
+            @Override
+            public ManagedIdentitySqlControlSettingsModelInner call(ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update Managed Identity Sql Control Settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ManagedIdentitySqlControlSettingsModelInner object
+     */
+    public Observable<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String workspaceName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        final ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity = null;
+        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings = new ManagedIdentitySqlControlSettingsModelInner();
+        managedIdentitySqlControlSettings.withGrantSqlControlToManagedIdentity(null);
+        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, workspaceName, this.client.apiVersion(), this.client.acceptLanguage(), managedIdentitySqlControlSettings, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> clientResponse = createOrUpdateDelegate(response);
+                        ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> clientResponse = beginCreateOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -318,10 +384,97 @@ public class WorkspaceManagedIdentitySqlControlSettingsInner {
             });
     }
 
-    private ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> createOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractInnerException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ManagedIdentitySqlControlSettingsModelInner, ErrorContractInnerException>newInstance(this.client.serializerAdapter())
+    /**
+     * Create or update Managed Identity Sql Control Settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param grantSqlControlToManagedIdentity Grant sql control to managed identity
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorContractException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ManagedIdentitySqlControlSettingsModelInner object if successful.
+     */
+    public ManagedIdentitySqlControlSettingsModelInner beginCreateOrUpdate(String resourceGroupName, String workspaceName, ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, workspaceName, grantSqlControlToManagedIdentity).toBlocking().single().body();
+    }
+
+    /**
+     * Create or update Managed Identity Sql Control Settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param grantSqlControlToManagedIdentity Grant sql control to managed identity
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ManagedIdentitySqlControlSettingsModelInner> beginCreateOrUpdateAsync(String resourceGroupName, String workspaceName, ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity, final ServiceCallback<ManagedIdentitySqlControlSettingsModelInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, workspaceName, grantSqlControlToManagedIdentity), serviceCallback);
+    }
+
+    /**
+     * Create or update Managed Identity Sql Control Settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param grantSqlControlToManagedIdentity Grant sql control to managed identity
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ManagedIdentitySqlControlSettingsModelInner object
+     */
+    public Observable<ManagedIdentitySqlControlSettingsModelInner> beginCreateOrUpdateAsync(String resourceGroupName, String workspaceName, ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, workspaceName, grantSqlControlToManagedIdentity).map(new Func1<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>, ManagedIdentitySqlControlSettingsModelInner>() {
+            @Override
+            public ManagedIdentitySqlControlSettingsModelInner call(ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Create or update Managed Identity Sql Control Settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param grantSqlControlToManagedIdentity Grant sql control to managed identity
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ManagedIdentitySqlControlSettingsModelInner object
+     */
+    public Observable<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String workspaceName, ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (workspaceName == null) {
+            throw new IllegalArgumentException("Parameter workspaceName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(grantSqlControlToManagedIdentity);
+        ManagedIdentitySqlControlSettingsModelInner managedIdentitySqlControlSettings = new ManagedIdentitySqlControlSettingsModelInner();
+        managedIdentitySqlControlSettings.withGrantSqlControlToManagedIdentity(grantSqlControlToManagedIdentity);
+        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, workspaceName, this.client.apiVersion(), this.client.acceptLanguage(), managedIdentitySqlControlSettings, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ManagedIdentitySqlControlSettingsModelInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> clientResponse = beginCreateOrUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ManagedIdentitySqlControlSettingsModelInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws ErrorContractException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<ManagedIdentitySqlControlSettingsModelInner, ErrorContractException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<ManagedIdentitySqlControlSettingsModelInner>() { }.getType())
-                .registerError(ErrorContractInnerException.class)
+                .register(201, new TypeToken<Void>() { }.getType())
+                .registerError(ErrorContractException.class)
                 .build(response);
     }
 

@@ -51,9 +51,9 @@ public class IntegrationRuntimeMonitoringDatasInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface IntegrationRuntimeMonitoringDatasService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeMonitoringDatas get" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.synapse.v2019_06_01_preview.IntegrationRuntimeMonitoringDatas list" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/monitoringData")
-        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("integrationRuntimeName") String integrationRuntimeName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -62,15 +62,15 @@ public class IntegrationRuntimeMonitoringDatasInner {
      * Get monitoring data for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the IntegrationRuntimeMonitoringDataInner object if successful.
      */
-    public IntegrationRuntimeMonitoringDataInner get(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        return getWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().single().body();
+    public IntegrationRuntimeMonitoringDataInner list(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return listWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).toBlocking().single().body();
     }
 
     /**
@@ -78,14 +78,14 @@ public class IntegrationRuntimeMonitoringDatasInner {
      * Get monitoring data for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<IntegrationRuntimeMonitoringDataInner> getAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, final ServiceCallback<IntegrationRuntimeMonitoringDataInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName), serviceCallback);
+    public ServiceFuture<IntegrationRuntimeMonitoringDataInner> listAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName, final ServiceCallback<IntegrationRuntimeMonitoringDataInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName), serviceCallback);
     }
 
     /**
@@ -93,13 +93,13 @@ public class IntegrationRuntimeMonitoringDatasInner {
      * Get monitoring data for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IntegrationRuntimeMonitoringDataInner object
      */
-    public Observable<IntegrationRuntimeMonitoringDataInner> getAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        return getWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).map(new Func1<ServiceResponse<IntegrationRuntimeMonitoringDataInner>, IntegrationRuntimeMonitoringDataInner>() {
+    public Observable<IntegrationRuntimeMonitoringDataInner> listAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        return listWithServiceResponseAsync(resourceGroupName, workspaceName, integrationRuntimeName).map(new Func1<ServiceResponse<IntegrationRuntimeMonitoringDataInner>, IntegrationRuntimeMonitoringDataInner>() {
             @Override
             public IntegrationRuntimeMonitoringDataInner call(ServiceResponse<IntegrationRuntimeMonitoringDataInner> response) {
                 return response.body();
@@ -112,12 +112,12 @@ public class IntegrationRuntimeMonitoringDatasInner {
      * Get monitoring data for an integration runtime.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace
+     * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the IntegrationRuntimeMonitoringDataInner object
      */
-    public Observable<ServiceResponse<IntegrationRuntimeMonitoringDataInner>> getWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+    public Observable<ServiceResponse<IntegrationRuntimeMonitoringDataInner>> listWithServiceResponseAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -133,12 +133,12 @@ public class IntegrationRuntimeMonitoringDatasInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), resourceGroupName, workspaceName, integrationRuntimeName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IntegrationRuntimeMonitoringDataInner>>>() {
                 @Override
                 public Observable<ServiceResponse<IntegrationRuntimeMonitoringDataInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<IntegrationRuntimeMonitoringDataInner> clientResponse = getDelegate(response);
+                        ServiceResponse<IntegrationRuntimeMonitoringDataInner> clientResponse = listDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -147,7 +147,7 @@ public class IntegrationRuntimeMonitoringDatasInner {
             });
     }
 
-    private ServiceResponse<IntegrationRuntimeMonitoringDataInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<IntegrationRuntimeMonitoringDataInner> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<IntegrationRuntimeMonitoringDataInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<IntegrationRuntimeMonitoringDataInner>() { }.getType())
                 .registerError(CloudException.class)

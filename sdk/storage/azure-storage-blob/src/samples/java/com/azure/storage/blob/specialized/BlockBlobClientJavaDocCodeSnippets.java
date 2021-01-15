@@ -8,6 +8,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
@@ -135,6 +136,58 @@ public class BlockBlobClientJavaDocCodeSnippets {
                 .getValue()
                 .getContentMd5()));
         // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#uploadFromUrl(String)}
+     */
+    public void uploadFromUrl() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrl#String
+        System.out.printf("Uploaded BlockBlob from URL, MD5 is %s%n",
+            Base64.getEncoder().encodeToString(client.uploadFromUrl(sourceUrl).getContentMd5()));
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrl#String
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#uploadFromUrl(String, boolean)}
+     */
+    public void uploadFromUrlWithOverwrite() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrl#String-boolean
+        boolean overwrite = false;
+        System.out.printf("Uploaded BlockBlob from URL, MD5 is %s%n",
+            Base64.getEncoder().encodeToString(client.uploadFromUrl(sourceUrl, overwrite).getContentMd5()));
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrl#String-boolean
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobClient#uploadFromUrlWithResponse(BlobUploadFromUrlOptions, Duration, Context)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
+    public void uploadFromUrlWithResponse() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrlWithResponse#BlobUploadFromUrlOptions-Duration-Context
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+
+        byte[] md5 = MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8));
+
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+        Context context = new Context("key", "value");
+
+        System.out.printf("Uploaded BlockBlob MD5 is %s%n", Base64.getEncoder()
+            .encodeToString(client.uploadFromUrlWithResponse(new BlobUploadFromUrlOptions(sourceUrl)
+                .setHeaders(headers).setTags(tags).setTier(AccessTier.HOT).setContentMd5(md5)
+                .setDestinationRequestConditions(requestConditions), timeout, context)
+                .getValue()
+                .getContentMd5()));
+        // END: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrlWithResponse#BlobUploadFromUrlOptions-Duration-Context
     }
 
     /**

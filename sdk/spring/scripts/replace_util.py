@@ -21,56 +21,66 @@ config = {
     'appconfiguration': {
         'sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )
         }
     },
     'cosmos': {
         'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.10.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )
         }
     },
     'spring': {
         'sdk/spring/azure-spring-boot-test-core/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )
         },
         'sdk/spring/azure-spring-boot-test-aad/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
+            )
+        },
+        'sdk/spring/azure-spring-boot-test-aad-obo/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )
         },
         'sdk/spring/azure-spring-boot-test-application/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
+            )
+        },
+        'sdk/spring/azure-spring-boot-test-aad-b2c/pom.xml': {
+            VERSION_UPDATE_ITEMS: (
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )
         },
         'sdk/spring/azure-spring-boot-test-cosmos/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )
         },
         'sdk/spring/azure-spring-boot-test-keyvault/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )
         },
         'sdk/spring/azure-spring-boot-test-servicebus-jms/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )
         },
         'sdk/spring/azure-spring-boot-test-storage/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )
         },
         'sdk/spring/azure-spring-cloud-test-eventhubs/pom.xml': {
             VERSION_UPDATE_ITEMS: (
-                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.9.RELEASE'),
+                VersionUpdateItem('org.springframework.boot:spring-boot-starter-parent', '2.2.11.RELEASE'),
             )
         }
     }

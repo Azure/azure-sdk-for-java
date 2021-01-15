@@ -272,6 +272,9 @@ public class HttpConstants {
     public static class StatusCodes {
         public static final int OK = 200;
         public static final int NOT_MODIFIED = 304;
+        // Success
+        public static final int MINIMUM_SUCCESS_STATUSCODE = 200;
+        public static final int MAXIMUM_SUCCESS_STATUSCODE = 299;
         // Client error
         public static final int MINIMUM_STATUSCODE_AS_ERROR_GATEWAY = 400;
         public static final int BADREQUEST = 400;
@@ -323,5 +326,6 @@ public class HttpConstants {
     public static class HeaderValues {
         public static final String NO_CACHE = "no-cache";
         public static final String PREFER_RETURN_MINIMAL = "return=minimal";
+        public static final String IF_NONE_MATCH_ALL = "*";
     }
 }

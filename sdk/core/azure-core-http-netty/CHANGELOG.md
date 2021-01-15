@@ -1,11 +1,32 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
+
+## 1.7.1 (2021-01-11)
+
+### Bug Fixes
+
+- Fixed a bug where environment proxy configurations were not sanitizing the non-proxy host string into a valid `Pattern` format. [#18156](https://github.com/Azure/azure-sdk-for-java/issues/18156)
+
+### Dependency Updates
+
+- Upgraded Netty from `4.1.53.Final` to `4.1.54.Final`.
+- Upgraded `reactor-netty` from `0.9.13.RELEASE` to `0.9.15.RELEASE`.
+
+## 1.7.0 (2020-11-24)
+
+### New Features
+
+- Added functionality to eagerly read HTTP response bodies into memory when they will be deserialized into a POJO.
+
+### Bug Fixes
+
+- Fixed a bug where a connection would remain active when timed out instead of being closed.
 
 ## 1.6.3 (2020-10-29)
 
-### Dependency updates
+### Dependency Updates
 
 - Updated `azure-core` to `1.10.0`.
 

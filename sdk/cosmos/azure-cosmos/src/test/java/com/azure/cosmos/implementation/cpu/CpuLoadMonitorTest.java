@@ -21,11 +21,11 @@ public class CpuLoadMonitorTest {
 
     @Test(groups = "unit")
     public void multipleInstances() throws Exception {
-        List<CpuListener> cpuMonitorList = new ArrayList<>();
+        List<CpuMemoryListener> cpuMonitorList = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            CpuListener listener = new CpuListener() {
+            CpuMemoryListener listener = new CpuMemoryListener() {
             };
-            CpuMonitor.register(listener);
+            CpuMemoryMonitor.register(listener);
             cpuMonitorList.add(listener);
 
             Future<?> workFuture = ReflectionUtils.getFuture();
@@ -36,10 +36,10 @@ public class CpuLoadMonitorTest {
         }
 
         for (int i = 0; i < 9; i++) {
-            CpuListener cpuListener = cpuMonitorList.remove(0);
+            CpuMemoryListener cpuMemoryListener = cpuMonitorList.remove(0);
             assertThat(cpuMonitorList).hasSizeGreaterThan(0);
 
-            CpuMonitor.unregister(cpuListener);
+            CpuMemoryMonitor.unregister(cpuMemoryListener);
 
             assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
 
@@ -49,18 +49,18 @@ public class CpuLoadMonitorTest {
         }
 
         // register a new one here
-        CpuListener newListener = new CpuListener() {
+        CpuMemoryListener newListener = new CpuMemoryListener() {
         };
-        CpuMonitor.register(newListener);
-        CpuMonitor.unregister(newListener);
+        CpuMemoryMonitor.register(newListener);
+        CpuMemoryMonitor.unregister(newListener);
 
         assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
         Future<?> workFuture = ReflectionUtils.getFuture();
         assertThat(workFuture).isNotNull();
         assertThat(workFuture.isCancelled()).isFalse();
 
-        CpuListener cpuListener = cpuMonitorList.remove(0);
-        CpuMonitor.unregister(cpuListener);
+        CpuMemoryListener cpuMemoryListener = cpuMonitorList.remove(0);
+        CpuMemoryMonitor.unregister(cpuMemoryListener);
 
         assertThat(ReflectionUtils.getListeners()).hasSize(cpuMonitorList.size());
 
@@ -70,8 +70,8 @@ public class CpuLoadMonitorTest {
 
     @Test(groups = "unit")
     public void handleLeak() throws Throwable {
-        TestListener listener = new TestListener();
-        CpuMonitor.register(listener);
+        TestMemoryListener listener = new TestMemoryListener();
+        CpuMemoryMonitor.register(listener);
         listener.finalize();
         listener = null;
         System.gc();
@@ -81,7 +81,7 @@ public class CpuLoadMonitorTest {
         assertThat(ReflectionUtils.getFuture()).isNull();
     }
 
-    class TestListener implements CpuListener {
+    class TestMemoryListener implements CpuMemoryListener {
         @Override
         public void finalize() throws Throwable {
             super.finalize();

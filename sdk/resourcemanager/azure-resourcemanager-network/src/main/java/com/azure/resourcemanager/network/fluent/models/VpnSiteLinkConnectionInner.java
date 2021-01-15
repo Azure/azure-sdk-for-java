@@ -402,6 +402,13 @@ public class VpnSiteLinkConnectionInner extends SubResource {
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VpnSiteLinkConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

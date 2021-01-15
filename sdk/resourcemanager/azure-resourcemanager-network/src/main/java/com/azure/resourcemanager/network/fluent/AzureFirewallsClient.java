@@ -386,6 +386,19 @@ public interface AzureFirewallsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param azureFirewallName The name of the Azure Firewall.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Firewall resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AzureFirewallInner updateTags(String resourceGroupName, String azureFirewallName);
+
+    /**
+     * Updates tags of an Azure Firewall resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param azureFirewallName The name of the Azure Firewall.
      * @param tags Resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -396,19 +409,6 @@ public interface AzureFirewallsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     AzureFirewallInner updateTags(
         String resourceGroupName, String azureFirewallName, Map<String, String> tags, Context context);
-
-    /**
-     * Updates tags of an Azure Firewall resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param azureFirewallName The name of the Azure Firewall.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Firewall resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureFirewallInner updateTags(String resourceGroupName, String azureFirewallName);
 
     /**
      * Lists all Azure Firewalls in a resource group.
