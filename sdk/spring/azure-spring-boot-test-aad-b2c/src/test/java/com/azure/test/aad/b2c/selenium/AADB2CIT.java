@@ -4,7 +4,6 @@
 package com.azure.test.aad.b2c.selenium;
 
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
-import com.azure.test.aad.b2c.utils.AADB2CTestUtils;
 import java.util.Collections;
 import org.junit.After;
 import org.junit.Assert;
@@ -20,6 +19,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
+
 public class AADB2CIT {
 
     private final String JOB_TITLE_A_WORKER = "a worker";
@@ -29,19 +31,19 @@ public class AADB2CIT {
     @Test
     public void testSignIn() throws InterruptedException {
         aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-        aadB2CSeleniumITHelper.signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
+        aadB2CSeleniumITHelper.signIn(AAD_B2C_SIGN_UP_OR_SIGN_IN);
         String name = aadB2CSeleniumITHelper.getName();
         String userFlowName = aadB2CSeleniumITHelper.getUserFlowName();
 
         Assert.assertNotNull(name);
         Assert.assertNotNull(userFlowName);
-        Assert.assertEquals(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN, userFlowName);
+        Assert.assertEquals(AAD_B2C_SIGN_UP_OR_SIGN_IN, userFlowName);
     }
 
     @Test
     public void testProfileEdit() throws InterruptedException {
         aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-        aadB2CSeleniumITHelper.signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
+        aadB2CSeleniumITHelper.signIn(AAD_B2C_SIGN_UP_OR_SIGN_IN);
         String currentJobTitle = aadB2CSeleniumITHelper.getJobTitle();
         String newJobTitle = JOB_TITLE_A_WORKER.equals(currentJobTitle) ? JOB_TITLE_WORKER : JOB_TITLE_A_WORKER;
         aadB2CSeleniumITHelper.profileEditJobTitle(newJobTitle);
@@ -52,13 +54,13 @@ public class AADB2CIT {
         Assert.assertNotNull(name);
         Assert.assertNotNull(jobTitle);
         Assert.assertEquals(newJobTitle, jobTitle);
-        Assert.assertEquals(AADB2CTestUtils.AAD_B2C_PROFILE_EDIT, userFlowName);
+        Assert.assertEquals(AAD_B2C_PROFILE_EDIT, userFlowName);
     }
 
     @Test
     public void testLogOut() throws InterruptedException {
         aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, Collections.emptyMap());
-        aadB2CSeleniumITHelper.signIn(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
+        aadB2CSeleniumITHelper.signIn(AAD_B2C_SIGN_UP_OR_SIGN_IN);
         String signInButtonText = aadB2CSeleniumITHelper.logoutAndGetSignInButtonText();
         Assert.assertEquals("Sign in", signInButtonText);
     }
