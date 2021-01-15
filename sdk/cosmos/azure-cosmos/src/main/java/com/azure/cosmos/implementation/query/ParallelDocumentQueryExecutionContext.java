@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -34,6 +35,7 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 /**
@@ -207,6 +209,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
         private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
         private ConcurrentMap<String, QueryMetrics> emptyPageQueryMetricsMap = new ConcurrentHashMap<>();
+        private CosmosDiagnostics cosmosDiagnostics;
 
         public EmptyPagesFilterTransformer(RequestChargeTracker tracker, CosmosQueryRequestOptions options) {
 
@@ -231,7 +234,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page));
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page), page.getCosmosDiagnostics());
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }
@@ -246,7 +249,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page)
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page), page.getCosmosDiagnostics()
             );
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
@@ -270,6 +273,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
                     ConcurrentMap<String, QueryMetrics> currentQueryMetrics =
                         BridgeInternal.queryMetricsFromFeedResponse(documentProducerFeedResponse.pageResult);
                     QueryMetrics.mergeQueryMetricsMap(emptyPageQueryMetricsMap, currentQueryMetrics);
+                    cosmosDiagnostics = documentProducerFeedResponse.pageResult.getCosmosDiagnostics();
                     return false;
                 }
                 return true;
@@ -340,7 +344,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             }).switchIfEmpty(Flux.defer(() -> {
                 // create an empty page if there is no result
                 return Flux.just(BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
-                        headerResponse(tracker.getAndResetCharge()), emptyPageQueryMetricsMap, null));
+                        headerResponse(tracker.getAndResetCharge()), emptyPageQueryMetricsMap, null, cosmosDiagnostics));
             }));
         }
     }

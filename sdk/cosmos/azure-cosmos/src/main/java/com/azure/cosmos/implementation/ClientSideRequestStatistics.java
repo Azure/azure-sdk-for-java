@@ -1,18 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.DiagnosticsClientContext;
-import com.azure.cosmos.implementation.DiagnosticsInstantSerializer;
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
-import com.azure.cosmos.implementation.OperationType;
-import com.azure.cosmos.implementation.RequestTimeline;
-import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RetryContext;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
@@ -37,7 +29,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
-class ClientSideRequestStatistics {
+public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
     private final DiagnosticsClientContext clientContext;
     private final DiagnosticsClientContext diagnosticsClientContext;
@@ -58,7 +50,7 @@ class ClientSideRequestStatistics {
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
 
-    ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
+    public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientContext = diagnosticsClientContext;
         this.clientContext = null;
         this.requestStartTimeUTC = Instant.now();
@@ -74,11 +66,11 @@ class ClientSideRequestStatistics {
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
     }
 
-    Duration getDuration() {
+    public Duration getDuration() {
         return Duration.between(requestStartTimeUTC, requestEndTimeUTC);
     }
 
-    void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
+    public void recordResponse(RxDocumentServiceRequest request, StoreResult storeResult) {
         Objects.requireNonNull(request, "request is required and cannot be null.");
         Instant responseTime = Instant.now();
         connectionMode = ConnectionMode.DIRECT;
@@ -115,7 +107,7 @@ class ClientSideRequestStatistics {
         }
     }
 
-    void recordGatewayResponse(
+    public void recordGatewayResponse(
         RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponse storeResponse,
         CosmosException exception) {
         Instant responseTime = Instant.now();
@@ -159,11 +151,11 @@ class ClientSideRequestStatistics {
         }
     }
 
-    void setTransportClientRequestTimeline(RequestTimeline transportRequestTimeline) {
+    public void setTransportClientRequestTimeline(RequestTimeline transportRequestTimeline) {
         this.transportRequestTimeline = transportRequestTimeline;
     }
 
-    String recordAddressResolutionStart(URI targetEndpoint) {
+    public String recordAddressResolutionStart(URI targetEndpoint) {
         String identifier = Utils.randomUUID().toString();
 
         AddressResolutionStatistics resolutionStatistics = new AddressResolutionStatistics();
@@ -178,7 +170,7 @@ class ClientSideRequestStatistics {
         return identifier;
     }
 
-    void recordAddressResolutionEnd(String identifier, String errorMessage) {
+    public void recordAddressResolutionEnd(String identifier, String errorMessage) {
         if (StringUtils.isEmpty(identifier)) {
             return;
         }
@@ -201,46 +193,46 @@ class ClientSideRequestStatistics {
         }
     }
 
-    List<URI> getContactedReplicas() {
+    public List<URI> getContactedReplicas() {
         return contactedReplicas;
     }
 
-    void setContactedReplicas(List<URI> contactedReplicas) {
+    public void setContactedReplicas(List<URI> contactedReplicas) {
         this.contactedReplicas = Collections.synchronizedList(contactedReplicas);
     }
 
-    Set<URI> getFailedReplicas() {
+    public Set<URI> getFailedReplicas() {
         return failedReplicas;
     }
 
-    void setFailedReplicas(Set<URI> failedReplicas) {
+    public void setFailedReplicas(Set<URI> failedReplicas) {
         this.failedReplicas = Collections.synchronizedSet(failedReplicas);
     }
 
-    Set<URI> getRegionsContacted() {
+    public Set<URI> getRegionsContacted() {
         return regionsContacted;
     }
 
-    void setRegionsContacted(Set<URI> regionsContacted) {
+    public void setRegionsContacted(Set<URI> regionsContacted) {
         this.regionsContacted = Collections.synchronizedSet(regionsContacted);
     }
 
-    MetadataDiagnosticsContext getMetadataDiagnosticsContext(){
+    public MetadataDiagnosticsContext getMetadataDiagnosticsContext(){
         return this.metadataDiagnosticsContext;
     }
 
-    SerializationDiagnosticsContext getSerializationDiagnosticsContext(){
+    public SerializationDiagnosticsContext getSerializationDiagnosticsContext(){
         return this.serializationDiagnosticsContext;
     }
 
-    void recordRetryContext(RxDocumentServiceRequest request) {
+    public void recordRetryContext(RxDocumentServiceRequest request) {
         if(request.requestContext.retryContext != null) {
             request.requestContext.retryContext.retryEndTime =  Instant.now();
             this.retryContext = new RetryContext(request.requestContext.retryContext);
         }
     }
 
-    static class StoreResponseStatistics {
+    public static class StoreResponseStatistics {
         @JsonSerialize(using = StoreResult.StoreResultSerializer.class)
         StoreResult storeResult;
         @JsonSerialize(using = DiagnosticsInstantSerializer.class)
@@ -283,7 +275,7 @@ class ClientSideRequestStatistics {
             IOException {
             generator.writeStartObject();
             long requestLatency = statistics.getDuration().toMillis();
-            generator.writeStringField("userAgent", CosmosDiagnostics.USER_AGENT);
+            generator.writeStringField("userAgent", Utils.getUserAgent());
             generator.writeNumberField("requestLatencyInMs", requestLatency);
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
             generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestEndTimeUTC));
