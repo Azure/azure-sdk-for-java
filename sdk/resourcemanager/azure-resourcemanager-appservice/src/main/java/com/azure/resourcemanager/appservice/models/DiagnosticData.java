@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DiagnosticData model. */
+/** Set of data with rendering instructions. */
 @Fluent
 public final class DiagnosticData {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticData.class);

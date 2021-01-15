@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagedInstanceVersionCapability model. */
+/** The managed instance capability. */
 @Fluent
 public final class ManagedInstanceVersionCapability {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceVersionCapability.class);

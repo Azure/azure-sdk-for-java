@@ -7,7 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
-import com.azure.resourcemanager.network.fluent.inner.NetworkInterfaceInner;
+import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterfaces;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
@@ -28,9 +28,8 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
         this.networkManager = networkManager;
     }
 
-    @Override
     public NetworkInterfacesClient inner() {
-        return this.manager().inner().getNetworkInterfaces();
+        return this.manager().serviceClient().getNetworkInterfaces();
     }
 
     @Override
@@ -52,8 +51,7 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
         NetworkInterfaceInner networkInterfaceInner =
             this
                 .inner()
-                .getVirtualMachineScaleSetNetworkInterface(
-                    this.resourceGroupName, this.scaleSetName, instanceId, name);
+                .getVirtualMachineScaleSetNetworkInterface(this.resourceGroupName, this.scaleSetName, instanceId, name);
         if (networkInterfaceInner == null) {
             return null;
         }

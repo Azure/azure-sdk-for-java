@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VaultCertificate model. */
+/** Describes a single certificate reference in a Key Vault, and where the certificate should reside on the VM. */
 @Fluent
 public final class VaultCertificate {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultCertificate.class);

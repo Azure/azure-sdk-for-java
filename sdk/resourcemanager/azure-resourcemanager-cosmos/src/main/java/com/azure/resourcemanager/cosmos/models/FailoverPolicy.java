@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FailoverPolicy model. */
+/** The failover policy for a given region of a database account. */
 @Fluent
 public final class FailoverPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverPolicy.class);

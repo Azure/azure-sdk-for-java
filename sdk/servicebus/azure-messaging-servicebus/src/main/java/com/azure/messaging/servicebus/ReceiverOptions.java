@@ -3,44 +3,52 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+
+import java.time.Duration;
 
 /**
  * Options set when creating a service bus receiver.
+ *
+ * @see ServiceBusReceiverAsyncClient
  */
 class ReceiverOptions {
-    private final ReceiveMode receiveMode;
+    private final ServiceBusReceiveMode receiveMode;
     private final int prefetchCount;
+    private final boolean enableAutoComplete;
     private final String sessionId;
-    private final boolean isRollingSessionReceiver;
     private final Integer maxConcurrentSessions;
-    private final boolean isSessionReceiver;
+    private final Duration maxLockRenewDuration;
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount) {
-        this.receiveMode = receiveMode;
-        this.prefetchCount = prefetchCount;
-        this.sessionId = null;
-        this.isRollingSessionReceiver = false;
-        this.maxConcurrentSessions = null;
-        this.isSessionReceiver = false;
+    ReceiverOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
+        boolean enableAutoComplete) {
+        this(receiveMode, prefetchCount, maxLockRenewDuration, enableAutoComplete, null, null);
     }
 
-    ReceiverOptions(ReceiveMode receiveMode, int prefetchCount,
-        String sessionId, boolean isRollingSessionReceiver, Integer maxConcurrentSessions) {
+    ReceiverOptions(ServiceBusReceiveMode receiveMode, int prefetchCount, Duration maxLockRenewDuration,
+        boolean enableAutoComplete, String sessionId, Integer maxConcurrentSessions) {
         this.receiveMode = receiveMode;
         this.prefetchCount = prefetchCount;
+        this.enableAutoComplete = enableAutoComplete;
         this.sessionId = sessionId;
-        this.isRollingSessionReceiver = isRollingSessionReceiver;
         this.maxConcurrentSessions = maxConcurrentSessions;
-        this.isSessionReceiver = true;
+        this.maxLockRenewDuration = maxLockRenewDuration;
     }
 
+    /**
+     * Gets the {@code maxLockRenewDuration} for the message lock or session lock.
+     *
+     * @return the max lock duration for the message lock or session lock.
+     */
+    Duration getMaxLockRenewDuration() {
+        return maxLockRenewDuration;
+    }
     /**
      * Gets the receive mode for the message.
      *
      * @return the receive mode for the message.
      */
-    ReceiveMode getReceiveMode() {
+    ServiceBusReceiveMode getReceiveMode() {
         return receiveMode;
     }
 
@@ -63,12 +71,21 @@ class ReceiverOptions {
     }
 
     /**
+     * Determine if client have enabled auto renew of message or session lock.
+     *
+     * @return true if  autoRenew is enabled; false otherwise.
+     */
+    boolean isAutoLockRenewEnabled() {
+        return maxLockRenewDuration != null && !maxLockRenewDuration.isZero() && !maxLockRenewDuration.isNegative();
+    }
+
+    /**
      * Gets whether or not the receiver is a session-aware receiver.
      *
      * @return true if it is a session-aware receiver; false otherwise.
      */
     boolean isSessionReceiver() {
-        return isSessionReceiver;
+        return sessionId != null || maxConcurrentSessions != null;
     }
 
     /**
@@ -78,7 +95,7 @@ class ReceiverOptions {
      *     false} otherwise.
      */
     public boolean isRollingSessionReceiver() {
-        return isRollingSessionReceiver;
+        return maxConcurrentSessions != null && maxConcurrentSessions > 0 && sessionId == null;
     }
 
     /**
@@ -88,5 +105,9 @@ class ReceiverOptions {
      */
     public Integer getMaxConcurrentSessions() {
         return maxConcurrentSessions;
+    }
+
+    public boolean isEnableAutoComplete() {
+        return enableAutoComplete;
     }
 }

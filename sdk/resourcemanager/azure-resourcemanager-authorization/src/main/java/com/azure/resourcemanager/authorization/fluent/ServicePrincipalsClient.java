@@ -4,1839 +4,4582 @@
 
 package com.azure.resourcemanager.authorization.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectInner;
-import com.azure.resourcemanager.authorization.fluent.inner.DirectoryObjectListResultInner;
-import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialListResultInner;
-import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.inner.PasswordCredentialListResultInner;
-import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalInner;
-import com.azure.resourcemanager.authorization.fluent.inner.ServicePrincipalListResultInner;
-import com.azure.resourcemanager.authorization.models.GraphErrorException;
-import com.azure.resourcemanager.authorization.models.KeyCredentialsUpdateParameters;
-import com.azure.resourcemanager.authorization.models.PasswordCredentialsUpdateParameters;
-import com.azure.resourcemanager.authorization.models.ServicePrincipalBase;
-import com.azure.resourcemanager.authorization.models.ServicePrincipalCreateParameters;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphAppRoleAssignmentInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphClaimsMappingPolicyInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDelegatedPermissionClassificationInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDirectoryObjectInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphEndpointInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphExtensionPropertyInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphHomeRealmDiscoveryPolicyInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphKeyCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphOAuth2PermissionGrantInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphPasswordCredentialInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphServicePrincipalInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphTokenIssuancePolicyInner;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphTokenLifetimePolicyInner;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsAddKeyRequestBodyInner;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsAddPasswordRequestBodyInner;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsCheckMemberGroupsRequestBody;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsCheckMemberObjectsRequestBody;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsExpand;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsGetAvailableExtensionPropertiesRequestBody;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsGetByIdsRequestBody;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsGetMemberGroupsRequestBody;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsGetMemberObjectsRequestBody;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsOrderby;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsRemoveKeyRequestBody;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsRemovePasswordRequestBody;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsSelect;
+import com.azure.resourcemanager.authorization.fluent.models.ServicePrincipalsValidatePropertiesRequestBody;
 import java.util.List;
+import java.util.Map;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServicePrincipals. */
-public final class ServicePrincipalsClient {
-    private final ClientLogger logger = new ClientLogger(ServicePrincipalsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final ServicePrincipalsService service;
-
-    /** The service client containing this operation class. */
-    private final GraphRbacManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in ServicePrincipalsClient. */
+public interface ServicePrincipalsClient {
     /**
-     * Initializes an instance of ServicePrincipalsClient.
+     * Get appRoleAssignedTo from servicePrincipals.
      *
-     * @param client the instance of the service client containing this operation class.
-     */
-    public ServicePrincipalsClient(GraphRbacManagementClient client) {
-        this.service =
-            RestProxy.create(ServicePrincipalsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for GraphRbacManagementClientServicePrincipals to be used by the proxy
-     * service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "GraphRbacManagementC")
-    private interface ServicePrincipalsService {
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Post("/{tenantID}/servicePrincipals")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ServicePrincipalInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") ServicePrincipalCreateParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get("/{tenantID}/servicePrincipals")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ServicePrincipalListResultInner>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Patch("/{tenantID}/servicePrincipals/{objectId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") ServicePrincipalBase parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete("/{tenantID}/servicePrincipals/{objectId}")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get("/{tenantID}/servicePrincipals/{objectId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ServicePrincipalInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get("/{tenantID}/servicePrincipals/{objectId}/owners")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResultInner>> listOwners(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get("/{tenantID}/servicePrincipals/{objectId}/keyCredentials")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<KeyCredentialListResultInner>> listKeyCredentials(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Patch("/{tenantID}/servicePrincipals/{objectId}/keyCredentials")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> updateKeyCredentials(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") KeyCredentialsUpdateParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get("/{tenantID}/servicePrincipals/{objectId}/passwordCredentials")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<PasswordCredentialListResultInner>> listPasswordCredentials(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Patch("/{tenantID}/servicePrincipals/{objectId}/passwordCredentials")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> updatePasswordCredentials(
-            @HostParam("$host") String endpoint,
-            @PathParam("objectId") String objectId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            @BodyParam("application/json") PasswordCredentialsUpdateParameters parameters,
-            Context context);
-
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get("/{tenantID}/{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ServicePrincipalListResultInner>> listNext(
-            @HostParam("$host") String endpoint,
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantId,
-            Context context);
-
-        @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResultInner>> listOwnersNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
-
-    /**
-     * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return active Directory service principal information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServicePrincipalInner>> createWithResponseAsync(ServicePrincipalCreateParameters parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return active Directory service principal information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServicePrincipalInner>> createWithResponseAsync(
-        ServicePrincipalCreateParameters parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(), this.client.getApiVersion(), this.client.getTenantId(), parameters, context);
-    }
-
-    /**
-     * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return active Directory service principal information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicePrincipalInner> createAsync(ServicePrincipalCreateParameters parameters) {
-        return createWithResponseAsync(parameters)
-            .flatMap(
-                (Response<ServicePrincipalInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return active Directory service principal information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicePrincipalInner> createAsync(ServicePrincipalCreateParameters parameters, Context context) {
-        return createWithResponseAsync(parameters, context)
-            .flatMap(
-                (Response<ServicePrincipalInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return active Directory service principal information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServicePrincipalInner create(ServicePrincipalCreateParameters parameters) {
-        return createAsync(parameters).block();
-    }
-
-    /**
-     * Creates a service principal in the directory.
-     *
-     * @param parameters Request parameters for creating a new service principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return active Directory service principal information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServicePrincipalInner create(ServicePrincipalCreateParameters parameters, Context context) {
-        return createAsync(parameters, context).block();
-    }
-
-    /**
-     * Gets a list of service principals from the current tenant.
-     *
-     * @param filter The filter to apply to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ServicePrincipalInner>> listSinglePageAsync(String filter) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<ServicePrincipalInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets a list of service principals from the current tenant.
-     *
-     * @param filter The filter to apply to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ServicePrincipalInner>> listSinglePageAsync(String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Gets a list of service principals from the current tenant.
-     *
-     * @param filter The filter to apply to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
+     * @return appRoleAssignedTo from servicePrincipals.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServicePrincipalInner> listAsync(String filter) {
-        return new PagedFlux<>(() -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<MicrosoftGraphAppRoleAssignmentInner> listAppRoleAssignedToAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
 
     /**
-     * Gets a list of service principals from the current tenant.
+     * Get appRoleAssignedTo from servicePrincipals.
      *
-     * @param filter The filter to apply to the operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignedTo from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphAppRoleAssignmentInner> listAppRoleAssignedToAsync(String servicePrincipalId);
+
+    /**
+     * Get appRoleAssignedTo from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignedTo from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphAppRoleAssignmentInner> listAppRoleAssignedTo(String servicePrincipalId);
+
+    /**
+     * Get appRoleAssignedTo from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
+     * @return appRoleAssignedTo from servicePrincipals.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServicePrincipalInner> listAsync(String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
+    PagedIterable<MicrosoftGraphAppRoleAssignmentInner> listAppRoleAssignedTo(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
 
     /**
-     * Gets a list of service principals from the current tenant.
+     * Create new navigation property to appRoleAssignedTo for servicePrincipals.
      *
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServicePrincipalInner> listAsync() {
-        final String filter = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter), nextLink -> listNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets a list of service principals from the current tenant.
-     *
-     * @param filter The filter to apply to the operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
+     * @return represents an Azure Active Directory object.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServicePrincipalInner> list(String filter) {
-        return new PagedIterable<>(listAsync(filter));
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphAppRoleAssignmentInner>> createAppRoleAssignedToWithResponseAsync(
+        String servicePrincipalId, MicrosoftGraphAppRoleAssignmentInner body);
 
     /**
-     * Gets a list of service principals from the current tenant.
+     * Create new navigation property to appRoleAssignedTo for servicePrincipals.
      *
-     * @param filter The filter to apply to the operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an Azure Active Directory object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphAppRoleAssignmentInner> createAppRoleAssignedToAsync(
+        String servicePrincipalId, MicrosoftGraphAppRoleAssignmentInner body);
+
+    /**
+     * Create new navigation property to appRoleAssignedTo for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an Azure Active Directory object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphAppRoleAssignmentInner createAppRoleAssignedTo(
+        String servicePrincipalId, MicrosoftGraphAppRoleAssignmentInner body);
+
+    /**
+     * Create new navigation property to appRoleAssignedTo for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
+     * @return represents an Azure Active Directory object.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServicePrincipalInner> list(String filter, Context context) {
-        return new PagedIterable<>(listAsync(filter, context));
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphAppRoleAssignmentInner> createAppRoleAssignedToWithResponse(
+        String servicePrincipalId, MicrosoftGraphAppRoleAssignmentInner body, Context context);
 
     /**
-     * Gets a list of service principals from the current tenant.
+     * Get appRoleAssignedTo from servicePrincipals.
      *
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServicePrincipalInner> list() {
-        final String filter = null;
-        final Context context = null;
-        return new PagedIterable<>(listAsync(filter));
-    }
-
-    /**
-     * Updates a service principal in the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignedTo from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphAppRoleAssignmentInner>> getAppRoleAssignedToWithResponseAsync(
+        String servicePrincipalId,
+        String appRoleAssignmentId,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get appRoleAssignedTo from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignedTo from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphAppRoleAssignmentInner> getAppRoleAssignedToAsync(
+        String servicePrincipalId,
+        String appRoleAssignmentId,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get appRoleAssignedTo from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignedTo from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphAppRoleAssignmentInner> getAppRoleAssignedToAsync(
+        String servicePrincipalId, String appRoleAssignmentId);
+
+    /**
+     * Get appRoleAssignedTo from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignedTo from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphAppRoleAssignmentInner getAppRoleAssignedTo(String servicePrincipalId, String appRoleAssignmentId);
+
+    /**
+     * Get appRoleAssignedTo from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignedTo from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphAppRoleAssignmentInner> getAppRoleAssignedToWithResponse(
+        String servicePrincipalId,
+        String appRoleAssignmentId,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Update the navigation property appRoleAssignedTo in servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(String objectId, ServicePrincipalBase parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> updateAppRoleAssignedToWithResponseAsync(
+        String servicePrincipalId, String appRoleAssignmentId, MicrosoftGraphAppRoleAssignmentInner body);
 
     /**
-     * Updates a service principal in the directory.
+     * Update the navigation property appRoleAssignedTo in servicePrincipals.
      *
-     * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
-     * @param context The context to associate with this operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param body New navigation property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(
-        String objectId, ServicePrincipalBase parameters, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                objectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                parameters,
-                context);
-    }
+    Mono<Void> updateAppRoleAssignedToAsync(
+        String servicePrincipalId, String appRoleAssignmentId, MicrosoftGraphAppRoleAssignmentInner body);
 
     /**
-     * Updates a service principal in the directory.
+     * Update the navigation property appRoleAssignedTo in servicePrincipals.
      *
-     * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param body New navigation property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateAppRoleAssignedTo(
+        String servicePrincipalId, String appRoleAssignmentId, MicrosoftGraphAppRoleAssignmentInner body);
+
+    /**
+     * Update the navigation property appRoleAssignedTo in servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param body New navigation property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> updateAppRoleAssignedToWithResponse(
+        String servicePrincipalId,
+        String appRoleAssignmentId,
+        MicrosoftGraphAppRoleAssignmentInner body,
+        Context context);
+
+    /**
+     * Delete navigation property appRoleAssignedTo for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateAsync(String objectId, ServicePrincipalBase parameters) {
-        return updateWithResponseAsync(objectId, parameters).flatMap((Response<Void> res) -> Mono.empty());
-    }
+    Mono<Response<Void>> deleteAppRoleAssignedToWithResponseAsync(
+        String servicePrincipalId, String appRoleAssignmentId, String ifMatch);
 
     /**
-     * Updates a service principal in the directory.
+     * Delete navigation property appRoleAssignedTo for servicePrincipals.
      *
-     * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
-     * @param context The context to associate with this operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param ifMatch ETag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateAsync(String objectId, ServicePrincipalBase parameters, Context context) {
-        return updateWithResponseAsync(objectId, parameters, context).flatMap((Response<Void> res) -> Mono.empty());
-    }
+    Mono<Void> deleteAppRoleAssignedToAsync(String servicePrincipalId, String appRoleAssignmentId, String ifMatch);
 
     /**
-     * Updates a service principal in the directory.
+     * Delete navigation property appRoleAssignedTo for servicePrincipals.
      *
-     * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String objectId, ServicePrincipalBase parameters) {
-        updateAsync(objectId, parameters).block();
-    }
-
-    /**
-     * Updates a service principal in the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
-     * @param parameters Active Directory service principal common properties shared among GET, POST and PATCH.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String objectId, ServicePrincipalBase parameters, Context context) {
-        updateAsync(objectId, parameters, context).block();
-    }
-
-    /**
-     * Deletes a service principal from the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String objectId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Void> deleteAppRoleAssignedToAsync(String servicePrincipalId, String appRoleAssignmentId);
 
     /**
-     * Deletes a service principal from the directory.
+     * Delete navigation property appRoleAssignedTo for servicePrincipals.
      *
-     * @param objectId The object ID of the service principal to delete.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteAppRoleAssignedTo(String servicePrincipalId, String appRoleAssignmentId);
+
+    /**
+     * Delete navigation property appRoleAssignedTo for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param ifMatch ETag.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(String objectId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context);
-    }
+    Response<Void> deleteAppRoleAssignedToWithResponse(
+        String servicePrincipalId, String appRoleAssignmentId, String ifMatch, Context context);
 
     /**
-     * Deletes a service principal from the directory.
+     * Get appRoleAssignments from servicePrincipals.
      *
-     * @param objectId The object ID of the service principal to delete.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String objectId) {
-        return deleteWithResponseAsync(objectId).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a service principal from the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String objectId, Context context) {
-        return deleteWithResponseAsync(objectId, context).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a service principal from the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String objectId) {
-        deleteAsync(objectId).block();
-    }
-
-    /**
-     * Deletes a service principal from the directory.
-     *
-     * @param objectId The object ID of the service principal to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String objectId, Context context) {
-        deleteAsync(objectId, context).block();
-    }
-
-    /**
-     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
-     * @param objectId The object ID of the service principal to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service principal information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServicePrincipalInner>> getWithResponseAsync(String objectId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
-     * @param objectId The object ID of the service principal to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service principal information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServicePrincipalInner>> getWithResponseAsync(String objectId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context);
-    }
-
-    /**
-     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
-     * @param objectId The object ID of the service principal to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service principal information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicePrincipalInner> getAsync(String objectId) {
-        return getWithResponseAsync(objectId)
-            .flatMap(
-                (Response<ServicePrincipalInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
-     * @param objectId The object ID of the service principal to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service principal information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicePrincipalInner> getAsync(String objectId, Context context) {
-        return getWithResponseAsync(objectId, context)
-            .flatMap(
-                (Response<ServicePrincipalInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
-     * @param objectId The object ID of the service principal to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service principal information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServicePrincipalInner get(String objectId) {
-        return getAsync(objectId).block();
-    }
-
-    /**
-     * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     *
-     * @param objectId The object ID of the service principal to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return service principal information from the directory.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServicePrincipalInner get(String objectId, Context context) {
-        return getAsync(objectId, context).block();
-    }
-
-    /**
-     * The owners are a set of non-admin users who are allowed to modify this object.
-     *
-     * @param objectId The object ID of the service principal for which to get owners.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return directoryObject list operation result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String objectId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOwners(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<DirectoryObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * The owners are a set of non-admin users who are allowed to modify this object.
-     *
-     * @param objectId The object ID of the service principal for which to get owners.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return directoryObject list operation result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String objectId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listOwners(
-                this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * The owners are a set of non-admin users who are allowed to modify this object.
-     *
-     * @param objectId The object ID of the service principal for which to get owners.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return directoryObject list operation result.
+     * @return appRoleAssignments from servicePrincipals.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId) {
-        return new PagedFlux<>(
-            () -> listOwnersSinglePageAsync(objectId), nextLink -> listOwnersNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<MicrosoftGraphAppRoleAssignmentInner> listAppRoleAssignmentsAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
 
     /**
-     * The owners are a set of non-admin users who are allowed to modify this object.
+     * Get appRoleAssignments from servicePrincipals.
      *
-     * @param objectId The object ID of the service principal for which to get owners.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignments from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphAppRoleAssignmentInner> listAppRoleAssignmentsAsync(String servicePrincipalId);
+
+    /**
+     * Get appRoleAssignments from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignments from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphAppRoleAssignmentInner> listAppRoleAssignments(String servicePrincipalId);
+
+    /**
+     * Get appRoleAssignments from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return directoryObject list operation result.
+     * @return appRoleAssignments from servicePrincipals.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId, Context context) {
-        return new PagedFlux<>(
-            () -> listOwnersSinglePageAsync(objectId, context),
-            nextLink -> listOwnersNextSinglePageAsync(nextLink, context));
-    }
+    PagedIterable<MicrosoftGraphAppRoleAssignmentInner> listAppRoleAssignments(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
 
     /**
-     * The owners are a set of non-admin users who are allowed to modify this object.
+     * Create new navigation property to appRoleAssignments for servicePrincipals.
      *
-     * @param objectId The object ID of the service principal for which to get owners.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return directoryObject list operation result.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DirectoryObjectInner> listOwners(String objectId) {
-        return new PagedIterable<>(listOwnersAsync(objectId));
-    }
-
-    /**
-     * The owners are a set of non-admin users who are allowed to modify this object.
-     *
-     * @param objectId The object ID of the service principal for which to get owners.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return directoryObject list operation result.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DirectoryObjectInner> listOwners(String objectId, Context context) {
-        return new PagedIterable<>(listOwnersAsync(objectId, context));
-    }
-
-    /**
-     * Get the keyCredentials associated with the specified service principal.
-     *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
+     * @return represents an Azure Active Directory object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String objectId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeyCredentials(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<KeyCredentialInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<MicrosoftGraphAppRoleAssignmentInner>> createAppRoleAssignmentsWithResponseAsync(
+        String servicePrincipalId, MicrosoftGraphAppRoleAssignmentInner body);
 
     /**
-     * Get the keyCredentials associated with the specified service principal.
+     * Create new navigation property to appRoleAssignments for servicePrincipals.
      *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
-     * @param context The context to associate with this operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
+     * @return represents an Azure Active Directory object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String objectId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listKeyCredentials(
-                this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
-    }
+    Mono<MicrosoftGraphAppRoleAssignmentInner> createAppRoleAssignmentsAsync(
+        String servicePrincipalId, MicrosoftGraphAppRoleAssignmentInner body);
 
     /**
-     * Get the keyCredentials associated with the specified service principal.
+     * Create new navigation property to appRoleAssignments for servicePrincipals.
      *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
+     * @return represents an Azure Active Directory object.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String objectId) {
-        return new PagedFlux<>(() -> listKeyCredentialsSinglePageAsync(objectId));
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphAppRoleAssignmentInner createAppRoleAssignments(
+        String servicePrincipalId, MicrosoftGraphAppRoleAssignmentInner body);
 
     /**
-     * Get the keyCredentials associated with the specified service principal.
+     * Create new navigation property to appRoleAssignments for servicePrincipals.
      *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
+     * @return represents an Azure Active Directory object.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String objectId, Context context) {
-        return new PagedFlux<>(() -> listKeyCredentialsSinglePageAsync(objectId, context));
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphAppRoleAssignmentInner> createAppRoleAssignmentsWithResponse(
+        String servicePrincipalId, MicrosoftGraphAppRoleAssignmentInner body, Context context);
 
     /**
-     * Get the keyCredentials associated with the specified service principal.
+     * Get appRoleAssignments from servicePrincipals.
      *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
+     * @return appRoleAssignments from servicePrincipals.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyCredentialInner> listKeyCredentials(String objectId) {
-        return new PagedIterable<>(listKeyCredentialsAsync(objectId));
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphAppRoleAssignmentInner>> getAppRoleAssignmentsWithResponseAsync(
+        String servicePrincipalId,
+        String appRoleAssignmentId,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
 
     /**
-     * Get the keyCredentials associated with the specified service principal.
+     * Get appRoleAssignments from servicePrincipals.
      *
-     * @param objectId The object ID of the service principal for which to get keyCredentials.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignments from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphAppRoleAssignmentInner> getAppRoleAssignmentsAsync(
+        String servicePrincipalId,
+        String appRoleAssignmentId,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get appRoleAssignments from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignments from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphAppRoleAssignmentInner> getAppRoleAssignmentsAsync(
+        String servicePrincipalId, String appRoleAssignmentId);
+
+    /**
+     * Get appRoleAssignments from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return appRoleAssignments from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphAppRoleAssignmentInner getAppRoleAssignments(String servicePrincipalId, String appRoleAssignmentId);
+
+    /**
+     * Get appRoleAssignments from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the keyCredentials associated with the specified service principal.
+     * @return appRoleAssignments from servicePrincipals.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyCredentialInner> listKeyCredentials(String objectId, Context context) {
-        return new PagedIterable<>(listKeyCredentialsAsync(objectId, context));
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphAppRoleAssignmentInner> getAppRoleAssignmentsWithResponse(
+        String servicePrincipalId,
+        String appRoleAssignmentId,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
 
     /**
-     * Update the keyCredentials associated with a service principal.
+     * Update the navigation property appRoleAssignments in servicePrincipals.
      *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param body New navigation property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String objectId, List<KeyCredentialInner> value) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (value == null) {
-            return Mono.error(new IllegalArgumentException("Parameter value is required and cannot be null."));
-        } else {
-            value.forEach(e -> e.validate());
-        }
-        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
-        parameters.withValue(value);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateKeyCredentials(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> updateAppRoleAssignmentsWithResponseAsync(
+        String servicePrincipalId, String appRoleAssignmentId, MicrosoftGraphAppRoleAssignmentInner body);
 
     /**
-     * Update the keyCredentials associated with a service principal.
+     * Update the navigation property appRoleAssignments in servicePrincipals.
      *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
-     * @param context The context to associate with this operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param body New navigation property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(
-        String objectId, List<KeyCredentialInner> value, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (value == null) {
-            return Mono.error(new IllegalArgumentException("Parameter value is required and cannot be null."));
-        } else {
-            value.forEach(e -> e.validate());
-        }
-        KeyCredentialsUpdateParameters parameters = new KeyCredentialsUpdateParameters();
-        parameters.withValue(value);
-        context = this.client.mergeContext(context);
-        return service
-            .updateKeyCredentials(
-                this.client.getEndpoint(),
-                objectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                parameters,
-                context);
-    }
+    Mono<Void> updateAppRoleAssignmentsAsync(
+        String servicePrincipalId, String appRoleAssignmentId, MicrosoftGraphAppRoleAssignmentInner body);
 
     /**
-     * Update the keyCredentials associated with a service principal.
+     * Update the navigation property appRoleAssignments in servicePrincipals.
      *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param body New navigation property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateAppRoleAssignments(
+        String servicePrincipalId, String appRoleAssignmentId, MicrosoftGraphAppRoleAssignmentInner body);
+
+    /**
+     * Update the navigation property appRoleAssignments in servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param body New navigation property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> updateAppRoleAssignmentsWithResponse(
+        String servicePrincipalId,
+        String appRoleAssignmentId,
+        MicrosoftGraphAppRoleAssignmentInner body,
+        Context context);
+
+    /**
+     * Delete navigation property appRoleAssignments for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateKeyCredentialsAsync(String objectId, List<KeyCredentialInner> value) {
-        return updateKeyCredentialsWithResponseAsync(objectId, value).flatMap((Response<Void> res) -> Mono.empty());
-    }
+    Mono<Response<Void>> deleteAppRoleAssignmentsWithResponseAsync(
+        String servicePrincipalId, String appRoleAssignmentId, String ifMatch);
 
     /**
-     * Update the keyCredentials associated with a service principal.
+     * Delete navigation property appRoleAssignments for servicePrincipals.
      *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
-     * @param context The context to associate with this operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param ifMatch ETag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateKeyCredentialsAsync(String objectId, List<KeyCredentialInner> value, Context context) {
-        return updateKeyCredentialsWithResponseAsync(objectId, value, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
+    Mono<Void> deleteAppRoleAssignmentsAsync(String servicePrincipalId, String appRoleAssignmentId, String ifMatch);
 
     /**
-     * Update the keyCredentials associated with a service principal.
+     * Delete navigation property appRoleAssignments for servicePrincipals.
      *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAppRoleAssignmentsAsync(String servicePrincipalId, String appRoleAssignmentId);
+
+    /**
+     * Delete navigation property appRoleAssignments for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateKeyCredentials(String objectId, List<KeyCredentialInner> value) {
-        updateKeyCredentialsAsync(objectId, value).block();
-    }
+    void deleteAppRoleAssignments(String servicePrincipalId, String appRoleAssignmentId);
 
     /**
-     * Update the keyCredentials associated with a service principal.
+     * Delete navigation property appRoleAssignments for servicePrincipals.
      *
-     * @param objectId The object ID for which to get service principal information.
-     * @param value A collection of KeyCredentials.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param appRoleAssignmentId key: id of appRoleAssignment.
+     * @param ifMatch ETag.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateKeyCredentials(String objectId, List<KeyCredentialInner> value, Context context) {
-        updateKeyCredentialsAsync(objectId, value, context).block();
-    }
+    Response<Void> deleteAppRoleAssignmentsWithResponse(
+        String servicePrincipalId, String appRoleAssignmentId, String ifMatch, Context context);
 
     /**
-     * Gets the passwordCredentials associated with a service principal.
+     * Get claimsMappingPolicies from servicePrincipals.
      *
-     * @param objectId The object ID of the service principal.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(String objectId) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listPasswordCredentials(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<PasswordCredentialInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(
-        String objectId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listPasswordCredentials(
-                this.client.getEndpoint(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
-    }
-
-    /**
-     * Gets the passwordCredentials associated with a service principal.
-     *
-     * @param objectId The object ID of the service principal.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
+     * @return claimsMappingPolicies from servicePrincipals.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String objectId) {
-        return new PagedFlux<>(() -> listPasswordCredentialsSinglePageAsync(objectId));
-    }
+    PagedFlux<MicrosoftGraphClaimsMappingPolicyInner> listClaimsMappingPoliciesAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<ServicePrincipalsExpand> expand);
 
     /**
-     * Gets the passwordCredentials associated with a service principal.
+     * Get claimsMappingPolicies from servicePrincipals.
      *
-     * @param objectId The object ID of the service principal.
-     * @param context The context to associate with this operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
+     * @return claimsMappingPolicies from servicePrincipals.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String objectId, Context context) {
-        return new PagedFlux<>(() -> listPasswordCredentialsSinglePageAsync(objectId, context));
-    }
+    PagedFlux<MicrosoftGraphClaimsMappingPolicyInner> listClaimsMappingPoliciesAsync(String servicePrincipalId);
 
     /**
-     * Gets the passwordCredentials associated with a service principal.
+     * Get claimsMappingPolicies from servicePrincipals.
      *
-     * @param objectId The object ID of the service principal.
+     * @param servicePrincipalId key: id of servicePrincipal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
+     * @return claimsMappingPolicies from servicePrincipals.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String objectId) {
-        return new PagedIterable<>(listPasswordCredentialsAsync(objectId));
-    }
+    PagedIterable<MicrosoftGraphClaimsMappingPolicyInner> listClaimsMappingPolicies(String servicePrincipalId);
 
     /**
-     * Gets the passwordCredentials associated with a service principal.
+     * Get claimsMappingPolicies from servicePrincipals.
      *
-     * @param objectId The object ID of the service principal.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the passwordCredentials associated with a service principal.
+     * @return claimsMappingPolicies from servicePrincipals.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String objectId, Context context) {
-        return new PagedIterable<>(listPasswordCredentialsAsync(objectId, context));
-    }
+    PagedIterable<MicrosoftGraphClaimsMappingPolicyInner> listClaimsMappingPolicies(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<ServicePrincipalsExpand> expand,
+        Context context);
 
     /**
-     * Updates the passwordCredentials associated with a service principal.
+     * Get ref of claimsMappingPolicies from servicePrincipals.
      *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of claimsMappingPolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefClaimsMappingPoliciesAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby);
+
+    /**
+     * Get ref of claimsMappingPolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of claimsMappingPolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefClaimsMappingPoliciesAsync(String servicePrincipalId);
+
+    /**
+     * Get ref of claimsMappingPolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of claimsMappingPolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefClaimsMappingPolicies(String servicePrincipalId);
+
+    /**
+     * Get ref of claimsMappingPolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of claimsMappingPolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefClaimsMappingPolicies(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        Context context);
+
+    /**
+     * Create new navigation property ref to claimsMappingPolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Map<String, Object>>> createRefClaimsMappingPoliciesWithResponseAsync(
+        String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to claimsMappingPolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Map<String, Object>> createRefClaimsMappingPoliciesAsync(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to claimsMappingPolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> createRefClaimsMappingPolicies(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to claimsMappingPolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, Object>> createRefClaimsMappingPoliciesWithResponse(
+        String servicePrincipalId, Map<String, Object> body, Context context);
+
+    /**
+     * Get createdObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return createdObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDirectoryObjectInner> listCreatedObjectsAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get createdObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return createdObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDirectoryObjectInner> listCreatedObjectsAsync(String servicePrincipalId);
+
+    /**
+     * Get createdObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return createdObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDirectoryObjectInner> listCreatedObjects(String servicePrincipalId);
+
+    /**
+     * Get createdObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return createdObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDirectoryObjectInner> listCreatedObjects(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Get ref of createdObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of createdObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefCreatedObjectsAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby);
+
+    /**
+     * Get ref of createdObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of createdObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefCreatedObjectsAsync(String servicePrincipalId);
+
+    /**
+     * Get ref of createdObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of createdObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefCreatedObjects(String servicePrincipalId);
+
+    /**
+     * Get ref of createdObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of createdObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefCreatedObjects(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        Context context);
+
+    /**
+     * Create new navigation property ref to createdObjects for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Map<String, Object>>> createRefCreatedObjectsWithResponseAsync(
+        String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to createdObjects for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Map<String, Object>> createRefCreatedObjectsAsync(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to createdObjects for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> createRefCreatedObjects(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to createdObjects for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, Object>> createRefCreatedObjectsWithResponse(
+        String servicePrincipalId, Map<String, Object> body, Context context);
+
+    /**
+     * Get delegatedPermissionClassifications from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassifications from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDelegatedPermissionClassificationInner> listDelegatedPermissionClassificationsAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get delegatedPermissionClassifications from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassifications from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDelegatedPermissionClassificationInner> listDelegatedPermissionClassificationsAsync(
+        String servicePrincipalId);
+
+    /**
+     * Get delegatedPermissionClassifications from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassifications from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDelegatedPermissionClassificationInner> listDelegatedPermissionClassifications(
+        String servicePrincipalId);
+
+    /**
+     * Get delegatedPermissionClassifications from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassifications from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDelegatedPermissionClassificationInner> listDelegatedPermissionClassifications(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Create new navigation property to delegatedPermissionClassifications for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassification.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphDelegatedPermissionClassificationInner>>
+        createDelegatedPermissionClassificationsWithResponseAsync(
+            String servicePrincipalId, MicrosoftGraphDelegatedPermissionClassificationInner body);
+
+    /**
+     * Create new navigation property to delegatedPermissionClassifications for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassification.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphDelegatedPermissionClassificationInner> createDelegatedPermissionClassificationsAsync(
+        String servicePrincipalId, MicrosoftGraphDelegatedPermissionClassificationInner body);
+
+    /**
+     * Create new navigation property to delegatedPermissionClassifications for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassification.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphDelegatedPermissionClassificationInner createDelegatedPermissionClassifications(
+        String servicePrincipalId, MicrosoftGraphDelegatedPermissionClassificationInner body);
+
+    /**
+     * Create new navigation property to delegatedPermissionClassifications for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassification.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphDelegatedPermissionClassificationInner> createDelegatedPermissionClassificationsWithResponse(
+        String servicePrincipalId, MicrosoftGraphDelegatedPermissionClassificationInner body, Context context);
+
+    /**
+     * Get delegatedPermissionClassifications from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassifications from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphDelegatedPermissionClassificationInner>>
+        getDelegatedPermissionClassificationsWithResponseAsync(
+            String servicePrincipalId,
+            String delegatedPermissionClassificationId,
+            List<ServicePrincipalsSelect> select,
+            List<String> expand);
+
+    /**
+     * Get delegatedPermissionClassifications from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassifications from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphDelegatedPermissionClassificationInner> getDelegatedPermissionClassificationsAsync(
+        String servicePrincipalId,
+        String delegatedPermissionClassificationId,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get delegatedPermissionClassifications from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassifications from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphDelegatedPermissionClassificationInner> getDelegatedPermissionClassificationsAsync(
+        String servicePrincipalId, String delegatedPermissionClassificationId);
+
+    /**
+     * Get delegatedPermissionClassifications from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassifications from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphDelegatedPermissionClassificationInner getDelegatedPermissionClassifications(
+        String servicePrincipalId, String delegatedPermissionClassificationId);
+
+    /**
+     * Get delegatedPermissionClassifications from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegatedPermissionClassifications from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphDelegatedPermissionClassificationInner> getDelegatedPermissionClassificationsWithResponse(
+        String servicePrincipalId,
+        String delegatedPermissionClassificationId,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Update the navigation property delegatedPermissionClassifications in servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
-        String objectId, List<PasswordCredentialInner> value) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (value == null) {
-            return Mono.error(new IllegalArgumentException("Parameter value is required and cannot be null."));
-        } else {
-            value.forEach(e -> e.validate());
-        }
-        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
-        parameters.withValue(value);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updatePasswordCredentials(
-                            this.client.getEndpoint(),
-                            objectId,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> updateDelegatedPermissionClassificationsWithResponseAsync(
+        String servicePrincipalId,
+        String delegatedPermissionClassificationId,
+        MicrosoftGraphDelegatedPermissionClassificationInner body);
 
     /**
-     * Updates the passwordCredentials associated with a service principal.
+     * Update the navigation property delegatedPermissionClassifications in servicePrincipals.
      *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
-     * @param context The context to associate with this operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @param body New navigation property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
-        String objectId, List<PasswordCredentialInner> value, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (objectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        if (value == null) {
-            return Mono.error(new IllegalArgumentException("Parameter value is required and cannot be null."));
-        } else {
-            value.forEach(e -> e.validate());
-        }
-        PasswordCredentialsUpdateParameters parameters = new PasswordCredentialsUpdateParameters();
-        parameters.withValue(value);
-        context = this.client.mergeContext(context);
-        return service
-            .updatePasswordCredentials(
-                this.client.getEndpoint(),
-                objectId,
-                this.client.getApiVersion(),
-                this.client.getTenantId(),
-                parameters,
-                context);
-    }
+    Mono<Void> updateDelegatedPermissionClassificationsAsync(
+        String servicePrincipalId,
+        String delegatedPermissionClassificationId,
+        MicrosoftGraphDelegatedPermissionClassificationInner body);
 
     /**
-     * Updates the passwordCredentials associated with a service principal.
+     * Update the navigation property delegatedPermissionClassifications in servicePrincipals.
      *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @param body New navigation property values.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateDelegatedPermissionClassifications(
+        String servicePrincipalId,
+        String delegatedPermissionClassificationId,
+        MicrosoftGraphDelegatedPermissionClassificationInner body);
+
+    /**
+     * Update the navigation property delegatedPermissionClassifications in servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @param body New navigation property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> updateDelegatedPermissionClassificationsWithResponse(
+        String servicePrincipalId,
+        String delegatedPermissionClassificationId,
+        MicrosoftGraphDelegatedPermissionClassificationInner body,
+        Context context);
+
+    /**
+     * Delete navigation property delegatedPermissionClassifications for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updatePasswordCredentialsAsync(String objectId, List<PasswordCredentialInner> value) {
-        return updatePasswordCredentialsWithResponseAsync(objectId, value)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
+    Mono<Response<Void>> deleteDelegatedPermissionClassificationsWithResponseAsync(
+        String servicePrincipalId, String delegatedPermissionClassificationId, String ifMatch);
 
     /**
-     * Updates the passwordCredentials associated with a service principal.
+     * Delete navigation property delegatedPermissionClassifications for servicePrincipals.
      *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
-     * @param context The context to associate with this operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @param ifMatch ETag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updatePasswordCredentialsAsync(
-        String objectId, List<PasswordCredentialInner> value, Context context) {
-        return updatePasswordCredentialsWithResponseAsync(objectId, value, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
+    Mono<Void> deleteDelegatedPermissionClassificationsAsync(
+        String servicePrincipalId, String delegatedPermissionClassificationId, String ifMatch);
 
     /**
-     * Updates the passwordCredentials associated with a service principal.
+     * Delete navigation property delegatedPermissionClassifications for servicePrincipals.
      *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteDelegatedPermissionClassificationsAsync(
+        String servicePrincipalId, String delegatedPermissionClassificationId);
+
+    /**
+     * Delete navigation property delegatedPermissionClassifications for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePasswordCredentials(String objectId, List<PasswordCredentialInner> value) {
-        updatePasswordCredentialsAsync(objectId, value).block();
-    }
+    void deleteDelegatedPermissionClassifications(
+        String servicePrincipalId, String delegatedPermissionClassificationId);
 
     /**
-     * Updates the passwordCredentials associated with a service principal.
+     * Delete navigation property delegatedPermissionClassifications for servicePrincipals.
      *
-     * @param objectId The object ID of the service principal.
-     * @param value A collection of PasswordCredentials.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param delegatedPermissionClassificationId key: id of delegatedPermissionClassification.
+     * @param ifMatch ETag.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePasswordCredentials(String objectId, List<PasswordCredentialInner> value, Context context) {
-        updatePasswordCredentialsAsync(objectId, value, context).block();
-    }
+    Response<Void> deleteDelegatedPermissionClassificationsWithResponse(
+        String servicePrincipalId, String delegatedPermissionClassificationId, String ifMatch, Context context);
 
     /**
-     * Gets a list of service principals from the current tenant.
+     * Get endpoints from servicePrincipals.
      *
-     * @param nextLink Next link for the list operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
+     * @return endpoints from servicePrincipals.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ServicePrincipalInner>> listNextSinglePageAsync(String nextLink) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listNext(
-                            this.client.getEndpoint(),
-                            nextLink,
-                            this.client.getApiVersion(),
-                            this.client.getTenantId(),
-                            context))
-            .<PagedResponse<ServicePrincipalInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphEndpointInner> listEndpointsAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
 
     /**
-     * Gets a list of service principals from the current tenant.
+     * Get endpoints from servicePrincipals.
      *
-     * @param nextLink Next link for the list operation.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return endpoints from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphEndpointInner> listEndpointsAsync(String servicePrincipalId);
+
+    /**
+     * Get endpoints from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return endpoints from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphEndpointInner> listEndpoints(String servicePrincipalId);
+
+    /**
+     * Get endpoints from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service principals from the current tenant.
+     * @return endpoints from servicePrincipals.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ServicePrincipalInner>> listNextSinglePageAsync(String nextLink, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        if (this.client.getTenantId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getTenantId() is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listNext(
-                this.client.getEndpoint(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphEndpointInner> listEndpoints(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
 
     /**
-     * Get the next page of items.
+     * Create new navigation property to endpoints for servicePrincipals.
      *
-     * @param nextLink The nextLink parameter.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return directoryObject list operation result.
+     * @return represents an Azure Active Directory object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DirectoryObjectInner>> listOwnersNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listOwnersNext(nextLink, context))
-            .<PagedResponse<DirectoryObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<MicrosoftGraphEndpointInner>> createEndpointsWithResponseAsync(
+        String servicePrincipalId, MicrosoftGraphEndpointInner body);
 
     /**
-     * Get the next page of items.
+     * Create new navigation property to endpoints for servicePrincipals.
      *
-     * @param nextLink The nextLink parameter.
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an Azure Active Directory object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphEndpointInner> createEndpointsAsync(String servicePrincipalId, MicrosoftGraphEndpointInner body);
+
+    /**
+     * Create new navigation property to endpoints for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an Azure Active Directory object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphEndpointInner createEndpoints(String servicePrincipalId, MicrosoftGraphEndpointInner body);
+
+    /**
+     * Create new navigation property to endpoints for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return directoryObject list operation result.
+     * @return represents an Azure Active Directory object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DirectoryObjectInner>> listOwnersNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listOwnersNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
+    Response<MicrosoftGraphEndpointInner> createEndpointsWithResponse(
+        String servicePrincipalId, MicrosoftGraphEndpointInner body, Context context);
+
+    /**
+     * Get endpoints from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return endpoints from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphEndpointInner>> getEndpointsWithResponseAsync(
+        String servicePrincipalId, String endpointId, List<ServicePrincipalsSelect> select, List<String> expand);
+
+    /**
+     * Get endpoints from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return endpoints from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphEndpointInner> getEndpointsAsync(
+        String servicePrincipalId, String endpointId, List<ServicePrincipalsSelect> select, List<String> expand);
+
+    /**
+     * Get endpoints from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return endpoints from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphEndpointInner> getEndpointsAsync(String servicePrincipalId, String endpointId);
+
+    /**
+     * Get endpoints from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return endpoints from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphEndpointInner getEndpoints(String servicePrincipalId, String endpointId);
+
+    /**
+     * Get endpoints from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return endpoints from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphEndpointInner> getEndpointsWithResponse(
+        String servicePrincipalId,
+        String endpointId,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Update the navigation property endpoints in servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> updateEndpointsWithResponseAsync(
+        String servicePrincipalId, String endpointId, MicrosoftGraphEndpointInner body);
+
+    /**
+     * Update the navigation property endpoints in servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> updateEndpointsAsync(String servicePrincipalId, String endpointId, MicrosoftGraphEndpointInner body);
+
+    /**
+     * Update the navigation property endpoints in servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @param body New navigation property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void updateEndpoints(String servicePrincipalId, String endpointId, MicrosoftGraphEndpointInner body);
+
+    /**
+     * Update the navigation property endpoints in servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @param body New navigation property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> updateEndpointsWithResponse(
+        String servicePrincipalId, String endpointId, MicrosoftGraphEndpointInner body, Context context);
+
+    /**
+     * Delete navigation property endpoints for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> deleteEndpointsWithResponseAsync(String servicePrincipalId, String endpointId, String ifMatch);
+
+    /**
+     * Delete navigation property endpoints for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @param ifMatch ETag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteEndpointsAsync(String servicePrincipalId, String endpointId, String ifMatch);
+
+    /**
+     * Delete navigation property endpoints for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteEndpointsAsync(String servicePrincipalId, String endpointId);
+
+    /**
+     * Delete navigation property endpoints for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void deleteEndpoints(String servicePrincipalId, String endpointId);
+
+    /**
+     * Delete navigation property endpoints for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param endpointId key: id of endpoint.
+     * @param ifMatch ETag.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteEndpointsWithResponse(
+        String servicePrincipalId, String endpointId, String ifMatch, Context context);
+
+    /**
+     * Get homeRealmDiscoveryPolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return homeRealmDiscoveryPolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPoliciesAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<ServicePrincipalsExpand> expand);
+
+    /**
+     * Get homeRealmDiscoveryPolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return homeRealmDiscoveryPolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPoliciesAsync(
+        String servicePrincipalId);
+
+    /**
+     * Get homeRealmDiscoveryPolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return homeRealmDiscoveryPolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPolicies(
+        String servicePrincipalId);
+
+    /**
+     * Get homeRealmDiscoveryPolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return homeRealmDiscoveryPolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPolicies(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<ServicePrincipalsExpand> expand,
+        Context context);
+
+    /**
+     * Get ref of homeRealmDiscoveryPolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of homeRealmDiscoveryPolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefHomeRealmDiscoveryPoliciesAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby);
+
+    /**
+     * Get ref of homeRealmDiscoveryPolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of homeRealmDiscoveryPolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefHomeRealmDiscoveryPoliciesAsync(String servicePrincipalId);
+
+    /**
+     * Get ref of homeRealmDiscoveryPolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of homeRealmDiscoveryPolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefHomeRealmDiscoveryPolicies(String servicePrincipalId);
+
+    /**
+     * Get ref of homeRealmDiscoveryPolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of homeRealmDiscoveryPolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefHomeRealmDiscoveryPolicies(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        Context context);
+
+    /**
+     * Create new navigation property ref to homeRealmDiscoveryPolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Map<String, Object>>> createRefHomeRealmDiscoveryPoliciesWithResponseAsync(
+        String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to homeRealmDiscoveryPolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Map<String, Object>> createRefHomeRealmDiscoveryPoliciesAsync(
+        String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to homeRealmDiscoveryPolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> createRefHomeRealmDiscoveryPolicies(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to homeRealmDiscoveryPolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, Object>> createRefHomeRealmDiscoveryPoliciesWithResponse(
+        String servicePrincipalId, Map<String, Object> body, Context context);
+
+    /**
+     * Get memberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return memberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDirectoryObjectInner> listMemberOfAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get memberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return memberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDirectoryObjectInner> listMemberOfAsync(String servicePrincipalId);
+
+    /**
+     * Get memberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return memberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDirectoryObjectInner> listMemberOf(String servicePrincipalId);
+
+    /**
+     * Get memberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return memberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDirectoryObjectInner> listMemberOf(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Get ref of memberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of memberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefMemberOfAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby);
+
+    /**
+     * Get ref of memberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of memberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefMemberOfAsync(String servicePrincipalId);
+
+    /**
+     * Get ref of memberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of memberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefMemberOf(String servicePrincipalId);
+
+    /**
+     * Get ref of memberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of memberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefMemberOf(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        Context context);
+
+    /**
+     * Create new navigation property ref to memberOf for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Map<String, Object>>> createRefMemberOfWithResponseAsync(
+        String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to memberOf for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Map<String, Object>> createRefMemberOfAsync(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to memberOf for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> createRefMemberOf(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to memberOf for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, Object>> createRefMemberOfWithResponse(
+        String servicePrincipalId, Map<String, Object> body, Context context);
+
+    /**
+     * Invoke action addKey.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return keyCredential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphKeyCredentialInner>> addKeyWithResponseAsync(
+        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body);
+
+    /**
+     * Invoke action addKey.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return keyCredential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphKeyCredentialInner> addKeyAsync(
+        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body);
+
+    /**
+     * Invoke action addKey.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return keyCredential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphKeyCredentialInner addKey(String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body);
+
+    /**
+     * Invoke action addKey.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return keyCredential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphKeyCredentialInner> addKeyWithResponse(
+        String servicePrincipalId, ServicePrincipalsAddKeyRequestBodyInner body, Context context);
+
+    /**
+     * Invoke action addPassword.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return passwordCredential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphPasswordCredentialInner>> addPasswordWithResponseAsync(
+        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body);
+
+    /**
+     * Invoke action addPassword.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return passwordCredential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphPasswordCredentialInner> addPasswordAsync(
+        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body);
+
+    /**
+     * Invoke action addPassword.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return passwordCredential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphPasswordCredentialInner addPassword(
+        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body);
+
+    /**
+     * Invoke action addPassword.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return passwordCredential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphPasswordCredentialInner> addPasswordWithResponse(
+        String servicePrincipalId, ServicePrincipalsAddPasswordRequestBodyInner body, Context context);
+
+    /**
+     * Invoke action checkMemberGroups.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<List<String>>> checkMemberGroupsWithResponseAsync(
+        String servicePrincipalId, ServicePrincipalsCheckMemberGroupsRequestBody body);
+
+    /**
+     * Invoke action checkMemberGroups.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<String>> checkMemberGroupsAsync(
+        String servicePrincipalId, ServicePrincipalsCheckMemberGroupsRequestBody body);
+
+    /**
+     * Invoke action checkMemberGroups.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<String> checkMemberGroups(String servicePrincipalId, ServicePrincipalsCheckMemberGroupsRequestBody body);
+
+    /**
+     * Invoke action checkMemberGroups.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<String>> checkMemberGroupsWithResponse(
+        String servicePrincipalId, ServicePrincipalsCheckMemberGroupsRequestBody body, Context context);
+
+    /**
+     * Invoke action checkMemberObjects.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<List<String>>> checkMemberObjectsWithResponseAsync(
+        String servicePrincipalId, ServicePrincipalsCheckMemberObjectsRequestBody body);
+
+    /**
+     * Invoke action checkMemberObjects.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<String>> checkMemberObjectsAsync(
+        String servicePrincipalId, ServicePrincipalsCheckMemberObjectsRequestBody body);
+
+    /**
+     * Invoke action checkMemberObjects.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<String> checkMemberObjects(String servicePrincipalId, ServicePrincipalsCheckMemberObjectsRequestBody body);
+
+    /**
+     * Invoke action checkMemberObjects.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<String>> checkMemberObjectsWithResponse(
+        String servicePrincipalId, ServicePrincipalsCheckMemberObjectsRequestBody body, Context context);
+
+    /**
+     * Invoke action getMemberGroups.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<List<String>>> getMemberGroupsWithResponseAsync(
+        String servicePrincipalId, ServicePrincipalsGetMemberGroupsRequestBody body);
+
+    /**
+     * Invoke action getMemberGroups.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<String>> getMemberGroupsAsync(
+        String servicePrincipalId, ServicePrincipalsGetMemberGroupsRequestBody body);
+
+    /**
+     * Invoke action getMemberGroups.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<String> getMemberGroups(String servicePrincipalId, ServicePrincipalsGetMemberGroupsRequestBody body);
+
+    /**
+     * Invoke action getMemberGroups.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<String>> getMemberGroupsWithResponse(
+        String servicePrincipalId, ServicePrincipalsGetMemberGroupsRequestBody body, Context context);
+
+    /**
+     * Invoke action getMemberObjects.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<List<String>>> getMemberObjectsWithResponseAsync(
+        String servicePrincipalId, ServicePrincipalsGetMemberObjectsRequestBody body);
+
+    /**
+     * Invoke action getMemberObjects.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<String>> getMemberObjectsAsync(
+        String servicePrincipalId, ServicePrincipalsGetMemberObjectsRequestBody body);
+
+    /**
+     * Invoke action getMemberObjects.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<String> getMemberObjects(String servicePrincipalId, ServicePrincipalsGetMemberObjectsRequestBody body);
+
+    /**
+     * Invoke action getMemberObjects.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of String.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<String>> getMemberObjectsWithResponse(
+        String servicePrincipalId, ServicePrincipalsGetMemberObjectsRequestBody body, Context context);
+
+    /**
+     * Invoke action removeKey.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> removeKeyWithResponseAsync(
+        String servicePrincipalId, ServicePrincipalsRemoveKeyRequestBody body);
+
+    /**
+     * Invoke action removeKey.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> removeKeyAsync(String servicePrincipalId, ServicePrincipalsRemoveKeyRequestBody body);
+
+    /**
+     * Invoke action removeKey.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void removeKey(String servicePrincipalId, ServicePrincipalsRemoveKeyRequestBody body);
+
+    /**
+     * Invoke action removeKey.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> removeKeyWithResponse(
+        String servicePrincipalId, ServicePrincipalsRemoveKeyRequestBody body, Context context);
+
+    /**
+     * Invoke action removePassword.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> removePasswordWithResponseAsync(
+        String servicePrincipalId, ServicePrincipalsRemovePasswordRequestBody body);
+
+    /**
+     * Invoke action removePassword.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> removePasswordAsync(String servicePrincipalId, ServicePrincipalsRemovePasswordRequestBody body);
+
+    /**
+     * Invoke action removePassword.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void removePassword(String servicePrincipalId, ServicePrincipalsRemovePasswordRequestBody body);
+
+    /**
+     * Invoke action removePassword.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> removePasswordWithResponse(
+        String servicePrincipalId, ServicePrincipalsRemovePasswordRequestBody body, Context context);
+
+    /**
+     * Invoke action restore.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an Azure Active Directory object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<MicrosoftGraphDirectoryObjectInner>> restoreWithResponseAsync(String servicePrincipalId);
+
+    /**
+     * Invoke action restore.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an Azure Active Directory object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<MicrosoftGraphDirectoryObjectInner> restoreAsync(String servicePrincipalId);
+
+    /**
+     * Invoke action restore.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an Azure Active Directory object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    MicrosoftGraphDirectoryObjectInner restore(String servicePrincipalId);
+
+    /**
+     * Invoke action restore.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an Azure Active Directory object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<MicrosoftGraphDirectoryObjectInner> restoreWithResponse(String servicePrincipalId, Context context);
+
+    /**
+     * Get oauth2PermissionGrants from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return oauth2PermissionGrants from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphOAuth2PermissionGrantInner> listOauth2PermissionGrantsAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get oauth2PermissionGrants from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return oauth2PermissionGrants from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphOAuth2PermissionGrantInner> listOauth2PermissionGrantsAsync(String servicePrincipalId);
+
+    /**
+     * Get oauth2PermissionGrants from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return oauth2PermissionGrants from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphOAuth2PermissionGrantInner> listOauth2PermissionGrants(String servicePrincipalId);
+
+    /**
+     * Get oauth2PermissionGrants from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return oauth2PermissionGrants from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphOAuth2PermissionGrantInner> listOauth2PermissionGrants(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Get ref of oauth2PermissionGrants from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of oauth2PermissionGrants from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefOauth2PermissionGrantsAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby);
+
+    /**
+     * Get ref of oauth2PermissionGrants from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of oauth2PermissionGrants from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefOauth2PermissionGrantsAsync(String servicePrincipalId);
+
+    /**
+     * Get ref of oauth2PermissionGrants from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of oauth2PermissionGrants from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefOauth2PermissionGrants(String servicePrincipalId);
+
+    /**
+     * Get ref of oauth2PermissionGrants from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of oauth2PermissionGrants from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefOauth2PermissionGrants(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        Context context);
+
+    /**
+     * Create new navigation property ref to oauth2PermissionGrants for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Map<String, Object>>> createRefOauth2PermissionGrantsWithResponseAsync(
+        String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to oauth2PermissionGrants for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Map<String, Object>> createRefOauth2PermissionGrantsAsync(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to oauth2PermissionGrants for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> createRefOauth2PermissionGrants(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to oauth2PermissionGrants for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, Object>> createRefOauth2PermissionGrantsWithResponse(
+        String servicePrincipalId, Map<String, Object> body, Context context);
+
+    /**
+     * Get ownedObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ownedObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDirectoryObjectInner> listOwnedObjectsAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get ownedObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ownedObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDirectoryObjectInner> listOwnedObjectsAsync(String servicePrincipalId);
+
+    /**
+     * Get ownedObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ownedObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDirectoryObjectInner> listOwnedObjects(String servicePrincipalId);
+
+    /**
+     * Get ownedObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ownedObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDirectoryObjectInner> listOwnedObjects(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Get ref of ownedObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of ownedObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefOwnedObjectsAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby);
+
+    /**
+     * Get ref of ownedObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of ownedObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefOwnedObjectsAsync(String servicePrincipalId);
+
+    /**
+     * Get ref of ownedObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of ownedObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefOwnedObjects(String servicePrincipalId);
+
+    /**
+     * Get ref of ownedObjects from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of ownedObjects from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefOwnedObjects(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        Context context);
+
+    /**
+     * Create new navigation property ref to ownedObjects for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Map<String, Object>>> createRefOwnedObjectsWithResponseAsync(
+        String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to ownedObjects for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Map<String, Object>> createRefOwnedObjectsAsync(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to ownedObjects for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> createRefOwnedObjects(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to ownedObjects for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, Object>> createRefOwnedObjectsWithResponse(
+        String servicePrincipalId, Map<String, Object> body, Context context);
+
+    /**
+     * Get owners from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return owners from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDirectoryObjectInner> listOwnersAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get owners from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return owners from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDirectoryObjectInner> listOwnersAsync(String servicePrincipalId);
+
+    /**
+     * Get owners from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return owners from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDirectoryObjectInner> listOwners(String servicePrincipalId);
+
+    /**
+     * Get owners from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return owners from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDirectoryObjectInner> listOwners(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Get ref of owners from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of owners from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefOwnersAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby);
+
+    /**
+     * Get ref of owners from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of owners from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefOwnersAsync(String servicePrincipalId);
+
+    /**
+     * Get ref of owners from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of owners from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefOwners(String servicePrincipalId);
+
+    /**
+     * Get ref of owners from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of owners from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefOwners(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        Context context);
+
+    /**
+     * Create new navigation property ref to owners for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Map<String, Object>>> createRefOwnersWithResponseAsync(
+        String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to owners for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Map<String, Object>> createRefOwnersAsync(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to owners for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> createRefOwners(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to owners for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, Object>> createRefOwnersWithResponse(
+        String servicePrincipalId, Map<String, Object> body, Context context);
+
+    /**
+     * Get tokenIssuancePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tokenIssuancePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePoliciesAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<ServicePrincipalsExpand> expand);
+
+    /**
+     * Get tokenIssuancePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tokenIssuancePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePoliciesAsync(String servicePrincipalId);
+
+    /**
+     * Get tokenIssuancePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tokenIssuancePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePolicies(String servicePrincipalId);
+
+    /**
+     * Get tokenIssuancePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tokenIssuancePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePolicies(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<ServicePrincipalsExpand> expand,
+        Context context);
+
+    /**
+     * Get ref of tokenIssuancePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of tokenIssuancePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefTokenIssuancePoliciesAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby);
+
+    /**
+     * Get ref of tokenIssuancePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of tokenIssuancePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefTokenIssuancePoliciesAsync(String servicePrincipalId);
+
+    /**
+     * Get ref of tokenIssuancePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of tokenIssuancePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefTokenIssuancePolicies(String servicePrincipalId);
+
+    /**
+     * Get ref of tokenIssuancePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of tokenIssuancePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefTokenIssuancePolicies(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        Context context);
+
+    /**
+     * Create new navigation property ref to tokenIssuancePolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Map<String, Object>>> createRefTokenIssuancePoliciesWithResponseAsync(
+        String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to tokenIssuancePolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Map<String, Object>> createRefTokenIssuancePoliciesAsync(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to tokenIssuancePolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> createRefTokenIssuancePolicies(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to tokenIssuancePolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, Object>> createRefTokenIssuancePoliciesWithResponse(
+        String servicePrincipalId, Map<String, Object> body, Context context);
+
+    /**
+     * Get tokenLifetimePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tokenLifetimePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePoliciesAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<ServicePrincipalsExpand> expand);
+
+    /**
+     * Get tokenLifetimePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tokenLifetimePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePoliciesAsync(String servicePrincipalId);
+
+    /**
+     * Get tokenLifetimePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tokenLifetimePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePolicies(String servicePrincipalId);
+
+    /**
+     * Get tokenLifetimePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tokenLifetimePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePolicies(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<ServicePrincipalsExpand> expand,
+        Context context);
+
+    /**
+     * Get ref of tokenLifetimePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of tokenLifetimePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefTokenLifetimePoliciesAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby);
+
+    /**
+     * Get ref of tokenLifetimePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of tokenLifetimePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefTokenLifetimePoliciesAsync(String servicePrincipalId);
+
+    /**
+     * Get ref of tokenLifetimePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of tokenLifetimePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefTokenLifetimePolicies(String servicePrincipalId);
+
+    /**
+     * Get ref of tokenLifetimePolicies from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of tokenLifetimePolicies from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefTokenLifetimePolicies(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        Context context);
+
+    /**
+     * Create new navigation property ref to tokenLifetimePolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Map<String, Object>>> createRefTokenLifetimePoliciesWithResponseAsync(
+        String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to tokenLifetimePolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Map<String, Object>> createRefTokenLifetimePoliciesAsync(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to tokenLifetimePolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> createRefTokenLifetimePolicies(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to tokenLifetimePolicies for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, Object>> createRefTokenLifetimePoliciesWithResponse(
+        String servicePrincipalId, Map<String, Object> body, Context context);
+
+    /**
+     * Get transitiveMemberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return transitiveMemberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDirectoryObjectInner> listTransitiveMemberOfAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand);
+
+    /**
+     * Get transitiveMemberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return transitiveMemberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<MicrosoftGraphDirectoryObjectInner> listTransitiveMemberOfAsync(String servicePrincipalId);
+
+    /**
+     * Get transitiveMemberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return transitiveMemberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDirectoryObjectInner> listTransitiveMemberOf(String servicePrincipalId);
+
+    /**
+     * Get transitiveMemberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param select Select properties to be returned.
+     * @param expand Expand related entities.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return transitiveMemberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<MicrosoftGraphDirectoryObjectInner> listTransitiveMemberOf(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        List<ServicePrincipalsSelect> select,
+        List<String> expand,
+        Context context);
+
+    /**
+     * Get ref of transitiveMemberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of transitiveMemberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefTransitiveMemberOfAsync(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby);
+
+    /**
+     * Get ref of transitiveMemberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of transitiveMemberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<String> listRefTransitiveMemberOfAsync(String servicePrincipalId);
+
+    /**
+     * Get ref of transitiveMemberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of transitiveMemberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefTransitiveMemberOf(String servicePrincipalId);
+
+    /**
+     * Get ref of transitiveMemberOf from servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param top Show only the first n items.
+     * @param skip Skip the first n items.
+     * @param search Search items by search phrases.
+     * @param filter Filter items by property values.
+     * @param count Include count of items.
+     * @param orderby Order items by property values.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return ref of transitiveMemberOf from servicePrincipals.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<String> listRefTransitiveMemberOf(
+        String servicePrincipalId,
+        Integer top,
+        Integer skip,
+        String search,
+        String filter,
+        Boolean count,
+        List<ServicePrincipalsOrderby> orderby,
+        Context context);
+
+    /**
+     * Create new navigation property ref to transitiveMemberOf for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Map<String, Object>>> createRefTransitiveMemberOfWithResponseAsync(
+        String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to transitiveMemberOf for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Map<String, Object>> createRefTransitiveMemberOfAsync(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to transitiveMemberOf for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Map<String, Object> createRefTransitiveMemberOf(String servicePrincipalId, Map<String, Object> body);
+
+    /**
+     * Create new navigation property ref to transitiveMemberOf for servicePrincipals.
+     *
+     * @param servicePrincipalId key: id of servicePrincipal.
+     * @param body New navigation property ref value.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return dictionary of &lt;any&gt;.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Map<String, Object>> createRefTransitiveMemberOfWithResponse(
+        String servicePrincipalId, Map<String, Object> body, Context context);
+
+    /**
+     * Invoke function delta.
+     *
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<List<MicrosoftGraphServicePrincipalInner>>> deltaWithResponseAsync();
+
+    /**
+     * Invoke function delta.
+     *
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<MicrosoftGraphServicePrincipalInner>> deltaAsync();
+
+    /**
+     * Invoke function delta.
+     *
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<MicrosoftGraphServicePrincipalInner> delta();
+
+    /**
+     * Invoke function delta.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<MicrosoftGraphServicePrincipalInner>> deltaWithResponse(Context context);
+
+    /**
+     * Invoke action getAvailableExtensionProperties.
+     *
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<List<MicrosoftGraphExtensionPropertyInner>>> getAvailableExtensionPropertiesWithResponseAsync(
+        ServicePrincipalsGetAvailableExtensionPropertiesRequestBody body);
+
+    /**
+     * Invoke action getAvailableExtensionProperties.
+     *
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<MicrosoftGraphExtensionPropertyInner>> getAvailableExtensionPropertiesAsync(
+        ServicePrincipalsGetAvailableExtensionPropertiesRequestBody body);
+
+    /**
+     * Invoke action getAvailableExtensionProperties.
+     *
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<MicrosoftGraphExtensionPropertyInner> getAvailableExtensionProperties(
+        ServicePrincipalsGetAvailableExtensionPropertiesRequestBody body);
+
+    /**
+     * Invoke action getAvailableExtensionProperties.
+     *
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<MicrosoftGraphExtensionPropertyInner>> getAvailableExtensionPropertiesWithResponse(
+        ServicePrincipalsGetAvailableExtensionPropertiesRequestBody body, Context context);
+
+    /**
+     * Invoke action getByIds.
+     *
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<List<MicrosoftGraphDirectoryObjectInner>>> getByIdsWithResponseAsync(
+        ServicePrincipalsGetByIdsRequestBody body);
+
+    /**
+     * Invoke action getByIds.
+     *
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<List<MicrosoftGraphDirectoryObjectInner>> getByIdsAsync(ServicePrincipalsGetByIdsRequestBody body);
+
+    /**
+     * Invoke action getByIds.
+     *
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<MicrosoftGraphDirectoryObjectInner> getByIds(ServicePrincipalsGetByIdsRequestBody body);
+
+    /**
+     * Invoke action getByIds.
+     *
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of microsoft.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<List<MicrosoftGraphDirectoryObjectInner>> getByIdsWithResponse(
+        ServicePrincipalsGetByIdsRequestBody body, Context context);
+
+    /**
+     * Invoke action validateProperties.
+     *
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Void>> validatePropertiesWithResponseAsync(ServicePrincipalsValidatePropertiesRequestBody body);
+
+    /**
+     * Invoke action validateProperties.
+     *
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> validatePropertiesAsync(ServicePrincipalsValidatePropertiesRequestBody body);
+
+    /**
+     * Invoke action validateProperties.
+     *
+     * @param body Action parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void validateProperties(ServicePrincipalsValidatePropertiesRequestBody body);
+
+    /**
+     * Invoke action validateProperties.
+     *
+     * @param body Action parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> validatePropertiesWithResponse(ServicePrincipalsValidatePropertiesRequestBody body, Context context);
 }

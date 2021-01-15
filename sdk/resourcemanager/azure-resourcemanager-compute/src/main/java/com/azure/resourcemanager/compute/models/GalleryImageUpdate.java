@@ -10,8 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
-/** The GalleryImageUpdate model. */
+/** Specifies information about the gallery Image Definition that you want to update. */
 @JsonFlatten
 @Fluent
 public class GalleryImageUpdate extends UpdateResourceDefinition {
@@ -364,6 +365,13 @@ public class GalleryImageUpdate extends UpdateResourceDefinition {
      */
     public GalleryImagePropertiesProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryImageUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

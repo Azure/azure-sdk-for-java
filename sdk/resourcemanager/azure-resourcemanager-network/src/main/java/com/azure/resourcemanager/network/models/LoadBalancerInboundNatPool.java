@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** A client-side representation of an inbound NAT pool. */
@@ -14,7 +14,7 @@ public interface LoadBalancerInboundNatPool
     extends HasFrontend,
         HasBackendPort,
         HasProtocol<TransportProtocol>,
-        HasInner<InboundNatPool>,
+        HasInnerModel<InboundNatPool>,
         ChildResource<LoadBalancer> {
 
     /** @return the starting frontend port number */

@@ -11,6 +11,7 @@ package com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementat
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ErrorException;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.PrivateEndpointConnectionProperties;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -56,6 +57,10 @@ public class PrivateEndpointConnectionsInner {
      * used by Retrofit to perform actually REST calls.
      */
     interface PrivateEndpointConnectionsService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cognitiveservices.v2017_04_18.PrivateEndpointConnections list" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections")
+        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.cognitiveservices.v2017_04_18.PrivateEndpointConnections get" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Path("privateEndpointConnectionName") String privateEndpointConnectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -68,6 +73,92 @@ public class PrivateEndpointConnectionsInner {
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/privateEndpointConnections/{privateEndpointConnectionName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Path("privateEndpointConnectionName") String privateEndpointConnectionName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+    }
+
+    /**
+     * Gets the private endpoint connections associated with the Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PrivateEndpointConnectionListResultInner object if successful.
+     */
+    public PrivateEndpointConnectionListResultInner list(String resourceGroupName, String accountName) {
+        return listWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the private endpoint connections associated with the Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PrivateEndpointConnectionListResultInner> listAsync(String resourceGroupName, String accountName, final ServiceCallback<PrivateEndpointConnectionListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * Gets the private endpoint connections associated with the Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateEndpointConnectionListResultInner object
+     */
+    public Observable<PrivateEndpointConnectionListResultInner> listAsync(String resourceGroupName, String accountName) {
+        return listWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<PrivateEndpointConnectionListResultInner>, PrivateEndpointConnectionListResultInner>() {
+            @Override
+            public PrivateEndpointConnectionListResultInner call(ServiceResponse<PrivateEndpointConnectionListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the private endpoint connections associated with the Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PrivateEndpointConnectionListResultInner object
+     */
+    public Observable<ServiceResponse<PrivateEndpointConnectionListResultInner>> listWithServiceResponseAsync(String resourceGroupName, String accountName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.list(resourceGroupName, accountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PrivateEndpointConnectionListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PrivateEndpointConnectionListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PrivateEndpointConnectionListResultInner> clientResponse = listDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PrivateEndpointConnectionListResultInner> listDelegate(Response<ResponseBody> response) throws ErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PrivateEndpointConnectionListResultInner, ErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PrivateEndpointConnectionListResultInner>() { }.getType())
+                .registerError(ErrorException.class)
+                .build(response);
     }
 
     /**

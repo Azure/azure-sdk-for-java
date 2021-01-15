@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureFirewallRCAction model. */
+/** Properties of the AzureFirewallRCAction. */
 @Fluent
 public final class AzureFirewallRCAction {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallRCAction.class);

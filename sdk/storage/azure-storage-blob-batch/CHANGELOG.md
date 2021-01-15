@@ -1,7 +1,17 @@
 # Release History
 
-## 12.7.0-beta.1 (Unreleased)
+## 12.8.0 (2021-01-14)
+- GA release
 
+## 12.8.0-beta.1 (2020-12-07)
+- Reuse the Http client configured in the provided HttpPipeline during BlobBatch construction.
+
+## 12.7.0 (2020-11-11)
+- GA release
+
+## 12.7.0-beta.1 (2020-10-01)
+- Added logging of batch operation exceptions when they are added into the aggregate batch response.
+- Removed logging of batch operation exceptions when access operation that has failed.
 
 ## 12.6.0 (2020-08-13)
 - Added support to set tier on a snapshot or version.

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PrivateLinkResourceProperties model. */
+/** Properties of a private link resource. */
 @Immutable
 public final class PrivateLinkResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);

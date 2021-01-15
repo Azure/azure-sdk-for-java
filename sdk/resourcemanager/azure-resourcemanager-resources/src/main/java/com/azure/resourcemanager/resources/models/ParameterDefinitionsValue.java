@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ParameterDefinitionsValue model. */
+/** The definition of a parameter that can be provided to the policy. */
 @Fluent
 public final class ParameterDefinitionsValue {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ParameterDefinitionsValue.class);

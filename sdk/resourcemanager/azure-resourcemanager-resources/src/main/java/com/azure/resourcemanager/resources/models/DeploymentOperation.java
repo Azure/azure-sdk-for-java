@@ -4,10 +4,10 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.resources.fluent.inner.DeploymentOperationInner;
+import com.azure.resourcemanager.resources.fluent.models.DeploymentOperationInner;
 
 import java.time.OffsetDateTime;
 
@@ -18,7 +18,7 @@ import java.time.OffsetDateTime;
 public interface DeploymentOperation extends
         Indexable,
         Refreshable<DeploymentOperation>,
-        HasInner<DeploymentOperationInner> {
+        HasInnerModel<DeploymentOperationInner> {
 
     /**
      * @return the deployment operation id

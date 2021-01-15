@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ContainerPartitionKey model. */
+/** The configuration of the partition key to be used for partitioning data into multiple partitions. */
 @Fluent
 public final class ContainerPartitionKey {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerPartitionKey.class);

@@ -4,8 +4,8 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormPage;
-import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
+import com.azure.ai.formrecognizer.models.FormTable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
@@ -25,14 +25,13 @@ public class RecognizeContentFromUrlAsync {
      */
     public static void main(final String[] args)  {
         // Instantiate a client that will be used to call the service.
-
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         PollerFlux<FormRecognizerOperationResult, List<FormPage>> recognizeContentPoller =
-            client.beginRecognizeContentFromUrl("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/forms/layout1.jpg");
+            client.beginRecognizeContentFromUrl("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/forms/Form_1.jpg");
 
         Mono<List<FormPage>> contentPageResults = recognizeContentPoller
             .last()
@@ -59,15 +58,9 @@ public class RecognizeContentFromUrlAsync {
                     final FormTable formTable = tables.get(i1);
                     System.out.printf("Table %d has %d rows and %d columns.%n", i1, formTable.getRowCount(),
                         formTable.getColumnCount());
-                    formTable.getCells().forEach(formTableCell -> {
-                        final StringBuilder boundingBoxStr = new StringBuilder();
-                        if (formTableCell.getBoundingBox() != null) {
-                            formTableCell.getBoundingBox().getPoints().forEach(point ->
-                                boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
-                        }
+                    formTable.getCells().forEach(formTableCell ->
                         System.out.printf("Cell has text '%s', within bounding box %s.%n", formTableCell.getText(),
-                            boundingBoxStr);
-                    });
+                            formTableCell.getBoundingBox().toString()));
                     System.out.println();
                 }
             }

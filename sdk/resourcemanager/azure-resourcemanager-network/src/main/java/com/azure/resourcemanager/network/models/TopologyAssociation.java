@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TopologyAssociation model. */
+/** Resources that have an association with the parent resource. */
 @Fluent
 public final class TopologyAssociation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyAssociation.class);

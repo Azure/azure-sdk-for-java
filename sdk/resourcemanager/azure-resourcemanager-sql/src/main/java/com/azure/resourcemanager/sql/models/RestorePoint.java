@@ -7,13 +7,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.sql.fluent.inner.RestorePointInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
+import com.azure.resourcemanager.sql.fluent.models.RestorePointInner;
 import java.time.OffsetDateTime;
 
 /** An immutable client-side representation of an Azure SQL database's Restore Point. */
 @Fluent
-public interface RestorePoint extends HasInner<RestorePointInner>, HasResourceGroup, HasName, HasId {
+public interface RestorePoint extends HasInnerModel<RestorePointInner>, HasResourceGroup, HasName, HasId {
     /** @return name of the SQL Server to which this replication belongs */
     String sqlServerName();
 

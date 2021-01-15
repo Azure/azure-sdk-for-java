@@ -5,7 +5,6 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
@@ -13,7 +12,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point to network peering management API. */
@@ -25,8 +23,7 @@ public interface NetworkPeerings
         SupportsBatchCreation<NetworkPeering>,
         SupportsDeletingByParent,
         SupportsListing<NetworkPeering>,
-        HasManager<NetworkManager>,
-        HasInner<VirtualNetworkPeeringsClient> {
+        HasManager<NetworkManager> {
 
     /**
      * Finds the peering, if any, that is associated with the specified network.

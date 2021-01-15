@@ -19,12 +19,12 @@ import com.azure.resourcemanager.network.models.PrivateLinkServiceConnection;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.network.models.ServiceEndpointType;
 import com.azure.resourcemanager.network.NetworkManager;
-import com.azure.resourcemanager.network.fluent.inner.PrivateEndpointInner;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.network.fluent.models.PrivateEndpointInner;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
@@ -62,11 +62,11 @@ public class CosmosDBTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         rgName = generateRandomResourceName("rgcosmosdb", 20);
-        resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        cosmosManager = CosmosManager.authenticate(httpPipeline, profile);
-        networkManager = NetworkManager.authenticate(httpPipeline, profile);
+        cosmosManager = buildManager(CosmosManager.class, httpPipeline, profile);
+        networkManager = buildManager(NetworkManager.class, httpPipeline, profile);
+        resourceManager = cosmosManager.resourceManager();
     }
 
     @Override
@@ -88,7 +88,6 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
                 .withReadReplication(Region.US_CENTRAL)
-                .withIpRangeFilter("")
                 .withMultipleWriteLocationsEnabled(true)
                 .withTag("tag1", "value1")
                 .create();
@@ -125,8 +124,8 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .attach()
                 .create();
 
-        network.subnets().get(subnetName).inner().withPrivateEndpointNetworkPolicies("Disabled");
-        network.subnets().get(subnetName).inner().withPrivateLinkServiceNetworkPolicies("Disabled");
+        network.subnets().get(subnetName).innerModel().withPrivateEndpointNetworkPolicies("Disabled");
+        network.subnets().get(subnetName).innerModel().withPrivateLinkServiceNetworkPolicies("Disabled");
 
         network.update().updateSubnet(subnetName).parent().apply();
 
@@ -154,10 +153,10 @@ public class CosmosDBTests extends ResourceManagerTestBase {
         PrivateEndpointInner privateEndpoint =
             new PrivateEndpointInner()
                 .withPrivateLinkServiceConnections(Arrays.asList(privateLinkServiceConnection))
-                .withSubnet(network.subnets().get(subnetName).inner());
+                .withSubnet(network.subnets().get(subnetName).innerModel());
 
         privateEndpoint.withLocation(region.toString());
-        privateEndpoint = networkManager.inner().getPrivateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
+        privateEndpoint = networkManager.serviceClient().getPrivateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
 
         cosmosDBAccount
             .update()
@@ -202,7 +201,6 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
                 .withReadReplication(Region.US_CENTRAL)
-                .withIpRangeFilter("")
                 .withTag("tag1", "value1")
                 .create();
 
@@ -227,7 +225,6 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
                 .withReadReplication(Region.US_WEST)
-                .withIpRangeFilter("")
                 .withTag("tag1", "value1")
                 .create();
 
@@ -279,7 +276,6 @@ public class CosmosDBTests extends ResourceManagerTestBase {
                 .withEventualConsistency()
                 .withWriteReplication(Region.US_EAST)
                 .withReadReplication(Region.US_EAST2)
-                .withIpRangeFilter("")
                 .withTag("tag1", "value1")
                 .create();
 

@@ -4,7 +4,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
-import com.azure.resourcemanager.compute.fluent.inner.RunCommandResultInner;
+import com.azure.resourcemanager.compute.fluent.models.RunCommandResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import java.util.List;
 
@@ -21,6 +21,6 @@ class RunCommandResultImpl extends WrapperImpl<RunCommandResultInner> implements
      */
     @Override
     public List<InstanceViewStatus> value() {
-        return inner().value();
+        return innerModel().value();
     }
 }

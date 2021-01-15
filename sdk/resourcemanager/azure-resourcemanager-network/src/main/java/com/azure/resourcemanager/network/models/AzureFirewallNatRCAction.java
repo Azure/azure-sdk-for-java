@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureFirewallNatRCAction model. */
+/** AzureFirewall NAT Rule Collection Action. */
 @Fluent
 public final class AzureFirewallNatRCAction {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallNatRCAction.class);

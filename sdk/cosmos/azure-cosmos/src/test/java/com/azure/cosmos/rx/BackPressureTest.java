@@ -8,16 +8,16 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
 import com.azure.cosmos.implementation.TestUtils;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -59,7 +59,9 @@ public class BackPressureTest extends TestSuiteBase {
         return collectionDefinition;
     }
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    // RxDocumentClientUnderTest spy used in this test only has support for GW request capturing
+    // So only running the test against GW is relevant
+    @Factory(dataProvider = "simpleClientBuilderGatewaySession")
     public BackPressureTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

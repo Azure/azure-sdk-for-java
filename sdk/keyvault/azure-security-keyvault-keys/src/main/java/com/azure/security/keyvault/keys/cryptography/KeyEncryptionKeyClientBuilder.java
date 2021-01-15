@@ -13,9 +13,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -222,6 +224,21 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     public KeyEncryptionKeyClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         Objects.requireNonNull(retryPolicy, "The retry policy cannot be bull");
         builder.retryPolicy(retryPolicy);
+        return this;
+    }
+
+    /**
+     * Sets the {@link ClientOptions} which enables various options to be set on the client. For example setting an
+     * {@code applicationId} using {@link ClientOptions#setApplicationId(String)} to configure
+     * the {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     *
+     * <p>More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+     *
+     * @param clientOptions the {@link ClientOptions} to be set on the client.
+     * @return The updated KeyEncryptionKeyClientBuilder object.
+     */
+    public KeyEncryptionKeyClientBuilder clientOptions(ClientOptions clientOptions) {
+        builder.clientOptions(clientOptions);
         return this;
     }
 }

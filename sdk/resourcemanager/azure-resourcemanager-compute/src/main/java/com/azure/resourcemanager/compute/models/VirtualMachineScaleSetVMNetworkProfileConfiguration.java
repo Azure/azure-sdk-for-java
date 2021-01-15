@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetVMNetworkProfileConfiguration model. */
+/** Describes a virtual machine scale set VM network profile. */
 @Fluent
 public final class VirtualMachineScaleSetVMNetworkProfileConfiguration {
     @JsonIgnore

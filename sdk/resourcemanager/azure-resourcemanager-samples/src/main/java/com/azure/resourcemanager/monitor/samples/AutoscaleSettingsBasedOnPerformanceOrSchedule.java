@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.monitor.models.AutoscaleSetting;
@@ -17,15 +17,15 @@ import com.azure.resourcemanager.monitor.models.MetricStatisticType;
 import com.azure.resourcemanager.monitor.models.ScaleDirection;
 import com.azure.resourcemanager.monitor.models.ScaleType;
 import com.azure.resourcemanager.monitor.models.TimeAggregationType;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 
 import java.time.Duration;
 
 /**
- * This sample shows how to programmatically implement scenario described <a href="https://docs.microsoft.com/en-us/azure/monitoring-and-diagnostics/monitor-tutorial-autoscale-performance-schedule">here</a>.
+ * This sample shows how to programmatically implement scenario described <a href="https://docs.microsoft.com/azure/monitoring-and-diagnostics/monitor-tutorial-autoscale-performance-schedule">here</a>.
  *  - Create a Web App and App Service Plan
  *  - Configure autoscale rules for scale-in and scale out based on the number of requests a Web App receives
  *  - Trigger a scale-out action and watch the number of instances increase
@@ -36,20 +36,20 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String webappName = azure.sdkContext().randomResourceName("MyTestScaleWebApp", 20);
-        final String autoscaleSettingsName = azure.sdkContext().randomResourceName("autoscalename1", 20);
-        final String rgName = azure.sdkContext().randomResourceName("myResourceGroup", 20);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String webappName = Utils.randomResourceName(azureResourceManager, "MyTestScaleWebApp", 20);
+        final String autoscaleSettingsName = Utils.randomResourceName(azureResourceManager, "autoscalename1", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "myResourceGroup", 20);
 
         try {
             // ============================================================
             // Create a Web App and App Service Plan
             System.out.println("Creating a web app and service plan");
 
-            WebApp webapp = azure.webApps().define(webappName)
+            WebApp webapp = azureResourceManager.webApps().define(webappName)
                     .withRegion(Region.US_SOUTH_CENTRAL)
                     .withNewResourceGroup(rgName)
                     .withNewWindowsPlan(PricingTier.PREMIUM_P1)
@@ -60,7 +60,7 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
 
             // ============================================================
             // Configure autoscale rules for scale-in and scale out based on the number of requests a Web App receives
-            AutoscaleSetting scaleSettings = azure.autoscaleSettings().define(autoscaleSettingsName)
+            AutoscaleSetting scaleSettings = azureResourceManager.autoscaleSettings().define(autoscaleSettingsName)
                     .withRegion(Region.US_SOUTH_CENTRAL)
                     .withExistingResourceGroup(rgName)
                     .withTargetResource(webapp.appServicePlanId())
@@ -103,8 +103,8 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
 
             // Trigger scale-out action
             for (int i = 0; i < 11; i++) {
-                SdkContext.sleep(5000);
-                Utils.curl(deployedWebAppUrl);
+                ResourceManagerUtils.sleep(Duration.ofSeconds(5));
+                Utils.sendGetRequest(deployedWebAppUrl);
             }
 
             // Now you can browse the history of autoscale form the azure portal
@@ -118,9 +118,9 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
 
             return true;
         } finally {
-            if (azure.resourceGroups().getByName(rgName) != null) {
+            if (azureResourceManager.resourceGroups().getByName(rgName) != null) {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } else {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -137,18 +137,19 @@ public final class AutoscaleSettingsBasedOnPerformanceOrSchedule {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

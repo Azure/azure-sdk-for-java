@@ -4,14 +4,14 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.io.File;
 import java.io.IOException;
 
 /** A client-side representation of point-to-site configuration for a virtual network gateway. */
 @Fluent
-public interface PointToSiteConfiguration extends HasInner<VpnClientConfiguration> {
+public interface PointToSiteConfiguration extends HasInnerModel<VpnClientConfiguration> {
     /** Grouping of point-to-site configuration definition stages. */
     interface DefinitionStages {
         /**
@@ -137,9 +137,7 @@ public interface PointToSiteConfiguration extends HasInner<VpnClientConfiguratio
 
     /** Grouping of point-to-site configuration update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the point-to-site configuration definition allowing to specify address pool.
-         */
+        /** The stage of the point-to-site configuration definition allowing to specify address pool. */
         interface WithAddressPool {
             /**
              * Specifies address pool.
@@ -206,9 +204,7 @@ public interface PointToSiteConfiguration extends HasInner<VpnClientConfiguratio
             Update withRevokedCertificate(String name, String thumbprint);
         }
 
-        /**
-         * The stage of a point-to-site configuration definition allowing to specify which tunnel type will be used.
-         */
+        /** The stage of a point-to-site configuration definition allowing to specify which tunnel type will be used. */
         interface WithTunnelType {
             /**
              * Specifies that only SSTP tunnel type will be used.

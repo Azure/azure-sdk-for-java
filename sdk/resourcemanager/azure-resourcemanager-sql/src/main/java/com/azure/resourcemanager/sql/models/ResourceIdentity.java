@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
-/** The ResourceIdentity model. */
+/** Azure Active Directory identity configuration for a resource. */
 @Fluent
 public class ResourceIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);

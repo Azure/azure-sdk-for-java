@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExpressRouteConnectionId model. */
+/** The ID of the ExpressRouteConnection. */
 @Immutable
 public final class ExpressRouteConnectionId {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionId.class);

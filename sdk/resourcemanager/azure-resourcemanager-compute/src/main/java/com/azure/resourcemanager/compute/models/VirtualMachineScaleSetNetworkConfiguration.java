@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetNetworkConfiguration model. */
+/** Describes a virtual machine scale set network profile's network configurations. */
 @JsonFlatten
 @Fluent
 public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
@@ -206,6 +206,13 @@ public class VirtualMachineScaleSetNetworkConfiguration extends SubResource {
      */
     public VirtualMachineScaleSetNetworkConfiguration withEnableIpForwarding(Boolean enableIpForwarding) {
         this.enableIpForwarding = enableIpForwarding;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetNetworkConfiguration withId(String id) {
+        super.withId(id);
         return this;
     }
 

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Experiments model. */
+/** Routing rules in production experiments. */
 @Fluent
 public final class Experiments {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Experiments.class);

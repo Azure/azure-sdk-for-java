@@ -9,15 +9,17 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolMode;
 import com.azure.resourcemanager.containerservice.models.AgentPoolType;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceVMSizeTypes;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
+import com.azure.core.management.Region;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Properties;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class KubernetesClustersTests extends ContainerServiceManagementTest {
     private static final String SSH_KEY =
@@ -30,12 +32,14 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
         String agentPoolName = generateRandomResourceName("ap0", 10);
+        String agentPoolName1 = generateRandomResourceName("ap1", 10);
+        String agentPoolName2 = generateRandomResourceName("ap2", 10);
         String servicePrincipalClientId = "spId";
         String servicePrincipalSecret = "spSecret";
 
         // aks can use another azure auth rather than original client auth to access azure service.
         // Thus, set it to AZURE_AUTH_LOCATION_2 when you want.
-        String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION_2");
+        String envSecondaryServicePrincipal = System.getenv("AZURE_AUTH_LOCATION");
         if (envSecondaryServicePrincipal == null
             || envSecondaryServicePrincipal.isEmpty()
             || !(new File(envSecondaryServicePrincipal).exists())) {
@@ -55,17 +59,21 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .define(aksName)
                 .withRegion(Region.US_CENTRAL)
                 .withExistingResourceGroup(rgName)
-                .withLatestVersion()
+                .withDefaultVersion()
                 .withRootUsername("testaks")
                 .withSshKey(SSH_KEY)
                 .withServicePrincipalClientId(servicePrincipalClientId)
                 .withServicePrincipalSecret(servicePrincipalSecret)
                 .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .attach()
+                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+                    .withAgentPoolVirtualMachineCount(1)
+                    .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+                    .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                    .attach()
+                .defineAgentPool(agentPoolName1)
+                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+                    .withAgentPoolVirtualMachineCount(1)
+                    .attach()
                 .withDnsPrefix("mp1" + dnsPrefix)
                 .withTag("tag1", "value1")
                 .create();
@@ -73,31 +81,53 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertNotNull(kubernetesCluster.id());
         Assertions.assertEquals(Region.US_CENTRAL, kubernetesCluster.region());
         Assertions.assertEquals("testaks", kubernetesCluster.linuxRootUsername());
-        Assertions.assertEquals(1, kubernetesCluster.agentPools().size());
-        Assertions.assertNotNull(kubernetesCluster.agentPools().get(agentPoolName));
-        Assertions.assertEquals(1, kubernetesCluster.agentPools().get(agentPoolName).count());
-        Assertions
-            .assertEquals(
-                ContainerServiceVMSizeTypes.STANDARD_D2_V2, kubernetesCluster.agentPools().get(agentPoolName).vmSize());
-        Assertions
-            .assertEquals(
-                AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS, kubernetesCluster.agentPools().get(agentPoolName).type());
+        Assertions.assertEquals(2, kubernetesCluster.agentPools().size());
+
+        KubernetesClusterAgentPool agentPool = kubernetesCluster.agentPools().get(agentPoolName);
+        Assertions.assertNotNull(agentPool);
+        Assertions.assertEquals(1, agentPool.count());
+        Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_D2_V2, agentPool.vmSize());
+        Assertions.assertEquals(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS, agentPool.type());
+        Assertions.assertEquals(AgentPoolMode.SYSTEM, agentPool.mode());
+
+        agentPool = kubernetesCluster.agentPools().get(agentPoolName1);
+        Assertions.assertNotNull(agentPool);
+        Assertions.assertEquals(1, agentPool.count());
+        Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_A2_V2, agentPool.vmSize());
+        Assertions.assertEquals(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS, agentPool.type());
+
         Assertions.assertNotNull(kubernetesCluster.tags().get("tag1"));
 
         // update
         kubernetesCluster =
             kubernetesCluster
                 .update()
-                .withAgentPoolVirtualMachineCount(agentPoolName, 5)
+                .updateAgentPool(agentPoolName1)
+                    .withAgentPoolMode(AgentPoolMode.SYSTEM)
+                    .withAgentPoolVirtualMachineCount(5)
+                    .parent()
+                .defineAgentPool(agentPoolName2)
+                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+                    .withAgentPoolVirtualMachineCount(1)
+                    .attach()
                 .withTag("tag2", "value2")
                 .withTag("tag3", "value3")
                 .withoutTag("tag1")
                 .apply();
 
-        Assertions.assertEquals(1, kubernetesCluster.agentPools().size());
-        Assertions.assertEquals(5, kubernetesCluster.agentPools().get(agentPoolName).count());
-        Assertions.assertNotNull(kubernetesCluster.tags().get("tag2"));
-        Assertions.assertTrue(!kubernetesCluster.tags().containsKey("tag1"));
+        Assertions.assertEquals(3, kubernetesCluster.agentPools().size());
+
+        agentPool = kubernetesCluster.agentPools().get(agentPoolName1);
+        Assertions.assertEquals(5, agentPool.count());
+        Assertions.assertEquals(AgentPoolMode.SYSTEM, agentPool.mode());
+
+        agentPool = kubernetesCluster.agentPools().get(agentPoolName2);
+        Assertions.assertNotNull(agentPool);
+        Assertions.assertEquals(ContainerServiceVMSizeTypes.STANDARD_A2_V2, agentPool.vmSize());
+        Assertions.assertEquals(1, agentPool.count());
+
+        Assertions.assertEquals("value2", kubernetesCluster.tags().get("tag2"));
+        Assertions.assertFalse(kubernetesCluster.tags().containsKey("tag1"));
     }
 
     /**

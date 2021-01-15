@@ -22,6 +22,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.tracing.TracerProxy;
+import com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -144,6 +146,9 @@ public final class EventGridPublisherClientBuilder {
 
         HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
 
+        if (TracerProxy.isTracingEnabled()) {
+            httpPipelinePolicies.add(new CloudEventTracingPipelinePolicy());
+        }
         httpPipelinePolicies.add(new HttpLoggingPolicy(httpLogOptions));
 
         HttpPipeline buildPipeline = new HttpPipelineBuilder()

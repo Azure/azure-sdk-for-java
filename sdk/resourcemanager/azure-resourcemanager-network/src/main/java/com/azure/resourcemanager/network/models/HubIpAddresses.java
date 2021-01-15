@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HubIpAddresses model. */
+/** IP addresses associated with azure firewall. */
 @Fluent
 public final class HubIpAddresses {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HubIpAddresses.class);

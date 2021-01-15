@@ -26,67 +26,58 @@ public class SqlSampleTests extends SamplesTestBase {
 
     @Test
     public void testManageSqlDatabase() {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
-        Assertions.assertTrue(ManageSqlDatabase.runSample(azure));
+        Assertions.assertTrue(ManageSqlDatabase.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageSqlDatabaseInElasticPool() {
-        Assertions.assertTrue(ManageSqlDatabaseInElasticPool.runSample(azure));
+        Assertions.assertTrue(ManageSqlDatabaseInElasticPool.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageSqlDatabasesAcrossDifferentDataCenters() {
-        Assertions.assertTrue(ManageSqlDatabasesAcrossDifferentDataCenters.runSample(azure));
+        Assertions.assertTrue(ManageSqlDatabasesAcrossDifferentDataCenters.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageSqlFirewallRules() {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
-        Assertions.assertTrue(ManageSqlFirewallRules.runSample(azure));
+        Assertions.assertTrue(ManageSqlFirewallRules.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageSqlServerSecurityAlertPolicy() {
-        Assertions.assertTrue(ManageSqlServerSecurityAlertPolicy.runSample(azure));
+        Assertions.assertTrue(ManageSqlServerSecurityAlertPolicy.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageSqlVirtualNetworkRules() {
-        Assertions.assertTrue(ManageSqlVirtualNetworkRules.runSample(azure));
+        Assertions.assertTrue(ManageSqlVirtualNetworkRules.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageSqlImportExportDatabase() {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(ManageSqlImportExportDatabase.runSample(azure));
+            Assertions.assertTrue(ManageSqlImportExportDatabase.runSample(azureResourceManager));
         }
     }
 
     @Test
     public void testManageSqlWithRecoveredOrRestoredDatabase() {
-        if (isPlaybackMode()) {
-            return; // TODO: fix playback random fail
-        }
         // This test can take significant time to run since it depends on the availability of certain resources on the service side.
-        Assertions.assertTrue(ManageSqlWithRecoveredOrRestoredDatabase.runSample(azure));
+        Assertions.assertTrue(ManageSqlWithRecoveredOrRestoredDatabase.runSample(azureResourceManager));
     }
 
     @Test
     public void testManageSqlFailoverGroups() {
-        Assertions.assertTrue(ManageSqlFailoverGroups.runSample(azure));
+        Assertions.assertTrue(ManageSqlFailoverGroups.runSample(azureResourceManager));
     }
 
     @Test
     public void testGettingSqlServerMetrics() throws SQLException, ClassNotFoundException {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(GettingSqlServerMetrics.runSample(azure));
+            Assertions.assertTrue(GettingSqlServerMetrics.runSample(azureResourceManager));
         }
     }
 
@@ -94,7 +85,7 @@ public class SqlSampleTests extends SamplesTestBase {
     public void testManageSqlServerDnsAliases() throws SQLException, ClassNotFoundException {
         // Skip test in "playback" mode due to HTTP calls made outside of the management plane which can not be recorded at this time
         if (!isPlaybackMode()) {
-            Assertions.assertTrue(ManageSqlServerDnsAliases.runSample(azure));
+            Assertions.assertTrue(ManageSqlServerDnsAliases.runSample(azureResourceManager));
         }
     }
 
@@ -122,7 +113,7 @@ public class SqlSampleTests extends SamplesTestBase {
                 }
             }
 
-            Assertions.assertTrue(ManageSqlServerKeysWithAzureKeyVaultKey.runSample(azure, servicePrincipalClientId));
+            Assertions.assertTrue(ManageSqlServerKeysWithAzureKeyVaultKey.runSample(azureResourceManager, servicePrincipalClientId));
         }
     }
 }

@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.ConsistencyLevel;
+
 import java.util.Map;
 
 /**
@@ -10,6 +12,7 @@ import java.util.Map;
  * in the Azure Cosmos DB database service.
  */
 public class CosmosQueryRequestOptions {
+    private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private String partitionKeyRangeId;
     private Boolean scanInQueryEnabled;
@@ -37,6 +40,7 @@ public class CosmosQueryRequestOptions {
      * @param options the options
      */
     CosmosQueryRequestOptions(CosmosQueryRequestOptions options) {
+        this.consistencyLevel = options.consistencyLevel;
         this.sessionToken = options.sessionToken;
         this.partitionKeyRangeId = options.partitionKeyRangeId;
         this.scanInQueryEnabled = options.scanInQueryEnabled;
@@ -68,6 +72,31 @@ public class CosmosQueryRequestOptions {
      */
     CosmosQueryRequestOptions setPartitionKeyRangeIdInternal(String partitionKeyRangeId) {
         this.partitionKeyRangeId = partitionKeyRangeId;
+        return this;
+    }
+
+    /**
+     * Gets the consistency level required for the request.
+     *
+     * @return the consistency level.
+     */
+
+    public ConsistencyLevel getConsistencyLevel() {
+        return consistencyLevel;
+    }
+
+    /**
+     * Sets the consistency level required for the request. The effective consistency level
+     * can only be reduce for read/query requests. So when the Account's default consistency level
+     * is for example Session you can specify on a request-by-request level for individual requests
+     * that Eventual consistency is sufficient - which could reduce the latency and RU charges for this
+     * request but will not guarantee session consistency (read-your-own-write) anymore
+     *
+     * @param consistencyLevel the consistency level.
+     * @return the CosmosItemRequestOptions.
+     */
+    public CosmosQueryRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+        this.consistencyLevel = consistencyLevel;
         return this;
     }
 

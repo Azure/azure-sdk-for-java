@@ -12,18 +12,20 @@ import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
 import com.azure.resourcemanager.compute.models.DiskSku;
 import com.azure.resourcemanager.compute.models.DiskSkuTypes;
+import com.azure.resourcemanager.compute.models.DiskStorageAccountTypes;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.Snapshot;
-import com.azure.resourcemanager.compute.fluent.inner.DiskInner;
+import com.azure.resourcemanager.compute.fluent.models.DiskInner;
+import com.azure.resourcemanager.compute.models.SnapshotSkuType;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,12 +47,12 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     public DiskSkuTypes sku() {
-        return DiskSkuTypes.fromDiskSku(this.inner().sku());
+        return DiskSkuTypes.fromDiskSku(this.innerModel().sku());
     }
 
     @Override
     public DiskCreateOption creationMethod() {
-        return this.inner().creationData().createOption();
+        return this.innerModel().creationData().createOption();
     }
 
     @Override
@@ -60,34 +62,34 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     public String virtualMachineId() {
-        return this.inner().managedBy();
+        return this.innerModel().managedBy();
     }
 
     @Override
     public int sizeInGB() {
-        return Utils.toPrimitiveInt(this.inner().diskSizeGB());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().diskSizeGB());
     }
 
     @Override
     public long sizeInByte() {
-        return this.inner().diskSizeBytes();
+        return this.innerModel().diskSizeBytes();
     }
 
     @Override
     public OperatingSystemTypes osType() {
-        return this.inner().osType();
+        return this.innerModel().osType();
     }
 
     @Override
     public CreationSource source() {
-        return new CreationSource(this.inner().creationData());
+        return new CreationSource(this.innerModel().creationData());
     }
 
     @Override
     public Set<AvailabilityZoneId> availabilityZones() {
         Set<AvailabilityZoneId> zones = new HashSet<>();
-        if (this.inner().zones() != null) {
-            for (String zone : this.inner().zones()) {
+        if (this.innerModel().zones() != null) {
+            for (String zone : this.innerModel().zones()) {
                 zones.add(AvailabilityZoneId.fromString(zone));
             }
         }
@@ -96,7 +98,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     public EncryptionSettingsCollection encryptionSettings() {
-        return this.inner().encryptionSettingsCollection();
+        return this.innerModel().encryptionSettingsCollection();
     }
 
     @Override
@@ -111,7 +113,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDisks()
             .grantAccessAsync(this.resourceGroupName(), this.name(), grantAccessDataInner)
             .map(accessUriInner -> accessUriInner.accessSas());
@@ -124,13 +126,13 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     public Mono<Void> revokeAccessAsync() {
-        return this.manager().inner().getDisks().revokeAccessAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getDisks().revokeAccessAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public DiskImpl withLinuxFromVhd(String vhdUrl) {
         this
-            .inner()
+            .innerModel()
             .withOsType(OperatingSystemTypes.LINUX)
             .withCreationData(new CreationData())
             .creationData()
@@ -142,7 +144,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public DiskImpl withLinuxFromDisk(String sourceDiskId) {
         this
-            .inner()
+            .innerModel()
             .withOsType(OperatingSystemTypes.LINUX)
             .withCreationData(new CreationData())
             .creationData()
@@ -164,7 +166,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public DiskImpl withLinuxFromSnapshot(String sourceSnapshotId) {
         this
-            .inner()
+            .innerModel()
             .withOsType(OperatingSystemTypes.LINUX)
             .withCreationData(new CreationData())
             .creationData()
@@ -179,14 +181,14 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
         if (sourceSnapshot.osType() != null) {
             this.withOSType(sourceSnapshot.osType());
         }
-        this.withSku(sourceSnapshot.sku());
+        this.withSku(this.fromSnapshotSkuType(sourceSnapshot.skuType()));
         return this;
     }
 
     @Override
     public DiskImpl withWindowsFromVhd(String vhdUrl) {
         this
-            .inner()
+            .innerModel()
             .withOsType(OperatingSystemTypes.WINDOWS)
             .withCreationData(new CreationData())
             .creationData()
@@ -198,7 +200,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public DiskImpl withWindowsFromDisk(String sourceDiskId) {
         this
-            .inner()
+            .innerModel()
             .withOsType(OperatingSystemTypes.WINDOWS)
             .withCreationData(new CreationData())
             .creationData()
@@ -220,7 +222,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public DiskImpl withWindowsFromSnapshot(String sourceSnapshotId) {
         this
-            .inner()
+            .innerModel()
             .withOsType(OperatingSystemTypes.WINDOWS)
             .withCreationData(new CreationData())
             .creationData()
@@ -235,20 +237,20 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
         if (sourceSnapshot.osType() != null) {
             this.withOSType(sourceSnapshot.osType());
         }
-        this.withSku(sourceSnapshot.sku());
+        this.withSku(this.fromSnapshotSkuType(sourceSnapshot.skuType()));
         return this;
     }
 
     @Override
     public DiskImpl withData() {
-        this.inner().withCreationData(new CreationData()).creationData().withCreateOption(DiskCreateOption.EMPTY);
+        this.innerModel().withCreationData(new CreationData()).creationData().withCreateOption(DiskCreateOption.EMPTY);
         return this;
     }
 
     @Override
     public DiskImpl fromVhd(String vhdUrl) {
         this
-            .inner()
+            .innerModel()
             .withCreationData(new CreationData())
             .creationData()
             .withCreateOption(DiskCreateOption.IMPORT)
@@ -259,7 +261,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public DiskImpl withUploadSizeInMB(long uploadSizeInMB) {
         this
-            .inner()
+            .innerModel()
             .withCreationData(new CreationData())
             .creationData()
             .withCreateOption(DiskCreateOption.UPLOAD)
@@ -270,7 +272,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public DiskImpl fromSnapshot(String snapshotId) {
         this
-            .inner()
+            .innerModel()
             .withCreationData(new CreationData())
             .creationData()
             .withCreateOption(DiskCreateOption.COPY)
@@ -286,7 +288,7 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public DiskImpl fromDisk(String managedDiskId) {
         this
-            .inner()
+            .innerModel()
             .withCreationData(new CreationData())
             .creationData()
             .withCreateOption(DiskCreateOption.COPY)
@@ -301,25 +303,25 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
 
     @Override
     public DiskImpl withSizeInGB(int sizeInGB) {
-        this.inner().withDiskSizeGB(sizeInGB);
+        this.innerModel().withDiskSizeGB(sizeInGB);
         return this;
     }
 
     @Override
     public DiskImpl withOSType(OperatingSystemTypes osType) {
-        this.inner().withOsType(osType);
+        this.innerModel().withOsType(osType);
         return this;
     }
 
     @Override
     public DiskImpl withSku(DiskSkuTypes sku) {
-        this.inner().withSku((new DiskSku()).withName(sku.accountType()));
+        this.innerModel().withSku((new DiskSku()).withName(sku.accountType()));
         return this;
     }
 
     @Override
     public DiskImpl withStorageAccountId(String storageAccountId) {
-        this.inner().creationData().withStorageAccountId(storageAccountId);
+        this.innerModel().creationData().withStorageAccountId(storageAccountId);
         return this;
     }
 
@@ -348,40 +350,55 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
         // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to append a new
         // zone or remove one. Trying to remove the last one means attempt to change resource from
         // zonal to regional, which is not supported.
-        if (this.inner().zones() == null) {
-            this.inner().withZones(new ArrayList<String>());
+        if (this.innerModel().zones() == null) {
+            this.innerModel().withZones(new ArrayList<String>());
         }
-        this.inner().zones().add(zoneId.toString());
+        this.innerModel().zones().add(zoneId.toString());
         return this;
     }
 
     @Override
     public Mono<Disk> createResourceAsync() {
         return manager()
-            .inner()
+            .serviceClient()
             .getDisks()
-            .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
+            .createOrUpdateAsync(resourceGroupName(), name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<DiskInner> getInnerAsync() {
-        return this.manager().inner().getDisks().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().serviceClient().getDisks().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Accepted<Disk> beginCreate() {
-        return AcceptedImpl.newAccepted(logger,
-            this.manager().inner(),
-            () -> this.manager().inner().getDisks()
-                .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.inner()).block(),
-            inner -> new DiskImpl(inner.name(), inner, this.manager()),
-            DiskInner.class,
-            () -> {
-                Flux<Indexable> dependencyTasksAsync =
-                    taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
-                dependencyTasksAsync.blockLast();
-            },
-            this::setInner);
+        return AcceptedImpl
+            .newAccepted(
+                logger,
+                this.manager().serviceClient().getHttpPipeline(),
+                this.manager().serviceClient().getDefaultPollInterval(),
+                () ->
+                    this
+                        .manager()
+                        .serviceClient()
+                        .getDisks()
+                        .createOrUpdateWithResponseAsync(resourceGroupName(), name(), this.innerModel())
+                        .block(),
+                inner -> new DiskImpl(inner.name(), inner, this.manager()),
+                DiskInner.class,
+                () -> {
+                    Flux<Indexable> dependencyTasksAsync =
+                        taskGroup().invokeDependencyAsync(taskGroup().newInvocationContext());
+                    dependencyTasksAsync.blockLast();
+                },
+                this::setInner);
+    }
+
+    private DiskSkuTypes fromSnapshotSkuType(SnapshotSkuType skuType) {
+        if (skuType == null) {
+            return null;
+        }
+        return DiskSkuTypes.fromStorageAccountType(DiskStorageAccountTypes.fromString(skuType.toString()));
     }
 }

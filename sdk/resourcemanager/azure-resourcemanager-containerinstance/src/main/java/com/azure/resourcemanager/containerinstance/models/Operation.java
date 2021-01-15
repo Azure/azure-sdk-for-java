@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Operation model. */
+/** An operation for Azure Container Instance service. */
 @Fluent
 public final class Operation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Operation.class);

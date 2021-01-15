@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualNetworkUsageName model. */
+/** Usage strings container. */
 @Immutable
 public final class VirtualNetworkUsageName {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkUsageName.class);

@@ -12,7 +12,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetUpdateIpConfiguration model. */
+/**
+ * Describes a virtual machine scale set network profile's IP configuration. NOTE: The subnet of a scale set may be
+ * modified as long as the original subnet and the new subnet are in the same virtual network.
+ */
 @JsonFlatten
 @Fluent
 public class VirtualMachineScaleSetUpdateIpConfiguration extends SubResource {
@@ -261,6 +264,13 @@ public class VirtualMachineScaleSetUpdateIpConfiguration extends SubResource {
     public VirtualMachineScaleSetUpdateIpConfiguration withLoadBalancerInboundNatPools(
         List<SubResource> loadBalancerInboundNatPools) {
         this.loadBalancerInboundNatPools = loadBalancerInboundNatPools;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetUpdateIpConfiguration withId(String id) {
+        super.withId(id);
         return this;
     }
 

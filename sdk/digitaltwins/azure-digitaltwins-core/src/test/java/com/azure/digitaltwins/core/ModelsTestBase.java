@@ -1,9 +1,8 @@
 package com.azure.digitaltwins.core;
 
 import com.azure.core.http.HttpClient;
-import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import org.junit.jupiter.api.Test;
-import org.opentest4j.AssertionFailedError;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +25,9 @@ public abstract class ModelsTestBase extends DigitalTwinsTestBase {
 
     @Test
     public abstract void createModelThrowsIfModelAlreadyExists(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
+
+    @Test
+    public abstract void listModelsMultiplePages(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
 
     @Test
     public abstract void getModelThrowsIfModelIdInvalid(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion);
@@ -52,26 +54,26 @@ public abstract class ModelsTestBase extends DigitalTwinsTestBase {
         deleteModelRunner.accept(modelId);
     }
 
-    static void assertModelDataAreEqual(ModelData expected, ModelData actual, boolean compareModel) {
-        assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getUploadTime(), actual.getUploadTime());
+    static void assertModelDataAreEqual(DigitalTwinsModelData expected, DigitalTwinsModelData actual, boolean compareModel) {
+        assertEquals(expected.getModelId(), actual.getModelId());
+        assertEquals(expected.getUploadedOn(), actual.getUploadedOn());
 
         // ModelData objects that are obtained through the createModels API do not populate the model field, so it isn't
         // worth comparing those ModelData objects with ModelData objects retrieved through getModel calls
         if (compareModel) {
-            assertEquals(expected.getModel(), actual.getModel());
+            assertEquals(expected.getDtdlModel(), actual.getDtdlModel());
         }
 
-        assertEquals(expected.getDescription().size(), actual.getDescription().size());
-        for (String key : expected.getDescription().keySet()) {
-            assertTrue(actual.getDescription().containsKey(key));
-            assertEquals(expected.getDescription().get(key), actual.getDescription().get(key));
+        assertEquals(expected.getDescriptionLanguageMap().size(), actual.getDescriptionLanguageMap().size());
+        for (String key : expected.getDescriptionLanguageMap().keySet()) {
+            assertTrue(actual.getDescriptionLanguageMap().containsKey(key));
+            assertEquals(expected.getDescriptionLanguageMap().get(key), actual.getDescriptionLanguageMap().get(key));
         }
 
-        assertEquals(expected.getDisplayName().size(), actual.getDisplayName().size());
-        for (String key : expected.getDisplayName().keySet()) {
-            assertTrue(actual.getDisplayName().containsKey(key));
-            assertEquals(expected.getDisplayName().get(key), actual.getDisplayName().get(key));
+        assertEquals(expected.getDisplayNameLanguageMap().size(), actual.getDisplayNameLanguageMap().size());
+        for (String key : expected.getDisplayNameLanguageMap().keySet()) {
+            assertTrue(actual.getDisplayNameLanguageMap().containsKey(key));
+            assertEquals(expected.getDisplayNameLanguageMap().get(key), actual.getDisplayNameLanguageMap().get(key));
         }
 
         assertEquals(expected.isDecommissioned(), actual.isDecommissioned());

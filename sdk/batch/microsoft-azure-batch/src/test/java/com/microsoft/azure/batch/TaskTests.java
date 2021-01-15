@@ -387,9 +387,15 @@ public class TaskTests  extends BatchIntegrationTestBase {
 
         try {
             // Test Job count
-            TaskCounts counts = alternativeBatchClient.jobOperations().getTaskCounts(jobId);
+            TaskCountsResult countResult =
+                alternativeBatchClient.jobOperations().getTaskCountsResult(jobId);
+            TaskCounts counts = countResult.taskCounts();
             int all = counts.active() + counts.completed() + counts.running();
             Assert.assertEquals(0, all);
+
+            TaskSlotCounts slotCounts = countResult.taskSlotCounts();
+            int allSlots = slotCounts.active() + slotCounts.completed() + slotCounts.running();
+            Assert.assertEquals(0, allSlots);
 
             // CREATE
             List<TaskAddParameter> tasksToAdd = new ArrayList<>();
@@ -408,9 +414,16 @@ public class TaskTests  extends BatchIntegrationTestBase {
             threadSleepInRecordMode(30 * 1000);
 
             // Test Job count
-            counts = alternativeBatchClient.jobOperations().getTaskCounts(jobId);
+            countResult =
+                alternativeBatchClient.jobOperations().getTaskCountsResult(jobId);
+            counts = countResult.taskCounts();
             all = counts.active() + counts.completed() + counts.running();
             Assert.assertEquals(TASK_COUNT, all);
+
+            slotCounts = countResult.taskSlotCounts();
+            allSlots = slotCounts.active() + slotCounts.completed() + slotCounts.running();
+            // One slot per task
+            Assert.assertEquals(TASK_COUNT, allSlots);
         } finally {
             try {
                 batchClient.jobOperations().deleteJob(jobId);

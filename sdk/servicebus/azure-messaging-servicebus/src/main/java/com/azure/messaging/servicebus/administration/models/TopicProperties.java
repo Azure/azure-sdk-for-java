@@ -5,6 +5,8 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.models.AuthorizationRuleImpl;
 import com.azure.messaging.servicebus.implementation.models.EntityAvailabilityStatus;
@@ -19,7 +21,12 @@ import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimitive;
 
-/** Represents the static properties of the topic.. */
+/**
+ * Represents the static properties of the topic.
+ *
+ * @see ServiceBusAdministrationAsyncClient#getTopic(String)
+ * @see ServiceBusAdministrationClient#getTopic(String)
+ */
 @Fluent
 public final class TopicProperties {
     private Duration autoDeleteOnIdle;
@@ -63,7 +70,7 @@ public final class TopicProperties {
                     .setCreatedAt(topic.getCreatedAt())
                     .setDefaultMessageTimeToLive(topic.getDefaultMessageTimeToLive())
                     .setDuplicateDetectionHistoryTimeWindow(topic.getDuplicateDetectionHistoryTimeWindow())
-                    .setEnablePartitioning(topic.enablePartitioning())
+                    .setEnablePartitioning(topic.isPartitioningEnabled())
                     .setEnableSubscriptionPartitioning(topic.isEnableSubscriptionPartitioning())
                     .setEnableExpress(topic.enableExpress)
                     .setEnableBatchedOperations(topic.enableBatchedOperations)
@@ -76,7 +83,7 @@ public final class TopicProperties {
                     .setSubscriptionCount(topic.getSubscriptionCount())
                     .setStatus(topic.getStatus())
                     .setSizeInBytes(topic.getSizeInBytes())
-                    .setRequiresDuplicateDetection(topic.requiresDuplicateDetection())
+                    .setRequiresDuplicateDetection(topic.isDuplicateDetectionRequired())
                     .setUpdatedAt(topic.getUpdatedAt())
                     .setUserMetadata(topic.getUserMetadata());
 
@@ -199,7 +206,7 @@ public final class TopicProperties {
      *
      * @return the requiresDuplicateDetection value.
      */
-    public boolean requiresDuplicateDetection() {
+    public boolean isDuplicateDetectionRequired() {
         return this.requiresDuplicateDetection;
     }
 
@@ -209,7 +216,7 @@ public final class TopicProperties {
      * @param requiresDuplicateDetection the requiresDuplicateDetection value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicProperties setRequiresDuplicateDetection(boolean requiresDuplicateDetection) {
+    public TopicProperties setDuplicateDetectionRequired(boolean requiresDuplicateDetection) {
         this.requiresDuplicateDetection = requiresDuplicateDetection;
         return this;
     }
@@ -242,7 +249,7 @@ public final class TopicProperties {
      *
      * @return the enableBatchedOperations value.
      */
-    public boolean enableBatchedOperations() {
+    public boolean isBatchedOperationsEnabled() {
         return this.enableBatchedOperations;
     }
 
@@ -280,7 +287,7 @@ public final class TopicProperties {
      *
      * @return the supportOrdering value.
      */
-    public boolean supportOrdering() {
+    public boolean isOrderingSupported() {
         return this.supportOrdering;
     }
 
@@ -290,7 +297,7 @@ public final class TopicProperties {
      * @param supportOrdering the supportOrdering value to set.
      * @return the TopicDescription object itself.
      */
-    public TopicProperties setSupportOrdering(boolean supportOrdering) {
+    public TopicProperties setOrderingSupported(boolean supportOrdering) {
         this.supportOrdering = supportOrdering;
         return this;
     }
@@ -323,7 +330,7 @@ public final class TopicProperties {
      *
      * @return the enablePartitioning value.
      */
-    public boolean enablePartitioning() {
+    public boolean isPartitioningEnabled() {
         return this.enablePartitioning;
     }
 

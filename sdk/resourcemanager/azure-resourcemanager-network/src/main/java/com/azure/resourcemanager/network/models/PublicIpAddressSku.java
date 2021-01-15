@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PublicIpAddressSku model. */
+/** SKU of a public IP address. */
 @Fluent
 public final class PublicIpAddressSku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressSku.class);
@@ -19,6 +19,12 @@ public final class PublicIpAddressSku {
      */
     @JsonProperty(value = "name")
     private PublicIpAddressSkuName name;
+
+    /*
+     * Tier of a public IP address SKU.
+     */
+    @JsonProperty(value = "tier")
+    private PublicIpAddressSkuTier tier;
 
     /**
      * Get the name property: Name of a public IP address SKU.
@@ -37,6 +43,26 @@ public final class PublicIpAddressSku {
      */
     public PublicIpAddressSku withName(PublicIpAddressSkuName name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the tier property: Tier of a public IP address SKU.
+     *
+     * @return the tier value.
+     */
+    public PublicIpAddressSkuTier tier() {
+        return this.tier;
+    }
+
+    /**
+     * Set the tier property: Tier of a public IP address SKU.
+     *
+     * @param tier the tier value to set.
+     * @return the PublicIpAddressSku object itself.
+     */
+    public PublicIpAddressSku withTier(PublicIpAddressSkuTier tier) {
+        this.tier = tier;
         return this;
     }
 

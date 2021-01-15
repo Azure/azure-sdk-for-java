@@ -7,7 +7,7 @@ package com.azure.digitaltwins.core.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The QuerySpecification model. */
+/** A query specification containing either a query statement or a continuation token from a previous query result. */
 @Fluent
 public final class QuerySpecification {
     /*

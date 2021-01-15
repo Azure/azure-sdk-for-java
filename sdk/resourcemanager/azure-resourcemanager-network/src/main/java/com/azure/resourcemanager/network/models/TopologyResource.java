@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TopologyResource model. */
+/** The network resource topology information for the given resource group. */
 @Fluent
 public final class TopologyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyResource.class);

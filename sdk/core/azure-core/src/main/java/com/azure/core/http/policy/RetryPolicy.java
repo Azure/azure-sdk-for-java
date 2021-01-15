@@ -8,8 +8,10 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -99,8 +101,17 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     final Duration delayDuration = determineDelayDuration(httpResponse, tryCount);
                     logger.verbose("[Retrying] Try count: {}, Delay duration in seconds: {}", tryCount,
                         delayDuration.getSeconds());
-                    return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
-                        .delaySubscription(delayDuration);
+
+                    Flux<ByteBuffer> responseBody = httpResponse.getBody();
+                    if (responseBody == null) {
+                        return attemptAsync(context, next, originalHttpRequest, tryCount + 1)
+                            .delaySubscription(delayDuration);
+                    } else {
+                        return httpResponse.getBody()
+                            .ignoreElements()
+                            .then(attemptAsync(context, next, originalHttpRequest, tryCount + 1)
+                                .delaySubscription(delayDuration));
+                    }
                 } else {
                     return Mono.just(httpResponse);
                 }

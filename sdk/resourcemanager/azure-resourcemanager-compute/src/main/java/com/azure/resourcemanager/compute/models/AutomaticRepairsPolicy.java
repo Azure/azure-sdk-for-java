@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AutomaticRepairsPolicy model. */
+/** Specifies the configuration parameters for automatic repairs on the virtual machine scale set. */
 @Fluent
 public final class AutomaticRepairsPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomaticRepairsPolicy.class);

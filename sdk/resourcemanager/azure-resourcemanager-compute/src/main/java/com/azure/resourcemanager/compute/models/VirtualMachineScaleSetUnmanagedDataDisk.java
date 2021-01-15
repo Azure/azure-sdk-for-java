@@ -6,13 +6,13 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 
 /** Describes definition and update stages of unmanaged data disk of a scale set. */
 @Fluent
 public interface VirtualMachineScaleSetUnmanagedDataDisk
-    extends HasInner<VirtualMachineScaleSetDataDisk>, ChildResource<VirtualMachineScaleSet> {
+    extends HasInnerModel<VirtualMachineScaleSetDataDisk>, ChildResource<VirtualMachineScaleSet> {
 
     /** Grouping of unmanaged data disk definition stages applicable as part of a virtual machine scale set creation. */
     interface DefinitionStages {

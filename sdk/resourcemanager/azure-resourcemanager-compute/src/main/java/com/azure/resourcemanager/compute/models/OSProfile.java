@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OSProfile model. */
+/**
+ * Specifies the operating system settings for the virtual machine. Some of the settings cannot be changed once VM is
+ * provisioned.
+ */
 @Fluent
 public final class OSProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OSProfile.class);
@@ -117,7 +120,9 @@ public final class OSProfile {
 
     /*
      * Specifies whether the guest provision signal is required to infer
-     * provision success of the virtual machine.
+     * provision success of the virtual machine.  **Note: This property is for
+     * private testing only, and all customers must not set the property to
+     * false.**
      */
     @JsonProperty(value = "requireGuestProvisionSignal")
     private Boolean requireGuestProvisionSignal;
@@ -364,7 +369,8 @@ public final class OSProfile {
 
     /**
      * Get the requireGuestProvisionSignal property: Specifies whether the guest provision signal is required to infer
-     * provision success of the virtual machine.
+     * provision success of the virtual machine. **Note: This property is for private testing only, and all customers
+     * must not set the property to false.**.
      *
      * @return the requireGuestProvisionSignal value.
      */
@@ -374,7 +380,8 @@ public final class OSProfile {
 
     /**
      * Set the requireGuestProvisionSignal property: Specifies whether the guest provision signal is required to infer
-     * provision success of the virtual machine.
+     * provision success of the virtual machine. **Note: This property is for private testing only, and all customers
+     * must not set the property to false.**.
      *
      * @param requireGuestProvisionSignal the requireGuestProvisionSignal value to set.
      * @return the OSProfile object itself.

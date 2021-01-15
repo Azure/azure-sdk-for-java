@@ -6,12 +6,12 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.monitor.fluent.inner.MetadataValueInner;
+import com.azure.resourcemanager.monitor.fluent.models.MetadataValueInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The TimeSeriesElement model. */
+/** A time series result type. The discriminator value is always TimeSeries in this case. */
 @Fluent
 public final class TimeSeriesElement {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesElement.class);

@@ -15,7 +15,7 @@ import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.core.management.profile.AzureProfile;
@@ -149,7 +149,7 @@ public class VirtualMachineRelatedResourcesDeletionTests extends ComputeManageme
                     .withRootUsername(userName)
                     .withRootPassword("Abcdef.123456!")
                     .withNewStorageAccount(storageAccountDefinition)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_DS1_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .withNewAvailabilitySet(availabilitySetDefinition);
 
             // Keep track of all the related resource definitions based on the VM definition

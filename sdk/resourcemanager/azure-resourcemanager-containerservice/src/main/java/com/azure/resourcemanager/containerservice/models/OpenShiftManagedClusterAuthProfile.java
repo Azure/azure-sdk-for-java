@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The OpenShiftManagedClusterAuthProfile model. */
+/** Defines all possible authentication profiles for the OpenShift cluster. */
 @Fluent
 public final class OpenShiftManagedClusterAuthProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterAuthProfile.class);

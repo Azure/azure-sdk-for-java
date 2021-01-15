@@ -7,7 +7,7 @@ package com.azure.digitaltwins.core.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ErrorResponse model. */
+/** Error response. */
 @Fluent
 public final class ErrorResponse {
     /*

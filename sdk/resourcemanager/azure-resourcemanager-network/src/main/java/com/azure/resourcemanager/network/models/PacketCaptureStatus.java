@@ -3,14 +3,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.PacketCaptureQueryStatusResultInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.network.fluent.models.PacketCaptureQueryStatusResultInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Status of packet capture session. */
 @Fluent
-public interface PacketCaptureStatus extends HasInner<PacketCaptureQueryStatusResultInner> {
+public interface PacketCaptureStatus extends HasInnerModel<PacketCaptureQueryStatusResultInner> {
     /** @return the name of the packet capture resource */
     String name();
 

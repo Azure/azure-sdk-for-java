@@ -4,178 +4,34 @@
 
 package com.azure.resourcemanager.sql.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.fluent.inner.JobStepInner;
-import com.azure.resourcemanager.sql.fluent.inner.JobStepListResultInner;
+import com.azure.resourcemanager.sql.fluent.models.JobStepInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobSteps. */
-public final class JobStepsClient {
-    private final ClientLogger logger = new ClientLogger(JobStepsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final JobStepsService service;
-
-    /** The service client containing this operation class. */
-    private final SqlManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in JobStepsClient. */
+public interface JobStepsClient {
     /**
-     * Initializes an instance of JobStepsClient.
+     * Gets all job steps in the specified job version.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @param jobVersion The version of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all job steps in the specified job version.
      */
-    public JobStepsClient(SqlManagementClient client) {
-        this.service = RestProxy.create(JobStepsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for SqlManagementClientJobSteps to be used by the proxy service to
-     * perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientJ")
-    private interface JobStepsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}/steps")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobStepListResultInner>> listByVersion(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("jobVersion") int jobVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}/steps/{stepName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobStepInner>> getByVersion(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("jobVersion") int jobVersion,
-            @PathParam("stepName") String stepName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobStepListResultInner>> listByJob(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps/{stepName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobStepInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("stepName") String stepName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps/{stepName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobStepInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("stepName") String stepName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") JobStepInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps/{stepName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("jobName") String jobName,
-            @PathParam("stepName") String stepName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobStepListResultInner>> listByVersionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobStepListResultInner>> listByJobNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<JobStepInner> listByVersionAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, int jobVersion);
 
     /**
      * Gets all job steps in the specified job version.
@@ -187,64 +43,13 @@ public final class JobStepsClient {
      * @param jobName The name of the job to get.
      * @param jobVersion The version of the job to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all job steps in the specified job version.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobStepInner>> listByVersionSinglePageAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, int jobVersion) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByVersion(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            jobVersion,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .<PagedResponse<JobStepInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<JobStepInner> listByVersion(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, int jobVersion);
 
     /**
      * Gets all job steps in the specified job version.
@@ -257,165 +62,18 @@ public final class JobStepsClient {
      * @param jobVersion The version of the job to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all job steps in the specified job version.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobStepInner>> listByVersionSinglePageAsync(
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<JobStepInner> listByVersion(
         String resourceGroupName,
         String serverName,
         String jobAgentName,
         String jobName,
         int jobVersion,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .listByVersion(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                jobVersion,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets all job steps in the specified job version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobVersion The version of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobStepInner> listByVersionAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, int jobVersion) {
-        return new PagedFlux<>(
-            () -> listByVersionSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion),
-            nextLink -> listByVersionNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Gets all job steps in the specified job version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobVersion The version of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobStepInner> listByVersionAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        int jobVersion,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByVersionSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion, context),
-            nextLink -> listByVersionNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all job steps in the specified job version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobVersion The version of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobStepInner> listByVersion(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, int jobVersion) {
-        return new PagedIterable<>(
-            listByVersionAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion));
-    }
-
-    /**
-     * Gets all job steps in the specified job version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param jobVersion The version of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobStepInner> listByVersion(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        int jobVersion,
-        Context context) {
-        return new PagedIterable<>(
-            listByVersionAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion, context));
-    }
+        Context context);
 
     /**
      * Gets the specified version of a job step.
@@ -428,64 +86,66 @@ public final class JobStepsClient {
      * @param jobVersion The version of the job to get.
      * @param stepName The name of the job step.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified version of a job step.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobStepInner>> getByVersionWithResponseAsync(
+    Mono<Response<JobStepInner>> getByVersionWithResponseAsync(
         String resourceGroupName,
         String serverName,
         String jobAgentName,
         String jobName,
         int jobVersion,
-        String stepName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (stepName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter stepName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByVersion(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            jobVersion,
-                            stepName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        String stepName);
+
+    /**
+     * Gets the specified version of a job step.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param jobVersion The version of the job to get.
+     * @param stepName The name of the job step.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified version of a job step.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<JobStepInner> getByVersionAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        int jobVersion,
+        String stepName);
+
+    /**
+     * Gets the specified version of a job step.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param jobVersion The version of the job to get.
+     * @param stepName The name of the job step.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified version of a job step.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobStepInner getByVersion(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        int jobVersion,
+        String stepName);
 
     /**
      * Gets the specified version of a job step.
@@ -499,188 +159,19 @@ public final class JobStepsClient {
      * @param stepName The name of the job step.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified version of a job step.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobStepInner>> getByVersionWithResponseAsync(
+    Response<JobStepInner> getByVersionWithResponse(
         String resourceGroupName,
         String serverName,
         String jobAgentName,
         String jobName,
         int jobVersion,
         String stepName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (stepName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter stepName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .getByVersion(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                jobVersion,
-                stepName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Gets the specified version of a job step.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobVersion The version of the job to get.
-     * @param stepName The name of the job step.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of a job step.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobStepInner> getByVersionAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        int jobVersion,
-        String stepName) {
-        return getByVersionWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion, stepName)
-            .flatMap(
-                (Response<JobStepInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified version of a job step.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobVersion The version of the job to get.
-     * @param stepName The name of the job step.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of a job step.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobStepInner> getByVersionAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        int jobVersion,
-        String stepName,
-        Context context) {
-        return getByVersionWithResponseAsync(
-                resourceGroupName, serverName, jobAgentName, jobName, jobVersion, stepName, context)
-            .flatMap(
-                (Response<JobStepInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the specified version of a job step.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobVersion The version of the job to get.
-     * @param stepName The name of the job step.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of a job step.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobStepInner getByVersion(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        int jobVersion,
-        String stepName) {
-        return getByVersionAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion, stepName).block();
-    }
-
-    /**
-     * Gets the specified version of a job step.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param jobVersion The version of the job to get.
-     * @param stepName The name of the job step.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of a job step.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobStepInner getByVersion(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        int jobVersion,
-        String stepName,
-        Context context) {
-        return getByVersionAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion, stepName, context)
-            .block();
-    }
+        Context context);
 
     /**
      * Gets all job steps for a job's current version.
@@ -691,149 +182,30 @@ public final class JobStepsClient {
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobStepInner>> listByJobSinglePageAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByJob(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .<PagedResponse<JobStepInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets all job steps for a job's current version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobStepInner>> listByJobSinglePageAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .listByJob(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets all job steps for a job's current version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all job steps for a job's current version.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobStepInner> listByJobAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        return new PagedFlux<>(
-            () -> listByJobSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName),
-            nextLink -> listByJobNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<JobStepInner> listByJobAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName);
+
+    /**
+     * Gets all job steps for a job's current version.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all job steps for a job's current version.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<JobStepInner> listByJob(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName);
 
     /**
      * Gets all job steps for a job's current version.
@@ -845,56 +217,13 @@ public final class JobStepsClient {
      * @param jobName The name of the job to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all job steps for a job's current version.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobStepInner> listByJobAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
-        return new PagedFlux<>(
-            () -> listByJobSinglePageAsync(resourceGroupName, serverName, jobAgentName, jobName, context),
-            nextLink -> listByJobNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets all job steps for a job's current version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobStepInner> listByJob(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName) {
-        return new PagedIterable<>(listByJobAsync(resourceGroupName, serverName, jobAgentName, jobName));
-    }
-
-    /**
-     * Gets all job steps for a job's current version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job to get.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobStepInner> listByJob(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context) {
-        return new PagedIterable<>(listByJobAsync(resourceGroupName, serverName, jobAgentName, jobName, context));
-    }
+    PagedIterable<JobStepInner> listByJob(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, Context context);
 
     /**
      * Gets a job step in a job's current version.
@@ -906,58 +235,48 @@ public final class JobStepsClient {
      * @param jobName The name of the job.
      * @param stepName The name of the job step.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a job step in a job's current version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobStepInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (stepName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter stepName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            stepName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<JobStepInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName);
+
+    /**
+     * Gets a job step in a job's current version.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param stepName The name of the job step.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a job step in a job's current version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<JobStepInner> getAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName);
+
+    /**
+     * Gets a job step in a job's current version.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param stepName The name of the job step.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a job step in a job's current version.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobStepInner get(String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName);
 
     /**
      * Gets a job step in a job's current version.
@@ -970,168 +289,18 @@ public final class JobStepsClient {
      * @param stepName The name of the job step.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a job step in a job's current version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobStepInner>> getWithResponseAsync(
+    Response<JobStepInner> getWithResponse(
         String resourceGroupName,
         String serverName,
         String jobAgentName,
         String jobName,
         String stepName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (stepName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter stepName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                stepName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Gets a job step in a job's current version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param stepName The name of the job step.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step in a job's current version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobStepInner> getAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName) {
-        return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, stepName)
-            .flatMap(
-                (Response<JobStepInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a job step in a job's current version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param stepName The name of the job step.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step in a job's current version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobStepInner> getAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        String stepName,
-        Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, stepName, context)
-            .flatMap(
-                (Response<JobStepInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a job step in a job's current version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param stepName The name of the job step.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step in a job's current version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobStepInner get(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName) {
-        return getAsync(resourceGroupName, serverName, jobAgentName, jobName, stepName).block();
-    }
-
-    /**
-     * Gets a job step in a job's current version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param stepName The name of the job step.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step in a job's current version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobStepInner get(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        String stepName,
-        Context context) {
-        return getAsync(resourceGroupName, serverName, jobAgentName, jobName, stepName, context).block();
-    }
+        Context context);
 
     /**
      * Creates or updates a job step. This will implicitly create a new job version.
@@ -1144,69 +313,66 @@ public final class JobStepsClient {
      * @param stepName The name of the job step.
      * @param parameters A job step.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a job step.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobStepInner>> createOrUpdateWithResponseAsync(
+    Mono<Response<JobStepInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String serverName,
         String jobAgentName,
         String jobName,
         String stepName,
-        JobStepInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (stepName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter stepName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2017-03-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            stepName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        JobStepInner parameters);
+
+    /**
+     * Creates or updates a job step. This will implicitly create a new job version.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param stepName The name of the job step.
+     * @param parameters A job step.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a job step.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<JobStepInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        String stepName,
+        JobStepInner parameters);
+
+    /**
+     * Creates or updates a job step. This will implicitly create a new job version.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param stepName The name of the job step.
+     * @param parameters A job step.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a job step.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobStepInner createOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String jobName,
+        String stepName,
+        JobStepInner parameters);
 
     /**
      * Creates or updates a job step. This will implicitly create a new job version.
@@ -1220,194 +386,19 @@ public final class JobStepsClient {
      * @param parameters A job step.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a job step.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobStepInner>> createOrUpdateWithResponseAsync(
+    Response<JobStepInner> createOrUpdateWithResponse(
         String resourceGroupName,
         String serverName,
         String jobAgentName,
         String jobName,
         String stepName,
         JobStepInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (stepName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter stepName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2017-03-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                stepName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                context);
-    }
-
-    /**
-     * Creates or updates a job step. This will implicitly create a new job version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param stepName The name of the job step.
-     * @param parameters A job step.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobStepInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        String stepName,
-        JobStepInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, jobAgentName, jobName, stepName, parameters)
-            .flatMap(
-                (Response<JobStepInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a job step. This will implicitly create a new job version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param stepName The name of the job step.
-     * @param parameters A job step.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobStepInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        String stepName,
-        JobStepInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, jobAgentName, jobName, stepName, parameters, context)
-            .flatMap(
-                (Response<JobStepInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a job step. This will implicitly create a new job version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param stepName The name of the job step.
-     * @param parameters A job step.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobStepInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        String stepName,
-        JobStepInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, stepName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a job step. This will implicitly create a new job version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param stepName The name of the job step.
-     * @param parameters A job step.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobStepInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        String stepName,
-        JobStepInner parameters,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, jobName, stepName, parameters, context)
-            .block();
-    }
+        Context context);
 
     /**
      * Deletes a job step. This will implicitly create a new job version.
@@ -1419,58 +410,47 @@ public final class JobStepsClient {
      * @param jobName The name of the job.
      * @param stepName The name of the job step to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (stepName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter stepName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            jobName,
-                            stepName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName);
+
+    /**
+     * Deletes a job step. This will implicitly create a new job version.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param stepName The name of the job step to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName);
+
+    /**
+     * Deletes a job step. This will implicitly create a new job version.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param jobName The name of the job.
+     * @param stepName The name of the job step to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName);
 
     /**
      * Deletes a job step. This will implicitly create a new job version.
@@ -1483,264 +463,16 @@ public final class JobStepsClient {
      * @param stepName The name of the job step to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
+    Response<Void> deleteWithResponse(
         String resourceGroupName,
         String serverName,
         String jobAgentName,
         String jobName,
         String stepName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (jobAgentName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
-        }
-        if (jobName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
-        }
-        if (stepName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter stepName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String apiVersion = "2017-03-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                jobName,
-                stepName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
-    }
-
-    /**
-     * Deletes a job step. This will implicitly create a new job version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param stepName The name of the job step to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName) {
-        return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, stepName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a job step. This will implicitly create a new job version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param stepName The name of the job step to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        String stepName,
-        Context context) {
-        return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, stepName, context)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a job step. This will implicitly create a new job version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param stepName The name of the job step to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName) {
-        deleteAsync(resourceGroupName, serverName, jobAgentName, jobName, stepName).block();
-    }
-
-    /**
-     * Deletes a job step. This will implicitly create a new job version.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param jobName The name of the job.
-     * @param stepName The name of the job step to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String jobName,
-        String stepName,
-        Context context) {
-        deleteAsync(resourceGroupName, serverName, jobAgentName, jobName, stepName, context).block();
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job steps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobStepInner>> listByVersionNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listByVersionNext(nextLink, context))
-            .<PagedResponse<JobStepInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job steps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobStepInner>> listByVersionNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listByVersionNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job steps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobStepInner>> listByJobNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listByJobNext(nextLink, context))
-            .<PagedResponse<JobStepInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job steps.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<JobStepInner>> listByJobNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listByJobNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+        Context context);
 }

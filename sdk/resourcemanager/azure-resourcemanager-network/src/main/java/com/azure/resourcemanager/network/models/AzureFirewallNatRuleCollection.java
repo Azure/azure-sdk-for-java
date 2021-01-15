@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AzureFirewallNatRuleCollection model. */
+/** NAT rule collection resource. */
 @JsonFlatten
 @Fluent
 public class AzureFirewallNatRuleCollection extends SubResource {
@@ -153,6 +153,13 @@ public class AzureFirewallNatRuleCollection extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFirewallNatRuleCollection withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**

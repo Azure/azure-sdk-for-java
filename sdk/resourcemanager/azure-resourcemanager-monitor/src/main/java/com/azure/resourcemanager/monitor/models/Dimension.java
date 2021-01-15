@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Dimension model. */
+/** Specifies the criteria for converting log to metric. */
 @Fluent
 public final class Dimension {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Dimension.class);

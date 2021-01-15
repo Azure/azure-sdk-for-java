@@ -55,25 +55,25 @@ See [Next steps][sdk_readme_next_steps].
 ## Contributing
 
 If you would like to become an active contributor to this project please refer to our [Contribution
-Guidelines](../../CONTRIBUTING.md) for more information.
+Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/CONTRIBUTING.md) for more information.
 
 <!-- Links -->
-[sdk_readme_key_concepts]: ../../README.md#key-concepts
-[sdk_readme_getting_started]: ../../README.md#getting-started
-[sdk_readme_troubleshooting]: ../../README.md#troubleshooting
-[sdk_readme_next_steps]: ../../README.md#next-steps
-[sample_consume_event]: ./java/com/azure/messaging/eventhubs/ConsumeEvents.java
-[sample_consume_sequence_number]: ./java/com/azure/messaging/eventhubs/ConsumeEventsFromKnownSequenceNumberPosition.java
-[sample_event_processor]: ./java/com/azure/messaging/eventhubs/EventProcessorClientSample.java
-[sample_event_processor_aggregate_state_management]: ./java/com/azure/messaging/eventhubs/EventProcessorClientAggregateEventsSample.java
-[sample_event_processor_state_management]: ./java/com/azure/messaging/eventhubs/EventProcessorClientStateManagement.java
-[sample_get_event_hubs_metadata]: ./java/com/azure/messaging/eventhubs/GetEventHubMetadata.java
-[sample_publish_custom_metadata]: ./java/com/azure/messaging/eventhubs/PublishEventsWithCustomMetadata.java
-[sample_publish_identity]: ./java/com/azure/messaging/eventhubs/PublishEventsWithAzureIdentity.java
-[sample_publish_partitionId]: ./java/com/azure/messaging/eventhubs/PublishEventsToSpecificPartition.java
-[sample_publish_partitionKey]: ./java/com/azure/messaging/eventhubs/PublishEventsWithPartitionKey.java
-[sample_publish_size_limited]: ./java/com/azure/messaging/eventhubs/PublishEventsWithSizeLimitedBatches.java
-[sample_publish_stream_events]: ./java/com/azure/messaging/eventhubs/PublishStreamOfEvents.java
-[sample_publish_web_sockets_proxy]: ./java/com/azure/messaging/eventhubs/PublishEventsWithWebSocketsAndProxy.java
+[sdk_readme_key_concepts]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/README.md#key-concepts
+[sdk_readme_getting_started]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/README.md#getting-started
+[sdk_readme_troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/README.md#troubleshooting
+[sdk_readme_next_steps]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/README.md#next-steps
+[sample_consume_event]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/ConsumeEvents.java
+[sample_consume_sequence_number]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/ConsumeEventsFromKnownSequenceNumberPosition.java
+[sample_event_processor]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/EventProcessorClientSample.java
+[sample_event_processor_aggregate_state_management]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/EventProcessorClientAggregateEventsSample.java
+[sample_event_processor_state_management]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/EventProcessorClientStateManagement.java
+[sample_get_event_hubs_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/GetEventHubMetadata.java
+[sample_publish_custom_metadata]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithCustomMetadata.java
+[sample_publish_identity]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithAzureIdentity.java
+[sample_publish_partitionId]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsToSpecificPartition.java
+[sample_publish_partitionKey]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithPartitionKey.java
+[sample_publish_size_limited]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithSizeLimitedBatches.java
+[sample_publish_stream_events]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishStreamOfEvents.java
+[sample_publish_web_sockets_proxy]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/eventhubs/azure-messaging-eventhubs/src/samples/java/com/azure/messaging/eventhubs/PublishEventsWithWebSocketsAndProxy.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2Fsrc%2Fsamples%2README.png)

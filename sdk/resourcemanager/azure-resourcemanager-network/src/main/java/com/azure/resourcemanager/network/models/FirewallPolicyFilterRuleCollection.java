@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The FirewallPolicyFilterRuleCollection model. */
+/** Firewall Policy Filter Rule Collection. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleCollectionType")
 @JsonTypeName("FirewallPolicyFilterRuleCollection")
 @Fluent
@@ -68,6 +68,20 @@ public final class FirewallPolicyFilterRuleCollection extends FirewallPolicyRule
      */
     public FirewallPolicyFilterRuleCollection withRules(List<FirewallPolicyRule> rules) {
         this.rules = rules;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FirewallPolicyFilterRuleCollection withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FirewallPolicyFilterRuleCollection withPriority(Integer priority) {
+        super.withPriority(priority);
         return this;
     }
 

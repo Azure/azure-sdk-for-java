@@ -67,7 +67,8 @@ public final class BlobContainerClient {
      * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
      * BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
-     * @param blobName A {@code String} representing the name of the blob.
+     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
+     *  pass in the url encoded version of the blob name.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -86,7 +87,8 @@ public final class BlobContainerClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClient.getBlobClient#String-String}
      *
-     * @param blobName A {@code String} representing the name of the blob.
+     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
+     * pass in the url encoded version of the blob name.
      * @param snapshot the snapshot identifier for the blob.
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
@@ -98,7 +100,8 @@ public final class BlobContainerClient {
      * Initializes a new BlobClient object by concatenating blobName to the end of ContainerAsyncClient's URL. The new
      * BlobClient uses the same request policy pipeline as the ContainerAsyncClient.
      *
-     * @param blobName A {@code String} representing the name of the blob.
+     * @param blobName A {@code String} representing the name of the blob. If the blob name contains special characters,
+     * pass in the url encoded version of the blob name.
      * @param versionId the version identifier for the blob, pass {@code null} to interact with the latest blob version.
      * @return A new {@link BlobClient} object which references the blob with the specified name in this container.
      */
@@ -135,6 +138,15 @@ public final class BlobContainerClient {
      */
     public String getAccountName() {
         return this.client.getAccountName();
+    }
+
+    /**
+     * Get a client pointing to the account.
+     *
+     * @return {@link BlobServiceClient}
+     */
+    public BlobServiceClient getServiceClient() {
+        return this.client.getServiceClientBuilder().buildClient();
     }
 
     /**
@@ -225,7 +237,8 @@ public final class BlobContainerClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClient.createWithResponse#Map-PublicAccessType-Duration-Context}
      *
-     * @param metadata Metadata to associate with the container.
+     * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param accessType Specifies how the data in this container is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -312,7 +325,8 @@ public final class BlobContainerClient {
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClient.setMetadata#Map}
      *
-     * @param metadata Metadata to associate with the container.
+     * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      */
     public void setMetadata(Map<String, String> metadata) {
         setMetadataWithResponse(metadata, null, null, Context.NONE);
@@ -325,7 +339,8 @@ public final class BlobContainerClient {
      * <p><strong>Code Samples</strong></p>
      *
      * {@codesnippet com.azure.storage.blob.BlobContainerClient.setMetadataWithResponse#Map-BlobRequestConditions-Duration-Context}
-     * @param metadata Metadata to associate with the container.
+     * @param metadata Metadata to associate with the container. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -608,10 +623,10 @@ public final class BlobContainerClient {
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
-     * @see BlobServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how to get a
-     * user delegation key.
+     * See {@link BlobServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
+     * how to get a user delegation key.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
@@ -619,8 +634,31 @@ public final class BlobContainerClient {
     }
 
     /**
+     * Generates a user delegation SAS for the container using the specified {@link BlobServiceSasSignatureValues}.
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a user delegation SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link BlobServiceClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information on
+     * how to get a user delegation key..
+     * @param accountName The account name.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, String accountName, Context context) {
+        return this.client.generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey, accountName,
+            context);
+    }
+
+    /**
      * Generates a service SAS for the container using the specified {@link BlobServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -629,9 +667,27 @@ public final class BlobContainerClient {
      *
      * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues) {
         return this.client.generateSas(blobServiceSasSignatureValues);
+    }
+
+    /**
+     * Generates a service SAS for the container using the specified {@link BlobServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link BlobServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobContainerClient.generateSas#BlobServiceSasSignatureValues-Context}
+     *
+     * @param blobServiceSasSignatureValues {@link BlobServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(BlobServiceSasSignatureValues blobServiceSasSignatureValues, Context context) {
+        return this.client.generateSas(blobServiceSasSignatureValues, context);
     }
 }

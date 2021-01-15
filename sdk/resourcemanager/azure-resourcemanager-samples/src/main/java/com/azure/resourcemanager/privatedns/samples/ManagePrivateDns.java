@@ -6,14 +6,14 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.samples.Utils;
@@ -35,22 +35,22 @@ public class ManagePrivateDns {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String rgName = azure.sdkContext().randomResourceName("rgNEMV", 24);
-        final String vnetName = azure.sdkContext().randomResourceName("vnetwork-1", 24);
-        final String subnetName = azure.sdkContext().randomResourceName("subnet-1", 24);
-        final String linkName = azure.sdkContext().randomResourceName("vnlink-1", 24);
-        final String vm1Name = azure.sdkContext().randomResourceName("vm1-", 24);
-        final String vm2Name = azure.sdkContext().randomResourceName("vm2-", 24);
-        final String rsName = azure.sdkContext().randomResourceName("recordset1-", 24);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEMV", 24);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnetwork-1", 24);
+        final String subnetName = Utils.randomResourceName(azureResourceManager, "subnet-1", 24);
+        final String linkName = Utils.randomResourceName(azureResourceManager, "vnlink-1", 24);
+        final String vm1Name = Utils.randomResourceName(azureResourceManager, "vm1-", 24);
+        final String vm2Name = Utils.randomResourceName(azureResourceManager, "vm2-", 24);
+        final String rsName = Utils.randomResourceName(azureResourceManager, "recordset1-", 24);
         final String userName = "tirekicker";
         final String password = Utils.password();
 
         try {
-            ResourceGroup resourceGroup = azure.resourceGroups().define(rgName)
+            ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
                 .withRegion(Region.US_WEST)
                 .create();
 
@@ -58,7 +58,7 @@ public class ManagePrivateDns {
             // Creates a private DNS Zone
 
             System.out.println("Creating private DNS zone " + CUSTOM_DOMAIN_NAME + "...");
-            PrivateDnsZone privateDnsZone = azure.privateDnsZones().define(CUSTOM_DOMAIN_NAME)
+            PrivateDnsZone privateDnsZone = azureResourceManager.privateDnsZones().define(CUSTOM_DOMAIN_NAME)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
 
@@ -69,7 +69,7 @@ public class ManagePrivateDns {
             // Creates a virtual network
 
             System.out.println("Creating virtual network " + vnetName + "...");
-            Network network = azure.networks().define(vnetName)
+            Network network = azureResourceManager.networks().define(vnetName)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(rgName)
                 .withAddressSpace("10.2.0.0/16")
@@ -96,7 +96,7 @@ public class ManagePrivateDns {
             // Creates test virtual machines
 
             System.out.println("Creating first virtual machine " + vm1Name + "...");
-            VirtualMachine virtualMachine1 = azure.virtualMachines().define(vm1Name)
+            VirtualMachine virtualMachine1 = azureResourceManager.virtualMachines().define(vm1Name)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
@@ -115,7 +115,7 @@ public class ManagePrivateDns {
             System.out.println("Started first virtual machine " + virtualMachine1.name());
 
             System.out.println("Creating second virtual machine " + vm2Name + "...");
-            VirtualMachine virtualMachine2 = azure.virtualMachines().define(vm2Name)
+            VirtualMachine virtualMachine2 = azureResourceManager.virtualMachines().define(vm2Name)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
@@ -165,7 +165,7 @@ public class ManagePrivateDns {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -186,18 +186,19 @@ public class ManagePrivateDns {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

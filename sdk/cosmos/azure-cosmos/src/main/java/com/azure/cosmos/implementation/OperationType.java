@@ -10,6 +10,7 @@ public enum OperationType {
     AbortPartitionMigration,
     AbortSplit,
     AddComputeGatewayRequestCharges,
+    Batch,
     BatchApply,
     BatchReportThroughputUtilization,
     CompletePartitionMigration,
@@ -39,7 +40,7 @@ public enum OperationType {
     QueryPlan,
     Stop,
     Throttle,
-    Update,
+    Patch,
     Upsert;
 
     public boolean isWriteOperation() {
@@ -49,6 +50,7 @@ public enum OperationType {
                 this == ExecuteJavaScript ||
                 this == Replace ||
                 this == Upsert ||
-                this == Update;
+                this == Patch ||
+                this == Batch;
     }
 }

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ZoneUpdate model. */
+/** Describes a request to update a DNS zone. */
 @Fluent
 public final class ZoneUpdate {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ZoneUpdate.class);

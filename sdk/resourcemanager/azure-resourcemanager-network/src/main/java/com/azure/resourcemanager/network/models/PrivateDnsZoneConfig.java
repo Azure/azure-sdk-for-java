@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PrivateDnsZoneConfig model. */
+/** PrivateDnsZoneConfig resource. */
 @JsonFlatten
 @Fluent
 public class PrivateDnsZoneConfig {

@@ -5,13 +5,8 @@ package com.azure.resourcemanager.storage;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
-import java.util.List;
-import java.util.Map;
-
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountEncryptionKeySource;
@@ -21,7 +16,10 @@ import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.storage.models.StorageService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.Map;
 
 public class StorageAccountOperationsTests extends StorageManagementTest {
     private String rgName = "";
@@ -49,7 +47,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         //                .checkNameAvailability(SA_NAME);
         //        Assertions.assertEquals(true, result.isAvailable());
         // Create
-        Flux<Indexable> resourceStream =
+        Mono<StorageAccount> resourceStream =
             storageManager
                 .storageAccounts()
                 .define(saName)
@@ -60,7 +58,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .withHnsEnabled(true)
                 .withAzureFilesAadIntegrationEnabled(false)
                 .createAsync();
-        StorageAccount storageAccount = Utils.<StorageAccount>rootResource(resourceStream.last()).block();
+        StorageAccount storageAccount = resourceStream.block();
         Assertions.assertEquals(rgName, storageAccount.resourceGroupName());
         Assertions.assertEquals(SkuName.STANDARD_GRS, storageAccount.skuType().name());
         Assertions.assertTrue(storageAccount.isHnsEnabled());
@@ -112,7 +110,8 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertTrue(fileServiceEncryptionStatus.isEnabled()); // Service will enable this by default
 
         // Update
-        storageAccount = storageAccount.update().withSku(SkuName.STANDARD_LRS).withTag("tag2", "value2").apply();
+        storageAccount = storageAccount.update()
+            .withSku(StorageAccountSkuType.STANDARD_LRS).withTag("tag2", "value2").apply();
         Assertions.assertEquals(SkuName.STANDARD_LRS, storageAccount.skuType().name());
         Assertions.assertEquals(2, storageAccount.tags().size());
     }

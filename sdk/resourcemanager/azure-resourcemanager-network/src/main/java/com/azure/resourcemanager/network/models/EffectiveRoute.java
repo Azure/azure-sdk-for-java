@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EffectiveRoute model. */
+/** Effective Route. */
 @Fluent
 public final class EffectiveRoute {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveRoute.class);

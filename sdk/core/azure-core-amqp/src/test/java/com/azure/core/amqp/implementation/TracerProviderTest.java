@@ -26,7 +26,8 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 public class TracerProviderTest {
-    private static final String METHOD_NAME = "EventHubs.send";
+    private static final String SERVICE_BASE_NAME = "serviceBaseName";
+    private static final String METHOD_NAME = SERVICE_BASE_NAME + "send";
 
     @Mock
     private Tracer tracer;
@@ -50,7 +51,7 @@ public class TracerProviderTest {
     @Test
     public void startSpan() {
         // Act
-        tracerProvider.startSpan(Context.NONE, ProcessKind.SEND);
+        tracerProvider.startSpan(SERVICE_BASE_NAME, Context.NONE, ProcessKind.SEND);
 
         // Assert
         for (Tracer t : tracers) {
@@ -82,7 +83,7 @@ public class TracerProviderTest {
         );
 
         // Act
-        final Context updatedContext = tracerProvider.startSpan(startingContext, ProcessKind.SEND);
+        final Context updatedContext = tracerProvider.startSpan(SERVICE_BASE_NAME, startingContext, ProcessKind.SEND);
 
         // Assert
         // Want to ensure that the data added to the parent are available.
@@ -191,7 +192,7 @@ public class TracerProviderTest {
         );
 
         // Act
-        final Context updatedContext = tracerProvider.getSharedSpanBuilder(startingContext);
+        final Context updatedContext = tracerProvider.getSharedSpanBuilder(SERVICE_BASE_NAME, startingContext);
 
         // Assert
         final Optional<Object> spanBuilderData = updatedContext.getData(spanBuilderKey);

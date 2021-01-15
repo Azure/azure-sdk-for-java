@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Office365PolicyProperties model. */
+/** Network Virtual Appliance Sku Properties. */
 @Fluent
 public final class Office365PolicyProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Office365PolicyProperties.class);

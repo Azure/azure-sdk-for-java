@@ -9,8 +9,6 @@ import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.micrometer.core.instrument.Timer;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
@@ -65,7 +63,6 @@ public final class RntbdRequestArgs {
         return this.activityId;
     }
 
-    @JsonSerialize(using = ToStringSerializer.class)
     @JsonProperty
     public Duration lifetime() {
         return this.lifetime.elapsed();

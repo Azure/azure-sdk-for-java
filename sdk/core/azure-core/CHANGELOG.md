@@ -1,11 +1,59 @@
 # Release History
 
-## 1.9.0-beta.1 (Unreleased)
+## 1.13.0-beta.1 (Unreleased)
 
+
+## 1.12.0 (2021-01-11)
+
+### New Features
+
+- Added `AzureSasCredential` and `AzureSasCredentialPolicy` to standardize the ability to add SAS tokens to HTTP requests.
+
+### Bug Fixes
+
+- Fixed a bug where environment proxy configurations were not sanitizing the non-proxy host string into a valid `Pattern` format. [#18156](https://github.com/Azure/azure-sdk-for-java/issues/18156)
+
+### Dependency Updates
+
+- Updated `reactor-core` from `3.3.11.RELEASE` to `3.3.12.RELEASE`.
+- Updated `netty-tcnative-boringssl-static` from `2.0.34.Final` to `2.0.35.Final`.
+
+## 1.11.0 (2020-11-24)
+
+### New Features
+
+- Added `BinaryData` which allows for a format agnostic representation of binary information and supports
+ `ObjectSerializer` for serialization and deserialization.
+- Added functionality to eagerly read HTTP response bodies into memory when they will be deserialized into a POJO.
+
+## 1.10.0 (2020-10-29)
+
+### New Features
+
+- Added `JsonPatchDocument` to support `json-patch` functionality.
+- Added new Identity `Configuration` properties.
+
+### Bug Fixes
+
+- Modified `ContinuablePagedFlux` implementation to prevent `OutOfMemoryError` when retrieving many pages. [#12453](https://github.com/Azure/azure-sdk-for-java/issues/12453)
+- Fixed a bug where request retrying didn't consume the network response potentially leading to resource leaking.
+
+## 1.9.0 (2020-10-01)
+
+### New Features
+
+- Added `ServiceClientProtocol` to allow the client to indicate which networking protocol it will use.
+- Added `HttpPipelinePosition` which allows `HttpPipelinePolicy`s to indicate their position when used in a client builder.
+- Added default interface method `HttpPipelinePolicy.getPipelinePosition` that returns `HttpPipelinePosition.PER_RETRY`.
+
+### Bug Fixes
+
+- Fixed a bug where calling `UrlBuilder.parse` could result in an exception. [#15013](https://github.com/Azure/azure-sdk-for-java/issues/15013)
+- Changed `ContinuablePagedIterable` implementation to use a custom iterable to prevent additional, unrequested pages from being retrieved. [#15575](https://github.com/Azure/azure-sdk-for-java/issues/15575)
 
 ## 1.8.1 (2020-09-08)
 
-- Fixed bug where some `HttpRequests` would have their body consumed before being sent resulting in an exception being thrown.
+- Fixed a bug where some `HttpRequests` would have their body consumed before being sent resulting in an exception being thrown.
 
 ## 1.8.0 (2020-09-03)
 
@@ -13,7 +61,7 @@
 - New `InputStream` and `OutputStream` APIs for serialization and deserialization.
 - Added logging for the request attempt count to better correlate when requests are retried.
 - Improved request and response body logging performance by using bulk `ByteBuffer` reading instead of byte by byte reading.
-- Fixed bug where header logging checked for a log level of not equals `verbose` instead of equals `verbose`.
+- Fixed a bug where header logging checked for a log level of not equals `verbose` instead of equals `verbose`.
 - Updated `reactor-core` version to `3.3.9.RELEASE`.
 - Updated FasterXML Jackson versions to `2.11.2`.
 

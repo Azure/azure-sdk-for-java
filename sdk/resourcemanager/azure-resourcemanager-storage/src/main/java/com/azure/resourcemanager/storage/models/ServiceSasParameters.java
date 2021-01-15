@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ServiceSasParameters model. */
+/** The parameters to list service SAS credentials of a specific resource. */
 @Fluent
 public final class ServiceSasParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceSasParameters.class);

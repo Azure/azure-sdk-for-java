@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EnableRequest model. */
+/** Describes a receiver that should be resubscribed. */
 @Fluent
 public final class EnableRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EnableRequest.class);

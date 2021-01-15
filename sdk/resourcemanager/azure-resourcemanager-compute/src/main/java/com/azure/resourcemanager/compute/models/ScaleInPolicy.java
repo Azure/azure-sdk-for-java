@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ScaleInPolicy model. */
+/** Describes a scale-in policy for a virtual machine scale set. */
 @Fluent
 public final class ScaleInPolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleInPolicy.class);

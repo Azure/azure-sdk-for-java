@@ -33,7 +33,7 @@ public class ApplicationGatewayBackendHealthImpl implements ApplicationGatewayBa
     }
 
     @Override
-    public ApplicationGatewayBackendHealthPool inner() {
+    public ApplicationGatewayBackendHealthPool innerModel() {
         return this.inner;
     }
 

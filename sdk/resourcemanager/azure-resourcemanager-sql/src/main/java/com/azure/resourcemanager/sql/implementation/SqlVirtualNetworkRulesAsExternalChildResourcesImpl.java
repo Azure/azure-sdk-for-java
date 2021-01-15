@@ -6,7 +6,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlVirtualNetworkRule;
-import com.azure.resourcemanager.sql.fluent.inner.VirtualNetworkRuleInner;
+import com.azure.resourcemanager.sql.fluent.models.VirtualNetworkRuleInner;
 
 /** Represents a SQL Virtual Network Rules collection associated with an Azure SQL server. */
 public class SqlVirtualNetworkRulesAsExternalChildResourcesImpl

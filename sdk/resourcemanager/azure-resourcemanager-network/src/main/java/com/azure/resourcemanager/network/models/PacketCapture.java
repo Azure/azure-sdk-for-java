@@ -3,26 +3,26 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.PacketCaptureResultInner;
+import com.azure.resourcemanager.network.fluent.models.PacketCaptureResultInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** Client-side representation of Packet capture object, associated with Network Watcher. */
 @Fluent
-public interface PacketCapture extends HasInner<PacketCaptureResultInner>, HasName, HasId, Indexable {
+public interface PacketCapture extends HasInnerModel<PacketCaptureResultInner>, HasName, HasId, Indexable {
     /** @return the target id value */
     String targetId();
 
     /** @return the number of bytes captured per packet, the remaining bytes are truncated. */
-    int bytesToCapturePerPacket();
+    long bytesToCapturePerPacket();
 
     /** @return the maximum size of the capture output */
-    int totalBytesPerSession();
+    long totalBytesPerSession();
 
     /** @return the maximum duration of the capture session in seconds */
     int timeLimitInSeconds();
@@ -112,7 +112,7 @@ public interface PacketCapture extends HasInner<PacketCaptureResultInner>, HasNa
              * @param bytesToCapturePerPacket Number of bytes captured per packet
              * @return the next stage
              */
-            WithCreate withBytesToCapturePerPacket(int bytesToCapturePerPacket);
+            WithCreate withBytesToCapturePerPacket(long bytesToCapturePerPacket);
 
             /**
              * Set maximum size of the capture output.
@@ -120,7 +120,7 @@ public interface PacketCapture extends HasInner<PacketCaptureResultInner>, HasNa
              * @param totalBytesPerSession Maximum size of the capture output
              * @return the next stage
              */
-            WithCreate withTotalBytesPerSession(int totalBytesPerSession);
+            WithCreate withTotalBytesPerSession(long totalBytesPerSession);
 
             /**
              * Set maximum duration of the capture session in seconds.

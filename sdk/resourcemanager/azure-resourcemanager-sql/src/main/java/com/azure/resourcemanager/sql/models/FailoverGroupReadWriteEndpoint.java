@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The FailoverGroupReadWriteEndpoint model. */
+/** Read-write endpoint of the failover group instance. */
 @Fluent
 public final class FailoverGroupReadWriteEndpoint {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverGroupReadWriteEndpoint.class);

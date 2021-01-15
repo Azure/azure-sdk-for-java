@@ -32,25 +32,25 @@ class MetricAlertConditionImpl extends MetricAlertConditionBaseImpl<MetricCriter
     @Override
     public MetricAlertConditionImpl withCondition(
         MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold) {
-        this.inner().withOperator(Operator.fromString(condition.toString()));
-        this.inner().withTimeAggregation(AggregationType.fromString(timeAggregation.toString()));
-        this.inner().withThreshold(threshold);
+        this.innerModel().withOperator(Operator.fromString(condition.toString()));
+        this.innerModel().withTimeAggregation(AggregationType.fromString(timeAggregation.toString()));
+        this.innerModel().withThreshold(threshold);
         return this;
     }
 
     @Override
     public MetricAlertImpl attach() {
-        this.inner().withDimensions(new ArrayList<>(this.dimensions.values()));
+        this.innerModel().withDimensions(new ArrayList<>(this.dimensions.values()));
         return this.parent().withAlertCriteria(this);
     }
 
     @Override
     public MetricAlertRuleCondition condition() {
-        return MetricAlertRuleCondition.fromString(this.inner().operator().toString());
+        return MetricAlertRuleCondition.fromString(this.innerModel().operator().toString());
     }
 
     @Override
     public double threshold() {
-        return this.inner().threshold();
+        return this.innerModel().threshold();
     }
 }

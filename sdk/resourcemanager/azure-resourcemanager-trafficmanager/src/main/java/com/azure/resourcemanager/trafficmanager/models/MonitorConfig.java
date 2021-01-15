@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The MonitorConfig model. */
+/** Class containing endpoint monitoring settings in a Traffic Manager profile. */
 @Fluent
 public final class MonitorConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitorConfig.class);

@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.avs.v2020_03_20.implementation;
 
 import com.microsoft.azure.management.avs.v2020_03_20.OperationDisplay;
+import com.microsoft.azure.management.avs.v2020_03_20.OperationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -28,6 +29,25 @@ public class OperationInner {
     private OperationDisplay display;
 
     /**
+     * Gets or sets a value indicating whether the operation is a data action
+     * or not.
+     */
+    @JsonProperty(value = "isDataAction")
+    private Boolean isDataAction;
+
+    /**
+     * Origin of the operation.
+     */
+    @JsonProperty(value = "origin")
+    private String origin;
+
+    /**
+     * Properties of the operation.
+     */
+    @JsonProperty(value = "properties")
+    private OperationProperties properties;
+
+    /**
      * Get name of the operation being performed on this object.
      *
      * @return the name value
@@ -43,6 +63,66 @@ public class OperationInner {
      */
     public OperationDisplay display() {
         return this.display;
+    }
+
+    /**
+     * Get gets or sets a value indicating whether the operation is a data action or not.
+     *
+     * @return the isDataAction value
+     */
+    public Boolean isDataAction() {
+        return this.isDataAction;
+    }
+
+    /**
+     * Set gets or sets a value indicating whether the operation is a data action or not.
+     *
+     * @param isDataAction the isDataAction value to set
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withIsDataAction(Boolean isDataAction) {
+        this.isDataAction = isDataAction;
+        return this;
+    }
+
+    /**
+     * Get origin of the operation.
+     *
+     * @return the origin value
+     */
+    public String origin() {
+        return this.origin;
+    }
+
+    /**
+     * Set origin of the operation.
+     *
+     * @param origin the origin value to set
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withOrigin(String origin) {
+        this.origin = origin;
+        return this;
+    }
+
+    /**
+     * Get properties of the operation.
+     *
+     * @return the properties value
+     */
+    public OperationProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set properties of the operation.
+     *
+     * @param properties the properties value to set
+     * @return the OperationInner object itself.
+     */
+    public OperationInner withProperties(OperationProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ProtocolConfiguration model. */
+/** Configuration of the protocol. */
 @Fluent
 public final class ProtocolConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtocolConfiguration.class);

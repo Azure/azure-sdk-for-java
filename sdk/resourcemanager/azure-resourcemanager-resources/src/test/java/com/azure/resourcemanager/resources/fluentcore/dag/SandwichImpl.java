@@ -47,6 +47,6 @@ public class SandwichImpl
 
     @Override
     protected Mono<SandwichInner> getInnerAsync() {
-        return Mono.just(this.inner());
+        return Mono.just(this.innerModel());
     }
 }

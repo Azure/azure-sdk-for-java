@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TrafficAnalyticsProperties model. */
+/** Parameters that define the configuration of traffic analytics. */
 @Fluent
 public final class TrafficAnalyticsProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficAnalyticsProperties.class);

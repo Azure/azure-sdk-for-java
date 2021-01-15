@@ -7,12 +7,11 @@ package com.azure.resourcemanager.storage.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.samples.Utils;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
 import reactor.core.publisher.Flux;
 
@@ -27,13 +26,13 @@ public final class ManageStorageAccountAsync {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(final Azure azure) {
-        final String storageAccountName = azure.sdkContext().randomResourceName("sa", 8);
-        final String storageAccountName2 = azure.sdkContext().randomResourceName("sa2", 8);
-        final String rgName = azure.sdkContext().randomResourceName("rgSTMS", 8);
+    public static boolean runSample(final AzureResourceManager azureResourceManager) {
+        final String storageAccountName = Utils.randomResourceName(azureResourceManager, "sa", 8);
+        final String storageAccountName2 = Utils.randomResourceName(azureResourceManager, "sa2", 8);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgSTMS", 8);
         try {
 
             // ============================================================
@@ -42,22 +41,18 @@ public final class ManageStorageAccountAsync {
             System.out.println("Creating a Storage Accounts");
 
             Flux.merge(
-                    azure.storageAccounts().define(storageAccountName)
+                    azureResourceManager.storageAccounts().define(storageAccountName)
                             .withRegion(Region.US_EAST)
                             .withNewResourceGroup(rgName)
                             .createAsync(),
-                    azure.storageAccounts().define(storageAccountName2)
+                    azureResourceManager.storageAccounts().define(storageAccountName2)
                             .withRegion(Region.US_EAST)
                             .withNewResourceGroup(rgName)
                             .createAsync())
-                    .map(indexable -> {
-                        if (indexable instanceof StorageAccount) {
-                            StorageAccount storageAccount = (StorageAccount) indexable;
-
-                            System.out.println("Created a Storage Account:");
-                            Utils.print(storageAccount);
-                        }
-                        return indexable;
+                    .map(storageAccount -> {
+                        System.out.println("Created a Storage Account:");
+                        Utils.print(storageAccount);
+                        return storageAccount;
                     }).blockLast();
 
             // ============================================================
@@ -65,7 +60,7 @@ public final class ManageStorageAccountAsync {
 
             System.out.println("Listing storage accounts");
 
-            StorageAccounts storageAccounts = azure.storageAccounts();
+            StorageAccounts storageAccounts = azureResourceManager.storageAccounts();
 
             storageAccounts.listByResourceGroupAsync(rgName)
                     .flatMap(storageAccount -> {
@@ -90,14 +85,14 @@ public final class ManageStorageAccountAsync {
                     .flatMap(storageAccount -> {
                         System.out.println("Deleting a storage account - " + storageAccount.name()
                                 + " created @ " + storageAccount.creationTime());
-                        return azure.storageAccounts().deleteByIdAsync(storageAccount.id());
+                        return azureResourceManager.storageAccounts().deleteByIdAsync(storageAccount.id());
                     }).blockLast();
 
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().deleteByNameAsync(rgName).block();
+                azureResourceManager.resourceGroups().deleteByNameAsync(rgName).block();
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (Exception e) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -114,18 +109,19 @@ public final class ManageStorageAccountAsync {
         try {
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

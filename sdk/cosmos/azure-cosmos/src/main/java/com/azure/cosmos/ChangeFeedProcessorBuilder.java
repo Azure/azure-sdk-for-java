@@ -124,6 +124,12 @@ public class ChangeFeedProcessorBuilder {
             .handleChanges(this.consumer);
 
         if (this.changeFeedProcessorOptions != null) {
+            if (this.changeFeedProcessorOptions.getLeaseRenewInterval().compareTo(this.changeFeedProcessorOptions.getLeaseExpirationInterval()) >= 0) {
+                // Lease renewer task must execute at a faster frequency than expiration setting; otherwise this will
+                //  force a lot of resets and lead to a poor overall performance of ChangeFeedProcessor.
+                throw new IllegalArgumentException("changeFeedProcessorOptions: expecting leaseRenewInterval less than leaseExpirationInterval");
+            }
+
             builder.options(this.changeFeedProcessorOptions);
         }
 

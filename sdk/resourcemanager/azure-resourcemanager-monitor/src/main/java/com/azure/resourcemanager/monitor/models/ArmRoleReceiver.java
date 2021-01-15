@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ArmRoleReceiver model. */
+/** An arm role receiver. */
 @Fluent
 public final class ArmRoleReceiver {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmRoleReceiver.class);

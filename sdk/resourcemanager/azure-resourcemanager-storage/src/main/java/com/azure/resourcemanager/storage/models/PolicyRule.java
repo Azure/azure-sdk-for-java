@@ -5,13 +5,13 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.List;
 
 /** An immutable client-side representation of a rule in an Azure Management Policy. */
 @Fluent
-public interface PolicyRule extends HasInner<ManagementPolicyRule> {
+public interface PolicyRule extends HasInnerModel<ManagementPolicyRule> {
     /** @return the name of the rule */
     String name();
 

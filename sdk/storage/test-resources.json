@@ -29,6 +29,7 @@
         "authorizationApiVersion": "2018-09-01-preview",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/ba92f5b4-2d11-453d-a403-e96b0029c9fe')]",
         "contributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c')]",
+        "blobDataOwnerRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/b7e6dc6d-f1e8-4753-8033-0f276bb0955b')]",
         "primaryAccountName": "[concat('prim', parameters('baseName'))]",
         "secondaryAccountName": "[concat('sec', parameters('baseName'))]",
         "premiumAccountName": "[concat('prem', parameters('baseName'))]",
@@ -65,6 +66,18 @@
             }
         },
         {
+            "type": "Microsoft.Authorization/roleAssignments",
+            "apiVersion": "[variables('authorizationApiVersion')]",
+            "name": "[guid(concat('blobDataOwnerRoleId', variables('primaryAccountName')))]",
+            "dependsOn": [
+                "[variables('primaryAccountName')]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[variables('blobDataOwnerRoleId')]",
+                "principalId": "[parameters('testApplicationOid')]"
+            }
+        },
+        {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[variables('primaryAccountName')]",
@@ -97,6 +110,20 @@
             }
         },
         {
+            "type": "Microsoft.Storage/storageAccounts/blobServices",
+            "apiVersion": "[variables('storageApiVersion')]",
+            "name": "[concat(variables('primaryAccountName'), '/default')]",
+            "properties": {
+            "containerDeleteRetentionPolicy": {
+                "enabled": true,
+                "days": 1
+              }
+        },
+        "dependsOn": [
+          "[variables('primaryAccountName')]"
+        ]
+        },
+        {
             "type": "Microsoft.Storage/storageAccounts/fileServices",
             "apiVersion": "[variables('storageApiVersion')]",
             "name": "[concat(variables('primaryAccountName'), '/default')]",
@@ -105,7 +132,7 @@
                 "enabled": true,
                 "days": 1
             }
-          },
+            },
             "dependsOn": [
                 "[variables('primaryAccountName')]"
             ]
@@ -115,14 +142,20 @@
           "apiVersion": "[variables('storageApiVersion')]",
           "name": "[concat(variables('primaryAccountName'), '/testscope1')]",
           "properties": {
-          }
+          },
+          "dependsOn": [
+            "[variables('primaryAccountName')]"
+          ]
         },
         {
           "type": "Microsoft.Storage/storageAccounts/encryptionScopes",
           "apiVersion": "[variables('storageApiVersion')]",
           "name": "[concat(variables('primaryAccountName'), '/testscope2')]",
           "properties": {
-          }
+          },
+          "dependsOn": [
+            "[variables('primaryAccountName')]"
+          ]
         },
         {
             "type": "Microsoft.Storage/storageAccounts",

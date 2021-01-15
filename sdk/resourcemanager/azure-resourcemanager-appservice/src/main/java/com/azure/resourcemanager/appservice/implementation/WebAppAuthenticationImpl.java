@@ -6,7 +6,7 @@ import com.azure.resourcemanager.appservice.models.BuiltInAuthenticationProvider
 import com.azure.resourcemanager.appservice.models.UnauthenticatedClientAction;
 import com.azure.resourcemanager.appservice.models.WebAppAuthentication;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteAuthSettingsInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteAuthSettingsInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import java.util.ArrayList;
 
@@ -45,14 +45,14 @@ class WebAppAuthenticationImpl<FluentT extends WebAppBase, FluentImplT extends W
 
     @Override
     public WebAppAuthenticationImpl<FluentT, FluentImplT> withAnonymousAuthentication() {
-        inner().withUnauthenticatedClientAction(UnauthenticatedClientAction.ALLOW_ANONYMOUS);
+        innerModel().withUnauthenticatedClientAction(UnauthenticatedClientAction.ALLOW_ANONYMOUS);
         return this;
     }
 
     @Override
     public WebAppAuthenticationImpl<FluentT, FluentImplT> withDefaultAuthenticationProvider(
         BuiltInAuthenticationProvider provider) {
-        inner()
+        innerModel()
             .withUnauthenticatedClientAction(UnauthenticatedClientAction.REDIRECT_TO_LOGIN_PAGE)
             .withDefaultProvider(provider);
         return this;
@@ -60,46 +60,46 @@ class WebAppAuthenticationImpl<FluentT extends WebAppBase, FluentImplT extends W
 
     @Override
     public WebAppAuthenticationImpl<FluentT, FluentImplT> withActiveDirectory(String clientId, String issuerUrl) {
-        inner().withClientId(clientId).withIssuer(issuerUrl);
+        innerModel().withClientId(clientId).withIssuer(issuerUrl);
         return this;
     }
 
     @Override
     public WebAppAuthenticationImpl<FluentT, FluentImplT> withFacebook(String appId, String appSecret) {
-        inner().withFacebookAppId(appId).withFacebookAppSecret(appSecret);
+        innerModel().withFacebookAppId(appId).withFacebookAppSecret(appSecret);
         return this;
     }
 
     @Override
     public WebAppAuthenticationImpl<FluentT, FluentImplT> withGoogle(String clientId, String clientSecret) {
-        inner().withGoogleClientId(clientId).withGoogleClientSecret(clientSecret);
+        innerModel().withGoogleClientId(clientId).withGoogleClientSecret(clientSecret);
         return this;
     }
 
     @Override
     public WebAppAuthenticationImpl<FluentT, FluentImplT> withTwitter(String apiKey, String apiSecret) {
-        inner().withTwitterConsumerKey(apiKey).withTwitterConsumerSecret(apiSecret);
+        innerModel().withTwitterConsumerKey(apiKey).withTwitterConsumerSecret(apiSecret);
         return this;
     }
 
     @Override
     public WebAppAuthenticationImpl<FluentT, FluentImplT> withMicrosoft(String clientId, String clientSecret) {
-        inner().withMicrosoftAccountClientId(clientId).withMicrosoftAccountClientSecret(clientSecret);
+        innerModel().withMicrosoftAccountClientId(clientId).withMicrosoftAccountClientSecret(clientSecret);
         return this;
     }
 
     @Override
     public WebAppAuthenticationImpl<FluentT, FluentImplT> withTokenStore(boolean enabled) {
-        inner().withTokenStoreEnabled(enabled);
+        innerModel().withTokenStoreEnabled(enabled);
         return this;
     }
 
     @Override
     public WebAppAuthenticationImpl<FluentT, FluentImplT> withAllowedExternalRedirectUrl(String url) {
-        if (inner().allowedExternalRedirectUrls() == null) {
-            inner().withAllowedExternalRedirectUrls(new ArrayList<String>());
+        if (innerModel().allowedExternalRedirectUrls() == null) {
+            innerModel().withAllowedExternalRedirectUrls(new ArrayList<String>());
         }
-        inner().allowedExternalRedirectUrls().add(url);
+        innerModel().allowedExternalRedirectUrls().add(url);
         return this;
     }
 }

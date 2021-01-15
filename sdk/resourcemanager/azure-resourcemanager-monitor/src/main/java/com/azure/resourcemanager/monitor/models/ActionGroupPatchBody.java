@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ActionGroupPatchBody model. */
+/** An action group object for the body of patch operations. */
 @JsonFlatten
 @Fluent
 public class ActionGroupPatchBody {

@@ -7,17 +7,19 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareClientBuilder;
 import com.azure.storage.file.share.models.ShareFileItem;
+
+import java.time.Duration;
 
 /**
  * Azure Container Instance sample for managing container instances with Azure File Share mount.
@@ -30,14 +32,14 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
-        final String rgName = azure.sdkContext().randomResourceName("rgACI", 15);
-        final String aciName = azure.sdkContext().randomResourceName("acisample", 20);
-        final String saName = azure.sdkContext().randomResourceName("sa", 20);
-        final String shareName = azure.sdkContext().randomResourceName("fileshare", 20);
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgACI", 15);
+        final String aciName = Utils.randomResourceName(azureResourceManager, "acisample", 20);
+        final String saName = Utils.randomResourceName(azureResourceManager, "sa", 20);
+        final String shareName = Utils.randomResourceName(azureResourceManager, "fileshare", 20);
         final String containerImageName = "seanmckenna/aci-hellofiles";
         final String volumeMountName = "aci-helloshare";
 
@@ -46,7 +48,7 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
             //=============================================================
             // Create a new storage account and an Azure file share resource
 
-            StorageAccount storageAccount = azure.storageAccounts().define(saName)
+            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(saName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName)
                 .create();
@@ -54,10 +56,10 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
             StorageAccountKey storageAccountKey = storageAccount.getKeys().get(0);
 
             ShareClient shareClient = new ShareClientBuilder()
-                .connectionString(com.azure.resourcemanager.resources.fluentcore.utils.Utils.getStorageConnectionString(
+                .connectionString(ResourceManagerUtils.getStorageConnectionString(
                     saName,
                     storageAccountKey.value(),
-                    azure.containerGroups().manager().environment()
+                    azureResourceManager.containerGroups().manager().environment()
                 ))
                 .shareName(shareName)
                 .buildClient();
@@ -68,7 +70,7 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
             //   using public Docker image "seanmckenna/aci-hellofiles" which mounts the file share created previously
             //   as read/write shared container volume.
 
-            ContainerGroup containerGroup = azure.containerGroups().define(aciName)
+            ContainerGroup containerGroup = azureResourceManager.containerGroups().define(aciName)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(rgName)
                 .withLinux()
@@ -93,10 +95,10 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
 
             // warm up
             System.out.println("Warming up " + containerGroup.ipAddress());
-            Utils.curl("http://" + containerGroup.ipAddress());
-            SdkContext.sleep(15000);
+            Utils.sendGetRequest("http://" + containerGroup.ipAddress());
+            ResourceManagerUtils.sleep(Duration.ofSeconds(15));
             System.out.println("CURLing " + containerGroup.ipAddress());
-            System.out.println(Utils.curl("http://" + containerGroup.ipAddress()));
+            System.out.println(Utils.sendGetRequest("http://" + containerGroup.ipAddress()));
 
             //=============================================================
             // Check the container instance logs
@@ -107,7 +109,7 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
             //=============================================================
             // Remove the container group
 
-            azure.containerGroups().deleteById(containerGroup.id());
+            azureResourceManager.containerGroups().deleteById(containerGroup.id());
 
             //=============================================================
             // List the file share content
@@ -122,7 +124,7 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -144,18 +146,19 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

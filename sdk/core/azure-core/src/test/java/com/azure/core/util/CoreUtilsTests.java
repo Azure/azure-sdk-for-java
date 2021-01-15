@@ -59,7 +59,7 @@ public class CoreUtilsTests {
         assertNotNull(CoreUtils.getProperties("azure-core.properties").get("version"));
         assertNotNull(CoreUtils.getProperties("azure-core.properties").get("name"));
         assertTrue(CoreUtils.getProperties("azure-core.properties").get("version")
-            .matches("\\d.\\d.\\d([-a-zA-Z0-9.])*"));
+            .matches("\\d+\\.\\d+\\.\\d+(-beta\\.\\d+)?"));
     }
 
     @Test

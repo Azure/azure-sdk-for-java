@@ -9,19 +9,21 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BootDiagnosticsInstanceView model. */
+/** The instance view of a virtual machine boot diagnostics. */
 @Immutable
 public final class BootDiagnosticsInstanceView {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BootDiagnosticsInstanceView.class);
 
     /*
-     * The console screenshot blob URI.
+     * The console screenshot blob URI. <br><br>NOTE: This will **not** be set
+     * if boot diagnostics is currently enabled with managed storage.
      */
     @JsonProperty(value = "consoleScreenshotBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String consoleScreenshotBlobUri;
 
     /*
-     * The Linux serial console log blob Uri.
+     * The serial console log blob Uri. <br><br>NOTE: This will **not** be set
+     * if boot diagnostics is currently enabled with managed storage.
      */
     @JsonProperty(value = "serialConsoleLogBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String serialConsoleLogBlobUri;
@@ -35,7 +37,8 @@ public final class BootDiagnosticsInstanceView {
     private InstanceViewStatus status;
 
     /**
-     * Get the consoleScreenshotBlobUri property: The console screenshot blob URI.
+     * Get the consoleScreenshotBlobUri property: The console screenshot blob URI. &lt;br&gt;&lt;br&gt;NOTE: This will
+     * **not** be set if boot diagnostics is currently enabled with managed storage.
      *
      * @return the consoleScreenshotBlobUri value.
      */
@@ -44,7 +47,8 @@ public final class BootDiagnosticsInstanceView {
     }
 
     /**
-     * Get the serialConsoleLogBlobUri property: The Linux serial console log blob Uri.
+     * Get the serialConsoleLogBlobUri property: The serial console log blob Uri. &lt;br&gt;&lt;br&gt;NOTE: This will
+     * **not** be set if boot diagnostics is currently enabled with managed storage.
      *
      * @return the serialConsoleLogBlobUri value.
      */

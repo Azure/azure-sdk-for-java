@@ -188,5 +188,15 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
 
             return new Document((ObjectNode) this.get(PAYLOAD_PROPERTY_NAME));
         }
+
+        @Override
+        public boolean equals(Object o) {
+            return super.equals(o);
+        }
+
+        @Override
+        public int hashCode() {
+            return super.hashCode();
+        }
     }
 }

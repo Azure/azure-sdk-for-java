@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayRewriteRuleSet model. */
+/** Rewrite rule set of an application gateway. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayRewriteRuleSet extends SubResource {
@@ -99,6 +99,13 @@ public class ApplicationGatewayRewriteRuleSet extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayRewriteRuleSet withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**

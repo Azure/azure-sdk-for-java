@@ -23,6 +23,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.CertificateUtil;
+import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -44,10 +45,13 @@ import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessExcepti
 import com.sun.jna.Platform;
 import reactor.core.publisher.Mono;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -62,6 +66,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.GeneralSecurityException;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -110,13 +116,18 @@ public class IdentityClient {
     private static final String DEFAULT_CONFIDENTIAL_KEYRING_ITEM_NAME = DEFAULT_CONFIDENTIAL_KEYCHAIN_ACCOUNT;
     private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
+    private static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
+    private static final String MSI_ENDPOINT_VERSION = "2017-09-01";
+    private static final String ADFS_TENANT = "adfs";
     private static final String HTTP_LOCALHOST = "http://localhost";
+    private static final String SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION = "2019-07-01-preview";
     private final ClientLogger logger = new ClientLogger(IdentityClient.class);
 
     private final IdentityClientOptions options;
     private final String tenantId;
     private final String clientId;
     private final String clientSecret;
+    private final InputStream certificate;
     private final String certificatePath;
     private final String certificatePassword;
     private HttpPipelineAdapter httpPipelineAdapter;
@@ -130,13 +141,14 @@ public class IdentityClient {
      * @param clientId the client ID of the application.
      * @param clientSecret the client secret of the application.
      * @param certificatePath the path to the PKCS12 or PEM certificate of the application.
+     * @param certificate the PKCS12 or PEM certificate of the application.
      * @param certificatePassword the password protecting the PFX certificate.
      * @param isSharedTokenCacheCredential Indicate whether the credential is
      * {@link com.azure.identity.SharedTokenCacheCredential} or not.
      * @param options the options configuring the client.
      */
-    IdentityClient(String tenantId, String clientId, String clientSecret,
-                   String certificatePath, String certificatePassword, boolean isSharedTokenCacheCredential,
+    IdentityClient(String tenantId, String clientId, String clientSecret, String certificatePath,
+                   InputStream certificate, String certificatePassword, boolean isSharedTokenCacheCredential,
                    IdentityClientOptions options) {
         if (tenantId == null) {
             tenantId = "organizations";
@@ -148,6 +160,7 @@ public class IdentityClient {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.certificatePath = certificatePath;
+        this.certificate = certificate;
         this.certificatePassword = certificatePassword;
         this.options = options;
 
@@ -167,17 +180,24 @@ public class IdentityClient {
         IClientCredential credential;
         if (clientSecret != null) {
             credential = ClientCredentialFactory.createFromSecret(clientSecret);
-        } else if (certificatePath != null) {
+        } else if (certificate != null || certificatePath != null) {
             try {
                 if (certificatePassword == null) {
-                    byte[] pemCertificateBytes = Files.readAllBytes(Paths.get(certificatePath));
+                    byte[] pemCertificateBytes = getCertificateBytes();
 
-                    credential = ClientCredentialFactory.createFromCertificate(
-                        CertificateUtil.privateKeyFromPem(pemCertificateBytes),
-                        CertificateUtil.publicKeyFromPem(pemCertificateBytes));
+                    List<X509Certificate> x509CertificateList =  CertificateUtil.publicKeyFromPem(pemCertificateBytes);
+                    PrivateKey privateKey = CertificateUtil.privateKeyFromPem(pemCertificateBytes);
+                    if (x509CertificateList.size() == 1) {
+                        credential = ClientCredentialFactory.createFromCertificate(
+                            privateKey, x509CertificateList.get(0));
+                    } else {
+                        credential = ClientCredentialFactory.createFromCertificateChain(
+                            privateKey, x509CertificateList);
+                    }
                 } else {
+                    InputStream pfxCertificateStream = getCertificateInputStream();
                     credential = ClientCredentialFactory.createFromCertificate(
-                        new FileInputStream(certificatePath), certificatePassword);
+                            pfxCertificateStream, certificatePassword);
                 }
             } catch (IOException | GeneralSecurityException e) {
                 throw logger.logExceptionAsError(new RuntimeException(
@@ -187,6 +207,7 @@ public class IdentityClient {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Must provide client secret or client certificate path"));
         }
+
         ConfidentialClientApplication.Builder applicationBuilder =
             ConfidentialClientApplication.builder(clientId, credential);
         try {
@@ -194,6 +215,8 @@ public class IdentityClient {
         } catch (MalformedURLException e) {
             throw logger.logExceptionAsWarning(new IllegalStateException(e));
         }
+
+        applicationBuilder.sendX5c(options.isIncludeX5c());
 
         initializeHttpPipelineAdapter();
         if (httpPipelineAdapter != null) {
@@ -337,6 +360,10 @@ public class IdentityClient {
                 }
             } else if (authType.equalsIgnoreCase("DC")) {
 
+                if (isADFSTenant()) {
+                    return Mono.error(new CredentialUnavailableException("IntelliJCredential  "
+                                         + "authentication unavailable. ADFS tenant/authorities are not supported."));
+                }
                 JsonNode intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
                 String refreshToken = intelliJCredentials.get("refreshToken").textValue();
 
@@ -592,6 +619,10 @@ public class IdentityClient {
      */
     public Mono<MsalToken> authenticateWithVsCodeCredential(TokenRequestContext request, String cloud) {
 
+        if (isADFSTenant()) {
+            return Mono.error(new CredentialUnavailableException("VsCodeCredential  "
+                                         + "authentication unavailable. ADFS tenant/authorities are not supported."));
+        }
         VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
 
         String credential = accessor.getCredentials("VS Code Azure", cloud);
@@ -639,10 +670,21 @@ public class IdentityClient {
      * @param port the port on which the HTTP server is listening
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, int port) {
+    public Mono<MsalToken> authenticateWithBrowserInteraction(TokenRequestContext request, Integer port,
+                                                              String redirectUrl) {
         URI redirectUri;
+        String redirect;
+
+        if (port != null) {
+            redirect = HTTP_LOCALHOST + ":" + port;
+        } else if (redirectUrl != null) {
+            redirect = redirectUrl;
+        } else {
+            redirect = HTTP_LOCALHOST;
+        }
+
         try {
-            redirectUri = new URI(HTTP_LOCALHOST + ":" + port);
+            redirectUri = new URI(redirect);
         } catch (URISyntaxException e) {
             return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
         }
@@ -706,17 +748,189 @@ public class IdentityClient {
                     }));
     }
 
+
     /**
-     * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
+     * Asynchronously acquire a token from the Azure Arc Managed Service Identity endpoint.
      *
-     * @param msiEndpoint the endpoint to acquire token from
-     * @param msiSecret the secret to acquire token with
+     * @param identityEndpoint the Identity endpoint to acquire token from
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String msiEndpoint, String msiSecret,
+    public Mono<AccessToken> authenticateToArcManagedIdentityEndpoint(String identityEndpoint,
+                                                                      TokenRequestContext request) {
+        return Mono.fromCallable(() -> {
+            HttpURLConnection connection = null;
+            StringBuilder payload = new StringBuilder();
+            payload.append("resource=");
+            payload.append(URLEncoder.encode(ScopeUtil.scopesToResource(request.getScopes()), "UTF-8"));
+            payload.append("&api-version=");
+            payload.append(URLEncoder.encode("2019-11-01", "UTF-8"));
+
+            URL url = new URL(String.format("%s?%s", identityEndpoint, payload));
+
+
+            String secretKey = null;
+            try {
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Metadata", "true");
+                connection.connect();
+
+                new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
+            } catch (IOException e) {
+                if (connection == null) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException("Failed to initialize "
+                                                                       + "Http URL connection to the endpoint.",
+                        null, e));
+                }
+                int status = connection.getResponseCode();
+                if (status != 401) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException(String.format("Expected a 401"
+                         + " Unauthorized response from Azure Arc Managed Identity Endpoint, received: %d", status),
+                        null, e));
+                }
+
+                String realm = connection.getHeaderField("WWW-Authenticate");
+
+                if (realm == null) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a value"
+                           + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint",
+                        null));
+                }
+
+                int separatorIndex = realm.indexOf("=");
+                if (separatorIndex == -1) {
+                    throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a correct value"
+                           + " for WWW-Authenticate header in the response from Azure Arc Managed Identity Endpoint",
+                        null));
+                }
+
+                String secretKeyPath = realm.substring(separatorIndex + 1);
+                secretKey = new String(Files.readAllBytes(Paths.get(secretKeyPath)), StandardCharsets.UTF_8);
+
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+
+
+            if (secretKey == null) {
+                throw logger.logExceptionAsError(new ClientAuthenticationException("Did not receive a secret value"
+                     + " in the response from Azure Arc Managed Identity Endpoint",
+                    null));
+            }
+
+
+            try {
+
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+                connection.setRequestProperty("Authorization", String.format("Basic %s", secretKey));
+                connection.setRequestProperty("Metadata", "true");
+                connection.connect();
+
+                Scanner scanner = new Scanner(connection.getInputStream(), "UTF-8").useDelimiter("\\A");
+                String result = scanner.hasNext() ? scanner.next() : "";
+
+                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+        });
+    }
+
+    /**
+     * Asynchronously acquire a token from the Azure Service Fabric Managed Service Identity endpoint.
+     *
+     * @param identityEndpoint the Identity endpoint to acquire token from
+     * @param identityHeader the identity header to acquire token with
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateToServiceFabricManagedIdentityEndpoint(String identityEndpoint,
+                                                                                String identityHeader,
+                                                                                String thumbprint,
+                                                                                TokenRequestContext request) {
+        return Mono.fromCallable(() -> {
+
+            HttpsURLConnection connection = null;
+            String endpoint = identityEndpoint;
+            String headerValue = identityHeader;
+            String endpointVersion = SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION;
+
+            String resource = ScopeUtil.scopesToResource(request.getScopes());
+            StringBuilder payload = new StringBuilder();
+
+            payload.append("resource=");
+            payload.append(URLEncoder.encode(resource, "UTF-8"));
+            payload.append("&api-version=");
+            payload.append(URLEncoder.encode(endpointVersion, "UTF-8"));
+            if (clientId != null) {
+                payload.append("&client_id=");
+                payload.append(URLEncoder.encode(clientId, "UTF-8"));
+            }
+
+            try {
+
+                URL url = new URL(String.format("%s?%s", endpoint, payload));
+                connection = (HttpsURLConnection) url.openConnection();
+
+                IdentitySslUtil.addTrustedCertificateThumbprint(getClass().getSimpleName(), connection,
+                    thumbprint);
+                connection.setRequestMethod("GET");
+                if (headerValue != null) {
+                    connection.setRequestProperty("Secret", headerValue);
+                }
+                connection.setRequestProperty("Metadata", "true");
+
+                connection.connect();
+
+                Scanner s = new Scanner(connection.getInputStream(), StandardCharsets.UTF_8.name())
+                                .useDelimiter("\\A");
+
+                String result = s.hasNext() ? s.next() : "";
+                return SERIALIZER_ADAPTER.deserialize(result, MSIToken.class, SerializerEncoding.JSON);
+
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+        });
+    }
+
+    /**
+     * Asynchronously acquire a token from the App Service Managed Service Identity endpoint.
+     *
+     * @param identityEndpoint the Identity endpoint to acquire token from
+     * @param identityHeader the identity header to acquire token with
+     * @param msiEndpoint the MSI endpoint to acquire token from
+     * @param msiSecret the msi secret to acquire token with
+     * @param request the details of the token request
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String identityEndpoint, String identityHeader,
+                                                                   String msiEndpoint, String msiSecret,
                                                                    TokenRequestContext request) {
         return Mono.fromCallable(() -> {
+            String endpoint;
+            String headerValue;
+            String endpointVersion;
+
+            if (identityEndpoint != null) {
+                endpoint = identityEndpoint;
+                headerValue = identityHeader;
+                endpointVersion = IDENTITY_ENDPOINT_VERSION;
+            } else {
+                endpoint = msiEndpoint;
+                headerValue = msiSecret;
+                endpointVersion = MSI_ENDPOINT_VERSION;
+            }
+
             String resource = ScopeUtil.scopesToResource(request.getScopes());
             HttpURLConnection connection = null;
             StringBuilder payload = new StringBuilder();
@@ -724,18 +938,26 @@ public class IdentityClient {
             payload.append("resource=");
             payload.append(URLEncoder.encode(resource, "UTF-8"));
             payload.append("&api-version=");
-            payload.append(URLEncoder.encode("2017-09-01", "UTF-8"));
+            payload.append(URLEncoder.encode(endpointVersion, "UTF-8"));
             if (clientId != null) {
-                payload.append("&clientid=");
+                if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
+                    payload.append("&client_id=");
+                } else {
+                    payload.append("&clientid=");
+                }
                 payload.append(URLEncoder.encode(clientId, "UTF-8"));
             }
             try {
-                URL url = new URL(String.format("%s?%s", msiEndpoint, payload));
+                URL url = new URL(String.format("%s?%s", endpoint, payload));
                 connection = (HttpURLConnection) url.openConnection();
 
                 connection.setRequestMethod("GET");
-                if (msiSecret != null) {
-                    connection.setRequestProperty("Secret", msiSecret);
+                if (headerValue != null) {
+                    if (endpointVersion.equals(IDENTITY_ENDPOINT_VERSION)) {
+                        connection.setRequestProperty("X-IDENTITY-HEADER", headerValue);
+                    } else {
+                        connection.setRequestProperty("Secret", headerValue);
+                    }
                 }
                 connection.setRequestProperty("Metadata", "true");
 
@@ -812,6 +1034,12 @@ public class IdentityClient {
                                 "ManagedIdentityCredential authentication unavailable. "
                                     + "Connection to IMDS endpoint cannot be established, "
                                     + e.getMessage() + ".", e));
+                    }
+                    if (responseCode == 400) {
+                        throw logger.logExceptionAsError(
+                            new CredentialUnavailableException(
+                                "ManagedIdentityCredential authentication unavailable. "
+                                    + "Connection to IMDS endpoint cannot be established.", null));
                     }
                     if (responseCode == 410
                             || responseCode == 429
@@ -975,5 +1203,36 @@ public class IdentityClient {
      */
     public String getClientId() {
         return clientId;
+    }
+
+    private boolean isADFSTenant() {
+        return this.tenantId.equals(ADFS_TENANT);
+    }
+
+    private byte[] getCertificateBytes() throws IOException {
+        if (certificatePath != null) {
+            return Files.readAllBytes(Paths.get(certificatePath));
+        } else if (certificate != null) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int read = certificate.read(buffer, 0, buffer.length);
+            while (read != -1) {
+                outputStream.write(buffer, 0, read);
+                read = certificate.read(buffer, 0, buffer.length);
+            }
+            return outputStream.toByteArray();
+        } else {
+            return new byte[0];
+        }
+    }
+
+    private InputStream getCertificateInputStream() throws IOException {
+        if (certificatePath != null) {
+            return new FileInputStream(certificatePath);
+        } else if (certificate != null) {
+            return certificate;
+        } else {
+            return null;
+        }
     }
 }

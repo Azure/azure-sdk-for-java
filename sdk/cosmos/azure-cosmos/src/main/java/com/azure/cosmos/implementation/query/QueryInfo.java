@@ -187,5 +187,15 @@ public final class QueryInfo extends JsonSerializable {
             return endTimeUTC;
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
 

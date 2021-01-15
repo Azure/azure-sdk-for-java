@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CheckNameAvailabilityRequest model. */
+/** A request to check whether the specified name for a resource is available. */
 @Fluent
 public final class CheckNameAvailabilityRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityRequest.class);

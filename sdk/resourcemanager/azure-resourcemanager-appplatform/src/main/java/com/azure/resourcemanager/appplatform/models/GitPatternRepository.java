@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The GitPatternRepository model. */
+/** Git repository property payload. */
 @Fluent
 public final class GitPatternRepository {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GitPatternRepository.class);

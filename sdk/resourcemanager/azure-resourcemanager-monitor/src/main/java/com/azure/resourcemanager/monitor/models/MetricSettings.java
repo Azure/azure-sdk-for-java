@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** The MetricSettings model. */
+/** Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular metric. */
 @Fluent
 public final class MetricSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSettings.class);

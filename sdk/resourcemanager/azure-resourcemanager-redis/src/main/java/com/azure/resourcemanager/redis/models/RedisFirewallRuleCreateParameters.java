@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RedisFirewallRuleCreateParameters model. */
+/** Parameters required for creating a firewall rule on redis cache. */
 @JsonFlatten
 @Fluent
 public class RedisFirewallRuleCreateParameters {

@@ -4,12 +4,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.appservice.fluent.inner.TldLegalAgreementInner;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.appservice.fluent.models.TldLegalAgreementInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An immutable client-side representation of an Azure domain legal agreement. */
 @Fluent
-public interface DomainLegalAgreement extends HasInner<TldLegalAgreementInner> {
+public interface DomainLegalAgreement extends HasInnerModel<TldLegalAgreementInner> {
     /** @return unique identifier for the agreement */
     String agreementKey();
 

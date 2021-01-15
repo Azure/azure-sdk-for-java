@@ -19,7 +19,7 @@ import com.azure.resourcemanager.monitor.models.MetricAlertRuleTimeAggregation;
 import com.azure.resourcemanager.monitor.models.MetricDimension;
 import com.azure.resourcemanager.monitor.models.MetricDynamicAlertCondition;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.time.Duration;
@@ -386,8 +386,8 @@ public class AlertsTests extends MonitorManagementTest {
 
             ma.refresh();
             Assertions.assertEquals(2, ma.scopes().size());
-            Assertions.assertEquals(vm1.type(), ma.inner().targetResourceType());
-            Assertions.assertEquals(vm1.regionName(), ma.inner().targetResourceRegion());
+            Assertions.assertEquals(vm1.type(), ma.innerModel().targetResourceType());
+            Assertions.assertEquals(vm1.regionName(), ma.innerModel().targetResourceRegion());
             Assertions.assertEquals(1, ma.alertCriterias().size());
             Assertions.assertEquals(0, ma.dynamicAlertCriterias().size());
             Assertions.assertEquals("Percentage CPU", ma.alertCriterias().get("Metric1").metricName());
@@ -413,8 +413,8 @@ public class AlertsTests extends MonitorManagementTest {
 
             ma.refresh();
             Assertions.assertEquals(2, ma.scopes().size());
-            Assertions.assertEquals(vm1.type(), ma.inner().targetResourceType());
-            Assertions.assertEquals(vm1.regionName(), ma.inner().targetResourceRegion());
+            Assertions.assertEquals(vm1.type(), ma.innerModel().targetResourceType());
+            Assertions.assertEquals(vm1.regionName(), ma.innerModel().targetResourceRegion());
             Assertions.assertEquals(0, ma.alertCriterias().size());
             Assertions.assertEquals(1, ma.dynamicAlertCriterias().size());
             MetricDynamicAlertCondition condition = ma.dynamicAlertCriterias().get("Metric2");

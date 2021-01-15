@@ -14,7 +14,7 @@ import com.azure.storage.blob.BlobServiceClient;
 @Fluent
 public final class BlobContainerListDetails {
     private boolean retrieveMetadata;
-    // private boolean retrieveDeleted;
+    private boolean retrieveDeleted;
 
     /**
      * Constructs an unpopulated {@link BlobContainerListDetails}.
@@ -47,11 +47,9 @@ public final class BlobContainerListDetails {
      *
      * @return a flag indicating whether deleted containers should be returned
      */
-    /*
-    private boolean getRetrieveDeleted() {
+    public boolean getRetrieveDeleted() {
         return this.retrieveDeleted;
     }
-    */
 
     /**
      * Whether deleted containers should be returned.
@@ -59,12 +57,10 @@ public final class BlobContainerListDetails {
      * @param retrieveDeleted Flag indicating whether deleted containers should be returned.
      * @return the updated ContainerListDetails object
      */
-    /*
-    private BlobContainerListDetails setRetrieveDeleted(boolean retrieveDeleted) {
+    public BlobContainerListDetails setRetrieveDeleted(boolean retrieveDeleted) {
         this.retrieveDeleted = retrieveDeleted;
         return this;
     }
-     */
 
     /**
      * @return the listing flags

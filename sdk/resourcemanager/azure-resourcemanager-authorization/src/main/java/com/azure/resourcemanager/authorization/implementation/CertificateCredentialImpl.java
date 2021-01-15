@@ -5,9 +5,9 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphKeyCredentialInner;
 import com.azure.resourcemanager.authorization.models.CertificateCredential;
 import com.azure.resourcemanager.authorization.models.CertificateType;
-import com.azure.resourcemanager.authorization.fluent.inner.KeyCredentialInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import reactor.core.publisher.Mono;
 
@@ -20,8 +20,8 @@ import java.util.Base64;
 
 /** Implementation for ServicePrincipal and its parent interfaces. */
 class CertificateCredentialImpl<T extends HasCredential<T>>
-    extends IndexableRefreshableWrapperImpl<CertificateCredential, KeyCredentialInner>
-    implements CertificateCredential, CertificateCredential.Definition<T>, CertificateCredential.UpdateDefinition<T> {
+    extends IndexableRefreshableWrapperImpl<CertificateCredential, MicrosoftGraphKeyCredentialInner>
+    implements CertificateCredential, CertificateCredential.Definition<T> {
 
     private String name;
     private HasCredential<T> parent;
@@ -30,23 +30,22 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
     private String privateKeyPassword;
     private final ClientLogger logger = new ClientLogger(CertificateCredentialImpl.class);
 
-    CertificateCredentialImpl(KeyCredentialInner keyCredential) {
+    CertificateCredentialImpl(MicrosoftGraphKeyCredentialInner keyCredential) {
         super(keyCredential);
-        if (keyCredential.customKeyIdentifier() != null && !keyCredential.customKeyIdentifier().isEmpty()) {
-            this.name = new String(Base64.getDecoder().decode(keyCredential.customKeyIdentifier()),
-                StandardCharsets.UTF_8);
+        if (keyCredential.displayName() != null) {
+            this.name = keyCredential.displayName();
         } else {
-            this.name = keyCredential.keyId();
+            this.name = keyCredential.keyId().toString();
         }
     }
 
     CertificateCredentialImpl(String name, HasCredential<T> parent) {
         super(
-            new KeyCredentialInner()
+            new MicrosoftGraphKeyCredentialInner()
                 .withUsage("Verify")
-                .withCustomKeyIdentifier(Base64.getEncoder().encodeToString(name.getBytes(StandardCharsets.UTF_8)))
-                .withStartDate(OffsetDateTime.now())
-                .withEndDate(OffsetDateTime.now().plusYears(1)));
+                .withDisplayName(name)
+                .withStartDateTime(OffsetDateTime.now())
+                .withEndDateTime(OffsetDateTime.now().plusYears(1)));
         this.name = name;
         this.parent = parent;
     }
@@ -57,23 +56,23 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
     }
 
     @Override
-    protected Mono<KeyCredentialInner> getInnerAsync() {
+    protected Mono<MicrosoftGraphKeyCredentialInner> getInnerAsync() {
         throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot refresh credentials."));
     }
 
     @Override
     public OffsetDateTime startDate() {
-        return inner().startDate();
+        return innerModel().startDateTime();
     }
 
     @Override
     public OffsetDateTime endDate() {
-        return inner().endDate();
+        return innerModel().endDateTime();
     }
 
     @Override
     public String value() {
-        return inner().value();
+        return Base64.getEncoder().encodeToString(innerModel().key());
     }
 
     @Override
@@ -84,7 +83,7 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
     @Override
     public CertificateCredentialImpl<T> withStartDate(OffsetDateTime startDate) {
         OffsetDateTime original = startDate();
-        inner().withStartDate(startDate);
+        innerModel().withStartDateTime(startDate);
         // Adjust end time
         withDuration(Duration.between(original, endDate()));
         return this;
@@ -92,43 +91,56 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
 
     @Override
     public CertificateCredentialImpl<T> withDuration(Duration duration) {
-        inner().withEndDate(startDate().plus(duration));
+        innerModel().withEndDateTime(startDate().plus(duration));
         return this;
     }
 
     @Override
     public CertificateCredentialImpl<T> withAsymmetricX509Certificate() {
-        inner().withType(CertificateType.ASYMMETRIC_X509_CERT.toString());
+        innerModel().withType(CertificateType.ASYMMETRIC_X509_CERT.toString());
         return this;
     }
 
     @Override
     public CertificateCredentialImpl<T> withSymmetricEncryption() {
-        inner().withType(CertificateType.SYMMETRIC.toString());
+        innerModel().withType(CertificateType.SYMMETRIC.toString());
         return this;
     }
 
     @Override
     public CertificateCredentialImpl<T> withPublicKey(byte[] certificate) {
-        inner().withValue(Base64.getEncoder().encodeToString(certificate));
+        innerModel().withKey(certificate);
         return this;
     }
 
     @Override
     public CertificateCredentialImpl<T> withSecretKey(byte[] secret) {
-        inner().withValue(Base64.getEncoder().encodeToString(secret));
+        innerModel().withKey(secret);
         return this;
     }
 
     void exportAuthFile(ServicePrincipalImpl servicePrincipal) {
+        exportAuthFile(servicePrincipal.manager().environment(),
+            servicePrincipal.applicationId(),
+            servicePrincipal.manager().tenantId(),
+            servicePrincipal.assignedSubscription);
+    }
+
+    void exportAuthFile(ActiveDirectoryApplicationImpl activeDirectoryApplication) {
+        exportAuthFile(activeDirectoryApplication.manager().environment(),
+            activeDirectoryApplication.applicationId(),
+            activeDirectoryApplication.manager().tenantId(),
+            null);
+    }
+
+    void exportAuthFile(AzureEnvironment environment, String clientId, String tenantId, String subscriptionId) {
         if (authFile == null) {
             return;
         }
-        AzureEnvironment environment = AzureEnvironment.AZURE;
         StringBuilder builder = new StringBuilder("{\n");
         builder
             .append("  ")
-            .append(String.format("\"clientId\": \"%s\",", servicePrincipal.applicationId()))
+            .append(String.format("\"clientId\": \"%s\",", clientId))
             .append("\n");
         builder
             .append("  ")
@@ -140,11 +152,11 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
             .append("\n");
         builder
             .append("  ")
-            .append(String.format("\"tenantId\": \"%s\",", servicePrincipal.manager().tenantId()))
+            .append(String.format("\"tenantId\": \"%s\",", tenantId))
             .append("\n");
         builder
             .append("  ")
-            .append(String.format("\"subscriptionId\": \"%s\",", servicePrincipal.assignedSubscription))
+            .append(String.format("\"subscriptionId\": \"%s\",", subscriptionId))
             .append("\n");
         builder
             .append("  ")
@@ -157,6 +169,11 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
         builder
             .append("  ")
             .append(String.format("\"activeDirectoryGraphResourceId\": \"%s\",", environment.getGraphEndpoint()))
+            .append("\n");
+        builder
+            .append("  ")
+            .append(String.format("\"%s\": \"%s\",",
+                AzureEnvironment.Endpoint.MICROSOFT_GRAPH.identifier(), environment.getMicrosoftGraphEndpoint()))
             .append("\n");
         builder
             .append("  ")
@@ -190,7 +207,7 @@ class CertificateCredentialImpl<T extends HasCredential<T>>
 
     @Override
     public String id() {
-        return inner().keyId();
+        return innerModel().keyId().toString();
     }
 
     @Override

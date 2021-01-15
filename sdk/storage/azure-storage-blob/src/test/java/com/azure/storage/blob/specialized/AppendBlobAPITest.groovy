@@ -346,6 +346,23 @@ class AppendBlobAPITest extends APISpec {
         thrown(BlobStorageException)
     }
 
+    def "Append block retry on transient failure"() {
+        setup:
+        def clientWithFailure = getBlobClient(
+            primaryCredential,
+            bc.getBlobUrl(),
+            new TransientFailureInjectingHttpPipelinePolicy()
+        ).getAppendBlobClient()
+
+        when:
+        clientWithFailure.appendBlock(defaultInputStream.get(), defaultDataSize)
+
+        then:
+        def os = new ByteArrayOutputStream()
+        bc.download(os)
+        os.toByteArray() == defaultData.array()
+    }
+
     def "Append block from URL min"() {
         setup:
         cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
@@ -666,6 +683,20 @@ class AppendBlobAPITest extends APISpec {
         null     | null       | null        | receivedEtag | null           | null
         null     | null       | null        | null         | garbageLeaseID | null
         null     | null       | null        | null         | null           | 1
+    }
+
+    // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
+    def "Per call policy"() {
+        setup:
+        def specialBlob = getSpecializedBuilder(primaryCredential, bc.getBlobUrl(), getPerCallVersionPolicy())
+            .buildAppendBlobClient()
+
+        when:
+        def response = specialBlob.getPropertiesWithResponse(null, null, null)
+
+        then:
+        notThrown(BlobStorageException)
+        response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
 
 }

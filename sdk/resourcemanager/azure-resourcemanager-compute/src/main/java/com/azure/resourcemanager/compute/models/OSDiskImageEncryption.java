@@ -8,10 +8,17 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The OSDiskImageEncryption model. */
+/** Contains encryption settings for an OS disk image. */
 @Immutable
 public final class OSDiskImageEncryption extends DiskImageEncryption {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OSDiskImageEncryption.class);
+
+    /** {@inheritDoc} */
+    @Override
+    public OSDiskImageEncryption withDiskEncryptionSetId(String diskEncryptionSetId) {
+        super.withDiskEncryptionSetId(diskEncryptionSetId);
+        return this;
+    }
 
     /**
      * Validates the instance.

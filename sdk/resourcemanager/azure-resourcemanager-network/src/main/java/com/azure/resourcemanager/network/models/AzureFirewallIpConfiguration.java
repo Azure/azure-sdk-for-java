@@ -11,7 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureFirewallIpConfiguration model. */
+/** IP configuration of an Azure Firewall. */
 @JsonFlatten
 @Fluent
 public class AzureFirewallIpConfiguration extends SubResource {
@@ -164,6 +164,13 @@ public class AzureFirewallIpConfiguration extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFirewallIpConfiguration withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**

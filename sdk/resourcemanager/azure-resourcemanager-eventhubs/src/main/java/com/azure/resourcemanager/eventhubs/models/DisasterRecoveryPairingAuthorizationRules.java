@@ -5,11 +5,9 @@ package com.azure.resourcemanager.eventhubs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.resourcemanager.eventhubs.fluent.DisasterRecoveryConfigsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /**
@@ -18,7 +16,6 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface DisasterRecoveryPairingAuthorizationRules extends
     SupportsGettingById<DisasterRecoveryPairingAuthorizationRule>,
-    HasInner<DisasterRecoveryConfigsClient>,
     HasManager<EventHubsManager> {
     /**
      * Lists the authorization rules that can be used to access the disaster recovery pairing.

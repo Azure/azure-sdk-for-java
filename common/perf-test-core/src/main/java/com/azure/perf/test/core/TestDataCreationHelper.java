@@ -3,30 +3,28 @@
 
 package com.azure.perf.test.core;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
-import java.nio.ByteBuffer;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
 import reactor.core.publisher.Flux;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.util.Random;
 
 /**
  * Utility class to help with data creation for perf testing.
  */
 public class TestDataCreationHelper {
+    private static final int RANDOM_BYTES_LENGTH = 1024 * 1024; // 1MB
     private static final byte[] RANDOM_BYTES;
     private static final ByteBuffer RANDOM_BYTE_BUFFER;
     private static final int SIZE = (1024 * 1024 * 1024) + 1;
-    private static final byte[] RANDOM_STREAM_BYTES;
 
     static {
-        RANDOM_BYTES = new byte[1024 * 1024];
-        (new Random(0)).nextBytes(TestDataCreationHelper.RANDOM_BYTES);
+        Random random = new Random(0);
+        RANDOM_BYTES = new byte[RANDOM_BYTES_LENGTH];
+        random.nextBytes(RANDOM_BYTES);
         RANDOM_BYTE_BUFFER = ByteBuffer.wrap(TestDataCreationHelper.RANDOM_BYTES).asReadOnlyBuffer();
-        RANDOM_STREAM_BYTES = new byte[SIZE];
-        (new Random(0)).nextBytes(RANDOM_STREAM_BYTES);
     }
 
     /**
@@ -50,6 +48,7 @@ public class TestDataCreationHelper {
 
     /**
      * Creates a random flux of specified size.
+     *
      * @param size the size of the stream
      * @return the {@link Flux} of {@code size}
      */
@@ -59,36 +58,83 @@ public class TestDataCreationHelper {
 
     /**
      * Creates a random stream of specified size.
-     * @param size the size of the stream
      *
-     * @throws IllegalArgumentException if {@code size} is more than {@link #SIZE}
+     * @param size the size of the stream
      * @return the {@link InputStream} of {@code size}
+     * @throws IllegalArgumentException if {@code size} is more than {@link #SIZE}
      */
     public static InputStream createRandomInputStream(long size) {
         if (size > SIZE) {
             throw new IllegalArgumentException("size must be <= " + SIZE);
         }
 
-        // Workaround for Azure/azure-sdk-for-java#6020
-        // return CircularStream.create(_randomBytes, size);
-        return new ByteArrayInputStream(RANDOM_STREAM_BYTES, 0, (int) size);
+        return new RepeatingInputStream((int) size);
     }
 
     /**
-     * Creates a stream of {@code size}with repeated values of {@code byteArray}.
-     * @param byteArray the array to create stream from.
-     * @param size the size of the stream to create.
-     * @return The created {@link InputStream}
+     * Writes the size of bytes into the OutputStream.
+     *
+     * @param outputStream Stream to write into.
+     * @param size Number of bytes to write.
+     * @throws IOException If an IO error occurs.
      */
-    public static InputStream createCircularInputStream(byte[] byteArray, long size) {
-        int remaining = byteArray.length;
-        int quotient = (int) size / remaining;
-        int remainder = (int) size % remaining;
-        List<ByteArrayInputStream> list = Flux.range(0, quotient)
-            .map(i -> new ByteArrayInputStream(byteArray))
-            .concatWithValues(new ByteArrayInputStream(byteArray, 0, remainder))
-            .collectList()
-            .block();
-        return new SequenceInputStream(Collections.enumeration(list));
+    public static void writeBytesToOutputStream(OutputStream outputStream, long size) throws IOException {
+        int quotient = (int) size / RANDOM_BYTES.length;
+        int remainder = (int) size % RANDOM_BYTES.length;
+
+        for (int i = 0; i < quotient; i++) {
+            outputStream.write(RANDOM_BYTES);
+        }
+
+        outputStream.write(RANDOM_BYTES, 0, remainder);
+    }
+
+    private static final class RepeatingInputStream extends InputStream {
+        private final int size;
+
+        private int mark = 0;
+        private int pos = 0;
+
+        private RepeatingInputStream(int size) {
+            this.size = size;
+        }
+
+        @Override
+        public synchronized int read() {
+            return (pos < size) ? (RANDOM_BYTES[pos++ % RANDOM_BYTES_LENGTH] & 0xFF) : -1;
+        }
+
+        @Override
+        public synchronized int read(byte[] b) {
+            return read(b, 0, b.length);
+        }
+
+        @Override
+        public synchronized int read(byte[] b, int off, int len) {
+            if (pos >= size) {
+                return -1;
+            }
+
+            int readCount = Math.min(len, RANDOM_BYTES_LENGTH);
+            System.arraycopy(RANDOM_BYTES, 0, b, off, len);
+            pos += readCount;
+
+            return readCount;
+        }
+
+        @Override
+        public synchronized void reset() {
+            this.pos = this.mark;
+        }
+
+        @Override
+        public synchronized void mark(int readlimit) {
+            this.mark = readlimit;
+        }
+
+        @Override
+        public boolean markSupported() {
+            return true;
+        }
     }
 }

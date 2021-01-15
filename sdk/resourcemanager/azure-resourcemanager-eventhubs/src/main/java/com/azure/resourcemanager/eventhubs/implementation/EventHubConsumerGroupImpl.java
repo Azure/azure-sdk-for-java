@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.eventhubs.implementation;
 
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.inner.ConsumerGroupInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.ConsumerGroupInner;
 import com.azure.resourcemanager.eventhubs.models.EventHub;
 import com.azure.resourcemanager.eventhubs.models.EventHubConsumerGroup;
 import reactor.core.publisher.Mono;
@@ -51,17 +51,17 @@ class EventHubConsumerGroupImpl
 
     @Override
     public OffsetDateTime createdAt() {
-        return this.inner().createdAt();
+        return this.innerModel().createdAt();
     }
 
     @Override
     public OffsetDateTime updatedAt() {
-        return this.inner().updatedAt();
+        return this.innerModel().updatedAt();
     }
 
     @Override
     public String userMetadata() {
-        return this.inner().userMetadata();
+        return this.innerModel().userMetadata();
     }
 
     @Override
@@ -85,24 +85,24 @@ class EventHubConsumerGroupImpl
 
     @Override
     public EventHubConsumerGroupImpl withUserMetadata(String metadata) {
-        this.inner().withUserMetadata(metadata);
+        this.innerModel().withUserMetadata(metadata);
         return this;
     }
 
     @Override
     public Mono<EventHubConsumerGroup> createResourceAsync() {
-        return this.manager.inner().getConsumerGroups()
+        return this.manager.serviceClient().getConsumerGroups()
                 .createOrUpdateAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),
                         this.name(),
-                        this.inner().userMetadata())
+                        this.innerModel().userMetadata())
                 .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<ConsumerGroupInner> getInnerAsync() {
-        return this.manager.inner().getConsumerGroups()
+        return this.manager.serviceClient().getConsumerGroups()
                 .getAsync(this.ancestor().resourceGroupName(),
                         this.ancestor().ancestor2Name(),
                         this.ancestor().ancestor1Name(),

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StorageAccountKey model. */
+/** An access key for the storage account. */
 @Immutable
 public final class StorageAccountKey {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountKey.class);

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OperationDisplay model. */
+/** The object that represents the operation. */
 @Immutable
 public final class OperationDisplay {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);

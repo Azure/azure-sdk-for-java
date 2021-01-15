@@ -9,7 +9,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSize;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, VirtualMachines> {
@@ -19,7 +19,7 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
         Assertions.assertTrue(TestUtilities.getSize(availableSizes) > 0);
         VirtualMachineSize availableSize = availableSizes.iterator().next();
         System.out.println("VM Sizes: " + availableSizes);
-        final String vmName = virtualMachines.manager().sdkContext().randomResourceName("vm", 10);
+        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
         VirtualMachine vm =
             virtualMachines
                 .define(vmName)

@@ -6,7 +6,7 @@ import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.helpers.SamplesConstants;
 import com.azure.digitaltwins.core.helpers.UniqueIdHelper;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.models.ModelData;
+import com.azure.digitaltwins.core.models.DigitalTwinsModelData;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 import java.net.HttpURLConnection;
@@ -67,7 +67,7 @@ public class ModelsLifecycleSyncSamples {
         ConsoleLogger.printHeader("Create models");
 
         try {
-            client.createModels(new ArrayList<String>(Arrays.asList(newComponentModelPayload, newModelPayload)));
+            client.createModels(new ArrayList<>(Arrays.asList(newComponentModelPayload, newModelPayload)));
 
             ConsoleLogger.print("Created models " + componentModelId + " and " + sampleModelId);
         }
@@ -84,8 +84,8 @@ public class ModelsLifecycleSyncSamples {
         ConsoleLogger.printHeader("Get models");
 
         try {
-            ModelData sampleModelResponse = client.getModel(sampleModelId);
-            ConsoleLogger.print("Retrieved model " + sampleModelResponse.getId());
+            DigitalTwinsModelData sampleModelResponse = client.getModel(sampleModelId);
+            ConsoleLogger.print("Retrieved model " + sampleModelResponse.getModelId());
         }
         catch (Exception ex) {
             ConsoleLogger.printFatal("Failed to get the model due to:\n" + ex);

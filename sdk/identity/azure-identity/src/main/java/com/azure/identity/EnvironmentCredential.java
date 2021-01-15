@@ -57,7 +57,6 @@ public class EnvironmentCredential implements TokenCredential {
         String username = configuration.get(Configuration.PROPERTY_AZURE_USERNAME);
         String password = configuration.get(Configuration.PROPERTY_AZURE_PASSWORD);
         ValidationUtil.validateTenantIdCharacterRange(getClass().getSimpleName(), tenantId);
-        ValidationUtil.validateClientIdCharacterRange(getClass().getSimpleName(), clientId);
         LoggingUtil.logAvailableEnvironmentVariables(logger, configuration);
         if (verifyNotNull(clientId)) {
             // 1 - Attempt ClientSecretCredential or ClientCertificateCredential
@@ -70,8 +69,8 @@ public class EnvironmentCredential implements TokenCredential {
                 } else if (verifyNotNull(certPath)) {
                     // 1.2 Attempt ClientCertificateCredential
                     logger.info("Azure Identity => EnvironmentCredential invoking ClientCertificateCredential");
-                    targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath,
-                        null, identityClientOptions);
+                    targetCredential = new ClientCertificateCredential(tenantId, clientId, certPath, null, null,
+                            identityClientOptions);
                 } else {
                     // 1.3 Log error if neither is found
                     logger.error("Azure Identity => ERROR in EnvironmentCredential: Failed to create a "

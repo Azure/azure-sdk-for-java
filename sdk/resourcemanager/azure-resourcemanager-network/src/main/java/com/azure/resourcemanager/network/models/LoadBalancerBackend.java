@@ -3,10 +3,10 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.fluent.inner.BackendAddressPoolInner;
+import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 import java.util.Collection;
 import java.util.Set;
@@ -14,7 +14,7 @@ import java.util.Set;
 /** A client-side representation of a load balancer backend address pool. */
 @Fluent()
 public interface LoadBalancerBackend
-    extends HasInner<BackendAddressPoolInner>, ChildResource<LoadBalancer>, HasLoadBalancingRules, HasBackendNics {
+    extends HasInnerModel<BackendAddressPoolInner>, ChildResource<LoadBalancer>, HasLoadBalancingRules, HasBackendNics {
 
     /** @return a list of the resource IDs of the virtual machines associated with this backend */
     Set<String> getVirtualMachineIds();

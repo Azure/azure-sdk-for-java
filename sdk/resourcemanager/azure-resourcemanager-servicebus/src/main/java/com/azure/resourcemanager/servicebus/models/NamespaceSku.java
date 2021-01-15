@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.servicebus.models;
 
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
 /**
  * Defines values for NamespaceSku.
@@ -81,7 +81,7 @@ public final class NamespaceSku {
      * @return sku capacity
      */
     public int capacity() {
-        return Utils.toPrimitiveInt(this.sku.capacity());
+        return ResourceManagerUtils.toPrimitiveInt(this.sku.capacity());
     }
 
     @Override

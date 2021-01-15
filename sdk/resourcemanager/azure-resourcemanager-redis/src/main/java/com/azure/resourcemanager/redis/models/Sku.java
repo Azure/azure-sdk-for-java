@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Sku model. */
+/** SKU parameters supplied to the create Redis operation. */
 @Fluent
 public final class Sku {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
@@ -31,7 +31,7 @@ public final class Sku {
     /*
      * The size of the Redis cache to deploy. Valid values: for C
      * (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family
-     * (1, 2, 3, 4).
+     * (1, 2, 3, 4, 5).
      */
     @JsonProperty(value = "capacity", required = true)
     private int capacity;
@@ -78,7 +78,7 @@ public final class Sku {
 
     /**
      * Get the capacity property: The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0,
-     * 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).
+     * 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4, 5).
      *
      * @return the capacity value.
      */
@@ -88,7 +88,7 @@ public final class Sku {
 
     /**
      * Set the capacity property: The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0,
-     * 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).
+     * 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4, 5).
      *
      * @param capacity the capacity value to set.
      * @return the Sku object itself.

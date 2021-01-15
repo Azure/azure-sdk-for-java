@@ -48,20 +48,12 @@ public class RestSink extends CopySink {
     private Object requestInterval;
 
     /**
-     * Compression Type to Send data in compressed format with Optimal
+     * Http Compression Type to Send data in compressed format with Optimal
      * Compression Level, Default is None. And The Only Supported option is
      * Gzip.
      */
-    @JsonProperty(value = "compressionType")
-    private Object compressionType;
-
-    /**
-     * Wraps Request Array Json into an Object before calling the rest endpoint
-     * , Default is false. ex: if true request content sample format is {
-     * rows:[]} else the format is [].
-     */
-    @JsonProperty(value = "wrapRequestJsonInAnObject")
-    private Object wrapRequestJsonInAnObject;
+    @JsonProperty(value = "httpCompressionType")
+    private Object httpCompressionType;
 
     /**
      * Get the HTTP method used to call the RESTful API. The default is POST. Type: string (or Expression with resultType string).
@@ -144,42 +136,22 @@ public class RestSink extends CopySink {
     }
 
     /**
-     * Get compression Type to Send data in compressed format with Optimal Compression Level, Default is None. And The Only Supported option is Gzip.
+     * Get http Compression Type to Send data in compressed format with Optimal Compression Level, Default is None. And The Only Supported option is Gzip.
      *
-     * @return the compressionType value
+     * @return the httpCompressionType value
      */
-    public Object compressionType() {
-        return this.compressionType;
+    public Object httpCompressionType() {
+        return this.httpCompressionType;
     }
 
     /**
-     * Set compression Type to Send data in compressed format with Optimal Compression Level, Default is None. And The Only Supported option is Gzip.
+     * Set http Compression Type to Send data in compressed format with Optimal Compression Level, Default is None. And The Only Supported option is Gzip.
      *
-     * @param compressionType the compressionType value to set
+     * @param httpCompressionType the httpCompressionType value to set
      * @return the RestSink object itself.
      */
-    public RestSink withCompressionType(Object compressionType) {
-        this.compressionType = compressionType;
-        return this;
-    }
-
-    /**
-     * Get wraps Request Array Json into an Object before calling the rest endpoint , Default is false. ex: if true request content sample format is { rows:[]} else the format is [].
-     *
-     * @return the wrapRequestJsonInAnObject value
-     */
-    public Object wrapRequestJsonInAnObject() {
-        return this.wrapRequestJsonInAnObject;
-    }
-
-    /**
-     * Set wraps Request Array Json into an Object before calling the rest endpoint , Default is false. ex: if true request content sample format is { rows:[]} else the format is [].
-     *
-     * @param wrapRequestJsonInAnObject the wrapRequestJsonInAnObject value to set
-     * @return the RestSink object itself.
-     */
-    public RestSink withWrapRequestJsonInAnObject(Object wrapRequestJsonInAnObject) {
-        this.wrapRequestJsonInAnObject = wrapRequestJsonInAnObject;
+    public RestSink withHttpCompressionType(Object httpCompressionType) {
+        this.httpCompressionType = httpCompressionType;
         return this;
     }
 

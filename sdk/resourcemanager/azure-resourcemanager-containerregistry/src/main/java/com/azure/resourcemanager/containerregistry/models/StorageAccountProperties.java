@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StorageAccountProperties model. */
+/** The properties of a storage account for a container registry. Only applicable to Classic SKU. */
 @Fluent
 public final class StorageAccountProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountProperties.class);

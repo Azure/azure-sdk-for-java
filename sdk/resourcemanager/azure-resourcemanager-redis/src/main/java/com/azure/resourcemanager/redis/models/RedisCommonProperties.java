@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The RedisCommonProperties model. */
+/** Create/Update/Get common properties of the redis cache. */
 @Fluent
 public class RedisCommonProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisCommonProperties.class);

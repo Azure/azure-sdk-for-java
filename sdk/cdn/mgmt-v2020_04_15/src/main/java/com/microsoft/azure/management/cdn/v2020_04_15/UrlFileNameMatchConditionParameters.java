@@ -38,7 +38,7 @@ public class UrlFileNameMatchConditionParameters {
     /**
      * The match value for the condition of the delivery rule.
      */
-    @JsonProperty(value = "matchValues", required = true)
+    @JsonProperty(value = "matchValues")
     private List<String> matchValues;
 
     /**
@@ -50,7 +50,6 @@ public class UrlFileNameMatchConditionParameters {
     /**
      * Creates an instance of UrlFileNameMatchConditionParameters class.
      * @param operator describes operator to be matched. Possible values include: 'Any', 'Equal', 'Contains', 'BeginsWith', 'EndsWith', 'LessThan', 'LessThanOrEqual', 'GreaterThan', 'GreaterThanOrEqual'.
-     * @param matchValues the match value for the condition of the delivery rule.
      */
     public UrlFileNameMatchConditionParameters() {
         odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlFilenameConditionParameters";

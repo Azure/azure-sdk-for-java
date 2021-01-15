@@ -14,9 +14,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
 import reactor.core.publisher.Mono;
 
 /** Entry point for storage accounts management API. */
@@ -31,8 +29,7 @@ public interface StorageAccounts
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<StorageAccount>,
         SupportsBatchDeletion,
-        HasManager<StorageManager>,
-        HasInner<StorageAccountsClient> {
+        HasManager<StorageManager> {
     /**
      * Checks that account name is valid and is not in use.
      *

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ExpressRouteCircuitPeeringConfig model. */
+/** Specifies the peering configuration. */
 @Fluent
 public final class ExpressRouteCircuitPeeringConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringConfig.class);

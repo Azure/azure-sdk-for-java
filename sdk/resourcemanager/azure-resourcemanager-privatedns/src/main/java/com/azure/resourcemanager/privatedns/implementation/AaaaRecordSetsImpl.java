@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.privatedns.implementation;
 
-import com.azure.resourcemanager.privatedns.fluent.inner.RecordSetInner;
+import com.azure.resourcemanager.privatedns.fluent.models.RecordSetInner;
 import com.azure.resourcemanager.privatedns.models.AaaaRecordSet;
 import com.azure.resourcemanager.privatedns.models.AaaaRecordSets;
 import com.azure.resourcemanager.privatedns.models.RecordType;

@@ -11,12 +11,12 @@ import reactor.core.publisher.Mono;
 /** Represents a webhook collection associated with a container registry. */
 public class WebhookOperationsImpl implements WebhookOperations {
     private final RegistryImpl containerRegistry;
-    private final WebhooksClientImpl webhooksClient;
+    private final RegistriesWebhooksClientImpl webhooksClient;
 
     WebhookOperationsImpl(RegistryImpl containerRegistry) {
         this.containerRegistry = containerRegistry;
         if (containerRegistry != null) {
-            this.webhooksClient = new WebhooksClientImpl(containerRegistry.manager(), containerRegistry);
+            this.webhooksClient = new RegistriesWebhooksClientImpl(containerRegistry.manager(), containerRegistry);
         } else {
             this.webhooksClient = null;
         }

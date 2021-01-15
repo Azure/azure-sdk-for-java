@@ -28,49 +28,49 @@ class MetricAlertConditionBaseImpl<
 
     protected MetricAlertConditionBaseImpl(String name, InnerT innerObject, MetricAlertImpl parent) {
         super(innerObject);
-        this.inner().withName(name);
+        this.innerModel().withName(name);
         this.parent = parent;
         this.dimensions = new TreeMap<>();
-        if (this.inner().dimensions() != null) {
-            for (MetricDimension md : this.inner().dimensions()) {
+        if (this.innerModel().dimensions() != null) {
+            for (MetricDimension md : this.innerModel().dimensions()) {
                 dimensions.put(md.name(), md);
             }
         }
     }
 
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     public String metricName() {
-        return this.inner().metricName();
+        return this.innerModel().metricName();
     }
 
     public String metricNamespace() {
-        return this.inner().metricNamespace();
+        return this.innerModel().metricNamespace();
     }
 
     public MetricAlertRuleTimeAggregation timeAggregation() {
-        return MetricAlertRuleTimeAggregation.fromString(this.inner().timeAggregation().toString());
+        return MetricAlertRuleTimeAggregation.fromString(this.innerModel().timeAggregation().toString());
     }
 
     public Collection<MetricDimension> dimensions() {
-        return Collections.unmodifiableCollection(this.inner().dimensions());
+        return Collections.unmodifiableCollection(this.innerModel().dimensions());
     }
 
     public MetricAlertImpl parent() {
-        this.inner().withDimensions(new ArrayList<>(this.dimensions.values()));
+        this.innerModel().withDimensions(new ArrayList<>(this.dimensions.values()));
         return this.parent;
     }
 
     @SuppressWarnings("unchecked")
     public SubclassT withMetricName(String metricName) {
-        this.inner().withMetricName(metricName);
+        this.innerModel().withMetricName(metricName);
         return (SubclassT) this;
     }
 
     public SubclassT withMetricName(String metricName, String metricNamespace) {
-        this.inner().withMetricNamespace(metricNamespace);
+        this.innerModel().withMetricNamespace(metricNamespace);
         return this.withMetricName(metricName);
     }
 

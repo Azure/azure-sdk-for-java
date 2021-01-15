@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.containerinstance.implementation;
 
-import com.azure.resourcemanager.containerinstance.fluent.inner.ContainerExecResponseInner;
+import com.azure.resourcemanager.containerinstance.fluent.models.ContainerExecResponseInner;
 import com.azure.resourcemanager.containerinstance.models.ContainerExecResponse;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
@@ -16,11 +16,11 @@ public class ContainerExecResponseImpl extends WrapperImpl<ContainerExecResponse
 
     @Override
     public String webSocketUri() {
-        return this.inner().webSocketUri();
+        return this.innerModel().webSocketUri();
     }
 
     @Override
     public String password() {
-        return this.inner().password();
+        return this.innerModel().password();
     }
 }

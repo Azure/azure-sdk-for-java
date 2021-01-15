@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The GalleryImageIdentifier model. */
+/** This is the gallery Image Definition identifier. */
 @Fluent
 public final class GalleryImageIdentifier {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageIdentifier.class);

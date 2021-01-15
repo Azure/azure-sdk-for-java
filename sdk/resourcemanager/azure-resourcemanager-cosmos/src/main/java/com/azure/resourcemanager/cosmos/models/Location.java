@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Location model. */
+/** A region in which the Azure Cosmos DB database account is deployed. */
 @Fluent
 public final class Location {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Location.class);
@@ -42,8 +42,8 @@ public final class Location {
      * operation are returned. 'Succeeded' – the Cosmos DB account is active
      * for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting'
      * – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB
-     * account failed creation. 'Offline' - the Cosmos DB account is not
-     * active. 'DeletionFailed' – the Cosmos DB account deletion failed.
+     * account failed creation. 'DeletionFailed' – the Cosmos DB account
+     * deletion failed.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -110,7 +110,7 @@ public final class Location {
      * Creating state, only properties that are specified as input for the Create Cosmos DB account operation are
      * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
      * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.
-     * 'Offline' - the Cosmos DB account is not active. 'DeletionFailed' – the Cosmos DB account deletion failed.
+     * 'DeletionFailed' – the Cosmos DB account deletion failed.
      *
      * @return the provisioningState value.
      */

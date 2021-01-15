@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SrvRecord model. */
+/** An SRV record. */
 @Fluent
 public final class SrvRecord {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SrvRecord.class);

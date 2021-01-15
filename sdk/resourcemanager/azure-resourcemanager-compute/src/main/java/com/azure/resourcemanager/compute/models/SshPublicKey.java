@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SshPublicKey model. */
+/**
+ * Contains information about SSH certificate public key and the path on the Linux VM where the public key is placed.
+ */
 @Fluent
 public final class SshPublicKey {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SshPublicKey.class);

@@ -1,0 +1,68 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestssetpropertieslease40185dca853e0bbe8?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d2bade00-9eaf-481a-9df1-188bb5cdf07e"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D86FBAEFA0A2AF",
+      "Last-Modified" : "Tue, 13 Oct 2020 20:59:54 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "9f261409-001a-002e-6aa3-a1c395000000",
+      "Date" : "Tue, 13 Oct 2020 20:59:54 GMT",
+      "x-ms-client-request-id" : "d2bade00-9eaf-481a-9df1-188bb5cdf07e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestssetpropertieslease40185dca853e0bbe8?comp=lease&restype=share",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7bae1f42-6176-4a52-95d6-5d7e48a4a191"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D86FBAEFA0A2AF",
+      "x-ms-lease-id" : "5298bcec-6d60-4dc3-91f3-22c13fa95433",
+      "Last-Modified" : "Tue, 13 Oct 2020 20:59:54 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "9f26140c-001a-002e-6ba3-a1c395000000",
+      "Date" : "Tue, 13 Oct 2020 20:59:54 GMT",
+      "x-ms-client-request-id" : "7bae1f42-6176-4a52-95d6-5d7e48a4a191"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestssetpropertieslease40185dca853e0bbe8?restype=share&comp=properties",
+    "Headers" : {
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "75afcfa7-b3f4-4f3d-8f13-41a47db293a5"
+    },
+    "Response" : {
+      "x-ms-version" : "2020-02-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D86FBAEFD4ED49",
+      "Last-Modified" : "Tue, 13 Oct 2020 20:59:55 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "9f26140d-001a-002e-6ca3-a1c395000000",
+      "Date" : "Tue, 13 Oct 2020 20:59:55 GMT",
+      "x-ms-client-request-id" : "75afcfa7-b3f4-4f3d-8f13-41a47db293a5"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "shareapitestssetpropertieslease40185dca853e0bbe8" ]
+}

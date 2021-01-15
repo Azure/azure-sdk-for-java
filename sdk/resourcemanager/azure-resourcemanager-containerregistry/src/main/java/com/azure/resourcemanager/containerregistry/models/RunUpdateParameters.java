@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RunUpdateParameters model. */
+/** The set of run properties that can be updated. */
 @Fluent
 public final class RunUpdateParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RunUpdateParameters.class);

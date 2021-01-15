@@ -43,7 +43,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import io.opentelemetry.OpenTelemetrySdk;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporters.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.trace.TracerSdkProvider;

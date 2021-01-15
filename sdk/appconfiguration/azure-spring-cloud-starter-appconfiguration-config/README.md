@@ -1,54 +1,46 @@
 # Azure Spring cloud starter App Configuration client library for Java
 
-This project allows Spring Application to load properties from Azure Configuration Store.
+This package helps Spring Application to load properties from Azure Configuration Store.
 
-## Key concepts
+[Package (Maven)][package] | [Samples][app_configuration_sample]
 
 ## Getting started
+### Prerequisites
+- Java Development Kit (JDK) with version 8 or above
+- [Azure Subscription][azure_subscription]
+- [Maven][maven] 3.0 and above
+
+### Include the package
+There are two libraries that can be used azure-spring-cloud-appconfiguration-config and azure-spring-cloud-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version will attempt a refresh when the application is active when the cache expires. For more information on refresh see the [Configuration Refresh](#configuration-refresh) section.
+
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-appconfiguration-config;current})
+```xml
+<dependency>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-cloud-appconfiguration-config</artifactId>
+    <version>1.2.8-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+or
+
+[//]: # ({x-version-update-start;com.azure.spring:azure-spring-cloud-appconfiguration-config;current})
+```xml
+<dependency>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-cloud-appconfiguration-config-web</artifactId>
+    <version>1.2.8-beta.1</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
+
+## Key concepts
+Azure App Configuration provides a service to centrally manage application settings and feature flags. Modern programs, especially programs running in a cloud, generally have many components that are distributed in nature. Spreading configuration settings across these components can lead to hard-to-troubleshoot errors during an application deployment. Use App Configuration to store all the settings for your application and secure their accesses in one place. 
 
 ## Examples
 
 Please use this `sample` as a reference for how to use this starter.
-
-### Dependency Management
-
-There are two libraries that can be used spring-cloud-azure-appconfiguration-config and spring-cloud-azure-appconfiguration-config-web. There are two differences between them the first being the web version takes on spring-web as a dependency, and the web version will attempt a refresh when the application is active when the cache expires. For more information on refresh see the [Configuration Refresh](#Configuration-Refresh) section.
-
-#### Maven Coordinates
-
-```xml
-<dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>spring-cloud-azure-appconfiguration-config</artifactId>
-    <version>{version}</version>
-</dependency>
-```
-
-or
-
-```xml
-<dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>spring-cloud-azure-appconfiguration-config-web</artifactId>
-    <version>{version}</version>
-</dependency>
-```
-
-#### Gradle Coordinates
-
-```gradle
-dependencies {
-    compile group: 'com.microsoft.azure', name: 'spring-cloud-azure-appconfiguration-config', version: '{starter-version}'
-}
-```
-
-or
-
-```gradle
-dependencies {
-    compile group: 'com.microsoft.azure', name: 'spring-cloud-azure-appconfiguration-config-web', version: '{starter-version}'
-}
-```
 
 ### Supported properties
 
@@ -59,7 +51,7 @@ spring.cloud.azure.appconfiguration.enabled | Whether enable spring-cloud-azure-
 spring.cloud.azure.appconfiguration.default-context | Default context path to load properties from | No | application
 spring.cloud.azure.appconfiguration.name | Alternative to Spring application name, if not configured, fallback to default Spring application name | No | ${spring.application.name}
 spring.cloud.azure.appconfiguration.profile-separator | Profile separator for the key name, e.g., /foo-app_dev/db.connection.key, must follow format `^[a-zA-Z0-9_@]+$` | No | `_`
-spring.cloud.azure.appconfiguration.cache-expiration | Amount of time, of type [Duration](https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-conversion-duration), configurations are stored before a check can occur. | No | 30s
+spring.cloud.azure.appconfiguration.cache-expiration | Amount of time, of type [Duration][spring_conversion_duration], configurations are stored before a check can occur. | No | 30s
 spring.cloud.azure.appconfiguration.managed-identity.client-id | Client id of the user assigned managed identity, only required when choosing to use user assigned managed identity on Azure | No | null
 
 `spring.cloud.azure.appconfiguration.stores` is a List of stores, for each store should follow below format:
@@ -178,13 +170,13 @@ The values in App Configuration are filtered through the existing Environment wh
 
 #### Use Managed Identity to access App Configuration
 
-[Managed identity](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) allows application to access [Azure Active Directory][azure_active_directory] protected resource on [Azure][azure].
+[Managed identity][azure_managed_identity] allows application to access [Azure Active Directory][azure_active_directory] protected resource on [Azure][azure].
 
 In this library, [Azure Identity SDK][azure_identity_sdk] is used to access Azure App Configuration and optionally Azure Key Vault, for secrets. Only one method of authentication can be set at one time. When not using the AppConfigCredentialProvider and/or KeyVaultCredentialProvider the same authentication method is used for both App Configuration and Key Vault.
 
 Follow the below steps to enable accessing App Configuration with managed identity:
 
-1. [Enable managed identities](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview#how-can-i-use-managed-identities-for-azure-resources) for the [supported Azure services](https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities), for example, virtual machine or App Service, on which the application will be deployed.
+1. [Enable managed identities][enable_managed_identities] for the [supported Azure services][support_azure_services], for example, virtual machine or App Service, on which the application will be deployed.
 
 1. Configure the [Azure RBAC][azure_rbac] of your App Configuration store to grant access to the Azure service where your application is running. Select the App Configuration Data Reader. The App Configuration Data Owner role is not required but can be used if needed.
 
@@ -227,7 +219,7 @@ public class MyCredentials implements AppConfigCredentialProvider, KeyVaultCrede
 
 #### Client Builder Customization
 
-The service client builders used for connecting to App Configuration and Key Vault can be customized by implementing interfaces `ConfigurationClientBuilderSetup` and `SecretClientBuilderSetup` respectively. Generating and providing a `@Bean` of them will update the default service client builders used in [App Configuration SDK](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-data-appconfiguration#key-concepts) and [Key Vault SDK](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-secrets#key-concepts). If necessary, the customization can be done per App Configuration store or Key Vault instance.
+The service client builders used for connecting to App Configuration and Key Vault can be customized by implementing interfaces `ConfigurationClientBuilderSetup` and `SecretClientBuilderSetup` respectively. Generating and providing a `@Bean` of them will update the default service client builders used in [App Configuration SDK][app_configuration_SDK] and [Key Vault SDK][key_vault_SDK]. If necessary, the customization can be done per App Configuration store or Key Vault instance.
 
 ```java
 public interface ConfigurationClientBuilderSetup {
@@ -269,12 +261,54 @@ public class MyClient implements ConfigurationClientBuilderSetup, SecretClientBu
 }
 ```
 
-<!-- LINKS -->
+## Troubleshooting
+### Enable client logging
+Azure SDKs for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+
+### Enable Spring logging
+Spring allow all the supported logging systems to set logger levels set in the Spring Environment (for example, in application.properties) by using `logging.level.<logger-name>=<level>` where level is one of TRACE, DEBUG, INFO, WARN, ERROR, FATAL, or OFF. The root logger can be configured by using logging.level.root.
+
+The following example shows potential logging settings in `application.properties`:
+
+```properties
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
+```
+
+For more information about setting logging in spring, please refer to the [official doc][logging_doc].
+ 
+
+## Next steps
+
+The following section provide a sample project illustrating how to use the starter.
+### More sample code
+- [Azure App Configuration][app_configuration_sample]
+- [Azure App Configuration Conversation Complete][app_configuration_conversation_complete_sample]
+- [Azure App Configuration Conversation Initial][app_configuration_conversation_initail_sample]
+
+## Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+Please follow [instructions here][contributing_md] to build from source or contribute.
+
+<!-- Link -->
+[package]: https://mvnrepository.com/artifact/com.microsoft.azure/spring-cloud-azure-appconfiguration-config
+[app_configuration_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration
+[app_configuration_conversation_complete_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-complete
+[app_configuration_conversation_initail_sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-cloud-sample-appconfiguration-conversion-initial
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application
+[azure_subscription]: https://azure.microsoft.com/free
+[logging_doc]: https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
+[contributing_md]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/CONTRIBUTING.md
+[maven]: https://maven.apache.org/
+[spring_conversion_duration]: https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-external-config.html#boot-features-external-config-conversion-duration
+[azure_managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
+[enable_managed_identities]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview#how-can-i-use-managed-identities-for-azure-resources
+[support_azure_services]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/services-support-managed-identities
 [azure]: https://azure.microsoft.com
 [azure_active_directory]: https://azure.microsoft.com/services/active-directory/
 [azure_identity_sdk]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity
 [azure_rbac]: https://docs.microsoft.com/azure/role-based-access-control/role-assignments-portal
-
-## Troubleshooting
-## Next steps
-## Contributing
+[app_configuration_SDK]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/appconfiguration/azure-data-appconfiguration#key-concepts
+[key_vault_SDK]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/keyvault/azure-security-keyvault-secrets#key-concepts

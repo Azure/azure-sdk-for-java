@@ -14,25 +14,26 @@ import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NetworkWatcher;
 import com.azure.resourcemanager.network.models.NetworkWatchers;
 import com.azure.resourcemanager.network.models.Networks;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccounts;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 
 /** Tests Network Watcher. */
 public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatchers> {
     private String testId = "";
-    private static final Region REGION = Region.US_SOUTH_CENTRAL;
+    private static final Region REGION = Region.EUROPE_NORTH;
     private String groupName;
     private String nwName;
 
-    private void initializeResourceNames(SdkContext sdkContext) {
-        testId = sdkContext.randomResourceName("", 8);
+    private void initializeResourceNames(ResourceManagerUtils.InternalRuntimeContext internalContext) {
+        testId = internalContext.randomResourceName("", 8);
         groupName = "rg" + testId;
         nwName = "nw" + testId;
     }
@@ -40,7 +41,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
     @Override
     public NetworkWatcher createResource(NetworkWatchers networkWatchers) throws Exception {
         // Network Watcher should be in the same region as monitored resources
-        initializeResourceNames(networkWatchers.manager().sdkContext());
+        initializeResourceNames(networkWatchers.manager().resourceManager().internalContext());
 
         // make sure Network Watcher is disabled in current subscription and region as only one can exist
         PagedIterable<NetworkWatcher> nwList = networkWatchers.list();
@@ -113,14 +114,14 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
 
         Creatable<VirtualMachine> vm1 =
             vms
-                .define(networks.manager().sdkContext().randomResourceName("vm", 15))
+                .define(networks.manager().resourceManager().internalContext().randomResourceName("vm", 15))
                 .withRegion(REGION)
                 .withExistingResourceGroup(groupName)
                 .withExistingPrimaryNetworkInterface(nic)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername(userName)
                 .withRootPassword("Abcdef.123456")
-                .withSize(VirtualMachineSizeTypes.STANDARD_A1)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .defineNewExtension("packetCapture")
                 .withPublisher("Microsoft.Azure.NetworkWatcher")
                 .withType("NetworkWatcherAgentLinux")
@@ -128,7 +129,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withMinorVersionAutoUpgrade()
                 .attach();
 
-        String vmName = networks.manager().sdkContext().randomResourceName("vm", 15);
+        String vmName = networks.manager().resourceManager().internalContext().randomResourceName("vm", 15);
 
         Creatable<VirtualMachine> vm2 =
             vms
@@ -142,7 +143,7 @@ public class TestNetworkWatcher extends TestTemplate<NetworkWatcher, NetworkWatc
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
                 .withRootUsername(userName)
                 .withRootPassword("Abcdef.123456")
-                .withSize(VirtualMachineSizeTypes.STANDARD_A1);
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"));
 
         vmDefinitions.add(vm1);
         vmDefinitions.add(vm2);

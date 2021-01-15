@@ -9,7 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExtendedResourceProperties model. */
+/**
+ * The system generated resource properties associated with SQL databases, SQL containers, Gremlin databases and Gremlin
+ * graphs.
+ */
 @Immutable
 public class ExtendedResourceProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedResourceProperties.class);
@@ -25,7 +28,7 @@ public class ExtendedResourceProperties {
      * the resource.
      */
     @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
-    private Object ts;
+    private Float ts;
 
     /*
      * A system generated property representing the resource etag required for
@@ -48,7 +51,7 @@ public class ExtendedResourceProperties {
      *
      * @return the ts value.
      */
-    public Object ts() {
+    public Float ts() {
         return this.ts;
     }
 

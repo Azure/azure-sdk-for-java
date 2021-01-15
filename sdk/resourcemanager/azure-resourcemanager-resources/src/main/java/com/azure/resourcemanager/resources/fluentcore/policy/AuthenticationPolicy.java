@@ -11,7 +11,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.Locale;
@@ -50,7 +50,8 @@ public class AuthenticationPolicy implements HttpPipelinePolicy {
 
         Mono<AccessToken> tokenResult;
         if (this.scopes == null || this.scopes.length == 0) {
-            String defaultScope = Utils.getDefaultScopeFromRequest(context.getHttpRequest(), environment);
+            String defaultScope = ResourceManagerUtils.getDefaultScopeFromRequest(
+                context.getHttpRequest(), environment);
             tokenResult = this.credential.getToken(new TokenRequestContext().addScopes(defaultScope));
         } else {
             tokenResult = this.credential.getToken(new TokenRequestContext().addScopes(scopes));

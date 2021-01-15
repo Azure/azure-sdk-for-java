@@ -8,7 +8,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.models.Feature;
 import com.azure.resourcemanager.resources.models.Features;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
-import com.azure.resourcemanager.resources.fluent.inner.FeatureResultInner;
+import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 import com.azure.resourcemanager.resources.fluent.FeaturesClient;
 import reactor.core.publisher.Mono;
 

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Address model. */
+/** Address information for domain registration. */
 @Fluent
 public final class Address {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Address.class);

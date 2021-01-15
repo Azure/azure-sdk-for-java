@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The WhatIfChange model. */
+/** Information about a single resource change predicted by What-If operation. */
 @Fluent
 public final class WhatIfChange {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WhatIfChange.class);

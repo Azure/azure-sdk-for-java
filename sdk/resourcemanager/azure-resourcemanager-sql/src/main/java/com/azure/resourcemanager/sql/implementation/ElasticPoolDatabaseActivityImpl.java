@@ -5,9 +5,9 @@ package com.azure.resourcemanager.sql.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.sql.models.ElasticPoolDatabaseActivity;
-import com.azure.resourcemanager.sql.fluent.inner.ElasticPoolDatabaseActivityInner;
+import com.azure.resourcemanager.sql.fluent.models.ElasticPoolDatabaseActivityInner;
 import java.time.OffsetDateTime;
 
 /** Implementation for Elastic Pool Database Activity interface. */
@@ -17,17 +17,17 @@ class ElasticPoolDatabaseActivityImpl extends WrapperImpl<ElasticPoolDatabaseAct
 
     protected ElasticPoolDatabaseActivityImpl(ElasticPoolDatabaseActivityInner innerObject) {
         super(innerObject);
-        this.resourceId = ResourceId.fromString(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.innerModel().id());
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
@@ -37,81 +37,81 @@ class ElasticPoolDatabaseActivityImpl extends WrapperImpl<ElasticPoolDatabaseAct
 
     @Override
     public String databaseName() {
-        return this.inner().databaseName();
+        return this.innerModel().databaseName();
     }
 
     @Override
     public OffsetDateTime endTime() {
-        return this.inner().endTime();
+        return this.innerModel().endTime();
     }
 
     @Override
     public int errorCode() {
-        return Utils.toPrimitiveInt(this.inner().errorCode());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().errorCode());
     }
 
     @Override
     public String errorMessage() {
-        return this.inner().errorMessage();
+        return this.innerModel().errorMessage();
     }
 
     @Override
     public int errorSeverity() {
-        return Utils.toPrimitiveInt(this.inner().errorSeverity());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().errorSeverity());
     }
 
     @Override
     public String operation() {
-        return this.inner().operation();
+        return this.innerModel().operation();
     }
 
     @Override
     public String operationId() {
-        return this.inner().operationId().toString();
+        return this.innerModel().operationId().toString();
     }
 
     @Override
     public int percentComplete() {
-        return Utils.toPrimitiveInt(this.inner().percentComplete());
+        return ResourceManagerUtils.toPrimitiveInt(this.innerModel().percentComplete());
     }
 
     @Override
     public String requestedElasticPoolName() {
-        return this.inner().requestedElasticPoolName();
+        return this.innerModel().requestedElasticPoolName();
     }
 
     @Override
     public String currentElasticPoolName() {
-        return this.inner().currentElasticPoolName();
+        return this.innerModel().currentElasticPoolName();
     }
 
     @Override
     public String currentServiceObjective() {
-        return this.inner().currentServiceObjective();
+        return this.innerModel().currentServiceObjective();
     }
 
     @Override
     public String requestedServiceObjective() {
-        return this.inner().requestedServiceObjective();
+        return this.innerModel().requestedServiceObjective();
     }
 
     @Override
     public String serverName() {
-        return this.inner().serverName();
+        return this.innerModel().serverName();
     }
 
     @Override
     public OffsetDateTime startTime() {
-        return this.inner().startTime();
+        return this.innerModel().startTime();
     }
 
     @Override
     public String state() {
-        return this.inner().state();
+        return this.innerModel().state();
     }
 
     @Override
     public String location() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 }

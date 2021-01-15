@@ -256,13 +256,13 @@ public class CloudPool {
     private List<String> applicationLicenses;
 
     /**
-     * The maximum number of Tasks that can run concurrently on a single
-     * Compute Node in the Pool.
+     * The number of task slots that can be used to run concurrent tasks on a
+     * single compute node in the pool.
      * The default value is 1. The maximum value is the smaller of 4 times the
-     * number of cores of the vmSize of the Pool or 256.
+     * number of cores of the vmSize of the pool or 256.
      */
-    @JsonProperty(value = "maxTasksPerNode")
-    private Integer maxTasksPerNode;
+    @JsonProperty(value = "taskSlotsPerNode")
+    private Integer taskSlotsPerNode;
 
     /**
      * How Tasks are distributed across Compute Nodes in a Pool.
@@ -883,22 +883,22 @@ public class CloudPool {
     }
 
     /**
-     * Get the default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the Pool or 256.
+     * Get the default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
      *
-     * @return the maxTasksPerNode value
+     * @return the taskSlotsPerNode value
      */
-    public Integer maxTasksPerNode() {
-        return this.maxTasksPerNode;
+    public Integer taskSlotsPerNode() {
+        return this.taskSlotsPerNode;
     }
 
     /**
-     * Set the default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the Pool or 256.
+     * Set the default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.
      *
-     * @param maxTasksPerNode the maxTasksPerNode value to set
+     * @param taskSlotsPerNode the taskSlotsPerNode value to set
      * @return the CloudPool object itself.
      */
-    public CloudPool withMaxTasksPerNode(Integer maxTasksPerNode) {
-        this.maxTasksPerNode = maxTasksPerNode;
+    public CloudPool withTaskSlotsPerNode(Integer taskSlotsPerNode) {
+        this.taskSlotsPerNode = taskSlotsPerNode;
         return this;
     }
 

@@ -17,6 +17,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
@@ -36,7 +39,7 @@ public class ClientCertificateCredentialTest {
     private static final String CLIENT_ID = UUID.randomUUID().toString();
 
     @Test
-    public void testValidCertificates() throws Exception {
+    public void testValidCertificatePaths() throws Exception {
         // setup
         String pemPath = "C:\\fakepath\\cert1.pem";
         String pfxPath = "C:\\fakepath\\cert2.pfx";
@@ -54,8 +57,8 @@ public class ClientCertificateCredentialTest {
         when(pfxIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
         when(pemIdentityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
         when(pfxIdentityClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresAt));
-        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), eq(pemPath), isNull(), eq(false), any()).thenReturn(pemIdentityClient);
-        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), eq(pfxPath), eq(pfxPassword), eq(false), any()).thenReturn(pfxIdentityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), eq(pemPath), isNull(), isNull(), eq(false), any()).thenReturn(pemIdentityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), eq(pfxPath), isNull(), eq(pfxPassword), eq(false), any()).thenReturn(pfxIdentityClient);
 
         // test
         ClientCertificateCredential credential =
@@ -72,8 +75,46 @@ public class ClientCertificateCredentialTest {
             .verifyComplete();
     }
 
+
     @Test
-    public void testInvalidCertificates() throws Exception {
+    public void testValidCertificates() throws Exception {
+        // setup
+        InputStream pemCert = new ByteArrayInputStream("fakepem".getBytes(StandardCharsets.UTF_8));
+        InputStream pfxCert = new ByteArrayInputStream("fakepfx".getBytes(StandardCharsets.UTF_8));
+        String pfxPassword = "password";
+        String token1 = "token1";
+        String token2 = "token2";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+
+        // mock
+        IdentityClient pemIdentityClient = PowerMockito.mock(IdentityClient.class);
+        IdentityClient pfxIdentityClient = PowerMockito.mock(IdentityClient.class);
+        when(pemIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+        when(pfxIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+        when(pemIdentityClient.authenticateWithConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+        when(pfxIdentityClient.authenticateWithConfidentialClient(request2)).thenReturn(TestUtils.getMockAccessToken(token2, expiresAt));
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), isNull(), eq(pemCert), isNull(), eq(false), any()).thenReturn(pemIdentityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), isNull(), eq(pfxCert), eq(pfxPassword), eq(false), any()).thenReturn(pfxIdentityClient);
+
+        // test
+        ClientCertificateCredential credential =
+            new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemCert).build();
+        StepVerifier.create(credential.getToken(request1))
+            .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+            .verifyComplete();
+        credential =
+            new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxCert, pfxPassword).build();
+        StepVerifier.create(credential.getToken(request2))
+            .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
+                && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+            .verifyComplete();
+    }
+
+    @Test
+    public void testInvalidCertificatePaths() throws Exception {
         // setup
         String pemPath = "C:\\fakepath\\cert1.pem";
         String pfxPath = "C:\\fakepath\\cert2.pfx";
@@ -88,8 +129,8 @@ public class ClientCertificateCredentialTest {
         when(pfxIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
         when(pemIdentityClient.authenticateWithConfidentialClient(request1)).thenReturn(Mono.error(new MsalServiceException("bad pem", "BadPem")));
         when(pfxIdentityClient.authenticateWithConfidentialClient(request2)).thenReturn(Mono.error(new MsalServiceException("bad pfx", "BadPfx")));
-        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), eq(pemPath), isNull(), eq(false), any()).thenReturn(pemIdentityClient);
-        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), eq(pfxPath), eq(pfxPassword), eq(false), any()).thenReturn(pfxIdentityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), eq(pemPath), isNull(), isNull(), eq(false), any()).thenReturn(pemIdentityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), eq(pfxPath), isNull(), eq(pfxPassword), eq(false), any()).thenReturn(pfxIdentityClient);
 
         // test
         ClientCertificateCredential credential =
@@ -100,6 +141,39 @@ public class ClientCertificateCredentialTest {
 
         credential =
             new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxPath, pfxPassword).build();
+        StepVerifier.create(credential.getToken(request2))
+            .expectErrorMatches(e -> e instanceof MsalServiceException && "bad pfx".equals(e.getMessage()))
+            .verify();
+    }
+
+    @Test
+    public void testInvalidCertificates() throws Exception {
+        // setup
+        InputStream pemCert = new ByteArrayInputStream("fakepem".getBytes(StandardCharsets.UTF_8));
+        InputStream pfxCert = new ByteArrayInputStream("fakepfx".getBytes(StandardCharsets.UTF_8));
+        String pfxPassword = "password";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        TokenRequestContext request2 = new TokenRequestContext().addScopes("https://vault.azure.net");
+
+        // mock
+        IdentityClient pemIdentityClient = PowerMockito.mock(IdentityClient.class);
+        IdentityClient pfxIdentityClient = PowerMockito.mock(IdentityClient.class);
+        when(pemIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+        when(pfxIdentityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
+        when(pemIdentityClient.authenticateWithConfidentialClient(request1)).thenReturn(Mono.error(new MsalServiceException("bad pem", "BadPem")));
+        when(pfxIdentityClient.authenticateWithConfidentialClient(request2)).thenReturn(Mono.error(new MsalServiceException("bad pfx", "BadPfx")));
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), isNull(), eq(pemCert), isNull(), eq(false), any()).thenReturn(pemIdentityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), isNull(), eq(pfxCert), eq(pfxPassword), eq(false), any()).thenReturn(pfxIdentityClient);
+
+        // test
+        ClientCertificateCredential credential =
+            new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pemCertificate(pemCert).build();
+        StepVerifier.create(credential.getToken(request1))
+            .expectErrorMatches(e -> e instanceof MsalServiceException && "bad pem".equals(e.getMessage()))
+            .verify();
+
+        credential =
+            new ClientCertificateCredentialBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).pfxCertificate(pfxCert, pfxPassword).build();
         StepVerifier.create(credential.getToken(request2))
             .expectErrorMatches(e -> e instanceof MsalServiceException && "bad pfx".equals(e.getMessage()))
             .verify();
@@ -117,7 +191,7 @@ public class ClientCertificateCredentialTest {
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(Mono.empty());
         when(identityClient.authenticateWithConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
-        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), eq(pemPath), isNull(), eq(false), any()).thenReturn(identityClient);
+        PowerMockito.whenNew(IdentityClient.class).withArguments(eq(TENANT_ID), eq(CLIENT_ID), isNull(), eq(pemPath), isNull(), isNull(), eq(false), any()).thenReturn(identityClient);
 
         // test
         try {

@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Ipv6ExpressRouteCircuitPeeringConfig model. */
+/** Contains IPv6 peering config. */
 @Fluent
 public final class Ipv6ExpressRouteCircuitPeeringConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Ipv6ExpressRouteCircuitPeeringConfig.class);

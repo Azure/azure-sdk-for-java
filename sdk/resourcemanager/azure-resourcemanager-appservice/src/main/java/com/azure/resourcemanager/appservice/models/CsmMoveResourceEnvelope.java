@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CsmMoveResourceEnvelope model. */
+/** Object with a list of the resources that need to be moved and the resource group they should be moved to. */
 @Fluent
 public final class CsmMoveResourceEnvelope {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmMoveResourceEnvelope.class);

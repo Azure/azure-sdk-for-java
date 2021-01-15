@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
 
-/** The MetricTrigger model. */
+/** The trigger that results in a scaling action. */
 @Fluent
 public final class MetricTrigger {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricTrigger.class);

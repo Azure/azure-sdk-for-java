@@ -10,27 +10,27 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
 /**
- * This class helps authenticate an Http request for the Tables service
+ * Policy that adds the SharedKey into the request's Authorization header.
  */
 public final class TablesSharedKeyCredentialPolicy implements HttpPipelinePolicy {
 
     private final TablesSharedKeyCredential credential;
 
     /**
-     * constructor for the TablesSharedKeyCredentialPolicy class
+     * Creates a SharedKey pipeline policy that adds the SharedKey into the request's authorization header.
      *
-     * @param credential the credentials of the account
+     * @param credential The SharedKey credential used to create the policy.
      */
     public TablesSharedKeyCredentialPolicy(TablesSharedKeyCredential credential) {
         this.credential = credential;
     }
 
     /**
-     * creates an Http response
+     * Authorizes a {@link com.azure.core.http.HttpRequest} with the SharedKey credential.
      *
-     * @param context the context of the http pipeline
-     * @param next the next Http pipeline policy
-     * @return an Http response
+     * @param context The context of the request.
+     * @param next The next policy in the pipeline.
+     * @return A reactive result containing the HTTP response.
      */
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         String authorizationValue = credential.generateAuthorizationHeader(context.getHttpRequest().getUrl(),

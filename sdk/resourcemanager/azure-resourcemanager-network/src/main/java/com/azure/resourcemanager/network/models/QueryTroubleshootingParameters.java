@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The QueryTroubleshootingParameters model. */
+/** Parameters that define the resource to query the troubleshooting result. */
 @Fluent
 public final class QueryTroubleshootingParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryTroubleshootingParameters.class);

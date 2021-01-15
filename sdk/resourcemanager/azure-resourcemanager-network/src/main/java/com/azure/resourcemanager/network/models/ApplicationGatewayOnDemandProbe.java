@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationGatewayOnDemandProbe model. */
+/** Details of on demand test probe request. */
 @Fluent
 public final class ApplicationGatewayOnDemandProbe {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayOnDemandProbe.class);

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The DiagnosticMetricSet model. */
+/** Class representing Diagnostic Metric information. */
 @Fluent
 public final class DiagnosticMetricSet {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticMetricSet.class);

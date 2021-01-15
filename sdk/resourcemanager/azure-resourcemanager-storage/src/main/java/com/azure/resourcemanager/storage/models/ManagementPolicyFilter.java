@@ -10,7 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagementPolicyFilter model. */
+/**
+ * Filters limit rule actions to a subset of blobs within the storage account. If multiple filters are defined, a
+ * logical AND is performed on all filters.
+ */
 @Fluent
 public final class ManagementPolicyFilter {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyFilter.class);

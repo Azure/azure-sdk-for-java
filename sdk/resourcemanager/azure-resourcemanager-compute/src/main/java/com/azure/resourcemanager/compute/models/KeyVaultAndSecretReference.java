@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The KeyVaultAndSecretReference model. */
+/** Key Vault Secret Url and vault id of the encryption key. */
 @Fluent
 public final class KeyVaultAndSecretReference {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultAndSecretReference.class);

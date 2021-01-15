@@ -5,7 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.DdosProtectionPlan;
-import com.azure.resourcemanager.network.fluent.inner.DdosProtectionPlanInner;
+import com.azure.resourcemanager.network.fluent.models.DdosProtectionPlanInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +25,7 @@ class DdosProtectionPlanImpl
     protected Mono<DdosProtectionPlanInner> getInnerAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDdosProtectionPlans()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -34,24 +34,24 @@ class DdosProtectionPlanImpl
     public Mono<DdosProtectionPlan> createResourceAsync() {
         return this
             .manager()
-            .inner()
+            .serviceClient()
             .getDdosProtectionPlans()
-            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public String resourceGuid() {
-        return inner().resourceGuid();
+        return innerModel().resourceGuid();
     }
 
     @Override
     public String provisioningState() {
-        return inner().provisioningState().toString();
+        return innerModel().provisioningState().toString();
     }
 
     @Override
     public List<SubResource> virtualNetworks() {
-        return Collections.unmodifiableList(inner().virtualNetworks());
+        return Collections.unmodifiableList(innerModel().virtualNetworks());
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DateAfterModification model. */
+/** Object to define the number of days after last modification. */
 @Fluent
 public final class DateAfterModification {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DateAfterModification.class);

@@ -7,10 +7,10 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkPeering;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.core.management.profile.AzureProfile;
@@ -62,15 +62,15 @@ public final class ManageNetworkPeeringInSameSubscription {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST;
-        final String resourceGroupName = azure.sdkContext().randomResourceName("rg", 15);
-        final String vnetAName = azure.sdkContext().randomResourceName("net", 15);
-        final String vnetBName = azure.sdkContext().randomResourceName("net", 15);
-        final String peeringABName = azure.sdkContext().randomResourceName("peer", 15);
+        final String resourceGroupName = Utils.randomResourceName(azureResourceManager, "rg", 15);
+        final String vnetAName = Utils.randomResourceName(azureResourceManager, "net", 15);
+        final String vnetBName = Utils.randomResourceName(azureResourceManager, "net", 15);
+        final String peeringABName = Utils.randomResourceName(azureResourceManager, "peer", 15);
         try {
 
             //=============================================================
@@ -78,21 +78,21 @@ public final class ManageNetworkPeeringInSameSubscription {
 
             System.out.println("Creating two virtual networks in the same region and subscription...");
 
-            Creatable<Network> networkADefinition = azure.networks().define(vnetAName)
+            Creatable<Network> networkADefinition = azureResourceManager.networks().define(vnetAName)
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupName)
                     .withAddressSpace("10.0.0.0/27")
                     .withSubnet("subnet1", "10.0.0.0/28")
                     .withSubnet("subnet2", "10.0.0.16/28");
 
-            Creatable<Network> networkBDefinition = azure.networks().define(vnetBName)
+            Creatable<Network> networkBDefinition = azureResourceManager.networks().define(vnetBName)
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupName)
                     .withAddressSpace("10.1.0.0/27")
                     .withSubnet("subnet3", "10.1.0.0/27");
 
             // Create the networks in parallel for better performance
-            CreatedResources<Network> created = azure.networks().create(Arrays.asList(networkADefinition, networkBDefinition));
+            CreatedResources<Network> created = azureResourceManager.networks().create(Arrays.asList(networkADefinition, networkBDefinition));
 
             // Print virtual network details
             for (Network network : created.values()) {
@@ -153,7 +153,7 @@ public final class ManageNetworkPeeringInSameSubscription {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + resourceGroupName);
-                azure.resourceGroups().beginDeleteByName(resourceGroupName);
+                azureResourceManager.resourceGroups().beginDeleteByName(resourceGroupName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {
@@ -176,18 +176,19 @@ public final class ManageNetworkPeeringInSameSubscription {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

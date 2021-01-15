@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVM;
 import com.azure.resourcemanager.network.models.LoadBalancerInboundNatRule;
@@ -20,7 +20,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNicIpConfiguration;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 
@@ -44,14 +44,14 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final Region region = Region.US_EAST2;
-        final String rgName = azure.sdkContext().randomResourceName("rgCOVS", 15);
-        final String vnetName = azure.sdkContext().randomResourceName("vnet", 24);
-        final String loadBalancerName1 = azure.sdkContext().randomResourceName("intlb" + "-", 18);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgCOVS", 15);
+        final String vnetName = Utils.randomResourceName(azureResourceManager, "vnet", 24);
+        final String loadBalancerName1 = Utils.randomResourceName(azureResourceManager, "intlb" + "-", 18);
         final String publicIpName = "pip-" + loadBalancerName1;
         final String frontendName = loadBalancerName1 + "-FE1";
         final String backendPoolName1 = loadBalancerName1 + "-BAP1";
@@ -64,10 +64,10 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
         final String natPool50XXto22 = "natPool50XXto22";
         final String natPool60XXto23 = "natPool60XXto23";
 
-        final String vmssName =  azure.sdkContext().randomResourceName("vmss", 24);
-        final String storageAccountName1 = azure.sdkContext().randomResourceName("stg1", 24);
-        final String storageAccountName2 = azure.sdkContext().randomResourceName("stg2", 24);
-        final String storageAccountName3 = azure.sdkContext().randomResourceName("stg3", 24);
+        final String vmssName =  Utils.randomResourceName(azureResourceManager, "vmss", 24);
+        final String storageAccountName1 = Utils.randomResourceName(azureResourceManager, "stg1", 24);
+        final String storageAccountName2 = Utils.randomResourceName(azureResourceManager, "stg2", 24);
+        final String storageAccountName3 = Utils.randomResourceName(azureResourceManager, "stg3", 24);
 
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
@@ -81,7 +81,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
             // Create a virtual network with a frontend subnet
             System.out.println("Creating virtual network with a frontend subnet ...");
 
-            Network network = azure.networks().define(vnetName)
+            Network network = azureResourceManager.networks().define(vnetName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("172.16.0.0/16")
@@ -98,7 +98,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
             // Create a public IP address
             System.out.println("Creating a public IP address...");
 
-            PublicIpAddress publicIPAddress = azure.publicIpAddresses().define(publicIpName)
+            PublicIpAddress publicIPAddress = azureResourceManager.publicIpAddresses().define(publicIpName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withLeafDomainLabel(publicIpName)
@@ -133,7 +133,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
                     + "  balancer to a port for a specific virtual machine in the backend address pool\n"
                     + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
 
-            LoadBalancer loadBalancer1 = azure.loadBalancers().define(loadBalancerName1)
+            LoadBalancer loadBalancer1 = azureResourceManager.loadBalancers().define(loadBalancerName1)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
 
@@ -205,7 +205,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
                     .withSku("18.04-LTS")
                     .withVersion("latest");
 
-            VirtualMachineScaleSet virtualMachineScaleSet = azure.virtualMachineScaleSets().define(vmssName)
+            VirtualMachineScaleSet virtualMachineScaleSet = azureResourceManager.virtualMachineScaleSets().define(vmssName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
@@ -240,7 +240,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
             System.out.println();
 
             // Print virtual machine scale set details
-            // Utils.print(virtualMachineScaleSet);
+            // ResourceManagerUtils.print(virtualMachineScaleSet);
 
             //=============================================================
             // List virtual machine scale set network interfaces
@@ -317,7 +317,7 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -340,18 +340,19 @@ public final class ManageVirtualMachineScaleSetWithUnmanagedDisks {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

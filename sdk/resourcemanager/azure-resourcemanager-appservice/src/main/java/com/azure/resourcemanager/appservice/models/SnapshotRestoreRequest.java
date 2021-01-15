@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SnapshotRestoreRequest model. */
+/** Details about app recovery operation. */
 @JsonFlatten
 @Fluent
 public class SnapshotRestoreRequest extends ProxyOnlyResource {

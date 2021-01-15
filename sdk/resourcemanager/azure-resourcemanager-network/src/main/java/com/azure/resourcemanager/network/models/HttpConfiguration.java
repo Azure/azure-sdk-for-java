@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The HttpConfiguration model. */
+/** HTTP configuration of the connectivity check. */
 @Fluent
 public final class HttpConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpConfiguration.class);

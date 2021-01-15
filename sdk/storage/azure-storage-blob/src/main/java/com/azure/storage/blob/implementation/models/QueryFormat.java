@@ -15,7 +15,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @Fluent
 public final class QueryFormat {
     /*
-     * Possible values include: 'delimited', 'json'
+     * Possible values include: 'delimited', 'json', 'arrow'
      */
     @JsonProperty(value = "Type")
     private QueryFormatType type;
@@ -32,8 +32,15 @@ public final class QueryFormat {
     @JsonProperty(value = "JsonTextConfiguration")
     private JsonTextConfiguration jsonTextConfiguration;
 
+    /*
+     * The arrowConfiguration property.
+     */
+    @JsonProperty(value = "ArrowConfiguration")
+    private ArrowConfiguration arrowConfiguration;
+
     /**
-     * Get the type property: Possible values include: 'delimited', 'json'.
+     * Get the type property: Possible values include: 'delimited', 'json',
+     * 'arrow'.
      *
      * @return the type value.
      */
@@ -42,7 +49,8 @@ public final class QueryFormat {
     }
 
     /**
-     * Set the type property: Possible values include: 'delimited', 'json'.
+     * Set the type property: Possible values include: 'delimited', 'json',
+     * 'arrow'.
      *
      * @param type the type value to set.
      * @return the QueryFormat object itself.
@@ -94,6 +102,26 @@ public final class QueryFormat {
      */
     public QueryFormat setJsonTextConfiguration(JsonTextConfiguration jsonTextConfiguration) {
         this.jsonTextConfiguration = jsonTextConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the arrowConfiguration property: The arrowConfiguration property.
+     *
+     * @return the arrowConfiguration value.
+     */
+    public ArrowConfiguration getArrowConfiguration() {
+        return this.arrowConfiguration;
+    }
+
+    /**
+     * Set the arrowConfiguration property: The arrowConfiguration property.
+     *
+     * @param arrowConfiguration the arrowConfiguration value to set.
+     * @return the QueryFormat object itself.
+     */
+    public QueryFormat setArrowConfiguration(ArrowConfiguration arrowConfiguration) {
+        this.arrowConfiguration = arrowConfiguration;
         return this;
     }
 }

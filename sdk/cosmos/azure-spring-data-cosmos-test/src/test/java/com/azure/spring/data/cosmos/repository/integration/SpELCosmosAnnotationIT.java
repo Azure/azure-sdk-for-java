@@ -13,7 +13,7 @@ import com.azure.spring.data.cosmos.core.convert.ObjectMapperFactory;
 import com.azure.spring.data.cosmos.core.mapping.CosmosMappingContext;
 import com.azure.spring.data.cosmos.domain.SpELBeanStudent;
 import com.azure.spring.data.cosmos.domain.SpELPropertyStudent;
-import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
+import com.azure.spring.data.cosmos.repository.TestRepositorySpELConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.AfterClass;
@@ -32,11 +32,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestRepositoryConfig.class)
+@ContextConfiguration(classes = TestRepositorySpELConfig.class)
 public class SpELCosmosAnnotationIT {
-    private static final SpELPropertyStudent TEST_PROPERTY_STUDENT =
-            new SpELPropertyStudent(TestConstants.ID_1, TestConstants.FIRST_NAME,
-            TestConstants.LAST_NAME);
+
+    private static final SpELPropertyStudent TEST_PROPERTY_STUDENT = new SpELPropertyStudent(TestConstants.ID_1,
+        TestConstants.FIRST_NAME, TestConstants.LAST_NAME);
 
     @Value("${cosmos.uri}")
     private String dbUri;

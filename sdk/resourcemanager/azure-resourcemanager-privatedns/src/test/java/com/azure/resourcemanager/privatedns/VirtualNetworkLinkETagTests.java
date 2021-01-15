@@ -18,10 +18,10 @@ import com.azure.resourcemanager.privatedns.models.PrivateDnsZone;
 import com.azure.resourcemanager.privatedns.models.VirtualNetworkLink;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
@@ -63,11 +63,10 @@ public class VirtualNetworkLinkETagTests extends ResourceManagerTestBase {
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
-        SdkContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
-        resourceManager =
-            ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
-        privateZoneManager = PrivateDnsZoneManager.authenticate(httpPipeline, profile);
-        networkManager = NetworkManager.authenticate(httpPipeline, profile);
+        ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
+        privateZoneManager = buildManager(PrivateDnsZoneManager.class, httpPipeline, profile);
+        networkManager = buildManager(NetworkManager.class, httpPipeline, profile);
+        resourceManager = privateZoneManager.resourceManager();
         rgName = generateRandomResourceName("prdnsvnltest", 15);
         topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
         vnetName = generateRandomResourceName("prdnsvnet", 15);

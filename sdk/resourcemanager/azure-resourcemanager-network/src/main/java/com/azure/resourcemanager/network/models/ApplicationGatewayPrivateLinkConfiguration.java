@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayPrivateLinkConfiguration model. */
+/** Private Link Configuration on an application gateway. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayPrivateLinkConfiguration extends SubResource {
@@ -116,6 +116,13 @@ public class ApplicationGatewayPrivateLinkConfiguration extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayPrivateLinkConfiguration withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**

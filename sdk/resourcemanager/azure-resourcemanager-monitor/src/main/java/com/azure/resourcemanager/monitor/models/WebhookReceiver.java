@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The WebhookReceiver model. */
+/** A webhook receiver. */
 @Fluent
 public final class WebhookReceiver {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookReceiver.class);

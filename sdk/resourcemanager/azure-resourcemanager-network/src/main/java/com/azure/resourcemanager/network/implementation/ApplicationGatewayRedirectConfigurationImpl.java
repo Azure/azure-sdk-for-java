@@ -8,10 +8,11 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayListener;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectType;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRule;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayRedirectConfigurationInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRedirectConfigurationInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
@@ -32,17 +33,17 @@ class ApplicationGatewayRedirectConfigurationImpl
     // Getters
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public ApplicationGatewayRedirectType type() {
-        return this.inner().redirectType();
+        return this.innerModel().redirectType();
     }
 
     @Override
     public ApplicationGatewayListener targetListener() {
-        SubResource ref = this.inner().targetListener();
+        SubResource ref = this.innerModel().targetListener();
         if (ref == null) {
             return null;
         }
@@ -53,14 +54,14 @@ class ApplicationGatewayRedirectConfigurationImpl
 
     @Override
     public String targetUrl() {
-        return this.inner().targetUrl();
+        return this.innerModel().targetUrl();
     }
 
     @Override
     public Map<String, ApplicationGatewayRequestRoutingRule> requestRoutingRules() {
         Map<String, ApplicationGatewayRequestRoutingRule> rules = new TreeMap<>();
-        if (null != this.inner().requestRoutingRules()) {
-            for (SubResource ruleRef : this.inner().requestRoutingRules()) {
+        if (null != this.innerModel().requestRoutingRules()) {
+            for (SubResource ruleRef : this.innerModel().requestRoutingRules()) {
                 String ruleName = ResourceUtils.nameFromResourceId(ruleRef.id());
                 ApplicationGatewayRequestRoutingRule rule = this.parent().requestRoutingRules().get(ruleName);
                 if (null != rule) {
@@ -74,12 +75,12 @@ class ApplicationGatewayRedirectConfigurationImpl
 
     @Override
     public boolean isPathIncluded() {
-        return Utils.toPrimitiveBoolean(this.inner().includePath());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().includePath());
     }
 
     @Override
     public boolean isQueryStringIncluded() {
-        return Utils.toPrimitiveBoolean(this.inner().includeQueryString());
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().includeQueryString());
     }
 
     // Verbs
@@ -95,17 +96,17 @@ class ApplicationGatewayRedirectConfigurationImpl
 
     @Override
     public ApplicationGatewayRedirectConfigurationImpl withTargetUrl(String url) {
-        this.inner().withTargetUrl(url).withTargetListener(null).withIncludePath(null);
+        this.innerModel().withTargetUrl(url).withTargetListener(null).withIncludePath(null);
         return this;
     }
 
     @Override
     public ApplicationGatewayRedirectConfigurationImpl withTargetListener(String name) {
         if (name == null) {
-            this.inner().withTargetListener(null);
+            this.innerModel().withTargetListener(null);
         } else {
             SubResource ref = new SubResource().withId(this.parent().futureResourceId() + "/httpListeners/" + name);
-            this.inner().withTargetListener(ref).withTargetUrl(null);
+            this.innerModel().withTargetListener(ref).withTargetUrl(null);
         }
 
         return this;
@@ -113,43 +114,43 @@ class ApplicationGatewayRedirectConfigurationImpl
 
     @Override
     public ApplicationGatewayRedirectConfigurationImpl withoutTargetListener() {
-        this.inner().withTargetListener(null);
+        this.innerModel().withTargetListener(null);
         return this;
     }
 
     @Override
     public ApplicationGatewayRedirectConfigurationImpl withoutTargetUrl() {
-        this.inner().withTargetUrl(null);
+        this.innerModel().withTargetUrl(null);
         return this;
     }
 
     @Override
     public ApplicationGatewayRedirectConfigurationImpl withType(ApplicationGatewayRedirectType redirectType) {
-        this.inner().withRedirectType(redirectType);
+        this.innerModel().withRedirectType(redirectType);
         return this;
     }
 
     @Override
     public ApplicationGatewayRedirectConfigurationImpl withPathIncluded() {
-        this.inner().withIncludePath(true);
+        this.innerModel().withIncludePath(true);
         return this;
     }
 
     @Override
     public ApplicationGatewayRedirectConfigurationImpl withQueryStringIncluded() {
-        this.inner().withIncludeQueryString(true);
+        this.innerModel().withIncludeQueryString(true);
         return this;
     }
 
     @Override
     public ApplicationGatewayRedirectConfigurationImpl withoutPathIncluded() {
-        this.inner().withIncludePath(null);
+        this.innerModel().withIncludePath(null);
         return this;
     }
 
     @Override
     public ApplicationGatewayRedirectConfigurationImpl withoutQueryStringIncluded() {
-        this.inner().withIncludeQueryString(null);
+        this.innerModel().withIncludeQueryString(null);
         return this;
     }
 }

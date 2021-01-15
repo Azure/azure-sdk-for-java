@@ -7,10 +7,10 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAlias;
@@ -20,6 +20,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
 
 /**
  * Azure SQL sample for managing SQL Server DNS Aliases.
@@ -35,15 +36,15 @@ import java.sql.Statement;
 public class ManageSqlServerDnsAliases {
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) throws ClassNotFoundException, SQLException {
-        final String sqlServerForTestName = azure.sdkContext().randomResourceName("sqltest", 20);
-        final String sqlServerForProdName = azure.sdkContext().randomResourceName("sqlprod", 20);
-        final String sqlServerDnsAlias = azure.sdkContext().randomResourceName("sqlserver", 20);
+    public static boolean runSample(AzureResourceManager azureResourceManager) throws ClassNotFoundException, SQLException {
+        final String sqlServerForTestName = Utils.randomResourceName(azureResourceManager, "sqltest", 20);
+        final String sqlServerForProdName = Utils.randomResourceName(azureResourceManager, "sqlprod", 20);
+        final String sqlServerDnsAlias = Utils.randomResourceName(azureResourceManager, "sqlserver", 20);
         final String dbName = "dbSample";
-        final String rgName = azure.sdkContext().randomResourceName("rgRSSDFW", 20);
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgRSSDFW", 20);
         final String administratorLogin = "sqladmin3423";
         final String administratorPassword = Utils.password();
         try {
@@ -54,7 +55,7 @@ public class ManageSqlServerDnsAliases {
             // Create a "test" SQL Server.
             System.out.println("Creating a SQL server for test related activities");
 
-            SqlServer sqlServerForTest = azure.sqlServers().define(sqlServerForTestName)
+            SqlServer sqlServerForTest = azureResourceManager.sqlServers().define(sqlServerForTestName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
@@ -99,7 +100,7 @@ public class ManageSqlServerDnsAliases {
             // Create a "production" SQL Server.
             System.out.println("Creating a SQL server for production related activities");
 
-            SqlServer sqlServerForProd = azure.sqlServers().define(sqlServerForProdName)
+            SqlServer sqlServerForProd = azureResourceManager.sqlServers().define(sqlServerForProdName)
                 .withRegion(Region.US_EAST2)
                 .withExistingResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
@@ -149,7 +150,7 @@ public class ManageSqlServerDnsAliases {
             SqlServerDnsAlias dnsAlias = sqlServerForTest.dnsAliases()
                 .define(sqlServerDnsAlias)
                 .create();
-            SdkContext.sleep(5 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(5));
 
             String connectionUrl = String.format("jdbc:sqlserver://%s:1433;database=%s;user=%s;password=%s;",
                 dnsAlias.azureDnsRecord(),
@@ -179,7 +180,7 @@ public class ManageSqlServerDnsAliases {
             sqlServerForProd.dnsAliases().acquire(sqlServerDnsAlias, sqlServerForTest.id());
 
             // It takes some time for the DNS alias to reflect the new Server connection
-            SdkContext.sleep(10 * 60 * 1000);
+            ResourceManagerUtils.sleep(Duration.ofMinutes(10));
 
             // Re-establish the connection.
             try (Connection conDnsAlias = DriverManager.getConnection(connectionUrl);
@@ -197,13 +198,13 @@ public class ManageSqlServerDnsAliases {
 
             // Delete the SQL Servers.
             System.out.println("Deleting the Sql Servers");
-            azure.sqlServers().deleteById(sqlServerForTest.id());
-            azure.sqlServers().deleteById(sqlServerForProd.id());
+            azureResourceManager.sqlServers().deleteById(sqlServerForTest.id());
+            azureResourceManager.sqlServers().deleteById(sqlServerForProd.id());
             return true;
         } finally {
             try {
                 System.out.println("Deleting Resource Group: " + rgName);
-                azure.resourceGroups().beginDeleteByName(rgName);
+                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
             } catch (Exception e) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
@@ -219,18 +220,19 @@ public class ManageSqlServerDnsAliases {
         try {
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

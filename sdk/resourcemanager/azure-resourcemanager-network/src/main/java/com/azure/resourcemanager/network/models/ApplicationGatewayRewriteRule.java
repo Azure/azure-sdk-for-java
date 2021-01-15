@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayRewriteRule model. */
+/** Rewrite rule of an application gateway. */
 @Fluent
 public final class ApplicationGatewayRewriteRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRule.class);

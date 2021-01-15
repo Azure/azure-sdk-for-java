@@ -8,10 +8,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.sql.fluent.inner.SyncGroupInner;
+import com.azure.resourcemanager.sql.fluent.models.SyncGroupInner;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 @Fluent
 public interface SqlSyncGroup
     extends ExternalChildResource<SqlSyncGroup, SqlDatabase>,
-        HasInner<SyncGroupInner>,
+        HasInnerModel<SyncGroupInner>,
         HasResourceGroup,
         Refreshable<SqlSyncGroup>,
         Updatable<SqlSyncGroup.Update> {

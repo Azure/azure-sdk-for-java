@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The SubscriptionCreateOrUpdateParameters model. */
+/** Parameters supplied to the Create Or Update Subscription operation. */
 @JsonFlatten
 @Fluent
 public class SubscriptionCreateOrUpdateParameters {

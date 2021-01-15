@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OrchestrationServiceSummary model. */
+/** Summary for an orchestration service of a virtual machine scale set. */
 @Immutable
 public final class OrchestrationServiceSummary {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestrationServiceSummary.class);

@@ -6,13 +6,19 @@ package com.azure.resourcemanager.resources;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.resourcemanager.resources.fluent.FeatureClient;
-import com.azure.resourcemanager.resources.fluent.FeatureClientBuilder;
+import com.azure.resourcemanager.resources.fluent.ManagementLockClient;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
+import com.azure.resourcemanager.resources.implementation.FeatureClientBuilder;
 import com.azure.resourcemanager.resources.fluent.PolicyClient;
-import com.azure.resourcemanager.resources.fluent.PolicyClientBuilder;
+import com.azure.resourcemanager.resources.implementation.ManagementLockClientBuilder;
+import com.azure.resourcemanager.resources.implementation.ManagementLocksImpl;
+import com.azure.resourcemanager.resources.implementation.PolicyClientBuilder;
 import com.azure.resourcemanager.resources.fluent.ResourceManagementClient;
-import com.azure.resourcemanager.resources.fluent.ResourceManagementClientBuilder;
+import com.azure.resourcemanager.resources.implementation.ResourceManagementClientBuilder;
 import com.azure.resourcemanager.resources.fluent.SubscriptionClient;
-import com.azure.resourcemanager.resources.fluent.SubscriptionClientBuilder;
+import com.azure.resourcemanager.resources.implementation.SubscriptionClientBuilder;
+import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.implementation.DeploymentsImpl;
 import com.azure.resourcemanager.resources.implementation.FeaturesImpl;
 import com.azure.resourcemanager.resources.implementation.GenericResourcesImpl;
@@ -25,6 +31,7 @@ import com.azure.resourcemanager.resources.implementation.TenantsImpl;
 import com.azure.resourcemanager.resources.models.Deployments;
 import com.azure.resourcemanager.resources.models.Features;
 import com.azure.resourcemanager.resources.models.GenericResources;
+import com.azure.resourcemanager.resources.models.ManagementLocks;
 import com.azure.resourcemanager.resources.models.PolicyAssignments;
 import com.azure.resourcemanager.resources.models.PolicyDefinitions;
 import com.azure.resourcemanager.resources.models.Providers;
@@ -33,24 +40,20 @@ import com.azure.resourcemanager.resources.models.Subscriptions;
 import com.azure.resourcemanager.resources.models.Tenants;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.azure.resourcemanager.resources.fluentcore.arm.ManagerBase;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
-import com.azure.resourcemanager.resources.fluentcore.utils.Utils;
 
 import java.util.Objects;
 
 /**
  * Entry point to Azure resource management.
  */
-public final class ResourceManager extends ManagerBase implements HasInner<ResourceManagementClient> {
+public final class ResourceManager extends Manager<ResourceManagementClient> {
     // The sdk clients
-    private final ResourceManagementClient resourceManagementClient;
     private final FeatureClient featureClient;
     private final SubscriptionClient subscriptionClient;
     private final PolicyClient policyClient;
+    private final ManagementLockClient managementLockClient;
     // The collections
     private ResourceGroups resourceGroups;
     private GenericResources genericResources;
@@ -61,6 +64,8 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
     private PolicyAssignments policyAssignments;
     private Subscriptions subscriptions;
     private Tenants tenants;
+    private ManagementLocks managementLocks;
+    private ResourceManagerUtils.InternalRuntimeContext internalContext;
 
     /**
      * Creates an instance of ResourceManager that exposes resource management API entry points.
@@ -80,7 +85,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      * @param profile the profile used in resource management
      * @return the interface exposing resource management API entry points that work across subscriptions
      */
-    public static ResourceManager.Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    private static ResourceManager.Authenticated authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
         return new AuthenticatedImpl(httpPipeline, profile);
     }
 
@@ -131,14 +136,6 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         Subscriptions subscriptions();
 
         /**
-         * Specifies sdk context for resource manager.
-         *
-         * @param sdkContext the sdk context
-         * @return the authenticated itself for chaining
-         */
-        Authenticated withSdkContext(SdkContext sdkContext);
-
-        /**
          * Specifies a subscription to expose resource management API entry points that work in a subscription.
          *
          * @param subscriptionId the subscription UUID
@@ -162,7 +159,6 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
     private static final class AuthenticatedImpl implements Authenticated {
         private final HttpPipeline httpPipeline;
         private AzureProfile profile;
-        private SdkContext sdkContext;
         private final SubscriptionClient subscriptionClient;
         // The subscription less collections
         private Subscriptions subscriptions;
@@ -171,7 +167,6 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         AuthenticatedImpl(HttpPipeline httpPipeline, AzureProfile profile) {
             this.httpPipeline = httpPipeline;
             this.profile = profile;
-            this.sdkContext = new SdkContext();
             this.subscriptionClient = new SubscriptionClientBuilder()
                     .pipeline(httpPipeline)
                     .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
@@ -193,36 +188,32 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         }
 
         @Override
-        public AuthenticatedImpl withSdkContext(SdkContext sdkContext) {
-            this.sdkContext = sdkContext;
-            return this;
-        }
-
-        @Override
         public ResourceManager withSubscription(String subscriptionId) {
             Objects.requireNonNull(subscriptionId);
             profile = new AzureProfile(profile.getTenantId(), subscriptionId, profile.getEnvironment());
-            return new ResourceManager(httpPipeline, profile, sdkContext);
+            return new ResourceManager(httpPipeline, profile);
         }
 
         @Override
         public ResourceManager withDefaultSubscription() {
             if (profile.getSubscriptionId() == null) {
-                String subscriptionId = Utils.defaultSubscription(this.subscriptions().list());
+                String subscriptionId = ResourceManagerUtils.getDefaultSubscription(this.subscriptions().list());
                 profile = new AzureProfile(profile.getTenantId(), subscriptionId, profile.getEnvironment());
             }
-            return new ResourceManager(httpPipeline, profile, sdkContext);
+            return new ResourceManager(httpPipeline, profile);
         }
     }
 
-    private ResourceManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
-        super(null, profile, sdkContext);
-        super.withResourceManager(this);
-        this.resourceManagementClient = new ResourceManagementClientBuilder()
+    private ResourceManager(HttpPipeline httpPipeline, AzureProfile profile) {
+        super(
+            null,
+            profile,
+            new ResourceManagementClientBuilder()
                 .pipeline(httpPipeline)
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
-                .buildClient();
+                .buildClient());
+        super.withResourceManager(this);
 
         this.featureClient = new FeatureClientBuilder()
                 .pipeline(httpPipeline)
@@ -240,6 +231,53 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient();
+
+        this.managementLockClient = new ManagementLockClientBuilder()
+                .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+                .subscriptionId(profile.getSubscriptionId())
+                .buildClient();
+
+        for (int i = 0; i < httpPipeline.getPolicyCount(); ++i) {
+            if (httpPipeline.getPolicy(i) instanceof ProviderRegistrationPolicy) {
+                ProviderRegistrationPolicy policy = (ProviderRegistrationPolicy) httpPipeline.getPolicy(i);
+                if (policy.getProviders() == null) {
+                    policy.setProviders(providers());
+                }
+            }
+        }
+    }
+
+    /**
+     * @return wrapped inner feature client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     */
+    public FeatureClient featureClient() {
+        return featureClient;
+    }
+
+    /**
+     * @return wrapped inner subscription client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     */
+    public SubscriptionClient subscriptionClient() {
+        return subscriptionClient;
+    }
+
+    /**
+     * @return wrapped inner policy client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     */
+    public PolicyClient policyClient() {
+        return policyClient;
+    }
+
+    /**
+     * @return wrapped inner policy client providing direct access to auto-generated API implementation,
+     * based on Azure REST API.
+     */
+    public ManagementLockClient managementLockClient() {
+        return managementLockClient;
     }
 
     /**
@@ -287,7 +325,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      */
     public Providers providers() {
         if (providers == null) {
-            providers = new ProvidersImpl(resourceManagementClient.getProviders());
+            providers = new ProvidersImpl(serviceClient().getProviders());
         }
         return providers;
     }
@@ -332,8 +370,23 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         return tenants;
     }
 
-    @Override
-    public ResourceManagementClient inner() {
-        return this.resourceManagementClient;
+    /**
+     * @return the locks management API entry point
+     */
+    public ManagementLocks managementLocks() {
+        if (managementLocks == null) {
+            managementLocks = new ManagementLocksImpl(this);
+        }
+        return managementLocks;
+    }
+
+    /**
+     * @return the {@link ResourceManagerUtils.InternalRuntimeContext} associated with this manager
+     */
+    public ResourceManagerUtils.InternalRuntimeContext internalContext() {
+        if (internalContext == null) {
+            internalContext = new ResourceManagerUtils.InternalRuntimeContext();
+        }
+        return this.internalContext;
     }
 }

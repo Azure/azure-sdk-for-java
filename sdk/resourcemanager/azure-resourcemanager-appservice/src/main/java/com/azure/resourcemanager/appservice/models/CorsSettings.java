@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CorsSettings model. */
+/** Cross-Origin Resource Sharing (CORS) settings for the app. */
 @Fluent
 public final class CorsSettings {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CorsSettings.class);

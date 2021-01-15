@@ -4,9 +4,9 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventhubs.EventHubsManager;
-import com.azure.resourcemanager.eventhubs.fluent.inner.AuthorizationRuleInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.AuthorizationRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Fluent
 public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>> extends
-        NestedResource, HasInner<AuthorizationRuleInner>, HasManager<EventHubsManager>,
+        NestedResource, HasInnerModel<AuthorizationRuleInner>, HasManager<EventHubsManager>,
         Refreshable<RuleT> {
     /**
      * @return rights associated with the authorization rule

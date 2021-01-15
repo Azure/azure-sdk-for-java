@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ConnectionMonitorEndpointFilter model. */
+/** Describes the connection monitor endpoint filter. */
 @Fluent
 public final class ConnectionMonitorEndpointFilter {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorEndpointFilter.class);

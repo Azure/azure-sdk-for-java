@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EndpointDependency model. */
+/** A domain name that a service is reached at, including details of the current connection status. */
 @Fluent
 public final class EndpointDependency {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointDependency.class);

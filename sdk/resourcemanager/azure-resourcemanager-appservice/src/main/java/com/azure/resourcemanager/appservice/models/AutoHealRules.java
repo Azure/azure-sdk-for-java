@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AutoHealRules model. */
+/** Rules that can be defined for auto-heal. */
 @Fluent
 public final class AutoHealRules {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoHealRules.class);

@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ServerVersionCapability model. */
+/** The server capability. */
 @Fluent
 public final class ServerVersionCapability {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerVersionCapability.class);

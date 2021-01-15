@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Actor model. */
+/**
+ * The agent that initiated the event. For most situations, this could be from the authorization context of the request.
+ */
 @Fluent
 public final class Actor {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Actor.class);

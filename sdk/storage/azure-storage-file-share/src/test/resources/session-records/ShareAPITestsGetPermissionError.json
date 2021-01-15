@@ -1,47 +1,48 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestsgetpermissionerror229787cb2f0e135d2?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsgetpermissionerror2099401336ecf9cfa?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "f3e4e9bb-65e9-44c9-85e9-67f8752b5dc0"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a656d06e-fda1-473c-a38f-606732316872"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7791201EEBD80",
-      "Last-Modified" : "Wed, 04 Dec 2019 23:30:54 GMT",
+      "ETag" : "0x8D8448C9A1AFBC9",
+      "Last-Modified" : "Wed, 19 Aug 2020 22:09:54 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9ba99f77-201a-0011-6ffa-aa088f000000",
-      "Date" : "Wed, 04 Dec 2019 23:30:53 GMT",
-      "x-ms-client-request-id" : "f3e4e9bb-65e9-44c9-85e9-67f8752b5dc0"
+      "x-ms-request-id" : "8c89f993-601a-0022-7275-761fdd000000",
+      "Date" : "Wed, 19 Aug 2020 22:09:54 GMT",
+      "x-ms-client-request-id" : "a656d06e-fda1-473c-a38f-606732316872"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestsgetpermissionerror229787cb2f0e135d2?restype=share&comp=filepermission",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsgetpermissionerror2099401336ecf9cfa?restype=share&comp=filepermission",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "904ae656-9247-41d7-a279-b323e0822cbd"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "07d99347-0cf3-47d4-82db-8b92cd2f01c5"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
       "x-ms-error-code" : "InvalidHeaderValue",
       "retry-after" : "0",
       "Content-Length" : "335",
       "StatusCode" : "400",
-      "x-ms-request-id" : "9ba99f79-201a-0011-70fa-aa088f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:9ba99f79-201a-0011-70fa-aa088f000000\nTime:2019-12-04T23:30:54.5849574Z</Message><HeaderName>x-ms-file-permission-key</HeaderName><HeaderValue>abcde</HeaderValue></Error>",
-      "Date" : "Wed, 04 Dec 2019 23:30:53 GMT",
-      "x-ms-client-request-id" : "904ae656-9247-41d7-a279-b323e0822cbd",
+      "x-ms-request-id" : "8c89f995-601a-0022-7375-761fdd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:8c89f995-601a-0022-7375-761fdd000000\nTime:2020-08-19T22:09:54.5215553Z</Message><HeaderName>x-ms-file-permission-key</HeaderName><HeaderValue>abcde</HeaderValue></Error>",
+      "Date" : "Wed, 19 Aug 2020 22:09:54 GMT",
+      "x-ms-client-request-id" : "07d99347-0cf3-47d4-82db-8b92cd2f01c5",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestsgetpermissionerror229787cb2f0e135d2" ]
+  "variables" : [ "shareapitestsgetpermissionerror2099401336ecf9cfa" ]
 }

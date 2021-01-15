@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetNetworkConfigurationDnsSettings model. */
+/** Describes a virtual machines scale sets network configuration's DNS settings. */
 @Fluent
 public final class VirtualMachineScaleSetNetworkConfigurationDnsSettings {
     @JsonIgnore

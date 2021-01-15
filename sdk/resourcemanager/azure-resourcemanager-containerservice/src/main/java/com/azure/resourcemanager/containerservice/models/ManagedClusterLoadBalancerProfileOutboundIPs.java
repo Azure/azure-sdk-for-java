@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagedClusterLoadBalancerProfileOutboundIPs model. */
+/** Desired outbound IP resources for the cluster load balancer. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileOutboundIPs {
     @JsonIgnore

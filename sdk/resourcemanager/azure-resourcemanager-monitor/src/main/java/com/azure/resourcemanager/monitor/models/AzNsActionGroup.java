@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AzNsActionGroup model. */
+/** Azure action group. */
 @Fluent
 public final class AzNsActionGroup {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzNsActionGroup.class);

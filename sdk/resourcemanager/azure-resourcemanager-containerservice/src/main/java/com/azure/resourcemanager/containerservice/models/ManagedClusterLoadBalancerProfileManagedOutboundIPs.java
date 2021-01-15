@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagedClusterLoadBalancerProfileManagedOutboundIPs model. */
+/** Desired managed outbound IPs for the cluster load balancer. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     @JsonIgnore

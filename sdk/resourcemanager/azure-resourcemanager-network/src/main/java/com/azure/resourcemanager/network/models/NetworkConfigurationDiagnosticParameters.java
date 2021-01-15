@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkConfigurationDiagnosticParameters model. */
+/** Parameters to get network configuration diagnostic. */
 @Fluent
 public final class NetworkConfigurationDiagnosticParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticParameters.class);

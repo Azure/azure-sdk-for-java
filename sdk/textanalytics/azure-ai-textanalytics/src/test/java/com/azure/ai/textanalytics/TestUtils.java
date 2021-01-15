@@ -3,7 +3,15 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.AnalyzeTasksResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.HealthcareEntityCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.HealthcareEntityPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.HealthcareTaskResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.RecognizeHealthcareEntitiesResultCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.RecognizeHealthcareEntitiesResultPropertiesHelper;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
@@ -13,6 +21,10 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.HealthcareEntityCollection;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
+import com.azure.ai.textanalytics.models.HealthcareTaskResult;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
@@ -22,6 +34,7 @@ import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
@@ -34,6 +47,7 @@ import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.util.RecognizeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.exception.HttpResponseException;
@@ -95,6 +109,12 @@ final class TestUtils {
 
     static final String PII_ENTITY_OFFSET_INPUT = "SSN: 859-98-0987";
     static final String SENTIMENT_OFFSET_INPUT = "The hotel was dark and unclean.";
+
+    static final List<String> HEALTHCARE_INPUTS = asList(
+        "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months.",
+        "The patient went for six minutes with minimal ST depressions in the anterior lateral leads , thought due to fatigue and wrist pain , his anginal equivalent.");
+
+    static final List<String> ANALYZE_TASK_INPUTS = asList(CATEGORIZED_ENTITY_INPUTS.get(0), PII_ENTITY_INPUTS.get(0));
 
     // "personal" and "social" are common to both English and Spanish and if given with limited context the
     // response will be based on the "US" country hint. If the origin of the text is known to be coming from
@@ -195,9 +215,9 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<CategorizedEntity> getCategorizedEntitiesList1() {
-        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0, 18, 4);
-        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0, 26, 7);
-        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0, 34, 9);
+        CategorizedEntity categorizedEntity1 = new CategorizedEntity("trip", EntityCategory.EVENT, null, 0.0, 18);
+        CategorizedEntity categorizedEntity2 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 0.0, 26);
+        CategorizedEntity categorizedEntity3 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 0.0, 34);
         return asList(categorizedEntity1, categorizedEntity2, categorizedEntity3);
     }
 
@@ -205,7 +225,21 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<CategorizedEntity> getCategorizedEntitiesList2() {
-        return asList(new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0, 10, 9));
+        return asList(new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0, 10));
+    }
+
+    /**
+     * Helper method to get the expected Categorized entity result for PII document input.
+     */
+    static List<CategorizedEntity> getCategorizedEntitiesForPiiInput() {
+        return asList(
+            new CategorizedEntity("Microsoft", EntityCategory.ORGANIZATION, null, 0.0, 0),
+            new CategorizedEntity("employee", EntityCategory.PERSON_TYPE, null, 0.0, 10),
+            new CategorizedEntity("859", EntityCategory.QUANTITY, "Number", 0.0, 28),
+            new CategorizedEntity("98", EntityCategory.QUANTITY, "Number", 0.0, 32),
+            new CategorizedEntity("0987", EntityCategory.QUANTITY, "Number", 0.0, 35),
+            new CategorizedEntity("API", EntityCategory.SKILL, null, 0.0, 61)
+        );
     }
 
     /**
@@ -272,8 +306,8 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 1
      */
     static List<PiiEntity> getPiiEntitiesList1() {
-        PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 1.0, 0, 9);
-        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 0.65, 28, 11);
+        PiiEntity piiEntity0 = new PiiEntity("Microsoft", EntityCategory.ORGANIZATION, null, 1.0, 0);
+        PiiEntity piiEntity1 = new PiiEntity("859-98-0987", EntityCategory.fromString("U.S. Social Security Number (SSN)"), null, 0.65, 28);
         return asList(piiEntity0, piiEntity1);
     }
 
@@ -281,10 +315,10 @@ final class TestUtils {
      * Helper method to get the expected Categorized Entities List 2
      */
     static List<PiiEntity> getPiiEntitiesList2() {
-        PiiEntity piiEntity2 = new PiiEntity("111000025", EntityCategory.fromString("Phone Number"), null, 0.8, 18, 9);
-        PiiEntity piiEntity3 = new PiiEntity("111000025", EntityCategory.fromString("ABA Routing Number"), null, 0.75, 18, 9);
-        PiiEntity piiEntity4 = new PiiEntity("111000025", EntityCategory.fromString("New Zealand Social Welfare Number"), null, 0.65, 18, 9);
-        PiiEntity piiEntity5 = new PiiEntity("111000025", EntityCategory.fromString("Portugal Tax Identification Number"), null, 0.65, 18, 9);
+        PiiEntity piiEntity2 = new PiiEntity("111000025", EntityCategory.fromString("Phone Number"), null, 0.8, 18);
+        PiiEntity piiEntity3 = new PiiEntity("111000025", EntityCategory.fromString("ABA Routing Number"), null, 0.75, 18);
+        PiiEntity piiEntity4 = new PiiEntity("111000025", EntityCategory.fromString("New Zealand Social Welfare Number"), null, 0.65, 18);
+        PiiEntity piiEntity5 = new PiiEntity("111000025", EntityCategory.fromString("Portugal Tax Identification Number"), null, 0.65, 18);
         return asList(piiEntity2, piiEntity3, piiEntity4, piiEntity5);
     }
 
@@ -309,7 +343,7 @@ final class TestUtils {
      * Helper method to get the expected linked Entities List 1
      */
     static List<LinkedEntity> getLinkedEntitiesList1() {
-        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 26, 7);
+        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 26);
         LinkedEntity linkedEntity = new LinkedEntity(
             "Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle",
@@ -321,7 +355,7 @@ final class TestUtils {
      * Helper method to get the expected linked Entities List 2
      */
     static List<LinkedEntity> getLinkedEntitiesList2() {
-        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Microsoft", 0.0, 10, 9);
+        LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Microsoft", 0.0, 10);
         LinkedEntity linkedEntity = new LinkedEntity(
             "Microsoft", new IterableStream<>(Collections.singletonList(linkedEntityMatch)),
             "en", "Microsoft", "https://en.wikipedia.org/wiki/Microsoft",
@@ -370,21 +404,21 @@ final class TestUtils {
                 new SentenceSentiment("The hotel was dark and unclean.", TextSentiment.NEGATIVE,
                     new SentimentConfidenceScores(0.0, 0.0, 0.0),
                     new IterableStream<>(asList(new MinedOpinion(
-                        new AspectSentiment("hotel", TextSentiment.NEGATIVE, 4, 5, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                        new AspectSentiment("hotel", TextSentiment.NEGATIVE, 4, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                         new IterableStream<>(asList(
-                            new OpinionSentiment("dark", TextSentiment.NEGATIVE, 14, 4, false, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                            new OpinionSentiment("unclean", TextSentiment.NEGATIVE, 23, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+                            new OpinionSentiment("dark", TextSentiment.NEGATIVE, 14, false, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                            new OpinionSentiment("unclean", TextSentiment.NEGATIVE, 23, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
                         ))))),
-                    0, 31
+                    0
                 ),
                 new SentenceSentiment("The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
                     new SentimentConfidenceScores(0.0, 0.0, 0.0),
                     new IterableStream<>(asList(new MinedOpinion(
-                        new AspectSentiment("gnocchi", TextSentiment.POSITIVE, 59, 7, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                        new AspectSentiment("gnocchi", TextSentiment.POSITIVE, 59, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                         new IterableStream<>(asList(
-                            new OpinionSentiment("amazing", TextSentiment.POSITIVE, 51, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+                            new OpinionSentiment("amazing", TextSentiment.POSITIVE, 51, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
                         ))))),
-                    32, 35
+                    32
                 )
             )), null);
     }
@@ -399,22 +433,418 @@ final class TestUtils {
                 new SentenceSentiment("The restaurant had amazing gnocchi.", TextSentiment.POSITIVE,
                     new SentimentConfidenceScores(0.0, 0.0, 0.0),
                     new IterableStream<>(asList(new MinedOpinion(
-                        new AspectSentiment("gnocchi", TextSentiment.POSITIVE, 27, 7, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                        new AspectSentiment("gnocchi", TextSentiment.POSITIVE, 27, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                         new IterableStream<>(asList(
-                            new OpinionSentiment("amazing", TextSentiment.POSITIVE, 19, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+                            new OpinionSentiment("amazing", TextSentiment.POSITIVE, 19, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
                         ))))),
-                    0, 35
+                    0
                 ),
                 new SentenceSentiment("The hotel was dark and unclean.", TextSentiment.NEGATIVE,
                     new SentimentConfidenceScores(0.0, 0.0, 0.0), new IterableStream<>(asList(new MinedOpinion(
-                        new AspectSentiment("hotel", TextSentiment.NEGATIVE, 40, 5, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                        new AspectSentiment("hotel", TextSentiment.NEGATIVE, 40, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
                         new IterableStream<>(asList(
-                            new OpinionSentiment("dark", TextSentiment.NEGATIVE, 50, 4, false, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
-                            new OpinionSentiment("unclean", TextSentiment.NEGATIVE, 59, 7, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+                            new OpinionSentiment("dark", TextSentiment.NEGATIVE, 50, false, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                            new OpinionSentiment("unclean", TextSentiment.NEGATIVE, 59, false, new SentimentConfidenceScores(0.0, 0.0, 0.0))
                         ))))),
-                    36, 31
+                    36
                 )
             )), null);
+    }
+
+    /**
+     * Helper method that get a single-page (healthcareTaskResult) list.
+     */
+    static List<HealthcareTaskResult> getExpectedHealthcareTaskResultListForSinglePage() {
+        return asList(
+            getExpectedHealthcareTaskResult(getExpectedBatchHealthcareEntitiesWithPageSize(
+                2,
+                asList(getRecognizeHealthcareEntitiesResult1("0"), getRecognizeHealthcareEntitiesResult2()))));
+    }
+
+    /**
+     * Helper method that get a multiple-pages (healthcareTaskResult) list.
+     */
+    static List<HealthcareTaskResult> getExpectedHealthcareTaskResultListForMultiplePages(int startIndex,
+        int firstPage, int secondPage) {
+        List<RecognizeHealthcareEntitiesResult> healthcareEntitiesResults1 = new ArrayList<>();
+        // First Page
+        int i = startIndex;
+        for (; i < startIndex + firstPage; i++) {
+            healthcareEntitiesResults1.add(getRecognizeHealthcareEntitiesResult1(Integer.toString(i)));
+        }
+        // Second Page
+        List<RecognizeHealthcareEntitiesResult> healthcareEntitiesResults2 = new ArrayList<>();
+        for (; i < startIndex + firstPage + secondPage; i++) {
+            healthcareEntitiesResults2.add(getRecognizeHealthcareEntitiesResult1(Integer.toString(i)));
+        }
+
+        List<HealthcareTaskResult> result = new ArrayList<>();
+        result.add(getExpectedHealthcareTaskResult(getExpectedBatchHealthcareEntitiesWithPageSize(
+            firstPage, healthcareEntitiesResults1)));
+        if (secondPage != 0) {
+            result.add(getExpectedHealthcareTaskResult(getExpectedBatchHealthcareEntitiesWithPageSize(
+                secondPage, healthcareEntitiesResults2)));
+        }
+
+        return result;
+    }
+
+    /**
+     * Helper method that get the expected RecognizeHealthcareEntitiesResultCollection result in page.
+     */
+    static RecognizeHealthcareEntitiesResultCollection getExpectedBatchHealthcareEntitiesWithPageSize(int sizePerPage,
+        List<RecognizeHealthcareEntitiesResult> healthcareEntitiesResults) {
+        TextDocumentBatchStatistics textDocumentBatchStatistics = new TextDocumentBatchStatistics(
+            sizePerPage, sizePerPage, 0, sizePerPage);
+        final RecognizeHealthcareEntitiesResultCollection recognizeHealthcareEntitiesResults =
+            new RecognizeHealthcareEntitiesResultCollection(healthcareEntitiesResults);
+        RecognizeHealthcareEntitiesResultCollectionPropertiesHelper.setModelVersion(recognizeHealthcareEntitiesResults,
+            "2020-09-03");
+        RecognizeHealthcareEntitiesResultCollectionPropertiesHelper.setStatistics(recognizeHealthcareEntitiesResults,
+            textDocumentBatchStatistics);
+        return recognizeHealthcareEntitiesResults;
+    }
+
+    /**
+     * Helper method that get the expected HealthcareTaskResult result.
+     */
+    static HealthcareTaskResult getExpectedHealthcareTaskResult(
+        RecognizeHealthcareEntitiesResultCollection recognizeHealthcareEntitiesResults) {
+        final HealthcareTaskResult healthcareTaskResult = new HealthcareTaskResult(null, null,
+            null, null, null, null);
+        HealthcareTaskResultPropertiesHelper.setResult(healthcareTaskResult, recognizeHealthcareEntitiesResults);
+        return healthcareTaskResult;
+    }
+
+    /**
+     * Result for
+     * "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months.",
+     */
+    static RecognizeHealthcareEntitiesResult getRecognizeHealthcareEntitiesResult1(String documentId) {
+        TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(105, 1);
+        // HealthcareEntity
+        final HealthcareEntity healthcareEntity1 = new HealthcareEntity();
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity1, "54-year-old");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity1, EntityCategory.fromString("Age"));
+        HealthcareEntityPropertiesHelper.setSubcategory(healthcareEntity1, null);
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity1, 1.0);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity1, 17);
+        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity1, false);
+        final HealthcareEntity healthcareEntity2 = new HealthcareEntity();
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity2, "gentleman");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity2, EntityCategory.fromString("Gender"));
+        HealthcareEntityPropertiesHelper.setSubcategory(healthcareEntity2, null);
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity2, 1.0);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity2, 29);
+        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity2, false);
+        // there are too many entity links, we can just assert it is not null.
+        HealthcareEntityPropertiesHelper.setHealthcareEntityLinks(healthcareEntity2, new ArrayList<>());
+        final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "progressive");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, EntityCategory.fromString("ConditionQualifier"));
+        HealthcareEntityPropertiesHelper.setSubcategory(healthcareEntity3, null);
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity3, 0.91);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity3, 57);
+        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity3, false);
+        final HealthcareEntity healthcareEntity4 = new HealthcareEntity();
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity4, "angina");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity4, EntityCategory.fromString("SymptomOrSign"));
+        HealthcareEntityPropertiesHelper.setSubcategory(healthcareEntity4, null);
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity4, 0.81);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 69);
+        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity4, false);
+        // there are too many entity links, we can just assert it is not null.
+        HealthcareEntityPropertiesHelper.setHealthcareEntityLinks(healthcareEntity4, new ArrayList<>());
+        final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "past several months");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity5, EntityCategory.fromString("Time"));
+        HealthcareEntityPropertiesHelper.setSubcategory(healthcareEntity5, null);
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity5, 1.0);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity5, 85);
+        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity5, false);
+
+        // HealthcareEntityRelation
+        final HealthcareEntityRelation healthcareEntityRelation1 = new HealthcareEntityRelation();
+        HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation1,
+            "QualifierOfCondition");
+        HealthcareEntityRelationPropertiesHelper.setBidirectional(healthcareEntityRelation1, false);
+        HealthcareEntityRelationPropertiesHelper.setSourceLink(healthcareEntityRelation1,
+            "#/results/documents/0/entities/2");
+        HealthcareEntityRelationPropertiesHelper.setTargetLink(healthcareEntityRelation1,
+            "#/results/documents/0/entities/3");
+        final HealthcareEntityRelation healthcareEntityRelation2 = new HealthcareEntityRelation();
+        HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation2, "TimeOfCondition");
+        HealthcareEntityRelationPropertiesHelper.setBidirectional(healthcareEntityRelation2, false);
+        HealthcareEntityRelationPropertiesHelper.setSourceLink(healthcareEntityRelation2,
+            "#/results/documents/0/entities/4");
+        HealthcareEntityRelationPropertiesHelper.setTargetLink(healthcareEntityRelation2,
+            "#/results/documents/0/entities/3");
+
+        // HealthcareEntityCollection
+        final HealthcareEntityCollection healthcareEntityCollection1 = new HealthcareEntityCollection(
+            new IterableStream<>(asList(healthcareEntity1, healthcareEntity2, healthcareEntity3, healthcareEntity4,
+                healthcareEntity5)));
+        HealthcareEntityCollectionPropertiesHelper.setEntityRelations(healthcareEntityCollection1,
+            new IterableStream<>(asList(healthcareEntityRelation1, healthcareEntityRelation2)));
+
+        // RecognizeHealthcareEntitiesResult
+        final RecognizeHealthcareEntitiesResult healthcareEntitiesResult1 = new RecognizeHealthcareEntitiesResult(documentId,
+            textDocumentStatistics1, null);
+        RecognizeHealthcareEntitiesResultPropertiesHelper.setEntities(healthcareEntitiesResult1,
+            healthcareEntityCollection1);
+
+        return healthcareEntitiesResult1;
+    }
+
+    /**
+     * Result for
+     * "The patient went for six minutes with minimal ST depressions in the anterior lateral leads ,
+     * thought due to fatigue and wrist pain , his anginal equivalent."
+     */
+    static RecognizeHealthcareEntitiesResult getRecognizeHealthcareEntitiesResult2() {
+        TextDocumentStatistics textDocumentStatistics = new TextDocumentStatistics(156, 1);
+        // HealthcareEntity
+        final HealthcareEntity healthcareEntity1 = new HealthcareEntity();
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity1, "minutes");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity1, EntityCategory.fromString("Time"));
+        HealthcareEntityPropertiesHelper.setSubcategory(healthcareEntity1, null);
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity1, 0.87);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity1, 25);
+        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity1, false);
+        final HealthcareEntity healthcareEntity2 = new HealthcareEntity();
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity2, "minimal");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity2, EntityCategory.fromString("ConditionQualifier"));
+        HealthcareEntityPropertiesHelper.setSubcategory(healthcareEntity2, null);
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity2, 1.0);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity2, 38);
+        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity2, false);
+        final HealthcareEntity healthcareEntity3 = new HealthcareEntity();
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity3, "ST depressions in the anterior lateral leads");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity3, EntityCategory.fromString("SymptomOrSign"));
+        HealthcareEntityPropertiesHelper.setSubcategory(healthcareEntity3, null);
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity3, 1.0);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity3, 46);
+        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity3, false);
+        final HealthcareEntity healthcareEntity4 = new HealthcareEntity();
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity4, "fatigue");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity4, EntityCategory.fromString("SymptomOrSign"));
+        HealthcareEntityPropertiesHelper.setSubcategory(healthcareEntity4, null);
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity4, 1.0);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity4, 108);
+        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity4, false);
+        // there are too many entity links, we can just assert it is not null.
+        HealthcareEntityPropertiesHelper.setHealthcareEntityLinks(healthcareEntity4, new ArrayList<>());
+        final HealthcareEntity healthcareEntity5 = new HealthcareEntity();
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity5, "wrist pain");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity5, EntityCategory.fromString("SymptomOrSign"));
+        HealthcareEntityPropertiesHelper.setSubcategory(healthcareEntity5, null);
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity5, 1.0);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity5, 120);
+        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity5, false);
+        // there are too many entity links, we can just assert it is not null.
+        HealthcareEntityPropertiesHelper.setHealthcareEntityLinks(healthcareEntity5, new ArrayList<>());
+        final HealthcareEntity healthcareEntity6 = new HealthcareEntity();
+        HealthcareEntityPropertiesHelper.setText(healthcareEntity6, "anginal equivalent");
+        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity6, EntityCategory.fromString("SymptomOrSign"));
+        HealthcareEntityPropertiesHelper.setSubcategory(healthcareEntity6, null);
+        HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity6, 1.0);
+        HealthcareEntityPropertiesHelper.setOffset(healthcareEntity6, 137);
+        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity6, false);
+        // there are too many entity links, we can just assert it is not null.
+        HealthcareEntityPropertiesHelper.setHealthcareEntityLinks(healthcareEntity6, new ArrayList<>());
+
+        // HealthcareEntityRelation
+        final HealthcareEntityRelation healthcareEntityRelation1 = new HealthcareEntityRelation();
+        HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation1, "TimeOfCondition");
+        HealthcareEntityRelationPropertiesHelper.setBidirectional(healthcareEntityRelation1, false);
+        HealthcareEntityRelationPropertiesHelper.setSourceLink(healthcareEntityRelation1,
+            "#/results/documents/1/entities/0");
+        HealthcareEntityRelationPropertiesHelper.setTargetLink(healthcareEntityRelation1,
+            "#/results/documents/1/entities/2");
+        final HealthcareEntityRelation healthcareEntityRelation2 = new HealthcareEntityRelation();
+        HealthcareEntityRelationPropertiesHelper.setRelationType(healthcareEntityRelation2,
+            "QualifierOfCondition");
+        HealthcareEntityRelationPropertiesHelper.setBidirectional(healthcareEntityRelation2, false);
+        HealthcareEntityRelationPropertiesHelper.setSourceLink(healthcareEntityRelation2,
+            "#/results/documents/1/entities/1");
+        HealthcareEntityRelationPropertiesHelper.setTargetLink(healthcareEntityRelation2,
+            "#/results/documents/1/entities/2");
+
+        // HealthcareEntityCollection
+        final HealthcareEntityCollection healthcareEntityCollection = new HealthcareEntityCollection(
+            new IterableStream<>(asList(healthcareEntity1, healthcareEntity2, healthcareEntity3, healthcareEntity4,
+                healthcareEntity5, healthcareEntity6)));
+        HealthcareEntityCollectionPropertiesHelper.setEntityRelations(healthcareEntityCollection,
+            new IterableStream<>(asList(healthcareEntityRelation1, healthcareEntityRelation2)));
+
+        // RecognizeHealthcareEntitiesResult
+        final RecognizeHealthcareEntitiesResult healthcareEntitiesResult = new RecognizeHealthcareEntitiesResult("1",
+            textDocumentStatistics, null);
+        RecognizeHealthcareEntitiesResultPropertiesHelper.setEntities(healthcareEntitiesResult,
+            healthcareEntityCollection);
+        return healthcareEntitiesResult;
+    }
+
+    /**
+     * RecognizeEntitiesResultCollection result for
+     * "I had a wonderful trip to Seattle last week."
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static RecognizeEntitiesResultCollection getRecognizeEntitiesResultCollection() {
+        // Categorized Entities
+        // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
+        // https://github.com/Azure/azure-sdk-for-java/issues/17564
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
+        //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(44, 1);
+        return new RecognizeEntitiesResultCollection(
+            asList(new RecognizeEntitiesResult("0", null, null,
+                    new CategorizedEntityCollection(new IterableStream<>(getCategorizedEntitiesList1()), null)),
+                new RecognizeEntitiesResult("1", null, null,
+                    new CategorizedEntityCollection(new IterableStream<>(getCategorizedEntitiesForPiiInput()), null))
+            ), "2020-04-01", null);
+            //new TextDocumentBatchStatistics(2, 2, 0, 2)
+    }
+
+    /**
+     * RecognizePiiEntitiesResultCollection result for
+     * "I had a wonderful trip to Seattle last week."
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static RecognizePiiEntitiesResultCollection getRecognizePiiEntitiesResultCollection() {
+        // PII
+        // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
+        // https://github.com/Azure/azure-sdk-for-java/issues/17564
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
+        //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(67, 1);
+        return new RecognizePiiEntitiesResultCollection(
+            asList(
+                new RecognizePiiEntitiesResult("0", null, null,
+                new PiiEntityCollection(new IterableStream<>(new ArrayList<>()),
+                    "I had a wonderful trip to Seattle last week.", null)),
+                new RecognizePiiEntitiesResult("1", null, null,
+                    new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),
+                        "********* employee with ssn *********** is using our awesome API's.", null))),
+            "2020-07-01", new TextDocumentBatchStatistics(2, 2, 0, 2)
+        );
+    }
+
+    /**
+     * ExtractKeyPhrasesResultCollection result for
+     * "I had a wonderful trip to Seattle last week."
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static ExtractKeyPhrasesResultCollection getExtractKeyPhrasesResultCollection() {
+        // Key Phrases
+        // TODO: [Service-bugs] after service fixes the null statistics, then use the values and turn on includeStatics.
+        // https://github.com/Azure/azure-sdk-for-java/issues/17564
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(49, 1);
+        //TextDocumentStatistics textDocumentStatistics2 = new TextDocumentStatistics(21, 1);
+        return new ExtractKeyPhrasesResultCollection(
+            asList(new ExtractKeyPhraseResult("0", null,
+                null, new KeyPhrasesCollection(new IterableStream<>(asList("wonderful trip", "Seattle", "week")), null)),
+                new ExtractKeyPhraseResult("1", null,
+                    null, new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome API's")), null))),
+            "2020-07-01",
+            new TextDocumentBatchStatistics(2, 2, 0, 2));
+    }
+
+    /**
+     * Helper method that get the expected AnalyzeTasksResult result.
+     */
+    static AnalyzeTasksResult getExpectedAnalyzeTasksResult(
+        List<RecognizeEntitiesResultCollection> recognizeEntitiesResults,
+        List<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesResults,
+        List<ExtractKeyPhrasesResultCollection> extractKeyPhraseResults) {
+        // Analyze Tasks result
+        final AnalyzeTasksResult analyzeTasksResult = new AnalyzeTasksResult(
+            null, null, null, null, "Test1", null);
+        AnalyzeTasksResultPropertiesHelper.setStatistics(analyzeTasksResult,
+            new TextDocumentBatchStatistics(1, 1, 0, 1));
+        AnalyzeTasksResultPropertiesHelper.setCompleted(analyzeTasksResult, 3);
+        AnalyzeTasksResultPropertiesHelper.setFailed(analyzeTasksResult, 0);
+        AnalyzeTasksResultPropertiesHelper.setInProgress(analyzeTasksResult, 0);
+        AnalyzeTasksResultPropertiesHelper.setTotal(analyzeTasksResult, 3);
+        AnalyzeTasksResultPropertiesHelper.setEntityRecognitionTasks(analyzeTasksResult, recognizeEntitiesResults);
+        AnalyzeTasksResultPropertiesHelper.setEntityRecognitionPiiTasks(analyzeTasksResult, recognizePiiEntitiesResults);
+        AnalyzeTasksResultPropertiesHelper.setKeyPhraseExtractionTasks(analyzeTasksResult, extractKeyPhraseResults);
+        return analyzeTasksResult;
+    }
+
+    /**
+     * ExtractKeyPhrasesResultCollection result for
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static RecognizeEntitiesResultCollection getRecognizeEntitiesResultCollectionForPagination(int startIndex,
+        int documentCount) {
+        // Categorized Entities
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(44, 1);
+        List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
+        for (int i = startIndex; i < startIndex + documentCount; i++) {
+            recognizeEntitiesResults.add(new RecognizeEntitiesResult(Integer.toString(i), null, null,
+                new CategorizedEntityCollection(new IterableStream<>(getCategorizedEntitiesForPiiInput()), null)));
+        }
+        return new RecognizeEntitiesResultCollection(recognizeEntitiesResults, "2020-04-01",
+            new TextDocumentBatchStatistics(documentCount, documentCount, 0, documentCount));
+    }
+
+    /**
+     * ExtractKeyPhrasesResultCollection result for
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static RecognizePiiEntitiesResultCollection getRecognizePiiEntitiesResultCollectionForPagination(int startIndex,
+        int documentCount) {
+        // PII
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(67, 1);
+        List<RecognizePiiEntitiesResult> recognizePiiEntitiesResults = new ArrayList<>();
+        for (int i = startIndex; i < startIndex + documentCount; i++) {
+            recognizePiiEntitiesResults.add(new RecognizePiiEntitiesResult(Integer.toString(i), null, null,
+                new PiiEntityCollection(new IterableStream<>(getPiiEntitiesList1()),
+                    "********* employee with ssn *********** is using our awesome API's.", null)));
+        }
+        return new RecognizePiiEntitiesResultCollection(recognizePiiEntitiesResults, "2020-07-01",
+            new TextDocumentBatchStatistics(documentCount, documentCount, 0, documentCount)
+        );
+    }
+
+    /**
+     * ExtractKeyPhrasesResultCollection result for
+     * "Microsoft employee with ssn 859-98-0987 is using our awesome API's."
+     */
+    static ExtractKeyPhrasesResultCollection getExtractKeyPhrasesResultCollectionForPagination(int startIndex,
+        int documentCount) {
+        // Key Phrases
+        //TextDocumentStatistics textDocumentStatistics1 = new TextDocumentStatistics(49, 1);
+        List<ExtractKeyPhraseResult> extractKeyPhraseResults = new ArrayList<>();
+        for (int i = startIndex; i < startIndex + documentCount; i++) {
+            extractKeyPhraseResults.add(new ExtractKeyPhraseResult(Integer.toString(i), null, null,
+                new KeyPhrasesCollection(new IterableStream<>(asList("Microsoft employee", "ssn", "awesome API's")),
+                    null)));
+        }
+        return new ExtractKeyPhrasesResultCollection(extractKeyPhraseResults, "2020-07-01",
+            new TextDocumentBatchStatistics(documentCount, documentCount, 0, documentCount));
+    }
+
+    /**
+     * Helper method that get a multiple-pages (AnalyzeTasksResult) list.
+     */
+    static List<AnalyzeTasksResult> getExpectedAnalyzeTaskResultListForMultiplePages(int startIndex,
+        int firstPage, int secondPage) {
+        List<AnalyzeTasksResult> analyzeTasksResults = new ArrayList<>();
+        // First Page
+        analyzeTasksResults.add(getExpectedAnalyzeTasksResult(
+            asList(getRecognizeEntitiesResultCollectionForPagination(startIndex, firstPage)),
+            asList(getRecognizePiiEntitiesResultCollectionForPagination(startIndex, firstPage)),
+            asList(getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage))
+        ));
+
+        // Second Page
+        startIndex += firstPage;
+        analyzeTasksResults.add(getExpectedAnalyzeTasksResult(
+            asList(getRecognizeEntitiesResultCollectionForPagination(startIndex, secondPage)),
+            asList(getRecognizePiiEntitiesResultCollectionForPagination(startIndex, secondPage)),
+            asList(getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage))
+        ));
+        return analyzeTasksResults;
     }
 
     /**

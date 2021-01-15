@@ -6,9 +6,11 @@ package com.azure.resourcemanager.authorization;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
 import com.azure.resourcemanager.authorization.models.ServicePrincipal;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
 
 public class RoleAssignmentTests extends GraphRbacManagementTest {
     @Test
@@ -17,9 +19,9 @@ public class RoleAssignmentTests extends GraphRbacManagementTest {
         String spName = generateRandomResourceName("sp", 20);
 
         ServicePrincipal sp =
-            authorizationManager.servicePrincipals().define(spName).withNewApplication("http://" + spName).create();
+            authorizationManager.servicePrincipals().define(spName).withNewApplication().create();
 
-        SdkContext.sleep(15000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(15));
 
         RoleAssignment roleAssignment =
             authorizationManager

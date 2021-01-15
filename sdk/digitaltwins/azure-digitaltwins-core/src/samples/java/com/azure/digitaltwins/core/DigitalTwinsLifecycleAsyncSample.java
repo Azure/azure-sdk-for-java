@@ -8,7 +8,6 @@ import com.azure.digitaltwins.core.helpers.ConsoleLogger;
 import com.azure.digitaltwins.core.helpers.FileHelper;
 import com.azure.digitaltwins.core.helpers.SamplesArguments;
 import com.azure.digitaltwins.core.implementation.models.ErrorResponseException;
-import com.azure.digitaltwins.core.serialization.BasicRelationship;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -19,14 +18,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import static com.azure.digitaltwins.core.models.QueryChargeHelper.*;
 import static com.azure.digitaltwins.core.helpers.SamplesConstants.*;
 import static com.azure.digitaltwins.core.helpers.SamplesUtil.IgnoreConflictError;
 import static com.azure.digitaltwins.core.helpers.SamplesUtil.IgnoreNotFoundError;
@@ -114,20 +111,11 @@ public class DigitalTwinsLifecycleAsyncSample {
         // Create twin counterparts for all the models
         createAllTwins();
 
-        // TODO: Get all twins
-        // queryTwins();
+        // Get all twins
+        queryTwins();
 
         // Create all the relationships
         connectTwinsTogether();
-
-        // TODO: Creating event route
-        // createEventRoute();
-
-        // TODO: Get all event routes
-        // listEventRoutes();
-
-        // TODO: Deleting event route
-        // deleteEventRoute();
     }
 
     /**
@@ -165,7 +153,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                 .subscribe();
 
             // Call APIs to retrieve all incoming relationships.
-            client.listIncomingRelationships(twinId)
+            client.listIncomingRelationships(twinId, null)
                 .doOnNext(e -> relationshipList.add(MAPPER.convertValue(e, BasicRelationship.class)))
                 .doOnError(IgnoreNotFoundError)
                 .doOnTerminate(listRelationshipSemaphore::countDown)
@@ -242,7 +230,7 @@ public class DigitalTwinsLifecycleAsyncSample {
         // Call API to create the models. For each async operation, once the operation is completed successfully, a latch is counted down.
         client.createModels(modelsToCreate)
             .doOnNext(listOfModelData -> listOfModelData.forEach(
-                modelData -> ConsoleLogger.printSuccess("Created model: " + modelData.getId())
+                modelData -> ConsoleLogger.printSuccess("Created model: " + modelData.getModelId())
             ))
             .doOnError(IgnoreConflictError)
             .doOnTerminate(createModelsLatch::countDown)
@@ -262,8 +250,8 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Call API to list the models. For each async operation, once the operation is completed successfully, a latch is counted down.
         client.listModels()
-            .doOnNext(modelData -> ConsoleLogger.printSuccess("Retrieved model: " + modelData.getId() + ", display name '" + modelData.getDisplayName().get("en") + "'," +
-                    " upload time '" + modelData.getUploadTime() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
+            .doOnNext(modelData -> ConsoleLogger.printSuccess("Retrieved model: " + modelData.getModelId() + ", display name '" + modelData.getDisplayNameLanguageMap().get("en") + "'," +
+                    " upload time '" + modelData.getUploadedOn() + "' and decommissioned '" + modelData.isDecommissioned() + "'"))
             .doOnError(throwable -> ConsoleLogger.printFatal("List models error: " + throwable))
             .doOnTerminate(listModelsLatch::countDown)
             .subscribe();
@@ -284,7 +272,7 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Call APIs to create the twins. For each async operation, once the operation is completed successfully, a latch is counted down.
         twins
-            .forEach((twinId, twinContent) -> client.createDigitalTwin(twinId, twinContent)
+            .forEach((twinId, twinContent) -> client.createOrReplaceDigitalTwin(twinId, twinContent, String.class)
                 .subscribe(
                     twin -> ConsoleLogger.printSuccess("Created digital twin: " + twinId + "\n\t Body: " + twin),
                     throwable -> ConsoleLogger.printFatal("Could not create digital twin " + twinId + " due to " + throwable),
@@ -315,7 +303,7 @@ public class DigitalTwinsLifecycleAsyncSample {
                     relationships
                         .forEach(relationship -> {
                             try {
-                                client.createRelationship(relationship.getSourceId(), relationship.getId(), MAPPER.writeValueAsString(relationship))
+                                client.createOrReplaceRelationship(relationship.getSourceId(), relationship.getId(), MAPPER.writeValueAsString(relationship), String.class)
                                     .doOnSuccess(s -> ConsoleLogger.printSuccess("Linked twin " + relationship.getSourceId() + " to twin " + relationship.getTargetId() + " as " + relationship.getName()))
                                     .doOnError(IgnoreConflictError)
                                     .doOnTerminate(connectTwinsLatch::countDown)
@@ -332,5 +320,48 @@ public class DigitalTwinsLifecycleAsyncSample {
 
         // Wait until the latch count reaches zero, signifying that the async calls have completed successfully.
         connectTwinsLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS);
+    }
+
+    /**
+     *
+     * Queries for all the digital twins.
+     * @throws InterruptedException If the current thread is interrupted while waiting to acquire latch.
+     */
+    public static void queryTwins() throws InterruptedException {
+        ConsoleLogger.printHeader("QUERY DIGITAL TWINS");
+
+        final CountDownLatch queryLatch = new CountDownLatch(1);
+
+        ConsoleLogger.printHeader("Making a twin query and iterating over the results.");
+
+        // Call API to query digital twins. For each async operation, once the operation is completed successfully, a latch is counted down.
+        client.query("SELECT * FROM digitaltwins", String.class, null)
+            .doOnNext(queryResult -> ConsoleLogger.printHeader("Query result: " + queryResult))
+            .doOnError(throwable -> ConsoleLogger.printFatal("Query error: " + throwable))
+            .doOnTerminate(queryLatch::countDown)
+            .subscribe();
+
+        // Wait until the latch count reaches zero, signifying that the async calls have completed successfully.
+        queryLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS);
+
+        ConsoleLogger.printHeader("Making a twin query, with query-charge header extraction.");
+
+        final CountDownLatch queryWithChargeLatch = new CountDownLatch(1);
+
+        // Call API to query digital twins. For each async operation, once the operation is completed successfully, a latch is counted down.
+        client.query("SELECT * FROM digitaltwins", BasicDigitalTwin.class, null)
+            .byPage()
+            .doOnNext(page ->
+            {
+                ConsoleLogger.printHeader("Query charge: " + getQueryCharge(page));
+                page.getValue()
+                    .forEach(item -> ConsoleLogger.printHeader("Found digital twin: " + item.getId()));
+            })
+            .doOnError(throwable -> ConsoleLogger.printFatal("Query error: " + throwable))
+            .doOnTerminate(queryLatch::countDown)
+            .subscribe();
+
+        // Wait until the latch count reaches zero, signifying that the async calls have completed successfully.
+        queryWithChargeLatch.await(MAX_WAIT_TIME_ASYNC_OPERATIONS_IN_SECONDS, TimeUnit.SECONDS);
     }
 }

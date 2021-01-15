@@ -6,7 +6,7 @@ import com.azure.resourcemanager.compute.models.ComputeRoles;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersion;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionImageInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionImageInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** The implementation for {@link VirtualMachineExtensionImage}. */
@@ -22,12 +22,12 @@ class VirtualMachineExtensionImageImpl extends WrapperImpl<VirtualMachineExtensi
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public String regionName() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override
@@ -47,27 +47,27 @@ class VirtualMachineExtensionImageImpl extends WrapperImpl<VirtualMachineExtensi
 
     @Override
     public OperatingSystemTypes osType() {
-        return OperatingSystemTypes.fromString(this.inner().operatingSystem());
+        return OperatingSystemTypes.fromString(this.innerModel().operatingSystem());
     }
 
     @Override
     public ComputeRoles computeRole() {
-        return ComputeRoles.fromString(this.inner().computeRole());
+        return ComputeRoles.fromString(this.innerModel().computeRole());
     }
 
     @Override
     public String handlerSchema() {
-        return this.inner().handlerSchema();
+        return this.innerModel().handlerSchema();
     }
 
     @Override
     public boolean supportsVirtualMachineScaleSets() {
-        return this.inner().vmScaleSetEnabled();
+        return this.innerModel().vmScaleSetEnabled();
     }
 
     @Override
     public boolean supportsMultipleExtensions() {
-        return this.inner().supportsMultipleExtensions();
+        return this.innerModel().supportsMultipleExtensions();
     }
 
     @Override

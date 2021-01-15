@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ScaleCapacity model. */
+/** The number of instances that can be used during this profile. */
 @Fluent
 public final class ScaleCapacity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleCapacity.class);

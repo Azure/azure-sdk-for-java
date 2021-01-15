@@ -159,6 +159,19 @@ public class OperationalInsightsManagementClientImpl extends AzureServiceClient 
     }
 
     /**
+     * The DataCollectorLogsInner object to access its operations.
+     */
+    private DataCollectorLogsInner dataCollectorLogs;
+
+    /**
+     * Gets the DataCollectorLogsInner object to access its operations.
+     * @return the DataCollectorLogsInner object.
+     */
+    public DataCollectorLogsInner dataCollectorLogs() {
+        return this.dataCollectorLogs;
+    }
+
+    /**
      * The IntelligencePacksInner object to access its operations.
      */
     private IntelligencePacksInner intelligencePacks;
@@ -429,6 +442,7 @@ public class OperationalInsightsManagementClientImpl extends AzureServiceClient 
         this.generateClientRequestId = true;
         this.dataExports = new DataExportsInner(restClient().retrofit(), this);
         this.dataSources = new DataSourcesInner(restClient().retrofit(), this);
+        this.dataCollectorLogs = new DataCollectorLogsInner(restClient().retrofit(), this);
         this.intelligencePacks = new IntelligencePacksInner(restClient().retrofit(), this);
         this.linkedServices = new LinkedServicesInner(restClient().retrofit(), this);
         this.linkedStorageAccounts = new LinkedStorageAccountsInner(restClient().retrofit(), this);

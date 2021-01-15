@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AvailableProvidersListCountry model. */
+/** Country details. */
 @Fluent
 public final class AvailableProvidersListCountry {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListCountry.class);

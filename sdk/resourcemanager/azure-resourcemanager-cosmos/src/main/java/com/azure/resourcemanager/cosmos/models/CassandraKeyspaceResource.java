@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CassandraKeyspaceResource model. */
+/** Cosmos DB Cassandra keyspace resource object. */
 @Fluent
 public class CassandraKeyspaceResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraKeyspaceResource.class);

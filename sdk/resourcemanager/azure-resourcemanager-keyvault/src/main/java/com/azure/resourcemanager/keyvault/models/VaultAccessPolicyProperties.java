@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VaultAccessPolicyProperties model. */
+/** Properties of the vault access policy. */
 @Fluent
 public final class VaultAccessPolicyProperties {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultAccessPolicyProperties.class);

@@ -63,7 +63,7 @@ public class BlobClient extends BlobClientBase {
      */
     public static final int BLOB_DEFAULT_NUMBER_OF_BUFFERS = BlobAsyncClient.BLOB_DEFAULT_NUMBER_OF_BUFFERS;
     /**
-     * If a blob is known to be greater than 100MB, using a larger block size will trigger some server-side
+     * If a blob  is known to be greater than 100MB, using a larger block size will trigger some server-side
      * optimizations. If the block size is not set and the size of the blob is known to be greater than 100MB, this
      * value will be used.
      */
@@ -139,7 +139,10 @@ public class BlobClient extends BlobClientBase {
     /**
      * Creates a new blob. By default this method will not overwrite an existing blob.
      *
-     * @param data The data to write to the blob.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider opening a {@link com.azure.storage.blob.specialized.BlobOutputStream} and
+     * writing to the returned stream. Alternatively, consider wrapping your data source in a
+     * {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      */
@@ -150,7 +153,10 @@ public class BlobClient extends BlobClientBase {
     /**
      * Creates a new blob, or updates the content of an existing blob.
      *
-     * @param data The data to write to the blob.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider opening a {@link com.azure.storage.blob.specialized.BlobOutputStream} and
+     * writing to the returned stream. Alternatively, consider wrapping your data source in a
+     * {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
@@ -168,12 +174,16 @@ public class BlobClient extends BlobClientBase {
      * <p>
      * To avoid overwriting, pass "*" to {@link BlobRequestConditions#setIfNoneMatch(String)}.
      *
-     * @param data The data to write to the blob.
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider opening a {@link com.azure.storage.blob.specialized.BlobOutputStream} and
+     * writing to the returned stream. Alternatively, consider wrapping your data source in a
+     * {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the destination blob.
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
@@ -277,7 +287,8 @@ public class BlobClient extends BlobClientBase {
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      *        transfers parameter is ignored.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param tier {@link AccessTier} for the uploaded blob
      * @param requestConditions {@link BlobRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

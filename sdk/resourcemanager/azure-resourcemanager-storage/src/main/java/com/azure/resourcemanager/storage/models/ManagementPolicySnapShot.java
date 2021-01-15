@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ManagementPolicySnapShot model. */
+/** Management policy action for snapshot. */
 @Fluent
 public final class ManagementPolicySnapShot {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicySnapShot.class);

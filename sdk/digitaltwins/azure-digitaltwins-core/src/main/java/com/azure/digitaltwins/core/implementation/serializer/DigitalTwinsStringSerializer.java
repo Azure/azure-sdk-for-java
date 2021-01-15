@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * Configures the {@link StdSerializer<String>} with custom behavior needed to work with Digital Twins REST API.
  */
-public class DigitalTwinsStringSerializer extends StdSerializer<String> {
+public final class DigitalTwinsStringSerializer extends StdSerializer<String> {
     private static final long serialVersionUID = 1L;
     private final ObjectMapper mapper;
 

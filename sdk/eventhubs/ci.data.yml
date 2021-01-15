@@ -35,8 +35,9 @@ pr:
       - sdk/eventhubs/azure-messaging-eventhubs-checkpointstore-blob
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-data.yml
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
+    SDKType: data
     ServiceDirectory: eventhubs
     Artifacts:
       - name: azure-eventhubs

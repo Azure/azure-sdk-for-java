@@ -7,13 +7,13 @@ import com.azure.resourcemanager.compute.models.AvailabilitySet;
 import com.azure.resourcemanager.compute.models.AvailabilitySets;
 import com.azure.resourcemanager.compute.models.VirtualMachineSize;
 import com.azure.resourcemanager.test.utils.TestUtilities;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
 
 public class TestAvailabilitySet extends TestTemplate<AvailabilitySet, AvailabilitySets> {
     @Override
     public AvailabilitySet createResource(AvailabilitySets availabilitySets) throws Exception {
-        final String newName = availabilitySets.manager().sdkContext().randomResourceName("as", 10);
+        final String newName = availabilitySets.manager().resourceManager().internalContext().randomResourceName("as", 10);
         AvailabilitySet aset =
             availabilitySets
                 .define(newName)

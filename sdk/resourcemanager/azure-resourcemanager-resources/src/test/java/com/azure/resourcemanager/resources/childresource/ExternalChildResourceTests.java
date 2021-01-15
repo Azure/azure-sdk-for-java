@@ -196,7 +196,7 @@ public class ExternalChildResourceTests {
                 .define("john")
                 .withSubject("physics");
 
-        Creatable<SchoolsImpl.StudentImpl> creatableStudent = schools.independentStudents()
+        SchoolsImpl.StudentImpl creatableStudent = schools.independentStudents()
                 .define("nit")
                 .withAge(15)
                 .withTeacher(creatableTeacher);
@@ -204,7 +204,7 @@ public class ExternalChildResourceTests {
         final SchoolsImpl.TeacherImpl[] foundTeacher = new SchoolsImpl.TeacherImpl[1];
         final SchoolsImpl.StudentImpl[] foundStudent = new SchoolsImpl.StudentImpl[1];
 
-        creatableStudent.createAsync()
+        creatableStudent.taskGroup().invokeAsync(creatableStudent.taskGroup().newInvocationContext())
             .doOnNext(indexable -> {
                 if (indexable instanceof SchoolsImpl.TeacherImpl) {
                     foundTeacher[0] = (SchoolsImpl.TeacherImpl) indexable;

@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The MongoDBCollectionResource model. */
+/** Cosmos DB MongoDB collection resource object. */
 @Fluent
 public class MongoDBCollectionResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDBCollectionResource.class);
@@ -33,6 +33,12 @@ public class MongoDBCollectionResource {
      */
     @JsonProperty(value = "indexes")
     private List<MongoIndex> indexes;
+
+    /*
+     * Analytical TTL.
+     */
+    @JsonProperty(value = "analyticalStorageTtl")
+    private Integer analyticalStorageTtl;
 
     /**
      * Get the id property: Name of the Cosmos DB MongoDB collection.
@@ -91,6 +97,26 @@ public class MongoDBCollectionResource {
      */
     public MongoDBCollectionResource withIndexes(List<MongoIndex> indexes) {
         this.indexes = indexes;
+        return this;
+    }
+
+    /**
+     * Get the analyticalStorageTtl property: Analytical TTL.
+     *
+     * @return the analyticalStorageTtl value.
+     */
+    public Integer analyticalStorageTtl() {
+        return this.analyticalStorageTtl;
+    }
+
+    /**
+     * Set the analyticalStorageTtl property: Analytical TTL.
+     *
+     * @param analyticalStorageTtl the analyticalStorageTtl value to set.
+     * @return the MongoDBCollectionResource object itself.
+     */
+    public MongoDBCollectionResource withAnalyticalStorageTtl(Integer analyticalStorageTtl) {
+        this.analyticalStorageTtl = analyticalStorageTtl;
         return this;
     }
 

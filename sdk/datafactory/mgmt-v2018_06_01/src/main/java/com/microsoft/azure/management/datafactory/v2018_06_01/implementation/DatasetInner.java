@@ -18,6 +18,7 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.AzureBlobDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.AzureBlobFSDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.AzureDataExplorerTableDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.AzureDataLakeStoreDataset;
+import com.microsoft.azure.management.datafactory.v2018_06_01.AzureDatabricksDeltaLakeDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.AzureMariaDBTableDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.AzureMySqlTableDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.AzurePostgreSqlTableDataset;
@@ -60,6 +61,7 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.MagentoObjectDatas
 import com.microsoft.azure.management.datafactory.v2018_06_01.MariaDBTableDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.MarketoObjectDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.MicrosoftAccessTableDataset;
+import com.microsoft.azure.management.datafactory.v2018_06_01.MongoDbAtlasCollectionDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.MongoDbCollectionDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.MongoDbV2CollectionDataset;
 import com.microsoft.azure.management.datafactory.v2018_06_01.MySqlTableDataset;
@@ -117,6 +119,7 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.ZohoObjectDataset;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type", defaultImpl = DatasetInner.class)
 @JsonTypeName("Dataset")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "AzureDatabricksDeltaLakeDataset", value = AzureDatabricksDeltaLakeDataset.class),
     @JsonSubTypes.Type(name = "SharePointOnlineListResource", value = SharePointOnlineListResourceDataset.class),
     @JsonSubTypes.Type(name = "SnowflakeTable", value = SnowflakeDataset.class),
     @JsonSubTypes.Type(name = "GoogleAdWordsObject", value = GoogleAdWordsObjectDataset.class),
@@ -182,6 +185,7 @@ import com.microsoft.azure.management.datafactory.v2018_06_01.ZohoObjectDataset;
     @JsonSubTypes.Type(name = "ODataResource", value = ODataResourceDataset.class),
     @JsonSubTypes.Type(name = "CosmosDbMongoDbApiCollection", value = CosmosDbMongoDbApiCollectionDataset.class),
     @JsonSubTypes.Type(name = "MongoDbV2Collection", value = MongoDbV2CollectionDataset.class),
+    @JsonSubTypes.Type(name = "MongoDbAtlasCollection", value = MongoDbAtlasCollectionDataset.class),
     @JsonSubTypes.Type(name = "MongoDbCollection", value = MongoDbCollectionDataset.class),
     @JsonSubTypes.Type(name = "FileShare", value = FileShareDataset.class),
     @JsonSubTypes.Type(name = "Office365Table", value = Office365Dataset.class),

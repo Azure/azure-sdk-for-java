@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The MetricAlertAction model. */
+/** An alert action. */
 @Fluent
 public final class MetricAlertAction {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertAction.class);

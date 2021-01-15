@@ -76,7 +76,9 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         return collectionDefinition;
     }
 
-    @Factory(dataProvider = "simpleClientBuildersWithDirect")
+    // RxDocumentClientUnderTest spy used in this test only has support for GW request capturing
+    // So only running the test against GW is relevant
+    @Factory(dataProvider = "simpleClientBuilderGatewaySession")
     public BackPressureCrossPartitionTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }

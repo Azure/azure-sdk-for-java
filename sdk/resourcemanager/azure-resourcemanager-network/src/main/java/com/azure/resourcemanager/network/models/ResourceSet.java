@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ResourceSet model. */
+/** The base resource set for visibility and auto-approval. */
 @Fluent
 public class ResourceSet {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSet.class);

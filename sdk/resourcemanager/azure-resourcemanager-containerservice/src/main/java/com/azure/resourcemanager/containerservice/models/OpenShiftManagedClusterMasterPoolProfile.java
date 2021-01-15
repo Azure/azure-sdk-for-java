@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The OpenShiftManagedClusterMasterPoolProfile model. */
+/** OpenShiftManagedClusterMaterPoolProfile contains configuration for OpenShift master VMs. */
 @Fluent
 public final class OpenShiftManagedClusterMasterPoolProfile {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterMasterPoolProfile.class);

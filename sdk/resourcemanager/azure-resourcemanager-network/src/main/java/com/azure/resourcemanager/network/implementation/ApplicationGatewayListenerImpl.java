@@ -50,8 +50,8 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public boolean requiresServerNameIndication() {
-        if (this.inner().requireServerNameIndication() != null) {
-            return this.inner().requireServerNameIndication();
+        if (this.innerModel().requireServerNameIndication() != null) {
+            return this.innerModel().requireServerNameIndication();
         } else {
             return false;
         }
@@ -59,7 +59,7 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public String hostname() {
-        return this.inner().hostname();
+        return this.innerModel().hostname();
     }
 
     @Override
@@ -84,12 +84,12 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public ApplicationGatewaySslCertificate sslCertificate() {
-        SubResource certRef = this.inner().sslCertificate();
+        SubResource certRef = this.innerModel().sslCertificate();
         if (certRef == null) {
             return null;
         }
@@ -100,7 +100,7 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public ApplicationGatewayProtocol protocol() {
-        return this.inner().protocol();
+        return this.innerModel().protocol();
     }
 
     @Override
@@ -117,8 +117,8 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public String frontendPortName() {
-        if (this.inner().frontendPort() != null) {
-            return ResourceUtils.nameFromResourceId(this.inner().frontendPort().id());
+        if (this.innerModel().frontendPort() != null) {
+            return ResourceUtils.nameFromResourceId(this.innerModel().frontendPort().id());
         } else {
             return null;
         }
@@ -126,7 +126,7 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public ApplicationGatewayFrontend frontend() {
-        final SubResource frontendInner = this.inner().frontendIpConfiguration();
+        final SubResource frontendInner = this.innerModel().frontendIpConfiguration();
         if (frontendInner == null) {
             return null;
         } else {
@@ -148,7 +148,7 @@ class ApplicationGatewayListenerImpl
     private ApplicationGatewayListenerImpl withFrontend(String name) {
         SubResource frontendRef =
             new SubResource().withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + name);
-        this.inner().withFrontendIpConfiguration(frontendRef);
+        this.innerModel().withFrontendIpConfiguration(frontendRef);
         return this;
     }
 
@@ -157,7 +157,7 @@ class ApplicationGatewayListenerImpl
     @Override
     public ApplicationGatewayListenerImpl withFrontendPort(String name) {
         SubResource portRef = new SubResource().withId(this.parent().futureResourceId() + "/frontendPorts/" + name);
-        this.inner().withFrontendPort(portRef);
+        this.innerModel().withFrontendPort(portRef);
         return this;
     }
 
@@ -167,7 +167,8 @@ class ApplicationGatewayListenerImpl
         String portName = this.parent().frontendPortNameFromNumber(portNumber);
         if (portName == null) {
             // Existing frontend port with this number not found so create one
-            portName = this.parent().manager().sdkContext().randomResourceName("port", 9);
+            portName = this.parent().manager().resourceManager().internalContext()
+                .randomResourceName("port", 9);
             this.parent().withFrontendPort(portNumber, portName);
         }
 
@@ -177,7 +178,7 @@ class ApplicationGatewayListenerImpl
     @Override
     public ApplicationGatewayListenerImpl withSslCertificate(String name) {
         SubResource certRef = new SubResource().withId(this.parent().futureResourceId() + "/sslCertificates/" + name);
-        this.inner().withSslCertificate(certRef);
+        this.innerModel().withSslCertificate(certRef);
         return this;
     }
 
@@ -189,7 +190,8 @@ class ApplicationGatewayListenerImpl
     private ApplicationGatewayListenerImpl withSslCertificateFromKeyVaultSecretId(
         String keyVaultSecretId, String name) {
         if (name == null) {
-            name = this.parent().manager().sdkContext().randomResourceName("cert", 10);
+            name = this.parent().manager().resourceManager().internalContext()
+                .randomResourceName("cert", 10);
         }
         this.parent().defineSslCertificate(name).withKeyVaultSecretId(keyVaultSecretId).attach();
         return this;
@@ -202,7 +204,8 @@ class ApplicationGatewayListenerImpl
 
     private ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) throws IOException {
         if (name == null) {
-            name = this.parent().manager().sdkContext().randomResourceName("cert", 10);
+            name = this.parent().manager().resourceManager().internalContext()
+                .randomResourceName("cert", 10);
         }
         this.parent().defineSslCertificate(name).withPfxFromFile(pfxFile).attach();
         return this.withSslCertificate(name);
@@ -219,31 +222,31 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public ApplicationGatewayListenerImpl withHttp() {
-        this.inner().withProtocol(ApplicationGatewayProtocol.HTTP);
+        this.innerModel().withProtocol(ApplicationGatewayProtocol.HTTP);
         return this;
     }
 
     @Override
     public ApplicationGatewayListenerImpl withHttps() {
-        this.inner().withProtocol(ApplicationGatewayProtocol.HTTPS);
+        this.innerModel().withProtocol(ApplicationGatewayProtocol.HTTPS);
         return this;
     }
 
     @Override
     public ApplicationGatewayListenerImpl withHostname(String hostname) {
-        this.inner().withHostname(hostname);
+        this.innerModel().withHostname(hostname);
         return this;
     }
 
     @Override
     public ApplicationGatewayListenerImpl withServerNameIndication() {
-        this.inner().withRequireServerNameIndication(true);
+        this.innerModel().withRequireServerNameIndication(true);
         return this;
     }
 
     @Override
     public ApplicationGatewayListenerImpl withoutServerNameIndication() {
-        this.inner().withRequireServerNameIndication(false);
+        this.innerModel().withRequireServerNameIndication(false);
         return this;
     }
 

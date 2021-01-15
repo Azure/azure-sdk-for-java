@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ApplicationGatewayHttpListener model. */
+/** Http listener of an application gateway. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayHttpListener extends SubResource {
@@ -65,6 +65,12 @@ public class ApplicationGatewayHttpListener extends SubResource {
      */
     @JsonProperty(value = "properties.sslCertificate")
     private SubResource sslCertificate;
+
+    /*
+     * SSL profile resource of the application gateway.
+     */
+    @JsonProperty(value = "properties.sslProfile")
+    private SubResource sslProfile;
 
     /*
      * Applicable only if protocol is https. Enables SNI for multi-hosting.
@@ -236,6 +242,26 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
+     * Get the sslProfile property: SSL profile resource of the application gateway.
+     *
+     * @return the sslProfile value.
+     */
+    public SubResource sslProfile() {
+        return this.sslProfile;
+    }
+
+    /**
+     * Set the sslProfile property: SSL profile resource of the application gateway.
+     *
+     * @param sslProfile the sslProfile value to set.
+     * @return the ApplicationGatewayHttpListener object itself.
+     */
+    public ApplicationGatewayHttpListener withSslProfile(SubResource sslProfile) {
+        this.sslProfile = sslProfile;
+        return this;
+    }
+
+    /**
      * Get the requireServerNameIndication property: Applicable only if protocol is https. Enables SNI for
      * multi-hosting.
      *
@@ -324,6 +350,13 @@ public class ApplicationGatewayHttpListener extends SubResource {
      */
     public ApplicationGatewayHttpListener withHostNames(List<String> hostNames) {
         this.hostNames = hostNames;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApplicationGatewayHttpListener withId(String id) {
+        super.withId(id);
         return this;
     }
 

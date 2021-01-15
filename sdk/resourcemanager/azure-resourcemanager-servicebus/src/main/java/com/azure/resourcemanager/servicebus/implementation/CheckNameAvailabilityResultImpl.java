@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.servicebus.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.resourcemanager.servicebus.fluent.inner.CheckNameAvailabilityResultInner;
+import com.azure.resourcemanager.servicebus.fluent.models.CheckNameAvailabilityResultInner;
 import com.azure.resourcemanager.servicebus.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.servicebus.models.UnavailableReason;
 
@@ -25,17 +25,17 @@ class CheckNameAvailabilityResultImpl
 
     @Override
     public boolean isAvailable() {
-        return inner().nameAvailable();
+        return innerModel().nameAvailable();
     }
 
     @Override
     public UnavailableReason unavailabilityReason() {
-        return inner().reason();
+        return innerModel().reason();
     }
 
     @Override
     public String unavailabilityMessage() {
-        return inner().message();
+        return innerModel().message();
     }
 }
 

@@ -10,8 +10,9 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-/** The ImageUpdate model. */
+/** The source user image virtual hard disk. Only tags may be updated. */
 @JsonFlatten
 @Fluent
 public class ImageUpdate extends UpdateResource {
@@ -108,6 +109,13 @@ public class ImageUpdate extends UpdateResource {
      */
     public ImageUpdate withHyperVGeneration(HyperVGenerationTypes hyperVGeneration) {
         this.hyperVGeneration = hyperVGeneration;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageUpdate withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

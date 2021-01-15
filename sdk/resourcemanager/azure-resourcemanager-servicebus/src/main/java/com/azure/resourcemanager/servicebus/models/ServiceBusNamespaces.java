@@ -13,8 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import com.azure.resourcemanager.servicebus.fluent.NamespacesClient;
 import com.azure.resourcemanager.servicebus.ServiceBusManager;
 import reactor.core.publisher.Mono;
 
@@ -32,8 +30,7 @@ public interface ServiceBusNamespaces extends
     SupportsGettingById<ServiceBusNamespace>,
     SupportsDeletingById,
     SupportsDeletingByResourceGroup,
-    HasManager<ServiceBusManager>,
-    HasInner<NamespacesClient> {
+    HasManager<ServiceBusManager> {
     /**
      * Checks if namespace name is valid and is not in use.
      *

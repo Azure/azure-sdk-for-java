@@ -163,8 +163,7 @@ class AnalyzeSentimentAsyncClient {
                     new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()),
                     toMinedOpinionList(sentenceSentiment, documentSentimentList),
-                    sentenceSentiment.getOffset(),
-                    sentenceSentiment.getLength()
+                    sentenceSentiment.getOffset()
                 );
             }).collect(Collectors.toList());
 
@@ -217,7 +216,8 @@ class AnalyzeSentimentAsyncClient {
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             modelVersion, includeStatistics, includeOpinionMining, StringIndexType.UTF16CODE_UNIT,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE)
+            )
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
@@ -251,7 +251,7 @@ class AnalyzeSentimentAsyncClient {
             minedOpinions.add(new MinedOpinion(
                 new AspectSentiment(sentenceAspect.getText(),
                     TextSentiment.fromString(sentenceAspect.getSentiment().toString()),
-                    sentenceAspect.getOffset(), sentenceAspect.getLength(),
+                    sentenceAspect.getOffset(),
                     toSentimentConfidenceScores(sentenceAspect.getConfidenceScores())),
                 new IterableStream<>(opinionSentiments)));
         });
@@ -274,7 +274,7 @@ class AnalyzeSentimentAsyncClient {
     private OpinionSentiment toOpinionSentiment(SentenceOpinion sentenceOpinion) {
         return new OpinionSentiment(sentenceOpinion.getText(),
             TextSentiment.fromString(sentenceOpinion.getSentiment().toString()),
-            sentenceOpinion.getOffset(), sentenceOpinion.getLength(), sentenceOpinion.isNegated(),
+            sentenceOpinion.getOffset(), sentenceOpinion.isNegated(),
             toSentimentConfidenceScores(sentenceOpinion.getConfidenceScores()));
     }
 

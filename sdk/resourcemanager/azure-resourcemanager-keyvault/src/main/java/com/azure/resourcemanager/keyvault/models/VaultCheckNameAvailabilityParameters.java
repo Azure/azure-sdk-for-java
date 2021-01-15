@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VaultCheckNameAvailabilityParameters model. */
+/** The parameters used to check the availability of the vault name. */
 @Fluent
 public final class VaultCheckNameAvailabilityParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultCheckNameAvailabilityParameters.class);

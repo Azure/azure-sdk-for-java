@@ -5,7 +5,6 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.fluent.SnapshotsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -16,7 +15,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCr
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point to managed snapshot management API in Azure. */
@@ -31,8 +29,7 @@ public interface Snapshots
         SupportsDeletingByResourceGroup,
         SupportsBatchCreation<Snapshot>,
         SupportsBatchDeletion,
-        HasManager<ComputeManager>,
-        HasInner<SnapshotsClient> {
+        HasManager<ComputeManager> {
     /**
      * Grants access to the snapshot asynchronously.
      *

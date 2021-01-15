@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The JobAgentUpdate model. */
+/** An update to an Azure SQL job agent. */
 @Fluent
 public final class JobAgentUpdate {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(JobAgentUpdate.class);

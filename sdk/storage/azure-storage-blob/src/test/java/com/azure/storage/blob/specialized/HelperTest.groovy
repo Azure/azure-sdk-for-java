@@ -3,11 +3,15 @@
 
 package com.azure.storage.blob.specialized
 
+import com.azure.core.util.Context
+import com.azure.core.util.serializer.JacksonAdapter
+import com.azure.core.util.serializer.SerializerEncoding
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
 import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.PageList
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobSasServiceVersion
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
@@ -99,7 +103,7 @@ class HelperTest extends APISpec {
         def sasValues = new BlobServiceSasSignatureValues(e, p)
 
         def implUtil = new BlobSasImplUtil(sasValues, "containerName", "blobName", "snapshot", null)
-        def sas = implUtil.generateSas(primaryCredential)
+        def sas = implUtil.generateSas(primaryCredential, Context.NONE)
 
         parts.setCommonSasQueryParameters(new CommonSasQueryParameters(SasImplUtils.parseQueryString(sas), true))
 
@@ -131,7 +135,7 @@ class HelperTest extends APISpec {
         def data = getRandomByteArray(1024)
 
         when:
-        def flux = Utility.convertStreamToByteBuffer(new ByteArrayInputStream(data), 1024, 1024)
+        def flux = Utility.convertStreamToByteBuffer(new ByteArrayInputStream(data), 1024, 1024, true)
 
         then:
         StepVerifier.create(flux)
@@ -141,5 +145,31 @@ class HelperTest extends APISpec {
         StepVerifier.create(flux)
             .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data)) == 0 }
             .verifyComplete()
+    }
+
+    def "PageList custom deserializer"() {
+        setup:
+        def responseXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>  \n" +
+            "<PageList>  \n" +
+            "   <PageRange>  \n" +
+            "      <Start>0</Start>  \n" +
+            "      <End>511</End>  \n" +
+            "   </PageRange>  \n" +
+            "   <ClearRange>  \n" +
+            "      <Start>512</Start>  \n" +
+            "      <End>1023</End>  \n" +
+            "   </ClearRange>  \n" +
+            "   <PageRange>  \n" +
+            "      <Start>1024</Start>  \n" +
+            "      <End>2047</End>  \n" +
+            "   </PageRange>  \n" +
+            "</PageList>"
+
+        when:
+        def pageList = (PageList) new JacksonAdapter().deserialize(responseXml, PageList.class, SerializerEncoding.XML)
+
+        then:
+        pageList.getPageRange().size() == 2
+        pageList.getClearRange().size() == 1
     }
 }

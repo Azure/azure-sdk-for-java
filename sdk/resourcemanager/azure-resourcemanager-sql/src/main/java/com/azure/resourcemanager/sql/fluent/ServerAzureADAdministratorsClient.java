@@ -4,152 +4,38 @@
 
 package com.azure.resourcemanager.sql.fluent;
 
-import com.azure.core.annotation.BodyParam;
-import com.azure.core.annotation.Delete;
-import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.Get;
-import com.azure.core.annotation.Headers;
-import com.azure.core.annotation.Host;
-import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.PathParam;
-import com.azure.core.annotation.Post;
-import com.azure.core.annotation.Put;
-import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
-import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.RestProxy;
-import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.resourcemanager.sql.fluent.inner.AdministratorListResultInner;
-import com.azure.resourcemanager.sql.fluent.inner.ServerAzureADAdministratorInner;
+import com.azure.resourcemanager.sql.fluent.models.ServerAzureADAdministratorInner;
 import com.azure.resourcemanager.sql.models.AdministratorName;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServerAzureADAdministrators. */
-public final class ServerAzureADAdministratorsClient {
-    private final ClientLogger logger = new ClientLogger(ServerAzureADAdministratorsClient.class);
-
-    /** The proxy service used to perform REST calls. */
-    private final ServerAzureADAdministratorsService service;
-
-    /** The service client containing this operation class. */
-    private final SqlManagementClient client;
-
+/** An instance of this class provides access to all the operations defined in ServerAzureADAdministratorsClient. */
+public interface ServerAzureADAdministratorsClient {
     /**
-     * Initializes an instance of ServerAzureADAdministratorsClient.
+     * Gets a Azure Active Directory administrator.
      *
-     * @param client the instance of the service client containing this operation class.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param administratorName The name of server active directory administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Azure Active Directory administrator.
      */
-    public ServerAzureADAdministratorsClient(SqlManagementClient client) {
-        this.service =
-            RestProxy
-                .create(
-                    ServerAzureADAdministratorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
-        this.client = client;
-    }
-
-    /**
-     * The interface defining all the services for SqlManagementClientServerAzureADAdministrators to be used by the
-     * proxy service to perform REST calls.
-     */
-    @Host("{$host}")
-    @ServiceInterface(name = "SqlManagementClientS")
-    private interface ServerAzureADAdministratorsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/administrators/{administratorName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServerAzureADAdministratorInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("administratorName") AdministratorName administratorName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/administrators/{administratorName}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("administratorName") AdministratorName administratorName,
-            @BodyParam("application/json") ServerAzureADAdministratorInner parameters,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/administrators/{administratorName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("administratorName") AdministratorName administratorName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/administrators")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AdministratorListResultInner>> listByServer(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/disableAzureADOnlyAuthentication")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> disableAzureADOnlyAuthentication(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AdministratorListResultInner>> listByServerNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-    }
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<ServerAzureADAdministratorInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, AdministratorName administratorName);
 
     /**
      * Gets a Azure Active Directory administrator.
@@ -159,51 +45,29 @@ public final class ServerAzureADAdministratorsClient {
      * @param serverName The name of the server.
      * @param administratorName The name of server active directory administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Azure Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServerAzureADAdministratorInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (administratorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            administratorName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<ServerAzureADAdministratorInner> getAsync(
+        String resourceGroupName, String serverName, AdministratorName administratorName);
+
+    /**
+     * Gets a Azure Active Directory administrator.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param administratorName The name of server active directory administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Azure Active Directory administrator.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServerAzureADAdministratorInner get(
+        String resourceGroupName, String serverName, AdministratorName administratorName);
 
     /**
      * Gets a Azure Active Directory administrator.
@@ -214,138 +78,13 @@ public final class ServerAzureADAdministratorsClient {
      * @param administratorName The name of server active directory administrator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Azure Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServerAzureADAdministratorInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (administratorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                administratorName,
-                context);
-    }
-
-    /**
-     * Gets a Azure Active Directory administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The name of server active directory administrator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerAzureADAdministratorInner> getAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName) {
-        return getWithResponseAsync(resourceGroupName, serverName, administratorName)
-            .flatMap(
-                (Response<ServerAzureADAdministratorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a Azure Active Directory administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The name of server active directory administrator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerAzureADAdministratorInner> getAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
-        return getWithResponseAsync(resourceGroupName, serverName, administratorName, context)
-            .flatMap(
-                (Response<ServerAzureADAdministratorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a Azure Active Directory administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The name of server active directory administrator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerAzureADAdministratorInner get(
-        String resourceGroupName, String serverName, AdministratorName administratorName) {
-        return getAsync(resourceGroupName, serverName, administratorName).block();
-    }
-
-    /**
-     * Gets a Azure Active Directory administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The name of server active directory administrator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerAzureADAdministratorInner get(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
-        return getAsync(resourceGroupName, serverName, administratorName, context).block();
-    }
+    Response<ServerAzureADAdministratorInner> getWithResponse(
+        String resourceGroupName, String serverName, AdministratorName administratorName, Context context);
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
@@ -356,60 +95,56 @@ public final class ServerAzureADAdministratorsClient {
      * @param administratorName The administratorName parameter.
      * @param parameters Azure Active Directory administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName,
         String serverName,
         AdministratorName administratorName,
-        ServerAzureADAdministratorInner parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (administratorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            administratorName,
-                            parameters,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+        ServerAzureADAdministratorInner parameters);
+
+    /**
+     * Creates or updates an existing Azure Active Directory administrator.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param administratorName The administratorName parameter.
+     * @param parameters Azure Active Directory administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Active Directory administrator.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String serverName,
+        AdministratorName administratorName,
+        ServerAzureADAdministratorInner parameters);
+
+    /**
+     * Creates or updates an existing Azure Active Directory administrator.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param administratorName The administratorName parameter.
+     * @param parameters Azure Active Directory administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Active Directory administrator.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        AdministratorName administratorName,
+        ServerAzureADAdministratorInner parameters);
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
@@ -421,58 +156,17 @@ public final class ServerAzureADAdministratorsClient {
      * @param parameters Azure Active Directory administrator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+    SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serverName,
         AdministratorName administratorName,
         ServerAzureADAdministratorInner parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (administratorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        } else {
-            parameters.validate();
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                administratorName,
-                parameters,
-                context);
-    }
+        Context context);
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
@@ -483,85 +177,36 @@ public final class ServerAzureADAdministratorsClient {
      * @param administratorName The administratorName parameter.
      * @param parameters Azure Active Directory administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            AdministratorName administratorName,
-            ServerAzureADAdministratorInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, administratorName, parameters);
-        return this
-            .client
-            .<ServerAzureADAdministratorInner, ServerAzureADAdministratorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerAzureADAdministratorInner.class,
-                ServerAzureADAdministratorInner.class,
-                Context.NONE);
-    }
-
-    /**
-     * Creates or updates an existing Azure Active Directory administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serverName,
-            AdministratorName administratorName,
-            ServerAzureADAdministratorInner parameters,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serverName, administratorName, parameters, context);
-        return this
-            .client
-            .<ServerAzureADAdministratorInner, ServerAzureADAdministratorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerAzureADAdministratorInner.class,
-                ServerAzureADAdministratorInner.class,
-                context);
-    }
-
-    /**
-     * Creates or updates an existing Azure Active Directory administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner> beginCreateOrUpdate(
+    Mono<ServerAzureADAdministratorInner> createOrUpdateAsync(
         String resourceGroupName,
         String serverName,
         AdministratorName administratorName,
-        ServerAzureADAdministratorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters).getSyncPoller();
-    }
+        ServerAzureADAdministratorInner parameters);
+
+    /**
+     * Creates or updates an existing Azure Active Directory administrator.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param administratorName The administratorName parameter.
+     * @param parameters Azure Active Directory administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Active Directory administrator.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServerAzureADAdministratorInner createOrUpdate(
+        String resourceGroupName,
+        String serverName,
+        AdministratorName administratorName,
+        ServerAzureADAdministratorInner parameters);
 
     /**
      * Creates or updates an existing Azure Active Directory administrator.
@@ -573,116 +218,17 @@ public final class ServerAzureADAdministratorsClient {
      * @param parameters Azure Active Directory administrator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner> beginCreateOrUpdate(
+    ServerAzureADAdministratorInner createOrUpdate(
         String resourceGroupName,
         String serverName,
         AdministratorName administratorName,
         ServerAzureADAdministratorInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Creates or updates an existing Azure Active Directory administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerAzureADAdministratorInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        ServerAzureADAdministratorInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates an existing Azure Active Directory administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerAzureADAdministratorInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        ServerAzureADAdministratorInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates an existing Azure Active Directory administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerAzureADAdministratorInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        ServerAzureADAdministratorInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters).block();
-    }
-
-    /**
-     * Creates or updates an existing Azure Active Directory administrator.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The administratorName parameter.
-     * @param parameters Azure Active Directory administrator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerAzureADAdministratorInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        AdministratorName administratorName,
-        ServerAzureADAdministratorInner parameters,
-        Context context) {
-        return createOrUpdateAsync(resourceGroupName, serverName, administratorName, parameters, context).block();
-    }
+        Context context);
 
     /**
      * Deletes the Azure Active Directory administrator with the given name.
@@ -692,51 +238,45 @@ public final class ServerAzureADAdministratorsClient {
      * @param serverName The name of the server.
      * @param administratorName The name of server active directory administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (administratorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            administratorName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String serverName, AdministratorName administratorName);
+
+    /**
+     * Deletes the Azure Active Directory administrator with the given name.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param administratorName The name of server active directory administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String serverName, AdministratorName administratorName);
+
+    /**
+     * Deletes the Azure Active Directory administrator with the given name.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param administratorName The name of server active directory administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serverName, AdministratorName administratorName);
 
     /**
      * Deletes the Azure Active Directory administrator with the given name.
@@ -747,48 +287,13 @@ public final class ServerAzureADAdministratorsClient {
      * @param administratorName The name of server active directory administrator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        if (administratorName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter administratorName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                administratorName,
-                context);
-    }
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String serverName, AdministratorName administratorName, Context context);
 
     /**
      * Deletes the Azure Active Directory administrator with the given name.
@@ -798,19 +303,26 @@ public final class ServerAzureADAdministratorsClient {
      * @param serverName The name of the server.
      * @param administratorName The name of server active directory administrator.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serverName, administratorName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
-    }
+    Mono<Void> deleteAsync(String resourceGroupName, String serverName, AdministratorName administratorName);
+
+    /**
+     * Deletes the Azure Active Directory administrator with the given name.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param administratorName The name of server active directory administrator.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serverName, AdministratorName administratorName);
 
     /**
      * Deletes the Azure Active Directory administrator with the given name.
@@ -821,131 +333,11 @@ public final class ServerAzureADAdministratorsClient {
      * @param administratorName The name of server active directory administrator.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serverName, administratorName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Deletes the Azure Active Directory administrator with the given name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The name of server active directory administrator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, AdministratorName administratorName) {
-        return beginDeleteAsync(resourceGroupName, serverName, administratorName).getSyncPoller();
-    }
-
-    /**
-     * Deletes the Azure Active Directory administrator with the given name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The name of server active directory administrator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, administratorName, context).getSyncPoller();
-    }
-
-    /**
-     * Deletes the Azure Active Directory administrator with the given name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The name of server active directory administrator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String serverName, AdministratorName administratorName) {
-        return beginDeleteAsync(resourceGroupName, serverName, administratorName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the Azure Active Directory administrator with the given name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The name of server active directory administrator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serverName, administratorName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes the Azure Active Directory administrator with the given name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The name of server active directory administrator.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serverName, AdministratorName administratorName) {
-        deleteAsync(resourceGroupName, serverName, administratorName).block();
-    }
-
-    /**
-     * Deletes the Azure Active Directory administrator with the given name.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param administratorName The name of server active directory administrator.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serverName, AdministratorName administratorName, Context context) {
-        deleteAsync(resourceGroupName, serverName, administratorName, context).block();
-    }
+    void delete(String resourceGroupName, String serverName, AdministratorName administratorName, Context context);
 
     /**
      * Gets a list of Azure Active Directory administrators in a server.
@@ -954,128 +346,26 @@ public final class ServerAzureADAdministratorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ServerAzureADAdministratorInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByServer(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            context))
-            .<PagedResponse<ServerAzureADAdministratorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ServerAzureADAdministratorInner>> listByServerSinglePageAsync(
-        String resourceGroupName, String serverName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .listByServer(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
-
-    /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Azure Active Directory administrators in a server.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServerAzureADAdministratorInner> listByServerAsync(String resourceGroupName, String serverName) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName),
-            nextLink -> listByServerNextSinglePageAsync(nextLink));
-    }
+    PagedFlux<ServerAzureADAdministratorInner> listByServerAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Gets a list of Azure Active Directory administrators in a server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of Azure Active Directory administrators in a server.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServerAzureADAdministratorInner> listByServer(String resourceGroupName, String serverName);
 
     /**
      * Gets a list of Azure Active Directory administrators in a server.
@@ -1085,51 +375,13 @@ public final class ServerAzureADAdministratorsClient {
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Azure Active Directory administrators in a server.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ServerAzureADAdministratorInner> listByServerAsync(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedFlux<>(
-            () -> listByServerSinglePageAsync(resourceGroupName, serverName, context),
-            nextLink -> listByServerNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerAzureADAdministratorInner> listByServer(String resourceGroupName, String serverName) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName));
-    }
-
-    /**
-     * Gets a list of Azure Active Directory administrators in a server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Active Directory administrators in a server.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ServerAzureADAdministratorInner> listByServer(
-        String resourceGroupName, String serverName, Context context) {
-        return new PagedIterable<>(listByServerAsync(resourceGroupName, serverName, context));
-    }
+    PagedIterable<ServerAzureADAdministratorInner> listByServer(
+        String resourceGroupName, String serverName, Context context);
 
     /**
      * Disables Azure Active Directory only authentication on logical Server.
@@ -1138,46 +390,43 @@ public final class ServerAzureADAdministratorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> disableAzureADOnlyAuthenticationWithResponseAsync(
-        String resourceGroupName, String serverName) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disableAzureADOnlyAuthentication(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serverName,
-                            context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
+    Mono<Response<Flux<ByteBuffer>>> disableAzureADOnlyAuthenticationWithResponseAsync(
+        String resourceGroupName, String serverName);
+
+    /**
+     * Disables Azure Active Directory only authentication on logical Server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Active Directory administrator.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PollerFlux<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
+        beginDisableAzureADOnlyAuthenticationAsync(String resourceGroupName, String serverName);
+
+    /**
+     * Disables Azure Active Directory only authentication on logical Server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Active Directory administrator.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
+        beginDisableAzureADOnlyAuthentication(String resourceGroupName, String serverName);
 
     /**
      * Disables Azure Active Directory only authentication on logical Server.
@@ -1187,43 +436,13 @@ public final class ServerAzureADAdministratorsClient {
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> disableAzureADOnlyAuthenticationWithResponseAsync(
-        String resourceGroupName, String serverName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (serverName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01-preview";
-        context = this.client.mergeContext(context);
-        return service
-            .disableAzureADOnlyAuthentication(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serverName,
-                context);
-    }
+    SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
+        beginDisableAzureADOnlyAuthentication(String resourceGroupName, String serverName, Context context);
 
     /**
      * Disables Azure Active Directory only authentication on logical Server.
@@ -1232,24 +451,27 @@ public final class ServerAzureADAdministratorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
-        beginDisableAzureADOnlyAuthenticationAsync(String resourceGroupName, String serverName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            disableAzureADOnlyAuthenticationWithResponseAsync(resourceGroupName, serverName);
-        return this
-            .client
-            .<ServerAzureADAdministratorInner, ServerAzureADAdministratorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerAzureADAdministratorInner.class,
-                ServerAzureADAdministratorInner.class,
-                Context.NONE);
-    }
+    Mono<ServerAzureADAdministratorInner> disableAzureADOnlyAuthenticationAsync(
+        String resourceGroupName, String serverName);
+
+    /**
+     * Disables Azure Active Directory only authentication on logical Server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return azure Active Directory administrator.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ServerAzureADAdministratorInner disableAzureADOnlyAuthentication(String resourceGroupName, String serverName);
 
     /**
      * Disables Azure Active Directory only authentication on logical Server.
@@ -1259,190 +481,11 @@ public final class ServerAzureADAdministratorsClient {
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure Active Directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
-        beginDisableAzureADOnlyAuthenticationAsync(String resourceGroupName, String serverName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            disableAzureADOnlyAuthenticationWithResponseAsync(resourceGroupName, serverName, context);
-        return this
-            .client
-            .<ServerAzureADAdministratorInner, ServerAzureADAdministratorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServerAzureADAdministratorInner.class,
-                ServerAzureADAdministratorInner.class,
-                context);
-    }
-
-    /**
-     * Disables Azure Active Directory only authentication on logical Server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
-        beginDisableAzureADOnlyAuthentication(String resourceGroupName, String serverName) {
-        return beginDisableAzureADOnlyAuthenticationAsync(resourceGroupName, serverName).getSyncPoller();
-    }
-
-    /**
-     * Disables Azure Active Directory only authentication on logical Server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ServerAzureADAdministratorInner>, ServerAzureADAdministratorInner>
-        beginDisableAzureADOnlyAuthentication(String resourceGroupName, String serverName, Context context) {
-        return beginDisableAzureADOnlyAuthenticationAsync(resourceGroupName, serverName, context).getSyncPoller();
-    }
-
-    /**
-     * Disables Azure Active Directory only authentication on logical Server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerAzureADAdministratorInner> disableAzureADOnlyAuthenticationAsync(
-        String resourceGroupName, String serverName) {
-        return beginDisableAzureADOnlyAuthenticationAsync(resourceGroupName, serverName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Disables Azure Active Directory only authentication on logical Server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServerAzureADAdministratorInner> disableAzureADOnlyAuthenticationAsync(
-        String resourceGroupName, String serverName, Context context) {
-        return beginDisableAzureADOnlyAuthenticationAsync(resourceGroupName, serverName, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Disables Azure Active Directory only authentication on logical Server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerAzureADAdministratorInner disableAzureADOnlyAuthentication(
-        String resourceGroupName, String serverName) {
-        return disableAzureADOnlyAuthenticationAsync(resourceGroupName, serverName).block();
-    }
-
-    /**
-     * Disables Azure Active Directory only authentication on logical Server.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azure Active Directory administrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServerAzureADAdministratorInner disableAzureADOnlyAuthentication(
-        String resourceGroupName, String serverName, Context context) {
-        return disableAzureADOnlyAuthenticationAsync(resourceGroupName, serverName, context).block();
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active directory administrators.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ServerAzureADAdministratorInner>> listByServerNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listByServerNext(nextLink, context))
-            .<PagedResponse<ServerAzureADAdministratorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of active directory administrators.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<ServerAzureADAdministratorInner>> listByServerNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listByServerNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
-    }
+    ServerAzureADAdministratorInner disableAzureADOnlyAuthentication(
+        String resourceGroupName, String serverName, Context context);
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AdditionalCapabilities model. */
+/** Enables or disables a capability on the virtual machine or virtual machine scale set. */
 @Fluent
 public final class AdditionalCapabilities {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AdditionalCapabilities.class);

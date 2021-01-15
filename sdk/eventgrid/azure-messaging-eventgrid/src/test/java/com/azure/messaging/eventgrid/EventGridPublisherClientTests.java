@@ -83,12 +83,13 @@ public class EventGridPublisherClientTests extends TestBase {
             .buildAsyncClient();
 
         List<EventGridEvent> events = new ArrayList<>();
-        events.add(new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent", "1.0")
-            .setData(new HashMap<String, String>() {{
+        events.add(new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
+            new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
-            }})
+            }},
+            "1.0")
             .setEventTime(OffsetDateTime.now()));
 
         StepVerifier.create(egClient.sendEventsWithResponse(events))
@@ -110,12 +111,13 @@ public class EventGridPublisherClientTests extends TestBase {
             .buildAsyncClient();
 
         List<EventGridEvent> events = new ArrayList<>();
-        events.add(new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent", "1.0")
-            .setData(new HashMap<String, String>() {{
+        events.add(new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
+            new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
-            }})
+            }},
+            "1.0")
             .setEventTime(OffsetDateTime.now()));
 
         StepVerifier.create(egClient.sendEventsWithResponse(events))
@@ -219,12 +221,13 @@ public class EventGridPublisherClientTests extends TestBase {
             .buildClient();
 
         List<EventGridEvent> events = new ArrayList<>();
-        events.add(new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent", "1.0")
-            .setData(new HashMap<String, String>() {{
+        events.add(new EventGridEvent("Test", "Microsoft.MockPublisher.TestEvent",
+            new HashMap<String, String>() {{
                 put("Field1", "Value1");
                 put("Field2", "Value2");
                 put("Field3", "Value3");
-            }})
+            }},
+            "1.0")
             .setEventTime(OffsetDateTime.now()));
 
         Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);

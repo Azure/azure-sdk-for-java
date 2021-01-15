@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.implementation;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageType;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionImageVersions;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublisher;
-import com.azure.resourcemanager.compute.fluent.inner.VirtualMachineExtensionImageInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionImageInner;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineExtensionImagesClient;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
@@ -26,17 +26,17 @@ class VirtualMachineExtensionImageTypeImpl extends WrapperImpl<VirtualMachineExt
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.innerModel().id();
     }
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
     public String regionName() {
-        return this.inner().location();
+        return this.innerModel().location();
     }
 
     @Override

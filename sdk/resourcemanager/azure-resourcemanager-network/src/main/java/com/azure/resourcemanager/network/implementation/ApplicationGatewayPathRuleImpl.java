@@ -9,7 +9,7 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHttpCon
 import com.azure.resourcemanager.network.models.ApplicationGatewayPathRule;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayUrlPathMap;
-import com.azure.resourcemanager.network.fluent.inner.ApplicationGatewayPathRuleInner;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPathRuleInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ class ApplicationGatewayPathRuleImpl
 
     @Override
     public String name() {
-        return this.inner().name();
+        return this.innerModel().name();
     }
 
     @Override
@@ -48,31 +48,31 @@ class ApplicationGatewayPathRuleImpl
         SubResource httpConfigRef =
             new SubResource()
                 .withId(this.parent().parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
-        this.inner().withBackendHttpSettings(httpConfigRef);
+        this.innerModel().withBackendHttpSettings(httpConfigRef);
         return this;
     }
 
     @Override
     public ApplicationGatewayPathRuleImpl toBackend(String name) {
-        this.inner().withBackendAddressPool(this.parent().parent().ensureBackendRef(name));
+        this.innerModel().withBackendAddressPool(this.parent().parent().ensureBackendRef(name));
         return this;
     }
 
     @Override
     public ApplicationGatewayPathRuleImpl withRedirectConfiguration(String name) {
         if (name == null) {
-            this.inner().withRedirectConfiguration(null);
+            this.innerModel().withRedirectConfiguration(null);
         } else {
             SubResource ref =
                 new SubResource().withId(this.parent().parent().futureResourceId() + "/redirectConfigurations/" + name);
-            this.inner().withRedirectConfiguration(ref);
+            this.innerModel().withRedirectConfiguration(ref);
         }
         return this;
     }
 
     @Override
     public ApplicationGatewayBackend backend() {
-        SubResource backendRef = this.inner().backendAddressPool();
+        SubResource backendRef = this.innerModel().backendAddressPool();
         if (backendRef != null) {
             String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
             return this.parent().parent().backends().get(backendName);
@@ -83,7 +83,7 @@ class ApplicationGatewayPathRuleImpl
 
     @Override
     public ApplicationGatewayBackendHttpConfiguration backendHttpConfiguration() {
-        SubResource configRef = this.inner().backendHttpSettings();
+        SubResource configRef = this.innerModel().backendHttpSettings();
         if (configRef != null) {
             String configName = ResourceUtils.nameFromResourceId(configRef.id());
             return this.parent().parent().backendHttpConfigurations().get(configName);
@@ -94,7 +94,7 @@ class ApplicationGatewayPathRuleImpl
 
     @Override
     public ApplicationGatewayRedirectConfiguration redirectConfiguration() {
-        SubResource ref = this.inner().redirectConfiguration();
+        SubResource ref = this.innerModel().redirectConfiguration();
         if (ref == null) {
             return null;
         } else {
@@ -104,21 +104,21 @@ class ApplicationGatewayPathRuleImpl
 
     @Override
     public List<String> paths() {
-        return Collections.unmodifiableList(inner().paths());
+        return Collections.unmodifiableList(innerModel().paths());
     }
 
     @Override
     public ApplicationGatewayPathRuleImpl withPath(String path) {
-        if (inner().paths() == null) {
-            inner().withPaths(new ArrayList<String>());
+        if (innerModel().paths() == null) {
+            innerModel().withPaths(new ArrayList<String>());
         }
-        inner().paths().add(path);
+        innerModel().paths().add(path);
         return this;
     }
 
     @Override
     public ApplicationGatewayPathRuleImpl withPaths(String... paths) {
-        inner().withPaths(Arrays.asList(paths));
+        innerModel().withPaths(Arrays.asList(paths));
         return this;
     }
 }

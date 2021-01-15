@@ -7,7 +7,7 @@ import com.azure.resourcemanager.network.models.Direction;
 import com.azure.resourcemanager.network.models.IpFlowProtocol;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
 import com.azure.resourcemanager.network.models.VerificationIpFlowParameters;
-import com.azure.resourcemanager.network.fluent.inner.VerificationIpFlowResultInner;
+import com.azure.resourcemanager.network.fluent.models.VerificationIpFlowResultInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import reactor.core.publisher.Mono;
 
@@ -110,7 +110,7 @@ public class VerificationIPFlowImpl extends ExecutableImpl<VerificationIPFlow>
         return this
             .parent()
             .manager()
-            .inner()
+            .serviceClient()
             .getNetworkWatchers()
             .verifyIpFlowAsync(parent.resourceGroupName(), parent.name(), parameters)
             .map(

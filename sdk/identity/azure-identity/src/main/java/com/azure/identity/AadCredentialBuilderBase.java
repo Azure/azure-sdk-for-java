@@ -36,7 +36,6 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      */
     @SuppressWarnings("unchecked")
     public T clientId(String clientId) {
-        ValidationUtil.validateClientIdCharacterRange(getClass().getSimpleName(), clientId);
         this.clientId = clientId;
         return (T) this;
     }

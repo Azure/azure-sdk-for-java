@@ -4,12 +4,12 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.appplatform.fluent.inner.DeploymentResourceInner;
+import com.azure.resourcemanager.appplatform.fluent.models.DeploymentResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +21,7 @@ import java.util.List;
 @Fluent
 public interface SpringAppDeployment
     extends ExternalChildResource<SpringAppDeployment, SpringApp>,
-        HasInner<DeploymentResourceInner>,
+        HasInnerModel<DeploymentResourceInner>,
         Updatable<SpringAppDeployment.Update> {
     /** @return the app name of the deployment */
     String appName();

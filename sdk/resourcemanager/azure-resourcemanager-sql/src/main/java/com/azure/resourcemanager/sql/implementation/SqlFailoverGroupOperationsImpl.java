@@ -9,7 +9,7 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroupOperations;
 import com.azure.resourcemanager.sql.models.SqlServer;
-import com.azure.resourcemanager.sql.fluent.inner.FailoverGroupInner;
+import com.azure.resourcemanager.sql.fluent.models.FailoverGroupInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +32,7 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
     @Override
     public SqlFailoverGroup getBySqlServer(String resourceGroupName, String sqlServerName, String name) {
         FailoverGroupInner failoverGroupInner =
-            this.sqlServerManager.inner().getFailoverGroups().get(resourceGroupName, sqlServerName, name);
+            this.sqlServerManager.serviceClient().getFailoverGroups().get(resourceGroupName, sqlServerName, name);
         return failoverGroupInner != null
             ? new SqlFailoverGroupImpl(name, failoverGroupInner, this.sqlServerManager)
             : null;
@@ -44,7 +44,7 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
         final SqlFailoverGroupOperationsImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFailoverGroups()
             .getAsync(resourceGroupName, sqlServerName, name)
             .map(failoverGroupInner -> new SqlFailoverGroupImpl(name, failoverGroupInner, self.sqlServerManager));
@@ -54,7 +54,11 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
     public SqlFailoverGroup getBySqlServer(SqlServer sqlServer, String name) {
         Objects.requireNonNull(sqlServer);
         FailoverGroupInner failoverGroupInner =
-            sqlServer.manager().inner().getFailoverGroups().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
+            sqlServer
+                .manager()
+                .serviceClient()
+                .getFailoverGroups()
+                .get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return failoverGroupInner != null
             ? new SqlFailoverGroupImpl(name, (SqlServerImpl) sqlServer, failoverGroupInner, sqlServer.manager())
             : null;
@@ -65,7 +69,7 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
         Objects.requireNonNull(sqlServer);
         return sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getFailoverGroups()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name(), name)
             .map(
@@ -75,19 +79,23 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
 
     @Override
     public void deleteBySqlServer(String resourceGroupName, String sqlServerName, String name) {
-        this.sqlServerManager.inner().getFailoverGroups().delete(resourceGroupName, sqlServerName, name);
+        this.sqlServerManager.serviceClient().getFailoverGroups().delete(resourceGroupName, sqlServerName, name);
     }
 
     @Override
     public Mono<Void> deleteBySqlServerAsync(String resourceGroupName, String sqlServerName, String name) {
-        return this.sqlServerManager.inner().getFailoverGroups().deleteAsync(resourceGroupName, sqlServerName, name);
+        return this
+            .sqlServerManager
+            .serviceClient()
+            .getFailoverGroups()
+            .deleteAsync(resourceGroupName, sqlServerName, name);
     }
 
     @Override
     public List<SqlFailoverGroup> listBySqlServer(String resourceGroupName, String sqlServerName) {
         List<SqlFailoverGroup> failoverGroups = new ArrayList<>();
         PagedIterable<FailoverGroupInner> failoverGroupInners =
-            this.sqlServerManager.inner().getFailoverGroups().listByServer(resourceGroupName, sqlServerName);
+            this.sqlServerManager.serviceClient().getFailoverGroups().listByServer(resourceGroupName, sqlServerName);
         for (FailoverGroupInner inner : failoverGroupInners) {
             failoverGroups.add(new SqlFailoverGroupImpl(inner.name(), inner, this.sqlServerManager));
         }
@@ -100,7 +108,7 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
         final SqlFailoverGroupOperationsImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFailoverGroups()
             .listByServerAsync(resourceGroupName, sqlServerName)
             .mapPage(
@@ -111,13 +119,15 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
     @Override
     public List<SqlFailoverGroup> listBySqlServer(final SqlServer sqlServer) {
         List<SqlFailoverGroup> failoverGroups = new ArrayList<>();
-        PagedIterable<FailoverGroupInner> failoverGroupInners = sqlServer.manager().inner().getFailoverGroups()
-            .listByServer(sqlServer.resourceGroupName(), sqlServer.name());
+        PagedIterable<FailoverGroupInner> failoverGroupInners =
+            sqlServer
+                .manager()
+                .serviceClient()
+                .getFailoverGroups()
+                .listByServer(sqlServer.resourceGroupName(), sqlServer.name());
         for (FailoverGroupInner inner : failoverGroupInners) {
             failoverGroups
-                .add(
-                    new SqlFailoverGroupImpl(
-                        inner.name(), (SqlServerImpl) sqlServer, inner, this.sqlServerManager));
+                .add(new SqlFailoverGroupImpl(inner.name(), (SqlServerImpl) sqlServer, inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(failoverGroups);
     }
@@ -126,16 +136,13 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
     public PagedFlux<SqlFailoverGroup> listBySqlServerAsync(final SqlServer sqlServer) {
         return sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getFailoverGroups()
             .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
             .mapPage(
                 failoverGroupInner ->
                     new SqlFailoverGroupImpl(
-                        failoverGroupInner.name(),
-                        (SqlServerImpl) sqlServer,
-                        failoverGroupInner,
-                        sqlServer.manager()));
+                        failoverGroupInner.name(), (SqlServerImpl) sqlServer, failoverGroupInner, sqlServer.manager()));
     }
 
     @Override
@@ -151,7 +158,7 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
         FailoverGroupInner failoverGroupInner =
             sqlServer
                 .manager()
-                .inner()
+                .serviceClient()
                 .getFailoverGroups()
                 .failover(sqlServer.resourceGroupName(), sqlServer.name(), failoverGroupName);
         return failoverGroupInner != null
@@ -165,16 +172,13 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
         Objects.requireNonNull(this.sqlServer);
         return sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getFailoverGroups()
             .failoverAsync(sqlServer.resourceGroupName(), sqlServer.name(), failoverGroupName)
             .map(
                 failoverGroupInner ->
                     new SqlFailoverGroupImpl(
-                        failoverGroupInner.name(),
-                        (SqlServerImpl) sqlServer,
-                        failoverGroupInner,
-                        sqlServer.manager()));
+                        failoverGroupInner.name(), (SqlServerImpl) sqlServer, failoverGroupInner, sqlServer.manager()));
     }
 
     @Override
@@ -183,7 +187,7 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
         FailoverGroupInner failoverGroupInner =
             sqlServer
                 .manager()
-                .inner()
+                .serviceClient()
                 .getFailoverGroups()
                 .forceFailoverAllowDataLoss(sqlServer.resourceGroupName(), sqlServer.name(), failoverGroupName);
         return failoverGroupInner != null
@@ -197,22 +201,23 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
         Objects.requireNonNull(this.sqlServer);
         return sqlServer
             .manager()
-            .inner()
+            .serviceClient()
             .getFailoverGroups()
             .forceFailoverAllowDataLossAsync(sqlServer.resourceGroupName(), sqlServer.name(), failoverGroupName)
             .map(
                 failoverGroupInner ->
                     new SqlFailoverGroupImpl(
-                        failoverGroupInner.name(),
-                        (SqlServerImpl) sqlServer,
-                        failoverGroupInner,
-                        sqlServer.manager()));
+                        failoverGroupInner.name(), (SqlServerImpl) sqlServer, failoverGroupInner, sqlServer.manager()));
     }
 
     @Override
     public SqlFailoverGroup failover(String resourceGroupName, String serverName, String failoverGroupName) {
-        FailoverGroupInner failoverGroupInner = this.sqlServerManager.inner().getFailoverGroups()
-            .failover(resourceGroupName, serverName, failoverGroupName);
+        FailoverGroupInner failoverGroupInner =
+            this
+                .sqlServerManager
+                .serviceClient()
+                .getFailoverGroups()
+                .failover(resourceGroupName, serverName, failoverGroupName);
         return failoverGroupInner != null
             ? new SqlFailoverGroupImpl(failoverGroupInner.name(), failoverGroupInner, this.sqlServerManager)
             : null;
@@ -224,7 +229,7 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
         final SqlFailoverGroupOperationsImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFailoverGroups()
             .failoverAsync(resourceGroupName, serverName, failoverGroupName)
             .map(
@@ -238,7 +243,7 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
         FailoverGroupInner failoverGroupInner =
             this
                 .sqlServerManager
-                .inner()
+                .serviceClient()
                 .getFailoverGroups()
                 .forceFailoverAllowDataLoss(resourceGroupName, serverName, failoverGroupName);
         return failoverGroupInner != null
@@ -252,7 +257,7 @@ public class SqlFailoverGroupOperationsImpl extends SqlChildrenOperationsImpl<Sq
         final SqlFailoverGroupOperationsImpl self = this;
         return this
             .sqlServerManager
-            .inner()
+            .serviceClient()
             .getFailoverGroups()
             .forceFailoverAllowDataLossAsync(resourceGroupName, serverName, failoverGroupName)
             .map(

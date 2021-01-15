@@ -5,7 +5,6 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.AppServiceManager;
-import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -14,7 +13,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 
 /** Entry point for certificate management API. */
 @Fluent
@@ -26,6 +24,5 @@ public interface AppServiceCertificates
         SupportsGettingByResourceGroup<AppServiceCertificate>,
         SupportsGettingById<AppServiceCertificate>,
         SupportsDeletingByResourceGroup,
-        HasManager<AppServiceManager>,
-        HasInner<CertificatesClient> {
+        HasManager<AppServiceManager> {
 }

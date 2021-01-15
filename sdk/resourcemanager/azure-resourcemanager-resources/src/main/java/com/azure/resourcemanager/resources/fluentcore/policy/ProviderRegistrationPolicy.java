@@ -3,23 +3,24 @@
 
 package com.azure.resourcemanager.resources.fluentcore.policy;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
+import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.resources.models.Provider;
-import com.azure.core.management.profile.AzureProfile;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.resources.models.Provider;
+import com.azure.resourcemanager.resources.models.Providers;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,18 +29,43 @@ import java.util.regex.Pattern;
  */
 public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
     private static final String MISSING_SUBSCRIPTION_REGISTRATION = "MissingSubscriptionRegistration";
-    private final TokenCredential credential;
-    private final AzureProfile profile;
+    private Providers providers;
 
     /**
-     * Initialize a provider registration policy with a credential that's authorized
-     * to register the provider.
-     * @param credential the credential for provider registration
-     * @param profile the profile to use
+     * Initialize a provider registration policy to automatically register the provider.
      */
-    public ProviderRegistrationPolicy(TokenCredential credential, AzureProfile profile) {
-        this.credential = credential;
-        this.profile = profile;
+    public ProviderRegistrationPolicy() {
+    }
+
+    /**
+     * Initialize a provider registration policy to automatically register the provider.
+     * @param resourceManager the Resource Manager that provider providers endpoint
+     */
+    public ProviderRegistrationPolicy(ResourceManager resourceManager) {
+        providers = resourceManager.providers();
+    }
+
+    /**
+     * Initialize a provider registration policy to automatically register the provider.
+     * @param providers the providers endpoint
+     */
+    public ProviderRegistrationPolicy(Providers providers) {
+        this.providers = providers;
+    }
+
+    /**
+     * Sets the providers endpoint after initialized
+     * @param providers the providers endpoint
+     */
+    public void setProviders(Providers providers) {
+        this.providers = providers;
+    }
+
+    /**
+     * @return the providers endpoint contained in policy
+     */
+    public Providers getProviders() {
+        return providers;
     }
 
     private boolean isResponseSuccessful(HttpResponse response) {
@@ -48,6 +74,9 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        if (providers == null) {
+            return next.process();
+        }
         return next.process().flatMap(
             response -> {
                 if (!isResponseSuccessful(response)) {
@@ -56,7 +85,8 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                         body -> {
                             String bodyStr = new String(body, StandardCharsets.UTF_8);
 
-                            AzureJacksonAdapter jacksonAdapter = new AzureJacksonAdapter();
+                            SerializerAdapter jacksonAdapter =
+                                SerializerFactory.createDefaultManagementSerializerAdapter();
                             ManagementError cloudError;
                             try {
                                 cloudError = jacksonAdapter.deserialize(
@@ -66,14 +96,14 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                             }
 
                             if (cloudError != null && MISSING_SUBSCRIPTION_REGISTRATION.equals(cloudError.getCode())) {
-                                ResourceManager resourceManager = ResourceManager.authenticate(credential, profile)
-                                        .withDefaultSubscription();
                                 Pattern providerPattern = Pattern.compile(".*'(.*)'");
                                 Matcher providerMatcher = providerPattern.matcher(cloudError.getMessage());
-                                providerMatcher.find();
+                                if (!providerMatcher.find()) {
+                                    return Mono.just(bufferedResponse);
+                                }
 
                                 // Retry after registration
-                                return registerProviderUntilSuccess(providerMatcher.group(1), resourceManager)
+                                return registerProviderUntilSuccess(providerMatcher.group(1))
                                         .flatMap(afterRegistered -> next.process());
                             }
                             return Mono.just(bufferedResponse);
@@ -85,15 +115,15 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         );
     }
 
-    private Mono<Void> registerProviderUntilSuccess(String namespace, ResourceManager resourceManager) {
-        return resourceManager.providers().registerAsync(namespace)
+    private Mono<Void> registerProviderUntilSuccess(String namespace) {
+        return providers.registerAsync(namespace)
             .flatMap(
                 provider -> {
                     if (isProviderRegistered(provider)) {
                         return Mono.empty();
                     }
-                    return resourceManager.providers().getByNameAsync(namespace)
-                            .flatMap(providerGet -> checkProviderRegistered(providerGet))
+                    return providers.getByNameAsync(namespace)
+                            .flatMap(this::checkProviderRegistered)
                             .retry(60, ProviderUnregisteredException.class::isInstance);
                 }
             );
@@ -103,7 +133,7 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         if (isProviderRegistered(provider)) {
             return Mono.empty();
         }
-        SdkContext.sleep(5 * 1000);
+        ResourceManagerUtils.sleep(Duration.ofSeconds(5));
         return Mono.error(new ProviderUnregisteredException());
     }
 

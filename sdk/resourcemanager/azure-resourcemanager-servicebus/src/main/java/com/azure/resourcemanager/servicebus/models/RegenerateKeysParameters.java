@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RegenerateKeysParameters model. */
+/** Parameters supplied to the Regenerate Authorization Rule operation. */
 @Fluent
 public final class RegenerateKeysParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RegenerateKeysParameters.class);

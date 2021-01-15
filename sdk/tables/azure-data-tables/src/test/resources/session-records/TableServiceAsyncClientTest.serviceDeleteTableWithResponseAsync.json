@@ -1,0 +1,50 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.3 (11.0.9; Mac OS X; 10.15.7)",
+      "x-ms-client-request-id" : "1dc106a0-5a13-4a4b-a8f7-14e6a260ce1a",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Wed, 04 Nov 2020 23:42:51 GMT",
+      "Cache-Control" : "no-cache",
+      "DataServiceId" : "https://brsiegelsample.table.core.windows.net/Tables('test56031952d6')",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "313927db-e002-00d1-6704-b3a8d6000000",
+      "Preference-Applied" : "return-no-content",
+      "x-ms-client-request-id" : "1dc106a0-5a13-4a4b-a8f7-14e6a260ce1a",
+      "Location" : "https://brsiegelsample.table.core.windows.net/Tables('test56031952d6')"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.table.core.windows.net/Tables('test56031952d6')",
+    "Headers" : {
+      "x-ms-version" : "2019-02-02",
+      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.3 (11.0.9; Mac OS X; 10.15.7)",
+      "x-ms-client-request-id" : "e204cf64-2ac3-4bcd-a202-f6e588e5acbb"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-02-02",
+      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
+      "Cache-Control" : "no-cache",
+      "X-Content-Type-Options" : "nosniff",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "x-ms-request-id" : "313927e4-e002-00d1-6b04-b3a8d6000000",
+      "Date" : "Wed, 04 Nov 2020 23:42:51 GMT",
+      "x-ms-client-request-id" : "e204cf64-2ac3-4bcd-a202-f6e588e5acbb"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "test56031952d6" ]
+}

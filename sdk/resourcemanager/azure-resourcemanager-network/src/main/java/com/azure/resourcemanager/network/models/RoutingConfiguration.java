@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RoutingConfiguration model. */
+/** Routing Configuration indicating the associated and propagated route tables for this connection. */
 @Fluent
 public final class RoutingConfiguration {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingConfiguration.class);

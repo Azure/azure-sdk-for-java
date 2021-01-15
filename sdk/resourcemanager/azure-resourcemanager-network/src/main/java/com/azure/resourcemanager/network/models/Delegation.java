@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Delegation model. */
+/** Details the service to which the subnet is delegated. */
 @JsonFlatten
 @Fluent
 public class Delegation extends SubResource {
@@ -119,6 +119,13 @@ public class Delegation extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Delegation withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**

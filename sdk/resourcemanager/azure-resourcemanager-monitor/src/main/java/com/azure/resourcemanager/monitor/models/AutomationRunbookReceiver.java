@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AutomationRunbookReceiver model. */
+/** The Azure Automation Runbook notification receiver. */
 @Fluent
 public final class AutomationRunbookReceiver {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationRunbookReceiver.class);

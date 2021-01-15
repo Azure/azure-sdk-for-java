@@ -31,7 +31,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.DirectProcessor;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.ReplayProcessor;
 import reactor.test.StepVerifier;
@@ -121,11 +120,9 @@ class RequestResponseChannelTest {
         FluxSink<EndpointState> sink1 = endpointStateReplayProcessor.sink();
         sink1.next(EndpointState.ACTIVE);
         when(receiveLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
-        when(receiveLinkHandler.getErrors()).thenReturn(Flux.never());
         when(receiveLinkHandler.getDeliveredMessages()).thenReturn(deliveryProcessor);
 
         when(sendLinkHandler.getEndpointStates()).thenReturn(endpointStateReplayProcessor);
-        when(sendLinkHandler.getErrors()).thenReturn(Flux.never());
     }
 
     @AfterEach

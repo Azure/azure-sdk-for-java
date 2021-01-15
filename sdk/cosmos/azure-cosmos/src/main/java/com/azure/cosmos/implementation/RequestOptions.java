@@ -33,6 +33,7 @@ public class RequestOptions {
     private boolean quotaInfoEnabled;
     private Map<String, Object> properties;
     private ThroughputProperties throughputProperties;
+    private Boolean contentResponseOnWriteEnabled;
 
     /**
      * Gets the triggers to be invoked before the operation.
@@ -337,5 +338,44 @@ public class RequestOptions {
      */
     public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
+    }
+
+    /**
+     * Gets the boolean to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If set to false, service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
+     *
+     * This feature does not impact RU usage for read or write operations.
+     *
+     * By-default, this is null.
+     *
+     * @return a boolean indicating whether payload will be included in the response or not for this request.
+     */
+    public Boolean isContentResponseOnWriteEnabled() {
+        return contentResponseOnWriteEnabled;
+    }
+
+    /**
+     * Sets the boolean to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If set to false, service doesn't return payload in the response. It reduces networking
+     * and CPU load by not sending the payload back over the network and serializing it on the client.
+     *
+     * This feature does not impact RU usage for read or write operations.
+     *
+     * By-default, this is null.
+     *
+     * NOTE: This flag is also present on {@link com.azure.cosmos.CosmosClientBuilder},
+     * however if specified on {@link com.azure.cosmos.models.CosmosItemRequestOptions},
+     * it will override the value specified in {@link com.azure.cosmos.CosmosClientBuilder} for this request.
+     *
+     * @param contentResponseOnWriteEnabled a boolean indicating whether payload will be included
+     * in the response or not for this request
+     */
+    public void setContentResponseOnWriteEnabled(Boolean contentResponseOnWriteEnabled) {
+        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
     }
 }

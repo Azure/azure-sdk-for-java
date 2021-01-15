@@ -5,7 +5,9 @@ package com.azure.identity.implementation;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.util.CertificateUtil;
 import com.azure.identity.util.TestUtils;
 import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
@@ -32,7 +34,9 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import reactor.test.StepVerifier;
 
+import javax.net.ssl.HttpsURLConnection;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -54,12 +58,13 @@ import static org.mockito.Mockito.when;
 import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "org.xml.*"})
+@PowerMockIgnore({"com.sun.org.apache.xerces.*", "javax.xml.*", "javax.net.ssl.*", "org.xml.*"})
 @PrepareForTest({CertificateUtil.class, ClientCredentialFactory.class, Runtime.class, URL.class, ConfidentialClientApplication.class, ConfidentialClientApplication.Builder.class, PublicClientApplication.class, PublicClientApplication.Builder.class, IdentityClient.class})
 public class IdentityClientTests {
 
     private static final String TENANT_ID = "contoso.com";
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+    private final ClientLogger logger = new ClientLogger(IdentityClientTests.class);
 
     @Test
     public void testValidSecret() throws Exception {
@@ -124,9 +129,12 @@ public class IdentityClientTests {
     @Test
     public void testPemCertificate() throws Exception {
         // setup
-        String pemPath = getClass().getClassLoader().getResource("certificate.pem").getPath();
-        if (pemPath.contains(":")) {
-            pemPath = pemPath.substring(1);
+        String pemPath;
+        URL pemUrl = getClass().getClassLoader().getResource("certificate.pem");
+        if (pemUrl.getPath().contains(":")) {
+            pemPath = pemUrl.getPath().substring(1);
+        } else {
+            pemPath = pemUrl.getPath();
         }
         String accessToken = "token";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
@@ -200,9 +208,87 @@ public class IdentityClientTests {
 
         // test
         IdentityClient client = new IdentityClientBuilder().build();
-        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, request).block();
+        AccessToken token = client.authenticateToManagedIdentityEndpoint(null, null, endpoint, secret, request).block();
         Assert.assertEquals("token1", token.getToken());
         Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+    }
+
+    @Test
+    public void testValidServiceFabricCodeFlow() throws Exception {
+        // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = "http://localhost";
+        String secret = "secret";
+        String thumbprint = "950a2c88d57b5e19ac5119315f9ec199ff3cb823";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        configuration.put("IDENTITY_HEADER", secret);
+        configuration.put("IDENTITY_SERVER_THUMBPRINT", thumbprint);
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.toEpochSecond() + "\" }";
+
+        // mock
+        mockForServiceFabricCodeFlow(tokenJson);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().build();
+        AccessToken token = client.authenticateToServiceFabricManagedIdentityEndpoint(endpoint, secret,
+            thumbprint, request).block();
+        Assert.assertEquals("token1", token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+    }
+
+    @Test
+    public void testValidIdentityEndpointMSICodeFlow() throws Exception {
+        // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = "http://localhost";
+        String secret = "secret";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        configuration.put("IDENTITY_HEADER", secret);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
+
+        // mock
+        mockForMSICodeFlow(tokenJson);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().build();
+        AccessToken token = client.authenticateToManagedIdentityEndpoint(endpoint, secret, null, null, request).block();
+        Assert.assertEquals("token1", token.getToken());
+        Assert.assertEquals(expiresOn.getSecond(), token.getExpiresAt().getSecond());
+    }
+
+    @Test (expected = ClientAuthenticationException.class)
+    public void testInValidIdentityEndpointSecretArcCodeFlow() throws Exception {
+        // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = "http://localhost";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        // mock
+        mockForArcCodeFlow(401);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().build();
+        client.authenticateToArcManagedIdentityEndpoint(endpoint, request).block();
+    }
+
+    @Test (expected = ClientAuthenticationException.class)
+    public void testInValidIdentityEndpointResponseCodeArcCodeFlow() throws Exception {
+        // setup
+        Configuration configuration = Configuration.getGlobalConfiguration();
+        String endpoint = "http://localhost";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        configuration.put("IDENTITY_ENDPOINT", endpoint);
+        // mock
+        mockForArcCodeFlow(200);
+
+        // test
+        IdentityClient client = new IdentityClientBuilder().build();
+        client.authenticateToArcManagedIdentityEndpoint(endpoint, request).block();
     }
 
     @Test
@@ -308,7 +394,7 @@ public class IdentityClientTests {
         // test
         IdentityClientOptions options = new IdentityClientOptions();
         IdentityClient client = new IdentityClientBuilder().tenantId(TENANT_ID).clientId(CLIENT_ID).identityClientOptions(options).build();
-        StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567))
+        StepVerifier.create(client.authenticateWithBrowserInteraction(request, 4567, null))
             .expectNextMatches(accessToken -> token.equals(accessToken.getToken())
                 && expiresOn.getSecond() == accessToken.getExpiresAt().getSecond())
             .verifyComplete();
@@ -449,13 +535,39 @@ public class IdentityClientTests {
     private void mockForMSICodeFlow(String tokenJson) throws Exception {
         URL u = PowerMockito.mock(URL.class);
         whenNew(URL.class).withAnyArguments().thenReturn(u);
-        HttpURLConnection huc = PowerMockito.mock(HttpURLConnection.class);
+        HttpURLConnection huc = PowerMockito.mock(HttpsURLConnection.class);
         when(u.openConnection()).thenReturn(huc);
         PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
         PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
         PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
         InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
         when(huc.getInputStream()).thenReturn(inputStream);
+    }
+
+    private void mockForServiceFabricCodeFlow(String tokenJson) throws Exception {
+        URL u = PowerMockito.mock(URL.class);
+        whenNew(URL.class).withAnyArguments().thenReturn(u);
+        HttpsURLConnection huc = PowerMockito.mock(HttpsURLConnection.class);
+        when(u.openConnection()).thenReturn(huc);
+        PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
+        PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
+        PowerMockito.doNothing().when(huc).setRequestMethod(anyString());
+        PowerMockito.doNothing().when(huc).setSSLSocketFactory(any());
+
+        InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
+        when(huc.getInputStream()).thenReturn(inputStream);
+    }
+
+    private void mockForArcCodeFlow(int responseCode) throws Exception {
+        URL u = PowerMockito.mock(URL.class);
+        whenNew(URL.class).withAnyArguments().thenReturn(u);
+        HttpURLConnection initConnection = PowerMockito.mock(HttpURLConnection.class);
+        when(u.openConnection()).thenReturn(initConnection);
+        PowerMockito.doNothing().when(initConnection).setRequestMethod(anyString());
+        PowerMockito.doNothing().when(initConnection).setRequestProperty(anyString(), anyString());
+        PowerMockito.doNothing().when(initConnection).connect();
+        when(initConnection.getInputStream()).thenThrow(new IOException());
+        when(initConnection.getResponseCode()).thenReturn(responseCode);
     }
 
     private void mockForIMDSCodeFlow(String tokenJson) throws Exception {

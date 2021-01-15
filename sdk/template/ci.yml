@@ -9,7 +9,6 @@ trigger:
   paths:
     include:
       - sdk/template/
-      - eng/common/
 
 pr:
   branches:
@@ -30,3 +29,4 @@ extends:
       - name: azure-sdk-template
         groupId: com.azure
         safeName: azuresdktemplate
+        

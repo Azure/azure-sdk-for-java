@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.PiiEntitiesResult;
+import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.EntityCategory;
@@ -145,15 +145,15 @@ class RecognizePiiEntityAsyncClient {
      * @return A {@link Response} that contains {@link RecognizePiiEntitiesResultCollection}.
      */
     private Response<RecognizePiiEntitiesResultCollection> toRecognizePiiEntitiesResultCollectionResponse(
-        final Response<PiiEntitiesResult> response) {
-        final PiiEntitiesResult piiEntitiesResult = response.getValue();
+        final Response<PiiResult> response) {
+        final PiiResult piiEntitiesResult = response.getValue();
         // List of documents results
         final List<RecognizePiiEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
         piiEntitiesResult.getDocuments().forEach(documentEntities -> {
             // Pii entities list
             final List<PiiEntity> piiEntities = documentEntities.getEntities().stream().map(entity ->
                 new PiiEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                    entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset(), entity.getLength()))
+                    entity.getSubcategory(), entity.getConfidenceScore(), entity.getOffset()))
                 .collect(Collectors.toList());
             // Warnings
             final List<TextAnalyticsWarning> warnings = documentEntities.getWarnings().stream()
@@ -211,7 +211,10 @@ class RecognizePiiEntityAsyncClient {
         }
         return service.entitiesRecognitionPiiWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            modelVersion, includeStatistics, domainFilter, StringIndexType.UTF16CODE_UNIT,
+            modelVersion,
+            includeStatistics,
+            domainFilter,
+            StringIndexType.UTF16CODE_UNIT,
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info(
                 "Start recognizing Personally Identifiable Information entities for a batch of documents."))

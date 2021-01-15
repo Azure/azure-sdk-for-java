@@ -6,6 +6,8 @@ package com.azure.storage.file.datalake.implementation.util;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.models.DataLakeAclChangeFailedException;
+import com.azure.storage.file.datalake.models.DataLakeStorageException;
 
 /**
  * This class provides helper methods for common model patterns.
@@ -75,5 +77,21 @@ public class ModelHelper {
             .setMaxConcurrency(maxConcurrency)
             .setProgressReceiver(other.getProgressReceiver())
             .setMaxSingleUploadSizeLong(maxSingleUploadSize);
+    }
+
+    public static DataLakeAclChangeFailedException changeAclRequestFailed(DataLakeStorageException e,
+        String continuationToken) {
+        String message = String.format("An error occurred while recursively changing the access control list. See the "
+            + "exception of type %s with status=%s and error code=%s for more information. You can resume changing "
+            + "the access control list using continuationToken=%s after addressing the error.", e.getClass(),
+            e.getStatusCode(), e.getErrorCode(), continuationToken);
+        return new DataLakeAclChangeFailedException(message, e, continuationToken);
+    }
+
+    public static DataLakeAclChangeFailedException changeAclFailed(Exception e, String continuationToken) {
+        String message = String.format("An error occurred while recursively changing the access control list. See the "
+                + "exception of type %s for more information. You can resume changing the access control list using "
+                + "continuationToken=%s after addressing the error.", e.getClass(), continuationToken);
+        return new DataLakeAclChangeFailedException(message, e, continuationToken);
     }
 }

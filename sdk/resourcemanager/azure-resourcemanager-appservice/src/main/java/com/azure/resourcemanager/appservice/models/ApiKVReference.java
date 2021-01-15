@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApiKVReference model. */
+/** Description of site key vault references. */
 @Fluent
 public final class ApiKVReference {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiKVReference.class);

@@ -6,19 +6,31 @@ package com.azure.core.implementation.http;
 import com.azure.core.util.UrlBuilder;
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 public class UrlBuilderTests {
     @Test
     public void scheme() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http");
+            .setScheme("http");
         assertEquals("http://", builder.toString());
     }
 
@@ -49,7 +61,7 @@ public class UrlBuilderTests {
     @Test
     public void schemeWhenSchemeContainsTerminator() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http://");
+            .setScheme("http://");
         assertEquals("http", builder.getScheme());
         assertNull(builder.getHost());
         assertEquals("http://", builder.toString());
@@ -58,7 +70,7 @@ public class UrlBuilderTests {
     @Test
     public void schemeWhenSchemeContainsHost() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http://www.example.com");
+            .setScheme("http://www.example.com");
         assertEquals("http", builder.getScheme());
         assertEquals("www.example.com", builder.getHost());
         assertEquals("http://www.example.com", builder.toString());
@@ -67,23 +79,23 @@ public class UrlBuilderTests {
     @Test
     public void schemeAndHost() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http")
-                .setHost("www.example.com");
+            .setScheme("http")
+            .setHost("www.example.com");
         assertEquals("http://www.example.com", builder.toString());
     }
 
     @Test
     public void schemeAndHostWhenHostHasWhitespace() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http")
-                .setHost("www.exa mple.com");
+            .setScheme("http")
+            .setHost("www.exa mple.com");
         assertEquals("http://www.exa mple.com", builder.toString());
     }
 
     @Test
     public void host() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com");
+            .setHost("www.example.com");
         assertEquals("www.example.com", builder.toString());
     }
 
@@ -114,7 +126,7 @@ public class UrlBuilderTests {
     @Test
     public void hostWhenHostContainsSchemeTerminator() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("://www.example.com");
+            .setHost("://www.example.com");
         assertNull(builder.getScheme());
         assertEquals("www.example.com", builder.getHost());
         assertEquals("www.example.com", builder.toString());
@@ -123,7 +135,7 @@ public class UrlBuilderTests {
     @Test
     public void hostWhenHostContainsScheme() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("https://www.example.com");
+            .setHost("https://www.example.com");
         assertEquals("https", builder.getScheme());
         assertEquals("www.example.com", builder.getHost());
         assertEquals("https://www.example.com", builder.toString());
@@ -132,7 +144,7 @@ public class UrlBuilderTests {
     @Test
     public void hostWhenHostContainsColonButNoPort() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com:");
+            .setHost("www.example.com:");
         assertEquals("www.example.com", builder.getHost());
         assertNull(builder.getPort());
         assertEquals("www.example.com", builder.toString());
@@ -141,16 +153,16 @@ public class UrlBuilderTests {
     @Test
     public void hostWhenHostContainsPort() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com:1234");
+            .setHost("www.example.com:1234");
         assertEquals("www.example.com", builder.getHost());
-        assertEquals(1234, builder.getPort().intValue());
+        assertEquals(1234, builder.getPort());
         assertEquals("www.example.com:1234", builder.toString());
     }
 
     @Test
     public void hostWhenHostContainsForwardSlashButNoPath() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com/");
+            .setHost("www.example.com/");
         assertEquals("www.example.com", builder.getHost());
         assertEquals("/", builder.getPath());
         assertEquals("www.example.com/", builder.toString());
@@ -159,7 +171,7 @@ public class UrlBuilderTests {
     @Test
     public void hostWhenHostContainsPath() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com/index.html");
+            .setHost("www.example.com/index.html");
         assertEquals("www.example.com", builder.getHost());
         assertEquals("/index.html", builder.getPath());
         assertEquals("www.example.com/index.html", builder.toString());
@@ -168,7 +180,7 @@ public class UrlBuilderTests {
     @Test
     public void hostWhenHostContainsQuestionMarkButNoQuery() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com?");
+            .setHost("www.example.com?");
         assertEquals("www.example.com", builder.getHost());
         assertEquals(0, builder.getQuery().size());
         assertEquals("www.example.com", builder.toString());
@@ -177,7 +189,7 @@ public class UrlBuilderTests {
     @Test
     public void hostWhenHostContainsQuery() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com?a=b");
+            .setHost("www.example.com?a=b");
         assertEquals("www.example.com", builder.getHost());
         assertThat(builder.toString(), CoreMatchers.containsString("a=b"));
         assertEquals("www.example.com?a=b", builder.toString());
@@ -186,78 +198,78 @@ public class UrlBuilderTests {
     @Test
     public void hostWhenHostHasWhitespace() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.exampl e.com");
+            .setHost("www.exampl e.com");
         assertEquals("www.exampl e.com", builder.toString());
     }
 
     @Test
     public void hostAndPath() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com")
-                .setPath("my/path");
+            .setHost("www.example.com")
+            .setPath("my/path");
         assertEquals("www.example.com/my/path", builder.toString());
     }
 
     @Test
     public void hostAndPathWithSlashAfterHost() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com/")
-                .setPath("my/path");
+            .setHost("www.example.com/")
+            .setPath("my/path");
         assertEquals("www.example.com/my/path", builder.toString());
     }
 
     @Test
     public void hostAndPathWithSlashBeforePath() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com")
-                .setPath("/my/path");
+            .setHost("www.example.com")
+            .setPath("/my/path");
         assertEquals("www.example.com/my/path", builder.toString());
     }
 
     @Test
     public void hostAndPathWithSlashAfterHostAndBeforePath() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com/")
-                .setPath("/my/path");
+            .setHost("www.example.com/")
+            .setPath("/my/path");
         assertEquals("www.example.com/my/path", builder.toString());
     }
 
     @Test
     public void hostAndPathWithWhitespaceInPath() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com")
-                .setPath("my path");
+            .setHost("www.example.com")
+            .setPath("my path");
         assertEquals("www.example.com/my path", builder.toString());
     }
 
     @Test
     public void hostAndPathWithPlusInPath() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com")
-                .setPath("my+path");
+            .setHost("www.example.com")
+            .setPath("my+path");
         assertEquals("www.example.com/my+path", builder.toString());
     }
 
     @Test
     public void hostAndPathWithPercent20InPath() {
         final UrlBuilder builder = new UrlBuilder()
-                .setHost("www.example.com")
-                .setPath("my%20path");
+            .setHost("www.example.com")
+            .setPath("my%20path");
         assertEquals("www.example.com/my%20path", builder.toString());
     }
 
     @Test
     public void portInt() {
         final UrlBuilder builder = new UrlBuilder()
-                .setPort(50);
-        assertEquals(50, builder.getPort().intValue());
+            .setPort(50);
+        assertEquals(50, builder.getPort());
         assertEquals(":50", builder.toString());
     }
 
     @Test
     public void portStringWithNull() {
         final UrlBuilder builder = new UrlBuilder()
-                .setPort(null);
+            .setPort(null);
         assertNull(builder.getPort());
         assertEquals("", builder.toString());
     }
@@ -265,7 +277,7 @@ public class UrlBuilderTests {
     @Test
     public void portStringWithEmpty() {
         final UrlBuilder builder = new UrlBuilder()
-                .setPort("");
+            .setPort("");
         assertNull(builder.getPort());
         assertEquals("", builder.toString());
     }
@@ -273,25 +285,25 @@ public class UrlBuilderTests {
     @Test
     public void portString() {
         final UrlBuilder builder = new UrlBuilder()
-                .setPort("50");
-        assertEquals(50, builder.getPort().intValue());
+            .setPort("50");
+        assertEquals(50, builder.getPort());
         assertEquals(":50", builder.toString());
     }
 
     @Test
     public void portStringWithForwardSlashButNoPath() {
         final UrlBuilder builder = new UrlBuilder()
-                .setPort("50/");
-        assertEquals(50, builder.getPort().intValue());
+            .setPort("50/");
+        assertEquals(50, builder.getPort());
         assertEquals("/", builder.getPath());
         assertEquals(":50/", builder.toString());
     }
 
     @Test
-    public void portStringpath() {
+    public void portStringPath() {
         final UrlBuilder builder = new UrlBuilder()
-                .setPort("50/index.html");
-        assertEquals(50, builder.getPort().intValue());
+            .setPort("50/index.html");
+        assertEquals(50, builder.getPort());
         assertEquals("/index.html", builder.getPath());
         assertEquals(":50/index.html", builder.toString());
     }
@@ -299,17 +311,17 @@ public class UrlBuilderTests {
     @Test
     public void portStringWithQuestionMarkButNoQuery() {
         final UrlBuilder builder = new UrlBuilder()
-                .setPort("50?");
-        assertEquals(50, builder.getPort().intValue());
+            .setPort("50?");
+        assertEquals(50, builder.getPort());
         assertEquals(0, builder.getQuery().size());
         assertEquals(":50", builder.toString());
     }
 
     @Test
-    public void portStringquery() {
+    public void portStringQuery() {
         final UrlBuilder builder = new UrlBuilder()
-                .setPort("50?a=b&c=d");
-        assertEquals(50, builder.getPort().intValue());
+            .setPort("50?a=b&c=d");
+        assertEquals(50, builder.getPort());
         assertThat(builder.toString(), CoreMatchers.containsString("?a=b&c=d"));
         assertEquals(":50?a=b&c=d", builder.toString());
     }
@@ -335,72 +347,72 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
             .setPort(8080);
         builder.setPort("123");
-        assertEquals(123, builder.getPort().intValue());
+        assertEquals(123, builder.getPort());
     }
 
     @Test
     public void schemeAndHostAndOneQueryParameter() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http")
-                .setHost("www.example.com")
-                .setQueryParameter("A", "B");
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("A", "B");
         assertEquals("http://www.example.com?A=B", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndOneQueryParameterWhenQueryParameterNameHasWhitespace() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http")
-                .setHost("www.example.com")
-                .setQueryParameter("App les", "B");
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("App les", "B");
         assertEquals("http://www.example.com?App les=B", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndOneQueryParameterWhenQueryParameterNameHasPercent20() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http")
-                .setHost("www.example.com")
-                .setQueryParameter("App%20les", "B");
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("App%20les", "B");
         assertEquals("http://www.example.com?App%20les=B", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndOneQueryParameterWhenQueryParameterValueHasWhitespace() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http")
-                .setHost("www.example.com")
-                .setQueryParameter("Apples", "Go od");
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("Apples", "Go od");
         assertEquals("http://www.example.com?Apples=Go od", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndOneQueryParameterWhenQueryParameterValueHasPercent20() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http")
-                .setHost("www.example.com")
-                .setQueryParameter("Apples", "Go%20od");
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("Apples", "Go%20od");
         assertEquals("http://www.example.com?Apples=Go%20od", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndTwoQueryParameters() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http")
-                .setHost("www.example.com")
-                .setQueryParameter("A", "B")
-                .setQueryParameter("C", "D");
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("A", "B")
+            .setQueryParameter("C", "D");
         assertEquals("http://www.example.com?A=B&C=D", builder.toString());
     }
 
     @Test
     public void schemeAndHostAndPathAndTwoQueryParameters() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http")
-                .setHost("www.example.com")
-                .setQueryParameter("A", "B")
-                .setQueryParameter("C", "D")
-                .setPath("index.html");
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setQueryParameter("A", "B")
+            .setQueryParameter("C", "D")
+            .setPath("index.html");
         assertEquals("http://www.example.com/index.html?A=B&C=D", builder.toString());
     }
 
@@ -507,36 +519,36 @@ public class UrlBuilderTests {
     @Test
     public void withAbsolutePath() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http")
-                .setHost("www.example.com")
-                .setPath("http://www.othersite.com");
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setPath("http://www.othersite.com");
         assertEquals("http://www.othersite.com", builder.toString());
     }
 
     @Test
     public void queryInPath() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http")
-                .setHost("www.example.com")
-                .setPath("mypath?thing=stuff")
-                .setQueryParameter("otherthing", "otherstuff");
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setPath("mypath?thing=stuff")
+            .setQueryParameter("otherthing", "otherstuff");
         assertEquals("http://www.example.com/mypath?thing=stuff&otherthing=otherstuff", builder.toString());
     }
 
     @Test
     public void withAbsolutePathAndQuery() {
         final UrlBuilder builder = new UrlBuilder()
-                .setScheme("http")
-                .setHost("www.example.com")
-                .setPath("http://www.othersite.com/mypath?thing=stuff")
-                .setQueryParameter("otherthing", "otherstuff");
+            .setScheme("http")
+            .setHost("www.example.com")
+            .setPath("http://www.othersite.com/mypath?thing=stuff")
+            .setQueryParameter("otherthing", "otherstuff");
         assertEquals("http://www.othersite.com/mypath?thing=stuff&otherthing=otherstuff", builder.toString());
     }
 
     @Test
     public void queryWithNull() {
         final UrlBuilder builder = new UrlBuilder()
-                .setQuery(null);
+            .setQuery(null);
         assertEquals(0, builder.getQuery().size());
         assertEquals("", builder.toString());
     }
@@ -544,7 +556,7 @@ public class UrlBuilderTests {
     @Test
     public void queryWithEmpty() {
         final UrlBuilder builder = new UrlBuilder()
-                .setQuery("");
+            .setQuery("");
         assertEquals(0, builder.getQuery().size());
         assertEquals("", builder.toString());
     }
@@ -552,7 +564,7 @@ public class UrlBuilderTests {
     @Test
     public void queryWithQuestionMark() {
         final UrlBuilder builder = new UrlBuilder()
-                .setQuery("?");
+            .setQuery("?");
         assertEquals(0, builder.getQuery().size());
         assertEquals("", builder.toString());
     }
@@ -570,7 +582,7 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parsehost() {
+    public void parseHost() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com");
         assertEquals("www.bing.com", builder.toString());
     }
@@ -582,7 +594,7 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parsehostAndPort() {
+    public void parseHostAndPort() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com:8080");
         assertEquals("www.bing.com:8080", builder.toString());
     }
@@ -594,7 +606,7 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parsehostAndPath() {
+    public void parseHostAndPath() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com/my/path");
         assertEquals("www.bing.com/my/path", builder.toString());
     }
@@ -606,7 +618,7 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parsehostAndPortAndPath() {
+    public void parseHostAndPortAndPath() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com:1234/my/path");
         assertEquals("www.bing.com:1234/my/path", builder.toString());
     }
@@ -618,7 +630,7 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parsehostAndOneQueryParameter() {
+    public void parseHostAndOneQueryParameter() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com?a=1");
         assertEquals("www.bing.com?a=1", builder.toString());
     }
@@ -630,7 +642,7 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parsehostAndPortAndOneQueryParameter() {
+    public void parseHostAndPortAndOneQueryParameter() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com:123?a=1");
         assertEquals("www.bing.com:123?a=1", builder.toString());
     }
@@ -642,7 +654,7 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parsehostAndPathAndOneQueryParameter() {
+    public void parseHostAndPathAndOneQueryParameter() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com/folder/index.html?a=1");
         assertEquals("www.bing.com/folder/index.html?a=1", builder.toString());
     }
@@ -654,7 +666,7 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parsehostAndPortAndPathAndOneQueryParameter() {
+    public void parseHostAndPortAndPathAndOneQueryParameter() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com:123/index.html?a=1");
         assertEquals("www.bing.com:123/index.html?a=1", builder.toString());
     }
@@ -666,7 +678,7 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parsehostAndTwoQueryParameters() {
+    public void parseHostAndTwoQueryParameters() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com?a=1&b=2");
         assertEquals("www.bing.com?a=1&b=2", builder.toString());
     }
@@ -678,7 +690,7 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parsehostAndPortAndTwoQueryParameters() {
+    public void parseHostAndPortAndTwoQueryParameters() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com:123?a=1&b=2");
         assertEquals("www.bing.com:123?a=1&b=2", builder.toString());
     }
@@ -690,7 +702,7 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parsehostAndPathAndTwoQueryParameters() {
+    public void parseHostAndPathAndTwoQueryParameters() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com/folder/index.html?a=1&b=2");
         assertEquals("www.bing.com/folder/index.html?a=1&b=2", builder.toString());
     }
@@ -702,7 +714,7 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parsehostAndPortAndPathAndTwoQueryParameters() {
+    public void parseHostAndPortAndPathAndTwoQueryParameters() {
         final UrlBuilder builder = UrlBuilder.parse("www.bing.com:123/index.html?a=1&b=2");
         assertEquals("www.bing.com:123/index.html?a=1&b=2", builder.toString());
     }
@@ -726,8 +738,41 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parseURLschemeAndHost() throws MalformedURLException {
+    public void parseURLSchemeAndHost() throws MalformedURLException {
         final UrlBuilder builder = UrlBuilder.parse(new URL("http://www.bing.com"));
         assertEquals("http://www.bing.com", builder.toString());
+    }
+
+    @Test
+    public void parallelParsing() throws InterruptedException {
+        Thread.UncaughtExceptionHandler handler = mock(Thread.UncaughtExceptionHandler.class);
+        ForkJoinPool pool = new ForkJoinPool(Runtime.getRuntime().availableProcessors(),
+            ForkJoinPool.defaultForkJoinWorkerThreadFactory, handler, false);
+
+        AtomicInteger callCount = new AtomicInteger();
+        List<Callable<UrlBuilder>> tasks = IntStream.range(0, 100000)
+            .mapToObj(i -> (Callable<UrlBuilder>) () -> {
+                callCount.incrementAndGet();
+                return UrlBuilder.parse("https://example" + i + ".com");
+            })
+            .collect(Collectors.toList());
+
+        pool.invokeAll(tasks);
+        pool.shutdown();
+        assertTrue(pool.awaitTermination(10, TimeUnit.SECONDS));
+        assertEquals(100000, callCount.get());
+    }
+
+    @Test
+    public void fluxParallelParsing() {
+        Mono<Long> mono = Flux.range(0, 100000)
+            .parallel()
+            .map(i -> UrlBuilder.parse("https://example" + i + ".com"))
+            .sequential()
+            .count();
+
+        StepVerifier.create(mono)
+            .assertNext(count -> assertEquals(100000, count))
+            .verifyComplete();
     }
 }

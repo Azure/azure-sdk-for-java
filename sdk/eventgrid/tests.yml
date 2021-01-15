@@ -7,8 +7,8 @@ jobs:
       Timeout: 60
       MaxParallel: 6
       EnvVars:
-        AZURE_EVENTGRID_TEST_MODE: LIVE
+        AZURE_TEST_MODE: RECORD
       Artifacts:
         - name: azure-messaging-eventgrid
           groupId: com.azure
-          safeName: azureeventgrid
+          safeName: azuremessagingeventgrid

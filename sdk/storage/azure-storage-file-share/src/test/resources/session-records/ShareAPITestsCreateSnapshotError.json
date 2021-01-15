@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestscreatesnapshoterror03724cd5f25efce6?restype=share&comp=snapshot",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestscreatesnapshoterror62994f78266b2bdc?restype=share&comp=snapshot",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "6752d75b-5193-4444-88e3-9ee551bc5bed"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "348763e1-4621-462f-9687-bbe4fc9fe2ea"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "9ba99eb6-201a-0011-61fa-aa088f000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:9ba99eb6-201a-0011-61fa-aa088f000000\nTime:2019-12-04T23:30:43.1320382Z</Message></Error>",
-      "Date" : "Wed, 04 Dec 2019 23:30:42 GMT",
-      "x-ms-client-request-id" : "6752d75b-5193-4444-88e3-9ee551bc5bed",
+      "x-ms-request-id" : "8c89f82f-601a-0022-7a75-761fdd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:8c89f82f-601a-0022-7a75-761fdd000000\nTime:2020-08-19T22:09:25.3429686Z</Message></Error>",
+      "Date" : "Wed, 19 Aug 2020 22:09:25 GMT",
+      "x-ms-client-request-id" : "348763e1-4621-462f-9687-bbe4fc9fe2ea",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestscreatesnapshoterror03724cd5f25efce6" ]
+  "variables" : [ "shareapitestscreatesnapshoterror62994f78266b2bdc" ]
 }

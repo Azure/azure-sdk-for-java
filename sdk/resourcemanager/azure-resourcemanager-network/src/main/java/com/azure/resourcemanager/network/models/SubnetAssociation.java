@@ -6,12 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.fluent.inner.SecurityRuleInner;
+import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SubnetAssociation model. */
+/** Subnet and it's custom security rules. */
 @Fluent
 public final class SubnetAssociation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetAssociation.class);

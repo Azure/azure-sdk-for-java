@@ -43,7 +43,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import io.opentelemetry.OpenTelemetrySdk;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.exporters.logging.LoggingSpanExporter;
 import io.opentelemetry.sdk.trace.TracerSdkProvider;
@@ -61,7 +61,7 @@ public class Sample {
 
   private static Tracer configureOpenTelemetryAndLoggingExporter() {
     LoggingSpanExporter exporter = new LoggingSpanExporter();
-    TracerSdkProvider tracerSdkProvider = OpenTelemetry.getTracerProvider();
+    TracerSdkProvider tracerSdkProvider = OpenTelemetrySdk.getTracerProvider();
     tracerSdkProvider.addSpanProcessor(SimpleSpanProcessor.newBuilder(exporter).build());
     // Acquire a tracer
     return tracerSdkProvider.get("Sample");

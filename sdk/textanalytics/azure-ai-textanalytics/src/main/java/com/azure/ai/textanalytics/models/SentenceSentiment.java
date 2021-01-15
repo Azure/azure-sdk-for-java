@@ -8,7 +8,7 @@ import com.azure.core.util.IterableStream;
 
 /**
  * The {@link SentenceSentiment} model that contains a sentiment label of a sentence, confidence scores of the
- * sentiment label, mined opinions, offset of sentence, and length of sentence within a document.
+ * sentiment label, mined opinions, and offset of sentence within a document.
  */
 @Immutable
 public final class SentenceSentiment {
@@ -17,7 +17,6 @@ public final class SentenceSentiment {
     private final SentimentConfidenceScores confidenceScores;
     private final IterableStream<MinedOpinion> minedOpinions;
     private final int offset;
-    private final int length;
 
     /**
      * Creates a {@link SentenceSentiment} model that describes the sentiment analysis of sentence.
@@ -33,7 +32,6 @@ public final class SentenceSentiment {
         this.confidenceScores = confidenceScores;
         this.minedOpinions = null;
         this.offset = 0;
-        this.length = 0;
     }
 
     /**
@@ -46,16 +44,14 @@ public final class SentenceSentiment {
      * @param minedOpinions The mined opinions of the sentence sentiment. This is only returned if you pass the
      * opinion mining parameter to the analyze sentiment APIs.
      * @param offset The start position for the sentence in a document.
-     * @param length The length of sentence.
      */
     public SentenceSentiment(String text, TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
-        IterableStream<MinedOpinion> minedOpinions, int offset, int length) {
+        IterableStream<MinedOpinion> minedOpinions, int offset) {
         this.text = text;
         this.sentiment = sentiment;
         this.minedOpinions = minedOpinions;
         this.confidenceScores = confidenceScores;
         this.offset = offset;
-        this.length = length;
     }
 
     /**
@@ -103,14 +99,5 @@ public final class SentenceSentiment {
      */
     public int getOffset() {
         return offset;
-    }
-
-    /**
-     * Get the length of sentence.
-     *
-     * @return The length of sentence.
-     */
-    public int getLength() {
-        return length;
     }
 }

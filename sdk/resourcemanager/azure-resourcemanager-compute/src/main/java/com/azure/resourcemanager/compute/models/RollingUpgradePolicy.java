@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RollingUpgradePolicy model. */
+/** The configuration parameters used while performing a rolling upgrade. */
 @Fluent
 public final class RollingUpgradePolicy {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RollingUpgradePolicy.class);

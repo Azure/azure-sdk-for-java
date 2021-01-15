@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ImportExtensionProperties model. */
+/** Represents the properties for an import operation. */
 @Fluent
 public final class ImportExtensionProperties extends ExportRequest {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportExtensionProperties.class);

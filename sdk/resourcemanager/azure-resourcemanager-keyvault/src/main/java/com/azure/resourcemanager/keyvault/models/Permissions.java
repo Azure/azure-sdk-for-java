@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The Permissions model. */
+/** Permissions the identity has for keys, secrets, certificates and storage. */
 @Fluent
 public final class Permissions {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Permissions.class);

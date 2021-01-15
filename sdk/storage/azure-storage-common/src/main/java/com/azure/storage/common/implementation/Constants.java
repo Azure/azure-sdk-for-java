@@ -30,6 +30,11 @@ public final class Constants {
     public static final int GB = 1024 * MB;
 
     /**
+     * Represents a non-SI terabyte.
+     */
+    public static final long TB = 1024L * GB;
+
+    /**
      * Represents the value for {@link SasProtocol#HTTPS_ONLY}.
      */
     public static final String HTTPS = "https";
@@ -64,6 +69,10 @@ public final class Constants {
      * Buffer width used to copy data to output streams.
      */
     public static final int BUFFER_COPY_LENGTH = 8 * KB;
+
+    public static final String STORAGE_SCOPE = "https://storage.azure.com/.default";
+
+    public static final String STORAGE_LOG_STRING_TO_SIGN = "Azure-Storage-Log-String-To-Sign";
 
     private Constants() {
     }
@@ -189,7 +198,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2019-12-12";
+        public static final String TARGET_STORAGE_VERSION = "2020-04-08";
 
         /**
          * Error code returned from the service.
@@ -214,6 +223,12 @@ public final class Constants {
         public static final String ETAG_WILDCARD = "*";
 
         public static final String DIRECTORY_METADATA_KEY = "hdi_isfolder";
+
+        public static final String X_MS_META = "x-ms-meta";
+
+        public static final String SMB_PROTOCOL = "SMB";
+
+        public static final String NFS_PROTOCOL = "NFS";
 
         private HeaderConstants() {
             // Private to prevent construction.
@@ -346,6 +361,26 @@ public final class Constants {
          * The SAS signed version parameter for user delegation SAS.
          */
         public static final String SAS_SIGNED_KEY_VERSION = "skv";
+
+        /**
+         * The SAS preauthorized agent object id parameter for user delegation SAS.
+         */
+        public static final String SAS_PREAUTHORIZED_AGENT_OBJECT_ID = "saoid";
+
+        /**
+         * The SAS agent object id parameter for user delegation SAS.
+         */
+        public static final String SAS_AGENT_OBJECT_ID = "suoid";
+
+        /**
+         * The SAS correlation id parameter for user delegation SAS.
+         */
+        public static final String SAS_CORRELATION_ID = "scid";
+
+        /**
+         * The SAS directory depth parameter.
+         */
+        public static final String SAS_DIRECTORY_DEPTH = "sdd";
 
         /**
          * The SAS queue constant.

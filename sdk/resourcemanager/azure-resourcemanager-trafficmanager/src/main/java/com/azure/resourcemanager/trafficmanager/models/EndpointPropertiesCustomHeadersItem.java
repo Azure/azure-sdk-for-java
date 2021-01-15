@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The EndpointPropertiesCustomHeadersItem model. */
+/** Custom header name and value. */
 @Fluent
 public final class EndpointPropertiesCustomHeadersItem {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointPropertiesCustomHeadersItem.class);

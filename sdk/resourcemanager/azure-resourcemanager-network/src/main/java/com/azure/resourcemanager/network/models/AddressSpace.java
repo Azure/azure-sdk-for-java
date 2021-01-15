@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AddressSpace model. */
+/** AddressSpace contains an array of IP address ranges that can be used by subnets of the virtual network. */
 @Fluent
 public final class AddressSpace {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressSpace.class);

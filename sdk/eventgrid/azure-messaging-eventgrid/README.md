@@ -28,7 +28,7 @@ within your project, you can use [Maven][maven].
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>2.0.0-beta.1</version>
+    <version>2.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -82,12 +82,12 @@ topic or domain. They behave similarly to keys, and require a key to produce, bu
 with an expiration time, so they can be used to restrict access to a topic or domain.
 Here is sample code to produce a shared access signature that expires after 20 minutes:
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L101-L104 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L104-L107 -->
 ```java
 OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
-String credentialString = EventGridSharedAccessSignatureCredential
-    .createSharedAccessSignature(endpoint, expiration, new AzureKeyCredential(key));
-EventGridSharedAccessSignatureCredential signature = new EventGridSharedAccessSignatureCredential(credentialString);
+String credentialString = EventGridSasCredential
+    .createSas(endpoint, expiration, new AzureKeyCredential(key));
+EventGridSasCredential signature = new EventGridSasCredential(credentialString);
 ```
 
 #### Creating the Client
@@ -98,21 +98,21 @@ be used instead of a key in any of these samples by calling the `sharedAccessSig
 method instead of `keyCredential`. 
 
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L19-L22 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L28-L31 -->
 ```java
 EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
     .endpoint(endpoint)
-    .keyCredential(new AzureKeyCredential(key))
+    .credential(new AzureKeyCredential(key))
     .buildClient();
 ```
 
 or
 
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L31-L34 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L35-L38 -->
 ```java
 EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilder()
     .endpoint(endpoint)
-    .keyCredential(new AzureKeyCredential(key))
+    .credential(new AzureKeyCredential(key))
     .buildAsyncClient();
 ```
 
@@ -161,12 +161,12 @@ The `EventGridEvent` model has 3 required properties to set:
 
 These are set in the constructor, and a variety of other properties can be optionally set or overridden.
 Learn more [here][EventGridEvent].
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L38-L41 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L42-L48 -->
 ```java
 List<EventGridEvent> events = new ArrayList<>();
 events.add(
-    new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", "1")
-        .setData("Example Data")
+    new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", "Example Data",
+        "1")
 );
 
 egClient.sendEvents(events);
@@ -179,7 +179,7 @@ The `CloudEvent` model has 2 required properties to set:
 
 These are set in the constructor, and a variety of other properties can be optionally set or overridden.
 Learn more [here][CloudEvent].
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L48-L54 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L52-L58 -->
 ```java
 List<CloudEvent> events = new ArrayList<>();
 events.add(
@@ -204,7 +204,7 @@ of an event. Again, the handling is different based on the event schema being re
 from the topic/subscription.
 
 #### `EventGridEvent`
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L58-L75 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L62-L79 -->
 ```java
 List<EventGridEvent> events = EventGridEvent.parse(jsonData);
 
@@ -227,7 +227,7 @@ for (EventGridEvent event : events) {
 ```
 
 #### `CloudEvent`
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L79-L96 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L83-L100 -->
 ```java
 List<CloudEvent> events = CloudEvent.parse(jsonData);
 
@@ -271,18 +271,18 @@ Reference documentation for the SDK can be found [here][javadocs]. This is a goo
 to understanding the purpose of each method called, as well as possible reasons for errors
 or unexpected behavior.
 
-If you encounter any bugs with these SDKs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
+If you encounter any bugs with these SDKs, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ## Next steps
 
 - [Azure Java SDKs](https://docs.microsoft.com/java/azure/)
-- If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](http://go.microsoft.com/fwlink/?LinkId=330212)
+- If you don't have a Microsoft Azure subscription you can get a FREE trial account [here](https://go.microsoft.com/fwlink/?LinkId=330212)
 - Some additional sample code can be found [here][samples]
 - Additional Event Grid tutorials can be found [here][service_docs]
 
 ## Contributing
 
-If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/master/CONTRIBUTING.md).
 
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
@@ -300,12 +300,12 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [azure_subscription]: https://azure.microsoft.com/free
 [maven]: https://maven.apache.org/
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
-[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/eventgrid/azure-messaging/eventgrid/src/samples/java/com/azure/messaging/eventgrid
+[samples]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/eventgrid/azure-messaging-eventgrid/src/samples/java/com/azure/messaging/eventgrid
 [eventgrid]: https://azure.com/eventgrid
 [portal]: https://ms.portal.azure.com/
 [cli]: https://docs.microsoft.com/cli/azure
 [service_docs]: https://docs.microsoft.com/azure/event-grid/
-[sources]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/eventgrid/azure/messaging/eventgrid/src
+[sources]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/eventgrid/azure-messaging-eventgrid/src
 [EventGridEvent]: https://docs.microsoft.com/azure/event-grid/event-schema
 [CloudEvent]: https://github.com/cloudevents/spec/blob/master/spec.md
 

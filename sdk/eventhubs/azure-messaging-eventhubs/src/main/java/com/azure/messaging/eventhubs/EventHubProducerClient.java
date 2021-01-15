@@ -100,6 +100,7 @@ public class EventHubProducerClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public IterableStream<String> getPartitionIds() {
         return new IterableStream<>(producer.getPartitionIds());
     }
@@ -122,6 +123,7 @@ public class EventHubProducerClient implements Closeable {
      *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public EventDataBatch createBatch() {
         return producer.createBatch().block(tryTimeout);
     }
@@ -135,6 +137,7 @@ public class EventHubProducerClient implements Closeable {
      *
      * @throws NullPointerException if {@code options} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public EventDataBatch createBatch(CreateBatchOptions options) {
         return producer.createBatch(options).block(tryTimeout);
     }
@@ -151,6 +154,7 @@ public class EventHubProducerClient implements Closeable {
      *
      * @param event Event to send to the service.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     void send(EventData event) {
         producer.send(event).block();
     }
@@ -168,6 +172,7 @@ public class EventHubProducerClient implements Closeable {
      * @param event Event to send to the service.
      * @param options The set of options to consider when sending this event.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     void send(EventData event, SendOptions options) {
         producer.send(event, options).block();
     }
@@ -188,6 +193,7 @@ public class EventHubProducerClient implements Closeable {
      * @param events Events to send to the service.
      * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void send(Iterable<EventData> events) {
         producer.send(events).block();
     }
@@ -209,6 +215,7 @@ public class EventHubProducerClient implements Closeable {
      * @param options The set of options to consider when sending this batch.
      * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void send(Iterable<EventData> events, SendOptions options) {
         producer.send(events, options).block();
     }
@@ -221,6 +228,7 @@ public class EventHubProducerClient implements Closeable {
      * @see EventHubProducerClient#createBatch()
      * @see EventHubProducerClient#createBatch(CreateBatchOptions)
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void send(EventDataBatch batch) {
         producer.send(batch).block();
     }

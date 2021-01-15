@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.RequestConditions;
+import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -16,6 +17,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryProgress;
@@ -58,6 +60,7 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     private String copyId = "copyId";
     private String url = "https://sample.com";
     private String file = "file";
+    private String accountName = "accountName";
     private UserDelegationKey userDelegationKey = new BlobServiceClientBuilder().buildClient().getUserDelegationKey(null, null);
 
     /**
@@ -140,8 +143,9 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link BlobAsyncClientBase#downloadToFile(String)} and {@link BlobAsyncClientBase#downloadToFileWithResponse(String,
-     * BlobRange, ParallelTransferOptions, DownloadRetryOptions, BlobRequestConditions, boolean)}
+     * Code snippets for {@link BlobAsyncClientBase#downloadToFile(String)}, {@link BlobAsyncClientBase#downloadToFileWithResponse(String,
+     * BlobRange, ParallelTransferOptions, DownloadRetryOptions, BlobRequestConditions, boolean)} and
+     * {@link BlobAsyncClientBase#downloadToFileWithResponse(BlobDownloadToFileOptions)}
      */
     public void downloadToFileCodeSnippet() {
         // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFile#String
@@ -170,6 +174,15 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
         client.downloadToFileWithResponse(file, blobRange, null, downloadRetryOptions, null, false, openOptions)
             .subscribe(response -> System.out.println("Completed download to file"));
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#String-BlobRange-ParallelTransferOptions-DownloadRetryOptions-BlobRequestConditions-boolean-Set
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions
+        client.downloadToFileWithResponse(new BlobDownloadToFileOptions(file)
+            .setRange(new BlobRange(1024, 2018L))
+            .setDownloadRetryOptions(new DownloadRetryOptions().setMaxRetryRequests(5))
+            .setOpenOptions(new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE,
+                StandardOpenOption.READ))))
+            .subscribe(response -> System.out.println("Completed download to file"));
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.downloadToFileWithResponse#BlobDownloadToFileOptions
     }
 
     /**
@@ -577,6 +590,33 @@ public class BlobAsyncClientBaseJavaDocCodeSnippets {
 
         client.generateUserDelegationSas(values, userDelegationKey);
         // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey
+    }
+
+    /**
+     * Code snippet for {@link BlobAsyncClientBase#generateUserDelegationSas(BlobServiceSasSignatureValues, UserDelegationKey, String, Context)}
+     * and {@link BlobAsyncClientBase#generateSas(BlobServiceSasSignatureValues, Context)}
+     */
+    public void generateSasWithContext() {
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues-Context
+        OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
+        BlobSasPermission permission = new BlobSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues values = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        client.generateSas(values, new Context("key", "value"));
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateSas#BlobServiceSasSignatureValues-Context
+
+        // BEGIN: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
+        OffsetDateTime myExpiryTime = OffsetDateTime.now().plusDays(1);
+        BlobSasPermission myPermission = new BlobSasPermission().setReadPermission(true);
+
+        BlobServiceSasSignatureValues myValues = new BlobServiceSasSignatureValues(expiryTime, permission)
+            .setStartTime(OffsetDateTime.now());
+
+        client.generateUserDelegationSas(values, userDelegationKey, accountName, new Context("key", "value"));
+        // END: com.azure.storage.blob.specialized.BlobAsyncClientBase.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
     }
 
     /**

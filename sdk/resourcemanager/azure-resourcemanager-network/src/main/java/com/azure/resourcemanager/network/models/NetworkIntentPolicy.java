@@ -9,8 +9,9 @@ import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
-/** The NetworkIntentPolicy model. */
+/** Network Intent Policy resource. */
 @Fluent
 public final class NetworkIntentPolicy extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkIntentPolicy.class);
@@ -53,6 +54,20 @@ public final class NetworkIntentPolicy extends Resource {
      */
     public NetworkIntentPolicy withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkIntentPolicy withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkIntentPolicy withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ContainerExecRequestTerminalSize model. */
+/** The size of the terminal. */
 @Fluent
 public final class ContainerExecRequestTerminalSize {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerExecRequestTerminalSize.class);

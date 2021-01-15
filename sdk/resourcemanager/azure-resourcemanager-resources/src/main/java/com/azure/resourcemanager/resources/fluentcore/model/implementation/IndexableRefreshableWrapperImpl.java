@@ -5,18 +5,18 @@ package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import reactor.core.publisher.Mono;
 
 /**
- * The implementation for {@link Indexable}, {@link Refreshable}, and {@link HasInner}.
+ * The implementation for {@link Indexable}, {@link Refreshable}, and {@link HasInnerModel}.
  *
  * @param <FluentModelT> The fluent model type
  * @param <InnerModelT> Azure inner resource class type
  */
 public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
         extends IndexableRefreshableImpl<FluentModelT>
-        implements HasInner<InnerModelT> {
+        implements HasInnerModel<InnerModelT> {
 
     private InnerModelT innerObject;
 
@@ -30,7 +30,7 @@ public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
     }
 
     @Override
-    public InnerModelT inner() {
+    public InnerModelT innerModel() {
         return this.innerObject;
     }
 

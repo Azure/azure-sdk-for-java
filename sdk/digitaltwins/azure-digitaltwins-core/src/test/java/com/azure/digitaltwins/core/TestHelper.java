@@ -55,10 +55,10 @@ public class TestHelper {
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
         getHttpClients()
-            .forEach(httpClient -> {
-                Arrays.stream(DigitalTwinsServiceVersion.values()).filter(TestHelper::shouldServiceVersionBeTested)
-                    .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
-            });
+            .forEach(httpClient -> Arrays
+                .stream(DigitalTwinsServiceVersion.values())
+                .filter(TestHelper::shouldServiceVersionBeTested)
+                .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion))));
         return argumentsList.stream();
     }
 
@@ -70,7 +70,7 @@ public class TestHelper {
      * <li>If it's set to ALL, all Service versions in {@link DigitalTwinsServiceVersion} will be tested.</li>
      * <li>Otherwise, Service version string should match env variable.</li>
      * </ul>
-     *
+     * <p>
      * Environment values currently supported are: "ALL", "${version}".
      * Use comma to separate http clients want to test.
      * e.g. {@code set AZURE_TEST_SERVICE_VERSIONS = V1_0, V2_0}

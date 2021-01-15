@@ -20,7 +20,7 @@ public class ContainerRegistryTests extends SamplesTestBase {
             return;
         }
 
-        Assertions.assertTrue(ManageContainerRegistry.runSample(azure));
+        Assertions.assertTrue(ManageContainerRegistry.runSample(azureResourceManager));
     }
 
     @Test
@@ -30,6 +30,6 @@ public class ContainerRegistryTests extends SamplesTestBase {
             return;
         }
 
-        Assertions.assertTrue(ManageContainerRegistryWithWebhooks.runSample(azure));
+        Assertions.assertTrue(ManageContainerRegistryWithWebhooks.runSample(azureResourceManager));
     }
 }

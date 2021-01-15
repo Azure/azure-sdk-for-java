@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureFunctionReceiver model. */
+/** An azure function receiver. */
 @Fluent
 public final class AzureFunctionReceiver {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFunctionReceiver.class);

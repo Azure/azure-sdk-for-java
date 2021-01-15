@@ -9,15 +9,24 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
+import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
+import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.concurrent.Future;
 
 /**
  *
@@ -26,7 +35,7 @@ import java.lang.reflect.Method;
  * ReflectionUtils.setTransportClient(documentClient, spyTransportClient);
  *
  * // use the documentClient
- * // do assertion on the request and response spyTransportClient recieves using Mockito
+ * // do assertion on the request and response spyTransportClient receives using Mockito
  */
 public class ReflectionUtils {
 
@@ -59,6 +68,18 @@ public class ReflectionUtils {
             return (T) FieldUtils.readField(object, fieldName, true);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <R> R getStaticField(Class<?> classType, String fieldName) {
+        try {
+            Field field = classType.getDeclaredField(fieldName);
+            field.setAccessible(true);
+            return (R) field.get(null);
+        } catch (Exception e) {
+            RuntimeException runtimeException = Utils.as(e, RuntimeException.class);
+            if (runtimeException != null) throw runtimeException; else throw new RuntimeException(e);
         }
     }
 
@@ -141,4 +162,33 @@ public class ReflectionUtils {
     public static UserAgentContainer getUserAgentContainer(RxDocumentClientImpl rxDocumentClient) {
         return get(UserAgentContainer.class, rxDocumentClient, "userAgentContainer");
     }
+
+    public static Future<?> getFuture() {
+        return getStaticField(CpuMemoryMonitor.class, "future");
+    }
+
+    public static List<WeakReference<CpuMemoryListener>> getListeners() {
+        return getStaticField(CpuMemoryMonitor.class, "cpuListeners");
+    }
+
+    public static RxStoreModel getGatewayProxy(RxDocumentClientImpl rxDocumentClient){
+        return get(RxStoreModel.class, rxDocumentClient, "gatewayProxy");
+    }
+
+    public static RxStoreModel getRxServerStoreModel(RxDocumentClientImpl rxDocumentClient){
+        return get(RxStoreModel.class, rxDocumentClient, "storeModel");
+    }
+
+    public static GlobalEndpointManager getGlobalEndpointManager(RxDocumentClientImpl rxDocumentClient){
+        return get(GlobalEndpointManager.class, rxDocumentClient, "globalEndpointManager");
+    }
+
+    public static void setGatewayProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
+        set(client, storeModel, "gatewayProxy");
+    }
+
+    public static void setServerStoreModel (RxDocumentClientImpl client, RxStoreModel storeModel) {
+        set(client, storeModel, "storeModel");
+    }
+
 }

@@ -17,6 +17,7 @@ import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -320,7 +321,34 @@ public final class ShareServiceClient {
     public Response<ShareClient> createShareWithResponse(String shareName, Map<String, String> metadata,
         Integer quotaInGB, Duration timeout, Context context) {
         ShareClient shareClient = getShareClient(shareName);
-        return new SimpleResponse<>(shareClient.createWithResponse(metadata, quotaInGB, null, context), shareClient);
+        return new SimpleResponse<>(shareClient.createWithResponse(metadata, quotaInGB, timeout, context), shareClient);
+    }
+
+    /**
+     * Creates a share in the storage account with the specified name and options and returns a ShareClient to interact
+     * with it.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet ShareServiceClient.createShareWithResponse#String-ShareCreateOptions-Duration-Context}
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-share">Azure Docs</a>.</p>
+     *
+     * @param shareName Name of the share
+     * @param options {@link ShareCreateOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing the {@link ShareClient ShareClient} and the status of creating the share.
+     * @throws ShareStorageException If a share with the same name already exists or {@code quotaInGB} is outside the
+     * allowed range.
+     * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
+     */
+    public Response<ShareClient> createShareWithResponse(String shareName, ShareCreateOptions options,
+        Duration timeout, Context context) {
+        ShareClient shareClient = getShareClient(shareName);
+        return new SimpleResponse<>(shareClient.createWithResponse(options, timeout, context), shareClient);
     }
 
     /**
@@ -391,7 +419,7 @@ public final class ShareServiceClient {
 
     /**
      * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
      *
      * <p><strong>Generating an account SAS</strong></p>
@@ -401,10 +429,28 @@ public final class ShareServiceClient {
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
         return this.shareServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
+     * containers and file shares.</p>
+     * {@codesnippet com.azure.storage.file.share.ShareServiceClient.generateAccountSas#AccountSasSignatureValues-Context}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+        return this.shareServiceAsyncClient.generateAccountSas(accountSasSignatureValues, context);
     }
 
     /**

@@ -4,7 +4,7 @@
 package com.azure.resourcemanager.monitor.implementation;
 
 import com.azure.resourcemanager.monitor.models.LocalizableString;
-import com.azure.resourcemanager.monitor.fluent.inner.LocalizableStringInner;
+import com.azure.resourcemanager.monitor.fluent.models.LocalizableStringInner;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 
 /** The {@link LocalizableString} wrapper class implementation. */
@@ -16,11 +16,11 @@ class LocalizableStringImpl extends WrapperImpl<LocalizableStringInner> implemen
 
     @Override
     public String value() {
-        return this.inner().value();
+        return this.innerModel().value();
     }
 
     @Override
     public String localizedValue() {
-        return this.inner().localizedValue();
+        return this.innerModel().localizedValue();
     }
 }

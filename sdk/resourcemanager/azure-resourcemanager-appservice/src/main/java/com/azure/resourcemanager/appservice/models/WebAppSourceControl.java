@@ -3,14 +3,14 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.appservice.fluent.inner.SiteSourceControlInner;
+import com.azure.resourcemanager.appservice.fluent.models.SiteSourceControlInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.ChildResource;
 import com.azure.resourcemanager.resources.fluentcore.model.Attachable;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 
 /** An immutable representation of a web app source control configuration in a web app. */
 @Fluent
-public interface WebAppSourceControl extends HasInner<SiteSourceControlInner>, ChildResource<WebAppBase> {
+public interface WebAppSourceControl extends HasInnerModel<SiteSourceControlInner>, ChildResource<WebAppBase> {
     /** @return the repository or source control url */
     String repositoryUrl();
 

@@ -6,28 +6,24 @@ package com.azure.resourcemanager.authorization.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.authorization.fluent.ApplicationsApplicationsClient;
+import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplication;
 import com.azure.resourcemanager.authorization.models.ActiveDirectoryApplications;
-import com.azure.resourcemanager.authorization.fluent.inner.ApplicationInner;
-import com.azure.resourcemanager.authorization.fluent.ApplicationsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
-import java.util.UUID;
-
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
 /** The implementation of Applications and its parent interfaces. */
 public class ActiveDirectoryApplicationsImpl
-    extends CreatableResourcesImpl<ActiveDirectoryApplication, ActiveDirectoryApplicationImpl, ApplicationInner>
-    implements ActiveDirectoryApplications, HasManager<AuthorizationManager>, HasInner<ApplicationsClient> {
-    private ApplicationsClient innerCollection;
+    extends CreatableResourcesImpl<
+        ActiveDirectoryApplication,
+        ActiveDirectoryApplicationImpl,
+        MicrosoftGraphApplicationInner>
+    implements ActiveDirectoryApplications, HasManager<AuthorizationManager> {
     private AuthorizationManager manager;
 
-    public ActiveDirectoryApplicationsImpl(
-        final ApplicationsClient client, final AuthorizationManager authorizationManager) {
-        this.innerCollection = client;
+    public ActiveDirectoryApplicationsImpl(final AuthorizationManager authorizationManager) {
         this.manager = authorizationManager;
     }
 
@@ -38,14 +34,11 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryApplication> listAsync() {
-        return PagedConverter.flatMapPage(inner().listAsync(), applicationInner -> {
-            ActiveDirectoryApplicationImpl application = this.wrapModel(applicationInner);
-            return application.refreshCredentialsAsync().thenReturn(application);
-        });
+        return inner().listApplicationAsync().mapPage(this::wrapModel);
     }
 
     @Override
-    protected ActiveDirectoryApplicationImpl wrapModel(ApplicationInner applicationInner) {
+    protected ActiveDirectoryApplicationImpl wrapModel(MicrosoftGraphApplicationInner applicationInner) {
         if (applicationInner == null) {
             return null;
         }
@@ -59,11 +52,9 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public Mono<ActiveDirectoryApplication> getByIdAsync(String id) {
-        return innerCollection
-            .getAsync(id)
-            .flatMap(
-                applicationInner ->
-                    new ActiveDirectoryApplicationImpl(applicationInner, manager()).refreshCredentialsAsync());
+        return inner()
+            .getApplicationAsync(id)
+            .map(this::wrapModel);
     }
 
     @Override
@@ -74,32 +65,20 @@ public class ActiveDirectoryApplicationsImpl
     @Override
     public Mono<ActiveDirectoryApplication> getByNameAsync(String name) {
         final String trimmed = name.replaceFirst("^'+", "").replaceAll("'+$", "");
-        return inner()
-            .listAsync(String.format("displayName eq '%s'", trimmed))
+        return listByFilterAsync(String.format("displayName eq '%s'", trimmed))
             .singleOrEmpty()
-            .switchIfEmpty(
-                Mono
-                    .defer(
-                        () -> {
-                            try {
-                                UUID.fromString(trimmed);
-                                return inner().listAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty();
-                            } catch (IllegalArgumentException e) {
-                                return Mono.empty();
-                            }
-                        }))
-            .map(applicationInner -> new ActiveDirectoryApplicationImpl(applicationInner, manager()))
-            .flatMap(activeDirectoryApplication -> activeDirectoryApplication.refreshCredentialsAsync());
+            .switchIfEmpty(listByFilterAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty());
     }
 
     @Override
     protected ActiveDirectoryApplicationImpl wrapModel(String name) {
-        return new ActiveDirectoryApplicationImpl(new ApplicationInner().withDisplayName(name), manager());
+        return new ActiveDirectoryApplicationImpl(
+            new MicrosoftGraphApplicationInner().withDisplayName(name), manager());
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return inner().deleteAsync(id);
+        return inner().deleteApplicationAsync(id);
     }
 
     @Override
@@ -112,9 +91,8 @@ public class ActiveDirectoryApplicationsImpl
         return this.manager;
     }
 
-    @Override
-    public ApplicationsClient inner() {
-        return this.innerCollection;
+    public ApplicationsApplicationsClient inner() {
+        return manager().serviceClient().getApplicationsApplications();
     }
 
     @Override
@@ -124,9 +102,7 @@ public class ActiveDirectoryApplicationsImpl
 
     @Override
     public PagedFlux<ActiveDirectoryApplication> listByFilterAsync(String filter) {
-        return PagedConverter.flatMapPage(inner().listAsync(filter), applicationInner -> {
-            ActiveDirectoryApplicationImpl application = this.wrapModel(applicationInner);
-            return application.refreshCredentialsAsync().thenReturn(application);
-        });
+        return inner().listApplicationAsync(null, null, null, null, filter, null, null, null, null)
+            .mapPage(this::wrapModel);
     }
 }

@@ -3,9 +3,10 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.amqp.implementation.AmqpErrorCode;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpErrorCode;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.microsoft.azure.proton.transport.proxy.ProxyHandler;
@@ -16,6 +17,7 @@ import org.apache.qpid.proton.amqp.transport.ConnectionError;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.engine.impl.TransportInternal;
 
@@ -51,11 +53,14 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * @param proxyOptions The options to use for proxy.
      * @param product The name of the product this connection handler is created for.
      * @param clientVersion The version of the client library creating the connection handler.
+     * @param clientOptions provided by the user.
+     *
      * @throws NullPointerException if {@code amqpHostname} or {@code proxyConfiguration} is null.
      */
-    public WebSocketsProxyConnectionHandler(String connectionId, String amqpHostname,
-                                            ProxyOptions proxyOptions, String product, String clientVersion) {
-        super(connectionId, amqpHostname, product, clientVersion);
+    public WebSocketsProxyConnectionHandler(String connectionId, String amqpHostname, ProxyOptions proxyOptions,
+        String product, String clientVersion, SslDomain.VerifyMode verifyMode, ClientOptions clientOptions) {
+        super(connectionId, amqpHostname, product, clientVersion, verifyMode, clientOptions);
+
         this.amqpHostname = Objects.requireNonNull(amqpHostname, "'amqpHostname' cannot be null.");
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.remoteHost = amqpHostname + ":" + HTTPS_PORT;

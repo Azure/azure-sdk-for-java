@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NsRecord model. */
+/** An NS record. */
 @Fluent
 public final class NsRecord {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NsRecord.class);

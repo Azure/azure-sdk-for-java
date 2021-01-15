@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PremierAddOnPatchResource model. */
+/** ARM resource for a PremierAddOn. */
 @JsonFlatten
 @Fluent
 public class PremierAddOnPatchResource extends ProxyOnlyResource {

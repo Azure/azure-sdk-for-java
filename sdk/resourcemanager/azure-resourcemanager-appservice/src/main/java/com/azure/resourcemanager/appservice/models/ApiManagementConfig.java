@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApiManagementConfig model. */
+/** Azure API management (APIM) configuration linked to the app. */
 @Fluent
 public final class ApiManagementConfig {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiManagementConfig.class);

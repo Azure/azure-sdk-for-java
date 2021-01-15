@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/query?$top=10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d3d6ec08-a0db-46f2-a8a7-f3de27af4287",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "3cfbe9e0-7c0d-4d4b-8350-a3e5fd501161",
+      "x-envoy-upstream-service-time" : "238",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "3cfbe9e0-7c0d-4d4b-8350-a3e5fd501161",
+      "retry-after" : "0",
+      "Content-Length" : "1570",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Hong Kong\",\"category\":\"__SUM__\"},\"property\":{\"anomalySeverity\":\"Medium\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Hong Kong\",\"category\":\"Cell Phones\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Sao Paulo\",\"category\":\"Software & Computer Games\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Chennai\",\"category\":\"__SUM__\"},\"property\":{\"anomalySeverity\":\"Medium\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Beijing\",\"category\":\"Handmade\"},\"property\":{\"anomalySeverity\":\"Medium\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"__SUM__\",\"category\":\"Electronics (Consumer)\"},\"property\":{\"anomalySeverity\":\"Medium\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Singapore\",\"category\":\"__SUM__\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Los Angeles\",\"category\":\"Camera & Photo\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Kolkata\",\"category\":\"Electronics (Consumer)\"},\"property\":{\"anomalySeverity\":\"Medium\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Hong Kong\",\"category\":\"Handmade\"},\"property\":{\"anomalySeverity\":\"Medium\"}}],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/query?$top=10&$skip=10\"}",
+      "Date" : "Sun, 25 Oct 2020 00:29:05 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/query?$top=10&$skip=10",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e6739f01-bea5-45ee-83b7-37b72a3cb022",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-request-id" : "8d54da0e-94e0-45dd-821b-88e8f95dbf84",
+      "x-envoy-upstream-service-time" : "112",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "8d54da0e-94e0-45dd-821b-88e8f95dbf84",
+      "retry-after" : "0",
+      "Content-Length" : "1596",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"__SUM__\",\"category\":\"Electronics (Accessories)\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Beijing\",\"category\":\"__SUM__\"},\"property\":{\"anomalySeverity\":\"Medium\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Dhaka\",\"category\":\"Historical & Advertising Collectibles\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Barcelona\",\"category\":\"__SUM__\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Istanbul\",\"category\":\"Shoes Handbags & Sunglasses\"},\"property\":{\"anomalySeverity\":\"Medium\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Istanbul\",\"category\":\"__SUM__\"},\"property\":{\"anomalySeverity\":\"Medium\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Santiago\",\"category\":\"Grocery & Gourmet Food\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"London\",\"category\":\"Home & Garden\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"New York\",\"category\":\"Device Accessories\"},\"property\":{\"anomalySeverity\":\"Low\"}},{\"timestamp\":\"2020-10-21T00:00:00Z\",\"dimension\":{\"city\":\"Los Angeles\",\"category\":\"__SUM__\"},\"property\":{\"anomalySeverity\":\"Medium\"}}],\"@nextLink\":\"https://js-metrics-advisor.cognitiveservices.azure.com:443/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/anomalies/query?$top=10&$skip=20\"}",
+      "Date" : "Sun, 25 Oct 2020 00:29:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

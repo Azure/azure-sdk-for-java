@@ -8,7 +8,7 @@ import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.common.ParallelTransferOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -31,8 +31,9 @@ public class ChunkedDownloadUtils {
     access conditions containing the etag to lock on, and the response from downloading the first chunk.
      */
     public static Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> downloadFirstChunk(
-        BlobRange range, ParallelTransferOptions parallelTransferOptions, BlobRequestConditions requestConditions,
-        BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloader, boolean eTagLock) {
+        BlobRange range, ParallelTransferOptions parallelTransferOptions,
+        BlobRequestConditions requestConditions, BiFunction<BlobRange, BlobRequestConditions,
+        Mono<BlobDownloadAsyncResponse>> downloader, boolean eTagLock) {
         // We will scope our initial download to either be one chunk or the total size.
         long initialChunkSize = range.getCount() != null
             && range.getCount() < parallelTransferOptions.getBlockSizeLong()

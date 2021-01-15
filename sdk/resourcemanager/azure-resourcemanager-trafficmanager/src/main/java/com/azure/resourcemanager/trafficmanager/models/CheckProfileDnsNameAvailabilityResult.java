@@ -3,7 +3,7 @@
 
 package com.azure.resourcemanager.trafficmanager.models;
 
-import com.azure.resourcemanager.trafficmanager.fluent.inner.TrafficManagerNameAvailabilityInner;
+import com.azure.resourcemanager.trafficmanager.fluent.models.TrafficManagerNameAvailabilityInner;
 
 /** The result of checking for DNS name availability. */
 public class CheckProfileDnsNameAvailabilityResult {

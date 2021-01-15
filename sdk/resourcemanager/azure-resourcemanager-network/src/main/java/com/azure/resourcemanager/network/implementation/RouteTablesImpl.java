@@ -4,7 +4,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.RouteTablesClient;
-import com.azure.resourcemanager.network.fluent.inner.RouteTableInner;
+import com.azure.resourcemanager.network.fluent.models.RouteTableInner;
 import com.azure.resourcemanager.network.models.RouteTable;
 import com.azure.resourcemanager.network.models.RouteTables;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
@@ -16,7 +16,7 @@ public class RouteTablesImpl
     implements RouteTables {
 
     public RouteTablesImpl(final NetworkManager networkManager) {
-        super(networkManager.inner().getRouteTables(), networkManager);
+        super(networkManager.serviceClient().getRouteTables(), networkManager);
     }
 
     @Override

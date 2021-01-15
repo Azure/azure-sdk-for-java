@@ -7,16 +7,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.fluent.RoleDefinitionsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
 /** Entry point to role definition management API. */
 @Fluent
 public interface RoleDefinitions
-    extends SupportsGettingById<RoleDefinition>, HasManager<AuthorizationManager>, HasInner<RoleDefinitionsClient> {
+    extends SupportsGettingById<RoleDefinition>, HasManager<AuthorizationManager> {
     /**
      * Gets the information about a role definition based on scope and name.
      *

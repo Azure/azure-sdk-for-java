@@ -20,7 +20,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.resources.fluentcore.utils.SdkContext;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -54,10 +54,15 @@ public abstract class AzureServiceClient {
 
     protected AzureServiceClient(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
                                  AzureEnvironment environment) {
-        sdkName = this.getClass().getPackage().getName();
-
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
+
+        String packageName = this.getClass().getPackage().getName();
+        String implementationSegment = ".implementation";
+        if (packageName.endsWith(implementationSegment)) {
+            packageName = packageName.substring(0, packageName.length() - implementationSegment.length());
+        }
+        this.sdkName = packageName;
     }
 
     /**
@@ -65,7 +70,7 @@ public abstract class AzureServiceClient {
      *
      * @return the serializer adapter.
      */
-    public SerializerAdapter getSerializerAdapter() {
+    private SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
@@ -129,7 +134,7 @@ public abstract class AzureServiceClient {
             httpPipeline,
             pollResultType,
             finalResultType,
-            SdkContext.getDelayDuration(this.getDefaultPollInterval()),
+            ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(this.getDefaultPollInterval()),
             lroInit,
             context
         );

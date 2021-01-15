@@ -1,26 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.file.core.windows.net/shareapitestsdoesnotexistshareapitestsdoesnotexist7ac454376?restype=share",
+    "Uri" : "https://REDACTED.file.core.windows.net/shareapitestsdoesnotexistshareapitestsdoesnotexist26303998f?restype=share",
     "Headers" : {
-      "x-ms-version" : "2019-07-07",
-      "User-Agent" : "azsdk-java-azure-storage-file-share/12.3.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "8051a442-8340-48af-aea9-804abe7e191f"
+      "x-ms-version" : "2020-02-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e1e26284-22a3-43c2-bae7-664f81255e99"
     },
     "Response" : {
-      "x-ms-version" : "2019-07-07",
+      "x-ms-version" : "2020-02-10",
       "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "Access-Control-Allow-Origin" : "*",
       "x-ms-error-code" : "ShareNotFound",
       "retry-after" : "0",
       "Content-Length" : "217",
       "StatusCode" : "404",
-      "x-ms-request-id" : "4662f66d-601a-0000-3115-ec923b000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:4662f66d-601a-0000-3115-ec923b000000\nTime:2020-02-25T19:56:04.5617036Z</Message></Error>",
-      "Date" : "Tue, 25 Feb 2020 19:56:03 GMT",
-      "x-ms-client-request-id" : "8051a442-8340-48af-aea9-804abe7e191f",
+      "x-ms-request-id" : "8c89f819-601a-0022-6d75-761fdd000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ShareNotFound</Code><Message>The specified share does not exist.\nRequestId:8c89f819-601a-0022-6d75-761fdd000000\nTime:2020-08-19T22:09:23.1354106Z</Message></Error>",
+      "Date" : "Wed, 19 Aug 2020 22:09:23 GMT",
+      "x-ms-client-request-id" : "e1e26284-22a3-43c2-bae7-664f81255e99",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   } ],
-  "variables" : [ "shareapitestsdoesnotexistshareapitestsdoesnotexist7ac454376" ]
+  "variables" : [ "shareapitestsdoesnotexistshareapitestsdoesnotexist26303998f" ]
 }

@@ -11,7 +11,7 @@
 //
 //import com.microsoft.azure.Page;
 //import com.microsoft.azure.PagedList;
-//import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+//import com.azure.core.management.Region;
 //import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupPagedList;
 //import com.azure.resourcemanager.resources.implementation.PageImpl;
 //import com.azure.resourcemanager.resources.implementation.ResourceGroupInner;

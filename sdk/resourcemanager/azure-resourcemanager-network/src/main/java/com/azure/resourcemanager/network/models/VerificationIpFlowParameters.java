@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VerificationIpFlowParameters model. */
+/** Parameters that define the IP flow to be verified. */
 @Fluent
 public final class VerificationIpFlowParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VerificationIpFlowParameters.class);

@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TopologyParameters model. */
+/** Parameters that define the representation of topology. */
 @Fluent
 public final class TopologyParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyParameters.class);

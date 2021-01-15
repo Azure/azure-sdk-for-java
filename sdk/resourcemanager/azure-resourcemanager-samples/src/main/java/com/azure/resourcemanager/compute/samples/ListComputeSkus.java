@@ -8,11 +8,11 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.compute.models.ComputeResourceType;
 import com.azure.resourcemanager.compute.models.ComputeSku;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
-import com.azure.resourcemanager.resources.fluentcore.arm.Region;
+import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 
 import java.util.Map;
@@ -29,10 +29,10 @@ public final class ListComputeSkus {
 
     /**
      * Main function which runs the actual sample.
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
 
         //=================================================================
         // List all compute SKUs in the subscription
@@ -43,7 +43,7 @@ public final class ListComputeSkus {
         System.out.println(String.format(format, "Name", "ResourceType", "Size", "Regions [zones]"));
         System.out.println("============================================================================");
 
-        PagedIterable<ComputeSku> skus = azure.computeSkus().list();
+        PagedIterable<ComputeSku> skus = azureResourceManager.computeSkus().list();
         for (ComputeSku sku : skus) {
             String size = null;
             if (sku.resourceType().equals(ComputeResourceType.VIRTUALMACHINES)) {
@@ -67,7 +67,7 @@ public final class ListComputeSkus {
         System.out.println(String.format(format, "Name", "Size", "Regions [zones]"));
         System.out.println("============================================================================");
 
-        skus = azure.computeSkus()
+        skus = azureResourceManager.computeSkus()
                 .listByRegionAndResourceType(Region.US_EAST2, ComputeResourceType.VIRTUALMACHINES);
         for (ComputeSku sku : skus) {
             final String line = String.format(format, sku.name(), sku.virtualMachineSizeType(), regionZoneToString(sku.zones()));
@@ -83,7 +83,7 @@ public final class ListComputeSkus {
         System.out.println(String.format(format, "Name", "Size", "Regions [zones]"));
         System.out.println("============================================================================");
 
-        skus = azure.computeSkus()
+        skus = azureResourceManager.computeSkus()
                 .listByResourceType(ComputeResourceType.DISKS);
         for (ComputeSku sku : skus) {
             final String line = String.format(format, sku.name(), sku.diskSkuType(), regionZoneToString(sku.zones()));
@@ -118,15 +118,16 @@ public final class ListComputeSkus {
 
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

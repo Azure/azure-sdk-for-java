@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualNetworkRule model. */
+/** Virtual Network ACL Rule object. */
 @Fluent
 public final class VirtualNetworkRule {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkRule.class);

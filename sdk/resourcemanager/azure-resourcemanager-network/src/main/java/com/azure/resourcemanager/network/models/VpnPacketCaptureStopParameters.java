@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VpnPacketCaptureStopParameters model. */
+/** Stop packet capture parameters. */
 @Fluent
 public final class VpnPacketCaptureStopParameters {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnPacketCaptureStopParameters.class);

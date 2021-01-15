@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureFilesIdentityBasedAuthentication model. */
+/** Settings for Azure Files identity based authentication. */
 @Fluent
 public final class AzureFilesIdentityBasedAuthentication {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFilesIdentityBasedAuthentication.class);

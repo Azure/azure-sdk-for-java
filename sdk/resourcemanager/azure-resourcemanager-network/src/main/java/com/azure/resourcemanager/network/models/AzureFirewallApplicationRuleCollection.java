@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AzureFirewallApplicationRuleCollection model. */
+/** Application rule collection resource. */
 @JsonFlatten
 @Fluent
 public class AzureFirewallApplicationRuleCollection extends SubResource {
@@ -153,6 +153,13 @@ public class AzureFirewallApplicationRuleCollection extends SubResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureFirewallApplicationRuleCollection withId(String id) {
+        super.withId(id);
+        return this;
     }
 
     /**

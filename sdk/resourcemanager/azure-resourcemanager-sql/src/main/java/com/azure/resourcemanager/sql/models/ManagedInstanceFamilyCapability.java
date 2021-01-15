@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagedInstanceFamilyCapability model. */
+/** The managed server family capability. */
 @Fluent
 public final class ManagedInstanceFamilyCapability {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceFamilyCapability.class);

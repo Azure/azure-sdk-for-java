@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Azure profile for client.
  */
-public class AzureProfile {
+public final class AzureProfile {
 
     private final String tenantId;
     private final String subscriptionId;

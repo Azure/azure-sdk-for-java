@@ -11,5 +11,6 @@
   <modules>
     <module>mgmt-v2015_06_01</module>
     <module>mgmt-v2016_10_01</module>
+    <module>mgmt-v2019_09_01</module>
   </modules>
 </project>

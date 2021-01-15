@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ExpressRouteCircuitArpTable model. */
+/** The ARP table associated with the ExpressRouteCircuit. */
 @Fluent
 public final class ExpressRouteCircuitArpTable {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitArpTable.class);

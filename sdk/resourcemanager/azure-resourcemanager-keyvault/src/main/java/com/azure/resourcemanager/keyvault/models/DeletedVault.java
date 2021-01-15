@@ -4,16 +4,16 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.keyvault.fluent.inner.DeletedVaultInner;
+import com.azure.resourcemanager.keyvault.fluent.models.DeletedVaultInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
-import com.azure.resourcemanager.resources.fluentcore.model.HasInner;
+import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** An immutable client-side representation of an Azure Key Vault. */
 @Fluent
-public interface DeletedVault extends HasInner<DeletedVaultInner>, HasName, HasId {
+public interface DeletedVault extends HasInnerModel<DeletedVaultInner>, HasName, HasId {
 
     /**
      * Get the location value.

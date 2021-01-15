@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The DefaultErrorResponseError model. */
+/** App Service error response. */
 @Immutable
 public final class DefaultErrorResponseError extends ManagementError {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DefaultErrorResponseError.class);

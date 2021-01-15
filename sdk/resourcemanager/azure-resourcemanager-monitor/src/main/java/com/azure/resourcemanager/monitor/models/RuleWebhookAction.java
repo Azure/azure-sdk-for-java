@@ -13,7 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
 
-/** The RuleWebhookAction model. */
+/**
+ * Specifies the action to post to service when the rule condition is evaluated. The discriminator is always
+ * RuleWebhookAction in this case.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleWebhookAction")
 @JsonFlatten

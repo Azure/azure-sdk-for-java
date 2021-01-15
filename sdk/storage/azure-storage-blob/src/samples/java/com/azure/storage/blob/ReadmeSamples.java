@@ -2,13 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.storage.blob;
 
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.Duration;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -124,5 +127,13 @@ public class ReadmeSamples {
             .buildClient();
     }
 
+    public void copyBlob() {
+        SyncPoller<BlobCopyInfo, Void> poller = blobClient.beginCopy("<url-to-blob>", Duration.ofSeconds(1));
+        poller.waitForCompletion();
+    }
+
+    public void copyBlob2() {
+        blobClient.copyFromUrl("url-to-blob");
+    }
 }
 

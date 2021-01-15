@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PacketCaptureStorageLocation model. */
+/** The storage location for a packet capture session. */
 @Fluent
 public final class PacketCaptureStorageLocation {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureStorageLocation.class);

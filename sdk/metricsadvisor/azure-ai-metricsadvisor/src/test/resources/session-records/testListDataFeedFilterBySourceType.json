@@ -1,0 +1,25 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0//dataFeeds?dataSourceType=AzureBlob",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.2 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "70931e85-1211-4e02-9f99-5b04fe6c5760"
+    },
+    "Response" : {
+      "x-request-id" : "a66f8cab-b952-42da-b8fd-624aa4f40e79",
+      "x-envoy-upstream-service-time" : "111",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "a66f8cab-b952-42da-b8fd-624aa4f40e79",
+      "retry-after" : "0",
+      "Content-Length" : "3820",
+      "StatusCode" : "200",
+      "Body" : "{\"value\":[{\"dataFeedId\":\"b23b7c41-4c49-4ad6-a0b8-cbb91f11cd33\",\"dataFeedName\":\"BlobDataFeed\",\"metrics\":[{\"metricId\":\"27b31c03-7057-4322-bb44-4ab780251528\",\"metricName\":\"Metric1\",\"metricDisplayName\":\"Metric1\",\"metricDescription\":\"\"},{\"metricId\":\"1c957231-7597-4023-8dbb-7de182929e21\",\"metricName\":\"Metric2\",\"metricDisplayName\":\"Metric2\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"Dim1\",\"dimensionDisplayName\":\"Dim1\"},{\"dimensionName\":\"Dim2\",\"dimensionDisplayName\":\"Dim2\"}],\"dataStartFrom\":\"2020-08-09T00:00:00Z\",\"dataSourceType\":\"AzureBlob\",\"timestampColumn\":\"Timestamp\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"granularityAmount\":null,\"allUpIdentification\":null,\"needRollup\":\"NoRollup\",\"fillMissingPointType\":\"SmartFilling\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"None\",\"rollUpColumns\":[],\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":-1,\"viewMode\":\"Private\",\"admins\":[\"chriss@microsoft.com\",\"camaiaor@microsoft.com\",\"kaolsze@microsoft.com\",\"yumeng@microsoft.com\",\"kaghiya@microsoft.com\",\"savaity@microsoft.com\",\"krpratic@microsoft.com\",\"stevencl@microsoft.com\",\"mayurid@microsoft.com\",\"elraikhm@microsoft.com\",\"johanste@microsoft.com\",\"anuchan@microsoft.com\",\"xiangyan@microsoft.com\"],\"viewers\":[],\"creator\":\"savaity@microsoft.com\",\"status\":\"Active\",\"createdTime\":\"2020-10-16T17:34:40Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"container\":\"adsample\",\"connectionString\":\"REDACTED\",\"blobTemplate\":\"%Y/%m/%d/%h/JsonFormatV2.json\",\"jsonFormatVersion\":\"V2\"}},{\"dataFeedId\":\"a4030af9-4419-4d3a-a2cc-49022cf54914\",\"dataFeedName\":\"testDataFeed1\",\"metrics\":[{\"metricId\":\"efa9adb3-7342-494b-a6f1-427021e75ad6\",\"metricName\":\"Metric1\",\"metricDisplayName\":\"Metric1\",\"metricDescription\":\"\"},{\"metricId\":\"a1948021-0002-4c37-be71-eaaa29f1e2e7\",\"metricName\":\"Metric2\",\"metricDisplayName\":\"Metric2\",\"metricDescription\":\"\"}],\"dimension\":[{\"dimensionName\":\"Dim1\",\"dimensionDisplayName\":\"Dim1\"},{\"dimensionName\":\"Dim2\",\"dimensionDisplayName\":\"Dim2\"}],\"dataStartFrom\":\"2020-01-01T00:00:00Z\",\"dataSourceType\":\"AzureBlob\",\"timestampColumn\":\"Timestamp\",\"startOffsetInSeconds\":0,\"maxQueryPerMinute\":30.0,\"granularityName\":\"Daily\",\"granularityAmount\":null,\"allUpIdentification\":\"__SUM__\",\"needRollup\":\"NeedRollup\",\"fillMissingPointType\":\"SmartFilling\",\"fillMissingPointValue\":0.0,\"rollUpMethod\":\"Sum\",\"rollUpColumns\":[],\"dataFeedDescription\":\"\",\"stopRetryAfterInSeconds\":-1,\"minRetryIntervalInSeconds\":-1,\"maxConcurrency\":-1,\"viewMode\":\"Private\",\"admins\":[\"kaghiya@microsoft.com\",\"camaiaor@microsoft.com\",\"xiangyan@microsoft.com\",\"chriss@microsoft.com\",\"anuchan@microsoft.com\",\"krpratic@microsoft.com\",\"yumeng@microsoft.com\",\"savaity@microsoft.com\"],\"viewers\":[],\"creator\":\"kaghiya@microsoft.com\",\"status\":\"Active\",\"createdTime\":\"2020-10-02T19:20:53Z\",\"isAdmin\":true,\"actionLinkTemplate\":\"\",\"dataSourceParameter\":{\"container\":\"adsample\",\"connectionString\":\"REDACTED\",\"blobTemplate\":\"%Y/%m/%d/%h/JsonFormatV2.json\",\"jsonFormatVersion\":\"v2\"}}],\"@nextLink\":null}",
+      "Date" : "Wed, 28 Oct 2020 19:59:02 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

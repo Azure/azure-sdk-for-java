@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.Duration;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,10 +50,10 @@ class LockContainerTest {
         // Arrange
         final String key = "key1";
         final String value = "value";
-        final Instant expiration = Instant.now().plusSeconds(10);
+        final OffsetDateTime expiration = OffsetDateTime.now().plusSeconds(10);
 
         // Act
-        final Instant added = container.addOrUpdate(key, expiration, value);
+        final OffsetDateTime added = container.addOrUpdate(key, expiration, value);
         final boolean contains = container.containsUnexpired(key);
 
         // Assert
@@ -67,12 +67,12 @@ class LockContainerTest {
         final String key = "key1";
         final String value = "value";
         final String value2 = "value2";
-        final Instant expiration = Instant.now();
-        final Instant expiration2 = expiration.plus(Duration.ofSeconds(10));
+        final OffsetDateTime expiration = OffsetDateTime.now();
+        final OffsetDateTime expiration2 = expiration.plus(Duration.ofSeconds(10));
 
         // Act
-        final Instant added = container.addOrUpdate(key, expiration, value);
-        final Instant added2 = container.addOrUpdate(key, expiration2, value2);
+        final OffsetDateTime added = container.addOrUpdate(key, expiration, value);
+        final OffsetDateTime added2 = container.addOrUpdate(key, expiration2, value2);
 
         // Assert
         assertEquals(expiration, added);
@@ -84,7 +84,7 @@ class LockContainerTest {
         // Arrange
         final String key = "key1";
         final String value = "value";
-        final Instant expiration = Instant.now();
+        final OffsetDateTime expiration = OffsetDateTime.now();
 
         container.addOrUpdate(key, expiration, value);
 

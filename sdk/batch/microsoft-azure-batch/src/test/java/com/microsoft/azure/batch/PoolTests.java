@@ -237,9 +237,10 @@ public class PoolTests extends BatchIntegrationTestBase {
 
         // Use IaaS VM with Linux
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
-        configuration.withImageReference(new ImageReference().withVirtualMachineImageId(
-                "/subscriptions/f30ef677-64a9-4768-934f-5fbbc0e1ad27/resourceGroups/batchexp/providers/Microsoft.Compute/images/FakeImage"))
-                .withNodeAgentSKUId("batch.node.ubuntu 16.04");
+        configuration.withImageReference(new ImageReference().withVirtualMachineImageId(String.format(
+            "/subscriptions/%s/resourceGroups/batchexp/providers/Microsoft.Compute/images/FakeImage",
+            System.getenv("SUBSCRIPTION_ID"))))
+            .withNodeAgentSKUId("batch.node.ubuntu 16.04");
         PoolAddParameter poolConfig = new PoolAddParameter()
             .withId(poolId)
             .withVmSize(POOL_VM_SIZE)
@@ -253,7 +254,7 @@ public class PoolTests extends BatchIntegrationTestBase {
             if (err.body().code().equals("InsufficientPermissions")) {
                 // Accepted Error
                 Assert.assertTrue(err.body().values().get(0).value().contains(
-                        "The user identity used for this operation does not have the required privelege Microsoft.Compute/images/read on the specified resource"));
+                        "The user identity used for this operation does not have the required privilege Microsoft.Compute/images/read on the specified resource"));
             } else {
                 if (!err.body().code().equals("InvalidPropertyValue")) {
                     throw err;

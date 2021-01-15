@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The BgpCommunity model. */
+/** Contains bgp community information offered in Service Community resources. */
 @Fluent
 public final class BgpCommunity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpCommunity.class);

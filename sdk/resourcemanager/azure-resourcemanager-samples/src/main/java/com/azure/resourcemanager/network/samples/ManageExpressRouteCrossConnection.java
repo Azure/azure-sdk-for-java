@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.Azure;
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnection;
 import com.azure.core.management.profile.AzureProfile;
 
@@ -25,22 +25,22 @@ public final class ManageExpressRouteCrossConnection {
     /**
      * Main function which runs the actual sample.
      *
-     * @param azure instance of the azure client
+     * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(AzureResourceManager azureResourceManager) {
         final String connectionId = "<crossconnection_id>";
 
         //============================================================
         // list Express Route Cross Connections
         System.out.println("List express route cross connection...");
-        azure.expressRouteCrossConnections().list().forEach(expressRouteCrossConnection ->
+        azureResourceManager.expressRouteCrossConnections().list().forEach(expressRouteCrossConnection ->
             System.out.println(expressRouteCrossConnection.name()));
         System.out.println();
 
         //============================================================
         // get Express Route Cross Connection by id
-        ExpressRouteCrossConnection crossConnection = azure.expressRouteCrossConnections().getById(connectionId);
+        ExpressRouteCrossConnection crossConnection = azureResourceManager.expressRouteCrossConnections().getById(connectionId);
 
         //============================================================
         // create Express Route Cross Connection private peering
@@ -109,18 +109,19 @@ public final class ManageExpressRouteCrossConnection {
             // Authenticate
             final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            Azure azure = Azure
+            AzureResourceManager azureResourceManager = AzureResourceManager
                 .configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
 
             // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
+            System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azure);
+            runSample(azureResourceManager);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
