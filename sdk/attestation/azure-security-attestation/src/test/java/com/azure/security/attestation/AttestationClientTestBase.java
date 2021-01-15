@@ -22,10 +22,11 @@ import com.nimbusds.jwt.SignedJWT;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.provider.Arguments;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -40,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AttestationClientTestBase extends TestBase {
 
-    private static String dataPlaneScope ="https://attest.azure.net/.default";
+    private static final String dataPlaneScope ="https://attest.azure.net/.default";
 
     enum ClientTypes {
         Shared,
@@ -88,12 +89,10 @@ public class AttestationClientTestBase extends TestBase {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
+        return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
-
-        return pipeline;
     }
 
     /**
@@ -104,31 +103,39 @@ public class AttestationClientTestBase extends TestBase {
      * @param client - Http Client used to retrieve signing certificates.
      * @param clientUri - Base URI for the attestation client.
      * @return X509Certificate which will have been used to sign the token.
-     * @throws CertificateException if the certificate is invalid.
-     * @throws RuntimeException if the "keyId" field in the token is not in the signing certificates.
      */
-    X509Certificate getSigningCertificateByKeyId(SignedJWT token, HttpClient client, String clientUri)
-        throws CertificateException {
+    Mono<X509Certificate> getSigningCertificateByKeyId(SignedJWT token, HttpClient client, String clientUri) {
         AttestationClientBuilder builder = getBuilder(client, clientUri);
-        JsonWebKeySet keySet = builder.buildSigningCertificatesClient().get();
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        return builder.buildSigningCertificatesAsyncClient().get()
+            .map(keySet -> {
+                CertificateFactory cf = null;
+                try {
+                    cf = CertificateFactory.getInstance("X.509");
+                } catch (CertificateException e) {
+                    e.printStackTrace();
+                }
 
-        String keyId = token.getHeader().getKeyID();
+                String keyId = token.getHeader().getKeyID();
 
-        for (JsonWebKey key : keySet.getKeys()) {
-            if (keyId.equals(key.getKid())) {
-                Certificate cert = cf.generateCertificate(base64ToStream(key.getX5C().get(0)));
+                for (JsonWebKey key : keySet.getKeys()) {
+                    if (keyId.equals(key.getKid())) {
+                        Certificate cert = null;
+                        try {
+                            assert cf != null;
+                            cert = cf.generateCertificate(base64ToStream(key.getX5C().get(0)));
+                        } catch (CertificateException e) {
+                            e.printStackTrace();
+                        }
 
-                assertTrue(cert instanceof X509Certificate);
+                        assertTrue(cert instanceof X509Certificate);
 
-                X509Certificate x5c = (X509Certificate) cert;
+                        return (X509Certificate) cert;
 
-                return x5c;
-
-            }
-        }
-        assertTrue(false);
-        throw new RuntimeException(String.format("Key {0} not found in JSON Web Key Set", keyId));
+                    }
+                }
+                fail();
+                throw new RuntimeException(String.format("Key %s not found in JSON Web Key Set", keyId));
+            });
     }
 
     /**
@@ -151,9 +158,9 @@ public class AttestationClientTestBase extends TestBase {
      *
      * Each certificate returned needs to be a valid X.509 certificate.
      * We also verify that self signed certificates are signed with the known trusted roots.
-     * @param clientUri
-     * @param certs
-     * @throws CertificateException
+     * @param clientUri Base URI for client, used to verify the contents of the certificates.
+     * @param certs certificate response to verify.
+     * @throws CertificateException thrown on invalid certificate returned.
      */
     void verifySigningCertificatesResponse(String clientUri, JsonWebKeySet certs) throws CertificateException {
         Assertions.assertTrue(certs.getKeys().size() > 1);
@@ -170,9 +177,6 @@ public class AttestationClientTestBase extends TestBase {
                     Assertions.assertTrue(cert instanceof X509Certificate);
 
                     X509Certificate x5c = (X509Certificate) cert;
-
-                    Set<String> nonCriticalExtensions = x5c.getNonCriticalExtensionOIDs();
-                    Set<String> criticalExtensions = x5c.getCriticalExtensionOIDs();
 
 //                    if (x5c.getExtensionValue("1.2.840.113556.10.1.1") != null) {
                     // If the certificate is self signed, it should be associated
@@ -199,46 +203,59 @@ public class AttestationClientTestBase extends TestBase {
     /**
      * Verifies the basic response for a Get Attestation Policy API - this simply verifies that the server
      * returns a valid JWT and that the JWT contains a base64url encoded attestation policy.
-     * @param client
-     * @param clientUri
-     * @param attestationType
-     * @param policyResponse
-     * @throws ParseException
-     * @throws CertificateException
-     * @throws JOSEException
-     * @throws UnsupportedEncodingException
+     * @param client HTTP Client, used when retrieving signing certificates.
+     * @param clientUri Client base URI - used when retrieving client signing certificates.
+     * @param attestationType attestation type - policy results vary by attestation type.
+     * @param policyResponse response from the getPolicy API.
      */
-    void verifyBasicGetAttestationPolicyResponse(HttpClient client, String clientUri, AttestationType attestationType, PolicyResponse policyResponse) throws ParseException, CertificateException, JOSEException, UnsupportedEncodingException {
+    void verifyBasicGetAttestationPolicyResponse(HttpClient client, String clientUri, AttestationType attestationType, PolicyResponse policyResponse) throws ParseException {
         assertNotNull(policyResponse);
         assertNotNull(policyResponse.getToken());
 
         SignedJWT token = SignedJWT.parse(policyResponse.getToken());
 
-        X509Certificate cert = getSigningCertificateByKeyId(token, client, clientUri);
-        PublicKey key = cert.getPublicKey();
-        RSAPublicKey rsaKey = (RSAPublicKey)key;
+        getSigningCertificateByKeyId(token, client, clientUri)
+            .subscribe(cert -> {
+                PublicKey key = cert.getPublicKey();
+                RSAPublicKey rsaKey = (RSAPublicKey) key;
 
-        RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
-        assertTrue(token.verify(verifier));
-        JWTClaimsSet claims = token.getJWTClaimsSet();
-        String policyDocument = claims.getClaims().get("x-ms-policy").toString();
+                RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
+                try {
+                    assertTrue(token.verify(verifier));
+                } catch (JOSEException e) {
+                    e.printStackTrace();
+                }
+                JWTClaimsSet claims = null;
+                try {
+                    claims = token.getJWTClaimsSet();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                assert claims != null;
+                String policyDocument = claims.getClaims().get("x-ms-policy").toString();
 
-        JOSEObject policyJose = JOSEObject.parse(policyDocument);
-        JSONObject jsonObject = policyJose.getPayload().toJSONObject();
-        if (jsonObject != null) {
-            assertTrue(jsonObject.containsKey("AttestationPolicy"));
-            String base64urlPolicy = jsonObject.getAsString("AttestationPolicy");
+                JOSEObject policyJose = null;
+                try {
+                    policyJose = JOSEObject.parse(policyDocument);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                assert policyJose != null;
+                JSONObject jsonObject = policyJose.getPayload().toJSONObject();
+                if (jsonObject != null) {
+                    assertTrue(jsonObject.containsKey("AttestationPolicy"));
+                    String base64urlPolicy = jsonObject.getAsString("AttestationPolicy");
 
-            byte[] attestationPolicyUtf8 = Base64.getUrlDecoder().decode(base64urlPolicy);
-            String attestationPolicy = new String(attestationPolicyUtf8, "UTF-8");
+                    byte[] attestationPolicyUtf8 = Base64.getUrlDecoder().decode(base64urlPolicy);
+                    String attestationPolicy;
+                    attestationPolicy = new String(attestationPolicyUtf8, StandardCharsets.UTF_8);
 
-            assertNotNull(attestationPolicy);
-        }
-        else
-        {
-            // TPM is allowed to have an empty attestation policy, all the other AttestationTypes have policies.
-            assertEquals("Tpm", attestationType.toString());
-        }
+                    assertNotNull(attestationPolicy);
+                } else {
+                    // TPM is allowed to have an empty attestation policy, all the other AttestationTypes have policies.
+                    assertEquals("Tpm", attestationType.toString());
+                }
+            });
     }
 
 
@@ -247,10 +264,10 @@ public class AttestationClientTestBase extends TestBase {
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
         List<Arguments> argumentsList = new ArrayList<>();
         String regionShortName = Configuration.getGlobalConfiguration().get("locationShortName");
-        getHttpClients().forEach(httpClient -> Arrays.asList(
+        getHttpClients().forEach(httpClient -> Stream.of(
             "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net",
             Configuration.getGlobalConfiguration().get("ATTESTATION_ISOLATED_URL"),
-            Configuration.getGlobalConfiguration().get("ATTESTATION_AAD_URL")).stream()
+            Configuration.getGlobalConfiguration().get("ATTESTATION_AAD_URL"))
             .forEach(clientUri -> argumentsList.add(Arguments.of(httpClient, clientUri))));
         return argumentsList.stream();
     }
@@ -260,7 +277,7 @@ public class AttestationClientTestBase extends TestBase {
         getAttestationClients().forEach(clientParams -> Arrays.asList(
             AttestationType.OPEN_ENCLAVE,
             AttestationType.TPM,
-            AttestationType.SGX_ENCLAVE).stream()
+            AttestationType.SGX_ENCLAVE)
             .forEach(attestationType -> argumentsList.add(Arguments.of(clientParams.get()[0], clientParams.get()[1], attestationType))));
         return argumentsList.stream();
     }

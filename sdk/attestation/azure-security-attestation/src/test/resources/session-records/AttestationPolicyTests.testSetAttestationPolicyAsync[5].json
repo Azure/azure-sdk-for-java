@@ -1,0 +1,40 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.wus.attest.azure.net/policies/Tpm?api-version=2020-10-01",
+    "Headers" : {
+      "Content-Type" : "text/plain"
+    },
+    "Response" : {
+      "Server" : "Kestrel",
+      "x-ms-maa-service-version" : "1.10.01439.0001",
+      "retry-after" : "0",
+      "Content-Length" : "2157",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "00-b73aeb118b2e7f069ed2b5d9ad3aab0c-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiAiUlMyNTYiLCAiamt1IjogImh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmlzby53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsICJraWQiOiAiMTVOMk1Ib2o5aUFka0YvYzVuUkUzSjJIQjhKRzZWdWUzVXp2dTNLL1Nlcz0iLCAidHlwIjogIkpXVCJ9.eyJleHAiOiAxNjEwNzUzNTE5LCAiaWF0IjogMTYxMDc0OTkxOSwgImlzcyI6ICJodHRwczovL2phbGFycnlvYXR0ZXN0YXRpb25pc28ud3VzLmF0dGVzdC5henVyZS5uZXQiLCAibmJmIjogMTYxMDc0OTkxOSwgIngtbXMtcG9saWN5LXJlc3VsdCI6ICJVcGRhdGVkIiwgIngtbXMtcG9saWN5LXNpZ25lciI6IHsiYWxnIjogIlJTMjU2IiwgImt0eSI6ICJSU0EiLCAidXNlIjogInNpZyIsICJ4NWMiOiBbIk1JSUMrVENDQWVHZ0F3SUJBZ0lKQUtDd1AyMjdielBrTUEwR0NTcUdTSWIzRFFFQkN3VUFNRE14TVRBdkJnTlZCQU1US0VGMGRHVnpkR0YwYVc5dVNYTnZiR0YwWldSTllXNWhaMlZ0Wlc1MFEyVnlkR2xtYVdOaGRHVXdIaGNOTWpFd01URXhNVGt4TWpFNFdoY05Nakl3TVRFeE1Ua3hNakU0V2pBek1URXdMd1lEVlFRREV5aEJkSFJsYzNSaGRHbHZia2x6YjJ4aGRHVmtUV0Z1WVdkbGJXVnVkRU5sY25ScFptbGpZWFJsTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFzK010ckRiVkdkUHZBRnUxK0ZtWnpqNXdpNjRHRlhJWk9BcGVqb0RGUnBiMm0xdHM4VkRiWDFzOFlZMzBqcndrSlphbndveVBvKzJIK2tTVXJOU2RWQVBjVnIxQnNtMkxCTUUwRm1udXNYL2xoQ2drQUc3ZkhGbFBwVzY1RThMNVNxdytpcnR2cEtYUHZPSGoyNmMrRFQ1dnYyL1g2cEZSUEx5NjdWaktNbllSN0hPUkF1TkE2dXVaN1U0dmFONVFFVkN5MGxTWUU1Y2Z6TlRZK2FVRm5NaGJVQVpzbDc0OE1kMkF5V2s3emp5TDRxNk0vdUMyVmRKenQwSnJoTGRpTnZFWUswcTh3UlVSZnlVYXRGN2YySXpYS2xXdklhZWYvRi80QUtBWUVLTWQwMU1BUTYyWDZwekdwRFJPOTE0L0k3bVE0anlPaFkzdER2QmVTRFJId1FJREFRQUJveEF3RGpBTUJnTlZIUk1FQlRBREFRSC9NQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUNWT0xyZjI4aU9tLzNxTE9pMHY5NzluMU5LcldDRTFnaGF6TUxlYVk5U2NzQ1M0NGhYOVl0R3Y1UjdrcE90Mncwdkc0ZlNBSFlNd3U2UjFhaFRqeHZOQi9BVktNNTdKNXVlb1ZJUW5JSHZvRzNmdGJvemtwd0JZbFFQVGdoMzV3Q3IyTjBudUVqV3Q1S29HKzdHTUxYQ1B4MkJZcWJsVzBKMlE2bnJFZ0VpUlpGK0dzTmJtYXhEZm4xOGFzUkMyalovYldCYkdwWjJnSGo2LzZ1cTJjYk1aL0ZPUDM4Mng0YkZ3SkZ5ZVlHNE5wYktjVWM0QmJUdTZPRWVFaXJtMTgxR3pKMUZhRUN5UnMvVTF5amh3VFVHYzZXNmQvSFdMYkQ0U3R1NDBUaFJ3VHFIOXYzcUUzc0MrK0pJWFhEQ2lUUVNmRzVJaDNUMHB1ZWxUVjl5MU9qSSJdfSwgIngtbXMtcG9saWN5LXRva2VuLWhhc2giOiAiN1lZdHJLRVJILWRWeGV0WGt3cjZFMGpfNEZ2dXRISE9LWUFUT2FVVXVtWSJ9.axVNVUM-NPqo93h6XyiR-V2wvBHvo0i3BrRMwoSkRkk4tSfex7FdHqvBX9fXTHtQcfJRobFuICT46ZILZqUX3wZQTKuuSQmfwFwdOnoE0MB54OvsOL4NiF8YrVE6q0uA7LOMn1_xfdt65dMxxvF63Vd0upMweOcjOeS1AbWGKiY\"}",
+      "Date" : "Fri, 15 Jan 2021 22:31:59 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.wus.attest.azure.net/policies/Tpm:reset?api-version=2020-10-01",
+    "Headers" : {
+      "Content-Type" : "text/plain"
+    },
+    "Response" : {
+      "Server" : "Kestrel",
+      "x-ms-maa-service-version" : "1.10.01439.0001",
+      "retry-after" : "0",
+      "Content-Length" : "592",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "00-4911820e2ac7d6e41f2c4a58c9e7c2b5-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiAiUlMyNTYiLCAiamt1IjogImh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmlzby53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsICJraWQiOiAiMTVOMk1Ib2o5aUFka0YvYzVuUkUzSjJIQjhKRzZWdWUzVXp2dTNLL1Nlcz0iLCAidHlwIjogIkpXVCJ9.eyJleHAiOiAxNjEwNzUzNTIwLCAiaWF0IjogMTYxMDc0OTkyMCwgImlzcyI6ICJodHRwczovL2phbGFycnlvYXR0ZXN0YXRpb25pc28ud3VzLmF0dGVzdC5henVyZS5uZXQiLCAibmJmIjogMTYxMDc0OTkyMCwgIngtbXMtcG9saWN5LXJlc3VsdCI6ICJSZW1vdmVkIn0.MG1Ab9kT2AlcXbRVuh1lxnG9M2y0w-PxYOuES5WGYy_LlX9Kzab1LCQ_HZIBH68_m_pKUpT3zq2QAoo3tm9PN5bLxoyBsxXOLnJIVW9SIuy2pnoq4Yn3HLRKvl0WwXrD2fqobBVb4N-YxFS6OhICxATaimX34XmDcgBbuIdRW8o\"}",
+      "Date" : "Fri, 15 Jan 2021 22:32:00 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -1,0 +1,58 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.wus.attest.azure.net/policies/OpenEnclave?api-version=2020-10-01",
+    "Headers" : {
+      "Content-Type" : "text/plain"
+    },
+    "Response" : {
+      "Server" : "Kestrel",
+      "x-ms-maa-service-version" : "1.10.01439.0001",
+      "retry-after" : "0",
+      "Content-Length" : "689",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "00-7e8a5bcdaf1b0802161075b9eb48a36a-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiAiUlMyNTYiLCAiamt1IjogImh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmFhZC53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsICJraWQiOiAiMTVOMk1Ib2o5aUFka0YvYzVuUkUzSjJIQjhKRzZWdWUzVXp2dTNLL1Nlcz0iLCAidHlwIjogIkpXVCJ9.eyJleHAiOiAxNjEwNzUzNTE5LCAiaWF0IjogMTYxMDc0OTkxOSwgImlzcyI6ICJodHRwczovL2phbGFycnlvYXR0ZXN0YXRpb25hYWQud3VzLmF0dGVzdC5henVyZS5uZXQiLCAibmJmIjogMTYxMDc0OTkxOSwgIngtbXMtcG9saWN5LXJlc3VsdCI6ICJVcGRhdGVkIiwgIngtbXMtcG9saWN5LXRva2VuLWhhc2giOiAiM0tGVDlHSWdaR25VOGpEMmtTQ2NRWV92WmZjOHhvY2MxUkZucUlqVGlIcyJ9.fEOLVI0pz6jwrqGgSKDai7wFpmyfSi4yNj8x663Z31wWpwmjZilVR9RqPVdvry-x4bCUH5Geeh4h9tLkHNcBucl91KH-CA-EkaRG2iLduFrgD2ySUZ1-uvt44fXVUQ6BuGQmA-Ium2qdf-5fOWzX0MUgbFAAb8PBopHkNp_6tow\"}",
+      "Date" : "Fri, 15 Jan 2021 22:31:59 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.wus.attest.azure.net/policies/OpenEnclave?api-version=2020-10-01",
+    "Headers" : {
+      "Content-Type" : "text/plain"
+    },
+    "Response" : {
+      "Server" : "Kestrel",
+      "x-ms-maa-service-version" : "1.10.01439.0001",
+      "retry-after" : "0",
+      "Content-Length" : "2157",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "00-61e0623b4d7045874060f8a4d48279f0-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiAiUlMyNTYiLCAiamt1IjogImh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmFhZC53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsICJraWQiOiAiMTVOMk1Ib2o5aUFka0YvYzVuUkUzSjJIQjhKRzZWdWUzVXp2dTNLL1Nlcz0iLCAidHlwIjogIkpXVCJ9.eyJleHAiOiAxNjEwNzUzNTIwLCAiaWF0IjogMTYxMDc0OTkyMCwgImlzcyI6ICJodHRwczovL2phbGFycnlvYXR0ZXN0YXRpb25hYWQud3VzLmF0dGVzdC5henVyZS5uZXQiLCAibmJmIjogMTYxMDc0OTkyMCwgIngtbXMtcG9saWN5LXJlc3VsdCI6ICJVcGRhdGVkIiwgIngtbXMtcG9saWN5LXNpZ25lciI6IHsiYWxnIjogIlJTMjU2IiwgImt0eSI6ICJSU0EiLCAidXNlIjogInNpZyIsICJ4NWMiOiBbIk1JSUMrVENDQWVHZ0F3SUJBZ0lKQUtDd1AyMjdielBrTUEwR0NTcUdTSWIzRFFFQkN3VUFNRE14TVRBdkJnTlZCQU1US0VGMGRHVnpkR0YwYVc5dVNYTnZiR0YwWldSTllXNWhaMlZ0Wlc1MFEyVnlkR2xtYVdOaGRHVXdIaGNOTWpFd01URXhNVGt4TWpFNFdoY05Nakl3TVRFeE1Ua3hNakU0V2pBek1URXdMd1lEVlFRREV5aEJkSFJsYzNSaGRHbHZia2x6YjJ4aGRHVmtUV0Z1WVdkbGJXVnVkRU5sY25ScFptbGpZWFJsTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFzK010ckRiVkdkUHZBRnUxK0ZtWnpqNXdpNjRHRlhJWk9BcGVqb0RGUnBiMm0xdHM4VkRiWDFzOFlZMzBqcndrSlphbndveVBvKzJIK2tTVXJOU2RWQVBjVnIxQnNtMkxCTUUwRm1udXNYL2xoQ2drQUc3ZkhGbFBwVzY1RThMNVNxdytpcnR2cEtYUHZPSGoyNmMrRFQ1dnYyL1g2cEZSUEx5NjdWaktNbllSN0hPUkF1TkE2dXVaN1U0dmFONVFFVkN5MGxTWUU1Y2Z6TlRZK2FVRm5NaGJVQVpzbDc0OE1kMkF5V2s3emp5TDRxNk0vdUMyVmRKenQwSnJoTGRpTnZFWUswcTh3UlVSZnlVYXRGN2YySXpYS2xXdklhZWYvRi80QUtBWUVLTWQwMU1BUTYyWDZwekdwRFJPOTE0L0k3bVE0anlPaFkzdER2QmVTRFJId1FJREFRQUJveEF3RGpBTUJnTlZIUk1FQlRBREFRSC9NQTBHQ1NxR1NJYjNEUUVCQ3dVQUE0SUJBUUNWT0xyZjI4aU9tLzNxTE9pMHY5NzluMU5LcldDRTFnaGF6TUxlYVk5U2NzQ1M0NGhYOVl0R3Y1UjdrcE90Mncwdkc0ZlNBSFlNd3U2UjFhaFRqeHZOQi9BVktNNTdKNXVlb1ZJUW5JSHZvRzNmdGJvemtwd0JZbFFQVGdoMzV3Q3IyTjBudUVqV3Q1S29HKzdHTUxYQ1B4MkJZcWJsVzBKMlE2bnJFZ0VpUlpGK0dzTmJtYXhEZm4xOGFzUkMyalovYldCYkdwWjJnSGo2LzZ1cTJjYk1aL0ZPUDM4Mng0YkZ3SkZ5ZVlHNE5wYktjVWM0QmJUdTZPRWVFaXJtMTgxR3pKMUZhRUN5UnMvVTF5amh3VFVHYzZXNmQvSFdMYkQ0U3R1NDBUaFJ3VHFIOXYzcUUzc0MrK0pJWFhEQ2lUUVNmRzVJaDNUMHB1ZWxUVjl5MU9qSSJdfSwgIngtbXMtcG9saWN5LXRva2VuLWhhc2giOiAiN1lZdHJLRVJILWRWeGV0WGt3cjZFMGpfNEZ2dXRISE9LWUFUT2FVVXVtWSJ9.RzRoU5y32_SSPq6OMKsHL9JHNI2Qg4RRvxvQ5-me7mHuMaWrGPAup256hYurTuRqYWG4Qd8mboWsR2ZBF7MiMZYKHYcoToVAVD2k9AVpYXveHlEr8Uhp8houf0Pyr5g-oEOBi-fE2W_b4T5-97Wqgq9m5kFmbQJOn3BlM3S407U\"}",
+      "Date" : "Fri, 15 Jan 2021 22:32:00 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.wus.attest.azure.net/policies/OpenEnclave:reset?api-version=2020-10-01",
+    "Headers" : {
+      "Content-Type" : "text/plain"
+    },
+    "Response" : {
+      "Server" : "Kestrel",
+      "x-ms-maa-service-version" : "1.10.01439.0001",
+      "retry-after" : "0",
+      "Content-Length" : "592",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "00-1a1b88e1bfac3780d619d145661dfec1-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiAiUlMyNTYiLCAiamt1IjogImh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmFhZC53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsICJraWQiOiAiMTVOMk1Ib2o5aUFka0YvYzVuUkUzSjJIQjhKRzZWdWUzVXp2dTNLL1Nlcz0iLCAidHlwIjogIkpXVCJ9.eyJleHAiOiAxNjEwNzUzNTIyLCAiaWF0IjogMTYxMDc0OTkyMiwgImlzcyI6ICJodHRwczovL2phbGFycnlvYXR0ZXN0YXRpb25hYWQud3VzLmF0dGVzdC5henVyZS5uZXQiLCAibmJmIjogMTYxMDc0OTkyMiwgIngtbXMtcG9saWN5LXJlc3VsdCI6ICJSZW1vdmVkIn0.ULL89OhkgVMnf-2h8HKyRgUNcwxALzxiRAKUqj2h9XNL-9IsGzSFJXfpPhno51xQyXmAeunGrrv_Ah6SqMFZVQD1P0NCM7ynp5ax_d142weEfafXZ21oIMKy0EfWjH_C4sH5clmrNAUmA7zIW5DVohLC4t8bEtHTLYxINFGIsGA\"}",
+      "Date" : "Fri, 15 Jan 2021 22:32:01 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

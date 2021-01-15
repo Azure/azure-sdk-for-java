@@ -5,6 +5,7 @@ package com.azure.security.attestation;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 /**
  * Tests for Attestation Metadata Configuration APIs.
@@ -29,9 +30,11 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        Object metadataConfigResponse = attestationBuilder.buildMetadataConfigurationAsyncClient().get().block();
-
-        verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse);
+        StepVerifier.create(attestationBuilder.buildMetadataConfigurationAsyncClient().get())
+            .assertNext(metadataConfigResponse -> {
+                verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse);
+            })
+            .verifyComplete();
     }
 
 }

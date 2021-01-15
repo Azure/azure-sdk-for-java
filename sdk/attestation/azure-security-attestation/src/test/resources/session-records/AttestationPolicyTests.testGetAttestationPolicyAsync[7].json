@@ -1,0 +1,20 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.wus.attest.azure.net/policies/OpenEnclave?api-version=2020-10-01",
+    "Headers" : { },
+    "Response" : {
+      "Server" : "Kestrel",
+      "x-ms-maa-service-version" : "1.10.01439.0001",
+      "retry-after" : "0",
+      "Content-Length" : "804",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "00-1d0632dc87c354da78a9375a2726feb1-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiAiUlMyNTYiLCAiamt1IjogImh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmFhZC53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsICJraWQiOiAiMTVOMk1Ib2o5aUFka0YvYzVuUkUzSjJIQjhKRzZWdWUzVXp2dTNLL1Nlcz0iLCAidHlwIjogIkpXVCJ9.eyJleHAiOiAxNjEwNzUzNTIxLCAiaWF0IjogMTYxMDc0OTkyMSwgImlzcyI6ICJodHRwczovL2phbGFycnlvYXR0ZXN0YXRpb25hYWQud3VzLmF0dGVzdC5henVyZS5uZXQiLCAibmJmIjogMTYxMDc0OTkyMSwgIngtbXMtcG9saWN5IjogImV5SmhiR2NpT2lKdWIyNWxJbjAuZXlKQmRIUmxjM1JoZEdsdmJsQnZiR2xqZVNJNkltUnRWbmxqTW14Mlltb3dlRXhxUVRkSlIwWXhaRWRvZG1OdGJEWlpXRkp3WWpJMWVXUlhlR3hqZVVJM1NVUXdMVWxJUW14amJURndaRU5uY0U5NVFqbFBlVUp3WXpOT01WbFhOV3BhV0VveFlrZFdla2xJZERsUGR5SjkuIn0.amlww5EyJwkM3vP9Whgt-TyBrv6Ue_k2rWh7TqSQ1JzTZAkBYubTBURkwj8aUyi6QpkER5VSOpJr8ovdCjz8MgZRoU-zjx64u-9FNvT7Rsp4bmn2evgSxmHOamnMUoSTj0s0l4X2GizdFIECXqeGhDFeb4lupvZes8PSbEGwbtE\"}",
+      "Date" : "Fri, 15 Jan 2021 22:32:01 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -5,10 +5,13 @@ package com.azure.security.attestation;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
 import com.azure.security.attestation.models.JsonWebKeySet;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,9 +41,15 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
-        JsonWebKeySet certs = attestationBuilder.buildSigningCertificatesAsyncClient().get().block();
+        StepVerifier.create(attestationBuilder.buildSigningCertificatesAsyncClient().get())
+            .assertNext(certs -> {
+                Assertions.assertDoesNotThrow(() -> {
+                        verifySigningCertificatesResponse(clientUri, certs);
+                    });
+            })
+        .verifyComplete();
 
-        verifySigningCertificatesResponse(clientUri, certs);
+        ;
     }
 }
 
