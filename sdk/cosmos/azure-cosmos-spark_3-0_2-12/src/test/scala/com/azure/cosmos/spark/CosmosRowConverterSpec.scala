@@ -27,7 +27,7 @@ class CosmosRowConverterSpec extends UnitSpec {
             Array(colVal1, colVal2),
             StructType(Seq(StructField(colName1, IntegerType), StructField(colName2, StringType))))
 
-        val objectNode = CosmosRowConverter.rowToObjectNode(row)
+        val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
         assertThat(objectNode.get(colName1).asInt()).isEqualTo(colVal1)
         assertThat(objectNode.get(colName2).asText()).isEqualTo(colVal2)
     }
@@ -43,12 +43,12 @@ class CosmosRowConverterSpec extends UnitSpec {
             Array(colVal1, colVal2),
             StructType(Seq(StructField(colName1, NullType), StructField(colName2, StringType))))
 
-        val objectNode = CosmosRowConverter.rowToObjectNode(row)
+        val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
         assertThat(objectNode.get(colName1).isNull).isTrue
         assertThat(objectNode.get(colName2).asText()).isEqualTo(colVal2)
     }
 
-    "array in spark row" should "translate to null in ArrayNode" in {
+    "array in spark row" should "translate to ObjectNode" in {
         val colName1 = "testCol1"
         val colName2 = "testCol2"
         val colVal1 = "strVal"
@@ -57,7 +57,7 @@ class CosmosRowConverterSpec extends UnitSpec {
             Array(Seq("arrayElement1", "arrayElement2"), colVal1),
             StructType(Seq(StructField(colName1, ArrayType(StringType, true)), StructField(colName2, StringType))))
 
-        val objectNode = CosmosRowConverter.rowToObjectNode(row)
+        val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
         assertThat(objectNode.get(colName1).isArray)
         assertThat(objectNode.get(colName1).asInstanceOf[ArrayNode]).hasSize(2)
         assertThat(objectNode.get(colName1).asInstanceOf[ArrayNode].get(0).asText()).isEqualTo("arrayElement1")
@@ -74,7 +74,7 @@ class CosmosRowConverterSpec extends UnitSpec {
             Array(colVal1),
             StructType(Seq(StructField(colName1, BinaryType))))
 
-        val objectNode = CosmosRowConverter.rowToObjectNode(row)
+        val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
         assertThat(objectNode.get(colName1).isArray)
         val nodeAsBinary = objectNode.get(colName1).asInstanceOf[BinaryNode].binaryValue()
         assertThat(nodeAsBinary).hasSize(colVal1.length)
@@ -90,7 +90,7 @@ class CosmosRowConverterSpec extends UnitSpec {
             Array(colVal1),
             StructType(Seq(StructField(colName1, BooleanType))))
 
-        val objectNode = CosmosRowConverter.rowToObjectNode(row)
+        val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
         val nodeAsBoolean = objectNode.get(colName1).asInstanceOf[BooleanNode].asBoolean()
         assertThat(nodeAsBoolean).isEqualTo(colVal1)
     }
@@ -106,7 +106,7 @@ class CosmosRowConverterSpec extends UnitSpec {
             Array(colVal1, colVal2),
             StructType(Seq(StructField(colName1, DateType), StructField(colName2, TimestampType))))
 
-        val objectNode = CosmosRowConverter.rowToObjectNode(row)
+        val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
         assertThat(objectNode.get(colName1).asLong()).isEqualTo(currentMillis)
         assertThat(objectNode.get(colName2).asLong()).isEqualTo(currentMillis)
     }
@@ -127,7 +127,7 @@ class CosmosRowConverterSpec extends UnitSpec {
             StructType(Seq(StructField(colName1, DoubleType), StructField(colName2, FloatType),
                 StructField(colName3, LongType), StructField(colName4, DecimalType(precision = 2, scale = 2)))))
 
-        val objectNode = CosmosRowConverter.rowToObjectNode(row)
+        val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
         assertThat(objectNode.get(colName1).asDouble()).isEqualTo(colVal1)
         assertThat(objectNode.get(colName2).asDouble()).isEqualTo(colVal2)
         assertThat(objectNode.get(colName3).asLong()).isEqualTo(colVal3)
@@ -135,17 +135,25 @@ class CosmosRowConverterSpec extends UnitSpec {
         assertThat(col4AsDecimal.compareTo(colVal4)).isEqualTo(0)
     }
 
-    // TODO: Currently RowConverter.scala only works with MapType if the row is RowInternal
-    "map in spark row" should "translate to ObjectNode" ignore {
+    "map in spark row" should "translate to ObjectNode" in {
         val colName1 = "testCol1"
-
-        val colVal1 : Map[String, String] = Map("x" -> "a", "y" -> "b")
+        val colName2 = "testCol2"
+        val colVal1 : Map[String, String] = Map("x" -> "a", "y" -> null)
+        val colVal2 : Map[String, Int] = Map("x" -> 20, "y" -> 10)
 
         val row = new GenericRowWithSchema(
-            Array(colVal1),
-            StructType(Seq(StructField(colName1, MapType(keyType = StringType, valueType = StringType, valueContainsNull = false)))))
+            Array(colVal1, colVal2),
+            StructType(Seq(
+                StructField(colName1, MapType(keyType = StringType, valueType = StringType, valueContainsNull = true)),
+                StructField(colName2, MapType(keyType = StringType, valueType = IntegerType, valueContainsNull = false)))))
 
-        CosmosRowConverter.rowToObjectNode(row)
+        val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+        val node1 = objectNode.get(colName1)
+        assertThat(node1.get("x").asText()).isEqualTo(colVal1.get("x").get)
+        assertThat(node1.get("y").isNull).isTrue
+        val node2 = objectNode.get(colName2)
+        assertThat(node2.get("x").asInt()).isEqualTo(colVal2.get("x").get)
+        assertThat(node2.get("y").asInt()).isEqualTo(colVal2.get("y").get)
     }
 
     "struct in spark row" should "translate to ObjectNode" in {
@@ -162,13 +170,13 @@ class CosmosRowConverterSpec extends UnitSpec {
             Array(colVal1),
             StructType(Seq(StructField(colName1, colVal1Definition))))
 
-        val objectNode = CosmosRowConverter.rowToObjectNode(row)
+        val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
         assertThat(objectNode.get(colName1).isInstanceOf[ObjectNode])
         val nestedNode = objectNode.get(colName1).asInstanceOf[ObjectNode]
         assertThat(nestedNode.get(structCol1Name).asText()).isEqualTo(structCol1Val)
     }
 
-    "basic ObjectNode" should "translate to InternalRow" in {
+    "basic ObjectNode" should "translate to Row" in {
         val colName1 = "testCol1"
         val colName2 = "testCol2"
         val colVal1 = 8
@@ -178,12 +186,12 @@ class CosmosRowConverterSpec extends UnitSpec {
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         objectNode.put(colName1, colVal1)
         objectNode.put(colName2, colVal2)
-        val internalRow = CosmosRowConverter.toInternalRow(schema, objectNode)
-        assertThat(internalRow.getInt(0)).isEqualTo(colVal1)
-        assertThat(internalRow.getString(1)).isEqualTo(colVal2)
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        assertThat(row.getInt(0)).isEqualTo(colVal1)
+        assertThat(row.getString(1)).isEqualTo(colVal2)
     }
 
-    "null type in ObjectNode" should "translate to InternalRow" in {
+    "null type in ObjectNode" should "translate to Row" in {
 
         val colName1 = "testCol1"
         val colName2 = "testCol2"
@@ -195,12 +203,12 @@ class CosmosRowConverterSpec extends UnitSpec {
         objectNode.put(colName1, colVal1)
         objectNode.put(colName2, colVal2)
 
-        val internalRow = CosmosRowConverter.toInternalRow(schema, objectNode)
-        assertThat(internalRow.isNullAt(0)).isTrue
-        assertThat(internalRow.getString(1)).isEqualTo(colVal2)
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        assertThat(row.isNullAt(0)).isTrue
+        assertThat(row.getString(1)).isEqualTo(colVal2)
     }
 
-    "array in ObjectNode" should "translate to InternalRow" ignore {
+    "array in ObjectNode" should "translate to Row" in {
         val colName1 = "testCol1"
         val colVal1 : Array[String] = Array("element1", "element2")
 
@@ -210,57 +218,90 @@ class CosmosRowConverterSpec extends UnitSpec {
         colVal1.foreach(elem => arrayObjectNode.add(elem))
         objectNode.set(colName1, arrayObjectNode)
 
-        val internalRow = CosmosRowConverter.toInternalRow(schema, objectNode)
-        val arrayNode = internalRow.getArray(0)
-        assertThat(arrayNode.numElements()).isEqualTo(colVal1.length)
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        val arrayNode = row.get(0).asInstanceOf[Array[Any]]
+        assertThat(arrayNode.length).isEqualTo(colVal1.length)
         for (i <- 0 until colVal1.length)
-            assertThat(arrayNode.array(i)).isEqualTo(colVal1(i))
+            assertThat(arrayNode(i)).isEqualTo(colVal1(i))
     }
 
-    "binary in ObjectNode" should "translate to InternalRow" in {
+    "binary in ObjectNode" should "translate to Row" in {
         val colName1 = "testCol1"
         val colVal1 = "strVal".getBytes()
+        val colName2 = "testCol2"
+        val colVal2 = "strVal2".getBytes()
 
-        val schema = StructType(Seq(StructField(colName1, BinaryType)))
+        val schema = StructType(Seq(StructField(colName1, BinaryType), StructField(colName2, BinaryType)))
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         val arrayObjectNode = objectMapper.createArrayNode()
         colVal1.foreach(elem => arrayObjectNode.add(elem))
         objectNode.set(colName1, arrayObjectNode)
+        objectNode.set(colName2, objectNode.binaryNode(colVal2))
 
-        val internalRow = CosmosRowConverter.toInternalRow(schema, objectNode)
-        val nodeAsBinary = internalRow.getBinary(0)
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        val nodeAsBinary = row.get(0).asInstanceOf[Array[Byte]]
         for (i <- 0 until colVal1.length)
             assertThat(nodeAsBinary(i)).isEqualTo(colVal1(i))
+
+        val nodeAsBinary2 = row.get(1).asInstanceOf[Array[Byte]]
+        for (i <- 0 until colVal2.length)
+            assertThat(nodeAsBinary2(i)).isEqualTo(colVal2(i))
     }
 
-    "date and time in ObjectNode" should "translate to InternalRow" in {
+    "time in ObjectNode" should "translate to Row" in {
         val colName1 = "testCol1"
+        val colName2 = "testCol2"
         val colVal1 = System.currentTimeMillis()
         val colVal1AsTime = new Timestamp(colVal1)
+        val colVal2 = System.currentTimeMillis()
+        val colVal2AsTime = new Timestamp(colVal2)
 
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         objectNode.put(colName1, colVal1)
-        val schema = StructType(Seq(StructField(colName1, TimestampType)))
-        val internalRow = CosmosRowConverter.toInternalRow(schema, objectNode)
-        val asTime = new Timestamp(internalRow.getLong(0))
+        objectNode.put(colName2, colVal2)
+        val schema = StructType(Seq(StructField(colName1, TimestampType), StructField(colName2, TimestampType)))
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        val asTime = row.get(0).asInstanceOf[Timestamp]
         assertThat(asTime.compareTo(colVal1AsTime)).isEqualTo(0)
+        val asTime2 = row.get(1).asInstanceOf[Timestamp]
+        assertThat(asTime2.compareTo(colVal2AsTime)).isEqualTo(0)
     }
 
-    "nested in ObjectNode" should "translate to InternalRow" in {
+    "date in ObjectNode" should "translate to Row" in {
+        val colName1 = "testCol1"
+        val colName2 = "testCol2"
+        val colVal1 = System.currentTimeMillis()
+        val colVal1AsTime = new Date(colVal1)
+        val colVal2 = System.currentTimeMillis()
+        val colVal2AsTime = new Date(colVal2)
+
+        val objectNode: ObjectNode = objectMapper.createObjectNode()
+        objectNode.put(colName1, colVal1)
+        objectNode.put(colName2, colVal2)
+        val schema = StructType(Seq(StructField(colName1, DateType), StructField(colName2, DateType)))
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        val asTime = row.get(0).asInstanceOf[Date]
+        assertThat(asTime.compareTo(colVal1AsTime)).isEqualTo(0)
+        val asTime2 = row.get(1).asInstanceOf[Date]
+        assertThat(asTime2.compareTo(colVal2AsTime)).isEqualTo(0)
+    }
+
+    "nested in ObjectNode" should "translate to Row" in {
         val colName1 = "testCol1"
         val colName2 = "testCol2"
         val colVal1 = "testVal1"
         val colVal2 = "testVal2"
 
         val objectNode: ObjectNode = objectMapper.createObjectNode()
-        objectNode.put(colName2, colVal1)
         val nestedObjectNode: ObjectNode = objectNode.putObject(colName1)
-        nestedObjectNode.put(colName2, colVal2)
-        val schema = StructType(Seq(StructField(colName1, StructType(Seq(StructField(colName2, StringType)))), StructField(colName2, StringType)))
-        val internalRow = CosmosRowConverter.toInternalRow(schema, objectNode)
-        val asStruct = internalRow.getStruct(0, 1)
-        assertThat(asStruct.getString(0)).isEqualTo(colVal2)
-        assertThat(internalRow.getString(1)).isEqualTo(colVal1)
+        nestedObjectNode.put(colName1, colVal1)
+        objectNode.put(colName2, colVal2)
+        val schema = StructType(Seq(StructField(colName1, StructType(Seq(StructField(colName1, StringType)))),
+            StructField(colName2, StringType)))
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        val asStruct = row.getStruct(0)
+        assertThat(asStruct.getString(0)).isEqualTo(colVal1)
+        assertThat(row.getString(1)).isEqualTo(colVal2)
     }
 
   //scalastyle:on null

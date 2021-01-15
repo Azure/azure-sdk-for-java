@@ -142,14 +142,14 @@ object CosmosRowConverter
     private def convertToSparkDataType(dataType: DataType, value: JsonNode): Any = (value, dataType) match {
         case (_ : NullNode, _) | (_, _ : NullType) => null
         case (jsonNode: ObjectNode, struct: StructType) =>
-            convertStructToSparkDataType(struct, jsonNode)
+            fromObjectNodeToRow(struct, jsonNode)
         case (jsonNode: ObjectNode, map: MapType) =>
             jsonNode.fields().asScala
                 .map(element => (
                     element.getKey(),
                     convertToSparkDataType(map.valueType, element.getValue())))
         case (arrayNode: ArrayNode, array: ArrayType) =>
-            arrayNode.elements().asScala.map(convertToSparkDataType(array.elementType, _))
+            arrayNode.elements().asScala.map(convertToSparkDataType(array.elementType, _)).toArray
         case (binaryNode: BinaryNode, _: BinaryType) =>
             binaryNode.binaryValue()
         case (arrayNode: ArrayNode, _: BinaryType) =>
