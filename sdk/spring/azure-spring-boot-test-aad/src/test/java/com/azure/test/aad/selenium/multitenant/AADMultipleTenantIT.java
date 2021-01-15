@@ -35,6 +35,7 @@ public class AADMultipleTenantIT {
         AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties,
             AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
+        LOGGER.info(AAD_USER_NAME_1);
         LOGGER.info(AAD_USER_NAME_2);
         LOGGER.info(httpResponse);
         Assert.assertTrue(httpResponse.contains("home"));
