@@ -92,7 +92,8 @@ def generate_changelog_and_breaking_change(
     new_jar,
     **kwargs,
 ) -> Tuple[bool, str]:
-    logging.info('[CHANGELOG] changelog jar: {0} -> {1}'.format(old_jar, new_jar))
+    logging.info('[CHANGELOG] changelog jar: {0} -> {1}'.format(
+        old_jar, new_jar))
     stdout = subprocess.run(
         'mvn clean compile exec:java -q -f {0}/eng/mgmt/changelog/pom.xml -DOLD_JAR="{1}" -DNEW_JAR="{2}"'
         .format(sdk_root, old_jar, new_jar),
@@ -163,8 +164,10 @@ def compare_with_maven_package(sdk_root, service, stable_version,
         breaking, changelog = generate_changelog_and_breaking_change(
             sdk_root, old_jar, new_jar)
         if changelog and changelog.strip() != '':
-            changelog_file = CHANGELOG_FORMAT.format(service = service,
-                                                     artifact_id = module)
+            changelog_file = os.path.join(
+                sdk_root,
+                CHANGELOG_FORMAT.format(service = service,
+                                        artifact_id = module))
             update_changelog(changelog_file, changelog)
         else:
             logging.error('[Changelog][Skip] Cannot get changelog')
