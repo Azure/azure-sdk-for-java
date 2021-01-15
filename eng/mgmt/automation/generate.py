@@ -623,13 +623,17 @@ def sdk_automation(input_file: str, output_file: str):
             stable_version, current_version = set_or_increase_version(
                 sdk_root,
                 service,
+            )
+            generate(
+                sdk_root,
+                service,
                 spec_root = config['specFolder'],
                 readme = readme,
                 autorest = AUTOREST_CORE_VERSION,
                 use = AUTOREST_JAVA,
                 tag = tag,
             )
-            compile_package(sdk_root, service, version = current_version)
+            compile_package(sdk_root, service)
 
             generated_folder = OUTPUT_FOLDER_FORMAT.format(service)
             packages.append({
