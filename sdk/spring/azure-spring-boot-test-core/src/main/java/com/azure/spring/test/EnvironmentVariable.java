@@ -1,7 +1,5 @@
 package com.azure.spring.test;
 
-import org.springframework.util.Assert;
-
 public class EnvironmentVariable {
     public static final String AAD_B2C_CLIENT_ID = System.getenv("AAD_B2C_CLIENT_ID");
     public static final String AAD_B2C_CLIENT_SECRET = System.getenv("AAD_B2C_CLIENT_SECRET");
@@ -39,43 +37,4 @@ public class EnvironmentVariable {
     public static final String SPRING_RESOURCE_GROUP = System.getenv("SPRING_RESOURCE_GROUP");
     public static final String SPRING_SUBSCRIPTION_ID = System.getenv("SPRING_SUBSCRIPTION_ID");
     public static final String SPRING_TENANT_ID = System.getenv("SPRING_TENANT_ID");
-
-    static {
-        Assert.hasText(AAD_B2C_CLIENT_ID, "Must has text.");
-        Assert.hasText(AAD_B2C_CLIENT_SECRET, "Must has text.");
-        Assert.hasText(AAD_B2C_PROFILE_EDIT, "Must has text.");
-        Assert.hasText(AAD_B2C_REPLY_URL, "Must has text.");
-        Assert.hasText(AAD_B2C_SIGN_UP_OR_SIGN_IN, "Must has text.");
-        Assert.hasText(AAD_B2C_TENANT, "Must has text.");
-        Assert.hasText(AAD_B2C_USER_EMAIL, "Must has text.");
-        Assert.hasText(AAD_B2C_USER_PASSWORD, "Must has text.");
-        Assert.hasText(AAD_MULTI_TENANT_CLIENT_ID, "Must has text.");
-        Assert.hasText(AAD_MULTI_TENANT_CLIENT_SECRET, "Must has text.");
-        Assert.hasText(AAD_SINGLE_TENANT_CLIENT_ID, "Must has text.");
-        Assert.hasText(AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE, "Must has text.");
-        Assert.hasText(AAD_SINGLE_TENANT_CLIENT_SECRET, "Must has text.");
-        Assert.hasText(AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE, "Must has text.");
-        Assert.hasText(AAD_TENANT_ID_1, "Must has text.");
-        Assert.hasText(AAD_TENANT_ID_2, "Must has text.");
-        Assert.hasText(AAD_USER_NAME_1, "Must has text.");
-        Assert.hasText(AAD_USER_NAME_2, "Must has text.");
-        Assert.hasText(AAD_USER_PASSWORD_1, "Must has text.");
-        Assert.hasText(AAD_USER_PASSWORD_2, "Must has text.");
-        Assert.hasText(AZURE_KEYVAULT2_URI, "Must has text.");
-        Assert.hasText(AZURE_KEYVAULT_URI, "Must has text.");
-        Assert.hasText(KEY_VAULT1_COMMON_SECRET_VALUE, "Must has text.");
-        Assert.hasText(KEY_VAULT1_SECRET_NAME, "Must has text.");
-        Assert.hasText(KEY_VAULT1_SECRET_VALUE, "Must has text.");
-        Assert.hasText(KEY_VAULT2_COMMON_SECRET_VALUE, "Must has text.");
-        Assert.hasText(KEY_VAULT2_SECRET_NAME, "Must has text.");
-        Assert.hasText(KEY_VAULT2_SECRET_VALUE, "Must has text.");
-        Assert.hasText(KEY_VAULT_COMMON_SECRET_NAME, "Must has text.");
-        Assert.hasText(KEY_VAULT_SECRET_NAME, "Must has text.");
-        Assert.hasText(KEY_VAULT_SECRET_VALUE, "Must has text.");
-        Assert.hasText(SPRING_CLIENT_ID, "Must has text.");
-        Assert.hasText(SPRING_CLIENT_SECRET, "Must has text.");
-        Assert.hasText(SPRING_RESOURCE_GROUP, "Must has text.");
-        Assert.hasText(SPRING_SUBSCRIPTION_ID, "Must has text.");
-        Assert.hasText(SPRING_TENANT_ID, "Must has text.");
-    }
 }
