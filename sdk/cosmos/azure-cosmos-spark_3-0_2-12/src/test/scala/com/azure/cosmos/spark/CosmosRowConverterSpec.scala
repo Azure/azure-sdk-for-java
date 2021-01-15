@@ -80,6 +80,23 @@ class CosmosRowConverterSpec extends UnitSpec {
             nodeAsBinary(i) shouldEqual colVal1(i)
     }
 
+    "null in spark row" should "translate to ObjectNode" in {
+        val colName1 = "testCol1"
+        val colName2 = "testCol2"
+        val colVal1 = null
+        val colVal2 = "testVal2"
+
+        val row = new GenericRowWithSchema(
+            Array(colVal1, colVal2),
+            StructType(Seq(
+                StructField(colName1, StringType),
+                StructField(colName2, NullType))))
+
+        val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+        objectNode.get(colName1).isNull shouldBe true
+        objectNode.get(colName2).isNull shouldBe true
+    }
+
     "boolean in spark row" should "translate to ObjectNode" in {
         val colName1 = "testCol1"
         val colVal1 = true

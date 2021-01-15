@@ -22,6 +22,8 @@ import org.apache.spark.unsafe.types.UTF8String
 object CosmosRowConverter
     extends CosmosLoggingTrait {
 
+    // TODO: Expose configuration to handle duplicate fields
+    // See: https://github.com/Azure/azure-sdk-for-java/pull/18642#discussion_r558638474
     val objectMapper = new ObjectMapper()
 
     def fromObjectNodeToInternalRow(schema: StructType, objectNode: ObjectNode): InternalRow = {
@@ -39,7 +41,8 @@ object CosmosRowConverter
         row.schema.fields.zipWithIndex.foreach({
             case (field, i) =>
                 field.dataType match {
-                    case NullType  | _ if row.isNullAt(i) => objectNode.putNull(field.name)
+                    case _: NullType  => objectNode.putNull(field.name)
+                    case _ if row.isNullAt(i) => objectNode.putNull(field.name)
                     case _ => objectNode.set(field.name, convertSparkDataTypeToJsonNode(field.dataType, row.get(i)))
                 }
         })
@@ -52,7 +55,8 @@ object CosmosRowConverter
         schema.fields.zipWithIndex.foreach({
             case (field, i) =>
                 field.dataType match {
-                    case NullType  | _ if row.isNullAt(i) => objectNode.putNull(field.name)
+                    case _: NullType  => objectNode.putNull(field.name)
+                    case _ if row.isNullAt(i) => objectNode.putNull(field.name)
                     case _ => objectNode.set(field.name, convertSparkDataTypeToJsonNode(field.dataType, row.get(i, field.dataType)))
                 }
         })
