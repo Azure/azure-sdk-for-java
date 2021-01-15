@@ -90,6 +90,21 @@ public class Utils {
         Utils.simpleObjectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
         Utils.simpleObjectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
 
+        final SimpleModule customDeserializationModules = new SimpleModule();
+        customDeserializationModules.addDeserializer(
+            FeedRangeInternal.class,
+            new FeedRangeInternalDeserializer());
+        customDeserializationModules.addDeserializer(
+            FeedRangeContinuation.class,
+            new FeedRangeContinuationDeserializer());
+        customDeserializationModules.addDeserializer(
+            ChangeFeedStartFromInternal.class,
+            new ChangeFeedStartFromInternalDeserializer());
+        customDeserializationModules.addDeserializer(
+            ChangeFeedState.class,
+            new ChangeFeedStateDeserializer());
+        Utils.simpleObjectMapper.registerModule(customDeserializationModules);
+
         Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
     }
 
