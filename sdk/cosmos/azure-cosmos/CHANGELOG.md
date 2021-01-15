@@ -1,7 +1,9 @@
 ## Release History
 
-## 4.11.0-beta.1 (Unreleased)
-
+### 4.10.1 (2021-01-15)
+#### Key Bug Fixes
+* Fixed RntbdServiceEnpoint close issue.
+* Improved the latency and throughput for writes when multiplexing.
 
 ### 4.10.0 (2020-12-14)
 #### New Features
