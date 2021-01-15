@@ -49,7 +49,7 @@ public class ReadmeSamples {
     /**
      * Code sample for authenticating with a SAS.
      */
-    public void authenticateWithSAS() {
+    public void authenticateWithSas() {
         TableServiceClient tableServiceClient = new TableServiceClientBuilder()
             .endpoint("<your-table-account-url>")
             .sasToken("<sas-token-string>")

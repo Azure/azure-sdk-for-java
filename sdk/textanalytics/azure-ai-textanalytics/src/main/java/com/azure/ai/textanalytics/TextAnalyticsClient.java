@@ -903,7 +903,7 @@ public final class TextAnalyticsClient {
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> beginAnalyzeHealthcare(
         Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options, Context context) {
         return client.analyzeHealthcareAsyncClient.beginAnalyzeHealthcarePagedIterable(documents, options, context)
@@ -931,7 +931,7 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException If {@code healthcareTaskId} is null.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<TextAnalyticsOperationResult, Void> beginCancelHealthcareTask(String healthcareTaskId,
         RecognizeHealthcareEntityOptions options, Context context) {
         return client.analyzeHealthcareAsyncClient.beginCancelAnalyzeHealthcare(healthcareTaskId, options, context)
@@ -960,7 +960,7 @@ public final class TextAnalyticsClient {
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<TextAnalyticsOperationResult, PagedIterable<AnalyzeTasksResult>> beginAnalyzeTasks(
         Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options, Context context) {
         return client.analyzeTasksAsyncClient.beginAnalyzeTasksIterable(documents, options, context).getSyncPoller();
