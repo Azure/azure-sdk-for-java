@@ -22,7 +22,6 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
 
     public static Map<String, String> createDefaultProperties() {
         Map<String, String> defaultProperties = new HashMap<>();
-        System.out.println(AAD_TENANT_ID_1);
         defaultProperties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
         defaultProperties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
         defaultProperties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
