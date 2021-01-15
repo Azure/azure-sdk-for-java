@@ -27,12 +27,20 @@ public class DefinitionStageChangeLog extends ChangeLog {
         oldMethodStages = new ArrayList<>();
         newMethodStages = new ArrayList<>();
         AllMethods blankStage = allStages.entrySet().stream().filter(x -> ClassName.name(x.getKey()).equals("Blank")).findAny().get().getValue();
-        calcMethodStages(blankStage, allStages, oldMethodStages, x -> x.getReturnType().getOldReturnType());
-        calcMethodStages(blankStage, allStages, newMethodStages, x -> x.getReturnType().getNewReturnType());
+        calcMethodStages(blankStage, allStages, oldMethodStages, method -> method.getReturnType().getOldReturnType());
+        calcMethodStages(blankStage, allStages, newMethodStages, method -> method.getReturnType().getNewReturnType());
         calcChangeLog();
     }
 
-    void calcMethodStages(AllMethods blankStage, Map<String, AllMethods> allStages, List<Set<JApiMethod>> results, Function<JApiMethod, String> getReturnType) {
+    /**
+     * Use BFS to search all definition stages function graph. Start from BlankStage and end to FinalStage.
+     *
+     * @param blankStage The start point for BFS, which is the first stage.
+     * @param allStages Map contains all stages. Map from Stage name to all methods it has.
+     * @param results The result contains list of methods. The index represents which stage the method locates.
+     * @param getReturnType The function to map a JApiMethod to its according return type.
+     */
+    private void calcMethodStages(AllMethods blankStage, Map<String, AllMethods> allStages, List<Set<JApiMethod>> results, Function<JApiMethod, String> getReturnType) {
         results.add(new HashSet<>(blankStage.getMethods()));
         Set<JApiMethod> used = new HashSet<>(blankStage.getMethods());
         for (int i = 0; i < results.size(); ++i) {
