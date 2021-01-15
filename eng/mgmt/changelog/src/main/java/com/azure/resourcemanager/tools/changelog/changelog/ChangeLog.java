@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -97,11 +96,8 @@ public class ChangeLog {
             case NEW: newFeature.add(String.format("* `%s` was added", getJApiClass().getFullyQualifiedName())); break;
             case REMOVED: breakingChange.add(String.format("* `%s` was removed", getJApiClass().getFullyQualifiedName())); break;
             default:
-                AtomicBoolean checkReturnType = new AtomicBoolean(true);
-                if (ClassName.name(getJApiClass()).equals("Definition")) {
-                    checkReturnType.set(false);
-                }
-                allMethods.getMethods().forEach(method -> this.calcChangelogForMethod(method, checkReturnType.get()));
+                boolean checkReturnType = !ClassName.name(getJApiClass()).equals("Definition");
+                allMethods.getMethods().forEach(method -> this.calcChangelogForMethod(method, checkReturnType));
                 break;
         }
     }
