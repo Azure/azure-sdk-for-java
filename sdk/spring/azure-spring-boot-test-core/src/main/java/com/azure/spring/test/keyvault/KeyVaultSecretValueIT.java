@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.keyvault;
+package com.azure.spring.test.keyvault;
 
 import static com.azure.spring.test.EnvironmentVariable.AZURE_KEYVAULT_URI;
 import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT_SECRET_NAME;
@@ -11,8 +11,9 @@ import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.SPRING_RESOURCE_GROUP;
 import static com.azure.spring.test.EnvironmentVariable.SPRING_SUBSCRIPTION_ID;
 import static com.azure.spring.test.EnvironmentVariable.SPRING_TENANT_ID;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.azure.spring.test.keyvault.app.DummyApp;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
@@ -40,9 +41,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-public class KeyVaultIT {
+class KeyVaultSecretValueIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultSecretValueIT.class);
     private static final String APP_SERVICE_NAME = System.getenv("APP_SERVICE_NAME");
     private static final String VM_NAME = System.getenv("VM_NAME");
     private static final String VM_USER_USERNAME = System.getenv("VM_USER_USERNAME");
