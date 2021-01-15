@@ -45,17 +45,22 @@ public final class ResponseTimeoutHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
-        if (responseTimeoutWatcher != null && !responseTimeoutWatcher.isDone()) {
-            responseTimeoutWatcher.cancel(false);
-            responseTimeoutWatcher = null;
-        }
+        disposeWatcher();
     }
 
     private void responseTimedOut(ChannelHandlerContext ctx) {
         if (!closed) {
+            disposeWatcher();
             ctx.fireExceptionCaught(new TimeoutException(String.format(RESPONSE_TIMED_OUT_MESSAGE, timeoutMillis)));
             ctx.close();
             closed = true;
+        }
+    }
+
+    private void disposeWatcher() {
+        if (responseTimeoutWatcher != null && !responseTimeoutWatcher.isDone()) {
+            responseTimeoutWatcher.cancel(false);
+            responseTimeoutWatcher = null;
         }
     }
 }

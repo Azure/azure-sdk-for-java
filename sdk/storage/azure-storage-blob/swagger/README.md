@@ -15,7 +15,7 @@ autorest --use=@microsoft.azure/autorest.java@3.0.4 --use=jianghaolu/autorest.mo
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-02-10/blob.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.BlobStorage/preview/2020-04-08/blob.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.blob
@@ -252,6 +252,20 @@ directive:
 directive:
 - from: swagger-document
   where: $["x-ms-paths"]["/{containerName}/{blob}?BlockBlob"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ContainerName")) {
+      const path = param["$ref"].replace(/[#].*$/, "#/parameters/");
+      $.put.parameters.splice(0, 0, { "$ref":  path + "ContainerName" });
+      $.put.parameters.splice(1, 0, { "$ref":  path + "Blob" });
+    }
+```
+
+### /{containerName}/{blob}?BlockBlob&fromUrl
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}/{blob}?BlockBlob&fromUrl"]
   transform: >
     let param = $.put.parameters[0];
     if (!param["$ref"].endsWith("ContainerName")) {
@@ -1409,6 +1423,15 @@ directive:
   where: $.definitions
   transform: >
     delete $.FilterBlobItem.properties.TagValue;
+```
+
+### Hide AllowPermanentDelete in RetentionPolicy
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.BlobRetentionPolicy
+  transform: >
+    delete $.properties.AllowPermanentDelete;
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)

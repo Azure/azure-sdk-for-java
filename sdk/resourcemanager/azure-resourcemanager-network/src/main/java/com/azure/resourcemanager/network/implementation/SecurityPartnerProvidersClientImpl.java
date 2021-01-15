@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -77,7 +78,7 @@ public final class SecurityPartnerProvidersClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface SecurityPartnerProvidersService {
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/securityPartnerProviders/{securityPartnerProviderName}")
@@ -89,9 +90,10 @@ public final class SecurityPartnerProvidersClientImpl
             @PathParam("securityPartnerProviderName") String securityPartnerProviderName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/securityPartnerProviders/{securityPartnerProviderName}")
@@ -103,9 +105,10 @@ public final class SecurityPartnerProvidersClientImpl
             @PathParam("securityPartnerProviderName") String securityPartnerProviderName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/securityPartnerProviders/{securityPartnerProviderName}")
@@ -118,9 +121,10 @@ public final class SecurityPartnerProvidersClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") SecurityPartnerProviderInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/securityPartnerProviders/{securityPartnerProviderName}")
@@ -133,9 +137,10 @@ public final class SecurityPartnerProvidersClientImpl
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") TagsObject parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/securityPartnerProviders")
@@ -146,9 +151,10 @@ public final class SecurityPartnerProvidersClientImpl
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/securityPartnerProviders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -156,21 +162,28 @@ public final class SecurityPartnerProvidersClientImpl
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityPartnerProviderListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityPartnerProviderListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -208,7 +221,8 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -219,6 +233,7 @@ public final class SecurityPartnerProvidersClientImpl
                             securityPartnerProviderName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -259,7 +274,8 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -268,6 +284,7 @@ public final class SecurityPartnerProvidersClientImpl
                 securityPartnerProviderName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -444,7 +461,8 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -455,6 +473,7 @@ public final class SecurityPartnerProvidersClientImpl
                             securityPartnerProviderName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -495,7 +514,8 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByResourceGroup(
@@ -504,6 +524,7 @@ public final class SecurityPartnerProvidersClientImpl
                 securityPartnerProviderName,
                 apiVersion,
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -605,7 +626,8 @@ public final class SecurityPartnerProvidersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -617,6 +639,7 @@ public final class SecurityPartnerProvidersClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -666,7 +689,8 @@ public final class SecurityPartnerProvidersClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -676,6 +700,7 @@ public final class SecurityPartnerProvidersClientImpl
                 apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -891,7 +916,8 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         return FluxUtil
@@ -905,6 +931,7 @@ public final class SecurityPartnerProvidersClientImpl
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -946,7 +973,8 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
         context = this.client.mergeContext(context);
@@ -958,6 +986,7 @@ public final class SecurityPartnerProvidersClientImpl
                 apiVersion,
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -1073,7 +1102,8 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1083,6 +1113,7 @@ public final class SecurityPartnerProvidersClientImpl
                             resourceGroupName,
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .<PagedResponse<SecurityPartnerProviderInner>>map(
                 res ->
@@ -1125,11 +1156,17 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByResourceGroup(
-                this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
+                this.client.getEndpoint(),
+                resourceGroupName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1225,11 +1262,13 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
-                    service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context))
+                    service
+                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<SecurityPartnerProviderInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1265,10 +1304,11 @@ public final class SecurityPartnerProvidersClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2020-07-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1347,8 +1387,16 @@ public final class SecurityPartnerProvidersClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SecurityPartnerProviderInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1377,9 +1425,16 @@ public final class SecurityPartnerProvidersClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroupNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1405,8 +1460,15 @@ public final class SecurityPartnerProvidersClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listNext(nextLink, context))
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<SecurityPartnerProviderInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1435,9 +1497,16 @@ public final class SecurityPartnerProvidersClientImpl
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listNext(nextLink, context)
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

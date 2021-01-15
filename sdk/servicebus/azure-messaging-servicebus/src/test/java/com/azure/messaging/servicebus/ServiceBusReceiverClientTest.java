@@ -451,10 +451,10 @@ class ServiceBusReceiverClientTest {
         final long sequenceNumber = 154;
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.peekMessageAt(sequenceNumber, SESSION_ID)).thenReturn(Mono.just(message));
+        when(asyncClient.peekMessage(sequenceNumber, SESSION_ID)).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.peekMessageAt(sequenceNumber);
+        final ServiceBusReceivedMessage actual = client.peekMessage(sequenceNumber);
 
         // Assert
         assertEquals(message, actual);
@@ -586,10 +586,10 @@ class ServiceBusReceiverClientTest {
             sink.complete();
         }));
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.peekMessagesAt(maxMessages, sequenceNumber, SESSION_ID)).thenReturn(messages);
+        when(asyncClient.peekMessages(maxMessages, sequenceNumber, SESSION_ID)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekMessagesAt(maxMessages, sequenceNumber);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.peekMessages(maxMessages, sequenceNumber);
 
         // Assert
         assertNotNull(actual);

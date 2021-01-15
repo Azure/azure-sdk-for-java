@@ -5,9 +5,16 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.TransactionalBatchResponse;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.batch.ServerBatchRequest;
+import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
+import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -80,6 +87,7 @@ public interface AsyncDocumentClient {
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
+        private CosmosClientMetadataCachesSnapshot state;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -87,6 +95,11 @@ public interface AsyncDocumentClient {
             } catch (URISyntaxException e) {
                 throw new IllegalArgumentException(e.getMessage());
             }
+            return this;
+        }
+
+        public Builder withState(CosmosClientMetadataCachesSnapshot state) {
+            this.state = state;
             return this;
         }
 
@@ -216,9 +229,10 @@ public interface AsyncDocumentClient {
                 tokenCredential,
                 sessionCapturingOverride,
                 transportClientSharing,
-                contentResponseOnWriteEnabled);
+                contentResponseOnWriteEnabled,
+                state);
 
-            client.init();
+            client.init(state);
             return client;
         }
 
@@ -310,6 +324,13 @@ public interface AsyncDocumentClient {
      * @return the consistency level
      */
     ConsistencyLevel getConsistencyLevel();
+
+    /**
+     * Gets the client telemetry
+     *
+     * @return the client telemetry
+     */
+    ClientTelemetry getClientTelemetry();
 
     /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
@@ -549,6 +570,21 @@ public interface AsyncDocumentClient {
      * @return a {@link Mono} containing the single resource response with the replaced document or an error.
      */
     Mono<ResourceResponse<Document>> replaceDocument(String documentLink, Object document, RequestOptions options);
+
+    /**
+     * Apply patch on an item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the patched document.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param documentLink the document link.
+     * @param cosmosPatchOperations container with the list of patch operations.
+     * @param options the request options.
+     *
+     * @return a {@link Mono} containing the single resource response with the patched document or an error.
+     */
+    Mono<ResourceResponse<Document>> patchDocument(String documentLink, CosmosPatchOperations cosmosPatchOperations, RequestOptions options);
 
     /**
      * Replaces a document with the passed in document.
@@ -1411,6 +1447,13 @@ public interface AsyncDocumentClient {
     Mono<DatabaseAccount> getDatabaseAccount();
 
     /**
+     * Gets latest cached database account information from GlobalEndpointManager.
+     *
+     * @return the database account.
+     */
+    DatabaseAccount getLatestDatabaseAccount();
+
+    /**
      * Reads many documents at once
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param collectionLink link for the documentcollection/container to be queried
@@ -1441,6 +1484,20 @@ public interface AsyncDocumentClient {
         PartitionKey partitionKey,
         CosmosQueryRequestOptions options
     );
+
+    /**
+     * Gets the collection cache.
+     *
+     * @return the collection Cache
+     */
+    RxClientCollectionCache getCollectionCache();
+
+    /**
+     * Gets the partition key range cache.
+     *
+     * @return the partition key range cache
+     */
+    RxPartitionKeyRangeCache getPartitionKeyRangeCache();
 
     /**
      * Close this {@link AsyncDocumentClient} instance and cleans up the resources.

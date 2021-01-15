@@ -25,7 +25,7 @@ Shares provide a way to organize sets of files and also can be mounted as an SMB
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-file-share</artifactId>
-  <version>12.7.0</version>
+  <version>12.8.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -116,7 +116,7 @@ https://myaccount.file.core.windows.net/myshare/mydirectorypath/myfile
 ### Handling Exceptions
 Uses the `shareServiceClient` generated from [shareSeviceClient](#share-service) section below.
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L222-L226 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L223-L227 -->
 ```java
 try {
     shareServiceClient.createShare("myShare");
@@ -160,7 +160,7 @@ Note that metadata names preserve the case with which they were created, but are
 The File Share Service REST API provides operations on accounts and manage file service properties. It allows the operations of listing and deleting shares, getting and setting file service properties.
 Once you have the SASToken, you can construct the `shareServiceClient` with `${accountName}`, `${sasToken}`
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L52-L54 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L53-L55 -->
 ```java
 String shareServiceURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
 ShareServiceClient shareServiceClient = new ShareServiceClientBuilder().endpoint(shareServiceURL)
@@ -171,7 +171,7 @@ ShareServiceClient shareServiceClient = new ShareServiceClientBuilder().endpoint
 The share resource includes metadata and properties for that share. It allows the opertions of creating, creating snapshot, deleting shares, getting share properties, setting metadata, getting and setting ACL (Access policy).
 Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${sasToken}`
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L59-L61 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L60-L62 -->
 ```java
 String shareURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
 ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
@@ -182,7 +182,7 @@ ShareClient shareClient = new ShareClientBuilder().endpoint(shareURL)
  The directory resource includes the properties for that directory. It allows the operations of creating, listing, deleting directories or subdirectories or files, getting properties, setting metadata, listing and force closing the handles.
  Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${directoryPath}`, `${sasToken}`
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L67-L69 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L68-L70 -->
 ```java
 String directoryURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
 ShareDirectoryClient directoryClient = new ShareFileClientBuilder().endpoint(directoryURL)
@@ -193,7 +193,7 @@ ShareDirectoryClient directoryClient = new ShareFileClientBuilder().endpoint(dir
  The file resource includes the properties for that file. It allows the operations of creating, uploading, copying, downloading, deleting files or range of the files, getting properties, setting metadata, listing and force closing the handles.
  Once you have the SASToken, you can construct the file service client with `${accountName}`, `${shareName}`, `${directoryPath}`, `${fileName}`, `${sasToken}`
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L76-L78 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L77-L79 -->
 ```java
 String fileURL = String.format("https://%s.file.core.windows.net", ACCOUNT_NAME);
 ShareFileClient fileClient = new ShareFileClientBuilder().connectionString(CONNECTION_STRING)
@@ -235,7 +235,7 @@ The following sections provide several code snippets covering some of the most c
 Create a share in the Storage Account. Throws StorageException If the share fails to be created.
 Taking a ShareServiceClient in KeyConcept, [`${shareServiceClient}`](#share-services).
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L82-L83 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L83-L84 -->
 ```Java
 String shareName = "testshare";
 shareServiceClient.createShare(shareName);
@@ -244,7 +244,7 @@ shareServiceClient.createShare(shareName);
 ### Create a snapshot on Share
 Taking a ShareServiceClient in KeyConcept, [`${shareServiceClient}`](#share-services).
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L87-L89 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L88-L90 -->
 ```Java
 String shareName = "testshare";
 ShareClient shareClient = shareServiceClient.getShareClient(shareName);
@@ -254,7 +254,7 @@ shareClient.createSnapshot();
 ### Create a directory
 Taking the [`${shareClient}`](#create-a-snapshot-on-share) initialized above, [`${shareClient}`](#share).
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L93-L94 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L94-L95 -->
 ```Java
 String dirName = "testdir";
 shareClient.createDirectory(dirName);
@@ -263,7 +263,7 @@ shareClient.createDirectory(dirName);
 ### Create a subdirectory
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#directory).
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L98-L99 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L99-L100 -->
 ```Java
 String subDirName = "testsubdir";
 directoryClient.createSubdirectory(subDirName);
@@ -272,7 +272,7 @@ directoryClient.createSubdirectory(subDirName);
 ### Create a File
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#directory) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L103-L105 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L104-L106 -->
 ```Java
 String fileName = "testfile";
 long maxSize = 1024;
@@ -282,7 +282,7 @@ directoryClient.createFile(fileName, maxSize);
 ### List all Shares
 Taking the shareServiceClient in KeyConcept, [`${shareServiceClient}`](#share-services)
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L109-L109 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L110-L110 -->
 ```Java
 shareServiceClient.listShares();
 ```
@@ -290,7 +290,7 @@ shareServiceClient.listShares();
 ### List all subdirectories and files
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#directory)
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L113-L113 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L114-L114 -->
 ```Java
 directoryClient.listFilesAndDirectories();
 ```
@@ -298,7 +298,7 @@ directoryClient.listFilesAndDirectories();
 ### List all ranges on file
 Taking the fileClient in KeyConcept, [`${fileClient}`](#file)
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L117-L117 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L118-L118 -->
 ```Java
 fileClient.listRanges();
 ```
@@ -306,7 +306,7 @@ fileClient.listRanges();
 ### Delete a share
 Taking the shareClient in KeyConcept, [`${shareClient}`](#share)
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L121-L121 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L122-L122 -->
 ```Java
 shareClient.delete();
 ```
@@ -314,7 +314,7 @@ shareClient.delete();
 ### Delete a directory
 Taking the shareClient in KeyConcept, [`${shareClient}`](#share) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L125-L126 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L126-L127 -->
 ```Java
 String dirName = "testdir";
 shareClient.deleteDirectory(dirName);
@@ -323,7 +323,7 @@ shareClient.deleteDirectory(dirName);
 ### Delete a subdirectory
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#directory) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L130-L131 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L131-L132 -->
 ```Java
 String subDirName = "testsubdir";
 directoryClient.deleteSubdirectory(subDirName);
@@ -332,7 +332,7 @@ directoryClient.deleteSubdirectory(subDirName);
 ### Delete a file
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#directory) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L135-L136 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L136-L137 -->
 ```Java
 String fileName = "testfile";
 directoryClient.deleteFile(fileName);
@@ -341,7 +341,7 @@ directoryClient.deleteFile(fileName);
 ### Copy a file
 Taking the fileClient in KeyConcept, [`${fileClient}`](#file) with string of source URL.
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L140-L142 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L141-L143 -->
 ```Java
 String sourceURL = "https://myaccount.file.core.windows.net/myshare/myfile";
 Duration pollInterval = Duration.ofSeconds(2);
@@ -351,7 +351,7 @@ SyncPoller<ShareFileCopyInfo, Void> poller = fileClient.beginCopy(sourceURL, nul
 ### Abort copy a file
 Taking the fileClient in KeyConcept, [`${fileClient}`](#file) with the copy info response returned above `${copyId}=[copyInfoResponse](#copy-a-file)`.
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L146-L146 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L147-L147 -->
 ```Java
 fileClient.abortCopy("copyId");
 ```
@@ -359,7 +359,7 @@ fileClient.abortCopy("copyId");
 ### Upload data to storage
 Taking the fileClient in KeyConcept, [`${fileClient}`](#file) with data of "default" .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L150-L152 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L151-L153 -->
 ```Java
 String uploadText = "default";
 InputStream data = new ByteArrayInputStream(uploadText.getBytes(StandardCharsets.UTF_8));
@@ -369,7 +369,7 @@ fileClient.upload(data, uploadText.length());
 ### Upload file to storage
 Taking the fileClient in KeyConcept, [`${fileClient}`](#file) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L156-L157 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L157-L158 -->
 ```Java
 String filePath = "${myLocalFilePath}";
 fileClient.uploadFromFile(filePath);
@@ -378,7 +378,7 @@ fileClient.uploadFromFile(filePath);
 ### Download data from file range
 Taking the fileClient in KeyConcept, [`${fileClient}`](#file) with the range from 1024 to 2048.
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L161-L163 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L162-L164 -->
 ```Java
 ShareFileRange fileRange = new ShareFileRange(0L, 2048L);
 OutputStream stream = new ByteArrayOutputStream();
@@ -388,7 +388,7 @@ fileClient.downloadWithResponse(stream, fileRange, false, null, Context.NONE);
 ### Download file from storage
 Taking the fileClient in KeyConcept, [`${fileClient}`](#file) and download to the file of filePath.
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L167-L168 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L168-L169 -->
 ```Java
 String filePath = "${myLocalFilePath}";
 fileClient.downloadToFile(filePath);
@@ -397,7 +397,7 @@ fileClient.downloadToFile(filePath);
 ### Get a share service properties
 Taking a ShareServiceClient in KeyConcept, [`${shareServiceClient}`](#share-services) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L172-L172 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L173-L173 -->
 ```Java
 shareServiceClient.getProperties();
 ```
@@ -405,7 +405,7 @@ shareServiceClient.getProperties();
 ### Set a share service properties
 Taking a ShareServiceClient in KeyConcept, [`${shareServiceClient}`](#share-services) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L176-L181 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L177-L182 -->
 ```Java
 ShareServiceProperties properties = shareServiceClient.getProperties();
 
@@ -418,7 +418,7 @@ shareServiceClient.setProperties(properties);
 ### Set a share metadata
 Taking the shareClient in KeyConcept, [`${shareClient}`](#share) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L185-L186 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L186-L187 -->
 ```Java
 Map<String, String> metadata = Collections.singletonMap("directory", "metadata");
 shareClient.setMetadata(metadata);
@@ -427,7 +427,7 @@ shareClient.setMetadata(metadata);
 ### Get a share access policy
 Taking the shareClient in KeyConcept, [`${shareClient}`](#share)
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L190-L190 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L191-L191 -->
 ```Java
 shareClient.getAccessPolicy();
 ```
@@ -435,7 +435,7 @@ shareClient.getAccessPolicy();
 ### Set a share access policy
 Taking the shareClient in KeyConcept, [`${shareClient}`](#share) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L194-L198 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L195-L199 -->
 ```java
 ShareAccessPolicy accessPolicy = new ShareAccessPolicy().setPermissions("r")
     .setStartsOn(OffsetDateTime.now(ZoneOffset.UTC))
@@ -447,7 +447,7 @@ shareClient.setAccessPolicy(Collections.singletonList(permission));
 ### Get handles on directory file
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#directory)
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L202-L202 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L203-L203 -->
 ```Java
 PagedIterable<HandleItem> handleItems = directoryClient.listHandles(null, true, Duration.ofSeconds(30), Context.NONE);
 ```
@@ -455,7 +455,7 @@ PagedIterable<HandleItem> handleItems = directoryClient.listHandles(null, true, 
 ### Force close handles on handle id
 Taking the directoryClient in KeyConcept, [`${directoryClient}`](#directory) and the handle id returned above `${handleId}=[handleItems](#get-handles-on-directory-file)`
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L207-L208 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L208-L209 -->
 ```Java
 String handleId = handleItems.iterator().next().getHandleId();
 directoryClient.forceCloseHandleWithResponse(handleId, Duration.ofSeconds(30), Context.NONE);
@@ -464,16 +464,16 @@ directoryClient.forceCloseHandleWithResponse(handleId, Duration.ofSeconds(30), C
 ### Set quota on share
 Taking the shareClient in KeyConcept, [`${shareClient}`](#share) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L212-L213 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L213-L214 -->
 ```Java
 int quotaOnGB = 1;
-shareClient.setQuota(quotaOnGB);
+shareClient.setPropertiesWithResponse(new ShareSetPropertiesOptions().setQuotaInGb(quotaOnGB), null, Context.NONE);
 ```
 
 ### Set file httpheaders
 Taking the fileClient in KeyConcept, [`${fileClient}`](#file) .
 
-<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L217-L218 -->
+<!-- embedme ./src/samples/java/com/azure/storage/file/share/ReadmeSamples.java#L218-L219 -->
 ```Java
 ShareFileHttpHeaders httpHeaders = new ShareFileHttpHeaders().setContentType("text/plain");
 fileClient.setProperties(1024, httpHeaders, null, null);

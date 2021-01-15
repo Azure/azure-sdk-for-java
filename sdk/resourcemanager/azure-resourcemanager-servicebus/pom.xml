@@ -14,7 +14,7 @@
 
   <groupId>com.azure.resourcemanager</groupId>
   <artifactId>azure-resourcemanager-servicebus</artifactId>
-  <version>2.0.0-beta.6</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-servicebus;current} -->
+  <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-servicebus;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for ServiceBus Management</name>
@@ -52,7 +52,7 @@
     <dependency>
       <groupId>com.azure.resourcemanager</groupId>
       <artifactId>azure-resourcemanager-resources</artifactId>
-      <version>2.1.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
+      <version>2.2.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;current} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
@@ -69,7 +69,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.6.3</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -139,6 +139,25 @@
             <exclude>com/azure/resourcemanager/**/implementation/*ClientImpl*</exclude>
             <exclude>com/azure/resourcemanager/**/implementation/*ClientBuilder*</exclude>
           </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.revapi</groupId>
+        <artifactId>revapi-maven-plugin</artifactId>
+        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <configuration>
+          <analysisConfiguration>
+            <revapi.ignore>
+              <item>
+                <code>java.method.addedToInterface</code>
+              </item>
+              <item>
+                <regex>true</regex>
+                <code>.*</code>
+                <package>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*</package>
+              </item>
+            </revapi.ignore>
+          </analysisConfiguration>
         </configuration>
       </plugin>
     </plugins>

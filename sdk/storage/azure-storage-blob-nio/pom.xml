@@ -54,19 +54,19 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.10.0-beta.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.11.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.12.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

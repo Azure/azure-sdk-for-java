@@ -182,7 +182,8 @@ public final class PageBlobAsyncClient extends BlobAsyncClientBase {
      * @param sequenceNumber A user-controlled value that you can use to track requests. The value of the sequence
      * number must be between 0 and 2^63 - 1.The default value is 0.
      * @param headers {@link BlobHttpHeaders}
-     * @param metadata Metadata to associate with the blob.
+     * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link BlobRequestConditions}
      * @return A reactive response containing the information of the created page blob.
      *

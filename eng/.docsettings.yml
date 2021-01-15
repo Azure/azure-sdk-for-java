@@ -3,7 +3,7 @@ omitted_paths:
   - profiles/*
   - loganalytics/data-plane/samples/*
   - sdk/*/azure-*/samples/*
-  - sdk/*/microsoft-opentelemetry-exporter-azuremonitor/*/samples/*
+  - sdk/*/azure-opentelemetry-exporter-azuremonitor/*/samples/*
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - sdk/spring/azure-spring-boot-samples/*
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
@@ -143,7 +143,7 @@ known_content_issues:
   - ['sdk/keyvault/README.md', '#3113']
   - ['sdk/keyvault/azure-security-keyvault-administration/README.md', '#3113']
   - ['sdk/loganalytics/microsoft-azure-loganalytics/README.md', '#3113']
-  - ['sdk/monitor/microsoft-opentelemetry-exporter-azuremonitor/swagger/README.md', '#3113' ]
+  - ['sdk/monitor/azure-opentelemetry-exporter-azuremonitor/swagger/README.md', '#3113' ]
   - ['sdk/parents/azure-client-sdk-parent/README.md', '#3113']
   - ['sdk/search/azure-search-documents/swagger/README.md', '#3113']
   - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']
@@ -162,6 +162,11 @@ known_content_issues:
   - ['sdk/storage/azure-storage-blob-nio/README.md', '#3113']
   - ['sdk/storage/azure-storage-internal-avro/README.md', '#3113']
   - ['sdk/storage/README.md', '#3113']
+  - ['sdk/synapse/azure-analytics-synapse-accesscontrol/swagger/README.md', '#3113']
+  - ['sdk/synapse/azure-analytics-synapse-artifacts/swagger/README.md', '#3113']
+  - ['sdk/synapse/azure-analytics-synapse-spark/swagger/README.md', '#3113']
+  - ['sdk/synapse/azure-analytics-synapse-managedprivateendpoints/swagger/README.md', '#3113']
+  - ['sdk/synapse/azure-analytics-synapse-monitoring/swagger/README.md', '#3113']
   - ['sdk/tables/azure-data-tables/swagger/README.md', '#3113']
   - ['sdk/template/azure-sdk-template/README.md','has other required sections']
   - ['sdk/textanalytics/azure-ai-textanalytics/swagger/README.md', '#3113']

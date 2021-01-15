@@ -69,7 +69,7 @@ public class AADB2CAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AADB2CAuthorizationRequestResolver b2cOAuth2AuthorizationRequestResolver() {
-        return new AADB2CAuthorizationRequestResolver(repository, properties.getUserFlows().getPasswordReset());
+        return new AADB2CAuthorizationRequestResolver(repository, properties);
     }
 
     @Bean
@@ -124,13 +124,15 @@ public class AADB2CAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         public ClientRegistrationRepository clientRegistrationRepository() {
-            final List<ClientRegistration> registrations = new ArrayList<>();
+            final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(1);
+            final List<ClientRegistration> otherRegistrations = new ArrayList<>();
 
-            addB2CClientRegistration(registrations, properties.getUserFlows().getSignUpOrSignIn());
-            addB2CClientRegistration(registrations, properties.getUserFlows().getProfileEdit());
-            addB2CClientRegistration(registrations, properties.getUserFlows().getPasswordReset());
 
-            return new InMemoryClientRegistrationRepository(registrations);
+            addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignUpOrSignIn());
+            addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getProfileEdit());
+            addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getPasswordReset());
+
+            return new AADB2CClientRegistrationRepository(signUpOrSignInRegistrations, otherRegistrations);
         }
 
         private ClientRegistration b2cClientRegistration(String userFlow) {

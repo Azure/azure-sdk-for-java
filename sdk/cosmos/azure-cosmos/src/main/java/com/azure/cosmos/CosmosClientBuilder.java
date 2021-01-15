@@ -8,10 +8,12 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosPermissionProperties;
+import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -87,6 +89,7 @@ public class CosmosClientBuilder {
     private Configs configs = new Configs();
     private String serviceEndpoint;
     private String keyOrResourceToken;
+    private CosmosClientMetadataCachesSnapshot state;
     private TokenCredential tokenCredential;
     private ConnectionPolicy connectionPolicy;
     private GatewayConnectionConfig gatewayConnectionConfig;
@@ -104,6 +107,7 @@ public class CosmosClientBuilder {
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
+    private boolean clientTelemetryEnabled = false;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -114,6 +118,15 @@ public class CosmosClientBuilder {
         //  Some default values
         this.userAgentSuffix = "";
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
+    }
+
+    CosmosClientBuilder metadataCaches(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
+        this.state = metadataCachesSnapshot;
+        return this;
+    }
+
+    CosmosClientMetadataCachesSnapshot metadataCaches() {
+        return this.state;
     }
 
     /**
@@ -585,6 +598,21 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Sets the flag to enable client telemetry which will periodically collect
+     * database operations aggregation statistics, system information like cpu/memory
+     * and send it to cosmos monitoring service, which will be helpful during debugging.
+     *<p>
+     * DEFAULT value is false indicating this is opt in feature, by default no telemetry collection.
+     *
+     * @param clientTelemetryEnabled flag to enable client telemetry.
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
+        this.clientTelemetryEnabled = clientTelemetryEnabled;
+        return this;
+    }
+
+    /**
      * Sets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
      * DEFAULT value is true.
@@ -677,6 +705,15 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Gets the flag to enabled client telemetry.
+     *
+     * @return flag to enable client telemetry.
+     */
+    boolean isClientTelemetryEnabled() {
+        return clientTelemetryEnabled;
+    }
+
+    /**
      * Gets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
      * DEFAULT value is true.
@@ -738,6 +775,7 @@ public class CosmosClientBuilder {
         this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
         this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
         this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
+        this.connectionPolicy.setClientTelemetryEnabled(this.clientTelemetryEnabled);
     }
 
     private void validateConfig() {
@@ -788,5 +826,27 @@ public class CosmosClientBuilder {
         if (value) {
             throw new IllegalArgumentException(error);
         }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+
+    static {
+        CosmosClientBuilderHelper.setCosmosClientBuilderAccessor(
+            new CosmosClientBuilderHelper.CosmosClientBuilderAccessor() {
+
+                @Override
+                public void setCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder,
+                                                                  CosmosClientMetadataCachesSnapshot metadataCache) {
+                    builder.metadataCaches(metadataCache);
+                }
+
+                @Override
+                public CosmosClientMetadataCachesSnapshot getCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder) {
+                    return builder.metadataCaches();
+                }
+            });
     }
 }

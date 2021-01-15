@@ -16,7 +16,7 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.experimental.util.BinaryData;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;

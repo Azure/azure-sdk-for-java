@@ -4,8 +4,10 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosClientBuilder
+import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeInternal}
 import com.azure.cosmos.models.{CosmosParametrizedQuery, CosmosQueryRequestOptions}
 import com.fasterxml.jackson.databind.node.ObjectNode
+import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.StructType
@@ -13,7 +15,10 @@ import org.apache.spark.sql.types.StructType
 // per spark task there will be one CosmosPartitionReader.
 // This provides iterator to read from the assigned spark partition
 // For now we are creating only one spark partition
-case class CosmosPartitionReader(config: Map[String, String], readSchema: StructType, cosmosQuery: CosmosParametrizedQuery)
+case class CosmosPartitionReader(config: Map[String, String],
+                                 readSchema: StructType,
+                                 cosmosQuery: CosmosParametrizedQuery,
+                                 cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot])
 // TODO: moderakh query need to change to SqlSpecQuery
 // requires making a serializable wrapper on top of SqlQuerySpec
 
@@ -25,10 +30,16 @@ case class CosmosPartitionReader(config: Map[String, String], readSchema: Struct
 
   // TODO: moderakh cache the cosmos clients and manage the lifetime of the clients
   // we shouldn't recreate everytime, causing resource leak, inefficient behaviour
-  val cosmosAsyncContainer = new CosmosClientBuilder()
+  val builder = new CosmosClientBuilder()
     .endpoint(endpointConfig.endpoint)
     .key(endpointConfig.key)
-    .buildAsyncClient()
+
+  val metadataCache = cosmosClientStateHandle.value;
+
+  SparkBridgeInternal.setMetadataCacheSnapshot(builder, metadataCache)
+  val client = builder.buildAsyncClient();
+
+  val cosmosAsyncContainer = client
     .getDatabase(containerTargetConfig.database)
     .getContainer(containerTargetConfig.container)
 

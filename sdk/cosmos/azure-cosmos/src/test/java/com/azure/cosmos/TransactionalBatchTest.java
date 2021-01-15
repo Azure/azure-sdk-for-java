@@ -17,8 +17,8 @@ import org.testng.annotations.Test;
 import java.util.List;
 import java.util.UUID;
 
-import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
-import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstant.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
+import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstants.MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
+import static com.azure.cosmos.implementation.batch.BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TransactionalBatchTest extends BatchTestBase {

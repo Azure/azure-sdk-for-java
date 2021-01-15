@@ -30,6 +30,7 @@ import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.models.PathSetAccessControlRecursiveMode;
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
+import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeSasImplUtil;
 import com.azure.storage.file.datalake.implementation.util.ModelHelper;
@@ -56,6 +57,7 @@ import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveO
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
+import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Base64;
@@ -79,6 +81,7 @@ public class DataLakePathAsyncClient {
     private final ClientLogger logger = new ClientLogger(DataLakePathAsyncClient.class);
 
     final DataLakeStorageClientImpl dataLakeStorage;
+    final DataLakeStorageClientImpl fileSystemDataLakeStorage;
     /**
      * This {@link DataLakeStorageClientImpl} is pointing to blob endpoint instead of dfs
      * in order to expose APIs that are on blob endpoint but are only functional for HNS enabled accounts.
@@ -126,6 +129,20 @@ public class DataLakePathAsyncClient {
         this.pathName = Utility.urlEncode(Utility.urlDecode(pathName));
         this.pathResourceType = pathResourceType;
         this.blockBlobAsyncClient = blockBlobAsyncClient;
+
+        BlobUrlParts parts = BlobUrlParts.parse(url);
+        String fileSystemUrl;
+        try {
+            fileSystemUrl = String.format("%s/%s", BuilderHelper.getEndpoint(parts), fileSystemName);
+        } catch (MalformedURLException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
+
+        this.fileSystemDataLakeStorage = new DataLakeStorageClientBuilder()
+            .pipeline(pipeline)
+            .url(fileSystemUrl)
+            .version(serviceVersion.getVersion())
+            .build();
     }
 
     /**
@@ -291,7 +308,8 @@ public class DataLakePathAsyncClient {
      * @param permissions POSIX access permissions for the resource owner, the resource owning group, and others.
      * @param umask Restricts permissions of the resource to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
@@ -362,7 +380,8 @@ public class DataLakePathAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
-     * @param metadata Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @return A reactive response signalling completion.
      */
     public Mono<Void> setMetadata(Map<String, String> metadata) {
@@ -384,7 +403,8 @@ public class DataLakePathAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
-     * @param metadata Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response signalling completion.
      */
@@ -1136,21 +1156,45 @@ public class DataLakePathAsyncClient {
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
-     * @see DataLakeServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime) for more information on how
-     * to get a user delegation key.
+     * See {@link DataLakeServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information
+     * on how to get a user delegation key.
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
         UserDelegationKey userDelegationKey) {
+        return generateUserDelegationSas(dataLakeServiceSasSignatureValues, userDelegationKey, getAccountName(),
+            Context.NONE);
+    }
+
+    /**
+     * Generates a user delegation SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}.
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a user delegation SAS.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.generateUserDelegationSas#DataLakeServiceSasSignatureValues-UserDelegationKey-String-Context}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param userDelegationKey A {@link UserDelegationKey} object used to sign the SAS values.
+     * See {@link DataLakeServiceAsyncClient#getUserDelegationKey(OffsetDateTime, OffsetDateTime)} for more information
+     * on how to get a user delegation key.
+     * @param accountName The account name.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateUserDelegationSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues,
+        UserDelegationKey userDelegationKey, String accountName, Context context) {
         return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName(), getObjectPath(),
             PathResourceType.DIRECTORY.equals(this.pathResourceType))
-            .generateUserDelegationSas(userDelegationKey, getAccountName());
+            .generateUserDelegationSas(userDelegationKey, accountName, context);
     }
 
     /**
      * Generates a service SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -1159,11 +1203,29 @@ public class DataLakePathAsyncClient {
      *
      * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues) {
+        return generateSas(dataLakeServiceSasSignatureValues, Context.NONE);
+    }
+
+    /**
+     * Generates a service SAS for the path using the specified {@link DataLakeServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link DataLakeServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.generateSas#DataLakeServiceSasSignatureValues-Context}
+     *
+     * @param dataLakeServiceSasSignatureValues {@link DataLakeServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(DataLakeServiceSasSignatureValues dataLakeServiceSasSignatureValues, Context context) {
         return new DataLakeSasImplUtil(dataLakeServiceSasSignatureValues, getFileSystemName(), getObjectPath(),
             PathResourceType.DIRECTORY.equals(this.pathResourceType))
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 }

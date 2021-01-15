@@ -17,6 +17,7 @@ import com.azure.resourcemanager.appservice.models.FunctionEnvelope;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.BatchDeletionImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -140,8 +141,8 @@ public class FunctionAppsImpl
 
     @Override
     public PagedFlux<FunctionAppBasic> listByResourceGroupAsync(String resourceGroupName) {
-        return inner().listByResourceGroupAsync(resourceGroupName)
-            .mapPage(inner -> new FunctionAppBasicImpl(inner, this.manager()));
+        return PagedConverter.flatMapPage(inner().listByResourceGroupAsync(resourceGroupName),
+            inner -> isFunctionApp(inner) ? Mono.just(new FunctionAppBasicImpl(inner, this.manager())) : Mono.empty());
     }
 
     @Override
@@ -151,7 +152,11 @@ public class FunctionAppsImpl
 
     @Override
     public PagedFlux<FunctionAppBasic> listAsync() {
-        return inner().listAsync()
-            .mapPage(inner -> new FunctionAppBasicImpl(inner, this.manager()));
+        return PagedConverter.flatMapPage(inner().listAsync(),
+            inner -> isFunctionApp(inner) ? Mono.just(new FunctionAppBasicImpl(inner, this.manager())) : Mono.empty());
+    }
+
+    private static boolean isFunctionApp(SiteInner inner) {
+        return inner.kind() != null && Arrays.asList(inner.kind().split(",")).contains("functionapp");
     }
 }

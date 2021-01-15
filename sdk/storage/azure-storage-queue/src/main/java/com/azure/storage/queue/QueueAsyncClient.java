@@ -149,7 +149,8 @@ public final class QueueAsyncClient {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/create-queue4">Azure Docs</a>.</p>
      *
-     * @param metadata Metadata to associate with the queue
+     * @param metadata Metadata to associate with the queue. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @return A response that only contains headers and response status code
      * @throws QueueStorageException If a queue with the same name and different metadata already exists in the queue
      * service.
@@ -925,7 +926,7 @@ public final class QueueAsyncClient {
 
     /**
      * Generates a service sas for the queue using the specified {@link QueueServiceSasSignatureValues}
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link QueueServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
      *
      * <p><strong>Code Samples</strong></p>
@@ -934,11 +935,29 @@ public final class QueueAsyncClient {
      *
      * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues) {
+        return generateSas(queueServiceSasSignatureValues, Context.NONE);
+    }
+
+    /**
+     * Generates a service sas for the queue using the specified {@link QueueServiceSasSignatureValues}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link QueueServiceSasSignatureValues} for more information on how to construct a service SAS.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.queue.QueueAsyncClient.generateSas#QueueServiceSasSignatureValues-Context}
+     *
+     * @param queueServiceSasSignatureValues {@link QueueServiceSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues, Context context) {
         return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
     /*

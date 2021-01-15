@@ -11,6 +11,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -163,7 +164,8 @@ public class DataLakeServiceAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.createFileSystemWithResponse#String-Map-PublicAccessType}
      *
      * @param fileSystemName Name of the file system to create
-     * @param metadata Metadata to associate with the file system
+     * @param metadata Metadata to associate with the file system. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param accessType Specifies how the data in this file system is available to the public. See the
      * x-ms-blob-public-access header in the Azure Docs for more information. Pass null for no public access.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
@@ -357,7 +359,7 @@ public class DataLakeServiceAsyncClient {
 
     /**
      * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to file
@@ -366,10 +368,28 @@ public class DataLakeServiceAsyncClient {
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
         return blobServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to file
+     * systems and file shares.</p>
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
+        return blobServiceAsyncClient.generateAccountSas(accountSasSignatureValues, context);
     }
 
 }

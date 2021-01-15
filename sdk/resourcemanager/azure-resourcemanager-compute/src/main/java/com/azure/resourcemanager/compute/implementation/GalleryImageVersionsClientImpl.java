@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -70,7 +71,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface GalleryImageVersionsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}")
@@ -85,9 +86,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             @PathParam("galleryImageVersionName") String galleryImageVersionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GalleryImageVersionInner galleryImageVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}")
@@ -102,9 +104,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             @PathParam("galleryImageVersionName") String galleryImageVersionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GalleryImageVersionUpdate galleryImageVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}")
@@ -119,9 +122,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             @PathParam("galleryImageVersionName") String galleryImageVersionName,
             @QueryParam("$expand") ReplicationStatusTypes expand,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/images/{galleryImageName}/versions/{galleryImageVersionName}")
@@ -135,9 +139,10 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             @PathParam("galleryImageName") String galleryImageName,
             @PathParam("galleryImageVersionName") String galleryImageVersionName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
                 + "/{galleryName}/images/{galleryImageName}/versions")
@@ -150,14 +155,18 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             @PathParam("galleryName") String galleryName,
             @PathParam("galleryImageName") String galleryImageName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<GalleryImageVersionList>> listByGalleryImageNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -218,6 +227,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             galleryImageVersion.validate();
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -231,6 +241,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                             galleryImageVersionName,
                             apiVersion,
                             galleryImageVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -295,6 +306,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             galleryImageVersion.validate();
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -306,6 +318,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 galleryImageVersionName,
                 apiVersion,
                 galleryImageVersion,
+                accept,
                 context);
     }
 
@@ -622,6 +635,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             galleryImageVersion.validate();
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -635,6 +649,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                             galleryImageVersionName,
                             apiVersion,
                             galleryImageVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -698,6 +713,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
             galleryImageVersion.validate();
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -709,6 +725,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 galleryImageVersionName,
                 apiVersion,
                 galleryImageVersion,
+                accept,
                 context);
     }
 
@@ -1009,6 +1026,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                     new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1022,6 +1040,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                             galleryImageVersionName,
                             expand,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1077,6 +1096,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                     new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -1088,6 +1108,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 galleryImageVersionName,
                 expand,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1239,6 +1260,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                     new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1251,6 +1273,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                             galleryImageName,
                             galleryImageVersionName,
                             apiVersion,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -1304,6 +1327,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                     new IllegalArgumentException("Parameter galleryImageVersionName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -1314,6 +1338,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 galleryImageName,
                 galleryImageVersionName,
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1533,6 +1558,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1544,6 +1570,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                             galleryName,
                             galleryImageName,
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<GalleryImageVersionInner>>map(
                 res ->
@@ -1597,6 +1624,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
         }
         final String apiVersion = "2019-12-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByGalleryImage(
@@ -1606,6 +1634,7 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
                 galleryName,
                 galleryImageName,
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -1710,8 +1739,16 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByGalleryImageNext(nextLink, context))
+            .withContext(
+                context -> service.listByGalleryImageNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<GalleryImageVersionInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1740,9 +1777,16 @@ public final class GalleryImageVersionsClientImpl implements GalleryImageVersion
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByGalleryImageNext(nextLink, context)
+            .listByGalleryImageNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -21,8 +21,8 @@ There are two swaggers for Administration management APIs, `identity` and `phone
 
 ```ps
 cd <swagger-folder>
-autorest --use=@autorest/java@4.0.1 --tag=identity
-autorest --use=@autorest/java@4.0.1 --tag=phonenumber
+autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=identity
+autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=phonenumber
 ```
 
 
