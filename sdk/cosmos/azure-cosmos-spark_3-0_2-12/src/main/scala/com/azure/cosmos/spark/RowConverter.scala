@@ -36,8 +36,100 @@ object CosmosRowConverter
 
     def fromRowToObjectNode(row: Row): ObjectNode = {
         val objectNode: ObjectNode = objectMapper.createObjectNode();
+        row.schema.fields.zipWithIndex.foreach({
+            case (field, i) => {
+                field.dataType match {
+                    case NullType  | _ if row.isNullAt(i) => objectNode.putNull(field.name)
+                    case _ => objectNode.set(field.name, convertSparkDataTypeToJsonNode(field.dataType, row.get(i)))
+                }
+            }
+        })
 
         objectNode
+    }
+
+    // scalastyle:off
+    private def convertSparkDataTypeToJsonNode(fieldType: DataType, rowData: Any) : JsonNode = {
+        fieldType match {
+            case StringType => objectMapper.convertValue(rowData.asInstanceOf[String], classOf[JsonNode])
+            case BinaryType => objectMapper.convertValue(rowData.asInstanceOf[Array[Byte]], classOf[JsonNode])
+            case BooleanType => objectMapper.convertValue(rowData.asInstanceOf[Boolean], classOf[JsonNode])
+            case DoubleType => objectMapper.convertValue(rowData.asInstanceOf[Double], classOf[JsonNode])
+            case IntegerType => objectMapper.convertValue(rowData.asInstanceOf[Int], classOf[JsonNode])
+            case LongType => objectMapper.convertValue(rowData.asInstanceOf[Long], classOf[JsonNode])
+            case FloatType => objectMapper.convertValue(rowData.asInstanceOf[Float], classOf[JsonNode])
+            case DecimalType() => if (rowData.isInstanceOf[Decimal]) {
+                    objectMapper.convertValue(rowData.asInstanceOf[Decimal].toJavaBigDecimal, classOf[JsonNode])
+                } else if (rowData.isInstanceOf[java.lang.Long]) {
+                    objectMapper.convertValue(new java.math.BigDecimal(rowData.asInstanceOf[java.lang.Long]), classOf[JsonNode])
+                } else {
+                    objectMapper.convertValue(rowData.asInstanceOf[java.math.BigDecimal], classOf[JsonNode])
+                }
+            case DateType => if (rowData.isInstanceOf[java.lang.Long]) {
+                objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
+            } else {
+                objectMapper.convertValue(rowData.asInstanceOf[Date].getTime, classOf[JsonNode])
+            }
+            case TimestampType => if (rowData.isInstanceOf[java.lang.Long]) {
+                    objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
+                } else {
+                    objectMapper.convertValue(rowData.asInstanceOf[Timestamp].getTime, classOf[JsonNode])
+                }
+            case arrayType: ArrayType => convertSparkArrayToArrayNode(arrayType.elementType, arrayType.containsNull, rowData.asInstanceOf[Seq[_]])
+            case _: StructType => rowTypeRouterToJsonArray(rowData)
+            case mapType: MapType =>
+                mapType.keyType match {
+                    case StringType =>
+                        convertSparkMapToObjectNode(mapType.valueType, mapType.valueContainsNull, rowData.asInstanceOf[Map[String, _]])
+                    case _ =>
+                        throw new Exception(s"Cannot cast $rowData into a Json value. MapTypes must have keys of StringType for conversion Json")
+                }
+            case _ =>
+                throw new Exception(s"Cannot cast $rowData into a Json value. $fieldType has no matching Json value.")
+        }
+    }
+
+    private def convertSparkMapToObjectNode(elementType: DataType, containsNull: Boolean, data: Map[String, Any]) : ObjectNode = {
+        val objectNode = objectMapper.createObjectNode()
+
+        data.foreach(x =>
+            if (containsNull && x._2 == null) {
+                objectNode.putNull(x._1)
+            }
+            else {
+                objectNode.set(x._1, convertSparkSubItemToJsonNode(elementType, containsNull, x._2))
+            })
+
+        objectNode
+    }
+
+    private def convertSparkArrayToArrayNode(elementType: DataType, containsNull: Boolean, data: Seq[Any]): ArrayNode = {
+        val arrayNode = objectMapper.createArrayNode()
+
+        data.foreach(x =>
+            if (containsNull && x == null) {
+                arrayNode.add(objectMapper.nullNode())
+            }
+            else {
+                arrayNode.add(convertSparkSubItemToJsonNode(elementType, containsNull, x))
+            })
+
+        arrayNode
+    }
+
+    private def convertSparkSubItemToJsonNode(elementType: DataType, containsNull: Boolean, data: Any): JsonNode = {
+        elementType match {
+            case _: StructType => rowTypeRouterToJsonArray(data)
+            case subArray: ArrayType => convertSparkArrayToArrayNode(subArray.elementType, containsNull, data.asInstanceOf[Seq[_]])
+            case _ => convertSparkDataTypeToJsonNode(elementType, data)
+        }
+    }
+
+    private def rowTypeRouterToJsonArray(element: Any) : ObjectNode = {
+        element match {
+            case e: Row => fromRowToObjectNode(e)
+            case _ => throw new Exception(s"Cannot cast $element into a Json value. Struct $element has no matching Json value.")
+        }
     }
 
     private def convertStructToSparkDataType(schema: StructType, objectNode: ObjectNode) : Seq[Any] =
@@ -99,8 +191,8 @@ object CosmosRowConverter
                  | _: com.fasterxml.jackson.databind.node.FloatNode
                  | _: com.fasterxml.jackson.databind.node.LongNode => true
             case _ => false
+        }
     }
-
 
     // ------------------------------------------------------
     def toInternalRow(schema: StructType, objectNode: ObjectNode): InternalRow = {
