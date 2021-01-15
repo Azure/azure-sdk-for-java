@@ -31,17 +31,6 @@ public class PartitionKey {
     }
 
     /**
-     * Constructor. CREATE a new instance of the PartitionKey object.
-     *
-     * @param keys the value of partition keys.
-     */
-    @SuppressWarnings("serial")
-    public PartitionKey(final Object[] keys) {
-        this.keyObject = keys;
-        this.internalPartitionKey = PartitionKeyInternal.fromObjectArray(keys, true);
-    }
-
-    /**
      * Gets the object used to create partition key
      * @return the partition key object
      */
