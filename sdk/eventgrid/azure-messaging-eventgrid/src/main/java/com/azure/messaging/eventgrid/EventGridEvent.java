@@ -57,8 +57,8 @@ public final class EventGridEvent {
      *
      * @return all of the events in the payload parsed as {@link EventGridEvent}s.
      */
-    public static List<EventGridEvent> parse(String json) {
-        return EventParser.parseEventGridEvents(json);
+    public static List<EventGridEvent> deserializeEventGridEvents(String json) {
+        return EventGridDeserializer.deserializeEventGridEvents(json);
     }
 
 
@@ -130,7 +130,7 @@ public final class EventGridEvent {
         if (event.getData() == null) {
             return null;
         }
-        return EventParser.getSystemEventData(this.getData(), event.getEventType());
+        return EventGridDeserializer.getSystemEventData(this.getData(), event.getEventType());
     }
 
     /**
@@ -142,7 +142,7 @@ public final class EventGridEvent {
         if (event.getData() == null) {
             return Mono.empty();
         }
-        return EventParser.getSystemEventDataAsync(this.getDataAsync(), event.getEventType());
+        return EventGridDeserializer.getSystemEventDataAsync(this.getDataAsync(), event.getEventType());
     }
 
     /**
@@ -152,7 +152,7 @@ public final class EventGridEvent {
      */
     public BinaryData getData() {
         if (event.getData() != null) {
-            return EventParser.getData(event.getData());
+            return EventGridDeserializer.getData(event.getData());
         }
         return null;
     }
@@ -164,7 +164,7 @@ public final class EventGridEvent {
      */
     public Mono<BinaryData> getDataAsync() {
         if (event.getData() != null) {
-            return Mono.defer(() -> Mono.just(EventParser.getData(event.getData())));
+            return Mono.defer(() -> Mono.just(EventGridDeserializer.getData(event.getData())));
         }
         return Mono.empty();
     }

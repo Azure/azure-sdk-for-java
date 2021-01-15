@@ -36,8 +36,9 @@ public final class CloudEvent {
      * Create an instance of CloudEvent. The source and type are required fields to publish.
      * @param source a URI identifying the origin of the event.
      * @param type   the type of event, e.g. "Contoso.Items.ItemReceived".
+     * @param data the payload of this event.
      */
-    public CloudEvent(String source, String type) {
+    public CloudEvent(String source, String type, Object data) {
         if (CoreUtils.isNullOrEmpty(source)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("Source cannot be null or empty"));
         }
@@ -50,6 +51,19 @@ public final class CloudEvent {
             .setSource(source)
             .setType(type)
             .setSpecversion(SPEC_VERSION);
+        this.setData(data);
+    }
+
+    /**
+     * Create an instance of CloudEvent. The source and type are required fields to publish.
+     * @param source a URI identifying the origin of the event.
+     * @param type   the type of event, e.g. "Contoso.Items.ItemReceived".
+     * @param data the payload of this event.
+     * @param dataContentType the type of the data.
+     */
+    public CloudEvent(String source, String type, Object data, String dataContentType) {
+        this(source, type, data);
+        this.cloudEvent.setDatacontenttype(dataContentType);
     }
 
     /**
@@ -59,8 +73,8 @@ public final class CloudEvent {
      *
      * @return all of the events in the payload parsed as {@link CloudEvent}s.
      */
-    public static List<CloudEvent> parse(String json) {
-        return EventParser.parseCloudEvents(json);
+    public static List<CloudEvent> deserializeCloudEvents(String json) {
+        return EventGridDeserializer.deserializeCloudEvents(json);
     }
 
     /**
@@ -112,7 +126,7 @@ public final class CloudEvent {
         if ((cloudEvent.getData() == null && cloudEvent.getDataBase64() == null)) {
             return null;
         }
-        return EventParser.getSystemEventData(this.getData(), cloudEvent.getType());
+        return EventGridDeserializer.getSystemEventData(this.getData(), cloudEvent.getType());
     }
 
     /**
@@ -124,7 +138,7 @@ public final class CloudEvent {
         if ((cloudEvent.getData() == null && cloudEvent.getDataBase64() == null)) {
             return Mono.empty();
         }
-        return EventParser.getSystemEventDataAsync(this.getDataAsync(), cloudEvent.getType());
+        return EventGridDeserializer.getSystemEventDataAsync(this.getDataAsync(), cloudEvent.getType());
     }
 
     /**
@@ -137,7 +151,7 @@ public final class CloudEvent {
             return BinaryData.fromBytes(cloudEvent.getDataBase64());
         }
         if (cloudEvent.getData() != null) {
-            return EventParser.getData(cloudEvent.getData());
+            return EventGridDeserializer.getData(cloudEvent.getData());
         }
         return null;
     }

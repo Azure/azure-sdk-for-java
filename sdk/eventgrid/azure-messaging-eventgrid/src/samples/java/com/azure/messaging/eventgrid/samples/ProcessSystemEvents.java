@@ -5,7 +5,7 @@ package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.EventGridEvent;
-import com.azure.messaging.eventgrid.EventParser;
+import com.azure.messaging.eventgrid.EventGridDeserializer;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDeletedEventData;
 
 import java.util.List;
@@ -20,7 +20,7 @@ public class ProcessSystemEvents {
             "    \"eventType\": \"Microsoft.AppConfiguration.KeyValueDeleted\",\n" +
             "    \"eventTime\": \"2018-01-02T19:17:44.4383997Z\",\n" +
             "    \"data\": {\n" +
-            "\t\"key\":\"key1\",\n" +
+            "        \"key\":\"key1\",\n" +
             "        \"label\":\"label1\",\n" +
             "        \"etag\":\"etag1\"\n" +
             "    },\n" +
@@ -29,7 +29,7 @@ public class ProcessSystemEvents {
             "  }\n" +
             "]\n";
 
-        List<EventGridEvent> eventGridEvents = EventParser.parseEventGridEvents(eventGridJsonString);
+        List<EventGridEvent> eventGridEvents = EventGridDeserializer.deserializeEventGridEvents(eventGridJsonString);
 
         for (EventGridEvent eventGridEvent : eventGridEvents) {
             if (eventGridEvent.isSystemEvent()) {

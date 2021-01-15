@@ -26,8 +26,8 @@ import java.util.Base64;
  * {@link EventGridPublisherClientBuilder#credential(AzureSasCredential)} to to create a client to publish events.
  *
  */
-public final class EventGridSasCreator {
-    private EventGridSasCreator() {
+public final class EventGridSharedAccessSingatureGenerator {
+    private EventGridSharedAccessSingatureGenerator() {
         // Hide the constructor
     }
     private static final ClientLogger logger = new ClientLogger(EventGridPublisherClient.class);
@@ -42,9 +42,7 @@ public final class EventGridSasCreator {
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
      */
-    public static String createSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
-        // TODO: To discuss. option 2: instance method instead of static. option 3: in a separate class. Refer to other
-        //  libraries.
+    public static String generateSharedAccessSignature(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
         try {
             String resKey = "r";
             String expKey = "e";

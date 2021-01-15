@@ -6,11 +6,12 @@ package com.azure.messaging.eventgrid.samples;
 import com.azure.core.credential.AzureKeyCredential;
 
 import com.azure.messaging.eventgrid.CloudEvent;
+import com.azure.messaging.eventgrid.EventGridDeserializer;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
-import com.azure.messaging.eventgrid.EventGridSasCreator;
+import com.azure.messaging.eventgrid.EventGridSharedAccessSingatureGenerator;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 
 import java.time.OffsetDateTime;
@@ -58,15 +59,14 @@ public class ReadmeSamples {
     public void sendCloudEvents() {
         List<CloudEvent> events = new ArrayList<>();
         events.add(
-            new CloudEvent("com/example/source", "Com.Example.ExampleEventType")
-                .setData("Example Data")
+            new CloudEvent("com/example/source", "Com.Example.ExampleEventType", "Example Data", null)
         );
 
         egClient.sendCloudEvents(events);
     }
 
     public void consumeEventGridEvent() {
-        List<EventGridEvent> events = EventGridEvent.parse(jsonData);
+        List<EventGridEvent> events = EventGridDeserializer.deserializeEventGridEvents(jsonData);
 
         for (EventGridEvent event : events) {
             // system event data will be turned into it's rich object,
@@ -88,7 +88,7 @@ public class ReadmeSamples {
     }
 
     public void consumeCloudEvent() {
-        List<CloudEvent> events = CloudEvent.parse(jsonData);
+        List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(jsonData);
 
         for (CloudEvent event : events) {
             if (event.isSystemEvent()) {
@@ -110,7 +110,7 @@ public class ReadmeSamples {
 
     public void createSharedAccessSignature() {
         OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
-        String sasToken = EventGridSasCreator
-            .createSas(endpoint, expiration, new AzureKeyCredential(key));
+        String sasToken = EventGridSharedAccessSingatureGenerator
+            .generateSharedAccessSignature(endpoint, new AzureKeyCredential(key), expiration);
     }
 }

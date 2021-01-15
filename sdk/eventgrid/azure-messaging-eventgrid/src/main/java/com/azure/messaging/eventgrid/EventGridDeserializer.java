@@ -15,12 +15,12 @@ import java.util.List;
 
 /**
  * This is convenience class that has methods to parse json into events.
- * {@link #parseCloudEvents(String)} parses a JSON string into a list of {@link CloudEvent} instances.
- * {@link #parseEventGridEvents(String)} parses a JSON string into a list of {@link EventGridEvent} instances.
+ * {@link #deserializeCloudEvents(String)} parses a JSON string into a list of {@link CloudEvent} instances.
+ * {@link #deserializeEventGridEvents(String)} parses a JSON string into a list of {@link EventGridEvent} instances.
  *
  */
-public final class EventParser {
-    private EventParser() {
+public final class EventGridDeserializer {
+    private EventGridDeserializer() {
         // Hide the constructor
     }
 
@@ -32,13 +32,13 @@ public final class EventParser {
     /**
      * Parse the EventGrid Event from a JSON string. This can be used to interpret the event at the event destination
      * from raw JSON into rich event(s).
-     * @param json the JSON payload containing one or more events.
+     * @param eventGridEventsJson the JSON payload containing one or more events.
      *
      * @return all of the events in the payload parsed as {@link EventGridEvent}s.
      */
-    public static List<EventGridEvent> parseEventGridEvents(String json) {
+    public static List<EventGridEvent> deserializeEventGridEvents(String eventGridEventsJson) {
         return Flux.fromArray(DESERIALIZER
-            .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
+            .deserialize(new ByteArrayInputStream(eventGridEventsJson.getBytes(StandardCharsets.UTF_8)),
                 TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class))
         )
             .map(EventGridEvent::new)
@@ -49,13 +49,13 @@ public final class EventParser {
     /**
      * Parse the Cloud Event from a JSON string. This can be used to interpret the event at the event destination
      * from raw JSON into rich event(s).
-     * @param json the JSON payload containing one or more events.
+     * @param cloudEventsJson the JSON payload containing one or more events.
      *
      * @return all of the events in the payload parsed as {@link CloudEvent}s.
      */
-    public static List<CloudEvent> parseCloudEvents(String json) {
+    public static List<CloudEvent> deserializeCloudEvents(String cloudEventsJson) {
         return Flux.fromArray(DESERIALIZER
-            .deserialize(new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
+            .deserialize(new ByteArrayInputStream(cloudEventsJson.getBytes(StandardCharsets.UTF_8)),
                 TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.CloudEvent[].class))
         )
             .map(CloudEvent::new)

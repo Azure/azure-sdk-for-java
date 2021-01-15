@@ -20,7 +20,7 @@ public class PublishCloudEventsToDomain {
 
         User newUser = new User("John2", "James");
         EventGridEvent eventModelClass = new EventGridEvent("A user is created", "User.Created.Object", newUser, "0.1")
-            .setTopic("com.example.MyApp");  // topic must be set when sending to an Event Grid Domain.
+            .setTopic("com/example/MyApp");  // topic must be set when sending to an Event Grid Domain.
 
         publisherClient.sendEvents(List.of(eventModelClass));
     }
