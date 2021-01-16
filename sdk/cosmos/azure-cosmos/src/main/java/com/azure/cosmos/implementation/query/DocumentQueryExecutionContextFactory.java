@@ -155,11 +155,7 @@ public class DocumentQueryExecutionContextFactory {
                 // a threadsafe LRU cache
                 queryPlanCache.clear();
             }
-            try {
-                queryPlanCache.put(query.getQueryText(), partitionedQueryExecutionInfo);
-            } catch (ConcurrentModificationException exception) {
-                logger.error("Error caching query plan: ", exception);
-            }
+            queryPlanCache.put(query.getQueryText(), partitionedQueryExecutionInfo);
         }
     }
 
