@@ -349,14 +349,14 @@ public abstract class IntegrationTestBase extends TestBase {
         return isSessionEnabled ? message.setSessionId(sessionId) : message;
     }
 
-    protected void assertMessageEquals(ServiceBusReceivedMessageContext context, String messageId, boolean isSessionEnabled) {
+    protected void assertMessageEquals(ServiceBusMessageContext context, String messageId, boolean isSessionEnabled) {
         Assertions.assertNotNull(context);
         Assertions.assertNotNull(context.getMessage());
         assertMessageEquals(context.getMessage(), messageId, isSessionEnabled);
     }
 
     protected void assertMessageEquals(ServiceBusReceivedMessage message, String messageId, boolean isSessionEnabled) {
-        assertArrayEquals(CONTENTS_BYTES, message.getBody());
+        assertArrayEquals(CONTENTS_BYTES, message.getBody().toBytes());
 
         // Disabling message ID assertion. Since we do multiple operations on the same queue/topic, it's possible
         // the queue or topic contains messages from previous test cases.

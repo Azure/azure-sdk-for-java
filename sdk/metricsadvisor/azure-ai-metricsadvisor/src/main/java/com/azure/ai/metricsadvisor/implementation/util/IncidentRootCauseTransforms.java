@@ -45,7 +45,7 @@ public class IncidentRootCauseTransforms {
         final IncidentRootCause incidentRootCause = new IncidentRootCause();
         IncidentRootCauseHelper.setSeriesKey(incidentRootCause, new DimensionKey(inner.getRootCause().getDimension()));
         IncidentRootCauseHelper.setPaths(incidentRootCause, inner.getPath());
-        IncidentRootCauseHelper.setConfidenceScore(incidentRootCause, inner.getScore());
+        IncidentRootCauseHelper.setContributionScore(incidentRootCause, inner.getScore());
         IncidentRootCauseHelper.setDescription(incidentRootCause, inner.getDescription());
         return incidentRootCause;
     }

@@ -63,6 +63,13 @@ public final class ServiceGetAccountInfoHeaders {
     private AccountKind accountKind;
 
     /*
+     * Version 2019-07-07 and newer. Indicates if the account has a
+     * hierarchical namespace enabled.
+     */
+    @JsonProperty(value = "x-ms-is-hns-enabled")
+    private Boolean isHierarchicalNamespaceEnabled;
+
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -212,6 +219,29 @@ public final class ServiceGetAccountInfoHeaders {
      */
     public ServiceGetAccountInfoHeaders setAccountKind(AccountKind accountKind) {
         this.accountKind = accountKind;
+        return this;
+    }
+
+    /**
+     * Get the isHierarchicalNamespaceEnabled property: Version 2019-07-07 and
+     * newer. Indicates if the account has a hierarchical namespace enabled.
+     *
+     * @return the isHierarchicalNamespaceEnabled value.
+     */
+    public Boolean isHierarchicalNamespaceEnabled() {
+        return this.isHierarchicalNamespaceEnabled;
+    }
+
+    /**
+     * Set the isHierarchicalNamespaceEnabled property: Version 2019-07-07 and
+     * newer. Indicates if the account has a hierarchical namespace enabled.
+     *
+     * @param isHierarchicalNamespaceEnabled the isHierarchicalNamespaceEnabled
+     * value to set.
+     * @return the ServiceGetAccountInfoHeaders object itself.
+     */
+    public ServiceGetAccountInfoHeaders setIsHierarchicalNamespaceEnabled(Boolean isHierarchicalNamespaceEnabled) {
+        this.isHierarchicalNamespaceEnabled = isHierarchicalNamespaceEnabled;
         return this;
     }
 

@@ -37,13 +37,13 @@ public class MetricEnrichedSeriesDataTransformations {
         if (timestampList == null) {
             timestampList = new ArrayList<>();
         }
-        MetricEnrichedSeriesDataHelper.setTimestampList(enrichedSeriesData, timestampList);
+        MetricEnrichedSeriesDataHelper.setTimestamps(enrichedSeriesData, timestampList);
 
         List<Double> valueList = innerEnrichedSeriesData.getValueList();
         if (valueList == null) {
             valueList = new ArrayList<>();
         }
-        MetricEnrichedSeriesDataHelper.setValueList(enrichedSeriesData, valueList);
+        MetricEnrichedSeriesDataHelper.setMetricValues(enrichedSeriesData, valueList);
 
         List<Boolean> isAnomalyList = innerEnrichedSeriesData.getIsAnomalyList();
         if (isAnomalyList == null) {
@@ -55,25 +55,25 @@ public class MetricEnrichedSeriesDataTransformations {
         if (periodList == null) {
             periodList = new ArrayList<>();
         }
-        MetricEnrichedSeriesDataHelper.setPeriodList(enrichedSeriesData, periodList);
+        MetricEnrichedSeriesDataHelper.setPeriods(enrichedSeriesData, periodList);
 
         List<Double> expectedValueList = innerEnrichedSeriesData.getExpectedValueList();
         if (expectedValueList == null) {
             expectedValueList = new ArrayList<>();
         }
-        MetricEnrichedSeriesDataHelper.setExpectedValueList(enrichedSeriesData, expectedValueList);
+        MetricEnrichedSeriesDataHelper.setExpectedMetricValues(enrichedSeriesData, expectedValueList);
 
         List<Double> lowerBoundList = innerEnrichedSeriesData.getLowerBoundaryList();
         if (lowerBoundList == null) {
             lowerBoundList = new ArrayList<>();
         }
-        MetricEnrichedSeriesDataHelper.setLowerBoundaryList(enrichedSeriesData, lowerBoundList);
+        MetricEnrichedSeriesDataHelper.setLowerBoundaryValues(enrichedSeriesData, lowerBoundList);
 
         List<Double> upperBoundList = innerEnrichedSeriesData.getUpperBoundaryList();
         if (upperBoundList == null) {
             upperBoundList = new ArrayList<>();
         }
-        MetricEnrichedSeriesDataHelper.setUpperBoundaryList(enrichedSeriesData, upperBoundList);
+        MetricEnrichedSeriesDataHelper.setUpperBoundaryValues(enrichedSeriesData, upperBoundList);
 
         return enrichedSeriesData;
     }

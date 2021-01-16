@@ -3,12 +3,12 @@
 
 package com.azure.ai.metricsadvisor.implementation.util;
 
-import com.azure.ai.metricsadvisor.models.Hook;
+import com.azure.ai.metricsadvisor.models.NotificationHook;
 
 import java.util.List;
 
 /**
- * The helper class to set the non-public properties of an {@link Hook} instance.
+ * The helper class to set the non-public properties of an {@link NotificationHook} instance.
  */
 public final class HookHelper {
     private static HookAccessor accessor;
@@ -16,15 +16,15 @@ public final class HookHelper {
     private HookHelper() { }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link Hook} instance.
+     * Type defining the methods to set the non-public properties of an {@link NotificationHook} instance.
      */
     public interface HookAccessor {
-        void setId(Hook hook, String id);
-        void setAdmins(Hook hook, List<String> admins);
+        void setId(NotificationHook hook, String id);
+        void setAdminEmails(NotificationHook hook, List<String> admins);
     }
 
     /**
-     * The method called from {@link Hook} to set it's accessor.
+     * The method called from {@link NotificationHook} to set it's accessor.
      *
      * @param hookAccessor The accessor.
      */
@@ -32,11 +32,11 @@ public final class HookHelper {
         accessor = hookAccessor;
     }
 
-    public static void setId(Hook hook, String id) {
+    public static void setId(NotificationHook hook, String id) {
         accessor.setId(hook, id);
     }
 
-    static void setAdmins(Hook hook, List<String> admins) {
-        accessor.setAdmins(hook, admins);
+    static void setAdminEmails(NotificationHook hook, List<String> adminEmails) {
+        accessor.setAdminEmails(hook, adminEmails);
     }
 }

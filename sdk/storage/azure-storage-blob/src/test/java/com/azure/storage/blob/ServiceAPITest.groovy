@@ -278,6 +278,9 @@ class ServiceAPITest extends APISpec {
 
         then:
         results.size() == 1
+        def tags = results.first().getTags()
+        tags.size() == 1
+        tags.get("bar") == "foo"
 
         cleanup:
         containerClient.delete()

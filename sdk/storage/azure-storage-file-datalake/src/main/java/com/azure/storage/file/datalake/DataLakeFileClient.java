@@ -276,7 +276,8 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param filePath Path of the file to upload
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @throws UncheckedIOException If an I/O error occurs
@@ -341,7 +342,7 @@ public class DataLakeFileClient extends DataLakePathClient {
 
         Objects.requireNonNull(data);
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
+            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
         Mono<Response<Void>> response = dataLakeFileAsyncClient.appendWithResponse(
             fbb.subscribeOn(Schedulers.elastic()), fileOffset, length, contentMd5, leaseId, context);
 
@@ -569,7 +570,7 @@ public class DataLakeFileClient extends DataLakePathClient {
                     .setRange(Transforms.toBlobRange(range)).setParallelTransferOptions(parallelTransferOptions)
                     .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(downloadRetryOptions))
                     .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
-                    .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
+                    .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout,
                 context);
             return new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue()));
         }, logger);

@@ -7,7 +7,6 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Mono;
 
 /**
@@ -21,12 +20,9 @@ public class AzureTelemetryPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String potentialTelemetry = (String) context.getData(CONTEXT_TELEMETRY_KEY)
-            .orElse(null);
-
-        if (!CoreUtils.isNullOrEmpty(potentialTelemetry)) {
-            context.getHttpRequest().setHeader("x-ms-azsdk-telemetry", potentialTelemetry);
-        }
+        context.getData(CONTEXT_TELEMETRY_KEY)
+            .ifPresent(telemetry -> context.getHttpRequest()
+                .setHeader("x-ms-azsdk-telemetry", String.valueOf(telemetry)));
 
         return next.process();
     }

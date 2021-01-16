@@ -39,7 +39,7 @@ public class MetricFeedbackAsyncSample {
 
         System.out.printf("Creating Metric Feedback%n");
         final Mono<MetricFeedback> createdFeedbackMono
-            = advisorAsyncClient.createMetricFeedback(metricId, metricChangePointFeedback);
+            = advisorAsyncClient.addFeeddback(metricId, metricChangePointFeedback);
 
         createdFeedbackMono
             .doOnSubscribe(__ ->
@@ -50,7 +50,7 @@ public class MetricFeedbackAsyncSample {
         // Retrieve the metric feedback that just created.
         Mono<MetricFeedback> fetchFeedbackMono =
             createdFeedbackMono.flatMap(createdFeedback -> {
-                return advisorAsyncClient.getMetricFeedback(createdFeedback.getId())
+                return advisorAsyncClient.getFeedback(createdFeedback.getId())
                     .doOnSubscribe(__ ->
                         System.out.printf("Fetching Metric Feedback: %s%n", createdFeedback.getId()))
                     .doOnSuccess(config ->
@@ -85,7 +85,7 @@ public class MetricFeedbackAsyncSample {
 
         // List metric feedbacks.
         System.out.printf("Listing metric feedbacks%n");
-        advisorAsyncClient.listMetricFeedbacks(metricId)
+        advisorAsyncClient.listFeedback(metricId)
             .doOnNext(feedbackItem -> {
                 System.out.printf("Metric Feedback Id : %s%n", feedbackItem.getId());
                 System.out.printf("Metric Feedback created time : %s%n", feedbackItem.getCreatedTime());

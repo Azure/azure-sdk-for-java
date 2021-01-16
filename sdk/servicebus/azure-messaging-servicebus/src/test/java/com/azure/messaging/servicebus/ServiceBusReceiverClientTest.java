@@ -9,7 +9,7 @@ import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.DeferOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -80,7 +80,7 @@ class ServiceBusReceiverClientTest {
         MockitoAnnotations.initMocks(this);
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false));
+        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 0, null, false));
         when(sessionReceiverOptions.getSessionId()).thenReturn(SESSION_ID);
         client = new ServiceBusReceiverClient(asyncClient, OPERATION_TIMEOUT);
     }
@@ -451,10 +451,10 @@ class ServiceBusReceiverClientTest {
         final long sequenceNumber = 154;
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.peekMessageAt(sequenceNumber, SESSION_ID)).thenReturn(Mono.just(message));
+        when(asyncClient.peekMessage(sequenceNumber, SESSION_ID)).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.peekMessageAt(sequenceNumber);
+        final ServiceBusReceivedMessage actual = client.peekMessage(sequenceNumber);
 
         // Assert
         assertEquals(message, actual);
@@ -586,10 +586,10 @@ class ServiceBusReceiverClientTest {
             sink.complete();
         }));
         when(asyncClient.getReceiverOptions()).thenReturn(sessionReceiverOptions);
-        when(asyncClient.peekMessagesAt(maxMessages, sequenceNumber, SESSION_ID)).thenReturn(messages);
+        when(asyncClient.peekMessages(maxMessages, sequenceNumber, SESSION_ID)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekMessagesAt(maxMessages, sequenceNumber);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.peekMessages(maxMessages, sequenceNumber);
 
         // Assert
         assertNotNull(actual);
@@ -633,7 +633,7 @@ class ServiceBusReceiverClientTest {
         final int numberToEmit = 5;
         final Duration receiveTimeout = Duration.ofSeconds(2);
         final AtomicInteger emittedMessages = new AtomicInteger();
-        Flux<ServiceBusReceivedMessageContext> messageSink = Flux.create(sink -> {
+        Flux<ServiceBusReceivedMessage> messageSink = Flux.create(sink -> {
             sink.onRequest(e -> {
                 if (emittedMessages.get() >= numberToEmit) {
                     logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
@@ -642,9 +642,8 @@ class ServiceBusReceiverClientTest {
                 }
 
                 for (int i = 0; i < numberToEmit; i++) {
-                    ServiceBusReceivedMessageContext context = new ServiceBusReceivedMessageContext(
-                        mock(ServiceBusReceivedMessage.class));
-                    sink.next(context);
+                    ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+                    sink.next(message);
 
                     final int emit = emittedMessages.incrementAndGet();
                     if (emit >= numberToEmit) {
@@ -659,10 +658,10 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receiveMessages()).thenReturn(messageSink);
+        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receiveMessages(maxMessages, receiveTimeout);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.receiveMessages(maxMessages, receiveTimeout);
 
         // Assert
         assertNotNull(actual);
@@ -679,7 +678,7 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final int maxMessages = 10;
         final int numberToEmit = maxMessages + 5;
-        Flux<ServiceBusReceivedMessageContext> messageSink = Flux.create(sink -> {
+        Flux<ServiceBusReceivedMessage> messageSink = Flux.create(sink -> {
             sink.onRequest(e -> {
                 final AtomicInteger emittedMessages = new AtomicInteger();
                 if (emittedMessages.get() >= numberToEmit) {
@@ -689,7 +688,7 @@ class ServiceBusReceiverClientTest {
                 }
 
                 for (int i = 0; i < numberToEmit; i++) {
-                    sink.next(new ServiceBusReceivedMessageContext(mock(ServiceBusReceivedMessage.class)));
+                    sink.next(mock(ServiceBusReceivedMessage.class));
 
                     final int emit = emittedMessages.incrementAndGet();
                     if (emit >= numberToEmit) {
@@ -705,10 +704,10 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.receiveMessages()).thenReturn(messageSink);
+        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receiveMessages(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.receiveMessages(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -727,7 +726,7 @@ class ServiceBusReceiverClientTest {
         final int numberToEmit = 5;
 
         final AtomicInteger emittedMessages = new AtomicInteger();
-        Flux<ServiceBusReceivedMessageContext> messageSink = Flux.create(sink -> {
+        Flux<ServiceBusReceivedMessage> messageSink = Flux.create(sink -> {
             sink.onRequest(e -> {
                 if (emittedMessages.get() >= numberToEmit) {
                     logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
@@ -736,7 +735,7 @@ class ServiceBusReceiverClientTest {
                 }
 
                 for (int i = 0; i < numberToEmit; i++) {
-                    sink.next(new ServiceBusReceivedMessageContext(mock(ServiceBusReceivedMessage.class)));
+                    sink.next(mock(ServiceBusReceivedMessage.class));
 
                     final int emit = emittedMessages.incrementAndGet();
                     if (emit >= numberToEmit) {
@@ -751,10 +750,10 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receiveMessages()).thenReturn(messageSink);
+        when(asyncClient.receiveMessagesNoBackPressure()).thenReturn(messageSink);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessageContext> actual = client.receiveMessages(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.receiveMessages(maxMessages);
 
         // Assert
         assertNotNull(actual);

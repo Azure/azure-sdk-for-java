@@ -6,8 +6,9 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -61,7 +62,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
             receiver.receiveMessages()
                 .take(numberOfMessages)
                 .map(message -> {
-                    logger.info("Message received: {}", message.getMessage().getSequenceNumber());
+                    logger.info("Message received: {}", message.getSequenceNumber());
                     return message;
                 })
                 .timeout(Duration.ofSeconds(5), Mono.empty())
@@ -146,6 +147,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
     /**
      * Verifies that we can send message to final destination using via-queue.
      */
+    @Disabled("The send via functionality is removing for first GA release, later we will come back to it.")
     @Test
     void viaQueueMessageSendTest() {
         // Arrange
@@ -166,11 +168,12 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(useCredentials, entityType,
             destinationEntity, false, shareConnection)
-            .viaQueueName(viaQueueName)
+            //.viaQueueName(viaQueueName)
             .buildAsyncClient();
         final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
             destinationEntity, shareConnection)
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+            .disableAutoComplete()
             .buildAsyncClient();
 
         final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
@@ -222,9 +225,11 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
+
     /**
      * Verifies that we can send message to final destination using via-topic.
      */
+    @Disabled("The send via functionality is removed for first GA release, later we will come back to it.")
     @Test
     void viaTopicMessageSendTest() {
         // Arrange
@@ -247,12 +252,13 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final ServiceBusSenderAsyncClient destination1ViaSender = getSenderBuilder(useCredentials, entityType,
             destinationEntity, false, shareConnection)
-            .viaTopicName(viaTopicName)
+            //.viaTopicName(viaTopicName)
             .buildAsyncClient();
 
         final ServiceBusReceiverAsyncClient destination1Receiver = getReceiverBuilder(useCredentials, entityType,
             destinationEntity, shareConnection)
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+            .disableAutoComplete()
             .buildAsyncClient();
 
         final AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
@@ -429,7 +435,10 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final boolean isSessionEnabled = false;
         final int total = 2;
+        final Duration shortWait = Duration.ofSeconds(3);
+
         setSenderAndReceiver(entityType, TestUtils.USE_CASE_SCHEDULE_MESSAGES, isSessionEnabled);
+
         final Duration scheduleDuration = Duration.ofSeconds(5);
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages = new ArrayList<>();
@@ -464,7 +473,9 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
-            .verifyComplete();
+            .thenAwait(shortWait)
+            .thenCancel()
+            .verify();
     }
 
     /**
@@ -509,7 +520,8 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         this.sender = getSenderBuilder(useCredentials, entityType, entityIndex, isSessionAware, sharedConnection)
             .buildAsyncClient();
         this.receiver = getReceiverBuilder(useCredentials, entityType, entityIndex, sharedConnection)
-            .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+            .disableAutoComplete()
             .buildAsyncClient();
     }
 }

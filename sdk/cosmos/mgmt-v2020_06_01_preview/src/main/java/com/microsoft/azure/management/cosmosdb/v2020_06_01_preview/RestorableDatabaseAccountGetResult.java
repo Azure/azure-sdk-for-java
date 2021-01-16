@@ -15,6 +15,7 @@ import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.cosmosdb.v2020_06_01_preview.implementation.CosmosDBManager;
 import org.joda.time.DateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +26,11 @@ public interface RestorableDatabaseAccountGetResult extends HasInner<RestorableD
      * @return the accountName value.
      */
     String accountName();
+
+    /**
+     * @return the apiType value.
+     */
+    ApiType apiType();
 
     /**
      * @return the creationTime value.
@@ -55,6 +61,11 @@ public interface RestorableDatabaseAccountGetResult extends HasInner<RestorableD
      * @return the name value.
      */
     String name();
+
+    /**
+     * @return the restorableLocations value.
+     */
+    List<RestorableLocationResource> restorableLocations();
 
     /**
      * @return the tags value.

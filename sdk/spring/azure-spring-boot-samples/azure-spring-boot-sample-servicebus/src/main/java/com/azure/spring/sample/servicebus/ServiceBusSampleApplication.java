@@ -3,6 +3,7 @@
 
 package com.azure.spring.sample.servicebus;
 
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
@@ -47,7 +48,7 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
     private void sendQueueMessage() throws InterruptedException {
         final String messageBody = "queue message";
 
-        queueSender.sendMessage(new ServiceBusMessage(messageBody.getBytes(UTF_8))).subscribe(
+        queueSender.sendMessage(new ServiceBusMessage(BinaryData.fromBytes(messageBody.getBytes(UTF_8)))).subscribe(
             v -> System.out.println("Sent message: " + messageBody),
             e -> System.err.println("Error occurred while sending message: " + e),
             () -> System.out.println("Send message to queue complete.")
@@ -60,7 +61,7 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
 
     private void receiveQueueMessage() throws InterruptedException {
         queueReceiver.receiveMessages().subscribe(message ->
-            System.out.println("Received Message: " + new String(message.getMessage().getBody())));
+            System.out.println("Received Message: " + message.getBody().toString()));
 
         TimeUnit.SECONDS.sleep(5);
 
@@ -70,7 +71,7 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
     private void sendTopicMessage() throws InterruptedException {
         final String messageBody = "topic message";
 
-        topicSender.sendMessage(new ServiceBusMessage(messageBody.getBytes(UTF_8))).subscribe(
+        topicSender.sendMessage(new ServiceBusMessage(BinaryData.fromBytes(messageBody.getBytes(UTF_8)))).subscribe(
             v -> System.out.println("Sent message: " + messageBody),
             e -> System.err.println("Error occurred while sending message: " + e),
             () -> System.out.println("Send message to topic complete.")
@@ -83,7 +84,7 @@ public class ServiceBusSampleApplication implements CommandLineRunner {
 
     private void receiveSubscriptionMessage() throws InterruptedException {
         topicSubscriber.receiveMessages().subscribe(message ->
-            System.out.println("Received Message: " + new String(message.getMessage().getBody())));
+            System.out.println("Received Message: " + message.getBody().toString()));
 
         TimeUnit.SECONDS.sleep(10);
 

@@ -354,7 +354,7 @@ public class GatewayAddressCache implements IAddressCache {
                     Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
         }
 
-        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(clientContext, httpResponseMono, httpRequest);
+        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, clientContext, httpResponseMono, httpRequest);
         return dsrObs.map(
             dsr -> {
                 MetadataDiagnosticsContext metadataDiagnosticsContext =
@@ -386,7 +386,7 @@ public class GatewayAddressCache implements IAddressCache {
             if (!(exception instanceof CosmosException)) {
                 // wrap in CosmosException
                 logger.error("Network failure", exception);
-                dce = BridgeInternal.createCosmosException(0, exception);
+                dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, 0, exception);
                 BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             } else {
                 dce = (CosmosException) exception;
@@ -588,7 +588,7 @@ public class GatewayAddressCache implements IAddressCache {
                     Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
         }
 
-        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(this.clientContext, httpResponseMono, httpRequest);
+        Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, this.clientContext, httpResponseMono, httpRequest);
 
         return dsrObs.map(
             dsr -> {
@@ -618,7 +618,7 @@ public class GatewayAddressCache implements IAddressCache {
             if (!(exception instanceof CosmosException)) {
                 // wrap in CosmosException
                 logger.error("Network failure", exception);
-                dce = BridgeInternal.createCosmosException(0, exception);
+                dce = BridgeInternal.createCosmosException(request.requestContext.resourcePhysicalAddress, 0, exception);
                 BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             } else {
                 dce = (CosmosException) exception;

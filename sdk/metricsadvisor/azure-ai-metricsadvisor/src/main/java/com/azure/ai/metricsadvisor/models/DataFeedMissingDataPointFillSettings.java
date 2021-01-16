@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public final class DataFeedMissingDataPointFillSettings {
-    private DataSourceMissingDataPointFillType fillType;
+    private DataFeedMissingDataPointFillType fillType;
     private Double customFillValue;
 
     /**
@@ -18,7 +18,7 @@ public final class DataFeedMissingDataPointFillSettings {
      *
      * @return the type of fill missing point for anomaly detection.
      */
-    public DataSourceMissingDataPointFillType getFillType() {
+    public DataFeedMissingDataPointFillType getFillType() {
         return this.fillType;
     }
 
@@ -38,7 +38,7 @@ public final class DataFeedMissingDataPointFillSettings {
      *
      * @return the DataFeedMissingDataPointFillSettings object itself.
      */
-    public DataFeedMissingDataPointFillSettings setFillType(DataSourceMissingDataPointFillType fillMissingPointType) {
+    public DataFeedMissingDataPointFillSettings setFillType(DataFeedMissingDataPointFillType fillMissingPointType) {
         this.fillType = fillMissingPointType;
         return this;
     }

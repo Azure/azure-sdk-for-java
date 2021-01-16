@@ -261,7 +261,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * to produce the same values across subscriptions.
      * @param parallelTransferOptions {@link ParallelTransferOptions} used to configure buffered uploading.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the information of the uploaded file.
      */
@@ -318,7 +319,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
                 options.getDataStream(), options.getLength(),
                 // We can only buffer up to max int due to restrictions in ByteBuffer.
-                (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong()))
+                (int) Math.min(Integer.MAX_VALUE, validatedParallelTransferOptions.getBlockSizeLong()), false)
                 : options.getDataFlux();
 
             return createWithResponse(options.getPermissions(), options.getUmask(), options.getHeaders(),
@@ -463,7 +464,8 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param parallelTransferOptions {@link ParallelTransferOptions} to use to upload from file. Number of parallel
      * transfers parameter is ignored.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the resource.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return An empty response
      * @throws UncheckedIOException If an I/O error occurs
@@ -865,7 +867,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         .setRange(Transforms.toBlobRange(range)).setParallelTransferOptions(parallelTransferOptions)
         .setDownloadRetryOptions(Transforms.toBlobDownloadRetryOptions(options))
         .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
-        .setRangeGetContentMd5(rangeGetContentMd5).setOpenOptions(openOptions))
+        .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
             .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue())));
     }

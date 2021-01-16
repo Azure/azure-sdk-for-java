@@ -3,12 +3,14 @@
 package com.azure.storage.queue;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -16,7 +18,6 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.implementation.AzureQueueStorageBuilder;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
@@ -76,7 +77,8 @@ public final class QueueServiceClientBuilder {
 
     private StorageSharedKeyCredential storageSharedKeyCredential;
     private TokenCredential tokenCredential;
-    private SasTokenCredential sasTokenCredential;
+    private AzureSasCredential azureSasCredential;
+    private String sasToken;
 
     private HttpClient httpClient;
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -85,6 +87,7 @@ public final class QueueServiceClientBuilder {
     private RequestRetryOptions retryOptions = new RequestRetryOptions();
     private HttpPipeline httpPipeline;
 
+    private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private QueueServiceVersion version;
 
@@ -110,12 +113,14 @@ public final class QueueServiceClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential} or
      * {@link #sasToken(String) SAS token} has been set.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public QueueServiceAsyncClient buildAsyncClient() {
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, sasTokenCredential, endpoint, retryOptions, logOptions,
-            httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, logOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, logger);
 
         AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageBuilder()
             .url(endpoint)
@@ -140,6 +145,7 @@ public final class QueueServiceClientBuilder {
      * @throws NullPointerException If {@code endpoint} or {@code queueName} have not been set.
      * @throws IllegalArgumentException If neither a {@link StorageSharedKeyCredential}
      * or {@link #sasToken(String) SAS token} has been set.
+     * @throws IllegalStateException If multiple credentials have been specified.
      */
     public QueueServiceClient buildClient() {
         return new QueueServiceClient(buildAsyncClient());
@@ -179,7 +185,7 @@ public final class QueueServiceClientBuilder {
     public QueueServiceClientBuilder credential(StorageSharedKeyCredential credential) {
         this.storageSharedKeyCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.tokenCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -193,7 +199,7 @@ public final class QueueServiceClientBuilder {
     public QueueServiceClientBuilder credential(TokenCredential credential) {
         this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.storageSharedKeyCredential = null;
-        this.sasTokenCredential = null;
+        this.sasToken = null;
         return this;
     }
 
@@ -205,10 +211,23 @@ public final class QueueServiceClientBuilder {
      * @throws NullPointerException If {@code sasToken} is {@code null}.
      */
     public QueueServiceClientBuilder sasToken(String sasToken) {
-        this.sasTokenCredential = new SasTokenCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
+        this.sasToken = Objects.requireNonNull(sasToken,
+            "'sasToken' cannot be null.");
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
+        return this;
+    }
+
+    /**
+     * Sets the {@link AzureSasCredential} used to authorize requests sent to the service.
+     *
+     * @param credential {@link AzureSasCredential} used to authorize requests sent to the service.
+     * @return the updated QueueServiceClientBuilder
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    public QueueServiceClientBuilder credential(AzureSasCredential credential) {
+        this.azureSasCredential = Objects.requireNonNull(credential,
+            "'credential' cannot be null.");
         return this;
     }
 
@@ -333,6 +352,18 @@ public final class QueueServiceClientBuilder {
         }
 
         this.httpPipeline = httpPipeline;
+        return this;
+    }
+
+    /**
+     * Sets the client options for all the requests made through the client.
+     *
+     * @param clientOptions {@link ClientOptions}.
+     * @return the updated QueueServiceClientBuilder object
+     * @throws NullPointerException If {@code clientOptions} is {@code null}.
+     */
+    public QueueServiceClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = Objects.requireNonNull(clientOptions, "'clientOptions' cannot be null.");
         return this;
     }
 

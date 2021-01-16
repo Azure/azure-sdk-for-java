@@ -30,6 +30,10 @@
       "\"moduleName\"": "\"AppService\""
     }
   },
+  "attestation/resource-manager": {
+    "source": "specification/attestation/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "automation/resource-manager": {
     "source": "specification/automation/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -158,6 +162,10 @@
     "source": "specification/eventhub/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "frontdoor/resource-manager": {
+    "source": "specification/frontdoor/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "hanaonazure/resource-manager": {
     "source": "specification/hanaonazure/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -242,10 +250,7 @@
   },
   "mysql/resource-manager": {
     "source": "specification/mysql/resource-manager/readme.md",
-    "args": "--multiapi --fluent",
-    "fconfig": {
-      "\"moduleName\"": "\"MySQL\""
-    }
+    "args": "--multiapi --fluent --service-name=MySQL"
   },
   "monitor/resource-manager": {
     "source": "specification/monitor/resource-manager/readme.md",

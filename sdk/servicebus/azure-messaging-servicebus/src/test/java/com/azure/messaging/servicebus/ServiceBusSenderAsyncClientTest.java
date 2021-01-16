@@ -9,8 +9,6 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.exception.AmqpErrorCondition;
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
@@ -18,6 +16,7 @@ import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.tracing.ProcessKind;
@@ -68,7 +67,6 @@ import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.messaging.servicebus.ServiceBusSenderAsyncClient.MAX_MESSAGE_LENGTH_BYTES;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -93,7 +91,7 @@ class ServiceBusSenderAsyncClientTest {
     private static final String NAMESPACE = "my-namespace";
     private static final String ENTITY_NAME = "my-servicebus-entity";
     private static final String LINK_NAME = "my-link-name";
-    private static final String TEST_CONTENTS = "My message for service bus queue!";
+    private static final BinaryData TEST_CONTENTS = BinaryData.fromString("My message for service bus queue!");
     private static final  String TXN_ID_STRING = "1";
 
     @Mock
@@ -243,7 +241,7 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.createMessageBatch(options))
-            .expectError(IllegalArgumentException.class)
+            .expectError(ServiceBusException.class)
             .verify();
     }
 
@@ -268,9 +266,9 @@ class ServiceBusSenderAsyncClientTest {
             .thenReturn(Mono.just(link));
 
         // This is 1024 bytes when serialized.
-        final ServiceBusMessage event = new ServiceBusMessage(new byte[maxEventPayload]);
+        final ServiceBusMessage event = new ServiceBusMessage(BinaryData.fromBytes(new byte[maxEventPayload]));
 
-        final ServiceBusMessage tooLargeEvent = new ServiceBusMessage(new byte[maxEventPayload + 1]);
+        final ServiceBusMessage tooLargeEvent = new ServiceBusMessage(BinaryData.fromBytes(new byte[maxEventPayload + 1]));
         final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(batchSize);
 
         // Act & Assert
@@ -320,12 +318,12 @@ class ServiceBusSenderAsyncClientTest {
     void sendMultipleMessagesWithTransaction() {
         // Arrange
         final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
             errorContextProvider, tracerProvider, serializer, null, null);
 
         IntStream.range(0, count).forEach(index -> {
-            final ServiceBusMessage message = new ServiceBusMessage(contents);
+            final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
             Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
@@ -359,12 +357,12 @@ class ServiceBusSenderAsyncClientTest {
     void sendMultipleMessages() {
         // Arrange
         final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
             errorContextProvider, tracerProvider, serializer, null, null);
 
         IntStream.range(0, count).forEach(index -> {
-            final ServiceBusMessage message = new ServiceBusMessage(contents);
+            final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
             Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
@@ -391,7 +389,7 @@ class ServiceBusSenderAsyncClientTest {
     void sendMultipleMessagesTracerSpans() {
         // Arrange
         final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final byte[] contents = TEST_CONTENTS.toBytes();
         final Tracer tracer1 = mock(Tracer.class);
         TracerProvider tracerProvider1 = new TracerProvider(Arrays.asList(tracer1));
 
@@ -432,7 +430,7 @@ class ServiceBusSenderAsyncClientTest {
         );
 
         IntStream.range(0, count).forEach(index -> {
-            final ServiceBusMessage message = new ServiceBusMessage(contents);
+            final ServiceBusMessage message = new ServiceBusMessage(BinaryData.fromBytes(contents));
             Assertions.assertTrue(batch.tryAddMessage(message));
         });
 
@@ -487,7 +485,7 @@ class ServiceBusSenderAsyncClientTest {
     void sendMessagesList() {
         // Arrange
         final int count = 4;
-        final byte[] contents = TEST_CONTENTS.getBytes(UTF_8);
+        final byte[] contents = TEST_CONTENTS.toBytes();
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
@@ -523,8 +521,25 @@ class ServiceBusSenderAsyncClientTest {
 
         // Act & Assert
         StepVerifier.create(sender.sendMessages(messages))
-            .verifyErrorMatches(error -> error instanceof AmqpException
-                && ((AmqpException) error).getErrorCondition() == AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED);
+            .verifyErrorMatches(error -> error instanceof ServiceBusException
+                && ((ServiceBusException) error).getReason() == ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED);
+
+        verify(sendLink, never()).send(anyList());
+    }
+
+    @Test
+    void sendSingleMessageThatExceedsSize() {
+        // arrange
+        ServiceBusMessage message = TestUtils.getServiceBusMessages(1, UUID.randomUUID().toString()).get(0);
+
+        when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
+                .thenReturn(Mono.just(sendLink));
+        when(sendLink.getLinkSize()).thenReturn(Mono.just(1));
+
+        // Act & Assert
+        StepVerifier.create(sender.sendMessage(message))
+                .verifyErrorMatches(error -> error instanceof ServiceBusException
+                        && ((ServiceBusException) error).getReason() == ServiceBusFailureReason.MESSAGE_SIZE_EXCEEDED);
 
         verify(sendLink, never()).send(anyList());
     }
@@ -535,7 +550,7 @@ class ServiceBusSenderAsyncClientTest {
     @Test
     void sendSingleMessageWithTransaction() {
         // Arrange
-        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+        final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))
             .thenReturn(Mono.just(sendLink));
@@ -568,7 +583,7 @@ class ServiceBusSenderAsyncClientTest {
     void sendSingleMessage() {
         // Arrange
         final ServiceBusMessage testData =
-            new ServiceBusMessage(TEST_CONTENTS.getBytes(UTF_8));
+            new ServiceBusMessage(TEST_CONTENTS);
 
         // EC is the prefix they use when creating a link that sends to the service round-robin.
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull()))

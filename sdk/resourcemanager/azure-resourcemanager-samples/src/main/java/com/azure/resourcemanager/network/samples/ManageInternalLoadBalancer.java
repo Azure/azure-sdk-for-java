@@ -257,7 +257,7 @@ public final class ManageInternalLoadBalancer {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withSsh(sshKey)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .withNewAvailabilitySet(availSet2Definition);
 
             virtualMachineCreateables2.add(virtualMachine3Creatable);
@@ -269,7 +269,7 @@ public final class ManageInternalLoadBalancer {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withSsh(sshKey)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .withNewAvailabilitySet(availSet2Definition);
 
             virtualMachineCreateables2.add(virtualMachine4Creatable);

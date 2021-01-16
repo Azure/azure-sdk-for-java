@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class QueryAsyncTests extends QueryTestBase{
+public class QueryAsyncTests extends QueryTestBase {
 
     private final ClientLogger logger = new ClientLogger(ComponentsTests.class);
 
@@ -61,7 +61,7 @@ public class QueryAsyncTests extends QueryTestBase{
             String queryString = "SELECT * FROM digitaltwins where IsOccupied = true";
 
             StepVerifier.create(asyncClient.query(queryString, BasicDigitalTwin.class, null))
-                .thenConsumeWhile(dt ->  {
+                .thenConsumeWhile(dt -> {
                     assertThat(dt.getContents().get("IsOccupied"))
                         .as("IsOccupied should be true")
                         .isEqualTo(true);
@@ -73,7 +73,7 @@ public class QueryAsyncTests extends QueryTestBase{
             // elements, or have no continuation token (signaling that it is the last page)
             AtomicInteger pageCount = new AtomicInteger(0);
             StepVerifier.create(asyncClient.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize)).byPage())
-                .thenConsumeWhile(digitalTwinsPage ->  {
+                .thenConsumeWhile(digitalTwinsPage -> {
                     pageCount.incrementAndGet();
                     if (digitalTwinsPage.getContinuationToken() != null) {
                         assertFalse(digitalTwinsPage.getValue().size() < pageSize, "Unexpected page size for a non-terminal page");
@@ -83,19 +83,16 @@ public class QueryAsyncTests extends QueryTestBase{
                 .verifyComplete();
 
             assertTrue(pageCount.get() > 1, "Expected more than one page of query results");
-        }
-        finally {
+        } finally {
             // Cleanup
             try {
                 for (String roomTwinId : roomTwinIds) {
                     asyncClient.deleteDigitalTwin(roomTwinId).block();
                 }
-                if (roomModelId != null){
+                if (roomModelId != null) {
                     asyncClient.deleteModel(roomModelId).block();
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 fail("Failed to cleanup due to: ", ex);
             }
         }

@@ -272,7 +272,9 @@ class FunctionAppImpl
         if (description.tier().equalsIgnoreCase(SkuName.BASIC.toString())
             || description.tier().equalsIgnoreCase(SkuName.STANDARD.toString())
             || description.tier().equalsIgnoreCase(SkuName.PREMIUM.toString())
-            || description.tier().equalsIgnoreCase(SkuName.PREMIUM_V2.toString())) {
+            || description.tier().equalsIgnoreCase(SkuName.PREMIUM_V2.toString())
+            || description.tier().equalsIgnoreCase(PricingTier.PREMIUM_P1V3.toSkuDescription().tier()) // PremiumV3
+        ) {
             return withWebAppAlwaysOn(true);
         } else {
             return withWebAppAlwaysOn(false);
@@ -600,7 +602,8 @@ class FunctionAppImpl
             }
             if (currentStorageAccount == null && storageAccountToSet == null && storageAccountCreatable == null) {
                 withNewStorageAccount(
-                    this.manager().resourceManager().internalContext().randomResourceName(name(), 20),
+                    this.manager().resourceManager().internalContext()
+                        .randomResourceName(getStorageAccountName(), 20),
                     StorageAccountSkuType.STANDARD_GRS);
             }
         }
@@ -714,6 +717,10 @@ class FunctionAppImpl
     private static class FunctionKeyListResult {
         @JsonProperty("keys")
         private List<NameValuePair> keys;
+    }
+
+    private String getStorageAccountName() {
+        return name().replaceAll("[^a-zA-Z0-9]", "");
     }
 
     /*

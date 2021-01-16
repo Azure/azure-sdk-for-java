@@ -9,7 +9,7 @@ import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSenderClientBuilder;
-import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,7 +27,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.*;
 
 class ServiceBusClientBuilderTest {
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -51,66 +50,6 @@ class ServiceBusClientBuilderTest {
     private static final String ENTITY_PATH_CONNECTION_STRING = String.format("Endpoint=%s;SharedAccessKeyName=%s;SharedAccessKey=%s;EntityPath=%s",
         ENDPOINT, SHARED_ACCESS_KEY_NAME, SHARED_ACCESS_KEY, QUEUE_NAME);
     private static final Proxy PROXY_ADDRESS = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
-
-    @Test
-    void viaQueueNameWithTopicNotAllowed() {
-        // Arrange
-        ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .sender()
-            .topicName(TOPIC_NAME)
-            .viaQueueName(VIA_QUEUE_NAME);
-
-        // Act & Assert
-        assertThrows(IllegalStateException.class, () -> builder.buildAsyncClient());
-    }
-
-    @Test
-    void viaTopicNameWithQueueNotAllowed() {
-        // Arrange
-        ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .sender()
-            .queueName(QUEUE_NAME)
-            .viaTopicName(VIA_TOPIC_NAME);
-
-        // Act & Assert
-        assertThrows(IllegalStateException.class, () -> builder.buildAsyncClient());
-    }
-
-    @Test
-    void queueClientWithViaQueueName() {
-        // Arrange
-        final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .sender()
-            .queueName(QUEUE_NAME)
-            .viaQueueName(VIA_QUEUE_NAME);
-
-        // Act
-        final ServiceBusSenderAsyncClient client = builder.buildAsyncClient();
-
-        // Assert
-        assertNotNull(client);
-        assertEquals(client.getEntityPath(), QUEUE_NAME);
-    }
-
-    @Test
-    void topicClientWithViaTopicName() {
-        // Arrange
-        final ServiceBusSenderClientBuilder builder = new ServiceBusClientBuilder()
-            .connectionString(NAMESPACE_CONNECTION_STRING)
-            .sender()
-            .topicName(TOPIC_NAME)
-            .viaTopicName(VIA_TOPIC_NAME);
-
-        // Act
-        final ServiceBusSenderAsyncClient client = builder.buildAsyncClient();
-
-        // Assert
-        assertNotNull(client);
-        assertEquals(client.getEntityPath(), TOPIC_NAME);
-    }
 
     @Test
     void deadLetterqueueClient() {
@@ -260,10 +199,10 @@ class ServiceBusClientBuilderTest {
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
             .topicName("baz").subscriptionName("bar")
-            .receiveMode(ReceiveMode.PEEK_LOCK);
+            .receiveMode(ServiceBusReceiveMode.PEEK_LOCK);
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> receiverBuilder.prefetchCount(0));
+        assertThrows(IllegalArgumentException.class, () -> receiverBuilder.prefetchCount(-1));
     }
 
     @MethodSource("getProxyConfigurations")
@@ -278,7 +217,7 @@ class ServiceBusClientBuilderTest {
                 .configuration(configuration)
                 .receiver()
                 .topicName("baz").subscriptionName("bar")
-                .receiveMode(ReceiveMode.PEEK_LOCK)
+                .receiveMode(ServiceBusReceiveMode.PEEK_LOCK)
                 .buildClient();
 
             clientCreated = true;

@@ -36,12 +36,11 @@ public class HttpVersionMatchConditionParameters {
     /**
      * The match value for the condition of the delivery rule.
      */
-    @JsonProperty(value = "matchValues", required = true)
+    @JsonProperty(value = "matchValues")
     private List<String> matchValues;
 
     /**
      * Creates an instance of HttpVersionMatchConditionParameters class.
-     * @param matchValues the match value for the condition of the delivery rule.
      */
     public HttpVersionMatchConditionParameters() {
         odatatype = "#Microsoft.Azure.Cdn.Models.DeliveryRuleHttpVersionConditionParameters";

@@ -97,7 +97,7 @@ public final class AzureBlobStorageBuilder {
         if (this.version != null) {
             client.setVersion(this.version);
         } else {
-            client.setVersion("2020-02-10");
+            client.setVersion("2020-04-08");
         }
         if (this.pathRenameMode != null) {
             client.setPathRenameMode(this.pathRenameMode);

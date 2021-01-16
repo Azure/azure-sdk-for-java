@@ -12,4 +12,11 @@ import com.azure.core.http.HttpClient;
 public abstract class ComponentsTestBase extends DigitalTwinsTestBase {
     @Test
     public abstract void componentLifecycleTest(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+
+    @Test
+    public abstract void patchComponentFailsIfETagDoesNotMatch(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+
+    @Test
+    public abstract void patchComponentSucceedsIfETagMatches(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) throws JsonProcessingException;
+
 }

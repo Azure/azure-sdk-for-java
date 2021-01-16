@@ -125,8 +125,7 @@ public class ModelsTest extends ModelsTestBase {
             .forEach(digitalTwinsModelDataPagedResponse -> {
                 pageCount.getAndIncrement();
                 logger.info("content for this page " + pageCount);
-                for (DigitalTwinsModelData data: digitalTwinsModelDataPagedResponse.getValue())
-                {
+                for (DigitalTwinsModelData data : digitalTwinsModelDataPagedResponse.getValue()) {
                     logger.info(data.getModelId());
                 }
             });

@@ -7,7 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CopyAuthorizationResult model. */
+/** Request parameter that contains authorization claims for copy operation. */
 @Fluent
 public final class CopyAuthorizationResult {
     /*

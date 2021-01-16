@@ -52,6 +52,12 @@ class TopicDescriptionSerializer {
         Element tdElement = doc.createElementNS(ManagementClientConstants.SB_NS, "TopicDescription");
         contentElement.appendChild(tdElement);
 
+        if (topicDescription.defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_DURATION) < 0) {
+            tdElement.appendChild(
+                    doc.createElementNS(ManagementClientConstants.SB_NS, "DefaultMessageTimeToLive")
+                            .appendChild(doc.createTextNode(topicDescription.defaultMessageTimeToLive.toString())).getParentNode());
+        }
+        
         tdElement.appendChild(
                 doc.createElementNS(ManagementClientConstants.SB_NS, "MaxSizeInMegabytes")
                         .appendChild(doc.createTextNode(Long.toString(topicDescription.maxSizeInMB))).getParentNode());
@@ -59,12 +65,6 @@ class TopicDescriptionSerializer {
         tdElement.appendChild(
                 doc.createElementNS(ManagementClientConstants.SB_NS, "RequiresDuplicateDetection")
                         .appendChild(doc.createTextNode(Boolean.toString(topicDescription.requiresDuplicateDetection))).getParentNode());
-
-        if (topicDescription.defaultMessageTimeToLive.compareTo(ManagementClientConstants.MAX_DURATION) < 0) {
-            tdElement.appendChild(
-                    doc.createElementNS(ManagementClientConstants.SB_NS, "DefaultMessageTimeToLive")
-                            .appendChild(doc.createTextNode(topicDescription.defaultMessageTimeToLive.toString())).getParentNode());
-        }
 
         if (topicDescription.requiresDuplicateDetection && topicDescription.duplicationDetectionHistoryTimeWindow.compareTo(Duration.ZERO) > 0) {
             tdElement.appendChild(
@@ -76,6 +76,14 @@ class TopicDescriptionSerializer {
                 doc.createElementNS(ManagementClientConstants.SB_NS, "EnableBatchedOperations")
                         .appendChild(doc.createTextNode(Boolean.toString(topicDescription.enableBatchedOperations))).getParentNode());
 
+        tdElement.appendChild(
+                doc.createElementNS(ManagementClientConstants.SB_NS, "FilteringMessagesBeforePublishing")
+                        .appendChild(doc.createTextNode(Boolean.toString(topicDescription.filterMessagesBeforePublishing))).getParentNode());
+        
+        tdElement.appendChild(
+                doc.createElementNS(ManagementClientConstants.SB_NS, "IsAnonymousAccessible")
+                        .appendChild(doc.createTextNode(Boolean.toString(topicDescription.isAnonymousAccessible))).getParentNode());
+        
         if (topicDescription.authorizationRules != null) {
             tdElement.appendChild(AuthorizationRuleSerializer.serializeRules(topicDescription.authorizationRules, doc));
         }
@@ -84,11 +92,21 @@ class TopicDescriptionSerializer {
                 doc.createElementNS(ManagementClientConstants.SB_NS, "Status")
                         .appendChild(doc.createTextNode(topicDescription.status.name())).getParentNode());
 
+        if (topicDescription.forwardTo != null) {
+        	tdElement.appendChild(
+                    doc.createElementNS(ManagementClientConstants.SB_NS, "ForwardTo")
+                            .appendChild(doc.createTextNode(topicDescription.forwardTo)).getParentNode());
+        }
+        
         if (topicDescription.userMetadata != null) {
             tdElement.appendChild(
                     doc.createElementNS(ManagementClientConstants.SB_NS, "UserMetadata")
                             .appendChild(doc.createTextNode(topicDescription.userMetadata)).getParentNode());
         }
+        
+        tdElement.appendChild(
+                doc.createElementNS(ManagementClientConstants.SB_NS, "SupportOrdering")
+                        .appendChild(doc.createTextNode(Boolean.toString(topicDescription.supportOrdering))).getParentNode());
 
         if (topicDescription.autoDeleteOnIdle.compareTo(ManagementClientConstants.MAX_DURATION) < 0) {
             tdElement.appendChild(
@@ -97,13 +115,19 @@ class TopicDescriptionSerializer {
         }
 
         tdElement.appendChild(
-                doc.createElementNS(ManagementClientConstants.SB_NS, "SupportOrdering")
-                        .appendChild(doc.createTextNode(Boolean.toString(topicDescription.supportOrdering))).getParentNode());
-
-        tdElement.appendChild(
                 doc.createElementNS(ManagementClientConstants.SB_NS, "EnablePartitioning")
                         .appendChild(doc.createTextNode(Boolean.toString(topicDescription.enablePartitioning))).getParentNode());
+        
+        tdElement.appendChild(
+                doc.createElementNS(ManagementClientConstants.SB_NS, "EnableSubscriptionPartitioning")
+                        .appendChild(doc.createTextNode(Boolean.toString(topicDescription.enableSubscriptionPartitioning))).getParentNode());
+        
+        tdElement.appendChild(
+                doc.createElementNS(ManagementClientConstants.SB_NS, "EnableExpress")
+                        .appendChild(doc.createTextNode(Boolean.toString(topicDescription.enableExpress))).getParentNode());
 
+        topicDescription.appendUnknownPropertiesToDescriptionElement(tdElement);
+        
         // Convert dom document to string.
         StringWriter output = new StringWriter();
 
@@ -187,6 +211,9 @@ class TopicDescriptionSerializer {
                             if (node.getNodeType() == Node.ELEMENT_NODE) {
                                 element = (Element) node;
                                 switch (element.getTagName()) {
+	                                case "DefaultMessageTimeToLive":
+	                                    td.defaultMessageTimeToLive = Duration.parse(element.getFirstChild().getNodeValue());
+	                                    break;
                                     case "MaxSizeInMegabytes":
                                         td.maxSizeInMB = Long.parseLong(element.getFirstChild().getNodeValue());
                                         break;
@@ -196,14 +223,32 @@ class TopicDescriptionSerializer {
                                     case "DuplicateDetectionHistoryTimeWindow":
                                         td.duplicationDetectionHistoryTimeWindow = Duration.parse(element.getFirstChild().getNodeValue());
                                         break;
-                                    case "DefaultMessageTimeToLive":
-                                        td.defaultMessageTimeToLive = Duration.parse(element.getFirstChild().getNodeValue());
-                                        break;
                                     case "EnableBatchedOperations":
                                         td.enableBatchedOperations = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
+                                    case "FilteringMessagesBeforePublishing":
+                                        td.filterMessagesBeforePublishing = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
+                                        break;
+                                    case "IsAnonymousAccessible":
+                                        td.isAnonymousAccessible = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
+                                        break;
+                                    case "AuthorizationRules":
+                                        td.authorizationRules = AuthorizationRuleSerializer.parseAuthRules(element);
+                                        break;
                                     case "Status":
                                         td.status = EntityStatus.valueOf(element.getFirstChild().getNodeValue());
+                                        break;
+                                    case "ForwardTo":
+                                    	Node fwd = element.getFirstChild();
+                                        if (fwd != null) {
+                                            td.forwardTo = fwd.getNodeValue();
+                                        }
+                                        break;
+                                    case "UserMetadata":
+                                        td.userMetadata = element.getFirstChild().getNodeValue();
+                                        break;
+                                    case "SupportOrdering":
+                                        td.supportOrdering = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
                                     case "AutoDeleteOnIdle":
                                         td.autoDeleteOnIdle = Duration.parse(element.getFirstChild().getNodeValue());
@@ -211,16 +256,26 @@ class TopicDescriptionSerializer {
                                     case "EnablePartitioning":
                                         td.enablePartitioning = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
-                                    case "UserMetadata":
-                                        td.userMetadata = element.getFirstChild().getNodeValue();
+                                    case "EnableSubscriptionPartitioning":
+                                        td.enableSubscriptionPartitioning = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
-                                    case "AuthorizationRules":
-                                        td.authorizationRules = AuthorizationRuleSerializer.parseAuthRules(element);
+                                    case "EnableExpress":
+                                        td.enableExpress = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
                                         break;
-                                    case "SupportOrdering":
-                                        td.supportOrdering = Boolean.parseBoolean(element.getFirstChild().getNodeValue());
+                                    case "AccessedAt":
+                                    case "CreatedAt":
+                                    case "MessageCount":
+                                    case "SizeInBytes":
+                                    case "UpdatedAt":
+                                    case "CountDetails":
+                                    case "SubscriptionCount":
+                                    case "EntityAvailabilityStatus":
+                                    case "SkippedUpdate":
+                                        // Ignore known properties
+                                        // Do nothing
                                         break;
                                     default:
+                                    	td.addUnknownProperty(element);
                                         break;
                                 }
                             }

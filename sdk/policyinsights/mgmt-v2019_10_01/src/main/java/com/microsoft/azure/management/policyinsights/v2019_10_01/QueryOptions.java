@@ -64,8 +64,15 @@ public class QueryOptions {
     private String apply;
 
     /**
-     * The $expand query parameter. For example, to expand
-     * policyEvaluationDetails, use $expand=policyEvaluationDetails.
+     * Skiptoken is only provided if a previous response returned a partial
+     * result as a part of nextLink element.
+     */
+    @JsonProperty(value = "")
+    private String skipToken;
+
+    /**
+     * The $expand query parameter. For example, to expand components use
+     * $expand=components.
      */
     @JsonProperty(value = "")
     private String expand;
@@ -211,7 +218,27 @@ public class QueryOptions {
     }
 
     /**
-     * Get the $expand query parameter. For example, to expand policyEvaluationDetails, use $expand=policyEvaluationDetails.
+     * Get skiptoken is only provided if a previous response returned a partial result as a part of nextLink element.
+     *
+     * @return the skipToken value
+     */
+    public String skipToken() {
+        return this.skipToken;
+    }
+
+    /**
+     * Set skiptoken is only provided if a previous response returned a partial result as a part of nextLink element.
+     *
+     * @param skipToken the skipToken value to set
+     * @return the QueryOptions object itself.
+     */
+    public QueryOptions withSkipToken(String skipToken) {
+        this.skipToken = skipToken;
+        return this;
+    }
+
+    /**
+     * Get the $expand query parameter. For example, to expand components use $expand=components.
      *
      * @return the expand value
      */
@@ -220,7 +247,7 @@ public class QueryOptions {
     }
 
     /**
-     * Set the $expand query parameter. For example, to expand policyEvaluationDetails, use $expand=policyEvaluationDetails.
+     * Set the $expand query parameter. For example, to expand components use $expand=components.
      *
      * @param expand the expand value to set
      * @return the QueryOptions object itself.

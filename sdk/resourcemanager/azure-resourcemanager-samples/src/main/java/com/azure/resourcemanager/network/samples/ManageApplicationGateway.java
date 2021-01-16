@@ -92,7 +92,7 @@ public final class ManageApplicationGateway {
         int backendPools = 2;
         int vmCountInAPool = 4;
 
-        Region[] regions = {Region.US_EAST, Region.UK_WEST};
+        Region[] regions = {Region.US_EAST, Region.US_WEST};
         String[] addressSpaces = {"172.16.0.0/16", "172.17.0.0/16"};
         String[][] publicIpCreatableKeys = new String[backendPools][vmCountInAPool];
         String[][] ipAddresses = new String[backendPools][vmCountInAPool];
@@ -177,7 +177,7 @@ public final class ManageApplicationGateway {
                             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                             .withRootUsername(userName)
                             .withSsh(sshKey)
-                            .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
+                            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                             .withNewStorageAccount(storageAccountCreatable);
                     creatableVirtualMachines.add(virtualMachineCreatable);
                 }

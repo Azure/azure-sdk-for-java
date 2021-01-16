@@ -19,10 +19,12 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
+import java.util.Map;
 
 /**
  * Test for {@link ServiceBusMessage}.
@@ -30,7 +32,7 @@ import java.time.Duration;
 public class ServiceBusMessageTest {
     // Create a giant payload with 10000 characters that are "a".
     private static final String PAYLOAD = new String(new char[10000]).replace("\0", "a");
-    private static final byte[] PAYLOAD_BYTES = PAYLOAD.getBytes(UTF_8);
+    private static final BinaryData PAYLOAD_BINARY = BinaryData.fromString(PAYLOAD);
 
     /**
      * Verifies we correctly set values via copy constructor for {@link ServiceBusMessage}.
@@ -50,13 +52,19 @@ public class ServiceBusMessageTest {
         final Duration expectedTimeToLive = Duration.ofSeconds(20);
         final String expectedPartitionKey = "old-p-key";
 
-        final ServiceBusReceivedMessage expected = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
-        expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), "10");
-        expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue(), "abc");
-        expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), "11");
-        expected.getAmqpAnnotatedMessage().getMessageAnnotations().put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), "11");
-        expected.getAmqpAnnotatedMessage().getApplicationProperties().put(DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME.getValue(), "abc");
-        expected.getAmqpAnnotatedMessage().getApplicationProperties().put(DEAD_LETTER_REASON_ANNOTATION_NAME.getValue(), "abc");
+        final short expectedPriority = 10;
+        final String expectedFooterValue = "foo-value1";
+        final String expectedDeliveryAnnotationsValue = "da-value1";
+        final String expectedApplicationValue = "ap-value1";
+
+
+        final ServiceBusReceivedMessage expected = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
+        expected.getRawAmqpMessage().getMessageAnnotations().put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), "10");
+        expected.getRawAmqpMessage().getMessageAnnotations().put(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue(), "abc");
+        expected.getRawAmqpMessage().getMessageAnnotations().put(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), "11");
+        expected.getRawAmqpMessage().getMessageAnnotations().put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), "11");
+        expected.getRawAmqpMessage().getApplicationProperties().put(DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME.getValue(), "abc");
+        expected.getRawAmqpMessage().getApplicationProperties().put(DEAD_LETTER_REASON_ANNOTATION_NAME.getValue(), "abc");
         expected.setSubject(expectedSubject);
         expected.setTo(expectedTo);
         expected.setReplyTo(expectedReplyTo);
@@ -65,6 +73,17 @@ public class ServiceBusMessageTest {
         expected.setDeadLetterSource(expectedDeadLetterSource);
         expected.setTimeToLive(expectedTimeToLive);
         expected.setPartitionKey(expectedPartitionKey);
+
+        expected.getRawAmqpMessage().getHeader().setPriority(expectedPriority);
+
+        final Map<String, Object> expectedFooter = expected.getRawAmqpMessage().getFooter();
+        expectedFooter.put("foo-1", expectedFooterValue);
+
+        final Map<String, Object> expectedDeliveryAnnotations = expected.getRawAmqpMessage().getDeliveryAnnotations();
+        expectedDeliveryAnnotations.put("da-1", expectedDeliveryAnnotationsValue);
+
+        final Map<String, Object> expectedApplicationProperties = expected.getApplicationProperties();
+        expectedApplicationProperties.put("ap-1", expectedApplicationValue);
 
         final ServiceBusMessage actual = new ServiceBusMessage(expected);
 
@@ -78,8 +97,15 @@ public class ServiceBusMessageTest {
         expected.setTimeToLive(Duration.ofSeconds(40));
         expected.setPartitionKey("new-p-key");
 
+        // Change original values
+        expected.getRawAmqpMessage().getHeader().setPriority((short) (expectedPriority + 1));
+        expectedFooter.put("foo-1", expectedFooterValue + "-changed");
+        expected.getRawAmqpMessage().getDeliveryAnnotations().put("da-1", expectedDeliveryAnnotationsValue + "-changed");
+        expected.getRawAmqpMessage().getApplicationProperties().put("ap-1", expectedApplicationValue + "-changed");
+
+
         // Assert
-        assertNotSame(expected.getAmqpAnnotatedMessage(), actual.getAmqpAnnotatedMessage());
+        assertNotSame(expected.getRawAmqpMessage(), actual.getRawAmqpMessage());
 
         // Validate updated values
         assertEquals(expectedSubject, actual.getSubject());
@@ -91,17 +117,23 @@ public class ServiceBusMessageTest {
         assertEquals(expectedPartitionKey, actual.getPartitionKey());
 
         // Following values should be reset.
-        assertNull(actual.getAmqpAnnotatedMessage().getMessageAnnotations().get(LOCKED_UNTIL_KEY_ANNOTATION_NAME.getValue()));
-        assertNull(actual.getAmqpAnnotatedMessage().getMessageAnnotations().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-        assertNull(actual.getAmqpAnnotatedMessage().getMessageAnnotations().get(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue()));
-        assertNull(actual.getAmqpAnnotatedMessage().getMessageAnnotations().get(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
-        assertNull(actual.getAmqpAnnotatedMessage().getMessageAnnotations().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getMessageAnnotations().get(LOCKED_UNTIL_KEY_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getMessageAnnotations().get(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getMessageAnnotations().get(DEAD_LETTER_SOURCE_KEY_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getMessageAnnotations().get(ENQUEUED_SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getMessageAnnotations().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()));
 
-        assertNull(actual.getAmqpAnnotatedMessage().getApplicationProperties().get(DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME.getValue()));
-        assertNull(actual.getAmqpAnnotatedMessage().getApplicationProperties().get(DEAD_LETTER_REASON_ANNOTATION_NAME.getValue()));
-        assertNull(actual.getAmqpAnnotatedMessage().getHeader().getDeliveryCount());
+        assertNull(actual.getRawAmqpMessage().getApplicationProperties().get(DEAD_LETTER_DESCRIPTION_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getApplicationProperties().get(DEAD_LETTER_REASON_ANNOTATION_NAME.getValue()));
+        assertNull(actual.getRawAmqpMessage().getHeader().getDeliveryCount());
+
+        // Testing , updating original message did not change copied message values..
+        assertEquals(expectedPriority, actual.getRawAmqpMessage().getHeader().getPriority());
+        assertEquals(expectedFooterValue, actual.getRawAmqpMessage().getFooter().get("foo-1").toString());
+        assertEquals(expectedDeliveryAnnotationsValue, actual.getRawAmqpMessage().getDeliveryAnnotations().get("da-1").toString());
+        assertEquals(expectedApplicationValue, actual.getRawAmqpMessage().getApplicationProperties().get("ap-1").toString());
+
     }
-
 
     /**
      * Verifies we correctly set values via copy constructor for {@link ServiceBusMessage}.
@@ -120,7 +152,7 @@ public class ServiceBusMessageTest {
         final Duration expectedTimeToLive = Duration.ofSeconds(20);
         final String expectedPartitionKey = "old-p-key";
 
-        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BYTES);
+        final ServiceBusReceivedMessage originalMessage = new ServiceBusReceivedMessage(PAYLOAD_BINARY);
         originalMessage.setSubject(expectedSubject);
         originalMessage.setTo(expectedTo);
         originalMessage.setReplyTo(expectedReplyTo);
@@ -144,15 +176,15 @@ public class ServiceBusMessageTest {
 
         // Assert
         // Validate updated values
-        assertEquals(expectedSubject, originalMessage.getAmqpAnnotatedMessage().getProperties().getSubject());
-        assertEquals(expectedTo, originalMessage.getAmqpAnnotatedMessage().getProperties().getTo());
-        assertEquals(expectedReplyTo, originalMessage.getAmqpAnnotatedMessage().getProperties().getReplyTo());
-        assertEquals(expectedReplyToSessionId, originalMessage.getAmqpAnnotatedMessage().getProperties().getReplyToGroupId());
-        assertEquals(expectedCorrelationId, originalMessage.getAmqpAnnotatedMessage().getProperties().getCorrelationId());
+        assertEquals(expectedSubject, originalMessage.getRawAmqpMessage().getProperties().getSubject());
+        assertEquals(expectedTo, originalMessage.getRawAmqpMessage().getProperties().getTo().toString());
+        assertEquals(expectedReplyTo, originalMessage.getRawAmqpMessage().getProperties().getReplyTo().toString());
+        assertEquals(expectedReplyToSessionId, originalMessage.getRawAmqpMessage().getProperties().getReplyToGroupId());
+        assertEquals(expectedCorrelationId, originalMessage.getRawAmqpMessage().getProperties().getCorrelationId().toString());
 
-        assertEquals(expectedTimeToLive, originalMessage.getAmqpAnnotatedMessage().getHeader().getTimeToLive());
+        assertEquals(expectedTimeToLive, originalMessage.getRawAmqpMessage().getHeader().getTimeToLive());
 
-        assertEquals(expectedPartitionKey, originalMessage.getAmqpAnnotatedMessage().getMessageAnnotations().get(PARTITION_KEY_ANNOTATION_NAME.getValue()));
+        assertEquals(expectedPartitionKey, originalMessage.getRawAmqpMessage().getMessageAnnotations().get(PARTITION_KEY_ANNOTATION_NAME.getValue()));
     }
 
     /**
@@ -168,7 +200,22 @@ public class ServiceBusMessageTest {
         ServiceBusMessage message = new ServiceBusMessage(body);
 
         // Assert
-        assertArrayEquals(encoded, message.getBody());
+        assertArrayEquals(encoded, message.getBody().toBytes());
+    }
+
+    /**
+     * Verify body is created.
+     */
+    @Test
+    void bodyAsBytes() {
+        // Arrange
+        byte[] expected = "some-contents".getBytes(UTF_8);
+
+        // Act
+        ServiceBusMessage message = new ServiceBusMessage(expected);
+
+        // Assert
+        assertArrayEquals(expected, message.getBody().toBytes());
     }
 
     /**
@@ -177,13 +224,14 @@ public class ServiceBusMessageTest {
     @Test
     void bodyNotNull() {
         assertThrows(NullPointerException.class, () -> new ServiceBusMessage((String) null));
+        assertThrows(NullPointerException.class, () -> new ServiceBusMessage((BinaryData) null));
         assertThrows(NullPointerException.class, () -> new ServiceBusMessage((byte[]) null));
     }
 
     @Test
     void messagePropertiesShouldNotBeNull() {
-        // Act
-        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BYTES);
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BINARY);
 
         // Assert
         Assertions.assertNotNull(serviceBusMessageData.getBody());
@@ -200,10 +248,10 @@ public class ServiceBusMessageTest {
         byte[] byteArray = new byte[0];
 
         // Act
-        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(byteArray);
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(BinaryData.fromBytes(byteArray));
 
         // Assert
-        final byte[] actual = serviceBusMessageData.getBody();
+        final byte[] actual = serviceBusMessageData.getBody().toBytes();
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(0, actual.length);
     }
@@ -213,11 +261,81 @@ public class ServiceBusMessageTest {
      */
     @Test
     void canCreateWithBytePayload() {
-        // Act
-        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BYTES);
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage(PAYLOAD_BINARY);
 
         // Assert
         Assertions.assertNotNull(serviceBusMessageData.getBody());
-        Assertions.assertEquals(PAYLOAD, new String(serviceBusMessageData.getBody(), UTF_8));
+        Assertions.assertEquals(PAYLOAD, serviceBusMessageData.getBody().toString());
+    }
+
+    @Test
+    void sessionIdMustMatchPartitionKeyAndViceVersa() {
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage("not-used-for-test");
+
+        // Setting them up to already be matching.
+        serviceBusMessageData.setSessionId("this must match with the other field");
+        serviceBusMessageData.setPartitionKey("this must match with the other field");
+
+        // Assert
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setSessionId("something inconsistent!");
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setPartitionKey("something inconsistent!");
+        });
+    }
+
+    @Test
+    void sessionIdAndPartitionIdCanBeSetToNull() {
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage("not-used-for-test");
+
+        // Act/Assert (ie, throw no exceptions)
+        serviceBusMessageData.setPartitionKey(null);
+        serviceBusMessageData.setSessionId(null);
+
+        // and the ordering doesn't matter
+        serviceBusMessageData.setPartitionKey("hello");
+        serviceBusMessageData.setSessionId(null);
+
+        // reset
+        serviceBusMessageData.setPartitionKey(null);
+        serviceBusMessageData.setSessionId(null);
+
+        serviceBusMessageData.setSessionId("hello");
+        serviceBusMessageData.setPartitionKey(null);
+    }
+
+    @Test
+    void idsCannotBeTooLong() {
+        // Arrange
+        final ServiceBusMessage serviceBusMessageData = new ServiceBusMessage("not-used-for-test");
+        final String longId = new String(new char[128 + 1]).replace("\0", "a");
+        final String justRightId = new String(new char[128]).replace("\0", "a");
+
+        // Assert
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setMessageId(longId);
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setPartitionKey(longId);
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            serviceBusMessageData.setSessionId(longId);
+        });
+
+        serviceBusMessageData.setMessageId(justRightId);
+        Assertions.assertEquals(justRightId, serviceBusMessageData.getMessageId());
+
+        serviceBusMessageData.setPartitionKey(justRightId);
+        Assertions.assertEquals(justRightId, serviceBusMessageData.getPartitionKey());
+
+        serviceBusMessageData.setSessionId(justRightId);
+        Assertions.assertEquals(justRightId, serviceBusMessageData.getSessionId());
     }
 }

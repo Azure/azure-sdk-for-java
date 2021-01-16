@@ -11,7 +11,7 @@
         },
         "location": {
             "type": "string",
-            "defaultValue": "westus2",
+            "defaultValue": "canadacentral",
             "metadata": {
                 "metadata": {
                     "description": "The location of the resource. By default, this is the same as the resource group."
@@ -73,7 +73,7 @@
         },
         "selectionMarkTrainingDataContainer": {
             "type": "string",
-            "defaultValue": "formselectionmark"
+            "defaultValue": "selectionmark"
         },
         "testingDataSasProperties": {
             "type": "object",

@@ -33,7 +33,7 @@ public final class MetricSeriesDefinition {
     }
 
     /**
-     * Get the metricId property: metric unique id.
+     * Get the metric unique id.
      *
      * @return the metricId value.
      */
@@ -42,7 +42,7 @@ public final class MetricSeriesDefinition {
     }
 
     /**
-     * Get the dimension property: dimension name and value pair.
+     * Get the dimension name and value pair.
      *
      * @return the dimension value.
      */

@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.fail;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class QueryTests extends QueryTestBase{
+public class QueryTests extends QueryTestBase {
 
     private final ClientLogger logger = new ClientLogger(ComponentsTests.class);
 
@@ -29,7 +29,7 @@ public class QueryTests extends QueryTestBase{
     @Override
     public void validQuerySucceeds(HttpClient httpClient, DigitalTwinsServiceVersion serviceVersion) {
         DigitalTwinsClient client = getClient(httpClient, serviceVersion);
-        int pageSize = 5;
+        int pageSize = 3;
         String floorModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.FLOOR_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
         String roomModelId = UniqueIdHelper.getUniqueModelId(TestAssetDefaults.ROOM_MODEL_ID_PREFIX, client, randomIntegerStringGenerator);
         List<String> roomTwinIds = new ArrayList<>();
@@ -50,18 +50,18 @@ public class QueryTests extends QueryTestBase{
 
             PagedIterable<BasicDigitalTwin> pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class, new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
 
-            for(BasicDigitalTwin digitalTwin : pagedQueryResponse){
+            for (BasicDigitalTwin digitalTwin : pagedQueryResponse) {
                 assertThat(digitalTwin.getContents().get("IsOccupied"))
                     .as("IsOccupied should be true")
                     .isEqualTo(true);
             }
 
-            pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class);
+            pagedQueryResponse = client.query(queryString, BasicDigitalTwin.class,new QueryOptions().setMaxItemsPerPage(pageSize), Context.NONE);
 
             // Test that page size hint works, and that all returned pages either have the page size hint amount of
             // elements, or have no continuation token (signaling that it is the last page)
             int pageCount = 0;
-            for (Page<BasicDigitalTwin> digitalTwinsPage : pagedQueryResponse.iterableByPage()){
+            for (Page<BasicDigitalTwin> digitalTwinsPage : pagedQueryResponse.iterableByPage()) {
                 pageCount++;
                 int elementsPerPage = 0;
                 for (BasicDigitalTwin basicDigitalTwin : digitalTwinsPage.getElements()) {
@@ -74,19 +74,16 @@ public class QueryTests extends QueryTestBase{
             }
 
             assertTrue(pageCount > 1, "Expected more than one page of query results");
-        }
-        finally {
+        } finally {
             // Cleanup
             try {
                 for (String roomTwinId : roomTwinIds) {
                     client.deleteDigitalTwin(roomTwinId);
                 }
-                if (roomModelId != null){
+                if (roomModelId != null) {
                     client.deleteModel(roomModelId);
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 fail("Failed to cleanup due to: ", ex);
             }
         }

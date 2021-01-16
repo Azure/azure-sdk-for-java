@@ -121,7 +121,8 @@ public class RequestResponseTest extends ApiTestBase {
                             }
                         });
                     }
-                });
+                },
+                "testRequestResponse", "test-session");
 
         int parallelization = 10;
         final CompletableFuture<Void>[] tasks = new CompletableFuture[parallelization];

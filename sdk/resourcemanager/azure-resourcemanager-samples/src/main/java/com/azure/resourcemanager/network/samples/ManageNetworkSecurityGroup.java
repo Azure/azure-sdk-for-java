@@ -44,7 +44,7 @@ public final class ManageNetworkSecurityGroup {
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws UnsupportedEncodingException, JSchException {
-        final Region region = Region.US_NORTH_CENTRAL;
+        final Region region = Region.US_WEST;
         final String frontEndNSGName = Utils.randomResourceName(azureResourceManager, "fensg", 24);
         final String backEndNSGName = Utils.randomResourceName(azureResourceManager, "bensg", 24);
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEMS", 24);
@@ -210,7 +210,7 @@ public final class ManageNetworkSecurityGroup {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withSsh(sshKey)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             Date t2 = new Date();
@@ -236,7 +236,7 @@ public final class ManageNetworkSecurityGroup {
                     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                     .withRootUsername(userName)
                     .withSsh(sshKey)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             t2 = new Date();

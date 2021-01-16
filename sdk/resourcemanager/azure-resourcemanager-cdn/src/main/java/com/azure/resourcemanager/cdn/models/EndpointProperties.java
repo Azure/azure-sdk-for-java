@@ -29,6 +29,13 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
     private List<DeepCreatedOrigin> origins;
 
     /*
+     * The origin groups comprising of origins that are used for load balancing
+     * the traffic based on availability.
+     */
+    @JsonProperty(value = "originGroups")
+    private List<DeepCreatedOriginGroup> originGroups;
+
+    /*
      * Resource status of the endpoint.
      */
     @JsonProperty(value = "resourceState", access = JsonProperty.Access.WRITE_ONLY)
@@ -71,6 +78,28 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
     }
 
     /**
+     * Get the originGroups property: The origin groups comprising of origins that are used for load balancing the
+     * traffic based on availability.
+     *
+     * @return the originGroups value.
+     */
+    public List<DeepCreatedOriginGroup> originGroups() {
+        return this.originGroups;
+    }
+
+    /**
+     * Set the originGroups property: The origin groups comprising of origins that are used for load balancing the
+     * traffic based on availability.
+     *
+     * @param originGroups the originGroups value to set.
+     * @return the EndpointProperties object itself.
+     */
+    public EndpointProperties withOriginGroups(List<DeepCreatedOriginGroup> originGroups) {
+        this.originGroups = originGroups;
+        return this;
+    }
+
+    /**
      * Get the resourceState property: Resource status of the endpoint.
      *
      * @return the resourceState value.
@@ -88,6 +117,105 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
         return this.provisioningState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withOriginPath(String originPath) {
+        super.withOriginPath(originPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withContentTypesToCompress(List<String> contentTypesToCompress) {
+        super.withContentTypesToCompress(contentTypesToCompress);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withOriginHostHeader(String originHostHeader) {
+        super.withOriginHostHeader(originHostHeader);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withIsCompressionEnabled(Boolean isCompressionEnabled) {
+        super.withIsCompressionEnabled(isCompressionEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withIsHttpAllowed(Boolean isHttpAllowed) {
+        super.withIsHttpAllowed(isHttpAllowed);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withIsHttpsAllowed(Boolean isHttpsAllowed) {
+        super.withIsHttpsAllowed(isHttpsAllowed);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withQueryStringCachingBehavior(QueryStringCachingBehavior queryStringCachingBehavior) {
+        super.withQueryStringCachingBehavior(queryStringCachingBehavior);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withOptimizationType(OptimizationType optimizationType) {
+        super.withOptimizationType(optimizationType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withProbePath(String probePath) {
+        super.withProbePath(probePath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withGeoFilters(List<GeoFilter> geoFilters) {
+        super.withGeoFilters(geoFilters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withDefaultOriginGroup(ResourceReference defaultOriginGroup) {
+        super.withDefaultOriginGroup(defaultOriginGroup);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withUrlSigningKeys(List<UrlSigningKey> urlSigningKeys) {
+        super.withUrlSigningKeys(urlSigningKeys);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withDeliveryPolicy(EndpointPropertiesUpdateParametersDeliveryPolicy deliveryPolicy) {
+        super.withDeliveryPolicy(deliveryPolicy);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EndpointProperties withWebApplicationFirewallPolicyLink(
+        EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
+        super.withWebApplicationFirewallPolicyLink(webApplicationFirewallPolicyLink);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -102,6 +230,9 @@ public final class EndpointProperties extends EndpointPropertiesUpdateParameters
                     new IllegalArgumentException("Missing required property origins in model EndpointProperties"));
         } else {
             origins().forEach(e -> e.validate());
+        }
+        if (originGroups() != null) {
+            originGroups().forEach(e -> e.validate());
         }
     }
 }

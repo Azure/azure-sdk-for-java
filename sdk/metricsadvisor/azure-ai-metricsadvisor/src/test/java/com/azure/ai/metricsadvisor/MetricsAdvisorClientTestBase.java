@@ -15,10 +15,7 @@ import com.azure.core.util.Configuration;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 
 public abstract class MetricsAdvisorClientTestBase extends TestBase {
-
-    static final String INCIDENT_ROOT_CAUSE_ID = "1516ffd506462aca05198391bb279aff-1746b031c00";
-    static final String INCIDENT_ROOT_CAUSE_CONFIGURATION_ID = "59f26a57-55f7-41eb-8899-a7268d125557";
-
+    
     @Override
     protected void beforeTest() {
     }

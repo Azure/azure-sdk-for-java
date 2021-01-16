@@ -267,6 +267,23 @@ public interface CustomDomainsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param customDomainName Name of the custom domain within an endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
+     *     e.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDomainInner create(
+        String resourceGroupName, String profileName, String endpointName, String customDomainName);
+
+    /**
+     * Creates a new custom domain within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param customDomainName Name of the custom domain within an endpoint.
      * @param hostname The host name of the custom domain. Must be a domain name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,23 +300,6 @@ public interface CustomDomainsClient {
         String customDomainName,
         String hostname,
         Context context);
-
-    /**
-     * Creates a new custom domain within an endpoint.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param customDomainName Name of the custom domain within an endpoint.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
-     *     e.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDomainInner create(
-        String resourceGroupName, String profileName, String endpointName, String customDomainName);
 
     /**
      * Deletes an existing custom domain within an endpoint.

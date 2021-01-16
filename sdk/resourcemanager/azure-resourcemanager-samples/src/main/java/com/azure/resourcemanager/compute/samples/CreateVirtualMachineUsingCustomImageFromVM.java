@@ -91,7 +91,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
                         .withPublicSetting("fileUris", apacheInstallScriptUris)
                         .withPublicSetting("commandToExecute", apacheInstallCommand)
                         .attach()
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             System.out.println("Created a Linux VM with un-managed OS and data disks: " + linuxVM.id());
@@ -146,7 +146,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
                     .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withRootPassword(password)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             Utils.print(linuxVM2);
@@ -169,7 +169,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVM {
                     .withNewDataDiskFromImage(1, 200, CachingTypes.READ_WRITE)  // TODO: Naming needs to be finalized
                     .withNewDataDiskFromImage(2, 100, CachingTypes.READ_ONLY)
                     .withNewDataDisk(50)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             Utils.print(linuxVM3);

@@ -3,10 +3,10 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.models.EmailHook;
-import com.azure.ai.metricsadvisor.models.Hook;
+import com.azure.ai.metricsadvisor.models.EmailNotificationHook;
+import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.WebHook;
+import com.azure.ai.metricsadvisor.models.WebNotificationHook;
 import com.azure.core.http.rest.PagedFlux;
 import reactor.core.publisher.Mono;
 
@@ -22,62 +22,62 @@ public class HookAsyncSample {
                 .buildAsyncClient();
 
         // Create email hook.
-        Hook emailHookToCreate = new EmailHook("email hook")
+        NotificationHook emailNotificationHookToCreate = new EmailNotificationHook("email hook")
             .setDescription("my email hook")
             .addEmailToAlert("alertme@alertme.com")
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
 
-        Mono<Hook> createHookMono
+        Mono<NotificationHook> createHookMono
             = advisorAdministrationAsyncClient
-            .createHook(emailHookToCreate);
+            .createHook(emailNotificationHookToCreate);
 
         createHookMono
             .doOnSubscribe(__ ->
-                System.out.printf("Creating Hook%n"))
+                System.out.printf("Creating NotificationHook%n"))
             .doOnSuccess(hook ->
                 System.out.printf("Created hook: %s%n", hook.getId()));
 
         // Retrieve the hook that just created.
-        Mono<Hook> fetchHookMono = createHookMono
+        Mono<NotificationHook> fetchHookMono = createHookMono
             .flatMap(createdHook -> {
                 return advisorAdministrationAsyncClient.getHook(
                     createdHook.getId())
                     .doOnSubscribe(__ ->
-                        System.out.printf("Fetching Hook: %s%n", createdHook.getId()))
+                        System.out.printf("Fetching NotificationHook: %s%n", createdHook.getId()))
                     .doOnSuccess(config ->
-                        System.out.printf("Fetched Hook%n"))
+                        System.out.printf("Fetched NotificationHook%n"))
                     .doOnNext(hook -> {
-                        EmailHook createdEmailHook = (EmailHook) hook;
-                        System.out.printf("Hook Id: %s%n", createdEmailHook.getId());
-                        System.out.printf("Hook Name: %s%n", createdEmailHook.getName());
-                        System.out.printf("Hook Description: %s%n", createdEmailHook.getDescription());
-                        System.out.printf("Hook External Link: %s%n", createdEmailHook.getExternalLink());
-                        System.out.printf("Hook Emails: %s%n", String.join(",", createdEmailHook.getEmailsToAlert()));
+                        EmailNotificationHook createdEmailHook = (EmailNotificationHook) hook;
+                        System.out.printf("NotificationHook Id: %s%n", createdEmailHook.getId());
+                        System.out.printf("NotificationHook Name: %s%n", createdEmailHook.getName());
+                        System.out.printf("NotificationHook Description: %s%n", createdEmailHook.getDescription());
+                        System.out.printf("NotificationHook External Link: %s%n", createdEmailHook.getExternalLink());
+                        System.out.printf("NotificationHook Emails: %s%n", String.join(",", createdEmailHook.getEmailsToAlert()));
                     });
             });
 
         // Update the hook.
-        Mono<Hook> updateHookMono = fetchHookMono
+        Mono<NotificationHook> updateHookMono = fetchHookMono
             .flatMap(hook -> {
-                EmailHook emailHookToUpdate = (EmailHook) hook;
+                EmailNotificationHook emailHookToUpdate = (EmailNotificationHook) hook;
                 emailHookToUpdate
                     .removeEmailToAlert("alertme@alertme.com")
                     .addEmailToAlert("alertme2@alertme.com")
                     .addEmailToAlert("alertme3@alertme.com");
                 return advisorAdministrationAsyncClient.updateHook(emailHookToUpdate)
                     .doOnSubscribe(__ ->
-                        System.out.printf("Updating Hook: %s%n", hook.getId()))
+                        System.out.printf("Updating Notification Hook: %s%n", hook.getId()))
                     .doOnSuccess(config ->
-                        System.out.printf("Updated Hook%n"));
+                        System.out.printf("Updated Notification Hook%n"));
             });
 
         // Delete the hook.
         Mono<Void> deleteHookMono = updateHookMono.flatMap(hook -> {
             return advisorAdministrationAsyncClient.deleteHook(hook.getId())
                 .doOnSubscribe(__ ->
-                    System.out.printf("Deleting Hook: %s%n", hook.getId()))
+                    System.out.printf("Deleting Notification Hook: %s%n", hook.getId()))
                 .doOnSuccess(config ->
-                    System.out.printf("Deleted Hook%n"));
+                    System.out.printf("Deleted Notification Hook%n"));
         });
 
         /*
@@ -88,15 +88,15 @@ public class HookAsyncSample {
         deleteHookMono.block();
 
         // Create a web hook
-        Hook webHookToCreate = new WebHook("web hook", "https://httpbin.org/post")
+        NotificationHook webNotificationHookToCreate = new WebNotificationHook("web hook", "https://httpbin.org/post")
             .setDescription("my web hook")
             .setUserCredentials("web-user", "web-user-pwd!")
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
 
-        Mono<Hook> createWebHookMono
-            = advisorAdministrationAsyncClient.createHook(webHookToCreate)
+        Mono<NotificationHook> createWebHookMono
+            = advisorAdministrationAsyncClient.createHook(webNotificationHookToCreate)
             .doOnSubscribe(__ ->
-                System.out.printf("Creating Hook%n"))
+                System.out.printf("Creating NotificationHook%n"))
             .doOnSuccess(hook ->
                 System.out.printf("Created hook: %s%n", hook.getId()));
 
@@ -109,25 +109,25 @@ public class HookAsyncSample {
 
         // List configurations
         System.out.printf("Listing hooks%n");
-        PagedFlux<Hook> hooksFlux
+        PagedFlux<NotificationHook> hooksFlux
             = advisorAdministrationAsyncClient.listHooks();
 
         hooksFlux.doOnNext(hook -> {
-            if (hook instanceof EmailHook) {
-                EmailHook emailHook = (EmailHook) hook;
-                System.out.printf("Hook Id: %s%n", emailHook.getId());
-                System.out.printf("Hook Name: %s%n", emailHook.getName());
-                System.out.printf("Hook Description: %s%n", emailHook.getDescription());
-                System.out.printf("Hook External Link: %s%n", emailHook.getExternalLink());
-                System.out.printf("Hook Emails: %s%n", String.join(",", emailHook.getEmailsToAlert()));
-            } else if (hook instanceof WebHook) {
-                WebHook webHook = (WebHook) hook;
-                System.out.printf("Hook Id: %s%n", webHook.getId());
-                System.out.printf("Hook Name: %s%n", webHook.getName());
-                System.out.printf("Hook Description: %s%n", webHook.getDescription());
-                System.out.printf("Hook External Link: %s%n", webHook.getExternalLink());
-                System.out.printf("Hook Endpoint: %s%n", webHook.getEndpoint());
-                System.out.printf("Hook Headers: %s%n", webHook.getHttpHeaders());
+            if (hook instanceof EmailNotificationHook) {
+                EmailNotificationHook emailHook = (EmailNotificationHook) hook;
+                System.out.printf("NotificationHook Id: %s%n", emailHook.getId());
+                System.out.printf("NotificationHook Name: %s%n", emailHook.getName());
+                System.out.printf("NotificationHook Description: %s%n", emailHook.getDescription());
+                System.out.printf("NotificationHook External Link: %s%n", emailHook.getExternalLink());
+                System.out.printf("NotificationHook Emails: %s%n", String.join(",", emailHook.getEmailsToAlert()));
+            } else if (hook instanceof WebNotificationHook) {
+                WebNotificationHook webHook = (WebNotificationHook) hook;
+                System.out.printf("NotificationHook Id: %s%n", webHook.getId());
+                System.out.printf("NotificationHook Name: %s%n", webHook.getName());
+                System.out.printf("NotificationHook Description: %s%n", webHook.getDescription());
+                System.out.printf("NotificationHook External Link: %s%n", webHook.getExternalLink());
+                System.out.printf("NotificationHook Endpoint: %s%n", webHook.getEndpoint());
+                System.out.printf("NotificationHook Headers: %s%n", webHook.getHttpHeaders());
             }
         }).blockLast();
     }

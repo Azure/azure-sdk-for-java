@@ -151,7 +151,7 @@ public abstract class RxCollectionCache {
         return async.map(Utils.ValueHolder::new);
     }
 
-    private Mono<DocumentCollection> resolveByNameAsync(
+    public Mono<DocumentCollection> resolveByNameAsync(
         MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
 
         String resourceFullName = PathsHelper.getCollectionPath(resourceAddress);
