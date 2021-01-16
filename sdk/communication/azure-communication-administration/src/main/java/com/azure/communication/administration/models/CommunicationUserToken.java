@@ -8,17 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The CommunicationIdentityToken model. */
+/** The CommunicationUserToken model. */
 @Fluent
-public final class CommunicationIdentityToken {
+public final class CommunicationUserToken {
     /*
-     * Identifier of the identity owning the token.
-     */
-    @JsonProperty(value = "id", required = true)
-    private String id;
-
-    /*
-     * The token issued for the identity.
+     * The access token issued for the identity.
      */
     @JsonProperty(value = "token", required = true)
     private String token;
@@ -30,27 +24,7 @@ public final class CommunicationIdentityToken {
     private OffsetDateTime expiresOn;
 
     /**
-     * Get the id property: Identifier of the identity owning the token.
-     *
-     * @return the id value.
-     */
-    public String getId() {
-        return this.id;
-    }
-
-    /**
-     * Set the id property: Identifier of the identity owning the token.
-     *
-     * @param id the id value to set.
-     * @return the CommunicationIdentityToken object itself.
-     */
-    public CommunicationIdentityToken setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the token property: The token issued for the identity.
+     * Get the token property: The access token issued for the identity.
      *
      * @return the token value.
      */
@@ -59,12 +33,12 @@ public final class CommunicationIdentityToken {
     }
 
     /**
-     * Set the token property: The token issued for the identity.
+     * Set the token property: The access token issued for the identity.
      *
      * @param token the token value to set.
-     * @return the CommunicationIdentityToken object itself.
+     * @return the CommunicationUserToken object itself.
      */
-    public CommunicationIdentityToken setToken(String token) {
+    public CommunicationUserToken setToken(String token) {
         this.token = token;
         return this;
     }
@@ -82,9 +56,9 @@ public final class CommunicationIdentityToken {
      * Set the expiresOn property: The expiry time of the token.
      *
      * @param expiresOn the expiresOn value to set.
-     * @return the CommunicationIdentityToken object itself.
+     * @return the CommunicationUserToken object itself.
      */
-    public CommunicationIdentityToken setExpiresOn(OffsetDateTime expiresOn) {
+    public CommunicationUserToken setExpiresOn(OffsetDateTime expiresOn) {
         this.expiresOn = expiresOn;
         return this;
     }

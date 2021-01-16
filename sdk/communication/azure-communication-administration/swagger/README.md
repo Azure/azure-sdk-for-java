@@ -32,8 +32,11 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=phonenumber
 These settings apply only when `--tag=identity` is specified on the command line.
 
 ``` yaml $(tag) == 'identity'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/084de2711f77d12d644c7628b61cdd7634341ee8/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/stable/2021-03-07/CommunicationIdentity.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/c6df8de0dfeceb6d705e0e3b7674044156e12e94/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/stable/2021-03-07/CommunicationIdentity.json
 add-context-parameter: true
+custom-types: CommunicationIdentityAccessToken,CommunicationIdentityTokenScope,CommunicationUserToken
+custom-types-subpackage: models
+models-subpackage: implementation.models
 ```
 
 ### Tag: phonenumber
@@ -46,6 +49,15 @@ override-client-name: PhoneNumberAdminClient
 custom-types: AcquiredPhoneNumber,AcquiredPhoneNumberUpdate,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityValue,PhoneNumberCost,PhoneNumberSearchRequest,PhoneNumberSearchResult,PhoneNumberType
 custom-types-subpackage: models
 models-subpackage: implementation.models
+```
+
+### Rename CommunicationIdentityAccessToken to CommunicationUserToken
+
+``` yaml
+directive:
+    - rename-model:
+        from: CommunicationIdentityAccessToken
+        to: CommunicationUserToken
 ```
 
 ### Rename searchId to reservationId in CreateSearchResponse
