@@ -256,6 +256,15 @@ public class FeedRangeTest {
 
         RxDocumentServiceRequest request = createMockRequest(true);
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
+        when(
+            routingMapProviderMock.tryGetPartitionKeyRangeByIdAsync(
+                any(MetadataDiagnosticsContext.class),
+                anyString(),
+                eq(partitionKeyRange.getId()),
+                anyBoolean(),
+                anyMapOf(String.class, Object.class)))
+            .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
+
         DocumentCollection collection = new DocumentCollection();
         feedRangPartitionKeyRange.populateFeedRangeFilteringHeaders(
             routingMapProviderMock,
@@ -477,6 +486,9 @@ public class FeedRangeTest {
         RxDocumentServiceRequest request = createMockRequest(true);
         IRoutingMapProvider routingMapProviderMock = Mockito.mock(IRoutingMapProvider.class);
         DocumentCollection collection = new DocumentCollection();
+        List<String> pkPaths = new ArrayList<>();
+        pkPaths.add("/Test");
+        collection.setPartitionKey(new PartitionKeyDefinition().setPaths(pkPaths));
         feedRangePartitionKey.populateFeedRangeFilteringHeaders(
             routingMapProviderMock,
             request,
