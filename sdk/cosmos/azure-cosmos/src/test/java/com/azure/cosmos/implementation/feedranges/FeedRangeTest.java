@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
@@ -291,7 +292,9 @@ public class FeedRangeTest {
         StepVerifier
             .create(
                 feedRangePartitionKeyRange.getEffectiveRange(
-                    routingMapProviderMock, request, Mono.just(Utils.ValueHolder.initialize(collection))))
+                    routingMapProviderMock,
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                    Mono.just(Utils.ValueHolder.initialize(collection))))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
@@ -343,7 +346,9 @@ public class FeedRangeTest {
         StepVerifier
             .create(
                 feedRangePartitionKeyRange.getEffectiveRange(
-                    routingMapProviderMock, request, Mono.just(Utils.ValueHolder.initialize(collection))))
+                    routingMapProviderMock,
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                    Mono.just(Utils.ValueHolder.initialize(collection))))
             .recordWith(ArrayList::new)
             .expectErrorSatisfies((e) -> {
                 assertThat(e).isInstanceOf(PartitionKeyRangeGoneException.class);
@@ -382,7 +387,9 @@ public class FeedRangeTest {
         StepVerifier
             .create(
                 feedRangePartitionKeyRange.getEffectiveRange(
-                    routingMapProviderMock, request, Mono.just(Utils.ValueHolder.initialize(collection))))
+                    routingMapProviderMock,
+                    BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                    Mono.just(Utils.ValueHolder.initialize(collection))))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {

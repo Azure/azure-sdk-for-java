@@ -335,7 +335,7 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> boolean noChanges(FeedResponse<T> page) {
+    public static <T> boolean noChanges(FeedResponse<T> page) {
         return page.nochanges;
     }
 
@@ -351,12 +351,21 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
-                                                                         Map<String,
-                                                                         String> headers,
-                                                                         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
-                                                                         QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
-        FeedResponse<T> feedResponse = new FeedResponse<>(results, headers, queryMetricsMap);
+    public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(
+        List<T> results,
+        Map<String,
+        String> headers,
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+        QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext,
+        boolean useEtagAsContinuation,
+        boolean isNoChanges) {
+
+        FeedResponse<T> feedResponse =  new FeedResponse<>(
+            results,
+            headers,
+            queryMetricsMap,
+            useEtagAsContinuation,
+            isNoChanges);
         feedResponse.setQueryPlanDiagnosticsContext(diagnosticsContext);
         return feedResponse;
     }
@@ -694,6 +703,11 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static QueryInfo getQueryInfoFromFeedResponse(FeedResponse<?> response) {
         return response.getQueryInfo();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static boolean getNoCHangesFromFeedResponse(FeedResponse<?> response) {
+        return response.getNoChanges();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

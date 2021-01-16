@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.feedranges;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.Range;
@@ -54,7 +55,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
 
     public abstract Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
-        RxDocumentServiceRequest request,
+        MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono);
 
     public abstract Mono<List<String>> getPartitionKeyRanges(

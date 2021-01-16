@@ -13,6 +13,8 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
@@ -49,20 +51,25 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
 
     @Override
     public Mono<FeedResponse<T>> nextPage() {
+        // There are two conditions that require retries
+        // in the change feed pipeline
+        // 1) On 410 the FeedRangeContinuation needs to evaluate
+        //    whether continuations need to be split (in the case that any continuation
+        //    exists that would span more than one physical partition now
+        // 2) On 304 a retry is needed if at least one continuation has not been drained yet.
+        //    This prevents returning a 304 before we received a 304 for all continuation
+        //
+        // 420 handling: this is triggered by an exception - using an
+        //               IRetryPolicy (FeedRangeContinuationSplitRetryPolicy)
+        // 304 handling: this is not triggered by an exception (304 doesn't result in throwing)
+        //               so using Reactor's built-in option of repeating the chain on an empty result
+        //               so nextPageInternal below has the logic to return empty result
+        //               if not all continuations have been drained yet.
         return ObservableHelper.inlineIfPossible(
             this::nextPageInternal,
             this.feedRangeContinuationSplitRetryPolicy);
     }
 
-    // TODO fabianm - the retry policy handling here via
-    // FeedRangeContinuationSplitRetryPolicy + the
-    // retry on 304 via the repeatWhenEmpty
-    // is not well structured. Hard to read and maintain
-    // especially don't like the side effect of triggering the
-    // split of the feed range continuation and resetting the
-    // should fetch more flag on 304 retries from the retry policies
-    // Planning to proceed with merging the PR for now
-    // and then refactor the retry logic here in a separate PR
     private Mono<FeedResponse<T>> nextPageInternal() {
         return Mono.fromSupplier(this::nextPageCore)
                    .flatMap(Function.identity())
@@ -73,6 +80,8 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
                        if (continuationSnapshot != null &&
                            continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_IMMEDIATELY) {
 
+                           // not all continuations have been drained yet
+                           // repeat with the next continuation
                            this.reenableShouldFetchMoreForRetry();
                            return Mono.empty();
                        }
@@ -83,8 +92,12 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
     }
 
     @Override
-    protected String applyServerResponseContinuation(String serverContinuationToken) {
-        return this.changeFeedState.applyServerResponseContinuation(serverContinuationToken);
+    protected String applyServerResponseContinuation(
+        String serverContinuationToken,
+        RxDocumentServiceRequest request) {
+
+        return this.changeFeedState.applyServerResponseContinuation(
+            serverContinuationToken, request);
     }
 
     @Override
@@ -121,7 +134,6 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
             this.state = state;
         }
 
-
         @Override
         public Mono<ShouldRetryResult> shouldRetry(Exception e) {
             if (!(e instanceof GoneException)) {
@@ -130,11 +142,25 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
 
             if (this.state.getContinuation() == null)
             {
-                this.state.setContinuation(
-                    FeedRangeContinuation.createForFullFeedRange(
+                final FeedRangeInternal feedRange = this.state.getFeedRange();
+                final Mono<Range<String>> effectiveRangeMono = feedRange.getEffectiveRange(
+                    this.client.getPartitionKeyRangeCache(),
+                    null,
+                    this.client.getCollectionCache().resolveByRidAsync(
+                        null,
                         this.state.getContainerRid(),
-                        this.state.getFeedRange())
+                        null)
                 );
+
+                return effectiveRangeMono
+                    .map(effectiveRange -> {
+                        return this.state.setContinuation(
+                            FeedRangeContinuation.create(
+                                this.state.getContainerRid(),
+                                this.state.getFeedRange(),
+                                effectiveRange));
+                    })
+                    .flatMap(state -> state.getContinuation().handleSplit(client, (GoneException)e));
             }
 
             return this.state.getContinuation().handleSplit(client, (GoneException)e);

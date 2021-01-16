@@ -68,14 +68,22 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
     }
 
     @Override
-    public String applyServerResponseContinuation(String serverContinuationToken) {
-        checkNotNull(serverContinuationToken, "Argument 'serverContinuationToken' must not be " +
-            "null");
+    public String applyServerResponseContinuation(
+        String serverContinuationToken,
+        RxDocumentServiceRequest request) {
+
+        checkNotNull(
+            serverContinuationToken,
+            "Argument 'serverContinuationToken' must not be null");
+        checkNotNull(request, "Argument 'request' must not be null");
 
         if (this.continuation == null) {
-            // TODO fabianm fix this before merge
-            this.continuation = FeedRangeContinuation.createForFullFeedRange(this.containerRid,
-                this.feedRange);
+            this.continuation = FeedRangeContinuation.create(
+                this.containerRid,
+                request.getFeedRange() != null ?
+                    request.getFeedRange()
+                    : new FeedRangeEpkImpl(request.getEffectiveRange()),
+                request.getEffectiveRange());
         }
 
         this.continuation.replaceContinuation(serverContinuationToken);
@@ -95,19 +103,11 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         final CompositeContinuationToken continuationToken;
         if (this.continuation != null) {
             continuationToken = this.continuation.getCurrentContinuationToken();
+            request.applyFeedRangeFilter(this.continuation.getFeedRange());
         } else {
             continuationToken = null;
+            request.applyFeedRangeFilter(this.feedRange);
         }
-
-        // By applying the effective feed range to the request
-        // it will populate the request headers for the specific range
-        // available in the composite continuation token
-        // this is necessary because when merging continuation tokens
-        // for example you could have a PkRange feed range
-        // with multiple composite continuations for different
-        // sub ranges with different eTags/continuations
-        // worst case this is the same range as above.
-        request.applyFeedRangeFilter(this.feedRange);
 
         if (continuationToken == null) {
             effectiveStartFrom = this.startFromSettings;
@@ -115,8 +115,6 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
             effectiveStartFrom = new ChangeFeedStartFromETagAndFeedRangeImpl(
                 continuationToken.getToken(),
                 new FeedRangeEpkImpl(continuationToken.getRange()));
-
-            request.setContinuationRange(continuationToken.getRange());
         }
 
         effectiveStartFrom.populateRequest(

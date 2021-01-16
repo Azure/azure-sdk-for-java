@@ -379,7 +379,7 @@ public class CosmosAsyncContainer {
                 this.getId(), OperationType.ReadFeed, ResourceType.Document, this.getDatabase().getClient());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDatabase().getDocClientWrapper().readDocuments(getLink(), options).map(
-                response -> prepareFeedResponse(response, classType));
+                response -> prepareFeedResponse(response, false, classType));
         });
     }
 
@@ -476,7 +476,7 @@ public class CosmosAsyncContainer {
 
                 return getDatabase().getDocClientWrapper()
                              .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, cosmosQueryRequestOptions)
-                             .map(response -> prepareFeedResponse(response, classType));
+                             .map(response -> prepareFeedResponse(response, false, classType));
         });
 
         return pagedFluxOptionsFluxFunction;
@@ -544,15 +544,24 @@ public class CosmosAsyncContainer {
 
                         return clientWrapper
                             .queryDocumentChangeFeed(collection, cosmosChangeFeedRequestOptions)
-                            .map(response -> prepareFeedResponse(response, classType));
+                            .map(response -> prepareFeedResponse(response, true, classType));
                     });
         });
 
         return pagedFluxOptionsFluxFunction;
     }
 
-    private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType) {
+    private <T> FeedResponse<T> prepareFeedResponse(
+        FeedResponse<Document> response,
+        boolean isChangeFeed,
+        Class<T> classType) {
+
         QueryInfo queryInfo = ModelBridgeInternal.getQueryInfoFromFeedResponse(response);
+        boolean useEtagAsContinuation = isChangeFeed;
+        boolean isNoChangesResponse = isChangeFeed ?
+            ModelBridgeInternal.getNoCHangesFromFeedResponse(response)
+            : false;
+
         if (queryInfo != null && queryInfo.hasSelectValue()) {
             List<T> transformedResults = response.getResults()
                                                  .stream()
@@ -564,7 +573,9 @@ public class CosmosAsyncContainer {
             return BridgeInternal.createFeedResponseWithQueryMetrics(transformedResults,
                 response.getResponseHeaders(),
                 ModelBridgeInternal.queryMetrics(response),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(response));
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
+                useEtagAsContinuation,
+                isNoChangesResponse);
 
         }
         return BridgeInternal.createFeedResponseWithQueryMetrics(
@@ -572,7 +583,9 @@ public class CosmosAsyncContainer {
                 classType))
                      .collect(Collectors.toList())), response.getResponseHeaders(),
             ModelBridgeInternal.queryMetrics(response),
-            ModelBridgeInternal.getQueryPlanDiagnosticsContext(response));
+            ModelBridgeInternal.getQueryPlanDiagnosticsContext(response),
+            useEtagAsContinuation,
+            isNoChangesResponse);
     }
 
     private <T> T transform(Object object, Class<T> classType) {
@@ -866,7 +879,7 @@ public class CosmosAsyncContainer {
             return getDatabase()
                 .getDocClientWrapper()
                 .readAllDocuments(getLink(), partitionKey, options)
-                .map(response -> prepareFeedResponse(response, classType));
+                .map(response -> prepareFeedResponse(response, false, classType));
         });
     }
 

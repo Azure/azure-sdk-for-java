@@ -44,8 +44,14 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this(results, headers, false, false, new ConcurrentHashMap<>());
     }
 
-    FeedResponse(List<T> results, Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-        this(results, headers, false, false, queryMetricsMap);
+    FeedResponse(
+        List<T> results,
+        Map<String, String> headers,
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+        boolean useEtagAsContinuation,
+        boolean isNoChanges) {
+
+        this(results, headers, useEtagAsContinuation, isNoChanges, queryMetricsMap);
     }
 
     FeedResponse(List<T> results, Map<String, String> header, boolean nochanges) {
@@ -303,6 +309,10 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         } else {
             this.header.remove(headerName);
         }
+    }
+
+    boolean getNoChanges() {
+        return this.nochanges;
     }
 
     /**

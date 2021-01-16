@@ -56,7 +56,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     @Override
     public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
-        RxDocumentServiceRequest request,
+        MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
 
         checkNotNull(
@@ -149,7 +149,16 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
             this.partitionKey.toJson());
         request.setPartitionKeyInternal(this.partitionKey);
 
-        return Mono.just(request);
+        MetadataDiagnosticsContext metadataDiagnosticsCtx =
+            BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+
+        return this
+            .getEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
+            .map(effectiveRange -> {
+                request.setEffectiveRange(effectiveRange);
+
+                return request;
+            });
     }
 
     @Override

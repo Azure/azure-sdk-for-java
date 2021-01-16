@@ -57,8 +57,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     private PartitionKeyInternal partitionKeyInternal;
 
     private FeedRangeInternal feedRange;
-
-    private Range<String> continuationRange;
+    private Range<String> effectiveRange;
 
     private byte[] contentAsByteArray;
 
@@ -844,12 +843,12 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.feedRange = feedRange;
     }
 
-    public Range<String> getContinuationRange() {
-        return this.continuationRange;
+    public Range<String> getEffectiveRange() {
+        return this.effectiveRange;
     }
 
-    public void setContinuationRange(Range<String> range) {
-        this.continuationRange = range;
+    public void setEffectiveRange(Range<String> range) {
+        this.effectiveRange = range;
     }
 
     public void setPartitionKeyRangeIdentity(PartitionKeyRangeIdentity partitionKeyRangeIdentity) {

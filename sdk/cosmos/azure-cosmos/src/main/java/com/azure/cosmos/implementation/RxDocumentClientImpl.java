@@ -29,8 +29,6 @@ import com.azure.cosmos.implementation.directconnectivity.GlobalAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.ServerStoreModel;
 import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreClientFactory;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
-import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
@@ -79,7 +77,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -97,7 +94,6 @@ import static com.azure.cosmos.BridgeInternal.toStoredProcedureResponse;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.models.ModelBridgeInternal.serializeJsonToByteBuffer;
-import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
 
 /**
  * While this class is public, it is not part of our published public APIs.
@@ -1417,74 +1413,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
         if (this.requiresFeedRangeFiltering(request)) {
-            final Range<String> continuationRange = request.getContinuationRange();
-
-            if (continuationRange != null &&
-                !continuationRange.equals(PartitionKeyInternalHelper.FullRange)) {
-                Mono<Range<String>> getEffectiveRangeTask = request.getFeedRange().getEffectiveRange(
-                    this.getPartitionKeyRangeCache(),
-                    request,
-                    this.collectionCache.resolveCollectionAsync(metadataDiagnosticsCtx, request));
-
-                return getEffectiveRangeTask
-                    .flatMap(feedRangeRange -> {
-                        if (!Range.checkOverlapping(
-                            continuationRange,
-                            feedRangeRange)) {
-
-                            return Mono.error(new NotFoundException(
-                                String.format("Incompatible continuation token range '%s - %s' and feed range '%s - %s'.",
-                                    continuationRange.getMin(),
-                                    continuationRange.getMax(),
-                                    feedRangeRange.getMin(),
-                                    feedRangeRange.getMax())));
-                        }
-
-                        Range.MinComparator<String> minComparator = new Range.MinComparator<>();
-                        Range.MaxComparator<String> maxComparator = new Range.MaxComparator<>();
-
-                        boolean isMaxInclusive;
-                        boolean isMinInclusive;
-                        String effectiveMax;
-                        String effectiveMin;
-
-                        if (minComparator.compare(continuationRange, feedRangeRange) > 0) {
-                            effectiveMin = continuationRange.getMin();
-                            isMinInclusive = continuationRange.isMinInclusive();
-                        } else {
-                            effectiveMin = feedRangeRange.getMin();
-                            isMinInclusive = feedRangeRange.isMinInclusive();
-                        }
-                        if (maxComparator.compare(continuationRange, feedRangeRange) <= 0) {
-                            effectiveMax = continuationRange.getMax();
-                            isMaxInclusive = continuationRange.isMaxInclusive();
-                        } else {
-                            effectiveMax = feedRangeRange.getMax();
-                            isMaxInclusive = feedRangeRange.isMaxInclusive();
-                        }
-
-                        final Range<String> effectiveRange =
-                            new Range<>(effectiveMin, effectiveMax, isMinInclusive, isMaxInclusive);
-
-                        final FeedRangeInternal effectiveFeedRange =
-                            effectiveRange.equals(feedRangeRange)
-                                ? request.getFeedRange() : new FeedRangeEpkImpl(effectiveRange);
-
-                        return effectiveFeedRange
-                            .populateFeedRangeFilteringHeaders(
-                                this.getPartitionKeyRangeCache(),
-                                request,
-                                this.collectionCache.resolveCollectionAsync(metadataDiagnosticsCtx, request))
-                            .flatMap(this::populateAuthorizationHeader);
-                    });
-            }
-
             return request.getFeedRange()
-                .populateFeedRangeFilteringHeaders(
-                    this.getPartitionKeyRangeCache(),
-                    request,
-                    this.collectionCache.resolveCollectionAsync(metadataDiagnosticsCtx, request))
-                .flatMap(this::populateAuthorizationHeader);
+                          .populateFeedRangeFilteringHeaders(
+                              this.getPartitionKeyRangeCache(),
+                              request,
+                              this.collectionCache.resolveCollectionAsync(metadataDiagnosticsCtx, request))
+                          .flatMap(this::populateAuthorizationHeader);
         }
 
         return this.populateAuthorizationHeader(request);

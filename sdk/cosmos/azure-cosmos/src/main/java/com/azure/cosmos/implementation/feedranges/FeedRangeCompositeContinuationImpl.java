@@ -179,7 +179,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         if (ModelBridgeInternal.<T>noChanges(response) &&
             this.compositeContinuationTokens.size() > 1) {
 
-            final String eTag = response.getResponseHeaders().get(HttpConstants.HttpHeaders.E_TAG);
+            final String eTag = this.currentToken.getToken();
             if (this.initialNoResultsRange == null) {
 
                 this.initialNoResultsRange = this.currentToken.getRange().getMin();

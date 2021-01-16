@@ -70,7 +70,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
     @Override
     public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
-        RxDocumentServiceRequest request,
+        MetadataDiagnosticsContext metadataDiagnosticsCtx,
         Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
 
         return Mono.just(this.range);
@@ -155,6 +155,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                 }
 
                 final String containerRid = collection.getResourceId();
+                request.setEffectiveRange(this.range);
 
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
@@ -216,6 +217,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                             headers.put(
                                 HttpConstants.HttpHeaders.END_EPK,
                                 this.range.getMax());
+
                         }
 
                         return Mono.just(request);

@@ -95,20 +95,18 @@ public abstract class FeedRangeContinuation extends JsonSerializable {
                 continuationToken));
     }
 
-    public static FeedRangeContinuation createForFullFeedRange(
+    public static FeedRangeContinuation create(
         String containerRid,
-        FeedRangeInternal feedRange) {
+        FeedRangeInternal feedRange,
+        Range<String> effectiveRange) {
 
         checkNotNull(containerRid, "Argument 'collectionLink' must not be null");
         checkNotNull(feedRange, "Argument 'feedRange' must not be null");
+        checkNotNull(effectiveRange, "Argument 'effectiveRange' must not be null");
 
         List<Range<String>> ranges = new ArrayList<>();
         ranges.add(
-            new Range<>(
-                PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
-                PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey,
-                true,
-                false));
+            effectiveRange);
 
         return new FeedRangeCompositeContinuationImpl(
             containerRid,

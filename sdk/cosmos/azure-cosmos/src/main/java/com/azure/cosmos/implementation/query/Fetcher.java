@@ -59,14 +59,18 @@ abstract class Fetcher<T extends Resource> {
         return nextPage(request);
     }
 
-    protected abstract String applyServerResponseContinuation(String serverContinuationToken);
+    protected abstract String applyServerResponseContinuation(
+        String serverContinuationToken,
+        RxDocumentServiceRequest request);
 
     protected abstract boolean isFullyDrained(boolean isChangeFeed, FeedResponse<T> response);
 
     protected abstract String getContinuationForLogging();
 
-    private void updateState(FeedResponse<T> response) {
-        String transformedContinuation = this.applyServerResponseContinuation(response.getContinuationToken());
+    private void updateState(FeedResponse<T> response, RxDocumentServiceRequest request) {
+        String transformedContinuation =
+            this.applyServerResponseContinuation(response.getContinuationToken(), request);
+
         ModelBridgeInternal.setFeedResponseContinuationToken(transformedContinuation, response);
         if (top != -1) {
             top -= response.getResults().size();
@@ -110,7 +114,7 @@ abstract class Fetcher<T extends Resource> {
 
     private Mono<FeedResponse<T>> nextPage(RxDocumentServiceRequest request) {
         return executeFunc.apply(request).map(rsp -> {
-            updateState(rsp);
+            updateState(rsp, request);
             return rsp;
         });
     }

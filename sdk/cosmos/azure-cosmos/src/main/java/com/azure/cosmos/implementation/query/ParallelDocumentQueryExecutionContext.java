@@ -231,7 +231,9 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page));
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                false,
+                false);
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }
@@ -246,7 +248,9 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page)
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                false,
+                false
             );
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
@@ -340,7 +344,11 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             }).switchIfEmpty(Flux.defer(() -> {
                 // create an empty page if there is no result
                 return Flux.just(BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
-                        headerResponse(tracker.getAndResetCharge()), emptyPageQueryMetricsMap, null));
+                    headerResponse(tracker.getAndResetCharge()),
+                    emptyPageQueryMetricsMap,
+                    null,
+                    false,
+                    false));
             }));
         }
     }

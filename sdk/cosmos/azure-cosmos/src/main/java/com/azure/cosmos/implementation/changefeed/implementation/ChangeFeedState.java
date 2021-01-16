@@ -27,7 +27,9 @@ public abstract class ChangeFeedState extends JsonSerializable {
 
     public abstract ChangeFeedStartFromInternal getStartFromSettings();
 
-    public abstract String applyServerResponseContinuation(String serverContinuationToken);
+    public abstract String applyServerResponseContinuation(
+        String serverContinuationToken,
+        RxDocumentServiceRequest request);
 
     public abstract String getContainerRid();
 
