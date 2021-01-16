@@ -6,14 +6,20 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.guava25.collect.ArrayListMultimap;
 import com.azure.cosmos.implementation.guava25.collect.Multimap;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,7 +36,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -88,12 +96,12 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         createdAsyncDatabase = client.asyncClient().getDatabase(createdDatabase.getId());
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 1000)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromBeginning_incremental_forFullRange() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
         );
-        insertDocuments(20, 7);
+        insertDocuments(200, 7);
         updateDocuments(3, 5);
         deleteDocuments(2, 3);
         Runnable updateAction = () -> {
@@ -102,14 +110,14 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         };
 
         final int expectedInitialEventCount =
-            20 * 7   //inserted
-            + 0       // updates won't show up as extra events in incremental mode
-            - 2 * 3;  // updated then deleted documents won't show up at all in incremental mode
+            200 * 7   //inserted
+                + 0       // updates won't show up as extra events in incremental mode
+                - 2 * 3;  // updated then deleted documents won't show up at all in incremental mode
 
         final int expectedEventCountAfterUpdates =
             5 * 2     // event count for initial updates
-            - 1 * Math.min(2,3);   // reducing events for 2 of the 3 deleted documents
-                                   // (because they have also had been updated)
+                - 1 * Math.min(2,3);   // reducing events for 2 of the 3 deleted documents
+        // (because they have also had been updated)
 
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
             .createForProcessingFromBeginning(FeedRange.forFullRange());
@@ -144,6 +152,380 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             .isEqualTo(expectedEventCountAfterUpdates);
     }
 
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void asyncChangeFeed_fromBeginning_incremental_forFullRange_withSmallPageSize() throws Exception {
+        this.createContainer(
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+        );
+        insertDocuments(200, 7);
+        updateDocuments(3, 5);
+        deleteDocuments(2, 3);
+
+        Runnable updateAction = () -> {
+            updateDocuments(5, 2);
+            deleteDocuments(1, 3);
+        };
+
+        final int expectedInitialEventCount =
+            200 * 7   //inserted
+            + 0       // updates won't show up as extra events in incremental mode
+            - 2 * 3;  // updated then deleted documents won't show up at all in incremental mode
+
+        final int expectedEventCountAfterUpdates =
+            5 * 2     // event count for initial updates
+            - 1 * Math.min(2,3);   // reducing events for 2 of the 3 deleted documents
+                                   // (because they have also had been updated)
+
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(FeedRange.forFullRange())
+            .setMaxItemCount(10);
+
+        AtomicReference<String> continuation = new AtomicReference<>();
+
+        int initialCountRetrieved = 0;
+        int emptyResultCount = 0;
+        List<ObjectNode> results;
+
+        while (true) {
+            results = createdAsyncContainer
+                .queryChangeFeed(options, ObjectNode.class)
+                .handle((r) -> continuation.set(r.getContinuationToken()))
+                .collectList()
+                .block();
+
+            options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(continuation.get())
+                .setMaxItemCount(10);
+
+            initialCountRetrieved += results.size();
+
+            if (initialCountRetrieved >= expectedInitialEventCount) {
+                break;
+            }
+
+            if (results.size() == 0) {
+                emptyResultCount += 1;
+
+                assertThat(emptyResultCount).isLessThan(3);
+                logger.info(
+                    String.format("Not all expected events retrieved yet. Retrying... Retry count: %d",
+                    emptyResultCount));
+
+                Thread.sleep(500);
+            }
+        }
+
+        assertThat(initialCountRetrieved)
+            .isEqualTo(expectedInitialEventCount);
+
+        // applying updates
+        updateAction.run();
+
+        results = createdAsyncContainer
+            .queryChangeFeed(options, ObjectNode.class)
+            .handle((r) -> continuation.set(r.getContinuationToken()))
+            .collectList()
+            .block();
+
+        assertThat(results)
+            .isNotNull()
+            .size()
+            .isEqualTo(expectedEventCountAfterUpdates);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void asyncChangeFeed_fromBeginning_incremental_forLogicalPartition() throws Exception {
+        this.createContainer(
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+        );
+        insertDocuments(20, 7);
+        updateDocuments(3, 5);
+        deleteDocuments(2, 3);
+        Runnable updateAction = () -> {
+            updateDocuments(5, 2);
+            deleteDocuments(1, 3);
+        };
+
+        final Map<String, String> continuations = new HashMap<>();
+
+        for (int i = 0; i < 20; i++) {
+            String pkValue = partitionKeyToDocuments.keySet().stream().skip(i).findFirst().get();
+            logger.info(String.format("Initial validation - PK value: '%s'", pkValue));
+
+            final int initiallyDeletedDocuments = i < 2 ? 3 : 0;
+            final int expectedInitialEventCount = 7 - initiallyDeletedDocuments;
+
+            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromBeginning(
+                    FeedRange.forLogicalPartition(
+                        new PartitionKey(pkValue)
+                    ));
+
+            List<ObjectNode> results = createdAsyncContainer
+                .queryChangeFeed(options, ObjectNode.class)
+                .handle((r) -> continuations.put(pkValue, r.getContinuationToken()))
+                .collectList()
+                .block();
+
+            assertThat(results)
+                .isNotNull()
+                .size()
+                .isEqualTo(expectedInitialEventCount);
+        }
+
+        // applying updates
+        updateAction.run();
+
+        for (int i = 0; i < 20; i++) {
+            String pkValue = partitionKeyToDocuments.keySet().stream().skip(i).findFirst().get();
+            logger.info(String.format("Validation after updates - PK value: '%s'", pkValue));
+
+            final int expectedEventCountAfterUpdates = i < 5 ?
+                i < 1 ? 0 : 2  // on the first logical partitions all updated documents were deleted
+                : 0; // no updates
+
+            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(continuations.get(pkValue));
+
+            List<ObjectNode> results = createdAsyncContainer
+                .queryChangeFeed(options, ObjectNode.class)
+                .handle((r) -> continuations.put(pkValue, r.getContinuationToken()))
+                .collectList()
+                .block();
+
+            assertThat(results)
+                .isNotNull()
+                .size()
+                .isEqualTo(expectedEventCountAfterUpdates);
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void asyncChangeFeed_fromBeginning_incremental_forEPK() throws Exception {
+        this.createContainer(
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+        );
+        insertDocuments(20, 7);
+        updateDocuments(3, 5);
+        deleteDocuments(2, 3);
+        Runnable updateAction = () -> {
+            updateDocuments(5, 2);
+            deleteDocuments(1, 3);
+        };
+
+        final Map<String, String> continuations = new HashMap<>();
+
+        for (int i = 0; i < 20; i++) {
+            String pkValue = partitionKeyToDocuments.keySet().stream().skip(i).findFirst().get();
+            logger.info(String.format("Initial validation - PK value: '%s'", pkValue));
+
+            final int initiallyDeletedDocuments = i < 2 ? 3 : 0;
+            final int expectedInitialEventCount = 7 - initiallyDeletedDocuments;
+
+            FeedRangeInternal feedRangeForLogicalPartition =
+                (FeedRangeInternal)FeedRange.forLogicalPartition(new PartitionKey(pkValue));
+            Utils.ValueHolder<DocumentCollection> documentCollection = client
+                .asyncClient()
+                .getContextClient()
+                .getCollectionCache()
+                .resolveByRidAsync(
+                    null,
+                    createdContainer.read().getProperties().getResourceId(),
+                    null)
+                .block();
+
+            Range<String> effectiveRange = feedRangeForLogicalPartition
+                .getEffectiveRange(
+                    client.asyncClient().getContextClient().getPartitionKeyRangeCache(),
+                    null,
+                    Mono.just(documentCollection))
+                .block();
+
+            assertThat(effectiveRange).isNotNull();
+
+            FeedRange feedRange = new FeedRangeEpkImpl(convertToMaxExclusive(effectiveRange));
+
+            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromBeginning(feedRange);
+
+            List<ObjectNode> results = createdAsyncContainer
+                .queryChangeFeed(options, ObjectNode.class)
+                .handle((r) -> continuations.put(pkValue, r.getContinuationToken()))
+                .collectList()
+                .block();
+
+            assertThat(results)
+                .isNotNull()
+                .size()
+                .isEqualTo(expectedInitialEventCount);
+        }
+
+        // applying updates
+        updateAction.run();
+
+        for (int i = 0; i < 20; i++) {
+            String pkValue = partitionKeyToDocuments.keySet().stream().skip(i).findFirst().get();
+            logger.info(String.format("Validation after updates - PK value: '%s'", pkValue));
+
+            final int expectedEventCountAfterUpdates = i < 5 ?
+                i < 1 ? 0 : 2  // on the first logical partitions all updated documents were deleted
+                : 0; // no updates
+
+            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(continuations.get(pkValue));
+
+            List<ObjectNode> results = createdAsyncContainer
+                .queryChangeFeed(options, ObjectNode.class)
+                .handle((r) -> continuations.put(pkValue, r.getContinuationToken()))
+                .collectList()
+                .block();
+
+            assertThat(results)
+                .isNotNull()
+                .size()
+                .isEqualTo(expectedEventCountAfterUpdates);
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void asyncChangeFeed_fromBeginning_incremental_forFeedRange() throws Exception {
+        this.createContainer(
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+        );
+        insertDocuments(200, 7);
+        updateDocuments(3, 5);
+        deleteDocuments(2, 3);
+        Runnable updateAction = () -> {
+            updateDocuments(5, 2);
+            deleteDocuments(1, 3);
+        };
+
+        final int expectedTotalInitialEventCount =
+            200 * 7   //inserted
+                + 0       // updates won't show up as extra events in incremental mode
+                - 2 * 3;  // updated then deleted documents won't show up at all in incremental mode
+
+        final int expectedTotalEventCountAfterUpdates =
+            5 * 2     // event count for initial updates
+                - 1 * Math.min(2,3);   // reducing events for 2 of the 3 deleted documents
+        // (because they have also had been updated)
+
+        List<FeedRange> feedRanges = createdContainer.getFeedRanges();
+        final Map<Integer, String> continuations = new HashMap<>();
+        int totalEventCount = 0;
+
+        for (int i = 0; i < feedRanges.size(); i++) {
+            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromBeginning(feedRanges.get(i));
+
+            final Integer feedRangeIndex = i;
+            List<ObjectNode> results = createdAsyncContainer
+                .queryChangeFeed(options, ObjectNode.class)
+                .handle((r) -> continuations.put(feedRangeIndex, r.getContinuationToken()))
+                .collectList()
+                .block();
+
+            totalEventCount += results.size();
+        }
+
+        assertThat(totalEventCount)
+            .isEqualTo(expectedTotalInitialEventCount);
+
+        // applying updates
+        updateAction.run();
+
+        totalEventCount = 0;
+
+        for (int i = 0; i < feedRanges.size(); i++) {
+
+            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(continuations.get(i));
+
+            final Integer feedRangeIndex = i;
+            List<ObjectNode> results = createdAsyncContainer
+                .queryChangeFeed(options, ObjectNode.class)
+                .handle((r) -> continuations.put(feedRangeIndex, r.getContinuationToken()))
+                .collectList()
+                .block();
+
+            totalEventCount += results.size();
+        }
+
+        assertThat(totalEventCount)
+            .isEqualTo(expectedTotalEventCountAfterUpdates);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void syncChangeFeed_fromBeginning_incremental_forFullRange() throws Exception {
+        this.createContainer(
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+        );
+        insertDocuments(200, 7);
+        updateDocuments(3, 5);
+        deleteDocuments(2, 3);
+        Runnable updateAction = () -> {
+            updateDocuments(5, 2);
+            deleteDocuments(1, 3);
+        };
+
+        final int expectedInitialEventCount =
+            200 * 7   //inserted
+                + 0       // updates won't show up as extra events in incremental mode
+                - 2 * 3;  // updated then deleted documents won't show up at all in incremental mode
+
+        final int expectedEventCountAfterUpdates =
+            5 * 2     // event count for initial updates
+                - 1 * Math.min(2,3);   // reducing events for 2 of the 3 deleted documents
+        // (because they have also had been updated)
+
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(FeedRange.forFullRange());
+
+        AtomicReference<String> continuation = new AtomicReference<>();
+        List<ObjectNode> results = new ArrayList<>();
+        while (true) {
+            FeedResponse<ObjectNode> response =
+                createdContainer.queryChangeFeed(options, ObjectNode.class);
+
+            options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(response.getContinuationToken());
+
+            if (response.getResults().size() == 0) {
+                break;
+            }
+
+            results.addAll(response.getResults());
+        }
+
+        assertThat(results)
+            .isNotNull()
+            .size()
+            .isEqualTo(expectedInitialEventCount);
+
+        // applying updates
+        updateAction.run();
+
+        results.clear();
+        while (true) {
+            FeedResponse<ObjectNode> response =
+                createdContainer.queryChangeFeed(options, ObjectNode.class);
+
+            options = CosmosChangeFeedRequestOptions
+                .createForProcessingFromContinuation(response.getContinuationToken());
+
+            if (response.getResults().size() == 0) {
+                break;
+            }
+
+            results.addAll(response.getResults());
+        }
+
+        assertThat(results)
+            .isNotNull()
+            .size()
+            .isEqualTo(expectedEventCountAfterUpdates);
+    }
+
     void insertDocuments(
         int partitionCount,
         int documentCount) {
@@ -165,7 +547,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
         List<ObjectNode> insertedDocs = Flux.merge(
             Flux.fromIterable(result),
-            100)
+            10)
                    .map(CosmosItemResponse::getItem).collectList().block();
 
         for (ObjectNode doc : insertedDocs) {
@@ -237,6 +619,34 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                     null);
             }
         }
+    }
+
+    private Range<String> convertToMaxExclusive(Range<String> maxInclusiveRange) {
+        assertThat(maxInclusiveRange)
+            .isNotNull()
+            .matches(r -> r.isMaxInclusive(), "Ensure isMaxInclusive is set");
+
+        String max = maxInclusiveRange.getMax();
+        int i = max.length() - 1;
+
+        while (i >= 0) {
+            if (max.charAt(i) == 'F') {
+                i--;
+                continue;
+            }
+
+            char newChar = (char)(((int)max.charAt(i))+1);
+
+            if (i < max.length() - 1) {
+                max = max.substring(0, i) + newChar + max.substring(i + 1);
+            } else {
+                max = max.substring(0, i) + newChar;
+            }
+
+            break;
+        }
+
+        return new Range<>(maxInclusiveRange.getMin(), max, true, false);
     }
 
     private void createContainer(

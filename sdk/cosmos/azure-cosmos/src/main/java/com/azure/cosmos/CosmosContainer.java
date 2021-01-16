@@ -377,7 +377,7 @@ public class CosmosContainer {
 
         checkNotNull(options, "Argument 'options' must not be null.");
 
-        options.setMaxPrefetchPageCount(0);
+        options.setMaxPrefetchPageCount(1);
 
         return this.blockFirstFeedResponse(
             this.asyncContainer

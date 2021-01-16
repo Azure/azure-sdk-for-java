@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
@@ -135,6 +136,9 @@ public final class CosmosChangeFeedRequestOptions {
     @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosChangeFeedRequestOptions setMaxPrefetchPageCount(Integer maxPrefetchPageCount) {
+        checkArgument(
+            maxPrefetchPageCount > 0,
+            "Argument 'maxPrefetchCount' must be larger than 0.");
         this.maxPrefetchPageCount =
             maxPrefetchPageCount != null ? maxPrefetchPageCount : DEFAULT_MAX_PREFETCH_PAGE_COUNT;
         return this;

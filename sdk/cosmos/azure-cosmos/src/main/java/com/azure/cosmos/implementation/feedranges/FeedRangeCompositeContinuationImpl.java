@@ -176,9 +176,10 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     @Override
     public <T extends Resource> ShouldRetryResult handleChangeFeedNotModified(final FeedResponse<T> response) {
         checkNotNull(response, "Argument 'response' must not be null");
-        if (ModelBridgeInternal.<T>noChanges(response) &&
-            this.compositeContinuationTokens.size() > 1) {
 
+        if (!ModelBridgeInternal.<T>noChanges(response)) {
+            this.initialNoResultsRange = null;
+        } else if (this.compositeContinuationTokens.size() > 1) {
             final String eTag = this.currentToken.getToken();
             if (this.initialNoResultsRange == null) {
 
