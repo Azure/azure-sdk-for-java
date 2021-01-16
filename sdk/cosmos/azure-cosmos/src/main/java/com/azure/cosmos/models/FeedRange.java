@@ -28,7 +28,7 @@ public interface FeedRange {
 
     /**
      * Gets a json representation of the feed range - the returned json string can be used
-     * to create a new feed range instance from it - {@link this.fromJsonString}
+     * to create a new feed range instance from it - (use factory method fromJsonString to do so)
      * @return a JSON string representing the feed range
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
