@@ -5,8 +5,9 @@ package com.azure.communication.administration;
 
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.administration.implementation.CommunicationIdentityImpl;
-import com.azure.communication.administration.models.CommunicationIdentityAccessToken;
 import com.azure.communication.administration.models.CommunicationIdentityTokenScope;
+import com.azure.communication.administration.models.CommunicationUserIdentifierWithTokenResult;
+import com.azure.communication.administration.models.CommunicationUserToken;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -33,22 +34,42 @@ public final class CommunicationIdentityAsyncClient {
     /**
      * Creates a new CommunicationUserIdentifier.
      *
-     * @param scopes the list of scopes for the identity access token
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationUserIdentifier> createUser(List<CommunicationIdentityTokenScope> scopes) {
+    public Mono<CommunicationUserIdentifier> createUser() {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 
     /**
      * Creates a new CommunicationUserIdentifier with response.
      *
-     * @param scopes the list of scopes for the identity access token
      * @return the created Communication User.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationUserIdentifier>> createUserWithResponse(List<CommunicationIdentityTokenScope> scopes) {
+    public Mono<Response<CommunicationUserIdentifierWithTokenResult>> createUserWithResponse() {
+        return Mono.error(new UnsupportedOperationException("not yet implemented"));
+    }
+
+    /**
+     * Creates a new CommunicationUserIdentifier with token.
+     *
+     * @param scopes the list of scopes for the token
+     * @return the result with created communication user and token
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CommunicationUserIdentifierWithTokenResult> createUserWithToken(List<CommunicationIdentityTokenScope> scopes) {
+        return Mono.error(new UnsupportedOperationException("not yet implemented"));
+    }
+
+    /**
+     * Creates a new CommunicationUserIdentifier with token with response.
+     *
+     * @param scopes the list of scopes for the token
+     * @return the result with created communication user and token
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CommunicationUserIdentifierWithTokenResult>> createUserWithTokenWithResponse(List<CommunicationIdentityTokenScope> scopes) {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 
@@ -75,48 +96,48 @@ public final class CommunicationIdentityAsyncClient {
     }
 
     /**
-     * Revokes all the access tokens created for an identifier.
+     * Revokes all the tokens created for an identifier.
      * 
      * @param communicationUser The user to be revoked access tokens.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> revokeAccessTokens(CommunicationUserIdentifier communicationUser) {
+    public Mono<Void> revokeTokens(CommunicationUserIdentifier communicationUser) {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));  
     }
 
     /**
-     * Revokes all the access tokens created for an identifier with response.
+     * Revokes all the tokens created for an identifier with response.
      *
-     * @param communicationUser The user to be revoked access tokens.
+     * @param communicationUser The user to be revoked tokens.
      * @return the response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> revokeAccessTokensWithResponse(CommunicationUserIdentifier communicationUser) {
+    public Mono<Response<Void>> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser) {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 
     /**
-     * Generates a new access token for an identity.
+     * Generates a new token for an identity.
      *
-     * @param communicationUser The user to be issued access tokens.
+     * @param communicationUser The user to be issued tokens.
      * @param scopes The scopes that the token should have.
-     * @return the issued access token.
+     * @return the issued token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationIdentityAccessToken> issueAccessToken(CommunicationUserIdentifier communicationUser, List<CommunicationIdentityTokenScope> scopes) {
+    public Mono<CommunicationUserToken> issueToken(CommunicationUserIdentifier communicationUser, List<CommunicationIdentityTokenScope> scopes) {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 
     /**
-     * Generates a new access token for an identity with response.
+     * Generates a new token for an identity with response.
      *
-     * @param communicationUser The user to be issued access tokens.
+     * @param communicationUser The user to be issued tokens.
      * @param scopes The scopes that the token should have.
-     * @return the issued access token.
+     * @return the issued token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationIdentityAccessToken>> issueAccessTokenWithResponse(CommunicationUserIdentifier communicationUser, List<CommunicationIdentityTokenScope> scopes) {
+    public Mono<Response<CommunicationUserToken>> issueTokenWithResponse(CommunicationUserIdentifier communicationUser, List<CommunicationIdentityTokenScope> scopes) {
         return Mono.error(new UnsupportedOperationException("not yet implemented"));
     }
 }

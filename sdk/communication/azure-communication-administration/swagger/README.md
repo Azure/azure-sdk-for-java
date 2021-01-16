@@ -34,6 +34,9 @@ These settings apply only when `--tag=identity` is specified on the command line
 ``` yaml $(tag) == 'identity'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/14bfbf5d0ff8f0dc1358e6e60362e99d0a649ba7/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/stable/2021-03-07/CommunicationIdentity.json
 add-context-parameter: true
+custom-types: CommunicationIdentityAccessToken,CommunicationIdentityTokenScope,CommunicationUserToken
+custom-types-subpackage: models
+models-subpackage: implementation.models
 ```
 
 ### Tag: phonenumber
@@ -43,6 +46,15 @@ These settings apply only when `--tag=phonenumber` is specified on the command l
 ``` yaml $(tag) == 'phonenumber'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/257f060be8b60d8468584682aa2d71b1faa5f82c/specification/communication/data-plane/Microsoft.CommunicationServicesAdministration/preview/2020-07-20-preview1/communicationservicesadministration.json
 override-client-name: PhoneNumberAdminClient
+```
+
+### Rename CommunicationIdentityAccessToken to CommunicationUserToken
+
+``` yaml
+directive:
+    - rename-model:
+        from: CommunicationIdentityAccessToken
+        to: CommunicationUserToken
 ```
 
 ### Rename searchId to reservationId in CreateSearchResponse
