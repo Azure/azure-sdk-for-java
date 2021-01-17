@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.throughputControl.controller.group;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ThroughputControlGroup;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlMode;
 
@@ -12,6 +13,7 @@ public class ThroughputGroupControllerFactory {
 
     public static ThroughputGroupControllerBase createController(
         ConnectionMode connectionMode,
+        GlobalEndpointManager globalEndpointManager,
         ThroughputControlGroup group,
         Integer maxContainerThroughput,
         RxPartitionKeyRangeCache partitionKeyRangeCache,
@@ -20,6 +22,7 @@ public class ThroughputGroupControllerFactory {
         if (group.getControlMode() == ThroughputControlMode.LOCAL) {
             return new ThroughputGroupLocalController(
                 connectionMode,
+                globalEndpointManager,
                 group,
                 maxContainerThroughput,
                 partitionKeyRangeCache,

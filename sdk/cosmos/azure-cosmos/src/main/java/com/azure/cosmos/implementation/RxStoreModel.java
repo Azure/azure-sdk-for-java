@@ -22,5 +22,10 @@ public interface RxStoreModel {
      */
     Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request);
 
+    /**
+     * Enable throughput control.
+     *
+     * @param throughputControlStore
+     */
     void enableThroughputControl(ThroughputControlStore throughputControlStore);
 }

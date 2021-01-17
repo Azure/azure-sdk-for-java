@@ -80,13 +80,14 @@ public class ThroughputControlTests extends TestSuiteBase {
             readItemResponse2.getDiagnostics().toString(),
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
 
-        // Test read operation which will use an undefined control group, it will fall back to default group and got throttled.
+        // Test read operation which will use an undefined control group, it will fall back to default group
+        // but since the throughput usage has been reset, this request will not be throttled
         requestOptions.setThroughputControlGroupName("Undefined");
         CosmosItemResponse<TestItem> readItemResponse3 = container.readItem(docDefinition.getId(),
             new PartitionKey(docDefinition.getMypk()),
             requestOptions,
             TestItem.class).block();
-        this.validateRequestThrottled(
+        this.validateRequestNotThrottled(
             readItemResponse3.getDiagnostics().toString(),
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
     }

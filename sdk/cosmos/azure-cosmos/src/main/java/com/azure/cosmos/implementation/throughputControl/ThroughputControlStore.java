@@ -8,6 +8,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
@@ -79,26 +80,32 @@ public class ThroughputControlStore {
     private static final Logger logger = LoggerFactory.getLogger(ThroughputControlStore.class);
 
     private final RxClientCollectionCache collectionCache;
-    private final ConcurrentHashMap<String, List<ThroughputControlGroup>> groupMapByContainer;
     private final ConnectionMode connectionMode;
     private final AsyncCache<String, IThroughputContainerController> containerControllerCache;
+    private final GlobalEndpointManager globalEndpointManager;
+    private final ConcurrentHashMap<String, List<ThroughputControlGroup>> groupMapByContainer;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
 
     public ThroughputControlStore(
         RxClientCollectionCache collectionCache,
         ConnectionMode connectionMode,
+        GlobalEndpointManager globalEndpointManager,
         Set<ThroughputControlGroup> groups,
         RxPartitionKeyRangeCache partitionKeyRangeCache) {
 
         checkNotNull(collectionCache,"RxClientCollectionCache can not be null");
+        checkNotNull(globalEndpointManager, "Global endpoint manager can not be null");
         checkNotNull(groups, "Throughput budget group configs can not be null");
         checkNotNull(partitionKeyRangeCache, "PartitionKeyRangeCache can not be null");
 
         this.collectionCache = collectionCache;
+        this.connectionMode = connectionMode;
+        this.containerControllerCache = new AsyncCache<>();
+
+        this.globalEndpointManager = globalEndpointManager;
 
         this.groupMapByContainer = new ConcurrentHashMap<>();
-
-        // group throughput control group by container self link.
+        // Group throughput control group by container self link.
         this.groupMapByContainer.putAll(
             groups
                 .stream()
@@ -106,14 +113,22 @@ public class ThroughputControlStore {
                     Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(groupConfig.getTargetContainer()))))
         );
 
-        this.connectionMode = connectionMode;
-        this.containerControllerCache = new AsyncCache<>();
         this.partitionKeyRangeCache = partitionKeyRangeCache;
     }
 
     public Mono<Void> init() {
         return Flux.fromIterable(Collections.list(this.groupMapByContainer.keys()))
             .flatMap(containerLink -> this.resolveContainerController(containerLink)).then();
+    }
+
+    private Mono<IThroughputContainerController> resolveContainerController(String collectionLink) {
+        checkArgument(StringUtils.isNotEmpty(collectionLink), "Collection link can not be null or empty");
+
+        return this.containerControllerCache.getAsync(
+            collectionLink,
+            null,
+            () -> this.createAndInitContainerController(collectionLink)
+        );
     }
 
     private Mono<IThroughputContainerController> createAndInitContainerController(String containerLink) {
@@ -125,6 +140,7 @@ public class ThroughputControlStore {
                     ThroughputContainerController containerController =
                         new ThroughputContainerController(
                             this.connectionMode,
+                            this.globalEndpointManager,
                             groups,
                             this.partitionKeyRangeCache);
 
@@ -134,13 +150,13 @@ public class ThroughputControlStore {
             return Mono.just(new EmptyThroughputContainerController())
                 .flatMap(EmptyThroughputContainerController::init);
         }
-
     }
 
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {
         checkNotNull(request, "Request can not be null");
         checkNotNull(originalRequestMono, "originalRequestMono can not be null");
 
+        // Currently throughput control will only for non-master resources.
         if (request.getResourceType() == ResourceType.Document || request.getResourceType() == ResourceType.StoredProcedure) {
             String collectionLink = Utils.getCollectionName(request.getResourceAddress());
             return this.resolveContainerController(collectionLink)
@@ -171,9 +187,13 @@ public class ThroughputControlStore {
                             .doOnError(throwable -> this.doOnError(request, containerController, throwable));
                     } else {
                         // still can not handle the request
+                        logger.warn(
+                            "Can not find container controller to process request {} with collectionRid {} ",
+                            request.getActivityId(),
+                            request.requestContext.resolvedCollectionRid);
+
                         return originalRequestMono;
                     }
-
                 });
         } else {
             return originalRequestMono;
@@ -194,7 +214,6 @@ public class ThroughputControlStore {
 
         CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
 
-        // TODO: should we handle partitionKeyMismatchException ?
         if (cosmosException != null &&
             (Exceptions.isNameCacheStale(cosmosException) || Exceptions.isPartitionKeyMismatchException(cosmosException))) {
 
@@ -207,15 +226,5 @@ public class ThroughputControlStore {
                 () -> createAndInitContainerController(containerLink)
             );
         }
-    }
-
-    private Mono<IThroughputContainerController> resolveContainerController(String collectionLink) {
-        checkArgument(StringUtils.isNotEmpty(collectionLink), "Collection link can not be null or empty");
-
-        return this.containerControllerCache.getAsync(
-            collectionLink,
-            null,
-            () -> this.createAndInitContainerController(collectionLink)
-        );
     }
 }

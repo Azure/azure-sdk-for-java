@@ -30,17 +30,10 @@ public class ThroughputRequestThrottler {
     private final AtomicInteger totalRequests;
 
     public ThroughputRequestThrottler(double scheduledThroughput) {
-        this.availableThroughput = new AtomicReference<>(0d);
+        this.availableThroughput = new AtomicReference<>(scheduledThroughput);
         this.scheduledThroughput = new AtomicReference<>(scheduledThroughput);
         this.rejectedRequests = new AtomicInteger(0);
         this.totalRequests = new AtomicInteger(0);
-    }
-
-    public Mono<ThroughputRequestThrottler> init() {
-        // No-overflow: the availableThroughput will never be larger than scheduled throughput
-        // But if RU is over used in one cycle, the over used RU will be rolled over to the next cycle
-        this.updateAvailableThroughput();
-        return Mono.just(this);
     }
 
     public Mono<Void> renewThroughputUsageCycle(double scheduledThroughput) {

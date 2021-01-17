@@ -474,21 +474,26 @@ public final class CosmosAsyncClient implements Closeable {
      *
      * @param groupList The throughput control group configuration list.
      */
-    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableThroughputControl(List<ThroughputControlGroup> groupList) {
+        checkArgument(groupList != null, "Throughput control group list cannot be null");
+
         // Validate no duplicate group definition.
+        // Validate only at most 1 useByDefault group can be defined.
         Set<ThroughputControlGroup> groupConfigSet = new HashSet<>();
+        boolean hasUseByDefaultGroup = false;
+
         for (ThroughputControlGroup group : groupList) {
             checkArgument(group != null, "Throughput control group config cannot be null");
-            group.validate();
             if (!groupConfigSet.add(group)) {
                 throw new IllegalArgumentException(String.format("Duplicate throughput control group %s", group.getGroupName()));
             }
-        }
-
-        // Validate there is only at most one default group defined.
-        if (groupConfigSet.stream().filter(groupConfig -> groupConfig.isUseByDefault()).count() > 1) {
-            throw new IllegalArgumentException("Only at most one group can be set as default");
+            if (group.isUseByDefault()) {
+                if (hasUseByDefaultGroup) {
+                    throw new IllegalArgumentException("Only at most one group can be set as default");
+                }
+                hasUseByDefaultGroup = true;
+            }
         }
 
         this.asyncDocumentClient.enableThroughputControl(groupConfigSet);

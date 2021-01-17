@@ -3,23 +3,41 @@
 
 package com.azure.cosmos.implementation.throughputControl.controller.request;
 
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class GlobalThroughputRequestController implements IThroughputRequestController {
-    private final double initialScheduledThroughput;
-    private ThroughputRequestThrottler requestThrottler;
+import java.net.URI;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
-    public GlobalThroughputRequestController(double scheduledThroughput) {
-        this.initialScheduledThroughput = scheduledThroughput;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
+public class GlobalThroughputRequestController implements IThroughputRequestController {
+    private final GlobalEndpointManager globalEndpointManager;
+    private final AtomicReference<Double> scheduledThroughput;
+    private final ConcurrentHashMap<URI, ThroughputRequestThrottler> requestThrottlerMapByRegion;
+
+    public GlobalThroughputRequestController(GlobalEndpointManager globalEndpointManager, double initialScheduledThroughput) {
+        checkNotNull(globalEndpointManager, "Global endpoint manager can not be null");
+
+        this.globalEndpointManager = globalEndpointManager;
+        this.scheduledThroughput = new AtomicReference<>(initialScheduledThroughput);
+        this.requestThrottlerMapByRegion = new ConcurrentHashMap<>();
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T> Mono<T> init() {
-        this.requestThrottler = new ThroughputRequestThrottler(this.initialScheduledThroughput);
-        return Mono.just((T)this);
+        return Flux.fromIterable(this.globalEndpointManager.getReadEndpoints())
+            .mergeWith(Flux.fromIterable(this.globalEndpointManager.getWriteEndpoints()))
+            .flatMap(endpoint -> {
+                requestThrottlerMapByRegion.computeIfAbsent(endpoint, key -> new ThroughputRequestThrottler(this.scheduledThroughput.get()));
+                return Mono.empty();
+            })
+            .then(Mono.just((T)this));
     }
 
     @Override
@@ -29,12 +47,21 @@ public class GlobalThroughputRequestController implements IThroughputRequestCont
 
     @Override
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> nextRequestMono) {
-        return this.requestThrottler.processRequest(request, nextRequestMono);
+        return Mono.defer(
+                () -> Mono.just(
+                    this.requestThrottlerMapByRegion.computeIfAbsent(
+                        this.globalEndpointManager.resolveServiceEndpoint(request),
+                        key -> new ThroughputRequestThrottler(this.scheduledThroughput.get())))
+            )
+            .flatMap(requestThrottler -> requestThrottler.processRequest(request, nextRequestMono));
     }
 
     @Override
     public Mono<Void> renewThroughputUsageCycle(double throughput) {
-        return Mono.fromRunnable(() -> this.requestThrottler.renewThroughputUsageCycle(throughput)).then();
+        this.scheduledThroughput.set(throughput);
+        return Flux.fromIterable(this.requestThrottlerMapByRegion.values())
+            .flatMap(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughput))
+            .then();
     }
 
     @Override

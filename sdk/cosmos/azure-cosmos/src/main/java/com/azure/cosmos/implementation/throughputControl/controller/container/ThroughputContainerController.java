@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
@@ -41,16 +42,23 @@ import java.util.stream.Collectors;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * Three main purpose of container controller:
+ * 1. Resolve max container throughput
+ * 2. Create and initialize throughput group controllers
+ * 3. Start throughput refresh task if necessary
+ */
 public class ThroughputContainerController implements IThroughputContainerController {
     private static final Logger logger = LoggerFactory.getLogger(ThroughputContainerController.class);
 
-    private static final Duration DEFAULT_THROUGHPUT_REFRESH_INTERVAL = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_THROUGHPUT_REFRESH_INTERVAL = Duration.ofMinutes(15);
     private static final int NO_OFFER_EXCEPTION_STATUS_CODE = HttpConstants.StatusCodes.BADREQUEST;
     private static final int NO_OFFER_EXCEPTION_SUB_STATUS_CODE = HttpConstants.SubStatusCodes.UNKNOWN;
 
     private final AsyncDocumentClient client;
     private final CancellationTokenSource cancellationTokenSource;
     private final ConnectionMode connectionMode;
+    private final GlobalEndpointManager globalEndpointManager;
     private final ConcurrentHashMap<String, ThroughputGroupControllerBase> groupControllers;
     private final List<ThroughputControlGroup> groups;
     private final AtomicReference<Integer> maxContainerThroughput;
@@ -65,23 +73,27 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
     public ThroughputContainerController(
         ConnectionMode connectionMode,
+        GlobalEndpointManager globalEndpointManager,
         List<ThroughputControlGroup> groups,
         RxPartitionKeyRangeCache partitionKeyRangeCache) {
 
+        checkNotNull(globalEndpointManager, "GlobalEndpointManager can not be null");
         checkArgument(groups != null && groups.size() > 0, "Throughput budget groups can not be null or empty");
-        checkNotNull(partitionKeyRangeCache, "PartitionKeyRange cache can not be null");
+        checkNotNull(partitionKeyRangeCache, "RxPartitionKeyRangeCache can not be null");
 
-        this.cancellationTokenSource = new CancellationTokenSource();
         this.connectionMode = connectionMode;
+        this.globalEndpointManager = globalEndpointManager;
         this.groupControllers = new ConcurrentHashMap<>();
         this.groups = groups;
-        this.maxContainerThroughput = new AtomicReference<>(null);
+        this.maxContainerThroughput = new AtomicReference<>();
         this.partitionKeyRangeCache = partitionKeyRangeCache;
 
         this.targetContainer = groups.get(0).getTargetContainer();
         this.client = CosmosBridgeInternal.getContextClient(this.targetContainer);
 
         this.throughputResolveLevel = this.getThroughputResolveLevel(groups);
+
+        this.cancellationTokenSource = new CancellationTokenSource();
         this.scheduler = Schedulers.elastic();
     }
 
@@ -90,6 +102,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
             // Throughput can be provisioned on container level or database level, will start from container
             return ThroughputResolveLevel.CONTAINER;
         } else {
+            // There is no group configured with throughput threshold, so no need to query throughput
             return ThroughputResolveLevel.NONE;
         }
     }
@@ -98,33 +111,33 @@ public class ThroughputContainerController implements IThroughputContainerContro
     @SuppressWarnings("unchecked")
     public <T> Mono<T> init() {
         return this.resolveDatabaseResourceId()
-            .then(this.resolveContainerResourceId())
-            .then(this.resolveContainerMaxThroughput())
-            .then(this.createAndInitializeGroupControllers())
-            .doOnSuccess(avoid -> {
+            .flatMap(controller -> this.resolveContainerResourceId())
+            .flatMap(controller -> this.resolveContainerMaxThroughput())
+            .flatMap(controller -> this.createAndInitializeGroupControllers())
+            .doOnSuccess(controller -> {
                 this.setDefaultGroupController();
                 scheduler.schedule(() -> this.refreshContainerMaxThroughputTask(this.cancellationTokenSource.getToken()).subscribe());
             })
-            .thenReturn((T)this);
+            .thenReturn((T) this);
     }
 
-    private Mono<Void> resolveDatabaseResourceId() {
+    private Mono<ThroughputContainerController> resolveDatabaseResourceId() {
         return this.targetContainer.getDatabase().read()
             .flatMap(response -> {
                 this.targetDatabaseRid = response.getProperties().getResourceId();
-                return Mono.empty();
+                return Mono.just(this);
             });
     }
 
-    private Mono<Void> resolveContainerResourceId() {
+    private Mono<ThroughputContainerController> resolveContainerResourceId() {
         return this.targetContainer.read()
             .flatMap(response -> {
                 this.targetContainerRid = response.getProperties().getResourceId();
-                return Mono.empty();
+                return Mono.just(this);
             });
     }
 
-    private Mono<Void> resolveContainerMaxThroughput() {
+    private Mono<ThroughputContainerController> resolveContainerMaxThroughput() {
         return Mono.defer(() -> Mono.just(this.throughputResolveLevel))
             .flatMap(throughputResolveLevel -> {
                 if (throughputResolveLevel == ThroughputResolveLevel.CONTAINER) {
@@ -159,7 +172,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
                 // Throughput can be configured on database level or container level
                 // Retry at most 1 time so we can try on database and container both
                 RetrySpec.max(1).filter(throwable -> this.isOfferNotConfiguredException(throwable))
-            ).then();
+            ).thenReturn(this);
     }
 
     private Mono<ThroughputResponse> resolveThroughputByResourceId(String resourceId) {
@@ -221,8 +234,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
                     return Mono.just(new Utils.ValueHolder<>(this.defaultGroupController));
                 }
                 else {
-                    // TODO: if customer used a group not defined:
-                    //  should we fall back to default? or let it passing through? or throw exception back to client?
+                    // If customer used a group not defined, we will fall back to the default group controller
                     return Mono.justOrEmpty(this.groupControllers.get(request1.getThroughputControlGroupName()))
                         .defaultIfEmpty(this.defaultGroupController)
                         .map(Utils.ValueHolder::new);
@@ -244,51 +256,40 @@ public class ThroughputContainerController implements IThroughputContainerContro
     @Override
     public boolean canHandleRequest(RxDocumentServiceRequest request) {
         checkNotNull(request, "Request can not be null");
-        if (StringUtils.equals(this.targetContainerRid, request.requestContext.resolvedCollectionRid)) {
-            return true;
-        }
 
-        return false;
+        return StringUtils.equals(this.targetContainerRid, request.requestContext.resolvedCollectionRid);
     }
 
-    private Mono<Void> createAndInitializeGroupControllers() {
+    private Mono<ThroughputContainerController> createAndInitializeGroupControllers() {
         return Flux.fromIterable(this.groups)
             .flatMap(group -> {
                 ThroughputGroupControllerBase groupController =
-                    ThroughputGroupControllerFactory.createController(
-                        this.connectionMode,
-                        group,
-                        this.maxContainerThroughput.get(),
-                        this.partitionKeyRangeCache,
-                        this.targetContainerRid);
-
-                this.groupControllers.compute(group.getGroupName(), (groupName, controller) -> {
-                    if (controller != null) {
-                        // This should never happen, since we validate group configuration when enable throughput budget control
-                        throw new IllegalArgumentException(String.format("Duplicate group %s configuration", groupName));
-                    }
-
-                    return groupController;
-                });
+                    this.groupControllers.computeIfAbsent(
+                        group.getGroupName(),
+                        groupName -> ThroughputGroupControllerFactory.createController(
+                                        this.connectionMode,
+                                        this.globalEndpointManager,
+                                        group,
+                                        this.maxContainerThroughput.get(),
+                                        this.partitionKeyRangeCache,
+                                        this.targetContainerRid));
                 return Mono.just(groupController);
             })
             .flatMap(groupController -> groupController.init())
-            .then();
+            .then(Mono.just(this));
     }
 
     private Flux<Void> refreshContainerMaxThroughputTask(CancellationToken cancellationToken) {
+        checkNotNull(cancellationToken, "Cancellation token can not be null");
+
         if (this.throughputResolveLevel == ThroughputResolveLevel.NONE) {
             return Flux.empty();
         }
 
-        return Mono.just(this)
-            .delayElement(DEFAULT_THROUGHPUT_REFRESH_INTERVAL)
-            .then(this.resolveContainerMaxThroughput())
-            .then(Mono.fromCallable(() -> {
-                return Flux.fromIterable(this.groupControllers.values())
-                    .flatMap(groupController -> groupController.onContainerMaxThroughputRefresh(this.maxContainerThroughput.get()))
-                    .then();
-            }))
+        return Mono.delay(DEFAULT_THROUGHPUT_REFRESH_INTERVAL)
+            .flatMap(t -> this.resolveContainerMaxThroughput())
+            .flatMapIterable(controller -> this.groupControllers.values())
+            .doOnNext(groupController -> groupController.onContainerMaxThroughputRefresh(this.maxContainerThroughput.get()))
             .onErrorResume(throwable -> {
                 if (this.isOfferNotConfiguredException(throwable)) {
                     // Throughput is not configured on container nor database, a good hint the resource does not exists any more
