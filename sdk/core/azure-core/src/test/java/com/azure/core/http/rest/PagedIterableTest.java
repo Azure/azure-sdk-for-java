@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -275,6 +276,44 @@ public class PagedIterableTest {
          * Given that each page contains more than one element we are able to only retrieve a single page.
          */
         assertEquals(1, pageRetriever.getGetCount() - DEFAULT_PAGE_COUNT);
+    }
+
+    private <S> Function<PagedResponse<S>, PagedResponse<S>> mapPagedResponse(Function<S, S> mapper) {
+        return pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
+            pagedResponse.getStatusCode(),
+            pagedResponse.getHeaders(),
+            pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
+            pagedResponse.getContinuationToken(),
+            null);
+    }
+
+    @Test
+    public void streamFindFirstWithMapPage() throws InterruptedException {
+        int numberOfPages = 5;
+        createPagedResponse(numberOfPages);
+
+        AtomicInteger pageGetCount = new AtomicInteger(0);
+        PagedFlux<Integer> pagedFlux = new PagedFlux<>(() -> {
+            pageGetCount.getAndIncrement();
+            return pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0));
+        },
+            continuationToken -> {
+            pageGetCount.getAndIncrement();
+            return getNextPage(continuationToken, pagedResponses);
+        });
+
+        PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
+
+        pagedIterable = pagedIterable.mapPage(Function.identity());
+
+        Integer next = pagedIterable.stream().findFirst().get();
+
+        Thread.sleep(2000);
+
+        /*
+         * Given that each page contains more than one element we are able to only retrieve a single page.
+         */
+        assertEquals(1, pageGetCount.get());
     }
 
     @Test
