@@ -25,8 +25,8 @@ public class SeleniumITHelper {
     private final static String uuid = UUID.randomUUID().toString();
 
     static {
-        init();
-        deleteChromeDriverFile();
+        initChromeDriver();
+        registerShutdownHookChromeDriverFile();
     }
 
     public SeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
@@ -34,7 +34,7 @@ public class SeleniumITHelper {
         createAppRunner(appClass, properties);
     }
 
-    private static void init() {
+    private static void initChromeDriver() {
         final String strTmpPath = System.getProperty("java.io.tmpdir");
         final String chromedriverLinux = "chromedriver_linux64";
         final String chromedriverWin32 = "chromedriver_win32.exe";
@@ -93,12 +93,12 @@ public class SeleniumITHelper {
         return dest;
     }
 
-    private static void deleteChromeDriverFile() {
+    private static void registerShutdownHookChromeDriverFile() {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             String strTmpPath = System.getProperty("java.io.tmpdir");
             File targetFile = new File(strTmpPath + File.separator + uuid);
             try {
-                FileUtils.deleteDirectory(targetFile);
+                FileUtils.forceDeleteOnExit(targetFile);
             } catch (IOException e) {
                 e.printStackTrace();
             }
