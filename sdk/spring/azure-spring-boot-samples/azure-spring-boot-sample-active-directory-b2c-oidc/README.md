@@ -47,6 +47,7 @@ azure:
       client-secret: ${your-client-secret}
       reply-url: ${your-reply-url} # should be absolute url.
       logout-success-url: ${your-logout-success-url}
+      user-name-attribute-name: name
       user-flows:
         sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
         profile-edit: ${your-profile-edit-user-flow}      # optional
