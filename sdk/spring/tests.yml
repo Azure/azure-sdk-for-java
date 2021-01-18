@@ -179,5 +179,5 @@ jobs:
               mavenPomFile: pom.xml
               goals: verify
               options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
-            env:
-              ${{ parameters.EnvVars }}
+            env: ${{ parameters.EnvVars }}
+            
