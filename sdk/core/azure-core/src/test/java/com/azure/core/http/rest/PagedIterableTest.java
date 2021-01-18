@@ -296,8 +296,7 @@ public class PagedIterableTest {
         PagedFlux<Integer> pagedFlux = new PagedFlux<>(() -> {
             pageGetCount.getAndIncrement();
             return pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0));
-        },
-            continuationToken -> {
+        }, continuationToken -> {
             pageGetCount.getAndIncrement();
             return getNextPage(continuationToken, pagedResponses);
         });
