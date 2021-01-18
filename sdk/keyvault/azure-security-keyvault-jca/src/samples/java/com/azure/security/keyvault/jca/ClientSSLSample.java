@@ -23,7 +23,6 @@ import java.security.Security;
  * The ClientSSL sample.
  */
 public class ClientSSLSample {
-
     public void clientSSLSample() throws Exception {
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
@@ -38,22 +37,20 @@ public class ClientSSLSample {
         ks.load(parameter);
 
         SSLContext sslContext = SSLContexts
-                .custom()
-                .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
-                .build();
+            .custom()
+            .loadTrustMaterial(ks, new TrustSelfSignedStrategy())
+            .build();
 
         SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder
-                .create()
-                .setSslContext(sslContext)
-                .setHostnameVerifier((hostname, session) -> {
-                    return true;
-                })
-                .build();
+            .create()
+            .setSslContext(sslContext)
+            .setHostnameVerifier((hostname, session) -> true)
+            .build();
 
         PoolingHttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder
-                .create()
-                .setSSLSocketFactory(sslSocketFactory)
-                .build();
+            .create()
+            .setSSLSocketFactory(sslSocketFactory)
+            .build();
 
         String result = null;
 

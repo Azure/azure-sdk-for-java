@@ -232,7 +232,8 @@ final class Transforms {
                             .map(dataTableCell -> new FormTableCell(
                                 dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
                                 dataTableCell.getRowSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getRowSpan(),
-                                dataTableCell.getColumnSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
+                                dataTableCell.getColumnSpan() == null
+                                    ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
                                 dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
                                 dataTableCell.getConfidence(),
                                 dataTableCell.isHeader() == null ? false : dataTableCell.isHeader(),
@@ -283,7 +284,7 @@ final class Transforms {
             }
             StyleHelper.setConfidence(style, textLine.getAppearance().getStyle().getConfidence());
         }
-        
+
         Appearance appearance = new Appearance();
         AppearanceHelper.setStyle(appearance, style);
         return appearance;
