@@ -27,18 +27,18 @@ public class AADB2CIT {
 
     private final String JOB_TITLE_A_WORKER = "a worker";
     private final String JOB_TITLE_WORKER = "worker";
-    private AADB2CSeleniumITHelper aadb2cSeleniumITHelper;
+    private AADB2CSeleniumITHelper aadB2CSeleniumITHelper;
 
     @Before
     public void initAndSignIn() {
-        aadb2cSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, createDefaultProperteis());
-        aadb2cSeleniumITHelper.logIn();
+        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, createDefaultProperteis());
+        aadB2CSeleniumITHelper.logIn();
     }
 
     @Test
     public void testSignIn() {
-        String name = aadb2cSeleniumITHelper.getName();
-        String userFlowName = aadb2cSeleniumITHelper.getUserFlowName();
+        String name = aadB2CSeleniumITHelper.getName();
+        String userFlowName = aadB2CSeleniumITHelper.getUserFlowName();
         Assert.assertNotNull(name);
         Assert.assertNotNull(userFlowName);
         Assert.assertEquals(AAD_B2C_SIGN_UP_OR_SIGN_IN, userFlowName);
@@ -46,13 +46,13 @@ public class AADB2CIT {
 
     @Test
     public void testProfileEdit() {
-        aadb2cSeleniumITHelper.profileEditJobTitle(JOB_TITLE_A_WORKER);
-        String currentJobTitle = aadb2cSeleniumITHelper.getJobTitle();
+        aadB2CSeleniumITHelper.profileEditJobTitle(JOB_TITLE_A_WORKER);
+        String currentJobTitle = aadB2CSeleniumITHelper.getJobTitle();
         String newJobTitle = JOB_TITLE_A_WORKER.equals(currentJobTitle) ? JOB_TITLE_WORKER : JOB_TITLE_A_WORKER;
-        aadb2cSeleniumITHelper.profileEditJobTitle(newJobTitle);
-        String name = aadb2cSeleniumITHelper.getName();
-        String jobTitle = aadb2cSeleniumITHelper.getJobTitle();
-        String userFlowName = aadb2cSeleniumITHelper.getUserFlowName();
+        aadB2CSeleniumITHelper.profileEditJobTitle(newJobTitle);
+        String name = aadB2CSeleniumITHelper.getName();
+        String jobTitle = aadB2CSeleniumITHelper.getJobTitle();
+        String userFlowName = aadB2CSeleniumITHelper.getUserFlowName();
         Assert.assertNotNull(name);
         Assert.assertNotNull(jobTitle);
         Assert.assertEquals(newJobTitle, jobTitle);
@@ -61,14 +61,14 @@ public class AADB2CIT {
 
     @Test
     public void testLogOut() {
-        aadb2cSeleniumITHelper.logout();
-        String signInButtonText = aadb2cSeleniumITHelper.getSignInButtonText();
+        aadB2CSeleniumITHelper.logout();
+        String signInButtonText = aadB2CSeleniumITHelper.getSignInButtonText();
         Assert.assertEquals("Sign in", signInButtonText);
     }
 
     @After
     public void destroy() {
-        aadb2cSeleniumITHelper.destroy();
+        aadB2CSeleniumITHelper.destroy();
     }
 
     @EnableWebSecurity
