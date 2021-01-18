@@ -485,11 +485,25 @@ public class EncryptionTests extends TestSuiteBase {
 
     @Test(groups = { "encryption" }, timeOut = TIMEOUT)
     public void encryptionDecryptChangeFeedResultMultipleDocs() {
-        TestDoc testDoc1 =  EncryptionTests.createItem(EncryptionTests.encryptionContainer, EncryptionTests.dekId, TestDoc.PathsToEncrypt).getItem();
-        TestDoc testDoc2 =  EncryptionTests.createItem(EncryptionTests.encryptionContainer, EncryptionTests.dekId, TestDoc.PathsToEncrypt).getItem();
+        String partitionKey = UUID.randomUUID().toString();
+        TestDoc testDoc1 =  EncryptionTests
+            .createItem(
+                EncryptionTests.encryptionContainer,
+                EncryptionTests.dekId,
+                TestDoc.PathsToEncrypt,
+                partitionKey)
+            .getItem();
+        TestDoc testDoc2 =  EncryptionTests
+            .createItem(
+                EncryptionTests.encryptionContainer,
+                EncryptionTests.dekId,
+                TestDoc.PathsToEncrypt,
+                partitionKey)
+            .getItem();
 
         CosmosChangeFeedRequestOptions options =
-            CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
+            CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(
+                FeedRange.forLogicalPartition(new PartitionKey(partitionKey)));
 
         EncryptionTests.validateChangeFeedResultsMultipleDocuments(
             EncryptionTests.encryptionContainer,
