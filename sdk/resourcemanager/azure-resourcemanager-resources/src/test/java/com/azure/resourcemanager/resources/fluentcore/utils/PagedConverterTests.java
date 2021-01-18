@@ -4,8 +4,10 @@
 package com.azure.resourcemanager.resources.fluentcore.utils;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.logging.ClientLogger;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,6 +16,7 @@ import reactor.test.StepVerifier;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 
@@ -52,7 +55,35 @@ public class PagedConverterTests {
             .verify();
     }
 
+    @Test
+    public void testFlatMapPageOnePage() {
+        AtomicInteger pageCount = new AtomicInteger(0);
+        PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4, pageCount);
+        PagedFlux<String> convertedPagedFlux = PagedConverter.flatMapPage(pagedFlux, item -> Flux.just(item, item + "#"));
+        PagedIterable pagedIterable = new PagedIterable<>(convertedPagedFlux);
+
+        pagedIterable.stream().findFirst().get();
+
+        Assertions.assertEquals(1, pageCount.get());
+    }
+
+    @Test
+    public void testMergePagedFluxOnePage() {
+        AtomicInteger pageCount = new AtomicInteger(0);
+        PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 3, 2);
+        PagedFlux<String> mergedPagedFlux = PagedConverter.mergePagedFlux(pagedFlux, item -> mockPagedFlux(item + "sub", 0, 10, 4, pageCount));
+        PagedIterable pagedIterable = new PagedIterable<>(mergedPagedFlux);
+
+        pagedIterable.stream().findFirst().get();
+
+        Assertions.assertEquals(1, pageCount.get());
+    }
+
     private static PagedFlux<String> mockPagedFlux(String prefix, int startInclusive, int stopExclusive, int pageSize) {
+        return mockPagedFlux(prefix, startInclusive, stopExclusive, pageSize, new AtomicInteger(0));
+    }
+
+    private static PagedFlux<String> mockPagedFlux(String prefix, int startInclusive, int stopExclusive, int pageSize, AtomicInteger pageCount) {
         Iterator<Integer> iterator = IntStream.range(startInclusive, stopExclusive).iterator();
         Function<String, PagedResponseBase<Void, String>> nextPage = continuationToken -> {
             if (continuationToken == null) {
@@ -74,6 +105,8 @@ public class PagedConverterTests {
             if (!continuationToken.equals(prefix) && !items.isEmpty()) {
                 assert continuationToken.equals(items.iterator().next());
             }
+
+            pageCount.getAndIncrement();
 
             return new PagedResponseBase<>(null, 200, null,
                 items, iterator.hasNext() ? prefix + possibleNext : null,
