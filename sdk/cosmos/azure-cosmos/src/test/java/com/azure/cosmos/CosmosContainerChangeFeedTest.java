@@ -34,7 +34,8 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -407,12 +408,12 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(10))
         );
-        insertDocuments(20, 20);
+        insertDocuments(8, 15);
         updateDocuments(3, 5);
         deleteDocuments(2, 3);
 
         Runnable updateAction1 = () -> {
-            insertDocuments(200, 7);
+            insertDocuments(5, 9);
             updateDocuments(3, 5);
             deleteDocuments(2, 3);
         };
@@ -420,18 +421,18 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         Runnable updateAction2 = () -> {
             updateDocuments(5, 2);
             deleteDocuments(2, 3);
-            insertDocuments(100, 5);
+            insertDocuments(10, 5);
         };
 
         final int expectedInitialEventCount = 0;
 
         final int expectedEventCountAfterFirstSetOfUpdates =
-            200 * 7       // events for inserts
+              5 * 9       // events for inserts
             + 3 * 5       // event count for updates
             + 2 * 3;      // plus deletes (which are all included in FF CF)
 
         final int expectedEventCountAfterSecondSetOfUpdates =
-          100 * 5         // events for inserts
+           10 * 5         // events for inserts
           + 5 * 2         // event count for updates
           + 2 * 3;        // plus deletes (which are all included in FF CF)
 
@@ -466,10 +467,53 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromPointInTime_incremental_forFullRange() throws Exception {
+        this.createContainer(
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+        );
+        insertDocuments(20, 7);
+        updateDocuments(3, 5);
+        deleteDocuments(2, 3);
+
+        Runnable updateAction = () -> {
+            updateDocuments(5, 2);
+            deleteDocuments(1, 3);
+        };
+
+        final int expectedInitialEventCount =
+             20 * 7   //inserted
+                + 0       // updates won't show up as extra events in incremental mode
+                - 2 * 3;  // updated then deleted documents won't show up at all in incremental mode
+
+        final int expectedEventCountAfterUpdates =
+              5 * 2              // event count for initial updates
+            - 1 * Math.min(2,3); // reducing events for 2 of the 3 deleted documents
+                                 // (because they have also had been updated)
+
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromPointInTime(
+                Instant.now().minus(10, ChronoUnit.SECONDS),
+                FeedRange.forFullRange());
+
+        String continuation = drainAndValidateChangeFeedResults(options, null, expectedInitialEventCount);
+
+        // applying updates
+        updateAction.run();
+
+        options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromContinuation(continuation);
+
+        drainAndValidateChangeFeedResults(options, null, expectedEventCountAfterUpdates);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromPointInTime_fullFidelity_forFullRange() throws Exception {
+        assertThrows(
+            IllegalStateException.class,
+            () -> CosmosChangeFeedRequestOptions
+                .createForProcessingFromPointInTime(
+                    Instant.now().minus(10, ChronoUnit.SECONDS),
+                    FeedRange.forFullRange())
+                .withFullFidelity());
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
