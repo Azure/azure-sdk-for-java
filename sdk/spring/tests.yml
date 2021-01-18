@@ -5,6 +5,7 @@ jobs:
       parameters:
         TimeoutInMinutes: 240
         ServiceDirectory: spring
+        ScenarioName: AzureCloud
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
@@ -117,3 +118,37 @@ jobs:
               AAD_B2C_USER_PASSWORD: $(java-spring-aad-b2c-user-password)
               AAD_B2C_CLIENT_ID: $(java-spring-aad-b2c-client-id)
               AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret)
+
+    - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+        parameters:
+          TimeoutInMinutes: 240
+          ServiceDirectory: spring
+          ScenarioName: AzureChinaCloud
+          TestStepMavenInputs:
+            options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+            goals: "verify"
+
+          Artifacts:
+            - name: azure-spring-boot-test-core
+              groupId: com.azure.spring
+              safeName: azurespringboottestcore
+            - name: azure-spring-boot-test-aad
+              groupId: com.azure.spring
+              safeName: azurespringboottestaad
+
+          EnvVars:
+            AZURE_TEST_MODE: LIVE
+            AAD_TENANT_ID_1: $(java-spring-aad-cn-tenant-id-1)
+            AAD_USER_NAME_1: $(java-spring-aad-cn-user-name-1)
+            AAD_USER_PASSWORD_1: $(java-spring-aad-cn-user-password-1)
+            AAD_TENANT_ID_2: $(java-spring-aad-cn-tenant-id-2)
+            AAD_USER_NAME_2: $(java-spring-aad-cn-user-name-2)
+            AAD_USER_PASSWORD_2: $(java-spring-aad-cn-user-password-2)
+            AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-cn-multi-tenant-client-id)
+            AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-cn-multi-tenant-client-secret)
+            AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-cn-single-tenant-id)
+            AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-cn-single-tenant-secret)
+            AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-cn-single-tenant-id-with-role)
+            AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-cn-single-tenant-secret-with-role)
+
+        - ${{ parameters.PostRunSteps }}
