@@ -94,15 +94,13 @@ public class SeleniumITHelper {
     }
 
     private static void registerShutdownHookChromeDriverFile() {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            String strTmpPath = System.getProperty("java.io.tmpdir");
-            File targetFile = new File(strTmpPath + File.separator + uuid);
-            try {
-                FileUtils.forceDeleteOnExit(targetFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }));
+        String strTmpPath = System.getProperty("java.io.tmpdir");
+        File targetFile = new File(strTmpPath + File.separator + uuid);
+        try {
+            FileUtils.forceDeleteOnExit(targetFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
