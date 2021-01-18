@@ -16,7 +16,7 @@ import org.springframework.core.io.WritableResource;
 import org.springframework.util.StreamUtils;
 
 @SpringBootTest
-public class StorageIT {
+public class StorageWriteIT {
 
     @Value("${blob}")
     private Resource blobStorage;

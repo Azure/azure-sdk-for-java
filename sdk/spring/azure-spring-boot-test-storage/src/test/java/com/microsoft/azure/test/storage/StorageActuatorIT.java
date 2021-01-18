@@ -7,16 +7,16 @@ import com.azure.spring.test.AppRunner;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.client.RestTemplate;
 
+import static com.azure.spring.test.EnvironmentVariable.AZURE_STORAGE_ACCOUNT_KEY;
+import static com.azure.spring.test.EnvironmentVariable.AZURE_STORAGE_ACCOUNT_NAME;
+import static com.azure.spring.test.EnvironmentVariable.AZURE_STORAGE_BLOB;
+import static com.azure.spring.test.EnvironmentVariable.AZURE_STORAGE_BLOB_ENDPOINT;
+import static com.azure.spring.test.EnvironmentVariable.AZURE_STORAGE_FILE;
+import static com.azure.spring.test.EnvironmentVariable.AZURE_STORAGE_FILE_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ActuatorIT {
+public class StorageActuatorIT {
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
-    private static final String AZURE_STORAGE_ACCOUNT_NAME = System.getenv("AZURE_STORAGE_ACCOUNT_NAME");
-    private static final String AZURE_STORAGE_ACCOUNT_KEY = System.getenv("AZURE_STORAGE_ACCOUNT_KEY");
-    private static final String AZURE_STORAGE_BLOB_ENDPOINT = System.getenv("AZURE_STORAGE_BLOB_ENDPOINT");
-    private static final String AZURE_STORAGE_FILE_ENDPOINT = System.getenv("AZURE_STORAGE_FILE_ENDPOINT");
-    private static final String AZURE_STORAGE_BLOB = System.getenv("AZURE_STORAGE_BLOB");
-    private static final String AZURE_STORAGE_FILE = System.getenv("AZURE_STORAGE_FILE");
 
     @Test
     public void testBlobStorageActuatorHealth() {

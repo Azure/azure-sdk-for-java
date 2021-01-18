@@ -18,7 +18,7 @@ steps:
 - bash: |
     sudo apt-get install -y --upgrade python3-pip python3-setuptools
     pip3 install --upgrade wheel
-    pip3 install --upgrade PyYAML
+    pip3 install --upgrade PyYAML requests
   displayName: Update python
 
 - task: NodeTool@0
