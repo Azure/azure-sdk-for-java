@@ -1,7 +1,7 @@
 package com.azure.test.aad.selenium;
 
-import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
@@ -23,8 +23,8 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
     public static Map<String, String> createDefaultProperties() {
         Map<String, String> defaultProperties = new HashMap<>();
         defaultProperties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
-        defaultProperties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
-        defaultProperties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
+        defaultProperties.put("azure.activedirectory.client-id", AAD_SINGLE_TENANT_CLIENT_ID);
+        defaultProperties.put("azure.activedirectory.client-secret", AAD_SINGLE_TENANT_CLIENT_SECRET);
         defaultProperties.put("azure.activedirectory.user-group.allowed-groups", "group1");
         defaultProperties.put("azure.activedirectory.post-logout-redirect-uri", "http://localhost:${server.port}");
         return defaultProperties;
