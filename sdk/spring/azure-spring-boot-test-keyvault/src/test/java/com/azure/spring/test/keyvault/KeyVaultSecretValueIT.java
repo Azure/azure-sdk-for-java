@@ -41,7 +41,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-class KeyVaultSecretValueIT {
+public class KeyVaultSecretValueIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultSecretValueIT.class);
     private static final String APP_SERVICE_NAME = System.getenv("APP_SERVICE_NAME");

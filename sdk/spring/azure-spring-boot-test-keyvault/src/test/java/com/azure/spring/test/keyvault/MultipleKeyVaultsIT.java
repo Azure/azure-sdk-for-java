@@ -20,7 +20,7 @@ import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.SPRING_TENANT_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class MultipleKeyVaultsIT {
+public class MultipleKeyVaultsIT {
 
     private static final String KEY_VAULT_NAME_1 = getKeyVaultName(AZURE_KEYVAULT_URI);
     private static final String KEY_VAULT_NAME_2 = getKeyVaultName(AZURE_KEYVAULT2_URI);

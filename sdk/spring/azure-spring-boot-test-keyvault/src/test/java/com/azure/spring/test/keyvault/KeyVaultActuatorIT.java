@@ -16,7 +16,7 @@ import static com.azure.spring.test.EnvironmentVariable.SPRING_TENANT_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class KeyVaultActuatorIT {
+public class KeyVaultActuatorIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultActuatorIT.class);
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
