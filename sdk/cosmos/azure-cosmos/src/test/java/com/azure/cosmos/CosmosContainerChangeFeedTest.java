@@ -160,24 +160,24 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                                    // (because they have also had been updated)
 
         CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
-            .createForProcessingFromBeginning(FeedRange.forFullRange());
-            // TODO fabianm - reenable --- BUGALERT --- .setMaxItemCount(10);
+            .createForProcessingFromBeginning(FeedRange.forFullRange())
+            .setMaxItemCount(10);
 
         String continuation = drainAndValidateChangeFeedResults(
             options,
-            null, // TODO fabianm - reenable --- BUGALERT ---  (o) -> o.setMaxItemCount(10),
+            (o) -> o.setMaxItemCount(10),
             expectedInitialEventCount);
 
         // applying updates
         updateAction.run();
 
         options = CosmosChangeFeedRequestOptions
-            .createForProcessingFromContinuation(continuation);
-        // TODO fabianm - reenable --- BUGALERT ---  .setMaxItemCount(10);
+            .createForProcessingFromContinuation(continuation)
+            .setMaxItemCount(10);
 
         drainAndValidateChangeFeedResults(
             options,
-            null, // TODO fabianm - reenable --- BUGALERT --- (o) -> o.setMaxItemCount(10),
+            (o) -> o.setMaxItemCount(10),
             expectedEventCountAfterUpdates);
     }
 
@@ -544,7 +544,16 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 int emptyResultCount = 0;
                 List<ObjectNode> results;
 
-                CosmosChangeFeedRequestOptions effectiveOptions = changeFeedRequestOptions.get(i);
+                CosmosChangeFeedRequestOptions effectiveOptions;
+                if (continuations.containsKey(i)) {
+                    effectiveOptions = CosmosChangeFeedRequestOptions
+                        .createForProcessingFromContinuation(continuations.get(i));
+                    if (onNewRequestOptions != null) {
+                        effectiveOptions = onNewRequestOptions.apply(effectiveOptions);
+                    }
+                } else {
+                    effectiveOptions = changeFeedRequestOptions.get(i);
+                }
 
                 final Integer index = i;
                 results = createdAsyncContainer
@@ -552,12 +561,6 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                     .handle((r) -> continuations.put(index, r.getContinuationToken()))
                     .collectList()
                     .block();
-
-                effectiveOptions = CosmosChangeFeedRequestOptions
-                        .createForProcessingFromContinuation(continuations.get(i));
-                if (onNewRequestOptions != null) {
-                    effectiveOptions = onNewRequestOptions.apply(effectiveOptions);
-                }
 
                 totalRetrievedEventCount += results.size();
                 if (totalRetrievedEventCount >= expectedTotalEventCount) {
