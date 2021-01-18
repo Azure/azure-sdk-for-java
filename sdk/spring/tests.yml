@@ -150,5 +150,3 @@ jobs:
             AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-cn-single-tenant-secret)
             AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-cn-single-tenant-id-with-role)
             AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-cn-single-tenant-secret-with-role)
-
-        - ${{ parameters.PostRunSteps }}
