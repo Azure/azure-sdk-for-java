@@ -109,7 +109,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
             request.applyFeedRangeFilter(this.feedRange);
         }
 
-        if (continuationToken == null) {
+        if (continuationToken == null || continuationToken.getToken() == null) {
             effectiveStartFrom = this.startFromSettings;
         } else {
             effectiveStartFrom = new ChangeFeedStartFromETagAndFeedRangeImpl(

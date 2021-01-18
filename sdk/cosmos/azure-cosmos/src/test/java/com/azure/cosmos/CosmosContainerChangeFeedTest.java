@@ -34,6 +34,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -45,6 +46,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.testng.Assert.assertThrows;
 
 public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
@@ -135,7 +137,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         drainAndValidateChangeFeedResults(options, null, expectedEventCountAfterUpdates);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 1000)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT )
     public void asyncChangeFeed_fromBeginning_incremental_forFullRange_withSmallPageSize() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
@@ -352,6 +354,125 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void asyncChangeFeed_fromBeginning_fullFidelity_forFullRange() throws Exception {
+        assertThrows(
+            IllegalStateException.class,
+            () -> CosmosChangeFeedRequestOptions
+                .createForProcessingFromBeginning(FeedRange.forFullRange())
+                .withFullFidelity());
+    }
+
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 1000)
+    public void asyncChangeFeed_fromNow_incremental_forFullRange() throws Exception {
+        this.createContainer(
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
+        );
+        insertDocuments(20, 7);
+        updateDocuments(3, 5);
+        deleteDocuments(2, 3);
+
+        Runnable updateAction = () -> {
+            updateDocuments(5, 2);
+            deleteDocuments(2, 3);
+            insertDocuments(100, 5);
+        };
+
+        final int expectedInitialEventCount = 0;
+
+        final int expectedEventCountAfterUpdates =
+                5 * 2               // event count for updates
+            -   (2 * Math.min(2,3)) // reducing events for 2 of the 3 deleted documents
+                                    // (because they have also had been updated) on each of the two
+                                    // partitions documents are deleted from
+            + 100 * 5;              // event count for inserts
+
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRange.forFullRange());
+
+
+        String continuation = drainAndValidateChangeFeedResults(options, null, expectedInitialEventCount);
+
+        // applying updates
+        updateAction.run();
+
+        options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromContinuation(continuation);
+
+        drainAndValidateChangeFeedResults(options, null, expectedEventCountAfterUpdates);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void asyncChangeFeed_fromNow_fullFidelity_forFullRange() throws Exception {
+        this.createContainer(
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(10))
+        );
+        insertDocuments(20, 20);
+        updateDocuments(3, 5);
+        deleteDocuments(2, 3);
+
+        Runnable updateAction1 = () -> {
+            insertDocuments(200, 7);
+            updateDocuments(3, 5);
+            deleteDocuments(2, 3);
+        };
+
+        Runnable updateAction2 = () -> {
+            updateDocuments(5, 2);
+            deleteDocuments(2, 3);
+            insertDocuments(100, 5);
+        };
+
+        final int expectedInitialEventCount = 0;
+
+        final int expectedEventCountAfterFirstSetOfUpdates =
+            200 * 7       // events for inserts
+            + 3 * 5       // event count for updates
+            + 2 * 3;      // plus deletes (which are all included in FF CF)
+
+        final int expectedEventCountAfterSecondSetOfUpdates =
+          100 * 5         // events for inserts
+          + 5 * 2         // event count for updates
+          + 2 * 3;        // plus deletes (which are all included in FF CF)
+
+        CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromNow(FeedRange.forFullRange());
+
+
+        String continuation = drainAndValidateChangeFeedResults(options, null, expectedInitialEventCount);
+
+        // applying first set of  updates
+        updateAction1.run();
+
+        options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromContinuation(continuation);
+
+        continuation = drainAndValidateChangeFeedResults(
+            options,
+            null,
+            expectedEventCountAfterFirstSetOfUpdates);
+
+        // applying first set of  updates
+        updateAction2.run();
+
+        options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromContinuation(continuation);
+
+        drainAndValidateChangeFeedResults(
+            options,
+            null,
+            expectedEventCountAfterSecondSetOfUpdates);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void asyncChangeFeed_fromPointInTime_incremental_forFullRange() throws Exception {
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void asyncChangeFeed_fromPointInTime_fullFidelity_forFullRange() throws Exception {
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void syncChangeFeed_fromBeginning_incremental_forFullRange() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
@@ -451,6 +572,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 doc.get(PARTITION_KEY_FIELD_NAME).textValue(),
                 doc);
         }
+        logger.info("FINISHED INSERT");
     }
 
     void deleteDocuments(
@@ -538,14 +660,15 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         int totalRetrievedEventCount = 0;
 
         boolean isFinished = false;
+        int emptyResultCount = 0;
 
         while (!isFinished) {
             for (Integer i = 0; i < changeFeedRequestOptions.size(); i++) {
-                int emptyResultCount = 0;
                 List<ObjectNode> results;
 
                 CosmosChangeFeedRequestOptions effectiveOptions;
                 if (continuations.containsKey(i)) {
+                    logger.info(String.format("Continuation BEFORE: %s", continuations.get(i)));
                     effectiveOptions = CosmosChangeFeedRequestOptions
                         .createForProcessingFromContinuation(continuations.get(i));
                     if (onNewRequestOptions != null) {
@@ -562,6 +685,12 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                     .collectList()
                     .block();
 
+                logger.info(
+                    String.format(
+                        "Continuation AFTER: %s, records retrieved: %d",
+                        continuations.get(i),
+                        results.size()));
+
                 totalRetrievedEventCount += results.size();
                 if (totalRetrievedEventCount >= expectedTotalEventCount) {
                     isFinished = true;
@@ -571,17 +700,24 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 if (results.size() == 0) {
                     emptyResultCount += 1;
 
-                    assertThat(emptyResultCount).isLessThan(5 * changeFeedRequestOptions.size());
+                    assertThat(emptyResultCount).isLessThan(6 * changeFeedRequestOptions.size());
                     logger.info(
-                        String.format("Not all expected events retrieved yet. Retrying... Retry count: %d",
+                        String.format("Not all expected events retrieved yet. Retrieved %d out of " +
+                            "expected %d events. Retrying... Retry count: %d",
+                            totalRetrievedEventCount,
+                            expectedTotalEventCount,
                             emptyResultCount));
 
                     try {
-                        Thread.sleep(50 / changeFeedRequestOptions.size());
+                        Thread.sleep(500 / changeFeedRequestOptions.size());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
+                else {
+                    emptyResultCount = 0;
+                }
+
             }
         }
 

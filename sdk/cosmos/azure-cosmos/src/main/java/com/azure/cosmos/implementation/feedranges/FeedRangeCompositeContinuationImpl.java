@@ -185,11 +185,13 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
                 this.initialNoResultsRange = this.currentToken.getRange().getMin();
                 this.replaceContinuation(eTag);
+                this.moveToNextToken();
                 return ShouldRetryResult.RETRY_IMMEDIATELY;
             }
 
             if (!this.initialNoResultsRange.equalsIgnoreCase(this.currentToken.getRange().getMin())) {
                 this.replaceContinuation(eTag);
+                this.moveToNextToken();
                 return ShouldRetryResult.RETRY_IMMEDIATELY;
             }
         }
@@ -320,14 +322,14 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     private void moveToNextToken() {
         final CompositeContinuationToken recentToken = this.compositeContinuationTokens.poll();
-        if (recentToken.getToken() != null) {
+        // TODO fabianm remove if (recentToken.getToken() != null) {
             // Normal ReadFeed can signal termination by CT null, not NotModified
             // Change Feed never lands here, as it always provides a CT
             // Consider current range done, if this FeedToken contains multiple ranges due
             // to splits,
             // all of them need to be considered done
             this.compositeContinuationTokens.add(recentToken);
-        }
+        //}
 
         if (this.compositeContinuationTokens.size() > 0) {
             this.currentToken = this.compositeContinuationTokens.peek();
