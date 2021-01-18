@@ -124,6 +124,7 @@ jobs:
         TimeoutInMinutes: 240
         ServiceDirectory: spring
         ScenarioName: AzureChinaCloud
+        SubscriptionConfiguration: $(sub-config-cn-test-resources)
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
@@ -150,5 +151,3 @@ jobs:
           AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-cn-single-tenant-secret)
           AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-cn-single-tenant-id-with-role)
           AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-cn-single-tenant-secret-with-role)
-
-        - ${{ parameters.PostRunSteps }}
