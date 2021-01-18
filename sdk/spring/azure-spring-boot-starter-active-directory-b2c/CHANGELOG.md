@@ -2,7 +2,7 @@
 
 ## 3.2.0-beta.1 (Unreleased)
 ### Breaking Changes
-- Configure `userNameAttributeName` to access the user's name.
+- Exposed `userNameAttributeName` to configure the user's name.
 
 ## 3.0.0 (2020-12-30)
 

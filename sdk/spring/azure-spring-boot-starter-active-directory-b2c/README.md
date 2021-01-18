@@ -58,6 +58,20 @@ In this documentation, you created a new Java web application using the Azure Ac
 configured a new Azure AD B2C tenant and registered a new application in it, and then configured your
 application to use the Spring annotations and classes to protect the web app.
 
+### Configurable properties
+This starter provides following properties to be customized:
+
+
+ | Parameter | Description |
+   |---|---|
+   | `azure.activedirectory.b2c.tenant` | Contains your AD B2C's `${your-tenant-name` from earlier. |
+   | `azure.activedirectory.b2c.client-id` | Contains the `${your-client-id}` from your application that you completed earlier. |
+   | `azure.activedirectory.b2c.client-secret` | Contains the `${your-client-secret}` from your application that you completed earlier. |
+   | `azure.activedirectory.b2c.reply-url` | Contains one of the **Reply URL** from your application that you completed earlier. |
+   | `azure.activedirectory.b2c.logout-success-url` | Specify the URL when your application logout successfully. |
+   | `azure.activedirectory.b2c.user-flows` | Contains the name of the user flows that you completed earlier. |
+   | `azure.activedirectory.b2c.user-name-attribute-name` | Contains the attribute name of the user name .
+
 ## Examples
 ### Configure and compile your app
 
@@ -107,18 +121,6 @@ application to use the Spring annotations and classes to protect the web app.
            login_hint: xxxxxxxxx          # optional
            domain_hint: xxxxxxxxx         # optional
    ```
-   Where:
-
-   | Parameter | Description |
-   |---|---|
-   | `azure.activedirectory.b2c.tenant` | Contains your AD B2C's `${your-tenant-name` from earlier. |
-   | `azure.activedirectory.b2c.client-id` | Contains the `${your-client-id}` from your application that you completed earlier. |
-   | `azure.activedirectory.b2c.client-secret` | Contains the `${your-client-secret}` from your application that you completed earlier. |
-   | `azure.activedirectory.b2c.reply-url` | Contains one of the **Reply URL** from your application that you completed earlier. |
-   | `azure.activedirectory.b2c.logout-success-url` | Specify the URL when your application logout successfully. |
-   | `azure.activedirectory.b2c.user-flows` | Contains the name of the user flows that you completed earlier.
-   | `azure.activedirectory.b2c.user-name-attribute-name` | Contains the attribute name of the user name .
-
 7. Save and close the *application.yml* file.
 
 8. Create a folder named *controller* in the Java source folder for your application.
