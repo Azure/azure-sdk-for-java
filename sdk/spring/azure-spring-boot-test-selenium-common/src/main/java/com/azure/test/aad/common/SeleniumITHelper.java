@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebDriver;
@@ -21,34 +22,40 @@ public class SeleniumITHelper {
     protected AppRunner app;
     protected WebDriver driver;
     protected WebDriverWait wait;
+    private final static String uuid = UUID.randomUUID().toString();
+
+    static {
+        init();
+        deleteChromeDriverFile();
+    }
 
     public SeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
-        init();
         createDriver();
         createAppRunner(appClass, properties);
     }
 
-    private void init() {
+    private static void init() {
+        final String strTmpPath = System.getProperty("java.io.tmpdir");
         final String chromedriverLinux = "chromedriver_linux64";
         final String chromedriverWin32 = "chromedriver_win32.exe";
         final String chromedriverMac = "chromedriver_mac64";
-        final String path ="driver/";
         String osName = System.getProperty("os.name").toLowerCase();
         Process process = null;
+        File dir;
         try {
             if (Pattern.matches("linux.*", osName)) {
-                File dir = copyChromeDriverFile(path, chromedriverLinux);
+                dir = copyChromeDriverFile(strTmpPath, chromedriverLinux);
                 process = Runtime.getRuntime().exec("chmod +x " + chromedriverLinux, null, dir.getParentFile());
                 process.waitFor();
-                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, chromedriverLinux);
+                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, dir.getPath());
             } else if (Pattern.matches("windows.*", osName)) {
-                File dir = copyChromeDriverFile(path, chromedriverWin32);
+                dir = copyChromeDriverFile(strTmpPath, chromedriverWin32);
                 System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, dir.getPath());
             } else if (Pattern.matches("mac.*", osName)) {
-                File dir = copyChromeDriverFile(path, chromedriverMac);
+                dir = copyChromeDriverFile(strTmpPath, chromedriverMac);
                 process = Runtime.getRuntime().exec("chmod +x " + chromedriverMac, null, dir.getParentFile());
                 process.waitFor();
-                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, chromedriverMac);
+                System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, dir.getPath());
             } else {
                 throw new IllegalStateException("Unrecognized osName. osName = " + System.getProperty("os.name"));
             }
@@ -77,32 +84,25 @@ public class SeleniumITHelper {
         app.start();
     }
 
-    private static File copyChromeDriverFile(String path, String chromeDriverName) throws IOException {
+    private static File copyChromeDriverFile(String strTmpPath, String chromeDriverName)
+        throws IOException {
         InputStream resourceAsStream = SeleniumITHelper.class.getClassLoader()
-            .getResourceAsStream(path + chromeDriverName);
-        File sourcePath = new File(
-            SeleniumITHelper.class.getProtectionDomain().getCodeSource().getLocation().getPath());
-        File dest = new File(sourcePath.getParent() + File.separator + chromeDriverName);
+            .getResourceAsStream("driver/" + chromeDriverName);
+        File dest = new File(strTmpPath + File.separator + uuid + File.separator + chromeDriverName);
         FileUtils.copyInputStreamToFile(resourceAsStream, dest);
         return dest;
     }
 
-    private void deleteChromeDriverFile() {
-        String chromeDriverName = "";
-        String osName = System.getProperty("os.name").toLowerCase();
-        if (Pattern.matches("linux.*", osName)) {
-            chromeDriverName = "chromedriver_linux64";
-        } else if (Pattern.matches("windows.*", osName)) {
-            chromeDriverName = "chromedriver_win32.exe";
-        } else if (Pattern.matches("mac.*", osName)) {
-            chromeDriverName = "chromedriver_mac64";
-        }
-        File sourcePath = new File(
-            SeleniumITHelper.class.getProtectionDomain().getCodeSource().getLocation().getPath()).getParentFile();
-        File targetFile = new File(sourcePath + File.separator + chromeDriverName);
-        if (targetFile.exists()) {
-            targetFile.delete();
-        }
+    private static void deleteChromeDriverFile() {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            String strTmpPath = System.getProperty("java.io.tmpdir");
+            File targetFile = new File(strTmpPath + File.separator + uuid);
+            try {
+                FileUtils.deleteDirectory(targetFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }));
     }
 
     /**
@@ -111,6 +111,5 @@ public class SeleniumITHelper {
     public void destroy() {
         driver.quit();
         app.close();
-        deleteChromeDriverFile();
     }
 }

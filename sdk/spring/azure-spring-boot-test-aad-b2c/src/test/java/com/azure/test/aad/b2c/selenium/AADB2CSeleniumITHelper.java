@@ -14,6 +14,7 @@ import com.azure.test.aad.common.SeleniumITHelper;
 import java.util.HashMap;
 import java.util.Map;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class AADB2CSeleniumITHelper extends SeleniumITHelper {
@@ -44,7 +45,7 @@ public class AADB2CSeleniumITHelper extends SeleniumITHelper {
         driver.get(app.root());
         wait.until(presenceOfElementLocated(By.id("email"))).sendKeys(userEmail);
         wait.until(presenceOfElementLocated(By.id("password"))).sendKeys(userPassword);
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("next"))).click();
+        wait.until(presenceOfElementLocated(By.cssSelector("button[type='submit']"))).sendKeys(Keys.ENTER);
         manualRedirection();
     }
 
