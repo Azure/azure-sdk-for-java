@@ -69,9 +69,9 @@ public class AADB2CProperties {
     private Map<String, Object> authenticateAdditionalParameters;
 
     /**
-     * User name attribute name,eg "name"
+     * User name attribute name
      */
-    private String UserNameAttributeName;
+    private String userNameAttributeName;
 
     /**
      * The all user flows which is created under b2c tenant.
@@ -217,10 +217,10 @@ public class AADB2CProperties {
     }
 
     public String getUserNameAttributeName() {
-        return UserNameAttributeName;
+        return userNameAttributeName;
     }
 
-    public void setUserNameAttributeName(String UserNameAttributeName) {
-        this.UserNameAttributeName = UserNameAttributeName;
+    public void setUserNameAttributeName(String userNameAttributeName) {
+        this.userNameAttributeName = userNameAttributeName;
     }
 }

@@ -97,6 +97,7 @@ application to use the Spring annotations and classes to protect the web app.
          client-secret: ${your-client-secret}
          reply-url: ${your-reply-url-from-aad} # should be absolute url.
          logout-success-url: ${you-logout-success-url}
+         user-name-attribute-name: ${your-user-name-claim}
          user-flows:
            sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
            profile-edit: ${your-profile-edit-user-flow}     # optional
@@ -116,6 +117,7 @@ application to use the Spring annotations and classes to protect the web app.
    | `azure.activedirectory.b2c.reply-url` | Contains one of the **Reply URL** from your application that you completed earlier. |
    | `azure.activedirectory.b2c.logout-success-url` | Specify the URL when your application logout successfully. |
    | `azure.activedirectory.b2c.user-flows` | Contains the name of the user flows that you completed earlier.
+   | `azure.activedirectory.b2c.user-name-attribute-name` | Contains the attribute name of the user name .
 
 7. Save and close the *application.yml* file.
 
