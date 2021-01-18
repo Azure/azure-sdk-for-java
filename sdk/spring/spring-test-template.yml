@@ -1,0 +1,44 @@
+parameters:
+  OSVmImage: $(OSVmImage)
+  EnvVars: {}
+  TestName: ''
+  Artifacts: []
+
+jobs:
+    - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+      parameters:
+        TimeoutInMinutes: 240
+        ServiceDirectory: spring
+        EnvVars: ${{ parameters.EnvVars }}
+        TestName: ${{ parameters.TestName }}
+        TestStepMavenInputs:
+          options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+          goals: "verify"
+        Artifacts: ${{ parameters.Artifacts }}
+
+        PostRunSteps:
+          - script: |
+              python --version
+              python -m pip install setuptools termcolor in_place
+              python sdk/spring/scripts/replace_util.py --module spring --log debug --color false
+            displayName: 'Run replace_util.py'
+
+          - task: Maven@3
+            displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: 'install'
+              options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+              mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: $(JavaBuildVersion)
+              jdkArchitectureOption: 'x64'
+              publishJUnitResults: false
+
+          - task: Maven@3
+            displayName: 'Run tests again, JDK Version: $(JavaBuildVersion)'
+            inputs:
+              mavenPomFile: pom.xml
+              goals: verify
+              options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
+            env: ${{ parameters.EnvVars }}
