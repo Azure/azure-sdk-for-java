@@ -117,4 +117,12 @@ public class AADSeleniumITHelper {
         String id = driver.findElement(By.cssSelector("div[tabindex='0']")).getAttribute("data-test-id");
         Assert.assertEquals(username, id);
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }
