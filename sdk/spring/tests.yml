@@ -121,6 +121,7 @@ jobs:
 
     - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
       parameters:
+        TestName: LiveTestInAzureChina
         TimeoutInMinutes: 240
         ServiceDirectory: spring
         ScenarioName: AzureChinaCloud
