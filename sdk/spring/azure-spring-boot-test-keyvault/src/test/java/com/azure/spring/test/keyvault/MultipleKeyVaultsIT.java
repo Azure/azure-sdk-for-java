@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.test.keyvault;
+package com.azure.spring.test.keyvault;
 
 import com.azure.spring.test.AppRunner;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import static com.azure.spring.test.EnvironmentVariable.AZURE_KEYVAULT2_URI;
@@ -18,7 +18,7 @@ import static com.azure.spring.test.EnvironmentVariable.KEY_VAULT_COMMON_SECRET_
 import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.SPRING_TENANT_ID;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class MultipleKeyVaultsIT {
 

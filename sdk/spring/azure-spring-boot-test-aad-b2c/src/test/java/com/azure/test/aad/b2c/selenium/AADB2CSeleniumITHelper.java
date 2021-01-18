@@ -1,7 +1,6 @@
 package com.azure.test.aad.b2c.selenium;
 
 import com.azure.spring.test.AppRunner;
-import com.azure.test.aad.b2c.utils.AADB2CTestUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,6 +14,15 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_REPLY_URL;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_TENANT;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_USER_EMAIL;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_USER_PASSWORD;
+
 public class AADB2CSeleniumITHelper {
 
     private final String userEmail;
@@ -25,17 +33,12 @@ public class AADB2CSeleniumITHelper {
     private static final Map<String, String> DEFAULT_PROPERTIES = new HashMap<>();
 
     static {
-        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.tenant", AADB2CTestUtils.AAD_B2C_TENANT);
-        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.client-id", AADB2CTestUtils.AAD_B2C_CLIENT_ID);
-        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.client-secret",
-            AADB2CTestUtils.AAD_B2C_CLIENT_SECRET);
-        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.reply-url", AADB2CTestUtils.AAD_B2C_REPLY_URL);
-        DEFAULT_PROPERTIES
-            .put("azure.activedirectory.b2c.user-flows.sign-up-or-sign-in",
-                AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN);
-        DEFAULT_PROPERTIES
-            .put("azure.activedirectory.b2c.user-flows.profile-edit",
-                AADB2CTestUtils.AAD_B2C_PROFILE_EDIT);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.tenant", AAD_B2C_TENANT);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.client-id", AAD_B2C_CLIENT_ID);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.client-secret", AAD_B2C_CLIENT_SECRET);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.reply-url", AAD_B2C_REPLY_URL);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.user-flows.sign-up-or-sign-in", AAD_B2C_SIGN_UP_OR_SIGN_IN);
+        DEFAULT_PROPERTIES.put("azure.activedirectory.b2c.user-flows.profile-edit", AAD_B2C_PROFILE_EDIT);
 
         final String directory = "src/test/resources/driver/";
         final String chromedriverLinux = "chromedriver_linux64";
@@ -68,8 +71,8 @@ public class AADB2CSeleniumITHelper {
     }
 
     public AADB2CSeleniumITHelper(Class<?> appClass, Map<String, String> properties) throws InterruptedException {
-        userEmail = AADB2CTestUtils.AAD_B2C_USER_EMAIL;
-        userPassword = AADB2CTestUtils.AAD_B2C_USER_PASSWORD;
+        userEmail = AAD_B2C_USER_EMAIL;
+        userPassword = AAD_B2C_USER_PASSWORD;
         app = new AppRunner(appClass);
         DEFAULT_PROPERTIES.forEach(app::property);
         properties.forEach(app::property);
@@ -119,10 +122,10 @@ public class AADB2CSeleniumITHelper {
         driver.findElement(By.cssSelector("button[type='submit']")).submit();
         manualRedirection();
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(
-            "a[href='/oauth2/authorization/" + AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN + "']")));
+            "a[href='/oauth2/authorization/" + AAD_B2C_SIGN_UP_OR_SIGN_IN + "']")));
         driver.findElement(
             By.cssSelector(
-                "a[href='/oauth2/authorization/" + AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN + "']")).click();
+                "a[href='/oauth2/authorization/" + AAD_B2C_SIGN_UP_OR_SIGN_IN + "']")).click();
         wait.until(ExpectedConditions.elementToBeClickable(By.id("next")));
         return driver.findElement(By.cssSelector("button[type='submit']")).getText();
     }

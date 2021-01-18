@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.test.keyvault;
+package com.azure.spring.test.keyvault;
 
 import com.azure.spring.test.AppRunner;
+import com.azure.spring.test.keyvault.app.DummyApp;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,12 +13,12 @@ import static com.azure.spring.test.EnvironmentVariable.AZURE_KEYVAULT_URI;
 import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.SPRING_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.SPRING_TENANT_ID;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ActuatorIT {
+public class KeyVaultActuatorIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ActuatorIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(KeyVaultActuatorIT.class);
     private static final RestTemplate REST_TEMPLATE = new RestTemplate();
 
     /**
