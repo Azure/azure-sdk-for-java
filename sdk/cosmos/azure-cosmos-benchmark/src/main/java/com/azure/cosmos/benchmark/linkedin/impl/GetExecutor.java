@@ -80,11 +80,11 @@ class GetExecutor<K, V> {
                 return _responseHandler.convertException(key, ex);
             }
 
-            metrics.logCounterMetric(Constants.ERROR_COUNT);
+            metrics.error(startTime);
             final String errorMessage = String.format(ERROR_MESSAGE_FORMAT, id, activeCollection.getCollectionName());
             throw _responseHandler.createException(errorMessage, ex);
         } catch (Exception ex) {
-            metrics.logCounterMetric(Constants.ERROR_COUNT);
+            metrics.error(startTime);
             final String errorMessage = String.format(ERROR_MESSAGE_FORMAT, id, activeCollection.getCollectionName());
             throw new CosmosDBDataAccessorException.Builder()
                 .setMessage(errorMessage)

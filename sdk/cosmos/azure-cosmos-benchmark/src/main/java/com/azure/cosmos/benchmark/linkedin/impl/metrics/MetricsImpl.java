@@ -2,47 +2,64 @@ package com.azure.cosmos.benchmark.linkedin.impl.metrics;
 
 import com.azure.cosmos.benchmark.linkedin.impl.Metrics;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.google.common.base.Preconditions;
 import java.time.Clock;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.concurrent.TimeUnit;
+import org.mpierce.metrics.reservoir.hdrhistogram.HdrHistogramResetOnSnapshotReservoir;
 
 
 public class MetricsImpl implements Metrics {
-    public final static String LATENCY_MS = "LatencyMs";
-    private static final Logger LOGGER = LoggerFactory.getLogger(MetricsImpl.class);
-    private static final String SEPARATOR = "-";
-    private final Clock _clock;
-    private final String _metricNamePrefix;
-    private final String _latencyMetricName;
 
-    public MetricsImpl(final Clock clock, final CollectionKey collectionKey, final String operation) {
-        Preconditions.checkNotNull(operation, "The operation name can not be null");
+    private final MetricRegistry _metricsRegistry;
+    private final Clock _clock;
+    private final Meter _successMeter;
+    private final Meter _failureMeter;
+    private final Timer _latencyTimer;
+
+    public MetricsImpl(final MetricRegistry metricsRegistry,
+        final Clock clock,
+        final CollectionKey collectionKey,
+        final String operationName) {
+        Preconditions.checkNotNull(metricsRegistry, "The MetricsRegistry can not be null");
+        Preconditions.checkNotNull(clock, "Need a non-null Clock instance for latency tracking");
+        Preconditions.checkNotNull(operationName, "The operation name can not be null");
         Preconditions.checkNotNull(collectionKey,
             "The CollectionKey can not be null. Gotta have a CollectionKey to perform any DocumentDB operations");
 
-        _clock = Preconditions.checkNotNull(clock, "The Clock object can not be null");
-        // All metrics are of the form "database-collection-operation-%s". Pre-creating the
-        // prefix to save repeating formatting or concatenation
-        _metricNamePrefix = collectionKey.getDatabaseName() + SEPARATOR
-            + collectionKey.getCollectionName() + SEPARATOR
-            + operation + SEPARATOR;
-        _latencyMetricName = createMetricName(LATENCY_MS);
+        _metricsRegistry = metricsRegistry;
+        _clock = clock;
+
+        // The metric prefix is comprised of the Collection name and Operation type
+        //      e.g. #GET (invitations)
+        final String metricPrefix = String.format("#%s (%s)", operationName.toUpperCase(), collectionKey.getCollectionName());
+        _successMeter = _metricsRegistry.meter(metricPrefix + " Successful Operations");
+        _failureMeter = _metricsRegistry.meter(metricPrefix + " Unsuccessful Operations");
+        _latencyTimer = _metricsRegistry.register(metricPrefix + " Latency",
+            new Timer(new HdrHistogramResetOnSnapshotReservoir()));
     }
 
     @Override
     public void logCounterMetric(String metricName) {
-        // Intentional no-op for now
+        // Intentional no-op for for this use-case
     }
 
     @Override
     public void completed(long startTimeInMillis) {
         final long requestEndTime = _clock.millis();
         final long requestLatencyMs = requestEndTime - startTimeInMillis;
-        LOGGER.debug("Latency tracking for {}: Duration: {}ms", _latencyMetricName, requestLatencyMs);
+        _successMeter.mark();
+        _latencyTimer.update(requestLatencyMs, TimeUnit.MILLISECONDS);
     }
 
-    private String createMetricName(final String metricName) {
-        return _metricNamePrefix + metricName;
+    @Override
+    public void error(long startTimeInMillis) {
+        final long requestEndTime = _clock.millis();
+        final long requestLatencyMs = requestEndTime - startTimeInMillis;
+        _failureMeter.mark();
+        _latencyTimer.update(requestLatencyMs, TimeUnit.MILLISECONDS);
     }
+
 }

@@ -6,14 +6,21 @@ package com.azure.cosmos.benchmark.linkedin.impl;
 public interface Metrics {
 
     /**
-     * @param metricName metric for this operation e.g. Success, ErrorCount
+     * @param metricName metric for this operation e.g. CallCount, NotFound
      */
     void logCounterMetric(final String metricName);
 
     /**
-     * Mark the completion of the operation
+     * Track successful completion of the operation
      *
      * @param startTimeInMillis The start time for the operation
      */
     void completed(final long startTimeInMillis);
+
+    /**
+     * Track operation errors
+     *
+     * @param startTimeInMillis The start time for the operation
+     */
+    void error(final long startTimeInMillis);
 }

@@ -2,6 +2,7 @@ package com.azure.cosmos.benchmark.linkedin.impl.metrics;
 
 import com.azure.cosmos.benchmark.linkedin.impl.Metrics;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
+import com.codahale.metrics.MetricRegistry;
 import com.google.common.base.Preconditions;
 import java.time.Clock;
 import java.util.Map;
@@ -13,10 +14,18 @@ import org.apache.commons.lang3.StringUtils;
 public class MetricsFactory {
     private static final int DEFAULT_INITIAL_CAPACITY = 10;
 
+    private final MetricRegistry _metricsRegistry;
     private final Clock _clock;
+
+    // Local cache enables reusing the same Metric instance
+    //   {CollectionKey -> {OperationName -> Metrics} map}
     private final Map<CollectionKey, Map<String, Metrics>> _collectionKeyToMetricsMap;
 
-    public MetricsFactory(final Clock clock) {
+    public MetricsFactory(final MetricRegistry metricsRegistry, final Clock clock) {
+        Preconditions.checkNotNull(metricsRegistry, "The MetricsRegistry can not be null");
+        Preconditions.checkNotNull(clock, "Need a non-null Clock instance for latency tracking");
+
+        _metricsRegistry = metricsRegistry;
         _clock = clock;
         _collectionKeyToMetricsMap = new ConcurrentHashMap<>(DEFAULT_INITIAL_CAPACITY);
     }
@@ -30,6 +39,6 @@ public class MetricsFactory {
             key -> new ConcurrentHashMap<>(DEFAULT_INITIAL_CAPACITY));
 
         return operationMetricsMap.computeIfAbsent(operationName,
-            key -> new MetricsImpl(_clock, collectionKey, key));
+            operation -> new MetricsImpl(_metricsRegistry, _clock, collectionKey, operation));
     }
 }

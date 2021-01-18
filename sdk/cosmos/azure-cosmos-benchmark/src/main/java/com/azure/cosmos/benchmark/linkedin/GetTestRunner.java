@@ -21,6 +21,7 @@ import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
 import com.azure.cosmos.benchmark.linkedin.impl.models.Entity;
 import com.azure.cosmos.benchmark.linkedin.impl.models.GetRequestOptions;
 import com.azure.cosmos.benchmark.linkedin.impl.models.Result;
+import com.codahale.metrics.MetricRegistry;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
@@ -43,13 +44,18 @@ public class GetTestRunner {
     private final Configuration _configuration;
     private final Accessor<Key, JsonNode> _accessor;
 
-    GetTestRunner(final Configuration configuration, final CosmosAsyncClient client) {
+    GetTestRunner(final Configuration configuration,
+        final CosmosAsyncClient client,
+        final MetricRegistry metricsRegistry) {
         Preconditions.checkNotNull(configuration,
             "The Workload configuration defining the parameters can not be null");
-        Preconditions.checkNotNull(client, "Need a non-null client for "
-            + "setting up the Database and containers for the test");
+        Preconditions.checkNotNull(client,
+            "Need a non-null client for setting up the Database and containers for the test");
+        Preconditions.checkNotNull(metricsRegistry,
+            "The MetricsRegistry can not be null");
+
         _configuration = configuration;
-        _accessor = createAccessor(configuration, client);
+        _accessor = createAccessor(configuration, client, metricsRegistry);
     }
 
     public void run(Map<Key, ObjectNode> testData) {
@@ -97,7 +103,8 @@ public class GetTestRunner {
     }
 
     private Accessor<Key, JsonNode> createAccessor(final Configuration configuration,
-        final CosmosAsyncClient client) {
+        final CosmosAsyncClient client,
+        final MetricRegistry metricsRegistry) {
 
         final StaticDataLocator dataLocator = createDataLocator(configuration, client);
         final KeyExtractor<Key> keyExtractor = new KeyExtractorImpl();
@@ -106,7 +113,7 @@ public class GetTestRunner {
         return new CosmosDBDataAccessor<>(dataLocator,
             keyExtractor,
             new ResponseHandler<>(documentTransformer, keyExtractor),
-            new MetricsFactory(clock),
+            new MetricsFactory(metricsRegistry, clock),
             clock,
             new OperationsLogger(Duration.ofMillis(100)));
     }
