@@ -6,10 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.util.Beta;
-
-import java.io.IOException;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
