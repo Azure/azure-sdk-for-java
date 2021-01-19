@@ -3,6 +3,7 @@ trigger: none
 jobs:
     - template: spring-test-template.yml
       parameters:
+        TestName: LiveTestInAzureCloud
         ScenarioName: AzureCloud
 
         Artifacts:
