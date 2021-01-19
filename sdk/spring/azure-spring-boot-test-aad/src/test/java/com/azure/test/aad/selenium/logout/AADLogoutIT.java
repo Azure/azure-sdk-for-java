@@ -3,7 +3,12 @@
 
 package com.azure.test.aad.selenium.logout;
 
+import static com.azure.test.aad.selenium.AADSeleniumITHelper.createDefaultProperties;
+
 import com.azure.test.aad.selenium.AADSeleniumITHelper;
+import java.security.Principal;
+import java.util.Collections;
+import org.junit.After;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,17 +19,21 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-import java.util.Collections;
-
 public class AADLogoutIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADLogoutIT.class);
+    private AADSeleniumITHelper aadSeleniumITHelper;
 
     @Test
-    public void logoutTest() throws InterruptedException {
-        AADSeleniumITHelper aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, Collections.emptyMap());
+    public void logoutTest() {
+        aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, createDefaultProperties());
+        aadSeleniumITHelper.logIn();
         aadSeleniumITHelper.logoutTest();
+    }
+
+    @After
+    public void destroy() {
+        aadSeleniumITHelper.destroy();
     }
 
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)

@@ -150,7 +150,7 @@ public class AADB2CAutoConfiguration {
                 .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
                 .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))
                 .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow))
-                .userNameAttributeName("name")
+                .userNameAttributeName(properties.getUserNameAttributeName())
                 .clientName(userFlow)
                 .build();
         }
