@@ -58,6 +58,7 @@ public class WebSocketsProxyConnectionHandlerTest {
     @AfterEach
     public void teardown() {
         ProxySelector.setDefault(originalProxySelector);
+        Mockito.framework().clearInlineMocks();
     }
 
     @Test

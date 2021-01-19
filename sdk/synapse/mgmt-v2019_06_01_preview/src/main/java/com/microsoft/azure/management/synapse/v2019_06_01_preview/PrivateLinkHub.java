@@ -18,12 +18,18 @@ import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.SynapseManager;
+import java.util.List;
 import com.microsoft.azure.management.synapse.v2019_06_01_preview.implementation.PrivateLinkHubInner;
 
 /**
  * Type representing PrivateLinkHub.
  */
 public interface PrivateLinkHub extends HasInner<PrivateLinkHubInner>, Resource, GroupableResourceCore<SynapseManager, PrivateLinkHubInner>, HasResourceGroup, Refreshable<PrivateLinkHub>, Updatable<PrivateLinkHub.Update>, HasManager<SynapseManager> {
+    /**
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections();
+
     /**
      * @return the provisioningState value.
      */
@@ -52,22 +58,46 @@ public interface PrivateLinkHub extends HasInner<PrivateLinkHubInner>, Resource,
         }
 
         /**
+         * The stage of the privatelinkhub definition allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             * @param provisioningState PrivateLinkHub provisioning state
+             * @return the next definition stage
+             */
+            WithCreate withProvisioningState(String provisioningState);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<PrivateLinkHub>, Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<PrivateLinkHub>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithProvisioningState {
         }
     }
     /**
      * The template for a PrivateLinkHub update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<PrivateLinkHub>, Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<PrivateLinkHub>, Resource.UpdateWithTags<Update>, UpdateStages.WithProvisioningState {
     }
 
     /**
      * Grouping of PrivateLinkHub update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the privatelinkhub update allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             * @param provisioningState PrivateLinkHub provisioning state
+             * @return the next update stage
+             */
+            Update withProvisioningState(String provisioningState);
+        }
+
     }
 }

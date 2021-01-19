@@ -74,13 +74,14 @@ function Get-AssociatedArtifacts([MavenPackageDetail]$PackageDetail) {
 function Get-SonaTypeProfileID([string]$GroupID) {
   $sonaTypeProfileID = switch -wildcard ($GroupID)
   {
-    "com.azure*"                   { "88192f04117501" }
-    "com.microsoft"                { "108eda13eb3910" }
-    "com.microsoft.azure*"         { "534d15ee3800f4" }
-    "com.microsoft.rest*"          { "66eef5eb9b85bd" }
-    "com.microsoft.servicefabric*" { "8acff2e04dc15e" }
-    "com.microsoft.spring*"        { "615994e851c580" }
-    "com.microsoft.sqlserver*"     { "2bafd8aecdb240" }
+    "com.azure*"                     { "88192f04117501" }
+    "com.microsoft"                  { "108eda13eb3910" }
+    "com.microsoft.azure*"           { "534d15ee3800f4" }
+    "com.microsoft.commondatamodel*" { "36ba35bb1eff8"  }
+    "com.microsoft.rest*"            { "66eef5eb9b85bd" }
+    "com.microsoft.servicefabric*"   { "8acff2e04dc15e" }
+    "com.microsoft.spring*"          { "615994e851c580" }
+    "com.microsoft.sqlserver*"       { "2bafd8aecdb240" }
     default {
       throw "Profile ID for group ID $GroupID was not found."
     }

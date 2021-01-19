@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import java.net.MalformedURLException;
+import java.util.Map;
 
 /**
  * Configuration properties for Azure Active Directory B2C.
@@ -64,6 +65,13 @@ public class AADB2CProperties {
 
     @URL(message = "logout success should be valid URL")
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
+
+    private Map<String, Object> authenticateAdditionalParameters;
+
+    /**
+     * User name attribute name
+     */
+    private String userNameAttributeName;
 
     /**
      * The all user flows which is created under b2c tenant.
@@ -184,6 +192,14 @@ public class AADB2CProperties {
         this.logoutSuccessUrl = logoutSuccessUrl;
     }
 
+    public Map<String, Object> getAuthenticateAdditionalParameters() {
+        return authenticateAdditionalParameters;
+    }
+
+    public void setAuthenticateAdditionalParameters(Map<String, Object> authenticateAdditionalParameters) {
+        this.authenticateAdditionalParameters = authenticateAdditionalParameters;
+    }
+
     public UserFlows getUserFlows() {
         return userFlows;
     }
@@ -198,5 +214,13 @@ public class AADB2CProperties {
 
     public void setAllowTelemetry(boolean allowTelemetry) {
         this.allowTelemetry = allowTelemetry;
+    }
+
+    public String getUserNameAttributeName() {
+        return userNameAttributeName;
+    }
+
+    public void setUserNameAttributeName(String userNameAttributeName) {
+        this.userNameAttributeName = userNameAttributeName;
     }
 }

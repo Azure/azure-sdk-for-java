@@ -90,7 +90,8 @@ stages:
         TimeoutInMinutes: 90
         Matrix:
           Tcp_Integration_Tests_Java8:
-            OSVmImage: 'windows-2019'
+            Pool: azsdk-pool-mms-win-2019-general
+            OSVmImage: MMS2019
             JavaTestVersion: '1.8'
             ProfileFlag: '-Pemulator'
             DisplayName: 'Emulator only Integration Tests'
@@ -98,7 +99,8 @@ stages:
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
             AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
           Https_Integration_Tests_Java8:
-            OSVmImage: 'windows-2019'
+            Pool: azsdk-pool-mms-win-2019-general
+            OSVmImage: MMS2019
             JavaTestVersion: '1.8'
             ProfileFlag: '-Pemulator'
             DisplayName: 'Emulator only Integration Tests'
@@ -106,13 +108,15 @@ stages:
             DESIRED_CONSISTENCIES: '["Strong", "Session"]'
             AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
           Spring_Integration_Tests_Java8:
-            OSVmImage: 'windows-2019'
+            Pool: azsdk-pool-mms-win-2019-general
+            OSVmImage: MMS2019
             JavaTestVersion: '1.8'
             ProfileFlag: '-P integration-test-emulator'
             DisplayName: 'Spring Emulator only Integration Tests'
             AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/ -DACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DSECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DNEW_ACCOUNT_HOST=https://localhost:8081/ -DNEW_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DNEW_SECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="'
           Encryption_Integration_Tests_Java8:
-            OSVmImage: 'windows-2019'
+            Pool: azsdk-pool-mms-win-2019-general
+            OSVmImage: MMS2019
             JavaTestVersion: '1.8'
             ProfileFlag: '-Pencryption-integration'
             DisplayName: 'Encryption Emulator only Integration Tests'
@@ -129,7 +133,7 @@ stages:
         PreRunSteps:
         - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
           parameters:
-            StartParameters: '-EnableAadAuthentication -PartitionCount 50 -Consistency Strong -Timeout 600'
+            StartParameters: '-EnableAadAuthentication -PartitionCount 50 -Consistency Strong -Timeout 600 -EnablePreview'
         - powershell: |
             $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
             $password = ConvertTo-SecureString -String $Key -Force -AsPlainText

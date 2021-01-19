@@ -19,7 +19,7 @@ while protecting the identities of your customers at the same time.
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-    <version>3.0.0-beta.1</version>
+    <version>3.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"
@@ -48,7 +48,7 @@ while protecting the identities of your customers at the same time.
 
 3. Select **Keys** from your application, click **Generate key** to generate `${your-client-secret}` and then **Save**.
 
-4. Select **User flows** on your left, and then **Click** **New user flow **.
+4. Select **User flows** on your left, and then Click **New user flow**.
 
 5. Choose **Sign up or in**, **Profile editing** and **Password reset** to create user flows
 respectively. Specify your user flow **Name** and **User attributes and claims**, click **Create**.
@@ -58,6 +58,22 @@ In this documentation, you created a new Java web application using the Azure Ac
 configured a new Azure AD B2C tenant and registered a new application in it, and then configured your
 application to use the Spring annotations and classes to protect the web app.
 
+### Configurable properties
+This starter provides following properties to be customized:
+
+
+ | Parameter | Description |
+   |---|---|
+   | `azure.activedirectory.b2c.client-id` | The registered application ID in Azure AD B2C. |
+   | `azure.activedirectory.b2c.client-secret` | The client secret of a registered application. |
+   | `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |
+   | `azure.activedirectory.b2c.reply-url` | The reply URL of a registered application. It's the same as the **Redirect URI** configured on Azure Portal.|   
+   | `azure.activedirectory.b2c.tenant` | The Azure AD B2C's tenant name. |
+   | `azure.activedirectory.b2c.user-flows.signUpOrSignIn` | The name of the **sign up and sign in** user flow. |
+   | `azure.activedirectory.b2c.user-flows.profileEdit` | The name of the **profile editing** user flow. |
+   | `azure.activedirectory.b2c.user-flows.passwordReset` | The name of the **password reset** user flow. |
+   | `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|   
+   
 ## Examples
 ### Configure and compile your app
 
@@ -97,22 +113,16 @@ application to use the Spring annotations and classes to protect the web app.
          client-secret: ${your-client-secret}
          reply-url: ${your-reply-url-from-aad} # should be absolute url.
          logout-success-url: ${you-logout-success-url}
+         user-name-attribute-name: ${your-user-name-attribute-name}
          user-flows:
            sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
            profile-edit: ${your-profile-edit-user-flow}     # optional
            password-reset: ${your-password-reset-user-flow} # optional
+         authenticate-additional-parameters: 
+           prompt: [login,none,consent]   # optional
+           login_hint: xxxxxxxxx          # optional
+           domain_hint: xxxxxxxxx         # optional
    ```
-   Where:
-
-   | Parameter | Description |
-   |---|---|
-   | `azure.activedirectory.b2c.tenant` | Contains your AD B2C's `${your-tenant-name` from earlier. |
-   | `azure.activedirectory.b2c.client-id` | Contains the `${your-client-id}` from your application that you completed earlier. |
-   | `azure.activedirectory.b2c.client-secret` | Contains the `${your-client-secret}` from your application that you completed earlier. |
-   | `azure.activedirectory.b2c.reply-url` | Contains one of the **Reply URL** from your application that you completed earlier. |
-   | `azure.activedirectory.b2c.logout-success-url` | Specify the URL when your application logout successfully. |
-   | `azure.activedirectory.b2c.user-flows` | Contains the name of the user flows that you completed earlier.
-
 7. Save and close the *application.yml* file.
 
 8. Create a folder named *controller* in the Java source folder for your application.
@@ -234,7 +244,7 @@ Please follow [instructions here](https://github.com/Azure/azure-sdk-for-java/bl
 
 <!-- LINKS -->
 [docs]: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-boot-starter-java-app-with-azure-active-directory-b2c-oidc
-[refdocs]: https://azure.github.io/azure-sdk-for-java/spring.html#azure-active-directory-b2c-spring-boot-starter
+[refdocs]: https://azure.github.io/azure-sdk-for-java/springboot.html#azure-spring-boot
 [package]: https://mvnrepository.com/artifact/com.microsoft.azure/azure-active-directory-b2c-spring-boot-starter
 [sample]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK#use-logback-logging-framework-in-a-spring-boot-application

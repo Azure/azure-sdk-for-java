@@ -22,6 +22,7 @@ import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.ListSharesIncludeType;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareStorageException;
@@ -32,9 +33,11 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
@@ -217,12 +220,20 @@ public final class ShareServiceAsyncClient {
             nextMarker -> StorageImplUtils.applyOptionalTimeout(this.azureFileStorageClient.services()
                     .listSharesSegmentWithRestResponseAsync(
                         prefix, nextMarker, maxResultsPerPage, include, null, context), timeout)
-                .map(response -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    response.getValue().getShareItems(),
-                    response.getValue().getNextMarker(),
-                    response.getDeserializedHeaders()));
+                .map(response -> {
+                    List<ShareItem> value = response.getValue().getShareItems() == null
+                        ? Collections.emptyList()
+                        : response.getValue().getShareItems().stream()
+                        .map(ModelHelper::populateShareItem)
+                        .collect(Collectors.toList());
+
+                    return new PagedResponseBase<>(response.getRequest(),
+                        response.getStatusCode(),
+                        response.getHeaders(),
+                        value,
+                        response.getValue().getNextMarker(),
+                        response.getDeserializedHeaders());
+                });
         return new PagedFlux<>(() -> retriever.apply(marker), retriever);
     }
 
@@ -550,7 +561,7 @@ public final class ShareServiceAsyncClient {
 
     /**
      * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
-     * Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
      * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
      *
      * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
@@ -559,11 +570,29 @@ public final class ShareServiceAsyncClient {
      *
      * @param accountSasSignatureValues {@link AccountSasSignatureValues}
      *
-     * @return A {@code String} representing all SAS query parameters.
+     * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
+        return generateAccountSas(accountSasSignatureValues, Context.NONE);
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * <p>The snippet below generates a SAS that lasts for two days and gives the user read and list access to blob
+     * containers and file shares.</p>
+     * {@codesnippet com.azure.storage.file.share.ShareServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context}
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
         return new AccountSasImplUtil(accountSasSignatureValues)
-            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 
     /**

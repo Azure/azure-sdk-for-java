@@ -6,12 +6,11 @@ import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.http.rest.Response
-import com.azure.core.test.http.MockHttpResponse
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
-
+import com.azure.storage.common.Utility
 import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
@@ -2026,7 +2025,8 @@ class DirectoryAPITest extends APISpec {
         dc.getProperties()
 
         then:
-        thrown(DataLakeStorageException)
+        def ex = thrown(DataLakeStorageException)
+        ex.getMessage().contains("BlobNotFound")
     }
 
     def "Set HTTP headers null"() {
@@ -2897,5 +2897,136 @@ class DirectoryAPITest extends APISpec {
         then:
         notThrown(DataLakeStorageException)
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
+    }
+
+    def setupDirectoryForListing(DataLakeDirectoryClient client) {
+        // Create 3 subdirs
+        def foo = client.createSubdirectory("foo")
+        def bar = client.createSubdirectory("bar")
+        def baz = client.createSubdirectory("baz")
+
+        // Create subdirs for foo
+        foo.createSubdirectory("foo")
+        foo.createSubdirectory("bar")
+
+        // Creat subdirs for baz
+        baz.createSubdirectory("foo").createSubdirectory("bar")
+        baz.createSubdirectory("bar/foo")
+    }
+
+    def "List paths"() {
+        setup:
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        setupDirectoryForListing(dir)
+
+        when:
+        def response = dir.listPaths().iterator()
+
+        then:
+        response.next().getName() == dirName + "/bar"
+        response.next().getName() == dirName + "/baz"
+        response.next().getName() == dirName + "/foo"
+        !response.hasNext()
+    }
+
+    def "List paths recursive"() {
+        setup:
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        setupDirectoryForListing(dir)
+
+        when:
+        def response = dir.listPaths(true, false, null, null).iterator()
+
+        then:
+        response.next().getName() == dirName + "/bar"
+        response.next().getName() == dirName + "/baz"
+        response.next().getName() == dirName + "/baz/bar"
+        response.next().getName() == dirName + "/baz/bar/foo"
+        response.next().getName() == dirName + "/baz/foo"
+        response.next().getName() == dirName + "/baz/foo/bar"
+        response.next().getName() == dirName + "/foo"
+        response.next().getName() == dirName + "/foo/bar"
+        response.next().getName() == dirName + "/foo/foo"
+        !response.hasNext()
+    }
+
+    def "List paths upn"() {
+        setup:
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        setupDirectoryForListing(dir)
+
+        when:
+        def response = dir.listPaths(false, true, null, null).iterator()
+
+        then:
+        def first = response.next()
+        first.getName() == dirName + "/bar"
+        first.getGroup()
+        first.getOwner()
+        response.next().getName() == dirName + "/baz"
+        response.next().getName() == dirName + "/foo"
+        !response.hasNext()
+    }
+
+    def "List paths max results"() {
+        setup:
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+        dir.create()
+        setupDirectoryForListing(dir)
+
+        when:
+        def response = dir.listPaths(false, false, 2, null).iterableByPage().iterator().next()
+
+        then:
+        response.getValue().get(0).getName() == dirName + "/bar"
+        response.getValue().get(1).getName() == dirName + "/baz"
+        response.getValue().size() == 2
+    }
+
+    def "List paths error"() {
+        def dirName = generatePathName()
+        def dir = fsc.getDirectoryClient(dirName)
+
+        when:
+        def response = dir.listPaths().iterator()
+
+        then:
+        thrown(DataLakeStorageException)
+    }
+
+    @Unroll
+    def "Get file and subdirectory client"() {
+        setup:
+        def dirName = generatePathName()
+        def subPath = generatePathName()
+        dc = fsc.getDirectoryClient(resourcePrefix +  dirName)
+
+        when:
+        def fileClient = dc.getFileClient(subResourcePrefix + subPath)
+
+        then:
+        notThrown(IllegalArgumentException)
+        fileClient.getFilePath() == Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath
+
+        when:
+        def subDirectoryClient = dc.getSubdirectoryClient(subResourcePrefix + subPath)
+
+        then:
+        notThrown(IllegalArgumentException)
+        subDirectoryClient.getDirectoryPath() == Utility.urlDecode(resourcePrefix) + dirName + "/" + Utility.urlDecode(subResourcePrefix) + subPath
+
+        where:
+        resourcePrefix          | subResourcePrefix         || _
+        ""                      | ""                        || _
+        Utility.urlEncode("%")  | ""                        || _ // Resource has special character
+        ""                      | Utility.urlEncode("%")    || _ // Sub resource has special character
+        Utility.urlEncode("%")  | Utility.urlEncode("%")    || _
     }
 }

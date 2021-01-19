@@ -45,6 +45,9 @@ public final class ConnectionPolicy {
 
     private boolean tcpConnectionEndpointRediscoveryEnabled;
 
+
+    private boolean clientTelemetryEnabled;
+
     /**
      * Constructor.
      */
@@ -497,6 +500,14 @@ public final class ConnectionPolicy {
         return this;
     }
 
+    public boolean isClientTelemetryEnabled() {
+        return clientTelemetryEnabled;
+    }
+
+    public void setClientTelemetryEnabled(boolean clientTelemetryEnabled) {
+        this.clientTelemetryEnabled = clientTelemetryEnabled;
+    }
+
     @Override
     public String toString() {
         return "ConnectionPolicy{" +
@@ -518,6 +529,7 @@ public final class ConnectionPolicy {
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
             ", tcpConnectionEndpointRediscoveryEnabled=" + tcpConnectionEndpointRediscoveryEnabled +
+            ", clientTelemetryEnabled=" + clientTelemetryEnabled +
             '}';
     }
 }

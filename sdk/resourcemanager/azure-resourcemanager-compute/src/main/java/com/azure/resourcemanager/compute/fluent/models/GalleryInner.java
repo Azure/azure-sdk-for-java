@@ -12,6 +12,7 @@ import com.azure.resourcemanager.compute.models.GalleryIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryPropertiesProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Specifies information about the Shared Image Gallery that you want to create or update. */
 @JsonFlatten
@@ -85,6 +86,20 @@ public class GalleryInner extends Resource {
      */
     public GalleryPropertiesProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GalleryInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

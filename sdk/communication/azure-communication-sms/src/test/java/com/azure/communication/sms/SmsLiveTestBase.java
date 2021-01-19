@@ -24,13 +24,13 @@ public class SmsLiveTestBase extends TestBase {
         .get("SMS_SERVICE_PHONE_NUMBER", "+18005555555");
 
     static final String ACCESSKEY = Configuration.getGlobalConfiguration()
-        .get("SMS_SERVICE_ACCESS_KEY", DEFAULT_ACCESS_KEY);
+        .get("COMMUNICATION_SERVICE_ACCESS_KEY", DEFAULT_ACCESS_KEY);
 
     static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("SMS_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
+        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
 
     static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
+        .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
 
     protected SmsClientBuilder getSmsClientBuilder(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
@@ -86,5 +86,9 @@ public class SmsLiveTestBase extends TestBase {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
             return TestMode.PLAYBACK;
         }
-    }    
+    }
+    
+    protected SmsClientBuilder addLoggingPolicy(SmsClientBuilder builder, String testName) {
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
 }

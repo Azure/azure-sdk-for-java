@@ -6,6 +6,7 @@ package com.azure.core.implementation.http;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,14 +28,10 @@ public final class BufferedHttpResponse extends HttpResponse {
     public BufferedHttpResponse(HttpResponse innerHttpResponse) {
         super(innerHttpResponse.getRequest());
         this.innerHttpResponse = innerHttpResponse;
-        this.cachedBody = innerHttpResponse.getBody()
-            .map(buffer -> {
-                ByteBuffer cachedBuffer = ByteBuffer.allocate(buffer.remaining());
-                cachedBuffer.put(buffer);
-                cachedBuffer.rewind();
-
-                return cachedBuffer;
-            }).cache()
+        this.cachedBody = FluxUtil.collectBytesInByteBufferStream(innerHttpResponse.getBody())
+            .map(ByteBuffer::wrap)
+            .flux()
+            .cache()
             .map(ByteBuffer::duplicate);
     }
 
@@ -71,8 +68,7 @@ public final class BufferedHttpResponse extends HttpResponse {
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return getBodyAsByteArray()
-                .map(bytes -> bytes == null ? null : new String(bytes, charset));
+        return getBodyAsByteArray().map(bytes -> new String(bytes, charset));
     }
 
     @Override

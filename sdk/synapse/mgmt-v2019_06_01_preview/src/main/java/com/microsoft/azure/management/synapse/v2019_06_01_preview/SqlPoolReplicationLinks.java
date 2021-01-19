@@ -17,6 +17,19 @@ import com.microsoft.azure.arm.model.HasInner;
  */
 public interface SqlPoolReplicationLinks extends HasInner<SqlPoolReplicationLinksInner> {
     /**
+     * Get SQL pool replication link by name.
+     * Get SQL pool replication link by name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace
+     * @param sqlPoolName SQL pool name
+     * @param linkId The ID of the replication link.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ReplicationLink> getByNameAsync(String resourceGroupName, String workspaceName, String sqlPoolName, String linkId);
+
+    /**
      * Get SQL pool replication links.
      * Lists a Sql pool's replication links.
      *

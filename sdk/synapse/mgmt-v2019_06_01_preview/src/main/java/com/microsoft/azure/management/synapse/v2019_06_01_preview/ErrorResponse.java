@@ -12,7 +12,10 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The resource management error response.
+ * Error Response.
+ * Common error response for all Azure Resource Manager APIs to return error
+ * details for failed operations. (This also follows the OData error response
+ * format.).
  */
 public class ErrorResponse {
     /**

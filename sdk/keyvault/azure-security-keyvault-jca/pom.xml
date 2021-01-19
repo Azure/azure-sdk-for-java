@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
     <build>
@@ -47,6 +47,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <createSourcesJar>false</createSourcesJar>
                             <relocations>
                                 <relocation>
                                     <pattern>com.fasterxml.jackson</pattern>
@@ -72,7 +73,6 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
-                            <createSourcesJar>true</createSourcesJar>
                         </configuration>
                     </execution>
                 </executions>
@@ -180,9 +180,9 @@
               To run the integration tests pass in the following system properties
 
               - azure.keyvault.uri    - the Azure Key Vault URI
-              - azure.tenant.id       - your tenant ID
-              - azure.client.id       - the (application) client ID
-              - azure.client.secret   - the (application) client secret
+              - azure.keyvault.tenant-id       - your tenant ID
+              - azure.keyvault.client-id       - the (application) client ID
+              - azure.keyvault.client-secret   - the (application) client secret
 
             -->
             <activation>
@@ -200,9 +200,9 @@
                             <skip>false</skip>
                             <systemPropertyVariables>
                                 <azure.keyvault.uri>${azure.keyvault.uri}</azure.keyvault.uri>
-                                <azure.tenant.id>${azure.tenant.id}</azure.tenant.id>
-                                <azure.client.id>${azure.client.id}</azure.client.id>
-                                <azure.client.secret>${azure.client.secret}</azure.client.secret>
+                                <azure.keyvault.tenant-id>${azure.keyvault.tenant-id}</azure.keyvault.tenant-id>
+                                <azure.keyvault.client-id>${azure.keyvault.client-id}</azure.keyvault.client-id>
+                                <azure.keyvault.client-secret>${azure.keyvault.client-secret}</azure.keyvault.client-secret>
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>

@@ -7,7 +7,7 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TrainSourceFilter model. */
+/** Filter to apply to the documents in the source path for training. */
 @Fluent
 public final class TrainSourceFilter {
     /*

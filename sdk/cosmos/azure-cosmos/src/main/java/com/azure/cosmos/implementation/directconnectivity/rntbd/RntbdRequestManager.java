@@ -759,6 +759,9 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
             // ..Create CosmosException based on status and sub-status codes
 
+            final String resourceAddress = requestRecord.args().physicalAddress() != null ?
+                requestRecord.args().physicalAddress().toString() : null;
+
             switch (status.code()) {
 
                 case StatusCodes.BADREQUEST:
@@ -825,9 +828,6 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
 
                 case StatusCodes.REQUEST_TIMEOUT:
                     Exception inner = new RequestTimeoutException(error, lsn, partitionKeyRangeId, responseHeaders);
-                    String resourceAddress = requestRecord.args().physicalAddress() != null ?
-                        requestRecord.args().physicalAddress().toString() : null;
-
                     cause = new GoneException(resourceAddress, error, lsn, partitionKeyRangeId, responseHeaders, inner);
                     break;
 
@@ -848,9 +848,10 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                     break;
 
                 default:
-                    cause = BridgeInternal.createCosmosException(status.code(), error, responseHeaders);
+                    cause = BridgeInternal.createCosmosException(resourceAddress, status.code(), error, responseHeaders);
                     break;
             }
+            BridgeInternal.setResourceAddress(cause, resourceAddress);
 
             requestRecord.completeExceptionally(cause);
         }

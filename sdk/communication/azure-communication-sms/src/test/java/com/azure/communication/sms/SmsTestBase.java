@@ -3,7 +3,7 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumber;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.core.http.HttpHeaders;
@@ -41,17 +41,17 @@ public class SmsTestBase {
         mapper = new ObjectMapper();
     }
 
-    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumber from, List<PhoneNumber> to, String body) {
+    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body) {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(false);
         return getTestSmsClientBuilder(from, to, body, smsOptions, null);
     }
 
-    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumber from, List<PhoneNumber> to, String body, SendSmsOptions smsOptions) {
+    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, SendSmsOptions smsOptions) {
         return getTestSmsClientBuilder(from, to, body, smsOptions, null);
     }
 
-    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumber from, List<PhoneNumber> to, String body, SendSmsOptions smsOptions, HttpPipelinePolicy policy) {
+    public SmsClientBuilder getTestSmsClientBuilder(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, SendSmsOptions smsOptions, HttpPipelinePolicy policy) {
 
         HttpClient httpClient = getHttpClient(from, to, body, smsOptions);
 
@@ -67,7 +67,7 @@ public class SmsTestBase {
         return builder;
     }
 
-    public HttpClient getHttpClient(PhoneNumber from, List<PhoneNumber> to, String body, SendSmsOptions smsOptions) {
+    public HttpClient getHttpClient(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, SendSmsOptions smsOptions) {
         return new HttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
