@@ -32,10 +32,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+/**
+ * The test implementation for GETs/pointed lookups against CosmosDB. It takes in
+ * the testData and submits upto N get operations at a time, leveraging the ExecutorService
+ * for the parallelism control.
+ *
+ * The Latency tracking and reposting is handled within the Accessor, and not in this method.
+ *
+ * TODO: Change how testData is stored. For the 10M document scenario, we should not hold it all in memory
+ */
 public class GetTestRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GetTestRunner.class);
@@ -43,6 +56,7 @@ public class GetTestRunner {
 
     private final Configuration _configuration;
     private final Accessor<Key, JsonNode> _accessor;
+    private final ExecutorService _executorService;
 
     GetTestRunner(final Configuration configuration,
         final CosmosAsyncClient client,
@@ -56,33 +70,45 @@ public class GetTestRunner {
 
         _configuration = configuration;
         _accessor = createAccessor(configuration, client, metricsRegistry);
+        _executorService = Executors.newFixedThreadPool(_configuration.getConcurrency());
     }
 
     public void run(Map<Key, ObjectNode> testData) {
         final ArrayList<Key> keys = new ArrayList<>(testData.keySet());
         Collections.shuffle(keys);
         final long runStartTime = System.currentTimeMillis();
-        long errorCount = 0;
+        final AtomicLong errorCount = new AtomicLong(0);
         long i = 0;
         for (; BenchmarkHelper.shouldContinue(runStartTime, i, _configuration); i++) {
             int index = (int) ((i % keys.size()) % Integer.MAX_VALUE);
             final Key key = keys.get(index);
-            try {
-                final Result<Key, JsonNode> result = _accessor.get(key, GetRequestOptions.EMPTY_REQUEST_OPTIONS);
-                if (VALIDATE_RESULTS && !expectedResponse(testData.get(key), result)) {
-                    LOGGER.info("Result mismatch for Key {}; Actual value: {}, Expected: {}",
-                        key, result.getResult(),testData.get(key));
-                    errorCount++;
-                }
-            } catch (AccessorException e) {
-                errorCount++;
-            }
+            _executorService.submit(() -> runOperation(key, testData, errorCount));
+        }
+
+        try {
+            _executorService.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            LOGGER.error("Error awaiting the completion of all tasks", e);
         }
 
         final Instant runEndTime = Instant.now();
         LOGGER.info("Number of iterations: {}, Errors: {}, Runtime: {} millis", i,
-            errorCount,
+            errorCount.get(),
             runEndTime.minusMillis(runStartTime).toEpochMilli());
+        _executorService.shutdown();
+    }
+
+    private void runOperation(final Key key, final Map<Key, ObjectNode> testData, final AtomicLong errorCount) {
+        try {
+            final Result<Key, JsonNode> result = _accessor.get(key, GetRequestOptions.EMPTY_REQUEST_OPTIONS);
+            if (VALIDATE_RESULTS && !expectedResponse(testData.get(key), result)) {
+                LOGGER.info("Result mismatch for Key {}; Actual value: {}, Expected: {}", key, result.getResult(),
+                    testData.get(key));
+                errorCount.getAndIncrement();
+            }
+        } catch (AccessorException e) {
+            errorCount.getAndIncrement();
+        }
     }
 
     private boolean expectedResponse(final ObjectNode expectedResult, final Result<Key, JsonNode> result) {
