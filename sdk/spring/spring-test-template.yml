@@ -1,10 +1,14 @@
+parameters:
+  EnvVars: {}
+  TestName: ''
+
 jobs:
     - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
       parameters:
         TimeoutInMinutes: 240
         ServiceDirectory: spring
-        EnvVars: {}
-        TestName: ''
+        EnvVars: ${{parameters.EnvVars}}
+        TestName: ${{parameters.TestName}}
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
