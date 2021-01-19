@@ -34,7 +34,7 @@ SMS messaging uses HMAC authentication with resource access key. The access key 
 via the accessKey() function. Endpoint and httpClient must also be set via the endpoint() and httpClient()
 functions respectively.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L23-L39 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L25-L41 -->
 ```java
 // Your can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
@@ -56,8 +56,11 @@ SmsClient smsClient = smsClientBuilder.buildClient();
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L64-L70 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L69-L78 -->
 ```java
+// Create an HttpClient builder of your choice and customize it
+HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
 // Your can find your connection string from your resource in the Azure Portal
 String connectionString = "<connection_string>";
 
@@ -75,25 +78,30 @@ Use the `sendMessage` function to send a new message to a list of phone numbers.
 Once you send the message, you'll receive a response where you can access several
 properties such as the message id with the `response.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L41-L57 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L43-L64 -->
 ```java
-// Currently Sms services only supports one phone number
-List<PhoneNumber> to = new ArrayList<PhoneNumber>();
-to.add(new PhoneNumber("<to-phone-number>"));
 
-// SendSmsOptions is an optional field. It can be used
-// to enable a delivery report to the Azure Event Grid
-SendSmsOptions options = new SendSmsOptions();
-options.setEnableDeliveryReport(true);
 
-// Send the message and check the response for a message id
-SendSmsResponse response = smsClient.sendMessage(
-    new PhoneNumber("<leased-phone-number>"), 
-    to, 
-    "your message",
-    options /* Optional */);
 
-System.out.println("MessageId: " + response.getMessageId());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ```
 
 ## Contributing

@@ -40,7 +40,7 @@ public class ReadmeSamples {
         // Build a new SmsClient
         SmsClient smsClient = smsClientBuilder.buildClient();
 
-        // Currently Sms services only supports one phone number
+
         List<PhoneNumber> to = new ArrayList<PhoneNumber>();
         to.add(new PhoneNumber("<to-phone-number>"));
 
