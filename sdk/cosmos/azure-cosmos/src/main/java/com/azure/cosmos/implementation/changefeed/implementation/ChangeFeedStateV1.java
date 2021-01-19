@@ -95,10 +95,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         return this.containerRid;
     }
 
-    @Override
-    public void populateEffectiveRangeAndStartFromSettingsToRequest(
-        RxDocumentServiceRequest request
-    ) {
+    private void populateEffectiveRangeAndStartFromSettingsToRequest(RxDocumentServiceRequest request) {
         final ChangeFeedStartFromInternal effectiveStartFrom;
         final CompositeContinuationToken continuationToken;
         if (this.continuation != null) {
@@ -117,9 +114,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
                 new FeedRangeEpkImpl(continuationToken.getRange()));
         }
 
-        effectiveStartFrom.populateRequest(
-            PopulateStartFromRequestOptionVisitorImpl.SINGLETON,
-            request);
+        effectiveStartFrom.populateRequest(request);
     }
 
     @Override

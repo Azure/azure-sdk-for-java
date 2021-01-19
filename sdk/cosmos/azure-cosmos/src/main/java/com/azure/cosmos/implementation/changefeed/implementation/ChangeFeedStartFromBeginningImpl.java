@@ -23,10 +23,8 @@ class ChangeFeedStartFromBeginningImpl extends ChangeFeedStartFromInternal {
     }
 
     @Override
-    public void populateRequest(ChangeFeedStartFromVisitor visitor,
-                                RxDocumentServiceRequest request) {
-
-        visitor.visit(this, request);
+    public void populateRequest(RxDocumentServiceRequest request) {
+        // We don't need to set any headers to start from the beginning
     }
 
     @Override

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 
@@ -61,10 +62,15 @@ class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInterna
     }
 
     @Override
-    public void populateRequest(ChangeFeedStartFromVisitor visitor,
-                                RxDocumentServiceRequest request) {
+    public void populateRequest(RxDocumentServiceRequest request) {
+        checkNotNull(request, "Argument 'request' must not be null.");
 
-        visitor.visit(this, request);
+        if (this.eTag != null) {
+            // On REST level, change feed is using IfNoneMatch/ETag instead of continuation
+            request.getHeaders().put(
+                HttpConstants.HttpHeaders.IF_NONE_MATCH,
+                this.eTag);
+        }
     }
 
     @Override

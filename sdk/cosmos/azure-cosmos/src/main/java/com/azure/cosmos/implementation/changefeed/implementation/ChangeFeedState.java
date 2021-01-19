@@ -48,8 +48,6 @@ public abstract class ChangeFeedState extends JsonSerializable {
         }
     }
 
-    public abstract void populateEffectiveRangeAndStartFromSettingsToRequest(RxDocumentServiceRequest request);
-
     @Override
     public void populatePropertyBag() {
         super.populatePropertyBag();

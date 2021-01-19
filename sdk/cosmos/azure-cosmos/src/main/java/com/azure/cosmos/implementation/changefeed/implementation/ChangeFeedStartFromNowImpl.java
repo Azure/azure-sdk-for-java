@@ -3,9 +3,11 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
     public ChangeFeedStartFromNowImpl() {
@@ -28,9 +30,11 @@ class ChangeFeedStartFromNowImpl extends ChangeFeedStartFromInternal {
     }
 
     @Override
-    public void populateRequest(ChangeFeedStartFromVisitor visitor,
-                                RxDocumentServiceRequest request) {
+    public void populateRequest(RxDocumentServiceRequest request) {
+        checkNotNull(request, "Argument 'request' must not be null.");
 
-        visitor.visit(this, request);
+        request.getHeaders().put(
+            HttpConstants.HttpHeaders.IF_NONE_MATCH,
+            HttpConstants.HeaderValues.IF_NONE_MATCH_ALL);
     }
 }

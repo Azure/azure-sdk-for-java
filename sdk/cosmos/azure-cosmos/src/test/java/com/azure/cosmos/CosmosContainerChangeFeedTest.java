@@ -22,6 +22,7 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -45,6 +46,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertThrows;
@@ -543,20 +545,13 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             .createForProcessingFromBeginning(FeedRange.forFullRange());
 
         AtomicReference<String> continuation = new AtomicReference<>();
-        List<ObjectNode> results = new ArrayList<>();
-        while (true) {
-            FeedResponse<ObjectNode> response =
-                createdContainer.queryChangeFeed(options, ObjectNode.class);
-
-            options = CosmosChangeFeedRequestOptions
-                .createForProcessingFromContinuation(response.getContinuationToken());
-
-            if (response.getResults().size() == 0) {
-                break;
-            }
-
-            results.addAll(response.getResults());
-        }
+        List<ObjectNode> results = createdContainer
+                    .queryChangeFeed(options, ObjectNode.class)
+                    // NOTE - in real app you would need delaying persisting the
+                    // continuation until you retrieve the next one
+                    .handle((r) -> continuation.set(r.getContinuationToken()))
+                    .stream()
+                    .collect(Collectors.toList());
 
         assertThat(results)
             .isNotNull()
@@ -566,20 +561,15 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         // applying updates
         updateAction.run();
 
-        results.clear();
-        while (true) {
-            FeedResponse<ObjectNode> response =
-                createdContainer.queryChangeFeed(options, ObjectNode.class);
-
-            options = CosmosChangeFeedRequestOptions
-                .createForProcessingFromContinuation(response.getContinuationToken());
-
-            if (response.getResults().size() == 0) {
-                break;
-            }
-
-            results.addAll(response.getResults());
-        }
+        options = CosmosChangeFeedRequestOptions
+            .createForProcessingFromContinuation(continuation.get());
+        results = createdContainer
+            .queryChangeFeed(options, ObjectNode.class)
+            // NOTE - in real app you would need delaying persisting the
+            // continuation until you retrieve the next one
+            .handle((r) -> continuation.set(r.getContinuationToken()))
+            .stream()
+            .collect(Collectors.toList());
 
         assertThat(results)
             .isNotNull()
@@ -725,6 +715,8 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 final Integer index = i;
                 results = createdAsyncContainer
                     .queryChangeFeed(effectiveOptions, ObjectNode.class)
+                    // NOTE - in real app you would need delaying persisting the
+                    // continuation until you retrieve the next one
                     .handle((r) -> continuations.put(index, r.getContinuationToken()))
                     .collectList()
                     .block();

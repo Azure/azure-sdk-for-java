@@ -371,7 +371,9 @@ public class CosmosContainer {
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one feed response page
      */
-    public <T> FeedResponse<T> queryChangeFeed(
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> CosmosPagedIterable<T> queryChangeFeed(
         CosmosChangeFeedRequestOptions options,
         Class<T> classType) {
 
@@ -379,10 +381,9 @@ public class CosmosContainer {
 
         options.setMaxPrefetchPageCount(1);
 
-        return this.blockFirstFeedResponse(
+        return getCosmosPagedIterable(
             this.asyncContainer
-                .queryChangeFeed(options, classType)
-                .byPage());
+                .queryChangeFeed(options, classType));
     }
 
     /**

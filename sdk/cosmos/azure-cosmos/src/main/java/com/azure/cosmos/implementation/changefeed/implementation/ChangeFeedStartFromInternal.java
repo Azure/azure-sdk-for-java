@@ -9,6 +9,10 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import java.time.Instant;
 
 public abstract class ChangeFeedStartFromInternal extends JsonSerializable {
+    protected static final long START_FROM_BEGINNING_EPOCH_SECONDS = -62135596800L;
+    protected static final Instant START_FROM_BEGINNING_TIME =
+        Instant.ofEpochSecond(START_FROM_BEGINNING_EPOCH_SECONDS);
+
     ChangeFeedStartFromInternal() {
     }
 
@@ -43,9 +47,7 @@ public abstract class ChangeFeedStartFromInternal extends JsonSerializable {
 
     public abstract boolean supportsFullFidelityRetention();
 
-    public abstract void populateRequest(
-        ChangeFeedStartFromVisitor visitor,
-        RxDocumentServiceRequest request);
+    public abstract void populateRequest(RxDocumentServiceRequest request);
 
     private static final class InstanceHolder {
         static final ChangeFeedStartFromBeginningImpl FROM_BEGINNING_SINGLETON =
