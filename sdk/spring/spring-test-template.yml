@@ -1,4 +1,5 @@
 parameters:
+  OSVmImage: $(OSVmImage)
   EnvVars: {}
   TestName: ''
   Artifacts: []
@@ -8,12 +9,23 @@ jobs:
       parameters:
         TimeoutInMinutes: 240
         ServiceDirectory: spring
-        EnvVars: ${{parameters.EnvVars}}
-        TestName: ${{parameters.TestName}}
-        Artifact: ${{parameters.Artifacts}}
+        EnvVars: ${{ parameters.EnvVars }}
+        TestName: ${{ parameters.TestName }}
+        Artifact: ${{ parameters.Artifacts }}
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
+
+        PreRunSteps:
+          - task: PythonScript@0
+            displayName: Log of critical variables
+            inputs:
+              scriptSource: inline
+              script: |
+                os_parameter = "${{ parameters.OSVmImage }}".lower()
+                print("Job requested to run on OS: %s" % (os_parameter))
+                artifact_list = "${{ parameters.Artifacts }}"
+                print("The artifact list: ", artifact_list)
 
         PostRunSteps:
           - script: |
