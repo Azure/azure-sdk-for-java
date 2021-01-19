@@ -22,11 +22,12 @@ public class SeleniumITHelper {
     protected AppRunner app;
     protected WebDriver driver;
     protected WebDriverWait wait;
-    private final static String uuid = UUID.randomUUID().toString();
+    private final static String tempDirPath =
+        System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString();
 
     static {
         initChromeDriver();
-        registerShutdownHookChromeDriverFile();
+        deleteChromeDriverFile();
     }
 
     public SeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
@@ -35,7 +36,6 @@ public class SeleniumITHelper {
     }
 
     private static void initChromeDriver() {
-        final String strTmpPath = System.getProperty("java.io.tmpdir");
         final String chromedriverLinux = "chromedriver_linux64";
         final String chromedriverWin32 = "chromedriver_win32.exe";
         final String chromedriverMac = "chromedriver_mac64";
@@ -44,15 +44,15 @@ public class SeleniumITHelper {
         File dir;
         try {
             if (Pattern.matches("linux.*", osName)) {
-                dir = copyChromeDriverFile(strTmpPath, chromedriverLinux);
+                dir = copyChromeDriverFile(chromedriverLinux);
                 process = Runtime.getRuntime().exec("chmod +x " + chromedriverLinux, null, dir.getParentFile());
                 process.waitFor();
                 System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, dir.getPath());
             } else if (Pattern.matches("windows.*", osName)) {
-                dir = copyChromeDriverFile(strTmpPath, chromedriverWin32);
+                dir = copyChromeDriverFile(chromedriverWin32);
                 System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, dir.getPath());
             } else if (Pattern.matches("mac.*", osName)) {
-                dir = copyChromeDriverFile(strTmpPath, chromedriverMac);
+                dir = copyChromeDriverFile(chromedriverMac);
                 process = Runtime.getRuntime().exec("chmod +x " + chromedriverMac, null, dir.getParentFile());
                 process.waitFor();
                 System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, dir.getPath());
@@ -84,18 +84,17 @@ public class SeleniumITHelper {
         app.start();
     }
 
-    private static File copyChromeDriverFile(String strTmpPath, String chromeDriverName)
+    private static File copyChromeDriverFile(String chromeDriverName)
         throws IOException {
         InputStream resourceAsStream = SeleniumITHelper.class.getClassLoader()
             .getResourceAsStream("driver/" + chromeDriverName);
-        File dest = new File(strTmpPath + File.separator + uuid + File.separator + chromeDriverName);
+        File dest = new File(tempDirPath + File.separator + chromeDriverName);
         FileUtils.copyInputStreamToFile(resourceAsStream, dest);
         return dest;
     }
 
-    private static void registerShutdownHookChromeDriverFile() {
-        String strTmpPath = System.getProperty("java.io.tmpdir");
-        File targetFile = new File(strTmpPath + File.separator + uuid);
+    private static void deleteChromeDriverFile() {
+        File targetFile = new File(tempDirPath);
         try {
             FileUtils.forceDeleteOnExit(targetFile);
         } catch (IOException e) {
