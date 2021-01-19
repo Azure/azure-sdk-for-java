@@ -3,8 +3,6 @@
 
 package com.azure.analytics.synapse.spark;
 
-import com.azure.analytics.synapse.spark.models.SparkBatchJob;
-import com.azure.analytics.synapse.spark.models.SparkBatchJobOptions;
 import com.azure.analytics.synapse.spark.models.SparkSession;
 import com.azure.analytics.synapse.spark.models.SparkSessionOptions;
 import com.azure.analytics.synapse.spark.models.SparkStatement;
@@ -12,8 +10,6 @@ import com.azure.analytics.synapse.spark.models.SparkStatementCollection;
 import com.azure.analytics.synapse.spark.models.SparkStatementLanguageType;
 import com.azure.analytics.synapse.spark.models.SparkStatementOptions;
 import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

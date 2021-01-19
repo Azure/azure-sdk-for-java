@@ -3,8 +3,6 @@
 
 package com.azure.analytics.synapse.spark;
 
-import com.azure.analytics.synapse.spark.models.SparkBatchJob;
-import com.azure.analytics.synapse.spark.models.SparkBatchJobCollection;
 import com.azure.analytics.synapse.spark.models.SparkSession;
 import com.azure.analytics.synapse.spark.models.SparkSessionCollection;
 import com.azure.analytics.synapse.spark.models.SparkSessionOptions;
@@ -21,7 +19,6 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SparkSessionAsyncClientTest extends SparkClientTestBase {
 
