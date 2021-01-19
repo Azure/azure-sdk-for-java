@@ -28,6 +28,7 @@ class CommunicationIdentifierSerializer {
             return new MicrosoftTeamsUserIdentifier(identifier.getMicrosoftTeamsUserId(), identifier.isAnonymous());
         }
 
+        Objects.requireNonNull(id);
         return new UnknownIdentifier(id);
     }
 
@@ -46,12 +47,12 @@ class CommunicationIdentifierSerializer {
         if (identifier.getClass().equals(PhoneNumberIdentifier.class))
             return new CommunicationIdentifierModel()
                 .setKind(CommunicationIdentifierKind.PHONE_NUMBER)
-                .setId(((PhoneNumberIdentifier)identifier).getValue());
+                .setPhoneNumber(((PhoneNumberIdentifier)identifier).getValue());
 
         if (identifier.getClass().equals(MicrosoftTeamsUserIdentifier.class))
             return new CommunicationIdentifierModel()
                 .setKind(CommunicationIdentifierKind.MICROSOFT_TEAMS_USER)
-                .setId(((MicrosoftTeamsUserIdentifier)identifier).getUserId())
+                .setMicrosoftTeamsUserId(((MicrosoftTeamsUserIdentifier)identifier).getUserId())
                 .setIsAnonymous(((MicrosoftTeamsUserIdentifier)identifier).isAnonymous());
 
         return new CommunicationIdentifierModel()
