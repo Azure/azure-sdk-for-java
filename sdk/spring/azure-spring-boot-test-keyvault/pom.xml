@@ -16,7 +16,7 @@
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-keyvault;current} -->
 
   <properties>
-    <skipSpringITsForWebFlux>false</skipSpringITsForWebFlux>
+    <skipSpringWebFluxTests>false</skipSpringWebFluxTests>
   </properties>
 
   <dependencies>
