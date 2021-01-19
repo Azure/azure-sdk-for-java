@@ -8,6 +8,8 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.time.Duration;
+
 /**
  * Represents the change feed policy configuration for the container in the Azure Cosmos DB service.
  *
@@ -59,25 +61,28 @@ public final class ChangeFeedPolicy {
     /**
      * Creates a ChangeFeedPolicy with retention duration for full fidelity processing
      * <p>
-     * @param retentionDurationInMinutes - the retention duration in minutes in which it will be
-     *                                     possible to process change feed events with full fidelity
-     *                                     mode (meaning intermediary changes and deletes
-     *                                     will be exposed in change feed).
+     * @param retentionDuration  - the retention duration (max granularity in minutes) in which it
+     *                             will be possible to process change feed events with full fidelity
+     *                             mode (meaning intermediary changes and deletes
+     *                             will be exposed in change feed).
      *
      * @return ChangeFeedPolicy for full fidelity change feed.
      */
     @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public static ChangeFeedPolicy createFullFidelityPolicy(int retentionDurationInMinutes) {
+    public static ChangeFeedPolicy createFullFidelityPolicy(Duration retentionDuration) {
 
-        if (retentionDurationInMinutes <= 0) {
+        if (retentionDuration.isNegative() ||
+            retentionDuration.isZero() ||
+            retentionDuration.getNano() != 0 ||
+            retentionDuration.getSeconds() % 60 != 0) {
             throw new IllegalArgumentException(
-                "Argument retentionDurationInMinutes must be a positive integer value."
+                "Argument retentionDuration must be a duration of a positive number of minutes."
             );
         }
 
         ChangeFeedPolicy policy = new ChangeFeedPolicy();
-        policy.setFullFidelityRetentionDurationInMinutes(retentionDurationInMinutes);
+        policy.setFullFidelityRetentionDurationInMinutes((int)(retentionDuration.getSeconds() / 60));
         return policy;
     }
 
@@ -125,6 +130,20 @@ public final class ChangeFeedPolicy {
     }
 
     /**
+     * Gets the retention duration in which it will be possible to
+     * process change feed events with full fidelity mode (meaning intermediary changes and deletes
+     * will be exposed in change feed).
+     * By default full fidelity change feed is not enabled - so the retention duration would be Duration.ZERO.
+     *
+     * @return full fidelity retention duration.
+     */
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
+        warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Duration getFullFidelityRetentionDuration() {
+        return Duration.ofMinutes(this.getFullFidelityRetentionDurationInMinutes());
+    }
+
+    /**
      * Gets the retention duration in minutes in which it will be possible to
      * process change feed events with full fidelity mode (meaning intermediary changes and deletes
      * will be exposed in change feed).
@@ -132,9 +151,7 @@ public final class ChangeFeedPolicy {
      *
      * @return full fidelity retention duration in minutes.
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
-        warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public int getFullFidelityRetentionDurationInMinutes() {
+    int getFullFidelityRetentionDurationInMinutes() {
 
         Integer intValue = this.jsonSerializable.getInt(Constants.Properties.LOG_RETENTION_DURATION);
 

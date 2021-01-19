@@ -35,6 +35,7 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -408,7 +409,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromNow_fullFidelity_forFullRange() throws Exception {
         this.createContainer(
-            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(10))
+            (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(10)))
         );
         insertDocuments(8, 15);
         updateDocuments(3, 5);
