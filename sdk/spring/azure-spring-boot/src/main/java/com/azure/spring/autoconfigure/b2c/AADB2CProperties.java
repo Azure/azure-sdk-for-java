@@ -114,6 +114,32 @@ public class AADB2CProperties {
          */
         private String passwordReset;
 
+        /**
+         * The sign-up user flow which is created under b2c tenant.
+         */
+        private String signUp;
+
+        /**
+         * The sign-in user flow which is created under b2c tenant.
+         */
+        private String signIn;
+
+        public String getSignUp() {
+            return signUp;
+        }
+
+        public void setSignUp(String signUp) {
+            this.signUp = signUp;
+        }
+
+        public String getSignIn() {
+            return signIn;
+        }
+
+        public void setSignIn(String signIn) {
+            this.signIn = signIn;
+        }
+
         public String getSignUpOrSignIn() {
             return signUpOrSignIn;
         }

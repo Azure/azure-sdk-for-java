@@ -51,6 +51,8 @@ azure:
         sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
         profile-edit: ${your-profile-edit-user-flow}      # optional
         password-reset: ${your-password-reset-user-flow}  # optional
+        signin: ${your-sign-in-user-flow} # optional  
+        signup: ${your-sign-up-user-flow} # optional
 ```
 
 #### Templates greeting.html and home.html
