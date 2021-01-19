@@ -11,7 +11,6 @@ jobs:
         ServiceDirectory: spring
         EnvVars: ${{ parameters.EnvVars }}
         TestName: ${{ parameters.TestName }}
-        Artifact: ${{ parameters.Artifacts }}
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
