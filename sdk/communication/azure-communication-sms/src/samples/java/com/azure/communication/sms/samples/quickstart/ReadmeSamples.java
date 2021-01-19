@@ -10,8 +10,10 @@ import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.communication.sms.models.SendSmsResponse;
+import com.azure.communication.sms.models.SendSmsResponseItem;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.rest.PagedIterable;
 
 /**
  * Hello world!
@@ -47,14 +49,20 @@ public class ReadmeSamples {
         SendSmsOptions options = new SendSmsOptions();
         options.setEnableDeliveryReport(true);
 
-        // Send the message and check the response for a message id
-        SendSmsResponse response = smsClient.sendMessage(
-            new PhoneNumber("<leased-phone-number>"), 
-            to, 
-            "your message",
+        // Send the message to a list of  phone Nunbers and check the response for a messages ids
+        PagedIterable<SendSmsResponseItem> response = smsClient.sendMessage(
+            new PhoneNumber("<leased-phone-number>"),
+            to,
+            "your message",null,
             options /* Optional */);
 
-        System.out.println("MessageId: " + response.getMessageId());
+        for (SendSmsResponseItem messageResponseItem
+            : response) {
+            System.out.println("MessageId: " + messageResponseItem.getMessageId());
+
+        }
+
+
     }
 
     public void createCommunicationIdentityClientWithConnectionString() {

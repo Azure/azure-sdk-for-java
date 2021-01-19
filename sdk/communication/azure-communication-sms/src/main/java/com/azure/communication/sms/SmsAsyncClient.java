@@ -8,9 +8,11 @@ import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceIm
 import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.communication.sms.models.SendSmsResponse;
+import com.azure.communication.sms.models.SendSmsResponseItem;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -36,29 +38,7 @@ public final class SmsAsyncClient {
         this.smsServiceClient = smsServiceClient;
     }
 
-    /**
-     * Sends an SMS message from a phone number that belongs to the authenticated account.
-     *
-     * @param from Number that is sending the message.
-     * @param to The recipient's phone number. In this version, only one recipient in the list is supported.
-     * @param message message to send to recipient.
-     * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
-     * for this message to the Azure Resource Event Grid.
-     * @param context the context of the request. Can also be null or Context.NONE.
-     * @return response for a successful send Sms request.
-     */
-    Mono<Response<SendSmsResponse>> sendMessageWithResponse(PhoneNumber from, List<PhoneNumber> to, String message, 
-        SendSmsOptions smsOptions, Context context) {
-        if (from == null) {
-            return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
-        } else if (to == null) {
-            return monoError(logger, new NullPointerException("Argument 'to' cannot be null."));
-        }
 
-        SendMessageRequest sendMessageRequest = createSmsMessageRequest(from, to, message, smsOptions);
-
-        return this.smsServiceClient.getSms().sendWithResponseAsync(sendMessageRequest, context);
-    }
 
     /**
      * Sends an SMS message from a phone number that belongs to the authenticated account.
@@ -70,17 +50,26 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendMessage(PhoneNumber from, List<PhoneNumber> to, String message) {
-        if (from == null) {
-            return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
-        } else if (to == null) {
-            return monoError(logger, new NullPointerException("Argument 'to' cannot be null."));
-        }
+    public PagedFlux<SendSmsResponseItem> sendMessage(PhoneNumber from, List<PhoneNumber> to, String message) {
+        return null;
+    }
 
-        SendSmsOptions smsOptions = new SendSmsOptions();
-        smsOptions.setEnableDeliveryReport(false);
-        
-        return sendMessage(from, to, message, smsOptions);
+    /**
+     * Sends an SMS message from a phone number that belongs to the authenticated account.
+     *
+     * @param from Number that is sending the message.
+     * @param to The recipient's phone number. In this version, only one recipient in the
+     * list is supported.
+     * @param message message to send to recipient.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
+     *       client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *       response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *       is an opaque string representing a client-generated, GUID, identifier for the request.
+     * @return response for a successful send Sms request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedFlux<SendSmsResponseItem> sendMessage(PhoneNumber from, List<PhoneNumber> to, String message, String repeatabilityRequestID) {
+        return null;
     }
 
     /**
@@ -89,23 +78,15 @@ public final class SmsAsyncClient {
      * @param from Number that is sending the message.
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
+     *       client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *       response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, GUID, identifier for the request.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendMessage(PhoneNumber from, PhoneNumber to, String message) {
-        if (from == null) {
-            return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
-        } else if (to == null) {
-            return monoError(logger, new NullPointerException("Argument 'to' cannot be null."));
-        }
-
-        SendSmsOptions smsOptions = new SendSmsOptions();
-        smsOptions.setEnableDeliveryReport(false);
-
-        List<PhoneNumber> toList = new ArrayList<PhoneNumber>();
-        toList.add(to);
-
-        return sendMessage(from, toList, message, smsOptions);
+    public PagedFlux<SendSmsResponseItem> sendMessage(PhoneNumber from, PhoneNumber to, String message,String repeatabilityRequestID) {
+      return null;
     }
 
     /**
@@ -117,26 +98,45 @@ public final class SmsAsyncClient {
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
      * for this message to the Azure Resource Event Grid.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
+     *       client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *       response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *       is an opaque string representing a client-generated, GUID, identifier for the request.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendMessage(PhoneNumber from, List<PhoneNumber> to, String message, 
-        SendSmsOptions smsOptions) {
-        if (from == null) {
-            return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
-        } else if (to == null) {
-            return monoError(logger, new NullPointerException("Argument 'to' cannot be null."));
-        }
+    public PagedFlux<SendSmsResponseItem> sendMessage(PhoneNumber from, List<PhoneNumber> to, String message, String repeatabilityRequestID,
+                                                      SendSmsOptions smsOptions) {
 
-        SendMessageRequest sendMessageRequest = createSmsMessageRequest(from, to, message, smsOptions);
-        try {
-            return withContext(context -> this.smsServiceClient.getSms().sendAsync(sendMessageRequest, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }        
+
+        return null;
     }
 
-    private SendMessageRequest createSmsMessageRequest(PhoneNumber from, List<PhoneNumber> to, String message, 
+    /**
+     * Sends an SMS message from a phone number that belongs to the authenticated account.
+     *
+     * @param from Number that is sending the message.
+     * @param to The recipient's phone number. In this version, only one recipient in the
+     * list is supported.
+     * @param message message to send to recipient.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
+     *       client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *       response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *       is an opaque string representing a client-generated, GUID, identifier for the request.
+     * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
+     * for this message to the Azure Resource Event Grid.
+     * @param context The context to associate with this operation.
+     * @return response for a successful send Sms request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedFlux<SendSmsResponseItem> sendMessageWithContext(PhoneNumber from, List<PhoneNumber> to, String message, String repeatabilityRequestID,
+                                                      SendSmsOptions smsOptions, Context context) {
+
+
+       return null;
+    }
+
+    private SendMessageRequest createSmsMessageRequest(PhoneNumber from, List<PhoneNumber> to, String message,
         SendSmsOptions smsOptions) {
         Stream<String> s = to.stream().map(n -> n.getValue());
         SendMessageRequest sendMessageRequest = new SendMessageRequest();
@@ -144,7 +144,7 @@ public final class SmsAsyncClient {
             .setTo(s.collect(Collectors.toList()))
             .setMessage(message)
             .setSendSmsOptions(smsOptions);
-        
+
         return sendMessageRequest;
     }
 }

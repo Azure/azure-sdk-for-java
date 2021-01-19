@@ -77,7 +77,7 @@ public final class AzureCommunicationSMSServiceImpl {
     AzureCommunicationSMSServiceImpl(HttpPipeline httpPipeline, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-07-20-preview1";
+        this.apiVersion = "2021-03-07";
         this.sms = new SmsImpl(this);
     }
 }

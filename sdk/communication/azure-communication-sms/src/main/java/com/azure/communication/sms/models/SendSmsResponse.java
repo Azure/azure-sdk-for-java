@@ -6,33 +6,60 @@ package com.azure.communication.sms.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** The SendSmsResponse model. */
 @Fluent
 public final class SendSmsResponse {
     /*
-     * The identifier of the outgoing SMS message
+     * The value property.
      */
-    @JsonProperty(value = "messageId")
-    private String messageId;
+    @JsonProperty(value = "value", required = true)
+    private List<SendSmsResponseItem> value;
+
+    /*
+     * The nextLink property.
+     */
+    @JsonProperty(value = "nextLink")
+    private String nextLink;
 
     /**
-     * Get the messageId property: The identifier of the outgoing SMS message.
+     * Get the value property: The value property.
      *
-     * @return the messageId value.
+     * @return the value value.
      */
-    public String getMessageId() {
-        return this.messageId;
+    public List<SendSmsResponseItem> getValue() {
+        return this.value;
     }
 
     /**
-     * Set the messageId property: The identifier of the outgoing SMS message.
+     * Set the value property: The value property.
      *
-     * @param messageId the messageId value to set.
+     * @param value the value value to set.
      * @return the SendSmsResponse object itself.
      */
-    public SendSmsResponse setMessageId(String messageId) {
-        this.messageId = messageId;
+    public SendSmsResponse setValue(List<SendSmsResponseItem> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: The nextLink property.
+     *
+     * @return the nextLink value.
+     */
+    public String getNextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The nextLink property.
+     *
+     * @param nextLink the nextLink value to set.
+     * @return the SendSmsResponse object itself.
+     */
+    public SendSmsResponse setNextLink(String nextLink) {
+        this.nextLink = nextLink;
         return this;
     }
 }

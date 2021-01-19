@@ -17,6 +17,13 @@ public final class SendSmsOptions {
     @JsonProperty(value = "enableDeliveryReport")
     private Boolean enableDeliveryReport;
 
+    /*
+     * Use this field to provide metadata that will then be send back in the
+     * corresponding Delivery Report.
+     */
+    @JsonProperty(value = "tag")
+    private String tag;
+
     /**
      * Get the enableDeliveryReport property: Enable this flag to receive a delivery report for this message on the
      * Azure Resource EventGrid.
@@ -36,6 +43,28 @@ public final class SendSmsOptions {
      */
     public SendSmsOptions setEnableDeliveryReport(Boolean enableDeliveryReport) {
         this.enableDeliveryReport = enableDeliveryReport;
+        return this;
+    }
+
+    /**
+     * Get the tag property: Use this field to provide metadata that will then be send back in the corresponding
+     * Delivery Report.
+     *
+     * @return the tag value.
+     */
+    public String getTag() {
+        return this.tag;
+    }
+
+    /**
+     * Set the tag property: Use this field to provide metadata that will then be send back in the corresponding
+     * Delivery Report.
+     *
+     * @param tag the tag value to set.
+     * @return the SendSmsOptions object itself.
+     */
+    public SendSmsOptions setTag(String tag) {
+        this.tag = tag;
         return this;
     }
 }
