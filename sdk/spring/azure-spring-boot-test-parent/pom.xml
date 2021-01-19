@@ -18,7 +18,8 @@
   <packaging>pom</packaging>
 
   <properties>
-    <skipSpringITs>true</skipSpringITs>
+    <skipSpringITs>true</skipSpringITs> <!-- If it's true, it will disable integration test for spring-web. -->
+    <skipSpringITsForWebFlux>true</skipSpringITsForWebFlux> <!-- If it's true, it will disable integration test for spring-webmvc and spring-webflux. -->
   </properties>
 
   <dependencyManagement>
@@ -33,17 +34,83 @@
     </dependencies>
   </dependencyManagement>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        <configuration>
-          <skipITs>${skipSpringITs}</skipITs>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <profiles>
+
+    <profile>
+      <id>integration-test-with-spring-webmvc</id>
+      <activation>
+        <property>
+          <name>!skip-integration-test-with-spring-webmvc</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>default</id>
+                <phase>none</phase> <!-- Disable default execution. -->
+              </execution>
+              <execution>
+                <id>integration-test-with-spring-webmvc</id>
+                <goals>
+                  <goal>integration-test</goal>
+                </goals>
+                <configuration>
+                  <skipITs>${skipSpringITs}</skipITs>
+                  <classpathDependencyExcludes>
+                    <classpathDependencyExclude>org.springframework:spring-webflux</classpathDependencyExclude>
+                  </classpathDependencyExcludes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>integration-test-with-spring-webflux</id>
+      <activation>
+        <property>
+          <name>skipSpringITsForWebFlux</name>
+          <value>false</value>
+        </property>
+      </activation>
+      <dependencies>
+        <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+      </dependencies>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>integration-test-with-spring-webflux</id>
+                <goals>
+                  <goal>integration-test</goal>
+                </goals>
+                <configuration>
+                  <skipITs>${skipSpringITs}</skipITs>
+                  <classpathDependencyExcludes>
+                    <classpathDependencyExclude>org.springframework:spring-webmvc</classpathDependencyExclude>
+                  </classpathDependencyExcludes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+  </profiles>
 
 </project>
