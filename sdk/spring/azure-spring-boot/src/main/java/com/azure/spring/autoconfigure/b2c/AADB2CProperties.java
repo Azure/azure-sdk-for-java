@@ -69,6 +69,11 @@ public class AADB2CProperties {
     private Map<String, Object> authenticateAdditionalParameters;
 
     /**
+     * User name attribute name
+     */
+    private String userNameAttributeName;
+
+    /**
      * The all user flows which is created under b2c tenant.
      */
     private UserFlows userFlows = new UserFlows();
@@ -209,5 +214,13 @@ public class AADB2CProperties {
 
     public void setAllowTelemetry(boolean allowTelemetry) {
         this.allowTelemetry = allowTelemetry;
+    }
+
+    public String getUserNameAttributeName() {
+        return userNameAttributeName;
+    }
+
+    public void setUserNameAttributeName(String userNameAttributeName) {
+        this.userNameAttributeName = userNameAttributeName;
     }
 }
