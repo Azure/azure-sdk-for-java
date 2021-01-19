@@ -2,7 +2,6 @@ parameters:
   OSVmImage: $(OSVmImage)
   EnvVars: {}
   TestName: ''
-  Artifacts: []
 
 jobs:
     - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
@@ -23,6 +22,8 @@ jobs:
               script: |
                 os_parameter = "${{ parameters.OSVmImage }}".lower()
                 print("Job requested to run on OS: %s" % (os_parameter))
+                artifact_list = ${{ parameters.Artifacts }}
+                print len(artifact_list)
 
         PostRunSteps:
           - script: |
