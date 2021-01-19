@@ -4,7 +4,10 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.webapi.AADOAuth2OboAuthorizedClientRepository;
 import com.azure.spring.autoconfigure.aad.Constants;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * An exception handle Conditional Access in On-Behalf-Of flow.
@@ -25,13 +28,11 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
  * <img src="../doc-files/ConditionalAccessException.svg" alt="">
  *
  * <p>
- * Step 3,4,5,6  describe Conditional Access(such as multi-factor authentication, see the <a *
- * href="https://docs.microsoft.com/en-us/azure/active-directory/conditional-access/howto-conditional-access-policy
- * -all-users-mfa">Conditional
- * Access: Require MFA for all users</a>) in obo flow:
+ * Step 3,4,5,6  describe Conditional Access(such as multi-factor authentication) in obo flow:
  *
  * <p>
- * step 3:  {@link AADOAuth2OboAuthorizedClientRepository} sends the OBO Request to AAD.
+ * step 3:  {@link AADOAuth2OboAuthorizedClientRepository#loadAuthorizedClient(String, Authentication,
+ * HttpServletRequest)} sends the OBO Request to AAD.
  *
  * <p>
  * step 4 : AAD Conditional Access occurs and return an error(The claims field in this error is the reauthorization
@@ -42,10 +43,10 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
  * #claimsToHttpBody(String)}.
  *
  * <p>
- * step 6: {@link AADWebAppConfiguration#conditionalAccessExchangeFilterFunction()} receives the response and convert it
- * into {@link ConditionalAccessException}.  {@link AADWebAppConfiguration.GlobalExceptionAdvice} can catch this
- * exception and put the claims field into session. then clear authorization information and redirect. At last {@link
- * AADOAuth2AuthorizationRequestResolver} intercepts authorization-url, put claims into {@link
+ * step 6: {@link AADWebAppConfiguration#conditionalAccessExceptionFilterFunction()} receives the response and convert
+ * it into {@link ConditionalAccessException}.  {@link AADWebAppConfiguration.ConditionalAccessExceptionAdvice} can
+ * catch this exception and put the claims field into session. then clear the authorization information and redirect. At
+ * last {@link AADOAuth2AuthorizationRequestResolver} intercepts authorization-url, put claims into {@link
  * OAuth2AuthorizationRequest} to reauthorize.
  */
 public final class ConditionalAccessException extends RuntimeException {

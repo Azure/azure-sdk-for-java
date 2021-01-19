@@ -13,6 +13,9 @@ azure:
             - https://manage.office.com/ActivityFeed.Read
             - https://manage.office.com/ActivityFeed.ReadDlp
             - https://manage.office.com/ServiceHealth.Read
+      obo:
+        scopes:
+          - <Web-API-A-app-id-url>/File.Read
     client-id: <client-id>
     client-secret: <client-secret>
     tenant-id: <tenant-id>

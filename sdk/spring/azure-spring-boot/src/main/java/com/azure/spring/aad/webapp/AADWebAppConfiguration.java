@@ -139,7 +139,7 @@ public class AADWebAppConfiguration {
      * Handle conditional access error in obo flow.
      */
     @ControllerAdvice
-    public static class GlobalExceptionAdvice {
+    public static class ConditionalAccessExceptionAdvice {
         @ExceptionHandler(ConditionalAccessException.class)
         public void handleUserNotFound(HttpServletRequest request,
                                        HttpServletResponse response, Exception exception) {
@@ -235,7 +235,7 @@ public class AADWebAppConfiguration {
     }
 
 
-    public static ExchangeFilterFunction conditionalAccessExchangeFilterFunction() {
+    public static ExchangeFilterFunction conditionalAccessExceptionFilterFunction() {
         return ExchangeFilterFunction.ofResponseProcessor(clientResponse ->
             clientResponse.bodyToMono(String.class)
                           .flatMap(httpBody -> {
