@@ -45,7 +45,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.9.0</version> <!-- {x-version-update;com.azure:azure-storage-common;dependency} -->
+      <version>12.10.0</version> <!-- {x-version-update;com.azure:azure-storage-common;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
