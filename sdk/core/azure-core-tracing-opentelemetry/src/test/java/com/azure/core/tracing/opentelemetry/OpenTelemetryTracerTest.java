@@ -16,11 +16,12 @@ import io.opentelemetry.api.trace.TraceFlags;
 import io.opentelemetry.api.trace.TraceId;
 import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.api.trace.attributes.SemanticAttributes;
+import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.ReadableSpan;
-import io.opentelemetry.sdk.trace.data.SpanData;
+import io.opentelemetry.sdk.trace.data.EventData;
+import io.opentelemetry.sdk.trace.data.LinkData;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -272,7 +273,7 @@ public class OpenTelemetryTracerTest {
 
         Context spanContext = new Context(
             SPAN_CONTEXT_KEY, toLinkSpan.getSpanContext());
-        SpanData.Link expectedLink = SpanData.Link.create(toLinkSpan.getSpanContext());
+        LinkData expectedLink = LinkData.create(toLinkSpan.getSpanContext());
 
         // Act
         openTelemetryTracer.addLink(spanContext.addData(SPAN_BUILDER_KEY, span));
@@ -280,7 +281,7 @@ public class OpenTelemetryTracerTest {
 
         //Assert
         // verify parent span has the expected Link
-        SpanData.Link createdLink = span1.toSpanData().getLinks().get(0);
+        LinkData createdLink = span1.toSpanData().getLinks().get(0);
         assertEquals(1, span1.toSpanData().getLinks().size());
         assertEquals(expectedLink.getSpanContext().getTraceIdAsHexString(),
             createdLink.getSpanContext().getTraceIdAsHexString());
@@ -339,9 +340,9 @@ public class OpenTelemetryTracerTest {
 
         // Assert
         assertEquals(StatusCode.ERROR, recordEventsSpan.toSpanData().getStatus().getStatusCode());
-        List<SpanData.Event> events = recordEventsSpan.toSpanData().getEvents();
+        List<EventData> events = recordEventsSpan.toSpanData().getEvents();
         assertEquals(1, events.size());
-        SpanData.Event event = events.get(0);
+        EventData event = events.get(0);
         assertEquals("exception", event.getName());
         assertEquals("custom error message", event.getAttributes().get(SemanticAttributes.EXCEPTION_MESSAGE));
     }
@@ -358,9 +359,9 @@ public class OpenTelemetryTracerTest {
         assertEquals(StatusCode.ERROR, recordEventsSpan.toSpanData().getStatus().getStatusCode());
         assertEquals("Not Found", recordEventsSpan.toSpanData().getStatus().getDescription());
 
-        List<SpanData.Event> events = recordEventsSpan.toSpanData().getEvents();
+        List<EventData> events = recordEventsSpan.toSpanData().getEvents();
         assertEquals(1, events.size());
-        SpanData.Event event = events.get(0);
+        EventData event = events.get(0);
         assertEquals("exception", event.getName());
     }
 

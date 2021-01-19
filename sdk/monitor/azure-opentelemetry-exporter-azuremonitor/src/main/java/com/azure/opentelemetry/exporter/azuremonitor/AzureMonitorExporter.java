@@ -16,10 +16,12 @@ import com.azure.opentelemetry.exporter.azuremonitor.implementation.models.Telem
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
-import io.opentelemetry.api.trace.attributes.SemanticAttributes;
 import io.opentelemetry.sdk.common.CompletableResultCode;
+import io.opentelemetry.sdk.trace.data.EventData;
+import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
+import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -251,7 +253,9 @@ public final class AzureMonitorExporter implements SpanExporter {
         if (stdComponent == null) {
             addExtraAttributes(remoteDependencyData.getProperties(), attributes);
         }
-        telemetryItem.setSampleRate(samplingPercentage.floatValue());
+        if (samplingPercentage != null) {
+            telemetryItem.setSampleRate(samplingPercentage.floatValue());
+        }
         telemetryItems.add(telemetryItem);
         exportEvents(span, samplingPercentage, telemetryItems);
     }
@@ -413,7 +417,7 @@ public final class AzureMonitorExporter implements SpanExporter {
 
     private void exportEvents(SpanData span, Double samplingPercentage, List<TelemetryItem> telemetryItems) {
         boolean foundException = false;
-        for (SpanData.Event event : span.getEvents()) {
+        for (EventData event : span.getEvents()) {
 
             TelemetryItem telemetryItem = new TelemetryItem();
             TelemetryEventData eventData = new TelemetryEventData();
@@ -496,14 +500,14 @@ public final class AzureMonitorExporter implements SpanExporter {
             .format(DateTimeFormatter.ISO_DATE_TIME);
     }
 
-    private static void addLinks(Map<String, String> properties, List<SpanData.Link> links) {
+    private static void addLinks(Map<String, String> properties, List<LinkData> links) {
         if (links.isEmpty()) {
             return;
         }
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         boolean first = true;
-        for (SpanData.Link link : links) {
+        for (LinkData link : links) {
             if (!first) {
                 sb.append(",");
             }

@@ -19,8 +19,8 @@ import io.opentelemetry.api.trace.Tracer;
 import java.util.Objects;
 import java.util.Optional;
 
-import static io.opentelemetry.api.trace.attributes.SemanticAttributes.MESSAGING_DESTINATION;
-import static io.opentelemetry.api.trace.attributes.SemanticAttributes.PEER_SERVICE;
+import static io.opentelemetry.semconv.trace.attributes.SemanticAttributes.MESSAGING_DESTINATION;
+import static io.opentelemetry.semconv.trace.attributes.SemanticAttributes.PEER_SERVICE;
 
 /**
  * Basic tracing implementation class for use with REST and AMQP Service Clients to create {@link Span} and in-process

@@ -14,7 +14,10 @@ import io.opentelemetry.api.trace.attributes.SemanticAttributes;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.common.InstrumentationLibraryInfo;
 import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.sdk.trace.data.EventData;
+import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
+import io.opentelemetry.sdk.trace.data.StatusData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -111,18 +114,18 @@ public class AzureMonitorExporterTest extends MonitorExporterClientTestBase {
         }
 
         @Override
-        public List<Event> getEvents() {
+        public List<EventData> getEvents() {
             return new ArrayList<>();
         }
 
         @Override
-        public List<Link> getLinks() {
+        public List<LinkData> getLinks() {
             return new ArrayList<>();
         }
 
         @Override
-        public Status getStatus() {
-            return Status.ok();
+        public StatusData getStatus() {
+            return StatusData.ok();
         }
 
         @Override

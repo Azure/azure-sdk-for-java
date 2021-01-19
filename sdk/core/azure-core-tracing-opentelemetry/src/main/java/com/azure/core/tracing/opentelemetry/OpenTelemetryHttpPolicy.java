@@ -21,6 +21,7 @@ import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.propagation.W3CTraceContextPropagator;
 import io.opentelemetry.context.propagation.TextMapPropagator;
+import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 import reactor.util.context.Context;
@@ -29,10 +30,6 @@ import java.util.Optional;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
-import static io.opentelemetry.api.trace.attributes.SemanticAttributes.HTTP_METHOD;
-import static io.opentelemetry.api.trace.attributes.SemanticAttributes.HTTP_STATUS_CODE;
-import static io.opentelemetry.api.trace.attributes.SemanticAttributes.HTTP_URL;
-import static io.opentelemetry.api.trace.attributes.SemanticAttributes.HTTP_USER_AGENT;
 
 /**
  * Pipeline policy that creates an OpenTelemetry span which traces the service request.
@@ -93,9 +90,10 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
     private static void addSpanRequestAttributes(Span span, HttpRequest request,
         HttpPipelineCallContext context) {
-        putAttributeIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.getHeaders().getValue("User-Agent"));
-        putAttributeIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
-        putAttributeIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
+        putAttributeIfNotEmptyOrNull(span, SemanticAttributes.HTTP_USER_AGENT,
+            request.getHeaders().getValue("User-Agent"));
+        putAttributeIfNotEmptyOrNull(span, SemanticAttributes.HTTP_METHOD, request.getHttpMethod().toString());
+        putAttributeIfNotEmptyOrNull(span, SemanticAttributes.HTTP_URL, request.getUrl().toString());
         Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
         if (tracingNamespace.isPresent()) {
             putAttributeIfNotEmptyOrNull(span, AttributeKey.stringKey(OpenTelemetryTracer.AZ_NAMESPACE_KEY),
@@ -161,7 +159,7 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
             }
 
             putAttributeIfNotEmptyOrNull(span, AttributeKey.stringKey(REQUEST_ID), requestId);
-            span.setAttribute(HTTP_STATUS_CODE, statusCode);
+            span.setAttribute(SemanticAttributes.HTTP_STATUS_CODE, statusCode);
             span = HttpTraceUtil.setSpanStatus(span, statusCode, error);
         }
 

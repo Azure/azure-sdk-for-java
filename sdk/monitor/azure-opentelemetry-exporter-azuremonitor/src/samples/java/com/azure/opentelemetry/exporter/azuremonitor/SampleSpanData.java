@@ -9,10 +9,13 @@ import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanId;
 import io.opentelemetry.api.trace.TraceId;
 import io.opentelemetry.api.trace.TraceState;
-import io.opentelemetry.api.trace.attributes.SemanticAttributes;
 import io.opentelemetry.sdk.common.InstrumentationLibraryInfo;
 import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.sdk.trace.data.EventData;
+import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
+import io.opentelemetry.sdk.trace.data.StatusData;
+import io.opentelemetry.semconv.trace.attributes.SemanticAttributes;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -91,18 +94,18 @@ public class SampleSpanData implements SpanData {
     }
 
     @Override
-    public List<SpanData.Event> getEvents() {
+    public List<EventData> getEvents() {
         return new ArrayList<>();
     }
 
     @Override
-    public List<SpanData.Link> getLinks() {
+    public List<LinkData> getLinks() {
         return new ArrayList<>();
     }
 
     @Override
-    public Status getStatus() {
-        return Status.ok();
+    public StatusData getStatus() {
+        return StatusData.ok();
     }
 
     @Override
