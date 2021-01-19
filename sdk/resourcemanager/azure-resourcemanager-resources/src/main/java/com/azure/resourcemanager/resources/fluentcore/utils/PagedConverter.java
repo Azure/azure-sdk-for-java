@@ -58,6 +58,8 @@ public final class PagedConverter {
      */
     public static <T, S> PagedFlux<S> mergePagedFlux(PagedFlux<T> pagedFlux,
             Function<? super T, PagedFlux<S>> transformer) {
+        // one possible issue is that when inner PagedFlux ends, that PagedResponse will have continuationToken == null
+
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
             // here retrieve all pages, as the continuationToken in mergePagedFluxPagedResponse would confuse this outer paging
             Flux<PagedResponse<T>> flux = (continuationToken == null)
