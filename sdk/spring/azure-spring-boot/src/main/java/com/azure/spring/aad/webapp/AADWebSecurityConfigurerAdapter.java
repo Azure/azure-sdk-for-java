@@ -54,8 +54,6 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
                     .oidcUserService(oidcUserService)
                     .and()
                 .and()
-            .apply(new AADHttpConfigurer())
-                .and()
             .logout()
                 .logoutSuccessHandler(oidcLogoutSuccessHandler())
                 .and();
@@ -75,10 +73,6 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
 
     protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
         DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
-        RestTemplate restTemplate = new RestTemplate(Arrays.asList(
-            new FormHttpMessageConverter(), new OAuth2AccessTokenResponseHttpMessageConverter()));
-        restTemplate.setErrorHandler(new ConditionalAccessResponseErrorHandler());
-        result.setRestOperations(restTemplate);
         result.setRequestEntityConverter(
             new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(repo.getAzureClient()));
         return result;
@@ -86,21 +80,5 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
 
     protected OAuth2AuthorizationRequestResolver requestResolver() {
         return new AADOAuth2AuthorizationRequestResolver(this.repo);
-    }
-
-    protected AuthenticationFailureHandler failureHandler() {
-        return new AADAuthenticationFailureHandler();
-    }
-
-    /**
-     * Fix the default error info not displayed when the setting failureHandler in securityConfigure
-     */
-    private static final class AADHttpConfigurer extends AbstractHttpConfigurer<AADHttpConfigurer, HttpSecurity> {
-        @Override
-        public void init(HttpSecurity http) {
-            DefaultLoginPageGeneratingFilter filter =
-                http.getSharedObject(DefaultLoginPageGeneratingFilter.class);
-            filter.setFailureUrl("/login?error");
-        }
     }
 }
