@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="643px" height="592px" viewBox="-0.5 -0.5 643 592"
+     content="&lt;mxfile host=&quot;Electron&quot; modified=&quot;2021-01-18T10:50:38.328Z&quot; agent=&quot;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/14.1.8 Chrome/87.0.4280.88 Electron/11.1.1 Safari/537.36&quot; etag=&quot;zdZH8FVrp4TZ7_4Q0S75&quot; version=&quot;14.1.8&quot; type=&quot;device&quot;&gt;&lt;diagram id=&quot;kgpKYQtTHZ0yAKxKKP6v&quot; name=&quot;Page-1&quot;&gt;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&lt;/diagram&gt;&lt;/mxfile&gt;"
+     style="background-color: rgb(255, 255, 255);">
+  <defs/>
+  <g>
+    <g id="cell-3nuBFxr9cyL0pnOWT2aG-5">
+      <rect x="0" y="0" width="99" height="40" rx="6" ry="6" fill="#81caef" stroke="#000000" pointer-events="all"/>
+      <path d="M 49.5 40 L 49.5 590" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="all"/>
+      <g fill="#000000" font-family="Helvetica" font-weight="bold" text-anchor="middle" font-size="12px">
+        <text x="49" y="24.5">Web application</text>
+      </g>
+    </g>
+    <g id="cell-3nuBFxr9cyL0pnOWT2aG-6">
+      <rect x="44.5" y="60" width="10" height="530" fill="#ffffff" stroke="#000000" pointer-events="all"/>
+    </g>
+    <g id="cell-o5tUvNKxY8nh53MyDNSe-2">
+      <rect x="179" y="0" width="100" height="40" rx="6" ry="6" fill="#b2d6ef" stroke="#000000" pointer-events="all"/>
+      <path d="M 229 40 L 229 590" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="all"/>
+      <g fill="#000000" font-family="Helvetica" font-weight="bold" text-anchor="middle" font-size="12px">
+        <text x="228.5" y="24.5">Azure AD</text>
+      </g>
+    </g>
+    <g id="cell-o5tUvNKxY8nh53MyDNSe-3">
+      <rect x="224" y="60" width="10" height="530" fill="#ffffff" stroke="#000000" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-63">
+      <path d="M 61.37 99 L 218.63 99" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/>
+      <path d="M 56.12 99 L 63.12 95.5 L 61.37 99 L 63.12 102.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+      <path d="M 223.88 99 L 216.88 102.5 L 218.63 99 L 216.88 95.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-o5tUvNKxY8nh53MyDNSe-4">
+      <rect x="325" y="0" width="136" height="40" rx="6" ry="6" fill="#81caef" stroke="#000000" pointer-events="all"/>
+      <path d="M 393 40 L 393 590" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="all"/>
+      <g fill="#000000" font-family="Helvetica" font-weight="bold" text-anchor="middle" font-size="12px">
+        <text x="392.5" y="24.5">Web API A </text>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-66">
+      <rect x="388" y="60" width="10" height="530" fill="#ffffff" stroke="#000000" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-195">
+      <rect x="253" y="415" width="110" height="40" fill="none" stroke="none" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 435px; margin-left: 308px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+                  <font style="font-size: 10px">Acquire access token<br/> for Web API B
+                  </font>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="308" y="439" fill="#000000" font-family="Helvetica" font-size="13px" text-anchor="middle">Acquire access to...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-o5tUvNKxY8nh53MyDNSe-19">
+      <path d="M 386 310 L 58.24 310" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="stroke"/>
+      <path d="M 66.12 305.5 L 57.12 310 L 66.12 314.5" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-8OaaKrN09oYVDXz9ovkA-8">
+      <rect x="469" y="0" width="117" height="40" rx="6" ry="6" fill="#81caef" stroke="#000000" pointer-events="all"/>
+      <path d="M 527.5 40 L 527.5 590" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="all"/>
+      <g fill="#000000" font-family="Helvetica" font-weight="bold" text-anchor="middle" font-size="12px">
+        <text x="527" y="24.5">Web API B</text>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-65">
+      <rect x="522.5" y="60" width="10" height="530" fill="#ffffff" stroke="#000000" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-55">
+      <rect x="58" y="59" width="160" height="40" fill="none" stroke="none" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 79px; margin-left: 138px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+                  <span style="font-size: 10px">User is already authenticated,<br/>and acquire token for Web API A.
+                    <br/>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="138" y="83" fill="#000000" font-family="Helvetica" font-size="13px" text-anchor="middle">User is already authenti...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-74">
+      <path d="M 235 263 L 378.88 263" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/>
+      <path d="M 385.88 263 L 378.88 266.5 L 378.88 259.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-77">
+      <ellipse cx="144" cy="99" rx="5" ry="5" fill="#1ba1e2" stroke="#006eaf" stroke-width="2" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 8px; height: 1px; padding-top: 99px; margin-left: 140px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">1</div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="144" y="103" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">1</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-85">
+      <path d="M 55 135 L 380.36 135.18" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/>
+      <path d="M 387.36 135.18 L 380.36 138.68 L 380.36 131.68 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-88">
+      <rect x="51" y="115" width="180" height="20" fill="none" stroke="none" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 125px; margin-left: 141px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+                  <span style="font-size: 10px ; background-color: rgb(255 , 255 , 255)">Call Web API A with </span>
+                  <span style="font-size: 10px ; background-color: rgb(255 , 255 , 255)">access token A </span>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="141" y="129" fill="#000000" font-family="Helvetica" font-size="13px" text-anchor="middle">Call Web API A with access t...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-93">
+      <ellipse cx="304" cy="135" rx="5" ry="5" fill="#1ba1e2" stroke="#006eaf" stroke-width="2" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 8px; height: 1px; padding-top: 135px; margin-left: 300px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">2</div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="304" y="139" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">2</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-97">
+      <path d="M 383.5 201 L 237.24 201" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="stroke"/>
+      <path d="M 245.12 196.5 L 236.12 201 L 245.12 205.5" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-98">
+      <rect x="223" y="144" width="170" height="60" fill="none" stroke="none" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 174px; margin-left: 308px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+                  <span style="font-size: 10px"> Use Web API A’s access token to<br/> acquire Web API B's access token<br/> by On-Behalf-Of request.
+                  </span>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="308" y="178" fill="#000000" font-family="Helvetica" font-size="13px" text-anchor="middle">Use Web API A’s access tok...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-99">
+      <ellipse cx="314" cy="200" rx="5" ry="5" fill="#1ba1e2" stroke="#006eaf" stroke-width="2" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 8px; height: 1px; padding-top: 200px; margin-left: 310px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">3</div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="314" y="204" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">3</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-117">
+      <path d="M 223.66 249.04 L 219.33 247.02 Q 215 245 205.36 242.34 L 192.14 238.69" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/>
+      <path d="M 187.08 237.3 L 194.76 235.78 L 192.14 238.69 L 192.89 242.53 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-126">
+      <path d="M 117 162 L 203 162 L 203 252 L 87 252 L 87 192 Z" fill="#60a917" stroke="#2d7600" stroke-miterlimit="10" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 114px; height: 1px; padding-top: 207px; margin-left: 88px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <span style="color: rgb(255 , 255 , 255) ; font-size: 11px">
+                    <b>Azure Security required that who access Web API B must do multifactor authentication.</b>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="145" y="211" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">Azure Security req...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-142">
+      <path d="M 587.05 46.61 L 587.01 63.63" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/>
+      <path d="M 587 68.88 L 583.52 61.87 L 587.01 63.63 L 590.52 61.89 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-144">
+      <path d="M 565 47 L 641 47 L 641 203 L 535 203 L 535 77 Z" fill="#60a917" stroke="#2d7600" stroke-miterlimit="10" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 104px; height: 1px; padding-top: 125px; margin-left: 536px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">
+                  <b style="font-size: 11px">The application has been configured conditional Access policies(</b>
+                  <span style="font-size: 11px">
+                    <b>such as</b>
+                  </span>
+                  <b style="font-size: 11px"> multi-factor authentication) in Azure Security.</b>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="588" y="129" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">The application...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-145">
+      <rect x="245" y="205" width="130" height="60" fill="none" stroke="none" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 235px; margin-left: 310px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+                  <div>
+                    <span style="font-size: 10px">Return error to Web API A.</span>
+                  </div>
+                  <div>
+                    <span style="font-size: 10px">(</span>
+                    <font style="font-size: 10px">The claims field </font>
+                  </div>
+                  <div>
+                    <font style="font-size: 10px">in error is importan</font>
+                    <span style="font-size: 8px">t</span>
+                    <span style="font-size: 10px">)</span>
+                    <font color="#171717" face="Segoe UI, SegoeUI, Helvetica Neue, Helvetica, Arial, sans-serif">
+                      <span style="background-color: rgb(255 , 255 , 255) ; font-size: 10px"> </span>
+                    </font>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="310" y="239" fill="#000000" font-family="Helvetica" font-size="13px" text-anchor="middle">Return error to Web...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-148">
+      <ellipse cx="318" cy="263" rx="5" ry="5" fill="#1ba1e2" stroke="#006eaf" stroke-width="2" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 8px; height: 1px; padding-top: 263px; margin-left: 314px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">4</div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="318" y="267" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">4</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-153">
+      <rect x="250" y="272" width="120" height="40" fill="none" stroke="none" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 292px; margin-left: 310px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+                  <font style="font-size: 10px">Return the claims field <br/> to Web Application
+                  </font>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="310" y="296" fill="#000000" font-family="Helvetica" font-size="13px" text-anchor="middle">Return the claims...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-157">
+      <ellipse cx="190" cy="310" rx="5" ry="5" fill="#1ba1e2" stroke="#006eaf" stroke-width="2" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 8px; height: 1px; padding-top: 310px; margin-left: 186px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">5</div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="190" y="314" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">5</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-167">
+      <path d="M 59.37 378.31 L 216.63 378.31" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/>
+      <path d="M 54.12 378.31 L 61.12 374.81 L 59.37 378.31 L 61.12 381.81 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+      <path d="M 221.88 378.31 L 214.88 381.81 L 216.63 378.31 L 214.88 374.81 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-168">
+      <path d="M 54.52 409.66 L 379.88 409.84" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/>
+      <path d="M 386.88 409.84 L 379.88 413.34 L 379.88 406.34 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-175">
+      <rect x="405" y="550" width="100" height="20" fill="none" stroke="none" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 560px; margin-left: 455px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+                  <font style="font-size: 10px">Return source date </font>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="455" y="564" fill="#000000" font-family="Helvetica" font-size="13px" text-anchor="middle">Return source d...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-176">
+      <ellipse cx="138" cy="379" rx="5" ry="5" fill="#1ba1e2" stroke="#006eaf" stroke-width="2" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 8px; height: 1px; padding-top: 379px; margin-left: 134px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">6</div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="138" y="383" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">6</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-177">
+      <ellipse cx="198" cy="409" rx="5" ry="5" fill="#1ba1e2" stroke="#006eaf" stroke-width="2" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 8px; height: 1px; padding-top: 409px; margin-left: 194px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">7</div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="198" y="413" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">7</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-183">
+      <rect x="260" y="374" width="110" height="40" fill="none" stroke="none" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 394px; margin-left: 315px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+                  <span style="font-size: 10px ; background-color: rgb(255 , 255 , 255)">Call Web API A with 
+                    <br/>
+                  </span>
+                  <span style="font-size: 10px ; background-color: rgb(255 , 255 , 255)">access token A </span>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="315" y="398" fill="#000000" font-family="Helvetica" font-size="13px" text-anchor="middle">Call Web API A wi...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-162">
+      <rect x="66" y="312" width="150" height="70" fill="none" stroke="none" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 347px; margin-left: 141px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+                  <font style="font-size: 10px">User carries the claims field<br/> to re-authorize.(User need do<br/>multi-factor-authentication<br/>to get new access token.)  
+                  </font>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="141" y="351" fill="#000000" font-family="Helvetica" font-size="13px" text-anchor="middle">User carries the claims...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-188">
+      <path d="M 385 454 L 236.24 454" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="stroke"/>
+      <path d="M 244.12 449.5 L 235.12 454 L 244.12 458.5" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-189">
+      <ellipse cx="314" cy="454.5" rx="5.5" ry="5.5" fill="#1ba1e2" stroke="#006eaf" stroke-width="2" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 9px; height: 1px; padding-top: 454px; margin-left: 309px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">8</div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="314" y="458" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">8</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-194">
+      <path d="M 235 490.38 L 376.88 490.02" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/>
+      <path d="M 383.88 490 L 376.89 493.52 L 376.87 486.52 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-196">
+      <ellipse cx="313.5" cy="491" rx="5" ry="5" fill="#1ba1e2" stroke="#006eaf" stroke-width="2" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 8px; height: 1px; padding-top: 491px; margin-left: 310px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">9</div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="314" y="495" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">9</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-171">
+      <path d="M 519.08 570.9 L 451.58 570.36 Q 441.58 570.28 431.58 570.21 L 401.16 570.01" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-dasharray="3 3" pointer-events="stroke"/>
+      <path d="M 409.07 565.57 L 400.04 570.01 L 409.01 574.57" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-200">
+      <rect x="252" y="468" width="120" height="20" fill="none" stroke="none" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 478px; margin-left: 312px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+                  <font style="font-size: 10px">Return access token B</font>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="312" y="482" fill="#000000" font-family="Helvetica" font-size="13px" text-anchor="middle">Return access toke...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-201">
+      <path d="M 398 520 L 512.38 520" fill="none" stroke="#000000" stroke-miterlimit="10" pointer-events="stroke"/>
+      <path d="M 519.38 520 L 512.38 523.5 L 512.38 516.5 Z" fill="#000000" stroke="#000000" stroke-miterlimit="10" pointer-events="all"/>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-202">
+      <ellipse cx="464" cy="520" rx="5" ry="5" fill="#1ba1e2" stroke="#006eaf" stroke-width="2" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 8px; height: 1px; padding-top: 520px; margin-left: 460px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">10</div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="464" y="524" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">10</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-203">
+      <rect x="414" y="482" width="100" height="40" fill="none" stroke="none" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; padding-top: 502px; margin-left: 464px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #000000; line-height: 1.2; pointer-events: all; white-space: nowrap; ">
+                  <font style="font-size: 10px">
+                    <span style="background-color: rgb(255 , 255 , 255)">Call Web API B with<br/> 
+                    </span>
+                    <span style="background-color: rgb(255 , 255 , 255)">access token B </span>
+                    <br/>
+                  </font>
+                </div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="464" y="506" fill="#000000" font-family="Helvetica" font-size="13px" text-anchor="middle">Call Web API B...</text>
+        </switch>
+      </g>
+    </g>
+    <g id="cell-1MOUreyF4ROkt5W0rsJV-204">
+      <ellipse cx="466.5" cy="570.5" rx="5.5" ry="5.5" fill="#1ba1e2" stroke="#006eaf" stroke-width="2" pointer-events="all"/>
+      <g transform="translate(-0.5 -0.5)">
+        <switch>
+          <foreignObject style="overflow: visible; text-align: left;" pointer-events="none" width="100%" height="100%" requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility">
+            <div xmlns="http://www.w3.org/1999/xhtml"
+                 style="display: flex; align-items: unsafe center; justify-content: unsafe center; width: 9px; height: 1px; padding-top: 571px; margin-left: 462px;">
+              <div style="box-sizing: border-box; font-size: 0; text-align: center; ">
+                <div style="display: inline-block; font-size: 13px; font-family: Helvetica; color: #ffffff; line-height: 1.2; pointer-events: all; white-space: normal; word-wrap: normal; ">11</div>
+              </div>
+            </div>
+          </foreignObject>
+          <text x="466" y="574" fill="#ffffff" font-family="Helvetica" font-size="13px" text-anchor="middle">11</text>
+        </switch>
+      </g>
+    </g>
+  </g>
+  <switch>
+    <g requiredFeatures="http://www.w3.org/TR/SVG11/feature#Extensibility"/>
+    <a transform="translate(0,-5)" xlink:href="https://www.diagrams.net/doc/faq/svg-export-text-problems" target="_blank">
+      <text text-anchor="middle" font-size="10px" x="50%" y="100%">Viewer does not support full SVG 1.1</text>
+    </a>
+  </switch>
+</svg>
