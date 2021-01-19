@@ -5,6 +5,8 @@ package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.credential.AzureKeyCredential;
 
+import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.CloudEvent;
 import com.azure.messaging.eventgrid.EventGridDeserializer;
 import com.azure.messaging.eventgrid.EventGridEvent;
@@ -46,31 +48,39 @@ public class ReadmeSamples {
             .buildAsyncClient();
     }
 
+    public void createPublisherClientWithSAS() {
+        EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
+            .endpoint(endpoint)
+            .credential(new AzureSasCredential(key))
+            .buildClient();
+    }
+
+    public void createAsyncPublisherClientWithSAS() {
+        EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilder()
+            .endpoint(endpoint)
+            .credential(new AzureSasCredential(key))
+            .buildAsyncClient();
+    }
+
     public void sendEventGridEvents() {
         List<EventGridEvent> events = new ArrayList<>();
         events.add(
-            new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", "Example Data",
-                "1")
+            new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", "Example Data", "1")
         );
-
         egClient.sendEvents(events);
     }
 
     public void sendCloudEvents() {
         List<CloudEvent> events = new ArrayList<>();
         events.add(
-            new CloudEvent("com/example/source", "Com.Example.ExampleEventType", "Example Data", null)
+            new CloudEvent("com/example/source", "Com.Example.ExampleEventType", "Example Data")
         );
-
         egClient.sendCloudEvents(events);
     }
 
-    public void consumeEventGridEvent() {
+    public void deserializeEventGridEvent() {
         List<EventGridEvent> events = EventGridDeserializer.deserializeEventGridEvents(jsonData);
-
         for (EventGridEvent event : events) {
-            // system event data will be turned into it's rich object,
-            // while custom event data will be turned into a byte[].
             if (event.isSystemEvent()) {
                 Object systemEventData = event.asSystemEventData();
                 if (systemEventData instanceof SubscriptionValidationEventData) {
@@ -79,17 +89,18 @@ public class ReadmeSamples {
                 }
             }
             else {
-                // we can turn the data into the correct type by calling this method.
-                // since we set the data as a string when sending, we pass the String class in to get it back.
-                String stringData = event.getData().toString();
-                System.out.println(stringData); // "Example Data"
+                // we can turn the data into the correct type by calling BinaryData.toString(), BinaryData.toObject(),
+                // or BinaryData.toBytes(). This sample uses toString.
+                BinaryData binaryData = event.getData();
+                if (binaryData != null) {
+                    System.out.println(binaryData.toString()); // "Example Data"
+                }
             }
         }
     }
 
-    public void consumeCloudEvent() {
+    public void deserializeCloudEvent() {
         List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(jsonData);
-
         for (CloudEvent event : events) {
             if (event.isSystemEvent()) {
                 Object systemEventData = event.asSystemEventData();
@@ -98,12 +109,13 @@ public class ReadmeSamples {
                     System.out.println(validationData.getValidationCode());
                 }
             }
-            // this event type goes to any non-azure endpoint (such as a WebHook) when the subscription is created.
             else {
-                // we can turn the data into the correct type by calling this method.
-                // since we set the data as a string when sending, we pass the String class in to get it back.
-                String stringData = event.getData().toString();
-                System.out.println(stringData); // "Example Data"
+                // we can turn the data into the correct type by calling BinaryData.toString(), BinaryData.toObject(),
+                // or BinaryData.toBytes(). This sample uses toString.
+                BinaryData binaryData = event.getData();
+                if (binaryData != null) {
+                    System.out.println(binaryData.toString()); // "Example Data"
+                }
             }
         }
     }
