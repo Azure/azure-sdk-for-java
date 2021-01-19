@@ -59,10 +59,10 @@ public final class PagedConverter {
     public static <T, S> PagedFlux<S> mergePagedFlux(PagedFlux<T> pagedFlux,
             Function<? super T, PagedFlux<S>> transformer) {
         Supplier<PageRetriever<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
-            // retrieve single page, though this will be composed of multiple pages in the inner PagedFlux
+            // here retrieve all pages, as the continuationToken in mergePagedFluxPagedResponse would confuse this outer paging
             Flux<PagedResponse<T>> flux = (continuationToken == null)
-                ? pagedFlux.byPage().take(1)
-                : pagedFlux.byPage(continuationToken).take(1);
+                ? pagedFlux.byPage()
+                : pagedFlux.byPage(continuationToken);
             return flux.concatMap(PagedConverter.mergePagedFluxPagedResponse(transformer));
         };
         return PagedFlux.create(provider);
@@ -101,16 +101,10 @@ public final class PagedConverter {
     private static <T, S> Function<PagedResponse<T>, Flux<PagedResponse<S>>> mergePagedFluxPagedResponse(
         Function<? super T, PagedFlux<S>> transformer) {
         return pagedResponse -> {
-            String continuationToken = pagedResponse.getContinuationToken();
             List<Flux<PagedResponse<S>>> fluxList = pagedResponse.getValue().stream()
                 .map(item -> transformer.apply(item).byPage()).collect(Collectors.toList());
             return Flux.concat(fluxList)
-                .map(p -> new PagedResponseBase<HttpRequest, S>(p.getRequest(),
-                    p.getStatusCode(),
-                    p.getHeaders(),
-                    p.getValue(),
-                    continuationToken,
-                    null));
+                .filter(p -> !p.getValue().isEmpty());
         };
     }
 
