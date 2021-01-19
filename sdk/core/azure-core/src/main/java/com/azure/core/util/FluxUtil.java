@@ -169,27 +169,6 @@ public final class FluxUtil {
     }
 
     /**
-     * This method converts {@link reactor.util.context.Context Reactor Context} into {@link Context Azure Context}
-     * and applies telemetry data to the converted context.
-     *
-     * @param serviceCall A lambda function that makes a service call with the Azure Context.
-     * @param className The name of the class calling the service.
-     * @param methodName The name of the method calling the service.
-     * @param isAsync Flag indicating if the calling method is asynchronous.
-     * @param additionalTelemetries Additional telemetry values.
-     * @param <T> The service call response type.
-     * @return The service call response.
-     */
-    public static <T> Mono<T> withTelemetryContext(Function<Context, Mono<T>> serviceCall, String className,
-        String methodName, boolean isAsync, String... additionalTelemetries) {
-        return withContextInternal(serviceCall, Function.identity(), context -> {
-            String telemetry = CoreUtils.createTelemetryValue(className, methodName, isAsync, additionalTelemetries);
-
-            return CoreUtils.addTelemetryValue(context, telemetry);
-        });
-    }
-
-    /**
      * This method converts the incoming {@code subscriberContext} from {@link reactor.util.context.Context Reactor
      * Context} to {@link Context Azure Context}, adds the specified context attributes and calls the given lambda
      * function with this context and returns a single entity of type {@code T}
