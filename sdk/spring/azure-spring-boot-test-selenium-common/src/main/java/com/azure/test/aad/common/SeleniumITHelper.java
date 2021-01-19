@@ -23,7 +23,7 @@ public class SeleniumITHelper {
     protected WebDriver driver;
     protected WebDriverWait wait;
     private final static String tempDirPath =
-        System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID().toString();
+        System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID();
 
     static {
         initChromeDriver();
