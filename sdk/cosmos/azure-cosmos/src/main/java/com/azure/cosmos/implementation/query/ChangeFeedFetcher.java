@@ -58,9 +58,9 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
         //    whether continuations need to be split (in the case that any continuation
         //    exists that would span more than one physical partition now
         // 2) On 304 a retry is needed if at least one continuation has not been drained yet.
-        //    This prevents returning a 304 before we received a 304 for all continuation
+        //    This prevents returning a 304 before we received a 304 for all continuations
         //
-        // 420 handling: this is triggered by an exception - using an
+        // 410 handling: this is triggered by an exception - using an
         //               IRetryPolicy (FeedRangeContinuationSplitRetryPolicy)
         // 304 handling: this is not triggered by an exception (304 doesn't result in throwing)
         //               so using Reactor's built-in option of repeating the chain on an empty result
