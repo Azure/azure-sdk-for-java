@@ -1,4 +1,5 @@
 $Language = "java"
+$LanguageDisplayName = "Java"
 $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
