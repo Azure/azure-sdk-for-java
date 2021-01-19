@@ -7,6 +7,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.util.LinkedHashMap;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * Tests for Attestation Metadata Configuration APIs.
  */
@@ -36,6 +41,22 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
             })
             .verifyComplete();
     }
+
+    /**
+     * Verifies the response to the GetMetadataConfiguration (/.well-known/open-id-metadata) API.
+     * @param clientUri - URI associated with the operation.
+     * @param metadataConfigResponse - Object representing the metadata configuration.
+     */
+    void verifyMetadataConfigurationResponse(String clientUri, Object metadataConfigResponse) {
+        assertTrue(metadataConfigResponse instanceof LinkedHashMap);
+
+        @SuppressWarnings("unchecked")
+        LinkedHashMap<String, Object> metadataConfig = (LinkedHashMap<String, Object>) metadataConfigResponse;
+
+        assertEquals(clientUri, metadataConfig.get("issuer"));
+        assertEquals(clientUri +"/certs", metadataConfig.get("jwks_uri"));
+    }
+
 
 }
 

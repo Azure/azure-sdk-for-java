@@ -16,10 +16,13 @@ import com.azure.security.attestation.models.JsonWebKeySet;
 import com.azure.security.attestation.models.PolicyResponse;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JOSEObject;
+import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import net.minidev.json.JSONObject;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Mono;
@@ -27,12 +30,17 @@ import reactor.core.publisher.Mono;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Stream;
@@ -95,6 +103,48 @@ public class AttestationClientTestBase extends TestBase {
             .build();
     }
 
+    Mono<JWTClaimsSet> verifyAttestationToken(HttpClient httpClient, String clientUri, String attestationToken) throws ParseException {
+        SignedJWT token = SignedJWT.parse(attestationToken);
+
+        return getSigningCertificateByKeyId(token, httpClient, clientUri)
+            .flatMap(cert -> {
+                PublicKey key = cert.getPublicKey();
+                RSAPublicKey rsaKey = (RSAPublicKey) key;
+
+                RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
+                try {
+                    assertTrue(token.verify(verifier));
+                } catch (JOSEException e) {
+                    e.printStackTrace();
+                }
+
+
+                JWTClaimsSet claims = null;
+                try {
+                    claims = token.getJWTClaimsSet();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return Mono.just(claims);
+            });
+    }
+
+    /**
+     * Create a JWS Signer from the specified PKCS8 encoded signing key.
+     * @param signingKeyBase64 Base64 encoded PKCS8 encoded RSA Private key.
+     * @return JWSSigner created over the specified signing key.
+     * @throws NoSuchAlgorithmException - should never  throws this.
+     * @throws InvalidKeySpecException - Can throw this if the key is invalid.
+     */
+    @NotNull
+    JWSSigner getJwsSigner(String signingKeyBase64) throws NoSuchAlgorithmException, InvalidKeySpecException {
+        byte[] signingKey = Base64.getDecoder().decode(signingKeyBase64);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(signingKey);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+        return new RSASSASigner(privateKey);
+    }
+
     /**
      * Find the signing certificate associated with the specified SignedJWT token.
      *
@@ -137,127 +187,6 @@ public class AttestationClientTestBase extends TestBase {
                 throw new RuntimeException(String.format("Key %s not found in JSON Web Key Set", keyId));
             });
     }
-
-    /**
-     * Verifies the response to the GetMetadataConfiguration (/.well-known/open-id-metadata) API.
-     * @param clientUri - URI associated with the operation.
-     * @param metadataConfigResponse - Object representing the metadata configuration.
-     */
-    void verifyMetadataConfigurationResponse(String clientUri, Object metadataConfigResponse) {
-        assertTrue(metadataConfigResponse instanceof LinkedHashMap);
-
-        @SuppressWarnings("unchecked")
-        LinkedHashMap<String, Object> metadataConfig = (LinkedHashMap<String, Object>) metadataConfigResponse;
-
-        assertEquals(clientUri, metadataConfig.get("issuer"));
-        assertEquals(clientUri +"/certs", metadataConfig.get("jwks_uri"));
-    }
-
-    /**
-     * Verifies the response to the GetSigningCertificates (/certs) API.
-     *
-     * Each certificate returned needs to be a valid X.509 certificate.
-     * We also verify that self signed certificates are signed with the known trusted roots.
-     * @param clientUri Base URI for client, used to verify the contents of the certificates.
-     * @param certs certificate response to verify.
-     * @throws CertificateException thrown on invalid certificate returned.
-     */
-    void verifySigningCertificatesResponse(String clientUri, JsonWebKeySet certs) throws CertificateException {
-        Assertions.assertTrue(certs.getKeys().size() > 1);
-
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        certs.getKeys().forEach(key -> {
-            assertNotNull(key.getKid());
-            assertNotNull(key.getX5C());
-            Assertions.assertNotEquals(0, key.getX5C().size());
-            key.getX5C().forEach (base64cert -> {
-                try {
-                    Certificate cert = cf.generateCertificate(base64ToStream(base64cert));
-
-                    Assertions.assertTrue(cert instanceof X509Certificate);
-
-                    X509Certificate x5c = (X509Certificate) cert;
-
-//                    if (x5c.getExtensionValue("1.2.840.113556.10.1.1") != null) {
-                    // If the certificate is self signed, it should be associated
-                    // with either the Microsoft root CA, the VBS self signed root, or the instance.
-                    if (x5c.getIssuerDN().equals(x5c.getSubjectDN())) {
-                        if (x5c.getIssuerDN().toString().contains("Microsoft Root Certificate Authority")) {
-                            assertEquals("CN=Microsoft Root Certificate Authority 2011, O=Microsoft Corporation, L=Redmond, ST=Washington, C=US", x5c.getIssuerDN().getName());
-                        }
-                        else if (x5c.getIssuerDN().toString().contains("AttestationService-LocalTest-ReportSigning")) {
-                            assertEquals("CN=AttestationService-LocalTest-ReportSigning", x5c.getIssuerDN().getName());
-                        }
-                        else {
-                            assertEquals("CN=" + clientUri, x5c.getSubjectDN().getName());
-                        }
-                    }
-                } catch (CertificateException e) {
-                    e.printStackTrace();
-                    throw new RuntimeException(e);
-                }
-            });
-        });
-    }
-
-    /**
-     * Verifies the basic response for a Get Attestation Policy API - this simply verifies that the server
-     * returns a valid JWT and that the JWT contains a base64url encoded attestation policy.
-     * @param client HTTP Client, used when retrieving signing certificates.
-     * @param clientUri Client base URI - used when retrieving client signing certificates.
-     * @param attestationType attestation type - policy results vary by attestation type.
-     * @param policyResponse response from the getPolicy API.
-     */
-    void verifyBasicGetAttestationPolicyResponse(HttpClient client, String clientUri, AttestationType attestationType, PolicyResponse policyResponse) throws ParseException {
-        assertNotNull(policyResponse);
-        assertNotNull(policyResponse.getToken());
-
-        SignedJWT token = SignedJWT.parse(policyResponse.getToken());
-
-        getSigningCertificateByKeyId(token, client, clientUri)
-            .subscribe(cert -> {
-                PublicKey key = cert.getPublicKey();
-                RSAPublicKey rsaKey = (RSAPublicKey) key;
-
-                RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
-                try {
-                    assertTrue(token.verify(verifier));
-                } catch (JOSEException e) {
-                    e.printStackTrace();
-                }
-                JWTClaimsSet claims = null;
-                try {
-                    claims = token.getJWTClaimsSet();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                assert claims != null;
-                String policyDocument = claims.getClaims().get("x-ms-policy").toString();
-
-                JOSEObject policyJose = null;
-                try {
-                    policyJose = JOSEObject.parse(policyDocument);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                assert policyJose != null;
-                JSONObject jsonObject = policyJose.getPayload().toJSONObject();
-                if (jsonObject != null) {
-                    assertTrue(jsonObject.containsKey("AttestationPolicy"));
-                    String base64urlPolicy = jsonObject.getAsString("AttestationPolicy");
-
-                    byte[] attestationPolicyUtf8 = Base64.getUrlDecoder().decode(base64urlPolicy);
-                    String attestationPolicy;
-                    attestationPolicy = new String(attestationPolicyUtf8, StandardCharsets.UTF_8);
-
-                    assertNotNull(attestationPolicy);
-                } else {
-                    // TPM is allowed to have an empty attestation policy, all the other AttestationTypes have policies.
-                    assertEquals("Tpm", attestationType.toString());
-                }
-            });
-    }
-
 
     static Stream<Arguments> getAttestationClients() {
         // when this issues is closed, the newer version of junit will have better support for

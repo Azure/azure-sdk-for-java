@@ -11,11 +11,17 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test for Attestation Signing Certificates APIs.
@@ -50,6 +56,53 @@ public class AttestationSignersTest extends AttestationClientTestBase {
         .verifyComplete();
 
         ;
+    }
+
+    /**
+     * Verifies the response to the GetSigningCertificates (/certs) API.
+     *
+     * Each certificate returned needs to be a valid X.509 certificate.
+     * We also verify that self signed certificates are signed with the known trusted roots.
+     * @param clientUri Base URI for client, used to verify the contents of the certificates.
+     * @param certs certificate response to verify.
+     * @throws CertificateException thrown on invalid certificate returned.
+     */
+    private void verifySigningCertificatesResponse(String clientUri, JsonWebKeySet certs) throws CertificateException {
+        Assertions.assertTrue(certs.getKeys().size() > 1);
+
+        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        certs.getKeys().forEach(key -> {
+            assertNotNull(key.getKid());
+            assertNotNull(key.getX5C());
+            Assertions.assertNotEquals(0, key.getX5C().size());
+            key.getX5C().forEach (base64cert -> {
+                try {
+                    Certificate cert = cf.generateCertificate(base64ToStream(base64cert));
+
+                    Assertions.assertTrue(cert instanceof X509Certificate);
+
+                    X509Certificate x5c = (X509Certificate) cert;
+
+//                    if (x5c.getExtensionValue("1.2.840.113556.10.1.1") != null) {
+                    // If the certificate is self signed, it should be associated
+                    // with either the Microsoft root CA, the VBS self signed root, or the instance.
+                    if (x5c.getIssuerDN().equals(x5c.getSubjectDN())) {
+                        if (x5c.getIssuerDN().toString().contains("Microsoft Root Certificate Authority")) {
+                            assertEquals("CN=Microsoft Root Certificate Authority 2011, O=Microsoft Corporation, L=Redmond, ST=Washington, C=US", x5c.getIssuerDN().getName());
+                        }
+                        else if (x5c.getIssuerDN().toString().contains("AttestationService-LocalTest-ReportSigning")) {
+                            assertEquals("CN=AttestationService-LocalTest-ReportSigning", x5c.getIssuerDN().getName());
+                        }
+                        else {
+                            assertEquals("CN=" + clientUri, x5c.getSubjectDN().getName());
+                        }
+                    }
+                } catch (CertificateException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+            });
+        });
     }
 }
 

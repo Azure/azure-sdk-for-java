@@ -5,13 +5,13 @@
     "Headers" : { },
     "Response" : {
       "Server" : "Kestrel",
-      "x-ms-maa-service-version" : "1.10.01439.0001",
+      "x-ms-maa-service-version" : "1.10.01469.0002",
       "retry-after" : "0",
       "Content-Length" : "804",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-753e9f21631cb6a3ed7c0ee9a96e603e-0000000000000000-00",
-      "Body" : "{\"token\":\"eyJhbGciOiAiUlMyNTYiLCAiamt1IjogImh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmFhZC53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsICJraWQiOiAiMTVOMk1Ib2o5aUFka0YvYzVuUkUzSjJIQjhKRzZWdWUzVXp2dTNLL1Nlcz0iLCAidHlwIjogIkpXVCJ9.eyJleHAiOiAxNjEwNzUzNTIxLCAiaWF0IjogMTYxMDc0OTkyMSwgImlzcyI6ICJodHRwczovL2phbGFycnlvYXR0ZXN0YXRpb25hYWQud3VzLmF0dGVzdC5henVyZS5uZXQiLCAibmJmIjogMTYxMDc0OTkyMSwgIngtbXMtcG9saWN5IjogImV5SmhiR2NpT2lKdWIyNWxJbjAuZXlKQmRIUmxjM1JoZEdsdmJsQnZiR2xqZVNJNkltUnRWbmxqTW14Mlltb3dlRXhxUVRkSlIwWXhaRWRvZG1OdGJEWlpXRkp3WWpJMWVXUlhlR3hqZVVJM1NVUXdMVWxJUW14amJURndaRU5uY0U5NVFqbFBlVUp3WXpOT01WbFhOV3BhV0VveFlrZFdla2xJZERsUGR5SjkuIn0.amlww5EyJwkM3vP9Whgt-TyBrv6Ue_k2rWh7TqSQ1JzTZAkBYubTBURkwj8aUyi6QpkER5VSOpJr8ovdCjz8MgZRoU-zjx64u-9FNvT7Rsp4bmn2evgSxmHOamnMUoSTj0s0l4X2GizdFIECXqeGhDFeb4lupvZes8PSbEGwbtE\"}",
-      "Date" : "Fri, 15 Jan 2021 22:32:00 GMT",
+      "x-ms-request-id" : "00-b3cddd9ff162bc95ea413937dbb30b19-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiAiUlMyNTYiLCAiamt1IjogImh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmFhZC53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsICJraWQiOiAiMTVOMk1Ib2o5aUFka0YvYzVuUkUzSjJIQjhKRzZWdWUzVXp2dTNLL1Nlcz0iLCAidHlwIjogIkpXVCJ9.eyJleHAiOiAxNjExMDk5OTg4LCAiaWF0IjogMTYxMTA5NjM4OCwgImlzcyI6ICJodHRwczovL2phbGFycnlvYXR0ZXN0YXRpb25hYWQud3VzLmF0dGVzdC5henVyZS5uZXQiLCAibmJmIjogMTYxMTA5NjM4OCwgIngtbXMtcG9saWN5IjogImV5SmhiR2NpT2lKdWIyNWxJbjAuZXlKQmRIUmxjM1JoZEdsdmJsQnZiR2xqZVNJNkltUnRWbmxqTW14Mlltb3dlRXhxUVRkSlIwWXhaRWRvZG1OdGJEWlpXRkp3WWpJMWVXUlhlR3hqZVVJM1NVUXdMVWxJUW14amJURndaRU5uY0U5NVFqbFBlVUp3WXpOT01WbFhOV3BhV0VveFlrZFdla2xJZERsUGR5SjkuIn0.SAi7-b07DujxaaimLIyWoa_yDqv9kcLpA6QK1Vtse5m12ZSWC4DBoSGj1kqEgxRTC9iDaDKOAxUQYXG4cjaFU0J6ykkTk0-FI0p4A9u9srloJiCt308sf3p04MIaHrKDlNHQv_4bVBFeUztnVw90yc74NJhcWQYln8TxLEsfNak\"}",
+      "Date" : "Tue, 19 Jan 2021 22:46:28 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

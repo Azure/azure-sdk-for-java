@@ -8,17 +8,23 @@ import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyResponse;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jose.crypto.RSASSAVerifier;
+import com.nimbusds.jwt.JWTClaimsSet;
+import com.nimbusds.jwt.SignedJWT;
 import net.minidev.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.ParseException;
@@ -26,7 +32,8 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AttestationPolicyTests extends AttestationClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -71,7 +78,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
     public void testSetAttestationPolicy(HttpClient httpClient, String clientUri, AttestationType attestationType)
-        throws JOSEException, InvalidKeySpecException, NoSuchAlgorithmException {
+        throws JOSEException, InvalidKeySpecException, NoSuchAlgorithmException, ParseException {
 
         ClientTypes clientType = classifyClient(clientUri);
         // We can't set attestation policy on the shared client, so just exit early.
@@ -94,20 +101,31 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             ArrayList<JOSEObject> policySetObjects = getPolicySetObjects(clientUri, signingCertificateBase64, signer);
 
             for (JOSEObject policyObject : policySetObjects) {
-                client.set(attestationType, policyObject.serialize());
+                PolicyResponse response = client.set(attestationType, policyObject.serialize());
+                JWTClaimsSet responseClaims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
+                assertNotNull(responseClaims);
+                assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
+                assertEquals("Updated", responseClaims.getClaims().get("x-ms-policy-result").toString());
+
             }
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | ParseException e) {
             e.printStackTrace();
         } finally {
+            PolicyResponse resetResponse = null;
             switch (clientType) {
                 case Aad: {
-                    client.reset(attestationType, new PlainPolicyResetToken().serialize());
+                    resetResponse = client.reset(attestationType, new PlainPolicyResetToken().serialize());
                     break;
                 }
                 case Isolated:
-                    client.reset(attestationType, new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize());
+                    resetResponse = client.reset(attestationType, new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize());
                     break;
             }
+            JWTClaimsSet resetClaims = verifyAttestationToken(httpClient, clientUri, resetResponse.getToken()).block();
+            assertNotNull(resetClaims);
+            assertTrue(resetClaims.getClaims().containsKey("x-ms-policy-result"));
+            assertEquals("Removed", resetClaims.getClaims().get("x-ms-policy-result").toString());
+
         }
     }
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -130,32 +148,99 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
             ArrayList<JOSEObject> policySetObjects = Assertions.assertDoesNotThrow(() -> getPolicySetObjects(clientUri, signingCertificateBase64, signer));
 
-            try
-            {
-                for (JOSEObject policyObject : policySetObjects) {
-                    StepVerifier.create(client.set(attestationType, policyObject.serialize()))
-                        .assertNext(response -> {})
-                        .verifyComplete();
-                }
-            } finally {
-                switch (clientType) {
-                    case Aad: {
-                        StepVerifier.create(client.reset(attestationType, new PlainPolicyResetToken().serialize()))
-                            .assertNext(response -> {})
-                            .verifyComplete();
-                        break;
-                    }
-                    case Isolated: {
-                        StepVerifier.create(client.reset(attestationType, new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize()))
-                            .assertNext(response -> {})
-                            .verifyComplete();
-                        break;
-                    }
-                    default:
-                        throw new IllegalStateException("Unexpected value: " + clientType);
-                }
+            for (JOSEObject policyObject : policySetObjects) {
+                StepVerifier.create(client.set(attestationType, policyObject.serialize())
+                    .flatMap(response -> {
+                        try {
+                            return verifyAttestationToken(httpClient, clientUri, response.getToken());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }).doOnNext(responseClaims -> {
+                        assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
+                        assertEquals("Updated", responseClaims.getClaims().get("x-ms-policy-result").toString());
+                    }).flatMap(responseClaims -> {
+                        String resetToken = null;
+                        switch (clientType) {
+                            case Aad:
+                                resetToken = new PlainPolicyResetToken().serialize();
+                                break;
+                            case Isolated: {
+                                try {
+                                    resetToken = new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize();
+                                } catch (JOSEException e) {
+                                    e.printStackTrace();
+                                }
+                                break;
+                            }
+                            default:
+                                throw new RuntimeException();
+                        }
+                        return client.reset(attestationType, resetToken)
+                                .flatMap(response -> {
+                                    try {
+                                        return verifyAttestationToken(httpClient, clientUri, response.getToken());
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    return null;
+                                });
+                        })
+                    .doOnNext(responseClaims -> {
+                        assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
+                        assertEquals("Removed", responseClaims.getClaims().get("x-ms-policy-result").toString());
+                    }))
+                    .assertNext(claimSet -> {})
+                    .verifyComplete();
             }
         }
+    }
+
+    /**
+     * Verifies the basic response for a Get Attestation Policy API - this simply verifies that the server
+     * returns a valid JWT and that the JWT contains a base64url encoded attestation policy.
+     * @param client HTTP Client, used when retrieving signing certificates.
+     * @param clientUri Client base URI - used when retrieving client signing certificates.
+     * @param attestationType attestation type - policy results vary by attestation type.
+     * @param policyResponse response from the getPolicy API.
+     */
+    private void verifyBasicGetAttestationPolicyResponse(HttpClient client, String clientUri, AttestationType attestationType, PolicyResponse policyResponse) throws ParseException {
+        assertNotNull(policyResponse);
+        assertNotNull(policyResponse.getToken());
+
+        verifyAttestationToken(client, clientUri, policyResponse.getToken())
+            .subscribe(claims -> {
+                if (claims != null) {
+
+                    String policyDocument = claims.getClaims().get("x-ms-policy").toString();
+
+                    JOSEObject policyJose = null;
+                    try {
+                        policyJose = JOSEObject.parse(policyDocument);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    assert policyJose != null;
+                    JSONObject jsonObject = policyJose.getPayload().toJSONObject();
+                    if (jsonObject != null) {
+                        assertTrue(jsonObject.containsKey("AttestationPolicy"));
+                        String base64urlPolicy = jsonObject.getAsString("AttestationPolicy");
+
+                        byte[] attestationPolicyUtf8 = Base64.getUrlDecoder().decode(base64urlPolicy);
+                        String attestationPolicy;
+                        attestationPolicy = new String(attestationPolicyUtf8, StandardCharsets.UTF_8);
+
+                        assertNotNull(attestationPolicy);
+                    }
+                    else {
+                        assertEquals("Tpm", attestationType.toString());
+                    }
+                } else {
+                    // TPM is allowed to have an empty attestation policy, all the other AttestationTypes have policies.
+                    assertEquals("Tpm", attestationType.toString());
+                }
+            });
     }
 
     /**
@@ -166,7 +251,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
      * @throws InvalidKeySpecException Thrown if the configuration returns an invalid key
      * @throws JOSEException Thrown if we can't sign the JSON.
      */
-    ArrayList<JOSEObject> getPolicySetObjects(String clientUri, String signingCertificateBase64, JWSSigner signer) throws NoSuchAlgorithmException, InvalidKeySpecException, JOSEException {
+    private ArrayList<JOSEObject> getPolicySetObjects(String clientUri, String signingCertificateBase64, JWSSigner signer) throws NoSuchAlgorithmException, InvalidKeySpecException, JOSEException {
         ClientTypes clientType = classifyClient(clientUri);
         ArrayList<JOSEObject> policySetObjects = new ArrayList<>();
 
@@ -206,22 +291,6 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                 throw new IllegalStateException("Unexpected value: " + classifyClient(clientUri));
         }
         return policySetObjects;
-    }
-
-    /**
-     * Create a JWS Signer from the specified PKCS8 encoded signing key.
-     * @param signingKeyBase64 Base64 encoded PKCS8 encoded RSA Private key.
-     * @return JWSSigner created over the specified signing key.
-     * @throws NoSuchAlgorithmException - should never  throws this.
-     * @throws InvalidKeySpecException - Can throw this if the key is invalid.
-     */
-    @NotNull
-    private JWSSigner getJwsSigner(String signingKeyBase64) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        byte[] signingKey = Base64.getDecoder().decode(signingKeyBase64);
-        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(signingKey);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
-        return new RSASSASigner(privateKey);
     }
 }
 

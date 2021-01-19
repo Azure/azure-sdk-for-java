@@ -142,21 +142,11 @@ public final class JsonWebKey {
     /**
      * Creates an instance of JsonWebKey class.
      *
-     * @param alg the alg value to set.
-     * @param kid the kid value to set.
      * @param kty the kty value to set.
-     * @param use the use value to set.
      */
     @JsonCreator
-    public JsonWebKey(
-            @JsonProperty(value = "alg") String alg,
-            @JsonProperty(value = "kid") String kid,
-            @JsonProperty(value = "kty", required = true) String kty,
-            @JsonProperty(value = "use") String use) {
-        this.alg = alg;
-        this.kid = kid;
+    public JsonWebKey(@JsonProperty(value = "kty", required = true) String kty) {
         this.kty = kty;
-        this.use = use;
     }
 
     /**
@@ -168,6 +158,19 @@ public final class JsonWebKey {
      */
     public String getAlg() {
         return this.alg;
+    }
+
+    /**
+     * Set the alg property: The "alg" (algorithm) parameter identifies the algorithm intended for use with the key. The
+     * values used should either be registered in the IANA "JSON Web Signature and Encryption Algorithms" registry
+     * established by [JWA] or be a value that contains a Collision- Resistant Name.
+     *
+     * @param alg the alg value to set.
+     * @return the JsonWebKey object itself.
+     */
+    public JsonWebKey setAlg(String alg) {
+        this.alg = alg;
+        return this;
     }
 
     /**
@@ -305,6 +308,22 @@ public final class JsonWebKey {
     }
 
     /**
+     * Set the kid property: The "kid" (key ID) parameter is used to match a specific key. This is used, for instance,
+     * to choose among a set of keys within a JWK Set during key rollover. The structure of the "kid" value is
+     * unspecified. When "kid" values are used within a JWK Set, different keys within the JWK Set SHOULD use distinct
+     * "kid" values. (One example in which different keys might use the same "kid" value is if they have different "kty"
+     * (key type) values but are considered to be equivalent alternatives by the application using them.) The "kid"
+     * value is a case-sensitive string.
+     *
+     * @param kid the kid value to set.
+     * @return the JsonWebKey object itself.
+     */
+    public JsonWebKey setKid(String kid) {
+        this.kid = kid;
+        return this;
+    }
+
+    /**
      * Get the kty property: The "kty" (key type) parameter identifies the cryptographic algorithm family used with the
      * key, such as "RSA" or "EC". "kty" values should either be registered in the IANA "JSON Web Key Types" registry
      * established by [JWA] or be a value that contains a Collision- Resistant Name. The "kty" value is a case-sensitive
@@ -408,6 +427,19 @@ public final class JsonWebKey {
     }
 
     /**
+     * Set the use property: Use ("public key use") identifies the intended use of the public key. The "use" parameter
+     * is employed to indicate whether a public key is used for encrypting data or verifying the signature on data.
+     * Values are commonly "sig" (signature) or "enc" (encryption).
+     *
+     * @param use the use value to set.
+     * @return the JsonWebKey object itself.
+     */
+    public JsonWebKey setUse(String use) {
+        this.use = use;
+        return this;
+    }
+
+    /**
      * Get the x property: X coordinate for the Elliptic Curve point.
      *
      * @return the x value.
@@ -479,17 +511,8 @@ public final class JsonWebKey {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (getAlg() == null) {
-            throw new IllegalArgumentException("Missing required property alg in model JsonWebKey");
-        }
-        if (getKid() == null) {
-            throw new IllegalArgumentException("Missing required property kid in model JsonWebKey");
-        }
         if (getKty() == null) {
             throw new IllegalArgumentException("Missing required property kty in model JsonWebKey");
-        }
-        if (getUse() == null) {
-            throw new IllegalArgumentException("Missing required property use in model JsonWebKey");
         }
     }
 }
