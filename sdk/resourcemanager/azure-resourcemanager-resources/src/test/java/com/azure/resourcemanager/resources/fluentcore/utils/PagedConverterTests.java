@@ -61,7 +61,7 @@ public class PagedConverterTests {
         AtomicInteger pageCount = new AtomicInteger(0);
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 10, 4, pageCount);
         PagedFlux<String> convertedPagedFlux = PagedConverter.flatMapPage(pagedFlux, item -> Flux.just(item, item + "#"));
-        PagedIterable pagedIterable = new PagedIterable<>(convertedPagedFlux);
+        PagedIterable<String> pagedIterable = new PagedIterable<>(convertedPagedFlux);
 
         pagedIterable.stream().findFirst().get();
 
@@ -74,7 +74,7 @@ public class PagedConverterTests {
         AtomicInteger pageCount = new AtomicInteger(0);
         PagedFlux<String> pagedFlux = mockPagedFlux("base", 0, 3, 2);
         PagedFlux<String> mergedPagedFlux = PagedConverter.mergePagedFlux(pagedFlux, item -> mockPagedFlux(item + "sub", 0, 10, 4, pageCount));
-        PagedIterable pagedIterable = new PagedIterable<>(mergedPagedFlux);
+        PagedIterable<String> pagedIterable = new PagedIterable<>(mergedPagedFlux);
 
         pagedIterable.stream().findFirst().get();
 
