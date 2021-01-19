@@ -16,6 +16,11 @@ jobs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
 
+        PreRunSteps:
+          - script: echo ${{ parameters.OSVmImage }}
+            displayName: 'Print OSVmImage'
+          - script: echo ${{ parameters.Artifacts }}
+            displayName: 'Print Artifacts'
         PostRunSteps:
           - script: |
               python --version
