@@ -142,6 +142,8 @@ com.azure:azure-security-keyvault-jca;1.0.0-beta.2;1.0.0-beta.3
 com.azure.spring:azure-spring-data-gremlin;2.3.1-beta.1;2.3.1-beta.1
 com.azure.spring:azure-spring-boot-starter-data-gremlin;3.0.0-beta.1;3.0.0-beta.1
 com.azure.spring:azure-spring-boot-test-aad;1.0.0;1.0.0
+com.azure.spring:azure-spring-boot-test-aad-b2c;1.0.0;1.0.0
+com.azure.spring:azure-spring-boot-test-selenium-common;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-aad-obo;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-aad-resource-server;1.0.0;1.0.0
 com.azure.spring:azure-spring-boot-test-aad-resource-server-by-filter;1.0.0;1.0.0
