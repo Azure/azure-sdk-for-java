@@ -2,10 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.data.appconfiguration;
 
-import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -22,10 +18,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
-import java.net.HttpURLConnection;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -33,6 +25,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 import reactor.util.context.Context;
+
+import java.net.HttpURLConnection;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
@@ -54,12 +55,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     protected void afterTest() {
         logger.info("Cleaning up created key values.");
         client.listConfigurationSettings(new SettingSelector().setKeyFilter(keyPrefix + "*"))
-                .flatMap(configurationSetting -> {
-                    logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
-                    Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.setReadOnlyWithResponse(configurationSetting, false) : Mono.empty();
-                    return unlock.then(client.deleteConfigurationSettingWithResponse(configurationSetting, false));
-                })
-                .blockLast();
+            .flatMap(configurationSetting -> {
+                logger.info("Deleting key:label [{}:{}]. isReadOnly? {}", configurationSetting.getKey(), configurationSetting.getLabel(), configurationSetting.isReadOnly());
+                Mono<Response<ConfigurationSetting>> unlock = configurationSetting.isReadOnly() ? client.setReadOnlyWithResponse(configurationSetting, false) : Mono.empty();
+                return unlock.then(client.deleteConfigurationSettingWithResponse(configurationSetting, false));
+            })
+            .blockLast();
 
         logger.info("Finished cleaning up values.");
     }
@@ -153,8 +154,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that a configuration is able to be added or updated with set.
-     * When the configuration is read-only updates cannot happen, this will result in a 409.
+     * Tests that a configuration is able to be added or updated with set. When the configuration is read-only updates
+     * cannot happen, this will result in a 409.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
@@ -162,8 +163,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         setConfigurationSettingRunner((expected, update) ->
             StepVerifier.create(client.setConfigurationSettingWithResponse(expected, false))
-                    .assertNext(response -> assertConfigurationEquals(expected, response))
-                    .verifyComplete());
+                .assertNext(response -> assertConfigurationEquals(expected, response))
+                .verifyComplete());
     }
 
     /**
@@ -183,15 +184,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             final String etag = client.addConfigurationSettingWithResponse(initial).block().getValue().getETag();
 
             StepVerifier.create(client.setConfigurationSettingWithResponse(update.setETag(etag), true))
-                    .assertNext(response -> assertConfigurationEquals(update, response))
-                    .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(update, response))
+                .verifyComplete();
 
             StepVerifier.create(client.setConfigurationSettingWithResponse(initial, true))
                 .verifyErrorSatisfies(ex -> assertRestException(ex, HttpResponseException.class, HttpURLConnection.HTTP_PRECON_FAILED));
 
             StepVerifier.create(client.getConfigurationSettingWithResponse(update, null, false))
-                    .assertNext(response -> assertConfigurationEquals(update, response))
-                    .verifyComplete();
+                .assertNext(response -> assertConfigurationEquals(update, response))
+                .verifyComplete();
         });
     }
 
@@ -207,8 +208,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that we can set configuration settings when value is not null or an empty string.
-     * Value is not a required property.
+     * Tests that we can set configuration settings when value is not null or an empty string. Value is not a required
+     * property.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
@@ -276,9 +277,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that configurations are able to be deleted when they exist.
-     * After the configuration has been deleted attempting to get it will result in a 404, the same as if the
-     * configuration never existed.
+     * Tests that configurations are able to be deleted when they exist. After the configuration has been deleted
+     * attempting to get it will result in a 404, the same as if the configuration never existed.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
@@ -326,8 +326,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Tests that when an ETag is passed to delete it will only delete if the current representation of the setting has the ETag.
-     * If the delete ETag doesn't match anything the delete won't happen, this will result in a 412.
+     * Tests that when an ETag is passed to delete it will only delete if the current representation of the setting has
+     * the ETag. If the delete ETag doesn't match anything the delete won't happen, this will result in a 412.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
@@ -354,7 +354,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be thrown.
+     * Test the API will not make a delete call without having a key passed, an IllegalArgumentException should be
+     * thrown.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
@@ -546,13 +547,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         settingSelector.setKeyFilter("prodDBConnection");
         com.azure.core.util.Context context = new com.azure.core.util.Context(SettingFields.KEY, SettingFields.VALUE);
 
-        StepVerifier.create(client.listConfigurationSettings(null, context))
+        StepVerifier.create(client.listConfigurationSettings(null, context, "", true))
             .verifyError();
     }
 
     /**
-     * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those ConfigurationSettings
-     * from the service when filtering by their labels.
+     * Verifies that ConfigurationSettings can be added with different labels and that we can fetch those
+     * ConfigurationSettings from the service when filtering by their labels.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
@@ -662,14 +663,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setConfigurationSettingWithResponse(original, false))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated, false).delayElement(Duration.ofSeconds(2)))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated2, false))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
 
         // Gets all versions of this value so we can get the one we want at that particular date.
         List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).collectList().block();
@@ -680,8 +681,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // We want to fetch the configuration setting when we first updated its value.
         SettingSelector options = new SettingSelector().setKeyFilter(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
         StepVerifier.create(client.listConfigurationSettings(options))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
     }
 
     /**
@@ -699,37 +700,38 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setConfigurationSettingWithResponse(original, false))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated, false))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated2, false))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
 
         // Get all revisions for a key, they are listed in descending order.
         StepVerifier.create(client.listRevisions(new SettingSelector().setKeyFilter(keyName)))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
 
         // Verifies that we can select specific fields.
         StepVerifier.create(client.listRevisions(new SettingSelector().setKeyFilter(keyName).setFields(SettingFields.KEY, SettingFields.ETAG)))
-                .assertNext(response -> validateListRevisions(updated2, response))
-                .assertNext(response -> validateListRevisions(updated, response))
-                .assertNext(response -> validateListRevisions(original, response))
-                .verifyComplete();
+            .assertNext(response -> validateListRevisions(updated2, response))
+            .assertNext(response -> validateListRevisions(updated, response))
+            .assertNext(response -> validateListRevisions(original, response))
+            .verifyComplete();
 
         SettingSelector settingSelector = new SettingSelector();
         settingSelector.setKeyFilter("prodDBConnection");
         com.azure.core.util.Context context = new com.azure.core.util.Context("key", "value");
 
-        StepVerifier.create(client.listRevisions(settingSelector, context))
+        StepVerifier.create(client.listRevisions(settingSelector, context, "", true))
             .verifyError();
 
-        StepVerifier.create(client.listRevisionsFirstPage(null, context).then(client.listRevisionsNextPage(connectionString, context)))
+        StepVerifier.create(client.listRevisionsFirstPage(null, context, "", true)
+            .then(client.listRevisionsNextPage(connectionString, context, "", true)))
             .verifyError();
 
     }
@@ -829,14 +831,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
         // Create 3 revisions of the same key.
         StepVerifier.create(client.setConfigurationSettingWithResponse(original, false))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated, false).delayElement(Duration.ofSeconds(2)))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .verifyComplete();
         StepVerifier.create(client.setConfigurationSettingWithResponse(updated2, false))
-                .assertNext(response -> assertConfigurationEquals(updated2, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated2, response))
+            .verifyComplete();
 
         // Gets all versions of this value.
         List<ConfigurationSetting> revisions = client.listRevisions(new SettingSelector().setKeyFilter(keyName)).collectList().block();
@@ -848,14 +850,14 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // Revisions are returned in descending order from creation date.
         SettingSelector options = new SettingSelector().setKeyFilter(keyName).setAcceptDatetime(revisions.get(1).getLastModified());
         StepVerifier.create(client.listRevisions(options))
-                .assertNext(response -> assertConfigurationEquals(updated, response))
-                .assertNext(response -> assertConfigurationEquals(original, response))
-                .verifyComplete();
+            .assertNext(response -> assertConfigurationEquals(updated, response))
+            .assertNext(response -> assertConfigurationEquals(original, response))
+            .verifyComplete();
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination (ie.
+     * where 'nextLink' has a URL pointing to the next page of results.)
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
@@ -881,8 +883,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and
+     * stream is invoked multiple times. (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
@@ -913,8 +915,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and stream is invoked multiple times.
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.)
+     * Verifies that, given a ton of revisions, we can list the revisions ConfigurationSettings using pagination and
+     * stream is invoked multiple times. (ie. where 'nextLink' has a URL pointing to the next page of results.)
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
@@ -945,8 +947,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
     }
 
     /**
-     * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination
-     * (ie. where 'nextLink' has a URL pointing to the next page of results.
+     * Verifies that, given a ton of existing settings, we can list the ConfigurationSettings using pagination (ie.
+     * where 'nextLink' has a URL pointing to the next page of results.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
@@ -1000,6 +1002,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             .assertNext(response -> assertConfigurationEquals(newExpected, response))
             .verifyComplete();
     }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     @Disabled
@@ -1011,6 +1014,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 return client.deleteConfigurationSettingWithResponse(configurationSetting, false);
             }).blockLast();
     }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
     public void addHeadersFromContextPolicyTest(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {

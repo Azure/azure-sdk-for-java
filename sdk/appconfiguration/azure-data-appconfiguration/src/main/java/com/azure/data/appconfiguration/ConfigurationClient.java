@@ -17,8 +17,6 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 
 import java.time.OffsetDateTime;
 
-import static com.azure.core.util.CoreUtils.addTelemetryValue;
-import static com.azure.core.util.CoreUtils.createTelemetryValue;
 import static com.azure.data.appconfiguration.ConfigurationAsyncClient.createConfiguration;
 
 /**
@@ -97,9 +95,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> addConfigurationSettingWithResponse(ConfigurationSetting setting,
         Context context) {
-        String telemetry = createTelemetryValue(CLASS_NAME, "addConfigurationSetting", false);
-        return client.addConfigurationSetting(setting, addTelemetryValue(context, telemetry))
-            .block();
+        return client.addConfigurationSetting(setting, context, CLASS_NAME, false).block();
     }
 
     /**
@@ -159,9 +155,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
-        String telemetry = createTelemetryValue(CLASS_NAME, "setConfigurationSetting", false);
-        return client.setConfigurationSetting(setting, ifUnchanged, addTelemetryValue(context, telemetry))
-            .block();
+        return client.setConfigurationSetting(setting, ifUnchanged, context, CLASS_NAME, false).block();
     }
 
     /**
@@ -239,10 +233,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> getConfigurationSettingWithResponse(ConfigurationSetting setting,
         OffsetDateTime acceptDateTime, boolean ifChanged, Context context) {
-        String telemetry = createTelemetryValue(CLASS_NAME, "getConfigurationSetting", false);
-        return client.getConfigurationSetting(setting, acceptDateTime, ifChanged,
-            addTelemetryValue(context, telemetry))
-            .block();
+        return client.getConfigurationSetting(setting, acceptDateTime, ifChanged, context, CLASS_NAME, false).block();
     }
 
     /**
@@ -300,9 +291,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> deleteConfigurationSettingWithResponse(ConfigurationSetting setting,
         boolean ifUnchanged, Context context) {
-        String telemetry = createTelemetryValue(CLASS_NAME, "deleteConfigurationSetting", false);
-        return client.deleteConfigurationSetting(setting, ifUnchanged, addTelemetryValue(context, telemetry))
-            .block();
+        return client.deleteConfigurationSetting(setting, ifUnchanged, context, CLASS_NAME, false).block();
     }
 
     /**
@@ -362,8 +351,7 @@ public final class ConfigurationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationSetting> setReadOnlyWithResponse(ConfigurationSetting setting, boolean isReadOnly,
         Context context) {
-        String telemetry = createTelemetryValue(CLASS_NAME, "setReadOnly", false);
-        return client.setReadOnly(setting, isReadOnly, addTelemetryValue(context, telemetry)).block();
+        return client.setReadOnly(setting, isReadOnly, context, CLASS_NAME, false).block();
     }
 
     /**
@@ -402,9 +390,7 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
-        String telemetry = createTelemetryValue(CLASS_NAME, "listConfigurationSettings", false);
-        return new PagedIterable<>(client.listConfigurationSettings(selector,
-            addTelemetryValue(context, telemetry)));
+        return new PagedIterable<>(client.listConfigurationSettings(selector, context, CLASS_NAME, false));
     }
 
     /**
@@ -452,7 +438,6 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
-        String telemetry = createTelemetryValue(CLASS_NAME, "listRevisions", false);
-        return new PagedIterable<>(client.listRevisions(selector, addTelemetryValue(context, telemetry)));
+        return new PagedIterable<>(client.listRevisions(selector, context, CLASS_NAME, false));
     }
 }
