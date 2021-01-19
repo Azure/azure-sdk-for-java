@@ -17,14 +17,10 @@ jobs:
           goals: "verify"
 
         PreRunSteps:
-          - task: PythonScript@0
-            inputs:
-              scriptSource: inline
-              script: |
-                os_parameter = "${{ parameters.OSVmImage }}".lower()
-                print("Job requested to run on OS: %s" % (os_parameter))
-                artifact_list = "${{ parameters.Artifacts }}".lower()
-                print("The artifact list: ", artifact_list)
+          - script: |
+              echo ${{ parameters.OSVmImage }}
+              echo ${{ parameters.Artifacts }}
+            displayName: 'Print crital variables'
 
         PostRunSteps:
           - script: |
