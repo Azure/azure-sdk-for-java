@@ -87,7 +87,7 @@ public final class SmsClientBuilder {
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
-     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @return The updated {@link SmsClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
     public SmsClientBuilder credential(TokenCredential tokenCredential) {
