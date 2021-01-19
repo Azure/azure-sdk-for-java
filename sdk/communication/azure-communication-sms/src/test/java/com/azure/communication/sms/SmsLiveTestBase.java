@@ -54,8 +54,9 @@ public class SmsLiveTestBase extends TestBase {
 
     protected SmsClientBuilder getSmsClientBuilderWithManagedIdentity(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
+        String livetestEndpoint = CONNECTION_STRING.split("=")[1].split(";")[0];
 
-        builder.endpoint(ENDPOINT)
+        builder.endpoint(livetestEndpoint)
                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {
