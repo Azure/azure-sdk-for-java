@@ -111,7 +111,7 @@ public abstract class SparkClientTestBase extends TestBase {
         if (interceptorManager.isPlaybackMode()) {
             httpClient = interceptorManager.getPlaybackClient();
         } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888))).build();
+            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
         }
         policies.add(interceptorManager.getRecordPolicy());
 

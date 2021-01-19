@@ -8,6 +8,7 @@ import com.azure.analytics.synapse.spark.models.SparkBatchJobOptions;
 import com.azure.analytics.synapse.spark.models.SparkSession;
 import com.azure.analytics.synapse.spark.models.SparkSessionOptions;
 import com.azure.analytics.synapse.spark.models.SparkStatement;
+import com.azure.analytics.synapse.spark.models.SparkStatementCollection;
 import com.azure.analytics.synapse.spark.models.SparkStatementLanguageType;
 import com.azure.analytics.synapse.spark.models.SparkStatementOptions;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ public class SparkSessionClientTest extends SparkClientTestBase {
     @Test
     public void crudSparkSession() {
         // arrange
-        String sessionName = testResourceNamer.randomName("spark-session-", 10);
+        String sessionName = testResourceNamer.randomName("spark-session-", 20);
         SparkSessionOptions options = new SparkSessionOptions()
             .setName(sessionName)
             .setDriverMemory("28g")
@@ -79,13 +80,7 @@ public class SparkSessionClientTest extends SparkClientTestBase {
     @Test
     public void crudSparkStatement() throws Exception {
         // arrange
-        SparkBatchClient = clientSetup(httpPipeline -> new SparkClientBuilder()
-            .endpoint(getEndpoint())
-            .pipeline(httpPipeline)
-            .sparkPoolName(getSparkPoolName())
-            .buildSparkBatchClient());
-
-        String sessionName = testResourceNamer.randomName("spark-session-", 10);
+        String sessionName = testResourceNamer.randomName("spark-session-", 20);
         SparkSessionOptions sessionOptions = new SparkSessionOptions()
             .setName(sessionName)
             .setDriverMemory("28g")
@@ -94,25 +89,52 @@ public class SparkSessionClientTest extends SparkClientTestBase {
             .setExecutorCores(4)
             .setExecutorCount(2);
 
-        SparkSession session = client.createSparkSession(sessionOptions, true);
+        SparkSession session = null;
+        SparkStatement expected = null;
 
-        SparkStatementOptions options = new SparkStatementOptions()
-            .setKind(SparkStatementLanguageType.SPARK);
+        try {
+            // act
+            session = client.createSparkSession(sessionOptions, true);
 
-        // act
-        SparkStatement expected = client.createSparkStatement(session.getId(), options);
+            if (!interceptorManager.isPlaybackMode()) {
+                Thread.sleep(360000);
+            }
 
-        // assert
-        assertNotNull(expected);
-        assertEquals(session.getId(), expected.getId());
+            client.resetSparkSessionTimeout(session.getId());
 
-        // act
-        SparkStatement actual = client.getSparkStatement(expected.getId(), expected.getId());
+            String code = "print('hello, Azure CLI')";
 
-        // assert
-        assertSparkStatementEquals(expected, actual);
+            SparkStatementOptions options = new SparkStatementOptions()
+                .setKind(SparkStatementLanguageType.PYSPARK)
+                .setCode(code);
 
-        // clean up
-        client.cancelSparkSession(expected.getId());
+            // act
+            expected = client.createSparkStatement(session.getId(), options);
+
+            // assert
+            assertNotNull(expected);
+            assertEquals(code, expected.getCode());
+
+            // act
+            SparkStatement actual = client.getSparkStatement(session.getId(), expected.getId());
+
+            // assert
+            assertSparkStatementEquals(expected, actual);
+
+            // act
+            SparkStatementCollection list = client.getSparkStatements(session.getId());
+
+            // assert
+            assertEquals(1, list.getTotal());
+            assertSparkStatementEquals(expected, list.getStatements().get(0));
+        } finally {
+            // clean up
+            if (expected != null) {
+                client.cancelSparkStatement(session.getId(), expected.getId());
+            }
+            if (session != null) {
+                client.cancelSparkSession(session.getId());
+            }
+        }
     }
 }
