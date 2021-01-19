@@ -18,8 +18,8 @@
   <packaging>pom</packaging>
 
   <properties>
-    <skipSpringITs>true</skipSpringITs> <!-- If it's true, it will disable integration test for spring-web. -->
-    <skipSpringITsForWebFlux>true</skipSpringITsForWebFlux> <!-- If it's true, it will disable integration test for spring-webmvc and spring-webflux. -->
+    <skipSpringITs>true</skipSpringITs> <!-- If it's true, it will disable integration test for spring-web and spring-webflux. -->
+    <skipSpringITsForWebFlux>true</skipSpringITsForWebFlux> <!-- If it's true, it will disable integration test for spring-webmvc. -->
   </properties>
 
   <dependencyManagement>
