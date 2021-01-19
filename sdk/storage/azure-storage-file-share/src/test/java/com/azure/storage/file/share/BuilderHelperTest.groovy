@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.credential.AzureSasCredential
+import com.azure.core.credential.TokenCredential
 import com.azure.core.http.HttpClient
 import com.azure.core.http.HttpHeaders
 import com.azure.core.http.HttpMethod
@@ -357,6 +359,139 @@ class BuilderHelperTest extends Specification {
             .assertNext({ it.getStatusCode() == 200 })
             .verifyComplete()
 
+    }
+
+    def "Does not throw on ambiguous credentials, without AzureSasCredential"(){
+        when:
+        new ShareClientBuilder()
+            .endpoint(endpoint)
+            .shareName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .sasToken("foo")
+            .buildClient()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new ShareFileClientBuilder()
+            .endpoint(endpoint)
+            .shareName("foo")
+            .resourcePath("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .sasToken("foo")
+            .buildDirectoryClient()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new ShareServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .sasToken("foo")
+            .buildClient()
+
+        then:
+        noExceptionThrown()
+    }
+
+    def "Throws on ambiguous credentials, with AzureSasCredential"() {
+        when:
+        new ShareClientBuilder()
+            .endpoint(endpoint)
+            .shareName("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new ShareClientBuilder()
+            .endpoint(endpoint)
+            .shareName("foo")
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new ShareClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .shareName("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new ShareFileClientBuilder()
+            .endpoint(endpoint)
+            .shareName("foo")
+            .resourcePath("foo")
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildDirectoryClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new ShareFileClientBuilder()
+            .endpoint(endpoint)
+            .shareName("foo")
+            .resourcePath("foo")
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildDirectoryClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new ShareFileClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .shareName("foo")
+            .resourcePath("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildDirectoryClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new ShareServiceClientBuilder()
+            .endpoint(endpoint)
+            .credential(new StorageSharedKeyCredential("foo", "bar"))
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new ShareServiceClientBuilder()
+            .endpoint(endpoint)
+            .sasToken("foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
+
+        when:
+        new ShareServiceClientBuilder()
+            .endpoint(endpoint + "?sig=foo")
+            .credential(new AzureSasCredential("foo"))
+            .buildClient()
+
+        then:
+        thrown(IllegalStateException.class)
     }
 
     private static final class FreshDateTestClient implements HttpClient {

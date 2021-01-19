@@ -3,6 +3,12 @@
 ## 1.5.0-beta.1 (Unreleased)
 
 
+## 1.4.1 (2021-01-11)
+
+### Bug Fixes
+
+- Fixed a bug where environment proxy configurations were not sanitizing the non-proxy host string into a valid `Pattern` format. [#18156](https://github.com/Azure/azure-sdk-for-java/issues/18156)
+
 ## 1.4.0 (2020-11-24)
 
 ### New Features

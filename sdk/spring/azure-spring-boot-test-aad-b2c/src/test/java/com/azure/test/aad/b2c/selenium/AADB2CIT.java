@@ -3,10 +3,14 @@
 
 package com.azure.test.aad.b2c.selenium;
 
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
+import static com.azure.test.aad.b2c.selenium.AADB2CSeleniumITHelper.createDefaultProperteis;
+
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
-import com.azure.test.aad.b2c.utils.AADB2CTestUtils;
-import java.util.Collections;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,42 +27,48 @@ public class AADB2CIT {
 
     private final String JOB_TITLE_A_WORKER = "a worker";
     private final String JOB_TITLE_WORKER = "worker";
+    private AADB2CSeleniumITHelper aadB2CSeleniumITHelper;
 
-    @Test
-    public void testSignIn() throws InterruptedException {
-        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
-            Collections.emptyMap());
-        String name = AADB2CSeleniumITHelper.getName();
-        String userFlowName = AADB2CSeleniumITHelper.getUserFlowName();
-
-        Assert.assertNotNull(name);
-        Assert.assertNotNull(userFlowName);
-        Assert.assertEquals(AADB2CTestUtils.AAD_B2C_SIGN_UP_OR_SIGN_IN, userFlowName);
+    @Before
+    public void initAndSignIn() {
+        aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, createDefaultProperteis());
+        aadB2CSeleniumITHelper.logIn();
     }
 
     @Test
-    public void testProfileEdit() throws InterruptedException {
-        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
-            Collections.emptyMap());
-        String currentJobTitle = AADB2CSeleniumITHelper.getJobTitle();
-        String newJobTitle = JOB_TITLE_A_WORKER.equals(currentJobTitle) ? JOB_TITLE_WORKER : JOB_TITLE_A_WORKER;
-        AADB2CSeleniumITHelper.profileEditJobTitle(newJobTitle);
-        String name = AADB2CSeleniumITHelper.getName();
-        String jobTitle = AADB2CSeleniumITHelper.getJobTitle();
-        String userFlowName = AADB2CSeleniumITHelper.getUserFlowName();
+    public void testSignIn() {
+        String name = aadB2CSeleniumITHelper.getName();
+        String userFlowName = aadB2CSeleniumITHelper.getUserFlowName();
+        Assert.assertNotNull(name);
+        Assert.assertNotNull(userFlowName);
+        Assert.assertEquals(AAD_B2C_SIGN_UP_OR_SIGN_IN, userFlowName);
+    }
 
+    @Test
+    public void testProfileEdit() {
+        aadB2CSeleniumITHelper.profileEditJobTitle(JOB_TITLE_A_WORKER);
+        String currentJobTitle = aadB2CSeleniumITHelper.getJobTitle();
+        String newJobTitle = JOB_TITLE_A_WORKER.equals(currentJobTitle) ? JOB_TITLE_WORKER : JOB_TITLE_A_WORKER;
+        aadB2CSeleniumITHelper.profileEditJobTitle(newJobTitle);
+        String name = aadB2CSeleniumITHelper.getName();
+        String jobTitle = aadB2CSeleniumITHelper.getJobTitle();
+        String userFlowName = aadB2CSeleniumITHelper.getUserFlowName();
         Assert.assertNotNull(name);
         Assert.assertNotNull(jobTitle);
         Assert.assertEquals(newJobTitle, jobTitle);
-        Assert.assertEquals(AADB2CTestUtils.AAD_B2C_PROFILE_EDIT, userFlowName);
+        Assert.assertEquals(AAD_B2C_PROFILE_EDIT, userFlowName);
     }
 
     @Test
-    public void testLogOut() throws InterruptedException {
-        AADB2CSeleniumITHelper AADB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class,
-            Collections.emptyMap());
-        String signInButtonText = AADB2CSeleniumITHelper.logoutAndGetSignInButtonText();
+    public void testLogOut() {
+        aadB2CSeleniumITHelper.logout();
+        String signInButtonText = aadB2CSeleniumITHelper.getSignInButtonText();
         Assert.assertEquals("Sign in", signInButtonText);
+    }
+
+    @After
+    public void destroy() {
+        aadB2CSeleniumITHelper.destroy();
     }
 
     @EnableWebSecurity

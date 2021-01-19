@@ -6,37 +6,44 @@ parameters:
   MaxParallel: 0
   Matrix:
     Linux - Java 8 (AzureCloud):
-      OSVmImage: 'ubuntu-18.04'
+      Pool: azsdk-pool-mms-ubuntu-1804-general
+      OSVmImage: MMSUbuntu18.04
       JavaTestVersion: '1.8'
       DisplayName: 'Linux - Java 8'
       AZURE_TEST_HTTP_CLIENTS: netty
     macOS - Java 8 (AzureCloud):
+      Pool: Azure Pipelines
       OSVmImage: 'macOS-10.15'
       JavaTestVersion: '1.8'
       DisplayName: 'macOS - Java 8'
       AZURE_TEST_HTTP_CLIENTS: okhttp
     Windows - Java 8 (AzureCloud):
-      OSVmImage: 'windows-2019'
+      Pool: azsdk-pool-mms-win-2019-general
+      OSVmImage: MMS2019
       JavaTestVersion: '1.8'
       DisplayName: 'Windows - Java 8'
       AZURE_TEST_HTTP_CLIENTS: netty
     Linux - Java 11 (AzureCloud):
-      OSVmImage: 'ubuntu-18.04'
+      Pool: azsdk-pool-mms-ubuntu-1804-general
+      OSVmImage: MMSUbuntu18.04
       JavaTestVersion: '1.11'
       DisplayName: 'Linux - Java 11'
       AZURE_TEST_HTTP_CLIENTS: okhttp
     macOS - Java 11 (AzureCloud):
+      Pool: Azure Pipelines
       OSVmImage: 'macOS-10.15'
       JavaTestVersion: '1.11'
       DisplayName: 'macOS - Java 11'
       AZURE_TEST_HTTP_CLIENTS: netty
     Windows - Java 11 (AzureCloud):
-      OSVmImage: 'windows-2019'
+      Pool: azsdk-pool-mms-win-2019-general
+      OSVmImage: MMS2019
       JavaTestVersion: '1.11'
       DisplayName: 'Windows - Java 11'
       AZURE_TEST_HTTP_CLIENTS: okhttp
     Linux From Source - Java 11:
-      OSVmImage: 'ubuntu-18.04'
+      Pool: azsdk-pool-mms-ubuntu-1804-general
+      OSVmImage: MMSUbuntu18.04
       JavaTestVersion: '1.11'
       DisplayName: 'From Source: Linux on Java 1.11'
       AZURE_TEST_HTTP_CLIENTS: netty
@@ -79,7 +86,8 @@ jobs:
         ${{ insert }}: ${{ parameters.Matrix }}
         ${{ if eq(parameters.TestCanary, 'true') }}:
           Linux - Java 11 (AzureCloudCanary):
-            OSVmImage: 'ubuntu-18.04'
+            Pool: azsdk-pool-mms-ubuntu-1804-general
+            OSVmImage: MMSUbuntu18.04
             JavaTestVersion: '1.11'
             DisplayName: 'Linux - Java 11'
             SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
@@ -88,10 +96,11 @@ jobs:
       maxParallel: ${{ parameters.MaxParallel }}
 
     pool:
+      name: $(Pool)
       vmImage: $(OSVmImage)
 
     steps:
-      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+#      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
 
       - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
 
