@@ -18,8 +18,7 @@
   <packaging>pom</packaging>
 
   <properties>
-    <skipSpringITs>true</skipSpringITs> <!-- If it's true, it will disable integration test for spring-web and spring-webflux. -->
-    <skipSpringWebFluxTests>true</skipSpringWebFluxTests> <!-- If it's true, it will disable integration test for spring-webmvc. -->
+    <skipSpringITs>true</skipSpringITs>
   </properties>
 
   <dependencyManagement>
@@ -48,20 +47,6 @@
             </goals>
             <configuration>
               <skipITs>${skipSpringITs}</skipITs>
-            </configuration>
-          </execution>
-          <execution>
-            <id>springWebFluxTests</id>
-            <goals>
-              <goal>integration-test</goal>
-            </goals>
-            <configuration>
-              <skipTests>${skipSpringWebFluxTests}</skipTests>
-              <skipITs>${skipSpringITs}</skipITs>
-              <classpathDependencyExcludes>
-                <classpathDependencyExclude>org.springframework:spring-webmvc</classpathDependencyExclude>
-                <classpathDependencyExclude>org.apache.tomcat.embed:tomcat-embed-core</classpathDependencyExclude>
-              </classpathDependencyExcludes>
             </configuration>
           </execution>
         </executions>

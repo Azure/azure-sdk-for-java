@@ -26,10 +26,6 @@
       <version>5.2.10.RELEASE</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-embedder</artifactId>
       <version>3.6.2</version> <!-- {x-version-update;org.apache.maven:maven-embedder;external_dependency} -->
