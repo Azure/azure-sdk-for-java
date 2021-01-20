@@ -23,7 +23,7 @@ public class NettyHttpHeadersTests {
         headers.set("a", "c");
         assertEquals("c", headers.getValue("a"));
 
-        headers.set("a", null);
+        headers.set("a", (String) null);
         assertNull(headers.getValue("a"));
 
         headers.set("A", "");
@@ -32,7 +32,7 @@ public class NettyHttpHeadersTests {
         headers.set("A", "b");
         assertEquals("b", headers.getValue("A"));
 
-        headers.set("a", null);
+        headers.set("a", (String) null);
         assertNull(headers.getValue("a"));
     }
 
