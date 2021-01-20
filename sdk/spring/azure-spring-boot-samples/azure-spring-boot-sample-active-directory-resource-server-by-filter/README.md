@@ -108,7 +108,7 @@ azure:
 
 
 
-1. If your azure account follows format xxx@xxx.partner.onmschina.cn, configure property `environment: cn` to use [Azure China](https://docs.microsoft.com/azure/china/china-welcome), the default value is `global`.
+1. If your azure account follows format xxx@xxx.partner.onmschina.cn, configure property `environment: cn` to use [Azure China][azure-china], the default value is `global`.
 
 2. Put Application ID and client-secret in `client-id` and `client-secret` respectively e.g.
 ```properties
@@ -151,3 +151,4 @@ redirectUriTemplate: xxxxxx-your-redirect-uri-xxxxxx
 <!-- LINKS -->
 
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[azure-china]: https://docs.microsoft.com/azure/china/china-welcome
