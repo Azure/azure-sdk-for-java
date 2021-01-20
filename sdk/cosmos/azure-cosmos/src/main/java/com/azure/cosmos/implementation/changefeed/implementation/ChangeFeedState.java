@@ -10,6 +10,8 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -33,8 +35,12 @@ public abstract class ChangeFeedState extends JsonSerializable {
 
     public abstract String getContainerRid();
 
-    public static ChangeFeedState fromJson(String json) {
-        checkNotNull(json, "Argument 'json' must not be null");
+    public static ChangeFeedState fromBase64EncodedJson(String base64EncodedJson) {
+        checkNotNull(base64EncodedJson, "Argument 'base64EncodedJson' must not be null");
+
+        String json = new String(
+            Base64.getUrlDecoder().decode(base64EncodedJson),
+            StandardCharsets.UTF_8);
 
         final ObjectMapper mapper = Utils.getSimpleObjectMapper();
 
@@ -55,7 +61,13 @@ public abstract class ChangeFeedState extends JsonSerializable {
 
     @Override
     public String toString() {
-        return this.toJson();
+        String json = this.toJson();
+
+        if (json == null) {
+            return null;
+        }
+
+        return Base64.getUrlEncoder().encodeToString(json.getBytes(StandardCharsets.UTF_8));
     }
 
     public abstract void populateRequest(RxDocumentServiceRequest request, int maxItemCount);

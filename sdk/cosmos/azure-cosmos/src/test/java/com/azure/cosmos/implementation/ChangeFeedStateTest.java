@@ -11,6 +11,8 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import org.testng.annotations.Test;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,8 +31,11 @@ public class ChangeFeedStateTest {
             startFromSettings,
             null);
 
-        String representation = stateWithoutContinuation.toJson();
-        assertThat(representation)
+        String base64EncodedJsonRepresentation = stateWithoutContinuation.toString();
+        String jsonRepresentation = new String(
+            Base64.getUrlDecoder().decode(base64EncodedJsonRepresentation),
+            StandardCharsets.UTF_8);
+        assertThat(jsonRepresentation)
             .isEqualTo(
                 String.format(
                     "{\"V\":0," +
@@ -41,15 +46,15 @@ public class ChangeFeedStateTest {
                     containerRid,
                     pkRangeId));
 
-        assertThat(ChangeFeedState.fromJson(representation))
+        assertThat(ChangeFeedState.fromBase64EncodedJson(base64EncodedJsonRepresentation))
             .isNotNull()
             .isInstanceOf(ChangeFeedStateV1.class);
 
         ChangeFeedStateV1 stateWithoutContinuationDeserialized =
-            (ChangeFeedStateV1)ChangeFeedState.fromJson(representation);
+            (ChangeFeedStateV1)ChangeFeedState.fromBase64EncodedJson(base64EncodedJsonRepresentation);
 
-        String representationAfterDeserialization = stateWithoutContinuationDeserialized.toJson();
-        assertThat(representationAfterDeserialization).isEqualTo(representation);
+        String representationAfterDeserialization = stateWithoutContinuationDeserialized.toString();
+        assertThat(representationAfterDeserialization).isEqualTo(base64EncodedJsonRepresentation);
 
         String continuationDummy = UUID.randomUUID().toString();
         String continuationJson = String.format(
@@ -69,8 +74,12 @@ public class ChangeFeedStateTest {
 
         ChangeFeedState stateWithContinuation =
             stateWithoutContinuation.setContinuation(continuation);
-        representation = stateWithContinuation.toJson();
-        assertThat(representation)
+        base64EncodedJsonRepresentation = stateWithContinuation.toString();
+        jsonRepresentation = new String(
+            Base64.getUrlDecoder().decode(base64EncodedJsonRepresentation),
+            StandardCharsets.UTF_8);
+
+        assertThat(jsonRepresentation)
             .isEqualTo(
                 String.format(
                     "{\"V\":0," +
@@ -81,14 +90,14 @@ public class ChangeFeedStateTest {
                     containerRid,
                     continuationJson));
 
-        assertThat(ChangeFeedState.fromJson(representation))
+        assertThat(ChangeFeedState.fromBase64EncodedJson(base64EncodedJsonRepresentation))
             .isNotNull()
             .isInstanceOf(ChangeFeedStateV1.class);
 
         ChangeFeedStateV1 stateWithContinuationDeserialized =
-            (ChangeFeedStateV1)ChangeFeedState.fromJson(representation);
+            (ChangeFeedStateV1)ChangeFeedState.fromBase64EncodedJson(base64EncodedJsonRepresentation);
 
-        representationAfterDeserialization = stateWithContinuationDeserialized.toJson();
-        assertThat(representationAfterDeserialization).isEqualTo(representation);
+        representationAfterDeserialization = stateWithContinuationDeserialized.toString();
+        assertThat(representationAfterDeserialization).isEqualTo(base64EncodedJsonRepresentation);
     }
 }

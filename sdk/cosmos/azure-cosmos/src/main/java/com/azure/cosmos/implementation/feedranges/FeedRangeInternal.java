@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -30,17 +32,23 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
             return (FeedRangeInternal)feedRange;
         }
 
-        String json = feedRange.toJsonString();
-        return fromJsonString(json);
+        String json = feedRange.toString();
+        return fromBase64EncodedJsonString(json);
     }
 
     /**
      * Creates a range from a previously obtained string representation.
      *
-     * @param json A string representation of a feed range
+     * @param base64EncodedJson A string representation of a feed range
      * @return A feed range
      */
-    public static FeedRangeInternal fromJsonString(String json) {
+    public static FeedRangeInternal fromBase64EncodedJsonString(String base64EncodedJson) {
+        checkNotNull(base64EncodedJson, "Argument 'base64EncodedJson' must not be null");
+
+        String json = new String(
+            Base64.getUrlDecoder().decode(base64EncodedJson),
+            StandardCharsets.UTF_8);
+
         FeedRangeInternal parsedRange = FeedRangeInternal.tryParse(json);
 
         if (parsedRange == null) {
@@ -72,9 +80,6 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         setProperties(this, false);
     }
 
-    @Override
-    public abstract String toString();
-
     public abstract void removeProperties(JsonSerializable serializable);
 
     public void setProperties(
@@ -87,8 +92,14 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
     }
 
     @Override
-    public String toJsonString() {
-        return this.toJson();
+    public String toString() {
+        String json = this.toJson();
+
+        if (json == null) {
+            return null;
+        }
+
+        return Base64.getUrlEncoder().encodeToString(json.getBytes(StandardCharsets.UTF_8));
     }
 
     public static FeedRangeInternal tryParse(final String jsonString) {

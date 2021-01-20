@@ -19,8 +19,8 @@ public interface FeedRange {
      * @return A feed range
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public static FeedRange fromJsonString(String json) {
-        return FeedRangeInternal.fromJsonString(json);
+    public static FeedRange fromString(String json) {
+        return FeedRangeInternal.fromBase64EncodedJsonString(json);
     }
 
     /**
@@ -29,7 +29,7 @@ public interface FeedRange {
      * @return a JSON string representing the feed range
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String toJsonString();
+    public String toString();
 
     /**
      * Creates a range for a certain logical partition

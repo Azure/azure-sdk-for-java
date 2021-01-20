@@ -27,7 +27,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -277,9 +279,11 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(feedRanges)
             .isNotNull()
             .hasSize(1);
-        assertThat(feedRanges.get(0).toJsonString())
+        assertThat(feedRanges.get(0).toString())
             .isNotNull()
-            .isEqualTo("{\"PKRangeId\":\"0\"}");
+            .isEqualTo(Base64.getUrlEncoder().encodeToString(
+                "{\"PKRangeId\":\"0\"}".getBytes(StandardCharsets.UTF_8)
+            ));
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)

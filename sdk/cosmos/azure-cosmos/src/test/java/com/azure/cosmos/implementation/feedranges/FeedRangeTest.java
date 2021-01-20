@@ -25,7 +25,9 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
@@ -215,16 +217,19 @@ public class FeedRangeTest {
     public void feedRangeEPK_toJsonFromJson() {
         Range<String> range = new Range<>("AA", "BB", true, false);
         FeedRangeEpkImpl feedRange = new FeedRangeEpkImpl(range);
-        String representation = feedRange.toJson();
-        assertThat(representation)
+        String base64EncodedJsonRepresentation = feedRange.toString();
+        String jsonRepresentation = new String(
+            Base64.getUrlDecoder().decode(base64EncodedJsonRepresentation),
+            StandardCharsets.UTF_8);
+        assertThat(jsonRepresentation)
             .isEqualTo("{\"Range\":{\"min\":\"AA\",\"max\":\"BB\"}}");
-        assertThat(FeedRange.fromJsonString(representation))
+        assertThat(FeedRange.fromString(base64EncodedJsonRepresentation))
             .isNotNull()
             .isInstanceOf(FeedRangeEpkImpl.class);
         FeedRangeEpkImpl feedRangeDeserialized =
-            (FeedRangeEpkImpl)FeedRange.fromJsonString(representation);
-        String representationAfterDeserialization = feedRangeDeserialized.toJson();
-        assertThat(representationAfterDeserialization).isEqualTo(representation);
+            (FeedRangeEpkImpl)FeedRange.fromString(base64EncodedJsonRepresentation);
+        String representationAfterDeserialization = feedRangeDeserialized.toString();
+        assertThat(representationAfterDeserialization).isEqualTo(base64EncodedJsonRepresentation);
         assertThat(feedRangeDeserialized.getRange()).isNotNull();
         assertThat(feedRangeDeserialized.getRange().getMin())
             .isNotNull()
@@ -457,15 +462,18 @@ public class FeedRangeTest {
     public void feedRangePKRangeId_toJsonFromJson() {
         String pkRangeId = UUID.randomUUID().toString();
         FeedRangePartitionKeyRangeImpl feedRange = new FeedRangePartitionKeyRangeImpl(pkRangeId);
-        String representation = feedRange.toJson();
-        assertThat(representation).isEqualTo("{\"PKRangeId\":\"" + pkRangeId + "\"}");
-        assertThat(FeedRange.fromJsonString(representation))
+        String base64EncodedJsonRepresentation = feedRange.toString();
+        String jsonRepresentation = new String(
+            Base64.getUrlDecoder().decode(base64EncodedJsonRepresentation),
+            StandardCharsets.UTF_8);
+        assertThat(jsonRepresentation).isEqualTo("{\"PKRangeId\":\"" + pkRangeId + "\"}");
+        assertThat(FeedRange.fromString(base64EncodedJsonRepresentation))
             .isNotNull()
             .isInstanceOf(FeedRangePartitionKeyRangeImpl.class);
         FeedRangePartitionKeyRangeImpl feedRangeDeserialized =
-            (FeedRangePartitionKeyRangeImpl)FeedRange.fromJsonString(representation);
-        String representationAfterDeserialization = feedRangeDeserialized.toJson();
-        assertThat(representationAfterDeserialization).isEqualTo(representation);
+            (FeedRangePartitionKeyRangeImpl)FeedRange.fromString(base64EncodedJsonRepresentation);
+        String representationAfterDeserialization = feedRangeDeserialized.toString();
+        assertThat(representationAfterDeserialization).isEqualTo(base64EncodedJsonRepresentation);
     }
 
     @Test(groups = "unit")
@@ -587,15 +595,18 @@ public class FeedRangeTest {
         PartitionKeyInternal partitionKey = PartitionKeyInternalUtils.createPartitionKeyInternal(
             "Test");
         FeedRangePartitionKeyImpl feedRange = new FeedRangePartitionKeyImpl(partitionKey);
-        String representation = feedRange.toJson();
-        assertThat(representation).isEqualTo("{\"PK\":[\"Test\"]}");
-        assertThat(FeedRange.fromJsonString(representation))
+        String base64EncodedJsonRepresentation = feedRange.toString();
+        String jsonRepresentation = new String(
+            Base64.getUrlDecoder().decode(base64EncodedJsonRepresentation),
+            StandardCharsets.UTF_8);
+        assertThat(jsonRepresentation).isEqualTo("{\"PK\":[\"Test\"]}");
+        assertThat(FeedRange.fromString(base64EncodedJsonRepresentation))
             .isNotNull()
             .isInstanceOf(FeedRangePartitionKeyImpl.class);
         FeedRangePartitionKeyImpl feedRangeDeserialized =
-            (FeedRangePartitionKeyImpl)FeedRange.fromJsonString(representation);
-        String representationAfterDeserialization = feedRangeDeserialized.toJson();
-        assertThat(representationAfterDeserialization).isEqualTo(representation);
+            (FeedRangePartitionKeyImpl)FeedRange.fromString(base64EncodedJsonRepresentation);
+        String representationAfterDeserialization = feedRangeDeserialized.toString();
+        assertThat(representationAfterDeserialization).isEqualTo(base64EncodedJsonRepresentation);
     }
 
     private static RxDocumentServiceRequest createMockRequest(boolean hasProperties) {

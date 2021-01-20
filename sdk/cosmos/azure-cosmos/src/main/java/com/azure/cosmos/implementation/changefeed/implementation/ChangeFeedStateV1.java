@@ -87,7 +87,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
         }
 
         this.continuation.replaceContinuation(serverContinuationToken);
-        return this.toJson();
+        return this.toString();
     }
 
     @Override

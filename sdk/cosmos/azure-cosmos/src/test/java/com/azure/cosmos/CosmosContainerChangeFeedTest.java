@@ -19,10 +19,8 @@ import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
-import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -35,11 +33,13 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -703,7 +703,11 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
 
                 CosmosChangeFeedRequestOptions effectiveOptions;
                 if (continuations.containsKey(i)) {
-                    logger.info(String.format("Continuation BEFORE: %s", continuations.get(i)));
+                    logger.info(String.format(
+                        "Continuation BEFORE: %s",
+                        new String(
+                            Base64.getUrlDecoder().decode(continuations.get(i)),
+                            StandardCharsets.UTF_8)));
                     effectiveOptions = CosmosChangeFeedRequestOptions
                         .createForProcessingFromContinuation(continuations.get(i));
                     if (onNewRequestOptions != null) {
@@ -725,7 +729,9 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 logger.info(
                     String.format(
                         "Continuation AFTER: %s, records retrieved: %d",
-                        continuations.get(i),
+                        new String(
+                            Base64.getUrlDecoder().decode(continuations.get(i)),
+                            StandardCharsets.UTF_8),
                         results.size()));
 
                 totalRetrievedEventCount += results.size();

@@ -115,18 +115,12 @@ public class ServiceItemLease implements Lease {
         checkNotNull(containerRid, "Argument 'containerRid' must not be null.");
         checkNotNull(feedRange, "Argument 'feedRange' must not be null.");
 
-        if (this.ContinuationToken != null &&
-            this.ContinuationToken.startsWith("{\"V\":")) {
-
-            return ChangeFeedStateV1.fromJson(this.ContinuationToken);
-        } else {
-            return new ChangeFeedStateV1(
-                containerRid,
-                feedRange,
-                ChangeFeedMode.INCREMENTAL,
-                ChangeFeedStartFromInternal.createFromETagAndFeedRange(this.ContinuationToken, feedRange),
-                null);
-        }
+        return new ChangeFeedStateV1(
+            containerRid,
+            feedRange,
+            ChangeFeedMode.INCREMENTAL,
+            ChangeFeedStartFromInternal.createFromETagAndFeedRange(this.ContinuationToken, feedRange),
+            null);
     }
 
     @Override

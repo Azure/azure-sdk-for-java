@@ -232,11 +232,6 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
     }
 
     @Override
-    public String toString() {
-        return this.range.toString();
-    }
-
-    @Override
     public void setProperties(JsonSerializable serializable, boolean populateProperties) {
         checkNotNull(serializable, "Argument 'serializable' must not be null.");
         if (populateProperties) {
