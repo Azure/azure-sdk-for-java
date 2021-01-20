@@ -10,14 +10,14 @@ import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
 import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType, Decimal, DecimalType, DoubleType,
     FloatType, IntegerType, LongType, MapType, NullType, StringType, StructField, StructType, TimestampType}
 
-import java.time.{OffsetDateTime, ZoneId, ZoneOffset}
+import java.time.{OffsetDateTime, ZoneOffset}
 import java.time.format.DateTimeFormatter
 
 class CosmosRowConverterSpec extends UnitSpec {
     //scalastyle:off null
     //scalastyle:off multiple.string.literals
 
-    val objectMapper = new ObjectMapper();
+    val objectMapper = new ObjectMapper()
 
     "basic spark row" should "translate to ObjectNode" in {
 
@@ -118,7 +118,7 @@ class CosmosRowConverterSpec extends UnitSpec {
         val colName2 = "testCol2"
         val currentMillis = System.currentTimeMillis()
         val colVal1 = new Date(currentMillis)
-        val colVal2 = new Timestamp(colVal1.getTime())
+        val colVal2 = new Timestamp(colVal1.getTime)
 
         val row = new GenericRowWithSchema(
             Array(colVal1, colVal2),
@@ -167,11 +167,11 @@ class CosmosRowConverterSpec extends UnitSpec {
 
         val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
         val node1 = objectNode.get(colName1)
-        node1.get("x").asText() shouldEqual colVal1.get("x").get
+        node1.get("x").asText() shouldEqual colVal1("x")
         node1.get("y").isNull shouldBe true
         val node2 = objectNode.get(colName2)
-        node2.get("x").asInt() shouldEqual colVal2.get("x").get
-        node2.get("y").asInt() shouldEqual colVal2.get("y").get
+        node2.get("x").asInt() shouldEqual colVal2("x")
+        node2.get("y").asInt() shouldEqual colVal2("y")
     }
 
     "struct in spark row" should "translate to ObjectNode" in {
@@ -207,6 +207,60 @@ class CosmosRowConverterSpec extends UnitSpec {
         val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
         row.getInt(0) shouldEqual colVal1
         row.getString(1) shouldEqual colVal2
+    }
+
+    "numeric types in ObjectNode" should "translate to Row" in {
+        val colName1 = "testCol1"
+        val colName2 = "testCol2"
+        val colName3 = "testCol3"
+        val colName4 = "testCol4"
+
+        val colVal1 : Double = 3.5
+        val colVal2 : Float = 1e14f
+        val colVal3 : Long = 1000000000
+        val colVal4 : java.math.BigDecimal = new java.math.BigDecimal(4.6)
+
+        val objectNode: ObjectNode = objectMapper.createObjectNode()
+        objectNode.put(colName1, colVal1)
+        objectNode.put(colName2, colVal2)
+        objectNode.put(colName3, colVal3)
+        objectNode.put(colName4, colVal4)
+
+        val schema = StructType(Seq(StructField(colName1, DoubleType), StructField(colName2, FloatType),
+            StructField(colName3, LongType), StructField(colName4, DecimalType(precision = 2, scale = 2))))
+
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        row.getDouble(0) shouldEqual colVal1
+        row.getDouble(1) shouldEqual colVal2
+        row.getLong(2) shouldEqual colVal3
+        row.getDecimal(3) shouldEqual colVal4
+    }
+
+    "numeric types as strings in ObjectNode" should "translate to Row" in {
+        val colName1 = "testCol1"
+        val colName2 = "testCol2"
+        val colName3 = "testCol3"
+        val colName4 = "testCol4"
+
+        val colVal1 : Double = 3.5
+        val colVal2 : Float = 1e14f
+        val colVal3 : Long = 1000000000
+        val colVal4 : java.math.BigDecimal = new java.math.BigDecimal(4.6)
+
+        val objectNode: ObjectNode = objectMapper.createObjectNode()
+        objectNode.put(colName1, colVal1.toString)
+        objectNode.put(colName2, colVal2.toString)
+        objectNode.put(colName3, colVal3.toString)
+        objectNode.put(colName4, colVal4.toString)
+
+        val schema = StructType(Seq(StructField(colName1, DoubleType), StructField(colName2, FloatType),
+            StructField(colName3, LongType), StructField(colName4, DecimalType(precision = 2, scale = 2))))
+
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        row.getDouble(0) shouldEqual colVal1
+        row.getFloat(1) shouldEqual colVal2
+        row.getLong(2) shouldEqual colVal3
+        row.getDecimal(3) shouldEqual colVal4
     }
 
     "null type in ObjectNode" should "translate to Row" in {

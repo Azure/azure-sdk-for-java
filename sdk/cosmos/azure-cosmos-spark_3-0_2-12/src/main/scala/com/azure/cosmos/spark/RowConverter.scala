@@ -197,6 +197,11 @@ object CosmosRowConverter
         case (isJsonNumber(), FloatType) => value.asDouble()
         case (isJsonNumber(), LongType) => value.asLong()
         case (isJsonNumber(), _) => value.asInt()
+        case (textNode: TextNode, DoubleType) => textNode.asText.toDouble
+        case (textNode: TextNode, DecimalType()) => new java.math.BigDecimal(textNode.asText)
+        case (textNode: TextNode, FloatType) => textNode.asText.toFloat
+        case (textNode: TextNode, LongType) => textNode.asText.toLong
+        case (textNode: TextNode, IntegerType) => textNode.asText.toInt
         case _ =>
             this.logError(s"Unsupported datatype conversion [Value: $value] of ${value.getClass}] to $dataType]")
             value.asText() // Defaulting to a string representation for values that we cannot convert
