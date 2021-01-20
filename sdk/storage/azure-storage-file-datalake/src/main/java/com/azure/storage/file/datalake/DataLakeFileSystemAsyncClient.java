@@ -65,7 +65,7 @@ import static com.azure.core.util.FluxUtil.pagedFluxError;
  * <p>
  * Please refer to the
  *
- * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">
+ * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction">
  *     Azure Docs</a> for more information on file systems.
  *
  * <p>

@@ -85,7 +85,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  * <p>
  * Please refer to the
  *
- * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction?toc=%2fazure%2fstorage%2fblobs%2ftoc.json">Azure
+ * <a href="https://docs.microsoft.com/azure/storage/blobs/data-lake-storage-introduction">Azure
  * Docs</a> for more information.
  */
 @ServiceClient(builder = DataLakePathClientBuilder.class, isAsync = true)
