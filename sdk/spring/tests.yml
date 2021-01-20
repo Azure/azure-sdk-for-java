@@ -71,7 +71,7 @@ jobs:
       parameters:
         TestName: LiveTestInAzureChina
         ScenarioName: AzureChinaCloud
-
+        SubscriptionConfiguration: $(sub-config-cn-test-resources)
         Artifacts:
           - name: azure-spring-boot-test-core
             groupId: com.azure.spring
