@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.gremlin;
 
-import com.microsoft.spring.data.gremlin.repository.GremlinRepository;
-import com.microsoft.spring.data.gremlin.repository.config.GremlinRepositoryConfigurationExtension;
-import com.microsoft.spring.data.gremlin.repository.support.GremlinRepositoryFactoryBean;
+import com.azure.spring.data.gremlin.repository.GremlinRepository;
+import com.azure.spring.data.gremlin.repository.config.GremlinRepositoryConfigurationExtension;
+import com.azure.spring.data.gremlin.repository.support.GremlinRepositoryFactoryBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

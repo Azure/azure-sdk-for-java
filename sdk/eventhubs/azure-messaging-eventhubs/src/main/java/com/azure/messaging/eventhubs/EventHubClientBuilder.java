@@ -500,7 +500,7 @@ public class EventHubClientBuilder {
         }
 
         if (scheduler == null) {
-            scheduler = Schedulers.elastic();
+            scheduler = Schedulers.boundedElastic();
         }
 
         if (prefetchCount == null) {

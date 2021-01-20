@@ -365,7 +365,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         logger.debug("ParallelQuery: flux mergeSequential" +
                          " concurrency {}, prefetch {}", fluxConcurrency, fluxPrefetch);
         return Flux.mergeSequential(obs, fluxConcurrency, fluxPrefetch)
-            .compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), this.cosmosQueryRequestOptions));
+            .transformDeferred(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), this.cosmosQueryRequestOptions));
     }
 
     @Override

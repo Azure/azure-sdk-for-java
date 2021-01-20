@@ -2,12 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.gremlin;
 
+import com.azure.spring.data.gremlin.common.GremlinConfig;
+import com.azure.spring.data.gremlin.common.GremlinFactory;
+import com.azure.spring.data.gremlin.conversion.MappingGremlinConverter;
+import com.azure.spring.data.gremlin.mapping.GremlinMappingContext;
+import com.azure.spring.data.gremlin.query.GremlinTemplate;
 import com.azure.spring.telemetry.TelemetrySender;
-import com.microsoft.spring.data.gremlin.common.GremlinConfig;
-import com.microsoft.spring.data.gremlin.common.GremlinFactory;
-import com.microsoft.spring.data.gremlin.conversion.MappingGremlinConverter;
-import com.microsoft.spring.data.gremlin.mapping.GremlinMappingContext;
-import com.microsoft.spring.data.gremlin.query.GremlinTemplate;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

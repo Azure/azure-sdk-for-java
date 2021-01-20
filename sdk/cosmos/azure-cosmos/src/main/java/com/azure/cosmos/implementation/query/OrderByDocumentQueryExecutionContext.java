@@ -538,7 +538,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
         //// In more mathematical terms
         //// 1) <x, y> always comes before <z, y> where x < z
         //// 2) <i, j> always come before <i, k> where j < k
-        return this.orderByObservable.compose(new ItemToPageTransformer<T>(tracker,
+        return this.orderByObservable.transformDeferred(new ItemToPageTransformer<T>(tracker,
                 maxPageSize,
                 this.queryMetricMap,
                 this::getContinuationToken));

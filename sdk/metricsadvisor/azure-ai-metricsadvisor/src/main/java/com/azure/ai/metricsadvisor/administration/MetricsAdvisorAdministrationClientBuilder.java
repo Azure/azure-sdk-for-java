@@ -176,6 +176,7 @@ public final class MetricsAdvisorAdministrationClientBuilder {
         return new MetricsAdvisorAdministrationAsyncClient(advisorRestAPIOpenAPIV2, serviceVersion);
     }
 
+    @SuppressWarnings("deprecation")
     private HttpPipeline getDefaultHttpPipeline(Configuration buildConfiguration) {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();

@@ -20,7 +20,7 @@ import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpClientResponse;
 import reactor.netty.http.client.HttpClientState;
 import reactor.netty.resources.ConnectionProvider;
-import reactor.netty.tcp.ProxyProvider;
+import reactor.netty.transport.ProxyProvider;
 
 import java.nio.charset.Charset;
 import java.time.Duration;
@@ -69,29 +69,23 @@ class ReactorNettyClient implements HttpClient {
 
     private void configureChannelPipelineHandlers() {
         Configs configs = this.httpClientConfig.getConfigs();
-        this.httpClient = this.httpClient.tcpConfiguration(tcpClient -> {
 
-            if (this.httpClientConfig.getProxy() != null) {
-                tcpClient =
-                    tcpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP).address(this.httpClientConfig.getProxy().getAddress()));
-            }
-            tcpClient =
-                tcpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()));
-            if (LoggerFactory.getLogger(REACTOR_NETWORK_LOG_CATEGORY).isTraceEnabled()) {
-                tcpClient = tcpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
-            }
-            //  By default, keep alive is enabled on http client
-            tcpClient = tcpClient.option(ChannelOption.CONNECT_TIMEOUT_MILLIS,
-                (int) configs.getConnectionAcquireTimeout().toMillis());
+        if (this.httpClientConfig.getProxy() != null) {
+            this.httpClient = this.httpClient.proxy(typeSpec -> typeSpec.type(ProxyProvider.Proxy.HTTP)
+                .address(this.httpClientConfig.getProxy().getAddress()));
+        }
 
-            return tcpClient;
-        }).httpResponseDecoder(httpResponseDecoderSpec -> {
-            httpResponseDecoderSpec.maxInitialLineLength(configs.getMaxHttpInitialLineLength());
-            httpResponseDecoderSpec.maxHeaderSize(configs.getMaxHttpHeaderSize());
-            httpResponseDecoderSpec.maxChunkSize(configs.getMaxHttpChunkSize());
-            httpResponseDecoderSpec.validateHeaders(true);
-            return httpResponseDecoderSpec;
-        });
+        if (LoggerFactory.getLogger(REACTOR_NETWORK_LOG_CATEGORY).isTraceEnabled()) {
+            this.httpClient = this.httpClient.wiretap(REACTOR_NETWORK_LOG_CATEGORY, LogLevel.INFO);
+        }
+
+        this.httpClient.secure(sslContextSpec -> sslContextSpec.sslContext(configs.getSslContext()))
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) configs.getConnectionAcquireTimeout().toMillis())
+            .httpResponseDecoder(httpResponseDecoderSpec ->
+                httpResponseDecoderSpec.maxInitialLineLength(configs.getMaxHttpInitialLineLength())
+                    .maxHeaderSize(configs.getMaxHttpHeaderSize())
+                    .maxChunkSize(configs.getMaxHttpChunkSize())
+                    .validateHeaders(true));
     }
 
     @Override

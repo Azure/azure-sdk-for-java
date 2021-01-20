@@ -5,7 +5,6 @@ import com.azure.core.http.netty.ReactorNettyClientProvider;
 
 module com.azure.http.netty {
     requires transitive com.azure.core;
-    requires reactor.netty;
     requires io.netty.buffer;
     requires io.netty.common;
     requires io.netty.transport;
@@ -13,6 +12,9 @@ module com.azure.http.netty {
     requires io.netty.codec;
     requires io.netty.codec.http;
     requires io.netty.handler.proxy;
+    requires reactor.netty;
+    requires reactor.netty.core;
+    requires reactor.netty.http;
 
     exports com.azure.core.http.netty;
 

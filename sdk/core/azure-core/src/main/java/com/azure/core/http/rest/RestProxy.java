@@ -499,7 +499,7 @@ public final class RestProxy implements InvocationHandler {
         final Mono<HttpDecodedResponse> asyncExpectedResponse =
             ensureExpectedStatus(asyncHttpDecodedResponse, methodParser)
                 .doOnEach(RestProxy::endTracingSpan)
-                .subscriberContext(reactor.util.context.Context.of("TRACING_CONTEXT", context));
+                .contextWrite(reactor.util.context.Context.of("TRACING_CONTEXT", context));
 
         final Object result;
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Mono.class)) {

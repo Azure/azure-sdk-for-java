@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation.clientTelemetry;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;

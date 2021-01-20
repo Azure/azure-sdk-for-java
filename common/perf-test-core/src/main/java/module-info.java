@@ -10,4 +10,6 @@ module com.azure.core.test.perf {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires com.azure.core;
+    requires reactor.netty.http;
+    requires reactor.netty.core;
 }

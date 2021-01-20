@@ -48,7 +48,7 @@ class OrderByUtils {
                                                                                                  List<SortOrder> sortOrders) {
         return producer
                 .produceAsync()
-                .compose(new OrderByUtils.PageToItemTransformer<T>(klass, tracker, queryMetricsMap, targetRangeToOrderByContinuationTokenMap, sortOrders));
+                .transformDeferred(new OrderByUtils.PageToItemTransformer<T>(klass, tracker, queryMetricsMap, targetRangeToOrderByContinuationTokenMap, sortOrders));
     }
 
     private static class PageToItemTransformer<T extends Resource> implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<OrderByRowResult<T>>> {

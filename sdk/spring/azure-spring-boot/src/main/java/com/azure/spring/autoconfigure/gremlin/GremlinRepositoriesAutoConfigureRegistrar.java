@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.gremlin;
 
-import com.microsoft.spring.data.gremlin.repository.config.EnableGremlinRepositories;
-import com.microsoft.spring.data.gremlin.repository.config.GremlinRepositoryConfigurationExtension;
+import com.azure.spring.data.gremlin.repository.config.EnableGremlinRepositories;
+import com.azure.spring.data.gremlin.repository.config.GremlinRepositoryConfigurationExtension;
 import org.springframework.boot.autoconfigure.data.AbstractRepositoryConfigurationSourceSupport;
 import org.springframework.data.repository.config.RepositoryConfigurationExtension;
 

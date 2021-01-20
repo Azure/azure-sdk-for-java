@@ -188,7 +188,7 @@ public class PagedFluxTest {
         CountDownLatch multiPageLatch = new CountDownLatch(2);
         pagedFlux
             .byPage()
-            .subscriberContext(Context.of("hello", "context"))
+            .contextWrite(Context.of("hello", "context"))
             .subscribe(pagedResponse -> assertTrue(pagedResponse instanceof PagedResponse));
 
         boolean completed = singlePageLatch.await(1, TimeUnit.SECONDS);
@@ -216,7 +216,7 @@ public class PagedFluxTest {
 
         pagedFlux
             .byPage()
-            .subscriberContext(Context.of("hello", "context"))
+            .contextWrite(Context.of("hello", "context"))
             .subscribe(pagedResponse -> assertTrue(pagedResponse instanceof PagedResponse));
         completed = multiPageLatch.await(1, TimeUnit.SECONDS);
         assertTrue(completed);

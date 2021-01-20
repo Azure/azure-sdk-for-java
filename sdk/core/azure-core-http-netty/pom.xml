@@ -110,7 +110,7 @@
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
-      <version>0.9.15.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+      <version>1.0.2</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
 
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Netty -->
@@ -137,26 +137,26 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.12.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.1</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.7.0</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.7.0</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.6.3</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.7.0</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -169,7 +169,7 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>3.3.3</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>3.6.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -191,7 +191,7 @@
                 <include>io.netty:netty-handler-proxy:[4.1.54.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
                 <include>io.netty:netty-transport-native-unix-common:[4.1.54.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-unix-common;external_dependency} -->
                 <include>io.netty:netty-transport-native-epoll:[4.1.54.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty:[0.9.15.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty:[1.0.2]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>io.netty:netty-transport-native-kqueue:[4.1.54.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-kqueue;external_dependency} -->
               </includes>
             </bannedDependencies>

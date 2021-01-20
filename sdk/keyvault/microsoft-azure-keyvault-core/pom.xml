@@ -34,7 +34,9 @@
     </site>
   </distributionManagement>
 
-  <scm><url>https://github.com/Azure/azure-sdk-for-java</url></scm>
+  <scm>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
+  </scm>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -43,16 +45,16 @@
 
   <dependencies>
     <!-- COMPILE DEPENDENCY -->
-  	<dependency>
-  		<groupId>org.apache.commons</groupId>
-  		<artifactId>commons-lang3</artifactId>
-    <version>3.10</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
-  	</dependency>
-  	<dependency>
-  		<groupId>com.google.guava</groupId>
-  		<artifactId>guava</artifactId>
-    <version>29.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
-  	</dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.11</version> <!-- {x-version-update;org.apache.commons:commons-lang3;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>29.0-jre</version> <!-- {x-version-update;com.google.guava:guava;external_dependency} -->
+    </dependency>
   </dependencies>
 
   <build>
