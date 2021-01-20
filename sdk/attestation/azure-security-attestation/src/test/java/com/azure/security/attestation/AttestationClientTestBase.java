@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.security.attestation;
 
 import com.azure.core.credential.TokenCredential;
@@ -46,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AttestationClientTestBase extends TestBase {
 
-    private static final String dataPlaneScope ="https://attest.azure.net/.default";
+    private static final String DataPlaneScope = "https://attest.azure.net/.default";
 
     enum ClientTypes {
         Shared,
@@ -54,8 +56,7 @@ public class AttestationClientTestBase extends TestBase {
         Aad,
     }
 
-    ClientTypes classifyClient(@NotNull String clientUri)
-    {
+    ClientTypes classifyClient(@NotNull String clientUri) {
         assertNotNull(clientUri);
         String regionShortName = Configuration.getGlobalConfiguration().get("locationShortName");
         String sharedUri = "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net";
@@ -69,8 +70,7 @@ public class AttestationClientTestBase extends TestBase {
         throw new IllegalArgumentException();
     }
 
-    InputStream base64ToStream(String base64)
-    {
+    InputStream base64ToStream(String base64) {
         byte[] decoded = Base64.getDecoder().decode(base64);
         return new ByteArrayInputStream(decoded);
     }
@@ -88,7 +88,7 @@ public class AttestationClientTestBase extends TestBase {
 
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, dataPlaneScope));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, DataPlaneScope));
         }
 
         if (getTestMode() == TestMode.RECORD) {

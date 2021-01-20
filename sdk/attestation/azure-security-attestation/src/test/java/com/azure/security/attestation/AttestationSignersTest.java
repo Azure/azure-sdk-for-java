@@ -43,7 +43,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
         StepVerifier.create(attestationBuilder.buildSigningCertificatesAsyncClient().get())
             .assertNext(certs -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, certs)))
-        .verifyComplete();
+            .verifyComplete();
 
     }
 
@@ -64,7 +64,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
             assertNotNull(key.getKid());
             assertNotNull(key.getX5C());
             Assertions.assertNotEquals(0, key.getX5C().size());
-            key.getX5C().forEach (base64cert -> {
+            key.getX5C().forEach(base64cert -> {
                 try {
                     Certificate cert = cf.generateCertificate(base64ToStream(base64cert));
 

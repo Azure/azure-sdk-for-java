@@ -54,7 +54,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
         LinkedHashMap<String, Object> metadataConfig = (LinkedHashMap<String, Object>) metadataConfigResponse;
 
         assertEquals(clientUri, metadataConfig.get("issuer"));
-        assertEquals(clientUri +"/certs", metadataConfig.get("jwks_uri"));
+        assertEquals(clientUri + "/certs", metadataConfig.get("jwks_uri"));
     }
 
 

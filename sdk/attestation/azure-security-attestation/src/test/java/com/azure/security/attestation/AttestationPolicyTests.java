@@ -129,59 +129,58 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         PolicyAsyncClient client = attestationBuilder.buildPolicyAsyncClient();
-        {
-            String signingCertificateBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningCertificate");
-            String signingKeyBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
 
-            JWSSigner signer = Assertions.assertDoesNotThrow(() -> getJwsSigner(signingKeyBase64));
+        String signingCertificateBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningCertificate");
+        String signingKeyBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
 
-            ArrayList<JOSEObject> policySetObjects = Assertions.assertDoesNotThrow(() -> getPolicySetObjects(clientUri, signingCertificateBase64, signer));
+        JWSSigner signer = Assertions.assertDoesNotThrow(() -> getJwsSigner(signingKeyBase64));
 
-            for (JOSEObject policyObject : policySetObjects) {
-                StepVerifier.create(client.set(attestationType, policyObject.serialize())
-                    .flatMap(response -> {
-                        try {
-                            return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    }).doOnNext(responseClaims -> {
-                        assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
-                        assertEquals("Updated", responseClaims.getClaims().get("x-ms-policy-result").toString());
-                    }).flatMap(responseClaims -> {
-                        String resetToken = null;
-                        switch (clientType) {
-                            case Aad:
-                                resetToken = new PlainPolicyResetToken().serialize();
-                                break;
-                            case Isolated:
+        ArrayList<JOSEObject> policySetObjects = Assertions.assertDoesNotThrow(() -> getPolicySetObjects(clientUri, signingCertificateBase64, signer));
+
+        for (JOSEObject policyObject : policySetObjects) {
+            StepVerifier.create(client.set(attestationType, policyObject.serialize())
+                .flatMap(response -> {
+                    try {
+                        return verifyAttestationToken(httpClient, clientUri, response.getToken());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }).doOnNext(responseClaims -> {
+                    assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
+                    assertEquals("Updated", responseClaims.getClaims().get("x-ms-policy-result").toString());
+                }).flatMap(responseClaims -> {
+                    String resetToken = null;
+                    switch (clientType) {
+                        case Aad:
+                            resetToken = new PlainPolicyResetToken().serialize();
+                            break;
+                        case Isolated:
+                            try {
+                                resetToken = new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize();
+                            } catch (JOSEException e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        default:
+                            throw new RuntimeException("Cannot ever hit this - unknown client type: " + clientType.toString());
+                    }
+                    return client.reset(attestationType, resetToken)
+                            .flatMap(response -> {
                                 try {
-                                    resetToken = new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize();
-                                } catch (JOSEException e) {
+                                    return verifyAttestationToken(httpClient, clientUri, response.getToken());
+                                } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
-                                break;
-                            default:
-                                throw new RuntimeException("Cannot ever hit this - unknown client type: " + clientType.toString());
-                        }
-                        return client.reset(attestationType, resetToken)
-                                .flatMap(response -> {
-                                    try {
-                                        return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
-                                    return null;
-                                });
-                        })
-                    .doOnNext(responseClaims -> {
-                        assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
-                        assertEquals("Removed", responseClaims.getClaims().get("x-ms-policy-result").toString());
-                    }))
-                    .assertNext(claimSet -> {})
-                    .verifyComplete();
-            }
+                                return null;
+                            });
+                    })
+                .doOnNext(responseClaims -> {
+                    assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
+                    assertEquals("Removed", responseClaims.getClaims().get("x-ms-policy-result").toString());
+                }))
+                .assertNext(claimSet -> {})
+                .verifyComplete();
         }
     }
 
