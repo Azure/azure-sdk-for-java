@@ -1,7 +1,8 @@
 # Release History
 
 ## 3.2.0-beta.1 (Unreleased)
-
+### Breaking Changes
+- Exposed `userNameAttributeName` to configure the user's name.
 
 ## 3.0.0 (2020-12-30)
 
