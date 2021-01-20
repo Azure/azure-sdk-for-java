@@ -34,6 +34,7 @@ public final class AzureMonitorExporterBuilder {
     private String instrumentationKey;
     private String endpoint;
     private String connectionString;
+    private AzureMonitorExporterServiceVersion serviceVersion;
 
     /**
      * Creates an instance of {@link AzureMonitorExporterBuilder}.
@@ -168,6 +169,17 @@ public final class AzureMonitorExporterBuilder {
      */
     public AzureMonitorExporterBuilder instrumentationKey(String instrumentationKey) {
         this.instrumentationKey = Objects.requireNonNull(instrumentationKey, "'instrumentationKey' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the Azure Monitor service version.
+     *
+     * @param serviceVersion The Azure Monitor service version.
+     * @return The update {@link AzureMonitorExporterBuilder} object.
+     */
+    public AzureMonitorExporterBuilder serviceVersion(AzureMonitorExporterServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 
