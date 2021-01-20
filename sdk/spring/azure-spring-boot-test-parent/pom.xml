@@ -63,6 +63,7 @@
               <skipITs>${skipSpringITs}</skipITs>
               <classpathDependencyExcludes>
                 <classpathDependencyExclude>org.springframework:spring-webmvc</classpathDependencyExclude>
+                <classpathDependencyExclude>org.apache.tomcat.embed:tomcat-embed-core</classpathDependencyExclude>
               </classpathDependencyExcludes>
             </configuration>
           </execution>
