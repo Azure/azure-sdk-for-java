@@ -9,6 +9,8 @@ trigger:
   paths:
     include:
       - sdk/attestation/
+    exclude:
+      - sdk/attestation/mgmt-v2020_10_01
 
 pr:
   branches:
@@ -19,7 +21,13 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/attestation/
+      - sdk/attestation/ci.yml
+      - sdk/attestation/pom.xml
+      - sdk/attestation/test-resources.json
+      - sdk/attestation/tests.yml
+      - sdk/attestation/azure-security-attestation
+    exclude:
+      - sdk/attestation/mgmt-v2020_10_01
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
