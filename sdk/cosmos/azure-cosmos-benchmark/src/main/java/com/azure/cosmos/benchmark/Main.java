@@ -11,7 +11,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.azure.cosmos.benchmark.Configuration.Operation.*;
+import static com.azure.cosmos.benchmark.Configuration.Operation.CtlWorkload;
+import static com.azure.cosmos.benchmark.Configuration.Operation.LinkedInCtlWorkload;
+import static com.azure.cosmos.benchmark.Configuration.Operation.ReadThroughputWithMultipleClients;
 
 
 public class Main {

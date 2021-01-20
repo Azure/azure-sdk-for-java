@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
-import static com.azure.cosmos.benchmark.linkedin.impl.Constants.*;
+import static com.azure.cosmos.benchmark.linkedin.impl.Constants.DELETED_INDICATOR;
 
 
 /**

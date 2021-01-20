@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.azure.cosmos.benchmark.linkedin.impl.Constants.*;
-import static com.azure.cosmos.models.ThroughputProperties.*;
+import static com.azure.cosmos.benchmark.linkedin.impl.Constants.PARTITION_KEY_PATH;
+import static com.azure.cosmos.models.ThroughputProperties.createManualThroughput;
 
 
 public class ResourceManager {

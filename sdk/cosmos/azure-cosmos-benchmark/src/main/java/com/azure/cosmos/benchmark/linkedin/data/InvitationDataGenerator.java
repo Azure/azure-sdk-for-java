@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import static com.azure.cosmos.benchmark.linkedin.impl.Constants.*;
+import static com.azure.cosmos.benchmark.linkedin.impl.Constants.PARTITION_KEY;
 
 
 public class InvitationDataGenerator {

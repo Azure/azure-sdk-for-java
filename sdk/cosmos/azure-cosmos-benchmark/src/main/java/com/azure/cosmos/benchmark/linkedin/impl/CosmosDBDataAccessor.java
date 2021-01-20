@@ -5,7 +5,6 @@ import com.azure.cosmos.benchmark.linkedin.impl.keyextractor.KeyExtractor;
 import com.azure.cosmos.benchmark.linkedin.impl.metrics.MetricsFactory;
 import com.azure.cosmos.benchmark.linkedin.impl.models.GetRequestOptions;
 import com.azure.cosmos.benchmark.linkedin.impl.models.Result;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.google.common.base.Preconditions;
 import java.time.Clock;
 import javax.annotation.concurrent.ThreadSafe;

@@ -5,7 +5,7 @@ import java.time.Duration;
 import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 
-import static com.microsoft.applicationinsights.core.dependencies.http.HttpStatus.*;
+import static com.microsoft.applicationinsights.core.dependencies.http.HttpStatus.SC_INTERNAL_SERVER_ERROR;
 
 
 /**
