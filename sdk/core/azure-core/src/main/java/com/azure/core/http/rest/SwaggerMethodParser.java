@@ -149,7 +149,12 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                     if (!headerName.isEmpty()) {
                         final String headerValue = header.substring(colonIndex + 1).trim();
                         if (!headerValue.isEmpty()) {
-                            this.headers.set(headerName, headerValue);
+                            if (headerValue.contains(",")) {
+                                // there are multiple values for this header, so we split them out
+                                this.headers.set(headerName, Arrays.asList(headerValue.split(",")));
+                            } else {
+                                this.headers.set(headerName, headerValue);
+                            }
                         }
                     }
                 }
@@ -297,7 +302,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders httpHeaders) {
         for (HttpHeader header : headers) {
-            httpHeaders.set(header.getName(), header.getValue());
+            httpHeaders.set(header.getName(), header.getValuesList());
         }
 
         if (swaggerMethodArguments == null) {

@@ -3,6 +3,7 @@
 
 package com.azure.core.util;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +37,13 @@ public class Header {
         this.name = name;
         this.values = new LinkedList<>();
         this.values.add(value);
+    }
+
+    public Header(String name, String... values) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        this.name = name;
+        this.values = new LinkedList<>();
+        this.values.addAll(Arrays.asList(values));
     }
 
     public Header(String name, List<String> values) {

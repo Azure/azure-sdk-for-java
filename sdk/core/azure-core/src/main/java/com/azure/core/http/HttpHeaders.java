@@ -111,6 +111,11 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return this;
     }
 
+    public HttpHeaders setAll(Map<String, List<String>> headers) {
+        headers.forEach(this::set);
+        return this;
+    }
+
     /**
      * Gets the {@link HttpHeader header} for the provided header name. {@code Null} is returned if the header isn't
      * found.

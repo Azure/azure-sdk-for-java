@@ -201,10 +201,10 @@ public class MockHttpClient extends NoOpHttpClient {
         return body;
     }
 
-    private static Map<String, String> toMap(HttpHeaders headers) {
-        final Map<String, String> result = new HashMap<>();
+    private static Map<String, List<String>> toMap(HttpHeaders headers) {
+        final Map<String, List<String>> result = new HashMap<>();
         for (final HttpHeader header : headers) {
-            result.put(header.getName(), header.getValue());
+            result.put(header.getName(), header.getValuesList());
         }
         return result;
     }
