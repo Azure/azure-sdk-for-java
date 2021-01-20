@@ -34,7 +34,6 @@ public class Header {
     public Header(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        this.cachedStringValue = value;
         this.values = new LinkedList<>();
         this.values.add(value);
     }
@@ -60,9 +59,7 @@ public class Header {
      * @return the value of this Header
      */
     public String getValue() {
-        if (cachedStringValue == null) {
-            cachedStringValue = String.join(",", values);
-        }
+        checkCachedStringValue();
         return cachedStringValue;
     }
 
@@ -72,9 +69,7 @@ public class Header {
      * @return the values of this {@link Header} that are separated by a comma
      */
     public String[] getValues() {
-        if (cachedStringValues == null) {
-            cachedStringValues = values.toArray(new String[] { });
-        }
+        checkCachedStringValue();
         return cachedStringValues;
     }
 
@@ -88,9 +83,9 @@ public class Header {
      * @param value the value to add
      */
     public void addValue(String value) {
+        this.values.add(value);
         this.cachedStringValue = null;
         this.cachedStringValues = null;
-        this.values.add(value);
     }
 
     /**
@@ -100,6 +95,16 @@ public class Header {
      */
     @Override
     public String toString() {
+        checkCachedStringValue();
         return name + ":" + cachedStringValue;
+    }
+
+    private void checkCachedStringValue() {
+        if (cachedStringValues == null) {
+            cachedStringValues = values.toArray(new String[] { });
+        }
+        if (cachedStringValue == null) {
+            cachedStringValue = String.join(",", values);
+        }
     }
 }

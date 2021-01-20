@@ -68,13 +68,46 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return set(name, value);
     }
 
+    /**
+     * Sets a {@link HttpHeader header} with the given name and value. If a header with same name already exists then
+     * the value will be overwritten. If the given value is null, the header with the given name will be removed.
+     *
+     * @param name the name to set in the header. If it is null, this method will return with no changes to the headers.
+     * @param value the value
+     * @return The updated HttpHeaders object
+     */
     public HttpHeaders set(String name, String value) {
-        headers.put(formatKey(name), new HttpHeader(name, value));
+        if (name == null) {
+            return this;
+        }
+        name = formatKey(name);
+        if (value == null) {
+            remove(name);
+        } else {
+            headers.put(name, new HttpHeader(name, value));
+        }
         return this;
     }
 
+    /**
+     * Sets a {@link HttpHeader header} with the given name and the list of values provided, such that the given
+     * values will be comma-separated when necessary. If a header with same name already exists then the
+     * values will be overwritten. If the given values list is null, the header with the given name will be removed.
+     *
+     * @param name the name
+     * @param values the values that will be comma-separated as appropriate
+     * @return The updated HttpHeaders object
+     */
     public HttpHeaders set(String name, List<String> values) {
-        headers.put(formatKey(name), new HttpHeader(name, values));
+        if (name == null) {
+            return this;
+        }
+        name = formatKey(name);
+        if (values == null) {
+            remove(name);
+        } else {
+            headers.put(name, new HttpHeader(name, values));
+        }
         return this;
     }
 
