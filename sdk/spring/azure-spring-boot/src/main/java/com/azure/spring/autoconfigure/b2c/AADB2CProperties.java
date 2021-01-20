@@ -96,6 +96,9 @@ public class AADB2CProperties {
         return getReplyURLPath(replyUrl);
     }
 
+    /**
+     * UserFlows
+     */
     @Validated
     public static class UserFlows {
 
