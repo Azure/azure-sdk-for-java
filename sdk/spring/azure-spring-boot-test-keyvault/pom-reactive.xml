@@ -12,8 +12,8 @@
     <relativePath>../azure-spring-boot-test-parent</relativePath>
   </parent>
 
-  <artifactId>azure-spring-boot-test-keyvault-webflux</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-keyvault;current} -->
+  <artifactId>azure-spring-boot-test-keyvault-reactive</artifactId>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-keyvault-reactive;current} -->
 
   <dependencies>
     <dependency>
