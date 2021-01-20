@@ -23,8 +23,8 @@ Maven dependency for the Azure Key Vault Administration library. Add it to your 
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-security-keyvault-administration</artifactId>
-    <version>4.0.0-beta.3</version>
+    <artifactId>azure-security-attestation</artifactId>
+    <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -34,7 +34,7 @@ Maven dependency for the Azure Key Vault Administration library. Add it to your 
 - [Azure Subscription][azure_subscription]
 - An existing [Azure Attestation][azure_attestation]. If you need to create an attestation instance, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-instance-name>` with your own, unique names:
 
-    ```Bash
+    ```bash
     az attestation create --resource-group <your-resource-group-name> --name <your-key-vault-name>
     ```
 
@@ -70,7 +70,7 @@ Each example in the *Examples* section starts with an H3 that describes the exam
 
 Use the `create_thing` method to create a Thing reference; this method does not make a network call. To persist the Thing in the service, call `Thing.save`.
 
-```Python
+```python
 thing = client.create_thing(id, name)
 thing.save()
 ```
@@ -79,7 +79,7 @@ thing.save()
 
 The `get_thing` method retrieves a Thing from the service. The `id` parameter is the unique ID of the Thing, not its "name" property.
 
-```Python
+```python
 thing = client.get_thing(id)
 ```
 
@@ -87,7 +87,7 @@ thing = client.get_thing(id)
 
 Use `list_things` to get one or more Thing objects from the service. If there are no Things available, a `404` exception is thrown (see [Troubleshooting](#troubleshooting) for details on handling exceptions).
 
-```Python
+```python
 things = client.list_things()
 ```
 
