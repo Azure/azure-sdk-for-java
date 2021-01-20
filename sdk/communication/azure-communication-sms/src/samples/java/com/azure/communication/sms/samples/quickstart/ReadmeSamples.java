@@ -40,7 +40,7 @@ public class ReadmeSamples {
         // Build a new SmsClient
         SmsClient smsClient = smsClientBuilder.buildClient();
 
-
+        //Send an sms to one phone number
         List<PhoneNumber> to = new ArrayList<PhoneNumber>();
         to.add(new PhoneNumber("<to-phone-number>"));
 
@@ -59,8 +59,27 @@ public class ReadmeSamples {
         for (SendSmsResponseItem messageResponseItem
             : response) {
             System.out.println("MessageId: " + messageResponseItem.getMessageId());
-
         }
+
+        //Send an sms to multiple phone numbers
+        List<PhoneNumber> toMultiplePhones = new ArrayList<PhoneNumber>();
+        to.add(new PhoneNumber("<to-phone-number1>"));
+        to.add(new PhoneNumber("<to-phone-number2>"));
+
+        // Send the message to a list of  phone Numbers and check the response for a messages ids
+        PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.sendMessage(
+            new PhoneNumber("<leased-phone-number>"),
+            toMultiplePhones,
+            "your message",null,
+            options /* Optional */);
+
+        for (SendSmsResponseItem messageResponseItem
+            : responseMultiplePhones) {
+            System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
+        }
+
+
+
 
 
     }

@@ -56,11 +56,8 @@ SmsClient smsClient = smsClientBuilder.buildClient();
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L69-L78 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L69-L75 -->
 ```java
-// Create an HttpClient builder of your choice and customize it
-HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
 // Your can find your connection string from your resource in the Azure Portal
 String connectionString = "<connection_string>";
 
@@ -78,30 +75,28 @@ Use the `sendMessage` function to send a new message to a list of phone numbers.
 Once you send the message, you'll receive a response where you can access several
 properties such as the message id with the `response.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L43-L64 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L43-L62 -->
 ```java
+//Send an sms
+List<PhoneNumber> to = new ArrayList<PhoneNumber>();
+to.add(new PhoneNumber("<to-phone-number>"));
 
+// SendSmsOptions is an optional field. It can be used
+// to enable a delivery report to the Azure Event Grid
+SendSmsOptions options = new SendSmsOptions();
+options.setEnableDeliveryReport(true);
 
+// Send the message to a list of  phone Nunbers and check the response for a messages ids
+PagedIterable<SendSmsResponseItem> response = smsClient.sendMessage(
+    new PhoneNumber("<leased-phone-number>"),
+    to,
+    "your message",null,
+    options /* Optional */);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+for (SendSmsResponseItem messageResponseItem
+    : response) {
+    System.out.println("MessageId: " + messageResponseItem.getMessageId());
+}
 ```
 
 ## Contributing
