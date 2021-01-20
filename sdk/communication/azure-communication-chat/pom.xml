@@ -18,8 +18,8 @@
 
   <name>Microsoft Azure client library for chat application</name>
   <description>
-    This package contains a Java SDK for Chat Azure Communication Service. 
-    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-chat/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-chat/CHANGELOG.md. 
+    This package contains a Java SDK for Chat Azure Communication Service.
+    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-chat/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-chat/CHANGELOG.md.
     Microsoft Azure Communication Chat quickstart - https://docs.microsoft.com/azure/communication-services/quickstarts/chat/get-started?pivots=programming-language-java
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
@@ -34,10 +34,10 @@
   <scm>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
   </scm>
-  
+
   <properties>
     <jacoco.min.linecoverage>0.79</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.50</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.45</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
