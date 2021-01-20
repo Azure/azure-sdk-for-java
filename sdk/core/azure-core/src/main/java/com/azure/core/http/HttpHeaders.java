@@ -30,7 +30,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param headers the map of initial headers
      */
     public HttpHeaders(Map<String, String> headers) {
-        headers.forEach(this::put);
+        headers.forEach(this::set);
     }
 
     /**
@@ -40,7 +40,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public HttpHeaders(Iterable<HttpHeader> headers) {
         for (final HttpHeader header : headers) {
-            this.put(header.getName(), header.getValue());
+            this.set(header.getName(), header.getValue());
         }
     }
 
@@ -61,13 +61,20 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param name the name
      * @param value the value
      * @return The updated HttpHeaders object
+     * @deprecated Use {@link #set(String, String)} instead.
      */
+    @Deprecated
     public HttpHeaders put(String name, String value) {
         headers.put(formatKey(name), new HttpHeader(name, value));
         return this;
     }
 
-    public HttpHeaders put(String name, List<String> values) {
+    public HttpHeaders set(String name, String value) {
+        headers.put(formatKey(name), new HttpHeader(name, value));
+        return this;
+    }
+
+    public HttpHeaders set(String name, List<String> values) {
         headers.put(formatKey(name), new HttpHeader(name, values));
         return this;
     }

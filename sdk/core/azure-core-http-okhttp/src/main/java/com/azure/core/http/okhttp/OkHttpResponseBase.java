@@ -60,7 +60,7 @@ abstract class OkHttpResponseBase extends HttpResponse {
     private static HttpHeaders fromOkHttpHeaders(Headers headers) {
         HttpHeaders httpHeaders = new HttpHeaders();
         for (String headerName : headers.names()) {
-            httpHeaders.put(headerName, headers.get(headerName));
+            httpHeaders.set(headerName, headers.get(headerName));
         }
         return httpHeaders;
     }

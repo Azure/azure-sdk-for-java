@@ -17,8 +17,6 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +41,7 @@ public class CookiePolicy implements HttpPipelinePolicy {
 
             Map<String, List<String>> requestCookies = cookies.get(uri, cookieHeaders);
             for (Map.Entry<String, List<String>> entry : requestCookies.entrySet()) {
-                httpRequest.getHeaders().put(entry.getKey(), entry.getValue());
+                httpRequest.getHeaders().set(entry.getKey(), entry.getValue());
             }
 
             return next.process().map(httpResponse -> {
