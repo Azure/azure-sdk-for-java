@@ -1,2 +1,2 @@
 npm i -g autorest
-autorest readme.md --generate-sync-async-clients
+autorest autorest.md --generate-sync-async-clients

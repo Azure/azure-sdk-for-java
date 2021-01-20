@@ -1,4 +1,4 @@
-# Microsoft Azure Attestation client library for Java
+# Azure Attestation client library for Java
 
 Use the guidelines in each section of this template to ensure consistency and readability of your README. The README resides in your package's GitHub repository at the root of its directory within the repo. It's also used as the package distribution page (NuGet, PyPi, npm, etc.) and as a Quickstart on docs.microsoft.com. 
 
@@ -16,16 +16,33 @@ Use the guidelines in each section of this template to ensure consistency and re
 > TIP: Your README should be as **brief** as possible but **no more brief** than necessary to get a developer new to Azure, the service, or the package up and running quickly. Keep it brief, but include everything a developer needs to make their first API call successfully.
 
 ## Getting started
+### Adding the package to your project
+Maven dependency for the Azure Key Vault Administration library. Add it to your project's POM file.
 
-This section should include everything a developer needs to do to install and create their first client connection *very quickly*.
+[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-administration;current})
+```xml
+<dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-security-keyvault-administration</artifactId>
+    <version>4.0.0-beta.3</version>
+</dependency>
+```
+[//]: # ({x-version-update-end})
 
-### Install the package
+### Prerequisites
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+- [Azure Subscription][azure_subscription]
+- An existing [Azure Attestation][azure_attestation]. If you need to create an attestation instance, you can use the [Azure Cloud Shell][azure_cloud_shell] to create one with this Azure CLI command. Replace `<your-resource-group-name>` and `<your-instance-name>` with your own, unique names:
 
-First, provide instruction for obtaining and installing the package or library. This section might include only a single line of code, like `pip install package-name`, but should enable a developer to successfully install the package from NuGet, pip, npm, Maven, or even cloning a GitHub repository.
+    ```Bash
+    az attestation create --resource-group <your-resource-group-name> --name <your-key-vault-name>
+    ```
 
-Include a **Prerequisites** line after the install command that details any requirements that must be satisfied before a developer can [authenticate](#authenticate-the-client) and test all of the snippets in the [Examples](#examples) section. For example, for Cosmos DB:
+### Authenticate the client
+In order to interact with the Azure Attestation service
 
-**Prerequisites**: You must have an [Azure subscription](https://azure.microsoft.com/free/), [Cosmos DB account](https://docs.microsoft.com/azure/cosmos-db/account-overview) (SQL API), and [Python 3.6+](https://www.python.org/downloads/) to use this package.
+The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
+
 
 ### Authenticate the client
 
@@ -83,6 +100,19 @@ Provide information to help developers avoid throttling or other service-enforce
 If the package or a related package supports it, include tips for logging or enabling instrumentation to help them debug their code.
 
 ## Next steps
+
+## Contributing
+
+This project welcomes contributions and suggestions.  Most contributions require
+you to agree to a Contributor License Agreement (CLA) declaring that you have
+the right to, and actually do, grant us the rights to use your contribution. For
+details, visit https://cla.microsoft.com.
+
+This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct].
+For more information see the [Code of Conduct FAQ][coc_faq]
+or contact opencode@microsoft.com with any
+additional questions or comments.
+
 
 * Provide a link to additional code examples, ideally to those sitting alongside the README in the package's `/samples` directory.
 * If appropriate, point users to other packages that might be useful.
