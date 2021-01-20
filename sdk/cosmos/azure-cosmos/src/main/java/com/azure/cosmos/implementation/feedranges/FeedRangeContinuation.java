@@ -61,7 +61,7 @@ public abstract class FeedRangeContinuation extends JsonSerializable {
         super.populatePropertyBag();
     }
 
-    public static FeedRangeContinuation tryParse(String jsonString) {
+    private static FeedRangeContinuation tryParse(String jsonString) {
         if (jsonString == null) {
             return null;
         }

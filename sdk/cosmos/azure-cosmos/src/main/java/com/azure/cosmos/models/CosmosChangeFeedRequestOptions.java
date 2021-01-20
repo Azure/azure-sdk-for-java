@@ -198,7 +198,7 @@ public final class CosmosChangeFeedRequestOptions {
     public static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
         String continuation) {
 
-        final ChangeFeedState changeFeedState = ChangeFeedState.fromBase64EncodedJson(continuation);
+        final ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuation);
 
         return createForProcessingFromContinuation(changeFeedState);
     }

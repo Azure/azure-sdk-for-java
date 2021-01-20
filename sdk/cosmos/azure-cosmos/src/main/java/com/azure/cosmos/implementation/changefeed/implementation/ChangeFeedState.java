@@ -35,7 +35,7 @@ public abstract class ChangeFeedState extends JsonSerializable {
 
     public abstract String getContainerRid();
 
-    public static ChangeFeedState fromBase64EncodedJson(String base64EncodedJson) {
+    public static ChangeFeedState fromString(String base64EncodedJson) {
         checkNotNull(base64EncodedJson, "Argument 'base64EncodedJson' must not be null");
 
         String json = new String(

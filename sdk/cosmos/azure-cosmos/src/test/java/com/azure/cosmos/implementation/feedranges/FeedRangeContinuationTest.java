@@ -49,12 +49,12 @@ public class FeedRangeContinuationTest {
                     continuationDummy,
                     continuationDummy));
 
-        assertThat(FeedRangeContinuation.tryParse(representation))
+        assertThat(FeedRangeContinuation.convert(representation))
             .isNotNull()
             .isInstanceOf(FeedRangeCompositeContinuationImpl.class);
 
         FeedRangeCompositeContinuationImpl continuationDeserialized =
-            (FeedRangeCompositeContinuationImpl)FeedRangeContinuation.tryParse(representation);
+            (FeedRangeCompositeContinuationImpl)FeedRangeContinuation.convert(representation);
 
         String representationAfterDeserialization = continuationDeserialized.toJson();
         assertThat(representationAfterDeserialization).isEqualTo(representation);
@@ -95,12 +95,12 @@ public class FeedRangeContinuationTest {
                     continuationDummy,
                     pkRangeId));
 
-        assertThat(FeedRangeContinuation.tryParse(representation))
+        assertThat(FeedRangeContinuation.convert(representation))
             .isNotNull()
             .isInstanceOf(FeedRangeCompositeContinuationImpl.class);
 
         FeedRangeCompositeContinuationImpl continuationDeserialized =
-            (FeedRangeCompositeContinuationImpl)FeedRangeContinuation.tryParse(representation);
+            (FeedRangeCompositeContinuationImpl)FeedRangeContinuation.convert(representation);
 
         String representationAfterDeserialization = continuationDeserialized.toJson();
         assertThat(representationAfterDeserialization).isEqualTo(representation);
@@ -141,12 +141,12 @@ public class FeedRangeContinuationTest {
                     continuationDummy,
                     continuationDummy));
 
-        assertThat(FeedRangeContinuation.tryParse(representation))
+        assertThat(FeedRangeContinuation.convert(representation))
             .isNotNull()
             .isInstanceOf(FeedRangeCompositeContinuationImpl.class);
 
         FeedRangeCompositeContinuationImpl continuationDeserialized =
-            (FeedRangeCompositeContinuationImpl)FeedRangeContinuation.tryParse(representation);
+            (FeedRangeCompositeContinuationImpl)FeedRangeContinuation.convert(representation);
 
         String representationAfterDeserialization = continuationDeserialized.toJson();
         assertThat(representationAfterDeserialization).isEqualTo(representation);

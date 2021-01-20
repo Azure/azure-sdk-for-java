@@ -46,12 +46,12 @@ public class ChangeFeedStateTest {
                     containerRid,
                     pkRangeId));
 
-        assertThat(ChangeFeedState.fromBase64EncodedJson(base64EncodedJsonRepresentation))
+        assertThat(ChangeFeedState.fromString(base64EncodedJsonRepresentation))
             .isNotNull()
             .isInstanceOf(ChangeFeedStateV1.class);
 
         ChangeFeedStateV1 stateWithoutContinuationDeserialized =
-            (ChangeFeedStateV1)ChangeFeedState.fromBase64EncodedJson(base64EncodedJsonRepresentation);
+            (ChangeFeedStateV1)ChangeFeedState.fromString(base64EncodedJsonRepresentation);
 
         String representationAfterDeserialization = stateWithoutContinuationDeserialized.toString();
         assertThat(representationAfterDeserialization).isEqualTo(base64EncodedJsonRepresentation);
@@ -90,12 +90,12 @@ public class ChangeFeedStateTest {
                     containerRid,
                     continuationJson));
 
-        assertThat(ChangeFeedState.fromBase64EncodedJson(base64EncodedJsonRepresentation))
+        assertThat(ChangeFeedState.fromString(base64EncodedJsonRepresentation))
             .isNotNull()
             .isInstanceOf(ChangeFeedStateV1.class);
 
         ChangeFeedStateV1 stateWithContinuationDeserialized =
-            (ChangeFeedStateV1)ChangeFeedState.fromBase64EncodedJson(base64EncodedJsonRepresentation);
+            (ChangeFeedStateV1)ChangeFeedState.fromString(base64EncodedJsonRepresentation);
 
         representationAfterDeserialization = stateWithContinuationDeserialized.toString();
         assertThat(representationAfterDeserialization).isEqualTo(base64EncodedJsonRepresentation);
