@@ -42,6 +42,7 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
         http.authorizeRequests()
+                .antMatchers("/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
             .oauth2Login()

@@ -58,15 +58,16 @@ As a first step you'll need to:
 1. Select **New registration**.
    - In the **Name** section, enter a meaningful application name that will be displayed to users of the app, for example `Spring Boot Sample`.
    - In the **Supported account types** section, select **Accounts in any organizational directory**.
+   - Choose **Single-page application(SPA)** as application type.
    - Add `http://localhost:8080` as the `Reply URL` under Redirect URI.
-   - Select **Register** to create the application.
-   - After creating the application, on the application **Overview** page, click the **Redirect URIs** to edit, select the **Access tokens** and **ID tokens**, and click **Save**.
+   - Select **Register** to create the application. ![create the application](docs/application-register.png "create the application")
+   - After creating the application, on the application **Overview** page, click the **Redirect URIs** to edit, select the **Access tokens** and **ID tokens**, and click **Save**. ![add tokens](docs/add_tokens.png "add tokens")
 1. On the app **Overview** page, find the **Application (client) ID** value and record it for later. You'll need it to configure the application.properties file for this project.
 1. On selecting your application from the the registered applcations you can see **Certificates & secrets** in left navigation pane, go to that page and in the **Client secrets** section, choose **New client secret**:
 
    - Type a key description (of instance `app secret`),
-   - Select a key duration of either **In 1 year**, **In 2 years**, or **Never Expires**.
-   - When you press the **Add** button, the key value will be displayed, copy, and save the value in a safe location.
+   - Select a key duration of either **In 1 year**, **In 2 years**, or **Never Expires**. ![create the secret](docs/create_secret.png "create the secret")
+   - When you press the **Add** button, the key value will be displayed, copy, and save the value in a safe location. ![secret value](docs/secret_value.png "secret value")
    - You'll need this key later to configure the project. This key value will not be displayed again, nor retrievable by any other means,
    so record it as soon as it is visible from the Azure portal.   
    
@@ -75,12 +76,12 @@ As a first step you'll need to:
    - Ensure that the **Microsoft APIs** tab is selected
    - In the *Commonly used Microsoft APIs* section, click on **Microsoft Graph**
    - In the **Delegated permissions** section, ensure that the right permissions are checked: **Directory.AccessAsUser.All**
-   - Select the **Add permissions** button
+   - Select the **Add permissions** button ![add permissions](docs/add_permissions.png "add permissions")
    
 1. At this stage permissions are assigned correctly but the client app does not allow interaction. 
    Therefore no consent can be presented via a UI and accepted to use the service app. 
    Click the **Grant/revoke admin consent for {tenant}** button, and then select **Yes** when you are asked if you want to grant consent for the
-   requested permissions for all account in the tenant.
+   requested permissions for all account in the tenant. ![grant admin consent](docs/grant_admin_consent.png "grant admin consent")
    You need to be an Azure AD tenant admin to do this.
    
 ---

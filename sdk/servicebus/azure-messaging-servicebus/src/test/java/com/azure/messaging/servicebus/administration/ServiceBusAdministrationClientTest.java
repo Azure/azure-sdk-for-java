@@ -53,6 +53,9 @@ class ServiceBusAdministrationClientTest {
 
     private final Context context = new Context("foo", "bar").addData("baz", "boo");
     private final String queueName = "some-queue";
+    private final String subscriptionName = "subscriptionName";
+    private final String topicName = "topicName";
+    private final String ruleName = "ruleName";
     private ServiceBusAdministrationClient client;
 
     @BeforeEach
@@ -126,6 +129,78 @@ class ServiceBusAdministrationClientTest {
 
         // Act
         final Response<Void> actual = client.deleteQueueWithResponse(queueName, context);
+
+        // Assert
+        assertEquals(voidResponse, actual);
+    }
+
+    @Test
+    void deleteRule() {
+        // Arrange
+        when(asyncClient.deleteRule(topicName, subscriptionName, ruleName)).thenReturn(Mono.empty());
+
+        // Act
+        client.deleteRule(topicName, subscriptionName, ruleName);
+
+        // Assert
+        verify(asyncClient).deleteRule(topicName, subscriptionName, ruleName);
+    }
+
+    @Test
+    void deleteRuleWithResponse() {
+        // Arrange
+        when(asyncClient.deleteRuleWithResponse(topicName, subscriptionName, ruleName, context)).thenReturn(Mono.just(voidResponse));
+
+        // Act
+        final Response<Void> actual = client.deleteRuleWithResponse(topicName, subscriptionName, ruleName, context);
+
+        // Assert
+        assertEquals(voidResponse, actual);
+    }
+
+    @Test
+    void deleteSubscription() {
+        // Arrange
+        when(asyncClient.deleteSubscription(topicName, subscriptionName)).thenReturn(Mono.empty());
+
+        // Act
+        client.deleteSubscription(topicName, subscriptionName);
+
+        // Assert
+        verify(asyncClient).deleteSubscription(topicName, subscriptionName);
+    }
+
+    @Test
+    void deleteSubscriptionWithResponse() {
+        // Arrange
+        when(asyncClient.deleteSubscriptionWithResponse(topicName, subscriptionName, context)).thenReturn(Mono.just(voidResponse));
+
+        // Act
+        final Response<Void> actual = client.deleteSubscriptionWithResponse(topicName, subscriptionName, context);
+
+        // Assert
+        assertEquals(voidResponse, actual);
+    }
+
+    @Test
+    void deleteTopic() {
+        // Arrange
+        when(asyncClient.deleteTopic(topicName)).thenReturn(Mono.empty());
+
+        // Act
+        client.deleteTopic(topicName);
+
+        // Assert
+        verify(asyncClient).deleteTopic(topicName);
+    }
+
+    @Test
+    void deleteTopicWithResponse() {
+        // Arrange
+        when(asyncClient.deleteTopicWithResponse(topicName, context)).thenReturn(Mono.just(voidResponse));
+
+        // Act
+        final Response<Void> actual = client.deleteTopicWithResponse(topicName, context);
 
         // Assert
         assertEquals(voidResponse, actual);

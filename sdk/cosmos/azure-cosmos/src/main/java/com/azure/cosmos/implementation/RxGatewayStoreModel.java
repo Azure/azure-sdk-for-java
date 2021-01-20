@@ -87,6 +87,10 @@ class RxGatewayStoreModel implements RxStoreModel {
         return this.performRequest(request, HttpMethod.POST);
     }
 
+    private Mono<RxDocumentServiceResponse> patch(RxDocumentServiceRequest request) {
+        return this.performRequest(request, HttpMethod.PATCH);
+    }
+
     private Mono<RxDocumentServiceResponse> upsert(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.POST);
     }
@@ -354,6 +358,8 @@ class RxGatewayStoreModel implements RxStoreModel {
             case Create:
             case Batch:
                 return this.create(request);
+            case Patch:
+                return this.patch(request);
             case Upsert:
                 return this.upsert(request);
             case Delete:

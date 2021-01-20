@@ -170,7 +170,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         });
     }
 
-    public void fillClientTelemetry(CosmosAsyncClient cosmosAsyncClient,
+    private void fillClientTelemetry(CosmosAsyncClient cosmosAsyncClient,
                                     int statusCode,
                                     String containerId,
                                     String databaseId,
