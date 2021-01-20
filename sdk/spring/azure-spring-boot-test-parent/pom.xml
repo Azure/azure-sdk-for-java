@@ -48,9 +48,6 @@
             </goals>
             <configuration>
               <skipITs>${skipSpringITs}</skipITs>
-              <classpathDependencyExcludes>
-                <classpathDependencyExclude>org.springframework:spring-webflux</classpathDependencyExclude>
-              </classpathDependencyExcludes>
             </configuration>
           </execution>
           <execution>
