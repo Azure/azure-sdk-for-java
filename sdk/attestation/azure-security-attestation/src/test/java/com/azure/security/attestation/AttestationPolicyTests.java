@@ -7,33 +7,23 @@ import com.azure.core.util.Configuration;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyResponse;
 import com.nimbusds.jose.*;
-import com.nimbusds.jose.crypto.RSASSASigner;
-import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
-import com.nimbusds.jwt.SignedJWT;
 import net.minidev.json.JSONObject;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
-import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
-import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AttestationPolicyTests extends AttestationClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -130,7 +120,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     }
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
-    public void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri, AttestationType attestationType) throws JOSEException {
+    public void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri, AttestationType attestationType) {
         ClientTypes clientType = classifyClient(clientUri);
         // We can't set attestation policy on the shared client, so just exit early.
         if (clientType.equals(ClientTypes.Shared))
@@ -221,11 +211,11 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    assert policyJose != null;
-                    JSONObject jsonObject = policyJose.getPayload().toJSONObject();
+                    assertNotNull(policyJose);
+                    Map<String, Object> jsonObject = policyJose.getPayload().toJSONObject();
                     if (jsonObject != null) {
                         assertTrue(jsonObject.containsKey("AttestationPolicy"));
-                        String base64urlPolicy = jsonObject.getAsString("AttestationPolicy");
+                        String base64urlPolicy = jsonObject.get("AttestationPolicy").toString();
 
                         byte[] attestationPolicyUtf8 = Base64.getUrlDecoder().decode(base64urlPolicy);
                         String attestationPolicy;

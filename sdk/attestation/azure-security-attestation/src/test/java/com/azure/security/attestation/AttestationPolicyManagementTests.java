@@ -4,29 +4,25 @@ package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
-import com.azure.security.attestation.models.*;
+import com.azure.security.attestation.models.AttestationCertificateManagementBody;
+import com.azure.security.attestation.models.JsonWebKey;
+import com.azure.security.attestation.models.PolicyCertificatesModifyResponse;
+import com.azure.security.attestation.models.PolicyCertificatesResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nimbusds.jose.*;
-import com.nimbusds.jose.crypto.RSASSASigner;
+import com.nimbusds.jose.shaded.json.JSONArray;
+import com.nimbusds.jose.shaded.json.JSONObject;
 import com.nimbusds.jwt.JWTClaimsSet;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.lang.reflect.Array;
-import java.nio.charset.StandardCharsets;
-import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.ParseException;
-import java.util.*;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,6 +40,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         PolicyCertificatesResponse response = client.get();
         JWTClaimsSet claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
 
+        assertNotNull(claims);
         verifyGetPolicyCertificatesResponse(clientUri, claims);
     }
 
@@ -63,9 +60,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
                     }
                     return null;
                 }))
-            .assertNext(claims -> {
-                verifyGetPolicyCertificatesResponse(clientUri, claims);
-            })
+            .assertNext(claims -> verifyGetPolicyCertificatesResponse(clientUri, claims))
             .verifyComplete();
     }
 
@@ -75,10 +70,11 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
      * @param clientUri URI for client - used to determine the expected response.
      * @param claims Claims inside policy certificate token to be verified.
      */
-    private void verifyGetPolicyCertificatesResponse(String clientUri, JWTClaimsSet claims) {
-        assertNotNull(claims.getClaims().containsKey("x-ms-policy-certificates"));
-        assertTrue(claims.getClaims().get("x-ms-policy-certificates") instanceof JSONObject);
-        JSONObject certificates = (JSONObject) claims.getClaims().get("x-ms-policy-certificates");
+    private void verifyGetPolicyCertificatesResponse(String clientUri, @NotNull JWTClaimsSet claims) {
+        assertTrue(claims.getClaims().containsKey("x-ms-policy-certificates"));
+        Object policyCertificates = claims.getClaims().get("x-ms-policy-certificates");
+        assertTrue(policyCertificates instanceof JSONObject);
+        JSONObject certificates = (JSONObject) policyCertificates;
         assertTrue(certificates.containsKey("keys"));
         assertTrue(certificates.get("keys") instanceof JSONArray);
         JSONArray certificateArray = (JSONArray) certificates.get("keys");
@@ -91,8 +87,8 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
             for (Object certObject : certificateArray) {
                 assertTrue(certObject instanceof JSONObject);
                 JSONObject cert = (JSONObject) certObject;
-                assertEquals("RSA", cert.getAsString("kty"));
-                assertEquals("RS256", cert.getAsString("alg"));
+                assertEquals("RSA", cert.get("kty").toString());
+                assertEquals("RS256", cert.get("alg").toString());
                 assertTrue(cert.containsKey("x5c"));
                 assertTrue(cert.get("x5c") instanceof JSONArray);
                 JSONArray x5c = (JSONArray) cert.get("x5c");
@@ -138,7 +134,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         String signingKeyBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
 
         String newPolicyCertificateBase64 = Configuration.getGlobalConfiguration().get("policySigningCertificate0");
-        String newPolicySigner = Configuration.getGlobalConfiguration().get("policySigningKey0");
+//        String newPolicySigner = Configuration.getGlobalConfiguration().get("policySigningKey0");
 
         JWSSigner existingSigner = getJwsSigner(signingKeyBase64);
 
@@ -195,7 +191,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         String signingKeyBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
 
         String newPolicyCertificateBase64 = Configuration.getGlobalConfiguration().get("policySigningCertificate0");
-        String newPolicySigner = Configuration.getGlobalConfiguration().get("policySigningKey0");
+//        String newPolicySigner = Configuration.getGlobalConfiguration().get("policySigningKey0");
 
         JWSSigner existingSigner = getJwsSigner(signingKeyBase64);
 
@@ -231,17 +227,15 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
             .doOnNext(responseClaims -> {
                 assertTrue(responseClaims.getClaims().containsKey("x-ms-policycertificates-result"));
                 assertEquals("IsPresent", responseClaims.getClaims().get("x-ms-policycertificates-result").toString());
-            }).flatMap(policyResponse -> {
-                return client.remove(securedObject.serialize())
-                    .flatMap(response -> {
-                        try {
-                            return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        return null;
-                    });
-                })
+            }).flatMap(policyResponse -> client.remove(securedObject.serialize())
+                .flatMap(response -> {
+                    try {
+                        return verifyAttestationToken(httpClient, clientUri, response.getToken());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }))
                 .doOnNext(responseClaims -> {
                     assertTrue(responseClaims.getClaims().containsKey("x-ms-policycertificates-result"));
                     assertEquals("IsAbsent", responseClaims.getClaims().get("x-ms-policycertificates-result").toString());
