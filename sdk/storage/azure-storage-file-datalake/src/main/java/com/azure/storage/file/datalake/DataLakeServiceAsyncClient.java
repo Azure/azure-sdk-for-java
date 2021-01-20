@@ -3,7 +3,9 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
@@ -148,6 +150,7 @@ public class DataLakeServiceAsyncClient {
      * @return A {@link Mono} containing a {@link DataLakeFileSystemAsyncClient} used to interact with the file system
      * created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeFileSystemAsyncClient> createFileSystem(String fileSystemName) {
         try {
             return createFileSystemWithResponse(fileSystemName, null, null).flatMap(FluxUtil::toMono);
@@ -173,6 +176,7 @@ public class DataLakeServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeFileSystemAsyncClient} used to interact with the file system created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeFileSystemAsyncClient>> createFileSystemWithResponse(String fileSystemName,
         Map<String, String> metadata, PublicAccessType accessType) {
         try {
@@ -187,7 +191,7 @@ public class DataLakeServiceAsyncClient {
 
     /**
      * Deletes the specified file system in the storage account. If the file system doesn't exist the operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
      * <p><strong>Code Samples</strong></p>
      *
@@ -196,6 +200,7 @@ public class DataLakeServiceAsyncClient {
      * @param fileSystemName Name of the file system to delete
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteFileSystem(String fileSystemName) {
         try {
             return deleteFileSystemWithResponse(fileSystemName, null).flatMap(FluxUtil::toMono);
@@ -206,7 +211,7 @@ public class DataLakeServiceAsyncClient {
 
     /**
      * Deletes the specified file system in the storage account. If the file system doesn't exist the operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -217,6 +222,7 @@ public class DataLakeServiceAsyncClient {
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteFileSystemWithResponse(String fileSystemName,
         DataLakeRequestConditions requestConditions) {
         try {
@@ -245,6 +251,7 @@ public class DataLakeServiceAsyncClient {
      *
      * @return A reactive response emitting the list of file systems.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FileSystemItem> listFileSystems() {
         try {
             return this.listFileSystems(new ListFileSystemsOptions());
@@ -264,6 +271,7 @@ public class DataLakeServiceAsyncClient {
      * @param options A {@link ListFileSystemsOptions} which specifies what data should be returned by the service.
      * @return A reactive response emitting the list of file systems.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FileSystemItem> listFileSystems(ListFileSystemsOptions options) {
         try {
             return listFileSystemsWithOptionalTimeout(options, null);
@@ -315,6 +323,7 @@ public class DataLakeServiceAsyncClient {
      * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
      * @throws NullPointerException If {@code expiry} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserDelegationKey> getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         try {
             return this.getUserDelegationKeyWithResponse(start, expiry).flatMap(FluxUtil::toMono);
@@ -338,6 +347,7 @@ public class DataLakeServiceAsyncClient {
      * @throws IllegalArgumentException If {@code start} isn't null and is after {@code expiry}.
      * @throws NullPointerException If {@code expiry} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserDelegationKey>> getUserDelegationKeyWithResponse(OffsetDateTime start,
         OffsetDateTime expiry) {
         try {
@@ -409,6 +419,7 @@ public class DataLakeServiceAsyncClient {
      * @return A {@link Mono} containing a {@link DataLakeFileSystemAsyncClient} used
      * to interact with the restored file system.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeFileSystemAsyncClient> undeleteFileSystem(
         String deletedFileSystemName, String deletedFileSystemVersion) {
         return this.undeleteFileSystemWithResponse(new FileSystemUndeleteOptions(deletedFileSystemName,
@@ -433,6 +444,7 @@ public class DataLakeServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeFileSystemAsyncClient} used to interact with the restored file system.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeFileSystemAsyncClient>> undeleteFileSystemWithResponse(
         FileSystemUndeleteOptions options) {
         try {
@@ -458,6 +470,7 @@ public class DataLakeServiceAsyncClient {
      * @return A {@link Mono} containing a {@link DataLakeFileSystemAsyncClient} used to interact with the renamed file
      * system.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataLakeFileSystemAsyncClient> renameFileSystem(String destinationFileSystemName,
         String sourceFileSystemName) {
         return this.renameFileSystemWithResponse(new FileSystemRenameOptions(destinationFileSystemName,
@@ -475,6 +488,7 @@ public class DataLakeServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
      * {@link DataLakeFileSystemAsyncClient} used to interact with the renamed file system.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataLakeFileSystemAsyncClient>> renameFileSystemWithResponse(FileSystemRenameOptions options) {
         try {
             return blobServiceAsyncClient.renameBlobContainerWithResponse(

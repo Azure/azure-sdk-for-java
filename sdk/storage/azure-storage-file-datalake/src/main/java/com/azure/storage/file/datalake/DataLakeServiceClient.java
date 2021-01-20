@@ -3,7 +3,9 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
@@ -104,6 +106,7 @@ public class DataLakeServiceClient {
      * @param fileSystemName Name of the file system to create
      * @return The {@link DataLakeFileSystemClient} used to interact with the file system created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileSystemClient createFileSystem(String fileSystemName) {
         return createFileSystemWithResponse(fileSystemName, null, null, Context.NONE).getValue();
     }
@@ -126,6 +129,7 @@ public class DataLakeServiceClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileSystemClient}
      * used to interact with the file system created.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeFileSystemClient> createFileSystemWithResponse(String fileSystemName,
         Map<String, String> metadata, PublicAccessType accessType, Context context) {
         DataLakeFileSystemClient client = getFileSystemClient(fileSystemName);
@@ -144,6 +148,7 @@ public class DataLakeServiceClient {
      *
      * @param fileSystemName Name of the file system to delete
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteFileSystem(String fileSystemName) {
         deleteFileSystemWithResponse(fileSystemName, null, Context.NONE).getValue();
     }
@@ -162,6 +167,7 @@ public class DataLakeServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing status code and HTTP headers
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFileSystemWithResponse(String fileSystemName,
         DataLakeRequestConditions requestConditions, Context context) {
         return getFileSystemClient(fileSystemName).deleteWithResponse(requestConditions, null, context);
@@ -187,6 +193,7 @@ public class DataLakeServiceClient {
      *
      * @return The list of file systems.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileSystemItem> listFileSystems() {
         return this.listFileSystems(new ListFileSystemsOptions(), null);
     }
@@ -204,6 +211,7 @@ public class DataLakeServiceClient {
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @return The list of file systems.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileSystemItem> listFileSystems(ListFileSystemsOptions options, Duration timeout) {
         return new PagedIterable<>(dataLakeServiceAsyncClient.listFileSystemsWithOptionalTimeout(options, timeout));
     }
@@ -220,6 +228,7 @@ public class DataLakeServiceClient {
      * @param expiry Expiration of the key's validity.
      * @return The user delegation key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public UserDelegationKey getUserDelegationKey(OffsetDateTime start, OffsetDateTime expiry) {
         return getUserDelegationKeyWithResponse(start, expiry, null, Context.NONE).getValue();
     }
@@ -238,6 +247,7 @@ public class DataLakeServiceClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the user delegation key.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
@@ -306,6 +316,7 @@ public class DataLakeServiceClient {
      * @param deletedFileSystemVersion The version of the previously deleted file system.
      * @return The {@link DataLakeFileSystemClient} used to interact with the restored file system.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileSystemClient undeleteFileSystem(String deletedFileSystemName, String deletedFileSystemVersion) {
         return this.undeleteFileSystemWithResponse(
             new FileSystemUndeleteOptions(deletedFileSystemName, deletedFileSystemVersion), null,
@@ -331,6 +342,7 @@ public class DataLakeServiceClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link DataLakeFileSystemClient}
      * used to interact with the restored file system.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeFileSystemClient> undeleteFileSystemWithResponse(
         FileSystemUndeleteOptions options, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
@@ -352,6 +364,7 @@ public class DataLakeServiceClient {
      * @param sourceFileSystemName The current name of the file system.
      * @return A {@link DataLakeFileSystemClient} used to interact with the renamed file system.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileSystemClient renameFileSystem(String destinationFileSystemName, String sourceFileSystemName) {
         return this.renameFileSystemWithResponse(new FileSystemRenameOptions(destinationFileSystemName,
             sourceFileSystemName), null, Context.NONE).getValue();
@@ -370,6 +383,7 @@ public class DataLakeServiceClient {
      * @return A {@link Response} whose {@link Response#getValue() value} contains a
      * {@link DataLakeFileSystemClient} used to interact with the renamed file system.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataLakeFileSystemClient> renameFileSystemWithResponse(FileSystemRenameOptions options,
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
