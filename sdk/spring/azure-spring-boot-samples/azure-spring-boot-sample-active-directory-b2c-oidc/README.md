@@ -56,10 +56,6 @@ azure:
         signup: ${your-sign-up-user-flow} # optional
 ```
 
-#### Templates greeting.html and home.html
-1. Fill in the `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` from the portal `User flows`.
-Please make sure that these two placeholders should be the same as `application.yml` respectively.
-
 ### Run with Maven
 ```
 cd azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc

@@ -124,15 +124,14 @@ public class AADB2CAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         public ClientRegistrationRepository clientRegistrationRepository() {
-            final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(1);
+            final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(3);
             final List<ClientRegistration> otherRegistrations = new ArrayList<>();
 
-
             addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignUpOrSignIn());
+            addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignIn());
+            addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignUp());
             addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getProfileEdit());
             addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getPasswordReset());
-            addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getSignIn());
-            addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getSignUp());
 
             return new AADB2CClientRegistrationRepository(signUpOrSignInRegistrations, otherRegistrations);
         }

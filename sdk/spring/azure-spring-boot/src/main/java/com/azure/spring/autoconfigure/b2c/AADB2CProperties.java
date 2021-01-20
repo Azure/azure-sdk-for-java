@@ -97,7 +97,7 @@ public class AADB2CProperties {
     }
 
     @Validated
-    protected static class UserFlows {
+    public static class UserFlows {
 
         protected UserFlows() {
 
