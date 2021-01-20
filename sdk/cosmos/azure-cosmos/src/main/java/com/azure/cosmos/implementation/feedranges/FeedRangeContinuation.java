@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedResponse;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+@JsonDeserialize(using = FeedRangeContinuationDeserializer.class)
 public abstract class FeedRangeContinuation extends JsonSerializable {
     private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeContinuation.class);
 

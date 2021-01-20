@@ -5,9 +5,11 @@ package com.azure.cosmos.implementation.changefeed.implementation;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.time.Instant;
 
+@JsonDeserialize(using = ChangeFeedStartFromInternalDeserializer.class)
 public abstract class ChangeFeedStartFromInternal extends JsonSerializable {
     protected static final long START_FROM_BEGINNING_EPOCH_SECONDS = -62135596800L;
     protected static final Instant START_FROM_BEGINNING_TIME =

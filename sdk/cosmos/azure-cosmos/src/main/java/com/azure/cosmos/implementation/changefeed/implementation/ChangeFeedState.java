@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -15,6 +16,7 @@ import java.util.Base64;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+@JsonDeserialize(using = ChangeFeedStateDeserializer.class)
 public abstract class ChangeFeedState extends JsonSerializable {
     ChangeFeedState() {
     }

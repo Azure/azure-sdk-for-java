@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -23,6 +24,7 @@ import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+@JsonDeserialize(using = FeedRangeInternalDeserializer.class)
 public abstract class FeedRangeInternal extends JsonSerializable implements FeedRange {
     private final static Logger LOGGER = LoggerFactory.getLogger(FeedRangeInternal.class);
 
