@@ -82,17 +82,17 @@ jobs:
 
         EnvVars:
           AZURE_TEST_MODE: LIVE
-          AAD_TENANT_ID_1: $(java-spring-aad-cn-tenant-id-1)
-          AAD_USER_NAME_1: $(java-spring-aad-cn-user-name-1)
-          AAD_USER_PASSWORD_1: $(java-spring-aad-cn-user-password-1)
-          AAD_TENANT_ID_2: $(java-spring-aad-cn-tenant-id-2)
-          AAD_USER_NAME_2: $(java-spring-aad-cn-user-name-2)
-          AAD_USER_PASSWORD_2: $(java-spring-aad-cn-user-password-2)
-          AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-cn-multi-tenant-client-id)
-          AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-cn-multi-tenant-client-secret)
-          AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-cn-single-tenant-id)
-          AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-cn-single-tenant-secret)
-          AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-cn-single-tenant-id-with-role)
-          AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-cn-single-tenant-secret-with-role)
+          AAD_TENANT_ID_1: $(java-spring-aad-tenant-id-1-cn)
+          AAD_USER_NAME_1: $(java-spring-aad-user-name-1-cn)
+          AAD_USER_PASSWORD_1: $(java-spring-aad-user-password-1-cn)
+          AAD_TENANT_ID_2: $(java-spring-aad-tenant-id-2-cn)
+          AAD_USER_NAME_2: $(java-spring-aad-user-name-2-cn)
+          AAD_USER_PASSWORD_2: $(java-spring-aad-user-password-2-cn)
+          AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-multi-tenant-client-id-cn)
+          AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-multi-tenant-client-secret-cn)
+          AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-single-tenant-id-cn)
+          AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret-cn)
+          AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE: $(java-spring-aad-single-tenant-id-with-role-cn)
+          AAD_SINGLE_TENANT_CLIENT_SECRET_WITH_ROLE: $(java-spring-aad-single-tenant-secret-with-role-cn)
           AAD_LOGIN_BASE_URL: https://login.partner.microsoftonline.cn
           AAD_GRAPH_BASE_URL: https://microsoftgraph.chinacloudapi.cn
