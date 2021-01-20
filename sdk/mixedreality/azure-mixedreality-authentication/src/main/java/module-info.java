@@ -1,6 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+/**
+ * Declares a module for Azure Mixed Reality Authentication.
+ */
 module com.azure.mixedreality.authentication {
+    requires transitive com.azure.core;
+
     exports com.azure.mixedreality.authentication;
 }
