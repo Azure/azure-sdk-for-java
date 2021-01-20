@@ -312,7 +312,6 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         setupTest(httpClient);
         SendChatMessageOptions messageRequest = new SendChatMessageOptions()
             .setType(ChatMessageType.HTML)
-            .setPriority(ChatMessagePriority.NORMAL)
             .setSenderDisplayName("John")
             .setContent("<div>test</div>");
 
@@ -326,7 +325,6 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
             .assertNext(message -> {
                 assertEquals(message.getContent().getMessage(), messageRequest.getContent());
                 assertEquals(message.getType(), messageRequest.getType());
-                assertEquals(message.getPriority(), messageRequest.getPriority());
                 assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
             })
             .verifyComplete();
@@ -392,7 +390,6 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
             )
             .assertNext(message -> {
                 assertEquals(message.getContent().getMessage(), messageRequest.getContent());
-                assertEquals(message.getPriority(), messageRequest.getPriority());
                 assertEquals(message.getType(), messageRequest.getType());
                 assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
             })
@@ -417,7 +414,6 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
             .assertNext(getResponse -> {
                 ChatMessage message = getResponse.getValue();
                 assertEquals(message.getContent().getMessage(), messageRequest.getContent());
-                assertEquals(message.getPriority(), messageRequest.getPriority());
                 assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
             })
             .verifyComplete();
@@ -836,7 +832,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
                    return chatThreadClient.sendReadReceiptWithResponse(id);
                }))
             .assertNext((Response<Void> response) -> {
-                assertEquals(201, response.getStatusCode());
+                assertEquals(200, response.getStatusCode());
             })
             .verifyComplete();
     }

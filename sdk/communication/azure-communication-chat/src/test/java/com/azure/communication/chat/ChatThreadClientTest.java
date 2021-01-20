@@ -279,7 +279,6 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         ChatMessage message = chatThreadClient.getMessage(response);
         assertEquals(message.getContent().getMessage(), messageRequest.getContent());
-        assertEquals(message.getPriority(), messageRequest.getPriority());
         assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
     }
 
@@ -295,7 +294,6 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         ChatMessage message = chatThreadClient.getMessageWithResponse(response, Context.NONE).getValue();
         assertEquals(message.getContent().getMessage(), messageRequest.getContent());
-        assertEquals(message.getPriority(), messageRequest.getPriority());
         assertEquals(message.getSenderDisplayName(), messageRequest.getSenderDisplayName());
     }
 
@@ -592,6 +590,6 @@ public class ChatThreadClientTest extends ChatClientTestBase {
 
         // Action & Assert
         Response<Void> sendResponse = chatThreadClient.sendReadReceiptWithResponse(id, Context.NONE);
-        assertEquals(201, sendResponse.getStatusCode());
+        assertEquals(200, sendResponse.getStatusCode());
     }
 }
