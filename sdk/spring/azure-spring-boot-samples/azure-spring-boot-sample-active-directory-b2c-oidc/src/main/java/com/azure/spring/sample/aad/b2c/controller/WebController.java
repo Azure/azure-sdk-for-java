@@ -18,6 +18,7 @@ public class WebController {
 
             model.addAttribute("grant_type", user.getAuthorities());
             model.addAllAttributes(user.getAttributes());
+            model.addAttribute("name", user.getName());
         }
     }
 

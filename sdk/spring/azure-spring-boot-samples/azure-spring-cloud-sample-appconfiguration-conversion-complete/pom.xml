@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>azure-spring-cloud-sample-appconfiguration-convert-complete</artifactId>
+  <artifactId>azure-spring-cloud-sample-appconfiguration-conversion-complete</artifactId>
   <groupId>com.azure.spring</groupId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-sample-appconfiguration-convert-complete;current} -->
   <name>Azure Spring Cloud Sample App Configuration Conversion</name>

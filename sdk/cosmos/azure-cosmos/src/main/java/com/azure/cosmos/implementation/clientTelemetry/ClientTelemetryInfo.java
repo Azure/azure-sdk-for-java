@@ -5,10 +5,8 @@ package com.azure.cosmos.implementation.clientTelemetry;
 import com.azure.cosmos.ConnectionMode;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
-import org.HdrHistogram.DoubleHistogram;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @JsonSerialize(using = ClientTelemetrySerializer.class)

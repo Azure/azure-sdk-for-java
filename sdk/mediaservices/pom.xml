@@ -12,15 +12,9 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-resourcemanager-mediaservices</module>
       </modules>
 
       <dependencies>
-        <dependency>
-          <groupId>com.azure.resourcemanager</groupId>
-          <artifactId>azure-resourcemanager-mediaservices</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-mediaservices;current} -->
-        </dependency>
       </dependencies>
 
       <build>

@@ -26,15 +26,15 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_ID;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_MULTI_TENANT_CLIENT_SECRET;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_ID;
-import static com.azure.spring.test.aad.EnvironmentVariables.AAD_SINGLE_TENANT_CLIENT_SECRET;
-import static com.azure.spring.test.aad.EnvironmentVariables.SCOPE_GRAPH_READ;
-import static com.azure.spring.test.aad.EnvironmentVariables.toFullNameScope;
+import static com.azure.spring.test.Constant.toFullNameScope;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static org.junit.Assert.assertEquals;
 
 public class AADAuthenticationFilterIT {
+    public static final String SCOPE_GRAPH_READ = "ResourceAccessGraph.Read";
 
     private AADWebApiITHelper singleTenantITHelper;
     private AADWebApiITHelper multiTenantITHelper;

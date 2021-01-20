@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides methods for reading, deleting, and replacing existing Containers.
@@ -66,6 +67,7 @@ public class CosmosAsyncContainer {
     private final String upsertItemSpanName;
     private final String deleteItemSpanName;
     private final String replaceItemSpanName;
+    private final String patchItemSpanName;
     private final String createItemSpanName;
     private final String readAllItemsSpanName;
     private final String queryItemsSpanName;
@@ -87,6 +89,7 @@ public class CosmosAsyncContainer {
         this.upsertItemSpanName = "upsertItem." + this.id;
         this.deleteItemSpanName = "deleteItem." + this.id;
         this.replaceItemSpanName = "replaceItem." + this.id;
+        this.patchItemSpanName = "patchItem." + this.id;
         this.createItemSpanName = "createItem." + this.id;
         this.readAllItemsSpanName = "readAllItems." + this.id;
         this.queryItemsSpanName = "queryItems." + this.id;
@@ -837,6 +840,66 @@ public class CosmosAsyncContainer {
     }
 
     /**
+     * Run patch operations on an Item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
+     *
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param itemType the item type.
+     *
+     * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> Mono<CosmosItemResponse<T>> patchItem(
+        String itemId,
+        PartitionKey partitionKey,
+        CosmosPatchOperations cosmosPatchOperations,
+        Class<T> itemType) {
+
+        return patchItem(itemId, partitionKey, cosmosPatchOperations, new CosmosItemRequestOptions(), itemType);
+    }
+
+    /**
+     * Run patch operations on an Item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
+     *
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param options the request options.
+     * @param itemType the item type.
+     *
+     * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> Mono<CosmosItemResponse<T>> patchItem(
+        String itemId,
+        PartitionKey partitionKey,
+        CosmosPatchOperations cosmosPatchOperations,
+        CosmosItemRequestOptions options,
+        Class<T> itemType) {
+
+        checkNotNull(itemId, "expected non-null itemId");
+        checkNotNull(partitionKey, "expected non-null partitionKey for patchItem");
+        checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
+
+        if (options == null) {
+            options = new CosmosItemRequestOptions();
+        }
+        ModelBridgeInternal.setPartitionKey(options, partitionKey);
+
+        final CosmosItemRequestOptions requestOptions = options;
+        return withContext(context -> patchItemInternal(itemId, cosmosPatchOperations, requestOptions, context, itemType));
+    }
+
+    /**
      * Deletes an item.
      * <p>
      * After subscription the operation will be performed.
@@ -1061,6 +1124,30 @@ public class CosmosAsyncContainer {
             database.getClient(),
             ModelBridgeInternal.getConsistencyLevel(options),
             OperationType.Replace,
+            ResourceType.Document);
+    }
+
+    private <T> Mono<CosmosItemResponse<T>> patchItemInternal(
+        String itemId,
+        CosmosPatchOperations cosmosPatchOperations,
+        CosmosItemRequestOptions options,
+        Context context,
+        Class<T> itemType) {
+
+        Mono<CosmosItemResponse<T>> responseMono = this.getDatabase()
+            .getDocClientWrapper()
+            .patchDocument(getItemLink(itemId), cosmosPatchOperations, ModelBridgeInternal.toRequestOptions(options))
+            .map(response -> ModelBridgeInternal.createCosmosAsyncItemResponse(response, itemType, getItemDeserializer()));
+
+        return database.getClient().getTracerProvider().traceEnabledCosmosItemResponsePublisher(
+            responseMono,
+            context,
+            this.patchItemSpanName,
+            this.getId(),
+            database.getId(),
+            database.getClient(),
+            ModelBridgeInternal.getConsistencyLevel(options),
+            OperationType.Patch,
             ResourceType.Document);
     }
 

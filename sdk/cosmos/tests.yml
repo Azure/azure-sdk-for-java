@@ -24,7 +24,8 @@ jobs:
         Session_Http_E2E:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
           DisplayName: Https ReadMyWrites Integration Tests
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Session'
@@ -33,7 +34,8 @@ jobs:
         Session_Tcp_E2E:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
           DisplayName: TCP ReadMyWrites Integration Tests
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'Session'
@@ -42,7 +44,8 @@ jobs:
         Session_Single_Region_Tcp_NonEmulator:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
           DisplayName: Session Single Region TCP NonEmulator
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pnon-emulator'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Session"]'
@@ -51,7 +54,8 @@ jobs:
         Session_Single_Region_Tcp_Fast:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
           DisplayName: Session Single Region Fast
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pfast'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Session"]'
@@ -60,7 +64,8 @@ jobs:
         Session_Single_Region_Tcp_Direct:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
           DisplayName: Session Single Region Direct
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pdirect'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Session"]'
@@ -69,7 +74,8 @@ jobs:
         Session_Single_Region_Tcp_Long:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
           DisplayName: Session Single Region Long
-          OSVmImage: 'windows-2019'
+          Pool: azsdk-pool-mms-win-2019-general
+          OSVmImage: MMS2019
           ProfileFlag: '-e -Plong'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Session"]'
@@ -78,7 +84,8 @@ jobs:
         Strong_Session_Single_Region_Tcp_Fast:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
           DisplayName: Strong Session Single Region TCP Fast
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pfast'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
@@ -87,7 +94,8 @@ jobs:
         Bounded_Staleness_Single_Region_Tcp_Fast:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
           DisplayName: Bounded Staleness Single Region TCP Fast
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pfast'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["BoundedStaleness"]'
@@ -96,7 +104,8 @@ jobs:
         Consistent_Prefix_Single_Region_Tcp_Fast:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
           DisplayName: Consistent Prefix Single Region TCP Fast
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pfast'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["ConsistentPrefix"]'
@@ -105,7 +114,8 @@ jobs:
         Strong_Single_Region_Https_E2E:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
           DisplayName: Strong Single Region Https ReadMyWrites
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Strong'
@@ -114,7 +124,8 @@ jobs:
         Strong_Single_Region_Tcp_E2E:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
           DisplayName: Strong Single Region TCP ReadMyWrites
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'Strong'
@@ -123,7 +134,8 @@ jobs:
         Bounded_Staleness_Single_Region_Tcp_E2E:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
           DisplayName: Bounded Staleness Single Region TCP ReadMyWrites
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pe2e'
           AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
           DESIRED_CONSISTENCY: 'BoundedStaleness'
@@ -132,7 +144,8 @@ jobs:
         Strong_Session_Single_Region_Tcp_Direct:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
           DisplayName: Strong Session Single Region TCP Direct
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pdirect'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
@@ -141,7 +154,8 @@ jobs:
         Strong_Session_Single_Region_Tcp_NonEmulator:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
           DisplayName: Strong Session Single Region TCP NonEmulator
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pnon-emulator'
           PROTOCOLS: '["Tcp"]'
           DESIRED_CONSISTENCIES: '["Strong", "Session"]'
@@ -150,7 +164,8 @@ jobs:
         Session_Multimaster_Multi_Region_Tcp_MultiMaster:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
           DisplayName: Multimaster Multi Region Multi-Master
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pmulti-master'
           PROTOCOLS: '["Tcp"]'
           ACCOUNT_CONSISTENCY: 'Session'
@@ -160,7 +175,8 @@ jobs:
         Session_Multimaster_Multi_Region_Tcp_Fast:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
           DisplayName: Multimaster Multi Region Fast
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pfast'
           PROTOCOLS: '["Tcp"]'
           ACCOUNT_CONSISTENCY: 'Session'
@@ -170,7 +186,8 @@ jobs:
         Session_Multimaster_Multi_Region_Tcp_Direct:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
           DisplayName: Multimaster Multi Region Direct
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pdirect'
           PROTOCOLS: '["Tcp"]'
           ACCOUNT_CONSISTENCY: 'Session'
@@ -180,7 +197,8 @@ jobs:
         Session_Multimaster_Multi_Region_Tcp_NonEmulator:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
           DisplayName: Multimaster Multi Region NonEmulator
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pnon-emulator'
           PROTOCOLS: '["Tcp"]'
           ACCOUNT_CONSISTENCY: 'Session'
@@ -190,7 +208,8 @@ jobs:
         Session_Multimaster_Single_Region_Tcp_MultiMaster:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
           DisplayName: MultiMaster Single Region Multi-Master
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pmulti-master'
           PROTOCOLS: '["Tcp"]'
           ACCOUNT_CONSISTENCY: 'Session'
@@ -200,7 +219,8 @@ jobs:
         Session_Multimaster_Single_Region_Tcp_Fast:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
           DisplayName: Multimaster Single Region Fast
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pfast'
           PROTOCOLS: '["Tcp"]'
           ACCOUNT_CONSISTENCY: 'Session'
@@ -210,7 +230,8 @@ jobs:
         Session_Multimaster_Single_Region_Tcp_Direct:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
           DisplayName: Multimaster Single Region Direct
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pdirect'
           PROTOCOLS: '["Tcp"]'
           ACCOUNT_CONSISTENCY: 'Session'
@@ -220,7 +241,8 @@ jobs:
         Session_Multimaster_Single_Region_Tcp_NonEmulator:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
           DisplayName: Multimaster Single Region NonEmulator
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pnon-emulator'
           PROTOCOLS: '["Tcp"]'
           ACCOUNT_CONSISTENCY: 'Session'
@@ -249,7 +271,8 @@ jobs:
         Session_Integration:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
           DisplayName: Session Integration
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu1804
           ProfileFlag: '-P integration-test-azure'
 
       EnvVars:

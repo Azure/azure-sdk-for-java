@@ -1,103 +1,103 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:floor;1287412?includeModelDefinition=true&api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:floor;1552945?includeModelDefinition=true&api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "70d35d27-af36-49b7-9294-1ff7beca2ee6"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b8ec9764-e17e-4112-8d83-8b6d4b942c94"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "211",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:floor;1287412. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
-      "Date" : "Mon, 02 Nov 2020 22:26:31 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:floor;1552945. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:58 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:room;1751920?includeModelDefinition=true&api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:room;1610426?includeModelDefinition=true&api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "7be509b2-2d89-4f96-9fd2-0b3a09e3bfdc"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e1716e4a-358c-4f16-b27d-ee1b0ee0b595"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "210",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:room;1751920. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
-      "Date" : "Mon, 02 Nov 2020 22:26:31 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:room;1610426. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:58 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:hvac;1162708?includeModelDefinition=true&api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:hvac;1876760?includeModelDefinition=true&api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6eb29313-e480-4ac0-aacb-d12b170234ee"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "09017080-8c52-4135-ae91-99238d2ba6f2"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "210",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:hvac;1162708. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
-      "Date" : "Mon, 02 Nov 2020 22:26:31 GMT",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:example:hvac;1876760. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:58 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/floorTwin709160?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/floorTwin965600?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6b240bef-5617-4d02-ad7f-901beb86099c"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2b739d35-ff75-4210-954a-0694428763a5"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "268",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID floorTwin709160. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
-      "Date" : "Mon, 02 Nov 2020 22:26:32 GMT",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID floorTwin965600. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin136312?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin919980?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1d5a517c-0a22-4823-8164-cce19447401f"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "eb5a84dd-4f1e-4323-b596-fe4c119f13c2"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "267",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID roomTwin136312. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
-      "Date" : "Mon, 02 Nov 2020 22:26:32 GMT",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID roomTwin919980. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:58 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/hvacTwin087788?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/hvacTwin161400?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "de3a6945-1027-4802-8954-aedab4b59270"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "05b29665-68b1-4954-9eea-4f542b4e65a6"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "267",
       "StatusCode" : "404",
-      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID hvacTwin087788. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
-      "Date" : "Mon, 02 Nov 2020 22:26:32 GMT",
+      "Body" : "{\"error\":{\"code\":\"DigitalTwinNotFound\",\"message\":\"There is no digital twin instance that exists with the ID hvacTwin161400. Please verify that the twin id is valid and ensure that the twin is not deleted. See section on querying the twins http://aka.ms/adtv2query.\"}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -105,8 +105,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "bafa1c83-0161-42d5-98e3-7272ab935ea1",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "14e33c02-fb7b-42cc-bdd1-bddc609411e2",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -114,146 +114,146 @@
       "retry-after" : "0",
       "Content-Length" : "565",
       "StatusCode" : "201",
-      "Body" : "[{\"id\":\"dtmi:example:floor;1287412\",\"description\":{\"en\":\"Abuildingstory.\"},\"displayName\":{\"en\":\"Floor\"},\"decommissioned\":false,\"uploadTime\":\"2020-11-02T22:26:32.193285+00:00\"},{\"id\":\"dtmi:example:room;1751920\",\"description\":{\"en\":\"Anenclosureinsideabuilding.\"},\"displayName\":{\"en\":\"Room\"},\"decommissioned\":false,\"uploadTime\":\"2020-11-02T22:26:32.1934245+00:00\"},{\"id\":\"dtmi:example:hvac;1162708\",\"description\":{\"en\":\"Aheating,ventilation,andairconditioningunit.\"},\"displayName\":{\"en\":\"HVAC\"},\"decommissioned\":false,\"uploadTime\":\"2020-11-02T22:26:32.1935755+00:00\"}]",
-      "Date" : "Mon, 02 Nov 2020 22:26:32 GMT",
+      "Body" : "[{\"id\":\"dtmi:example:floor;1552945\",\"description\":{\"en\":\"Abuildingstory.\"},\"displayName\":{\"en\":\"Floor\"},\"decommissioned\":false,\"uploadTime\":\"2021-01-13T20:05:59.160008+00:00\"},{\"id\":\"dtmi:example:room;1610426\",\"description\":{\"en\":\"Anenclosureinsideabuilding.\"},\"displayName\":{\"en\":\"Room\"},\"decommissioned\":false,\"uploadTime\":\"2021-01-13T20:05:59.1600492+00:00\"},{\"id\":\"dtmi:example:hvac;1876760\",\"description\":{\"en\":\"Aheating,ventilation,andairconditioningunit.\"},\"displayName\":{\"en\":\"HVAC\"},\"decommissioned\":false,\"uploadTime\":\"2021-01-13T20:05:59.1600934+00:00\"}]",
+      "Date" : "Wed, 13 Jan 2021 20:05:58 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/floorTwin709160?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/floorTwin965600?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "0fcfd913-d155-49bf-aeb5-0b764c83e075",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "95d4ac38-72df-4c5e-8215-74b1b2f62449",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "ETag" : "W/\"f1e315ae-8190-42d8-bbd4-f72176bfae64\"",
+      "ETag" : "W/\"d77bcc28-7594-45b0-b4a1-b848244e5fb5\"",
       "retry-after" : "0",
       "Content-Length" : "227",
       "StatusCode" : "200",
-      "Body" : "{\"$dtId\":\"floorTwin709160\",\"$etag\":\"W/\\\"f1e315ae-8190-42d8-bbd4-f72176bfae64\\\"\",\"AverageTemperature\":75,\"$metadata\":{\"$model\":\"dtmi:example:floor;1287412\",\"AverageTemperature\":{\"lastUpdateTime\":\"2020-11-02T22:26:32.2995210Z\"}}}",
-      "Date" : "Mon, 02 Nov 2020 22:26:32 GMT",
+      "Body" : "{\"$dtId\":\"floorTwin965600\",\"$etag\":\"W/\\\"d77bcc28-7594-45b0-b4a1-b848244e5fb5\\\"\",\"AverageTemperature\":75,\"$metadata\":{\"$model\":\"dtmi:example:floor;1552945\",\"AverageTemperature\":{\"lastUpdateTime\":\"2021-01-13T20:05:59.2333542Z\"}}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin136312?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin919980?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "33cfc804-d8d2-4a13-8271-2799d7c469b8",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "30c06da1-4b25-44ab-8e9f-73ab6a98118c",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "ETag" : "W/\"3e22edaf-23d7-4b41-abc2-5b4d3bba2e44\"",
+      "ETag" : "W/\"80de64fe-44a9-4aa0-995d-f87a190ebc73\"",
       "retry-after" : "0",
       "Content-Length" : "455",
       "StatusCode" : "200",
-      "Body" : "{\"$dtId\":\"roomTwin136312\",\"$etag\":\"W/\\\"3e22edaf-23d7-4b41-abc2-5b4d3bba2e44\\\"\",\"IsOccupied\":true,\"Temperature\":80,\"Humidity\":25,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1751920\",\"IsOccupied\":{\"lastUpdateTime\":\"2020-11-02T22:26:32.4041571Z\"},\"Temperature\":{\"lastUpdateTime\":\"2020-11-02T22:26:32.4041571Z\"},\"Humidity\":{\"lastUpdateTime\":\"2020-11-02T22:26:32.4041571Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2020-11-02T22:26:32.4041571Z\"}}}",
-      "Date" : "Mon, 02 Nov 2020 22:26:32 GMT",
+      "Body" : "{\"$dtId\":\"roomTwin919980\",\"$etag\":\"W/\\\"80de64fe-44a9-4aa0-995d-f87a190ebc73\\\"\",\"IsOccupied\":true,\"Temperature\":80,\"Humidity\":25,\"EmployeeId\":\"Employee1\",\"$metadata\":{\"$model\":\"dtmi:example:room;1610426\",\"IsOccupied\":{\"lastUpdateTime\":\"2021-01-13T20:05:59.3090604Z\"},\"Temperature\":{\"lastUpdateTime\":\"2021-01-13T20:05:59.3090604Z\"},\"Humidity\":{\"lastUpdateTime\":\"2021-01-13T20:05:59.3090604Z\"},\"EmployeeId\":{\"lastUpdateTime\":\"2021-01-13T20:05:59.3090604Z\"}}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:58 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/hvacTwin087788?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/hvacTwin161400?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f99cddc5-26cd-4996-becc-8bc3ce1d988d",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0361949a-f359-49fb-b888-7fc02446812b",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "ETag" : "W/\"9d037a58-9828-4b8f-b103-f2318df317eb\"",
+      "ETag" : "W/\"225f262b-db7b-4608-9f97-a58a7c00481d\"",
       "retry-after" : "0",
       "Content-Length" : "310",
       "StatusCode" : "200",
-      "Body" : "{\"$dtId\":\"hvacTwin087788\",\"$etag\":\"W/\\\"9d037a58-9828-4b8f-b103-f2318df317eb\\\"\",\"TargetTemperature\":80,\"TargetHumidity\":25,\"$metadata\":{\"$model\":\"dtmi:example:hvac;1162708\",\"TargetTemperature\":{\"lastUpdateTime\":\"2020-11-02T22:26:32.5135826Z\"},\"TargetHumidity\":{\"lastUpdateTime\":\"2020-11-02T22:26:32.5135826Z\"}}}",
-      "Date" : "Mon, 02 Nov 2020 22:26:32 GMT",
+      "Body" : "{\"$dtId\":\"hvacTwin161400\",\"$etag\":\"W/\\\"225f262b-db7b-4608-9f97-a58a7c00481d\\\"\",\"TargetTemperature\":80,\"TargetHumidity\":25,\"$metadata\":{\"$model\":\"dtmi:example:hvac;1876760\",\"TargetTemperature\":{\"lastUpdateTime\":\"2021-01-13T20:05:59.3804380Z\"},\"TargetHumidity\":{\"lastUpdateTime\":\"2021-01-13T20:05:59.3804380Z\"}}}",
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/floorTwin709160/relationships/FloorToRoomRelationship?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/floorTwin965600/relationships/FloorToRoomRelationship?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "b49cc7d2-8b89-4b47-9859-9bfc1cee2e15",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e8722bd5-6f61-4a97-bba6-85bf7d09a97d",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "ETag" : "W/\"ea7f584d-4201-4ac5-98d1-585f360b7804\"",
+      "ETag" : "W/\"5f0ac70c-c02d-43a2-811c-6b166f4b0ca4\"",
       "retry-after" : "0",
       "Content-Length" : "214",
       "StatusCode" : "200",
-      "Body" : "{\"$relationshipId\":\"FloorToRoomRelationship\",\"$etag\":\"W/\\\"ea7f584d-4201-4ac5-98d1-585f360b7804\\\"\",\"$sourceId\":\"floorTwin709160\",\"$relationshipName\":\"contains\",\"$targetId\":\"roomTwin136312\",\"isAccessRestricted\":true}",
-      "Date" : "Mon, 02 Nov 2020 22:26:32 GMT",
+      "Body" : "{\"$relationshipId\":\"FloorToRoomRelationship\",\"$etag\":\"W/\\\"5f0ac70c-c02d-43a2-811c-6b166f4b0ca4\\\"\",\"$sourceId\":\"floorTwin965600\",\"$relationshipName\":\"contains\",\"$targetId\":\"roomTwin919980\",\"isAccessRestricted\":true}",
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin136312/relationships/RoomToFloorRelationship?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin919980/relationships/RoomToFloorRelationship?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "03a8fb30-836c-46cd-b748-7c9b94ee4bd0",
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "f0963e86-5d9c-420f-a911-84d6c92db09b",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
-      "ETag" : "W/\"8a1db9db-6078-430d-be01-37e41aedcda1\"",
+      "ETag" : "W/\"9dc8db9d-32e4-4055-b248-c3dd486937b8\"",
       "retry-after" : "0",
       "Content-Length" : "191",
       "StatusCode" : "200",
-      "Body" : "{\"$relationshipId\":\"RoomToFloorRelationship\",\"$etag\":\"W/\\\"8a1db9db-6078-430d-be01-37e41aedcda1\\\"\",\"$sourceId\":\"roomTwin136312\",\"$relationshipName\":\"containedIn\",\"$targetId\":\"floorTwin709160\"}",
-      "Date" : "Mon, 02 Nov 2020 22:26:32 GMT",
+      "Body" : "{\"$relationshipId\":\"RoomToFloorRelationship\",\"$etag\":\"W/\\\"9dc8db9d-32e4-4055-b248-c3dd486937b8\\\"\",\"$sourceId\":\"roomTwin919980\",\"$relationshipName\":\"containedIn\",\"$targetId\":\"floorTwin965600\"}",
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/floorTwin709160/relationships?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/floorTwin965600/relationships?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "bff4f4cd-a0b9-4636-9e91-5e0544ff1490"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "55ddd19f-6d33-48e7-a7fd-d00c241c9a7e"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "242",
       "StatusCode" : "200",
-      "Body" : "{\"nextLink\":null,\"value\":[{\"$relationshipId\":\"FloorToRoomRelationship\",\"$etag\":\"W/\\\"ea7f584d-4201-4ac5-98d1-585f360b7804\\\"\",\"$sourceId\":\"floorTwin709160\",\"$relationshipName\":\"contains\",\"$targetId\":\"roomTwin136312\",\"isAccessRestricted\":true}]}",
-      "Date" : "Mon, 02 Nov 2020 22:26:32 GMT",
+      "Body" : "{\"nextLink\":null,\"value\":[{\"$relationshipId\":\"FloorToRoomRelationship\",\"$etag\":\"W/\\\"5f0ac70c-c02d-43a2-811c-6b166f4b0ca4\\\"\",\"$sourceId\":\"floorTwin965600\",\"$relationshipName\":\"contains\",\"$targetId\":\"roomTwin919980\",\"isAccessRestricted\":true}]}",
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin136312/relationships?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin919980/relationships?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "1087e243-a89e-4b25-89c5-c5bf70d691d0"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d14b257e-ec60-4b70-8fd6-66986a522b74"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "219",
       "StatusCode" : "200",
-      "Body" : "{\"nextLink\":null,\"value\":[{\"$relationshipId\":\"RoomToFloorRelationship\",\"$etag\":\"W/\\\"8a1db9db-6078-430d-be01-37e41aedcda1\\\"\",\"$sourceId\":\"roomTwin136312\",\"$relationshipName\":\"containedIn\",\"$targetId\":\"floorTwin709160\"}]}",
-      "Date" : "Mon, 02 Nov 2020 22:26:32 GMT",
+      "Body" : "{\"nextLink\":null,\"value\":[{\"$relationshipId\":\"RoomToFloorRelationship\",\"$etag\":\"W/\\\"9dc8db9d-32e4-4055-b248-c3dd486937b8\\\"\",\"$sourceId\":\"roomTwin919980\",\"$relationshipName\":\"containedIn\",\"$targetId\":\"floorTwin965600\"}]}",
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/hvacTwin087788/relationships?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/hvacTwin161400/relationships?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c38c9e33-4394-4992-bb4a-bef18c1690fa"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "51662bb2-636c-4dda-b193-3d4be319e9de"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
@@ -261,130 +261,130 @@
       "Content-Length" : "28",
       "StatusCode" : "200",
       "Body" : "{\"nextLink\":null,\"value\":[]}",
-      "Date" : "Mon, 02 Nov 2020 22:26:33 GMT",
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/floorTwin709160/relationships/FloorToRoomRelationship?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/floorTwin965600/relationships/FloorToRoomRelationship?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4004cef8-2c97-47dc-9ae0-07d0fd19ffba"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "08d31957-c2ed-47be-b130-bc306de8a5cd"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:26:33 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin136312/relationships/RoomToFloorRelationship?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin919980/relationships/RoomToFloorRelationship?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "8f8cc624-39c4-43df-aa53-ec4062167a16"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c40ca7a3-c8fa-4267-bcef-a59c2d269646"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:26:33 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/floorTwin709160?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/floorTwin965600?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "94e1dbc1-d8f4-4cb5-a6ee-21dc20fc1ce1"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "cc75d8b6-94a5-4140-9ced-06d09791331a"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:26:33 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin136312?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/roomTwin919980?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6b7bf835-8c71-4b7a-90c8-3d51005935c7"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "4b70ad1b-3da0-4291-9f73-93d3439cde94"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:26:33 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/hvacTwin087788?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/digitaltwins/hvacTwin161400?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d38974f3-4c22-454a-8459-df1bfb4facbe"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "be71f5f6-4870-4f25-aff2-7b177c5d7120"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:26:33 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:floor;1287412?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:floor;1552945?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c12b855b-1b91-4563-acf8-3d5b2b82f4be"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ecccc2f2-47bb-4496-8cec-d3e2117b6031"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:26:33 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:room;1751920?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:room;1610426?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "45f93ee2-d757-4374-8a1a-ca6a2e3f2bd4"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c90af70f-7277-4445-8d76-4046c782cfc8"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:26:33 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:hvac;1162708?api-version=2020-10-31",
+    "Uri" : "https://REDACTED.api.wus2.digitaltwins.azure.net/models/dtmi:example:hvac;1876760?api-version=2020-10-31",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.8; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "9892d9a9-4ddf-41e9-8c82-1380ce3efc86"
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.1.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "e8bdfc7a-57ed-43e5-bdec-c0035c96d4d2"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Mon, 02 Nov 2020 22:26:33 GMT"
+      "Date" : "Wed, 13 Jan 2021 20:05:59 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "409634", "97314d", "384920", "921382", "35853f", "209900" ]
+  "variables" : [ "774167", "832648", "098982", "187822", "131102", "38362d" ]
 }
