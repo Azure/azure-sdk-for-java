@@ -94,11 +94,11 @@ Open application.yml in your project to configure:
 ```yml
 azure:
   activedirectory:
-    tenantId: <your-tenantId>
+    tenant-id: <your-tenant-id>
     client-id: <your-client-id>
     client-secret: <your-client-secret>
     # Optional, default value is http://localhost:8080/
-    redirectUriTemplate: <your-redirect-uri>
+    redirect-uri-template: <your-redirect-uri>
     # groups that you created in your Azure AD tenant
     user-group:
       allowed-groups: group1,group2
