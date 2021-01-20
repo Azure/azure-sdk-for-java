@@ -51,7 +51,7 @@ class CommunicationIdentifierSerializer {
         if (identifier instanceof PhoneNumberIdentifier) {
             return new CommunicationIdentifierModel()
                 .setKind(CommunicationIdentifierKind.PHONE_NUMBER)
-                .setPhoneNumber(((PhoneNumberIdentifier) identifier).getValue());
+                .setPhoneNumber(((PhoneNumberIdentifier) identifier).getPhoneNumber());
         }
 
         if (identifier instanceof MicrosoftTeamsUserIdentifier) {

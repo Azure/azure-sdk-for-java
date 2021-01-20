@@ -123,7 +123,7 @@ public class CommunicationIdentifierSerializerTests {
                 .setPhoneNumber(phoneNumber));
 
         assertEquals(PhoneNumberIdentifier.class, identifier.getClass());
-        assertEquals(phoneNumber, ((PhoneNumberIdentifier) identifier).getValue());
+        assertEquals(phoneNumber, ((PhoneNumberIdentifier) identifier).getPhoneNumber());
     }
 
     @ParameterizedTest
