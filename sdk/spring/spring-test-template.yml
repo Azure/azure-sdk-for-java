@@ -1,8 +1,8 @@
 parameters:
-  OSVmImage: $(OSVmImage)
   EnvVars: {}
   TestName: ''
   Artifacts: []
+  SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
 
 jobs:
     - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
@@ -11,10 +11,11 @@ jobs:
         ServiceDirectory: spring
         EnvVars: ${{ parameters.EnvVars }}
         TestName: ${{ parameters.TestName }}
+        SubscriptionConfiguration: ${{ parameters.SubscriptionConfiguration }}
+        Artifacts: ${{ parameters.Artifacts }}
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
-        Artifacts: ${{ parameters.Artifacts }}
 
         PostRunSteps:
           - script: |
