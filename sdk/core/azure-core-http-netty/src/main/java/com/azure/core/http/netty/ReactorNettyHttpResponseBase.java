@@ -72,9 +72,8 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
             return nettyHeaders.size();
         }
 
-        /* This replaces any current value with the given name */
         @Override
-        public HttpHeaders put(String name, String value) {
+        public HttpHeaders set(String name, String value) {
             if (name == null) {
                 return this;
             }
@@ -84,6 +83,21 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
                 remove(name);
             } else {
                 nettyHeaders.set(name, value);
+            }
+            return this;
+        }
+
+        @Override
+        public HttpHeaders set(String name, List<String> values) {
+            if (name == null) {
+                return this;
+            }
+
+            name = formatKey(name);
+            if (values == null) {
+                remove(name);
+            } else {
+                nettyHeaders.set(name, values);
             }
             return this;
         }

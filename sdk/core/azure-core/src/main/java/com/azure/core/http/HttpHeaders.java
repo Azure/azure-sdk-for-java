@@ -65,8 +65,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     @Deprecated
     public HttpHeaders put(String name, String value) {
-        headers.put(formatKey(name), new HttpHeader(name, value));
-        return this;
+        return set(name, value);
     }
 
     public HttpHeaders set(String name, String value) {
