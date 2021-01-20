@@ -3,6 +3,9 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
@@ -76,6 +79,7 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 /**
  * This class provides a client that contains all operations that apply to any path object.
  */
+@ServiceClient(builder = DataLakePathClientBuilder.class, isAsync = true)
 public class DataLakePathAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(DataLakePathAsyncClient.class);
@@ -259,6 +263,7 @@ public class DataLakePathAsyncClient {
      *
      * @return A reactive response containing information about the created resource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> create() {
         try {
             return create(false);
@@ -282,6 +287,7 @@ public class DataLakePathAsyncClient {
      *
      * @return A reactive response containing information about the created resource.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> create(boolean overwrite) {
         try {
             DataLakeRequestConditions requestConditions = new DataLakeRequestConditions();
@@ -314,6 +320,7 @@ public class DataLakePathAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * PathItem}.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> createWithResponse(String permissions, String umask, PathHttpHeaders headers,
         Map<String, String> metadata, DataLakeRequestConditions requestConditions) {
         try {
@@ -384,6 +391,7 @@ public class DataLakePathAsyncClient {
      * metadata key or value, it must be removed or encoded.
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setMetadata(Map<String, String> metadata) {
         try {
             return setMetadataWithResponse(metadata, null).flatMap(FluxUtil::toMono);
@@ -408,6 +416,7 @@ public class DataLakePathAsyncClient {
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataWithResponse(Map<String, String> metadata,
         DataLakeRequestConditions requestConditions) {
         try {
@@ -433,6 +442,7 @@ public class DataLakePathAsyncClient {
      * @param headers {@link PathHttpHeaders}
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setHttpHeaders(PathHttpHeaders headers) {
         try {
             return setHttpHeadersWithResponse(headers, null).flatMap(FluxUtil::toMono);
@@ -456,6 +466,7 @@ public class DataLakePathAsyncClient {
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response signalling completion.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setHttpHeadersWithResponse(PathHttpHeaders headers,
         DataLakeRequestConditions requestConditions) {
         try {
@@ -479,6 +490,7 @@ public class DataLakePathAsyncClient {
      *
      * @return A reactive response containing the resource's properties and metadata.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathProperties> getProperties() {
         try {
             return getPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
@@ -500,6 +512,7 @@ public class DataLakePathAsyncClient {
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource's properties and metadata.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathProperties>> getPropertiesWithResponse(DataLakeRequestConditions requestConditions) {
         try {
             return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(requestConditions))
@@ -522,6 +535,7 @@ public class DataLakePathAsyncClient {
      *
      * @return true if the path exists, false if it doesn't
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> exists() {
         try {
             return existsWithResponse().flatMap(FluxUtil::toMono);
@@ -542,6 +556,7 @@ public class DataLakePathAsyncClient {
      *
      * @return true if the path exists, false if it doesn't
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> existsWithResponse() {
         try {
             return blockBlobAsyncClient.existsWithResponse()
@@ -566,6 +581,7 @@ public class DataLakePathAsyncClient {
      * @param owner The owner of the resource.
      * @return A reactive response containing the resource info.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> setAccessControlList(List<PathAccessControlEntry> accessControlList, String group,
         String owner) {
         try {
@@ -591,6 +607,7 @@ public class DataLakePathAsyncClient {
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource info.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> setAccessControlListWithResponse(List<PathAccessControlEntry> accessControlList,
         String group, String owner, DataLakeRequestConditions requestConditions) {
         try {
@@ -616,6 +633,7 @@ public class DataLakePathAsyncClient {
      * @param owner The owner of the resource.
      * @return A reactive response containing the resource info.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathInfo> setPermissions(PathPermissions permissions, String group, String owner) {
         try {
             return setPermissionsWithResponse(permissions, group, owner, null).flatMap(FluxUtil::toMono);
@@ -640,6 +658,7 @@ public class DataLakePathAsyncClient {
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource info.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathInfo>> setPermissionsWithResponse(PathPermissions permissions, String group, String owner,
         DataLakeRequestConditions requestConditions) {
         try {
@@ -693,6 +712,7 @@ public class DataLakePathAsyncClient {
      * @throws DataLakeAclChangeFailedException if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessControlChangeResult> setAccessControlRecursive(List<PathAccessControlEntry> accessControlList) {
         try {
             return setAccessControlRecursiveWithResponse(new PathSetAccessControlRecursiveOptions(accessControlList))
@@ -718,6 +738,7 @@ public class DataLakePathAsyncClient {
      * @throws DataLakeAclChangeFailedException if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessControlChangeResult>> setAccessControlRecursiveWithResponse(
         PathSetAccessControlRecursiveOptions options) {
         StorageImplUtils.assertNotNull("options", options);
@@ -747,6 +768,7 @@ public class DataLakePathAsyncClient {
      * @throws DataLakeAclChangeFailedException if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessControlChangeResult> updateAccessControlRecursive(
         List<PathAccessControlEntry> accessControlList) {
         try {
@@ -774,6 +796,7 @@ public class DataLakePathAsyncClient {
      * @throws DataLakeAclChangeFailedException if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessControlChangeResult>> updateAccessControlRecursiveWithResponse(
         PathUpdateAccessControlRecursiveOptions options) {
         StorageImplUtils.assertNotNull("options", options);
@@ -803,6 +826,7 @@ public class DataLakePathAsyncClient {
      * @throws DataLakeAclChangeFailedException if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AccessControlChangeResult> removeAccessControlRecursive(
         List<PathRemoveAccessControlEntry> accessControlList) {
         try {
@@ -830,6 +854,7 @@ public class DataLakePathAsyncClient {
      * @throws DataLakeAclChangeFailedException if a request to storage throws a
      * {@link DataLakeStorageException} or a {@link Exception} to wrap the exception with the continuation token.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AccessControlChangeResult>> removeAccessControlRecursiveWithResponse(
         PathRemoveAccessControlRecursiveOptions options) {
         StorageImplUtils.assertNotNull("options", options);
@@ -997,6 +1022,7 @@ public class DataLakePathAsyncClient {
      *
      * @return A reactive response containing the resource access control.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PathAccessControl> getAccessControl() {
         try {
             return getAccessControlWithResponse(false, null).flatMap(FluxUtil::toMono);
@@ -1020,6 +1046,7 @@ public class DataLakePathAsyncClient {
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource access control.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PathAccessControl>> getAccessControlWithResponse(boolean userPrincipalNameReturned,
         DataLakeRequestConditions requestConditions) {
         try {
