@@ -27,9 +27,9 @@ object CosmosRowConverter
 
     // TODO: Expose configuration to handle duplicate fields
     // See: https://github.com/Azure/azure-sdk-for-java/pull/18642#discussion_r558638474
-    val objectMapper = new ObjectMapper()
+    private val objectMapper = new ObjectMapper()
 
-    val utcFormatter = DateTimeFormatter
+    private val utcFormatter = DateTimeFormatter
         .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
 
     def fromObjectNodeToInternalRow(schema: StructType, objectNode: ObjectNode): InternalRow = {
@@ -206,11 +206,10 @@ object CosmosRowConverter
     private def toTimestamp(value: JsonNode): Timestamp = {
         value match {
             case isJsonNumber() => new Timestamp(value.asLong())
-            case textNode : TextNode =>  {
+            case textNode : TextNode =>
                 parseDateTimefromString(textNode.asText()) match {
                     case Some(odt) => Timestamp.valueOf(odt.toLocalDateTime)
                 }
-            }
             case _ => Timestamp.valueOf(value.asText())
         }
     }
@@ -218,11 +217,10 @@ object CosmosRowConverter
     private def toDate(value: JsonNode): Date = {
         value match {
             case isJsonNumber() => new Date(value.asLong())
-            case textNode : TextNode =>  {
+            case textNode : TextNode =>
                 parseDateTimefromString(textNode.asText()) match {
                     case Some(odt) => Date.valueOf(odt.toLocalDate)
                 }
-            }
             case _ => Date.valueOf(value.asText())
         }
     }
@@ -233,13 +231,13 @@ object CosmosRowConverter
             Some(odt)
         }
         catch {
-            case _ =>
+            case _: Exception =>
                 try {
                     val odt = OffsetDateTime.parse(value, utcFormatter) //yyyy-MM-ddTHH:mm:ssZ
                     Some(odt)
                 }
                 catch {
-                    case e: Exception => None
+                    case _: Exception => None
                 }
         }
     }

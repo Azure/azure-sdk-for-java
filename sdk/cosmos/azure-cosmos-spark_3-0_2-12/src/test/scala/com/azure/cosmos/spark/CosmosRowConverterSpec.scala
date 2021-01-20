@@ -7,7 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.sql.{Date, Timestamp}
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
-import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType, Decimal, DecimalType, DoubleType, FloatType, IntegerType, LongType, MapType, NullType, StringType, StructField, StructType, TimestampType}
+import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType, Decimal, DecimalType, DoubleType,
+    FloatType, IntegerType, LongType, MapType, NullType, StringType, StructField, StructType, TimestampType}
 
 import java.time.{OffsetDateTime, ZoneId, ZoneOffset}
 import java.time.format.DateTimeFormatter
