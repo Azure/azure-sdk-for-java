@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.benchmark.linkedin.impl.models;
 
 import com.google.common.base.Preconditions;
