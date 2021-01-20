@@ -13,6 +13,7 @@
     <module>eng/jacoco-test-coverage</module>
     <module>sdk/anomalydetector</module>
     <module>sdk/appconfiguration</module>
+    <module>sdk/attestation</module>
     <module>sdk/authorization</module>
     <module>sdk/batch</module>
     <module>sdk/boms</module>
