@@ -115,14 +115,14 @@ public class SparkSessionAsyncClientTest extends SparkClientTestBase {
                 .setCode(code);
 
             Mono<SparkStatement> createSparkStatement = Mono.defer(() -> {
-                    if (interceptorManager.isPlaybackMode()) {
-                        return Mono.empty();
-                    } else {
-                        return Mono.delay(Duration.ofSeconds(360));
-                    }
-                })
-                .then(Mono.defer(() -> client.resetSparkSessionTimeout(testSession.get().getId())))
-                .then(Mono.defer(() -> client.createSparkStatement(testSession.get().getId(), options)));
+                if (interceptorManager.isPlaybackMode()) {
+                    return Mono.empty();
+                } else {
+                    return Mono.delay(Duration.ofSeconds(360));
+                }
+            })
+            .then(Mono.defer(() -> client.resetSparkSessionTimeout(testSession.get().getId())))
+            .then(Mono.defer(() -> client.createSparkStatement(testSession.get().getId(), options)));
 
             // act
             StepVerifier.create(createSparkStatement)
