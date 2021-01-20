@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.util.IterableStream;
 import reactor.netty.http.client.HttpClientResponse;
 
 import java.util.AbstractMap;
@@ -16,6 +15,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Base response class for Reactor Netty with implementations for response metadata.
@@ -60,9 +60,25 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
             return nettyHeaders.size();
         }
 
+        /* This replaces any current value with the given name */
         @Override
         public HttpHeaders put(String name, String value) {
-            nettyHeaders.add(name, value);
+            if (name == null) return this;
+            if (value == null) {
+                remove(name);
+            } else {
+                nettyHeaders.set(name, value);
+            }
+            return this;
+        }
+
+        HttpHeaders add(String name, String value) {
+            if (name == null) return this;
+            if (value == null) {
+                remove(name);
+            } else {
+                nettyHeaders.add(name, value);
+            }
             return this;
         }
 
@@ -121,25 +137,26 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
 
         @Override
         public Stream<HttpHeader> stream() {
-            return new IterableStream<>(nettyHeaders).stream().map(e -> new NettyHttpHeader(this, e));
+            return StreamSupport.stream(nettyHeaders.spliterator(), false)
+                       .map(e -> new NettyHttpHeader(this, e));
         }
     }
 
     static class NettyHttpHeader extends HttpHeader {
-        private final HttpHeaders allHeaders;
+        private final NettyHttpHeaders allHeaders;
 
-        NettyHttpHeader(HttpHeaders allHeaders, String name, String value) {
+        NettyHttpHeader(NettyHttpHeaders allHeaders, String name, String value) {
             super(name, value);
             this.allHeaders = allHeaders;
         }
 
-        NettyHttpHeader(HttpHeaders allHeaders, Map.Entry<String, String> entry) {
+        NettyHttpHeader(NettyHttpHeaders allHeaders, Map.Entry<String, String> entry) {
             this(allHeaders, entry.getKey(), entry.getValue());
         }
 
         @Override
         public void addValue(String value) {
-            allHeaders.put(getName(), value);
+            allHeaders.add(getName(), value);
         }
     }
 }
