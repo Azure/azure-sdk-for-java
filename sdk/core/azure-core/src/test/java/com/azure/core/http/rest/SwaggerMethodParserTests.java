@@ -386,7 +386,7 @@ public class SwaggerMethodParserTests {
         Map<String, String> simpleHeaderMap = Collections.singletonMap("key", "value");
         Map<String, String> expectedSimpleHeadersMap = Collections.singletonMap("x-ms-meta-key", "value");
 
-        Map<String, String> complexHeaderMap = new HttpHeaders().set("key1", null).set("key2", "value2").toMap();
+        Map<String, String> complexHeaderMap = new HttpHeaders().set("key1", (String) null).set("key2", "value2").toMap();
         Map<String, String> expectedComplexHeaderMap = Collections.singletonMap("x-ms-meta-key2", "value2");
 
         return Stream.of(
