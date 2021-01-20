@@ -11,7 +11,7 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_
 import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AADOauth2ROPCGrantClientIT {
 
