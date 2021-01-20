@@ -72,8 +72,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
         ClientTypes clientType = classifyClient(clientUri);
         // We can't set attestation policy on the shared client, so just exit early.
-        if (clientType.equals(ClientTypes.Shared))
-        {
+        if (clientType.equals(ClientTypes.Shared)) {
             return;
         }
 
@@ -103,13 +102,14 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         } finally {
             PolicyResponse resetResponse = null;
             switch (clientType) {
-                case Aad: {
+                case Aad:
                     resetResponse = client.reset(attestationType, new PlainPolicyResetToken().serialize());
                     break;
-                }
                 case Isolated:
                     resetResponse = client.reset(attestationType, new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize());
                     break;
+                default:
+                    throw new RuntimeException("Cannot ever hit this - unknown client type: " + clientType.toString());
             }
             JWTClaimsSet resetClaims = verifyAttestationToken(httpClient, clientUri, resetResponse.getToken()).block();
             assertNotNull(resetClaims);
@@ -123,8 +123,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     public void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri, AttestationType attestationType) {
         ClientTypes clientType = classifyClient(clientUri);
         // We can't set attestation policy on the shared client, so just exit early.
-        if (clientType.equals(ClientTypes.Shared))
-        {
+        if (clientType.equals(ClientTypes.Shared)) {
             return;
         }
 
@@ -156,16 +155,15 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                             case Aad:
                                 resetToken = new PlainPolicyResetToken().serialize();
                                 break;
-                            case Isolated: {
+                            case Isolated:
                                 try {
                                     resetToken = new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize();
                                 } catch (JOSEException e) {
                                     e.printStackTrace();
                                 }
                                 break;
-                            }
                             default:
-                                throw new RuntimeException();
+                                throw new RuntimeException("Cannot ever hit this - unknown client type: " + clientType.toString());
                         }
                         return client.reset(attestationType, resetToken)
                                 .flatMap(response -> {
@@ -222,8 +220,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                         attestationPolicy = new String(attestationPolicyUtf8, StandardCharsets.UTF_8);
 
                         assertNotNull(attestationPolicy);
-                    }
-                    else {
+                    } else {
                         assertEquals("Tpm", attestationType.toString());
                     }
                 } else {

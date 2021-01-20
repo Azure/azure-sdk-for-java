@@ -3,11 +3,9 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.Configuration;
 import com.azure.security.attestation.models.JsonWebKeySet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
@@ -15,10 +13,6 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,19 +37,14 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    public void testGetSigningCertificatesAsync(HttpClient client, String clientUri) throws Exception {
+    public void testGetSigningCertificatesAsync(HttpClient client, String clientUri) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
         StepVerifier.create(attestationBuilder.buildSigningCertificatesAsyncClient().get())
-            .assertNext(certs -> {
-                Assertions.assertDoesNotThrow(() -> {
-                        verifySigningCertificatesResponse(clientUri, certs);
-                    });
-            })
+            .assertNext(certs -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, certs)))
         .verifyComplete();
 
-        ;
     }
 
     /**
@@ -89,11 +78,9 @@ public class AttestationSignersTest extends AttestationClientTestBase {
                     if (x5c.getIssuerDN().equals(x5c.getSubjectDN())) {
                         if (x5c.getIssuerDN().toString().contains("Microsoft Root Certificate Authority")) {
                             assertEquals("CN=Microsoft Root Certificate Authority 2011, O=Microsoft Corporation, L=Redmond, ST=Washington, C=US", x5c.getIssuerDN().getName());
-                        }
-                        else if (x5c.getIssuerDN().toString().contains("AttestationService-LocalTest-ReportSigning")) {
+                        } else if (x5c.getIssuerDN().toString().contains("AttestationService-LocalTest-ReportSigning")) {
                             assertEquals("CN=AttestationService-LocalTest-ReportSigning", x5c.getIssuerDN().getName());
-                        }
-                        else {
+                        } else {
                             assertEquals("CN=" + clientUri, x5c.getSubjectDN().getName());
                         }
                     }

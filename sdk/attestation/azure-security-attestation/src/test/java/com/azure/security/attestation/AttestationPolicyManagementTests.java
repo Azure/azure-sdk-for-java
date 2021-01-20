@@ -51,8 +51,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         PolicyCertificatesAsyncClient client = attestationBuilder.buildPolicyCertificatesAsyncClient();
 
         StepVerifier.create(client.get()
-                .flatMap(response ->
-                {
+                .flatMap(response -> {
                     try {
                         return verifyAttestationToken(httpClient, clientUri, response.getToken());
                     } catch (ParseException e) {
@@ -122,8 +121,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         ClientTypes clientType = classifyClient(clientUri);
 
         // This test only works on isolated instances.
-        if (clientType != ClientTypes.Isolated)
-        {
+        if (clientType != ClientTypes.Isolated) {
             return;
         }
 
@@ -179,8 +177,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         ClientTypes clientType = classifyClient(clientUri);
         // This test only works on isolated instances.
-        if (clientType != ClientTypes.Isolated)
-        {
+        if (clientType != ClientTypes.Isolated) {
             return;
         }
 
@@ -240,7 +237,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
                     assertTrue(responseClaims.getClaims().containsKey("x-ms-policycertificates-result"));
                     assertEquals("IsAbsent", responseClaims.getClaims().get("x-ms-policycertificates-result").toString());
                 }))
-            .assertNext(claimsSet -> {})
+            .assertNext(claimsSet -> { })
             .verifyComplete();
     }
 

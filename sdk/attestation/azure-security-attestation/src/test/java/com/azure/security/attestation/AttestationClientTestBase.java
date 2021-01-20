@@ -12,24 +12,18 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.JsonWebKey;
-import com.azure.security.attestation.models.JsonWebKeySet;
-import com.azure.security.attestation.models.PolicyResponse;
 import com.nimbusds.jose.JOSEException;
-import com.nimbusds.jose.JOSEObject;
 import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import net.minidev.json.JSONObject;
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -42,7 +36,10 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -126,6 +123,7 @@ public class AttestationClientTestBase extends TestBase {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
+                assertNotNull(claims);
                 return Mono.just(claims);
             });
     }

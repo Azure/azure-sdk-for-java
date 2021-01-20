@@ -14,8 +14,7 @@ public class SecuredPolicyResetToken {
     private JWSSigner signer;
     private Base64 signingCertificate;
 
-    SecuredPolicyResetToken(JWSSigner signer, String signingCertificateBase64)
-    {
+    SecuredPolicyResetToken(JWSSigner signer, String signingCertificateBase64) {
         this.signer = signer;
         this.signingCertificate = new Base64(signingCertificateBase64);
     }
@@ -27,17 +26,8 @@ public class SecuredPolicyResetToken {
             .x509CertChain(certs)
             .build();
 
-//        // For reasons I fundamentally don't understand, it doesn't appear to be possible to create an
-//        ArrayList<Byte> bodyArray = new ArrayList<>();
-//        byte[] body = new byte[bodyArray.size()];
-//        int i = 0;
-//        for (Byte b : bodyArray)
-//        {
-//            body[i] = b.byteValue();
-//            i += 1;
-//        }
-        String signedBody = header.toBase64URL()+".";
-        Base64URL signedToken = signer.sign(header, /* body */ signedBody.getBytes(StandardCharsets.UTF_8));
+        String signedBody = header.toBase64URL() + ".";
+        Base64URL signedToken = signer.sign(header, signedBody.getBytes(StandardCharsets.UTF_8));
         return signedBody + "." + signedToken.toString();
     }
 }
