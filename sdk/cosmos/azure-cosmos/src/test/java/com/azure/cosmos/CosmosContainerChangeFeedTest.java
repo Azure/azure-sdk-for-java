@@ -103,7 +103,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         createdAsyncDatabase = client.asyncClient().getDatabase(createdDatabase.getId());
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 5)
     public void asyncChangeFeed_fromBeginning_incremental_forFullRange() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
@@ -367,7 +367,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 1000)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromNow_incremental_forFullRange() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy())
