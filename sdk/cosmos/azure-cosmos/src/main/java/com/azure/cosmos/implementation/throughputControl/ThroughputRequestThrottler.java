@@ -26,14 +26,11 @@ public class ThroughputRequestThrottler {
 
     private final AtomicReference<Double> availableThroughput;
     private final AtomicReference<Double> scheduledThroughput;
-    private final AtomicInteger rejectedRequests;
-    private final AtomicInteger totalRequests;
+
 
     public ThroughputRequestThrottler(double scheduledThroughput) {
         this.availableThroughput = new AtomicReference<>(scheduledThroughput);
         this.scheduledThroughput = new AtomicReference<>(scheduledThroughput);
-        this.rejectedRequests = new AtomicInteger(0);
-        this.totalRequests = new AtomicInteger(0);
     }
 
     public Mono<Void> renewThroughputUsageCycle(double scheduledThroughput) {
@@ -51,17 +48,14 @@ public class ThroughputRequestThrottler {
             return nextRequestMono
                 .doOnSuccess(response -> {
                     this.trackRequestCharge(response);
-                    this.totalRequests.getAndAdd(1);
                 })
-                .doOnError(throwable -> {
+                .onErrorResume(throwable -> {
                     this.trackRequestCharge(throwable);
-                    this.totalRequests.getAndAdd(1);
+
+                    return Mono.error(throwable);
                 });
         } else {
             // there is no enough throughput left, block request
-            this.totalRequests.getAndAdd(1);
-            this.rejectedRequests.getAndAdd(1);
-
             RequestRateTooLargeException requestRateTooLargeException = new RequestRateTooLargeException();
 
             int backoffTimeInMilliSeconds = (int)Math.floor(Math.abs(this.availableThroughput.get() * 1000 / this.scheduledThroughput.get()));
@@ -73,7 +67,9 @@ public class ThroughputRequestThrottler {
                 HttpConstants.HttpHeaders.SUB_STATUS,
                 String.valueOf(HttpConstants.SubStatusCodes.THROUGHPUT_CONTROL_REQUEST_RATE_TOO_LARGE));
 
-            BridgeInternal.setResourceAddress(requestRateTooLargeException, request.requestContext.resourcePhysicalAddress);
+            if (request.requestContext != null) {
+                BridgeInternal.setResourceAddress(requestRateTooLargeException, request.requestContext.resourcePhysicalAddress);
+            }
 
             return Mono.error(requestRateTooLargeException);
         }
@@ -92,5 +88,13 @@ public class ThroughputRequestThrottler {
             }
         }
         this.availableThroughput.getAndAccumulate(requestCharge, (available, consumed) -> available - consumed);
+    }
+
+    public double getAvailableThroughput() {
+        return this.availableThroughput.get();
+    }
+
+    public double getScheduledThroughput() {
+        return this.scheduledThroughput.get();
     }
 }

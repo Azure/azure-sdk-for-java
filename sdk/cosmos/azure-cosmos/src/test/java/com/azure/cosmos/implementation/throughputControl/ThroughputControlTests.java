@@ -56,7 +56,7 @@ public class ThroughputControlTests extends TestSuiteBase {
 
         this.client.enableThroughputControl(groups);
         TestItem docDefinition = getDocumentDefinition();
-        container.createItem(docDefinition).block(); // since not group is defined, this will fall into the default control group
+     //   container.createItem(docDefinition).block(); // since not group is defined, this will fall into the default control group
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
 
