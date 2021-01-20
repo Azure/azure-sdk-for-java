@@ -12,6 +12,7 @@ import reactor.netty.http.client.HttpClientResponse;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -55,6 +56,10 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
             this.nettyHeaders = nettyHeaders;
         }
 
+        private String formatKey(final String key) {
+            return key == null ? null : key.toLowerCase(Locale.ROOT);
+        }
+
         @Override
         public int getSize() {
             return nettyHeaders.size();
@@ -63,7 +68,11 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
         /* This replaces any current value with the given name */
         @Override
         public HttpHeaders put(String name, String value) {
-            if (name == null) return this;
+            if (name == null) {
+                return this;
+            }
+
+            name = formatKey(name);
             if (value == null) {
                 remove(name);
             } else {
@@ -73,17 +82,22 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
         }
 
         HttpHeaders add(String name, String value) {
-            if (name == null) return this;
+            if (name == null) {
+                return this;
+            }
+
+            name = formatKey(name);
             if (value == null) {
                 remove(name);
             } else {
-                nettyHeaders.add(name, value);
+                nettyHeaders.add(formatKey(name), value);
             }
             return this;
         }
 
         @Override
         public HttpHeader get(String name) {
+            name = formatKey(name);
             if (nettyHeaders.contains(name)) {
                 return new NettyHttpHeader(this, name, nettyHeaders.get(name));
             }
@@ -92,6 +106,7 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
 
         @Override
         public HttpHeader remove(String name) {
+            name = formatKey(name);
             HttpHeader header = get(name);
             nettyHeaders.remove(name);
             return header;
@@ -99,12 +114,12 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
 
         @Override
         public String getValue(String name) {
-            return nettyHeaders.get(name);
+            return nettyHeaders.get(formatKey(name));
         }
 
         @Override
         public String[] getValues(String name) {
-            return nettyHeaders.getAll(name).toArray(new String[] { });
+            return nettyHeaders.getAll(formatKey(name)).toArray(new String[] { });
         }
 
         @Override
