@@ -96,7 +96,7 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
         String json = this.toJson();
 
         if (json == null) {
-            return null;
+            return "";
         }
 
         return Base64.getUrlEncoder().encodeToString(json.getBytes(StandardCharsets.UTF_8));
