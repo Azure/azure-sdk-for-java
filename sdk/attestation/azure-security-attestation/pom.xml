@@ -11,7 +11,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-attestation</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-sdk-template;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-attestation;current} -->
 
   <name>Microsoft Azure SDK for Attestation</name>
   <description>This package contains Microsoft Azure SDK for the Microsoft Azure Attestation service.</description>
@@ -31,7 +31,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.11.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
@@ -66,13 +66,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.4.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.2.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
