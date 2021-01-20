@@ -14,10 +14,7 @@ jobs:
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
-        Artifacts: ${{ each artifact in parameters.Artifacts }}
-          - name: ${{artifact.name}}
-          - groupId: ${{artifact.groupId}}
-          - safeName: ${{artifact.safeName}}  
+        Artifacts: ${{ parameters.Artifacts }}
 
         PreRunSteps:
           - task: PythonScript@0
