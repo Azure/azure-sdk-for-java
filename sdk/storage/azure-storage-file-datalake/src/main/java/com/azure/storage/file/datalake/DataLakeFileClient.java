@@ -460,7 +460,6 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public void read(OutputStream stream) {
         readWithResponse(stream, null, null, null, false, null, Context.NONE);
     }
@@ -487,7 +486,6 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public FileReadResponse readWithResponse(OutputStream stream, FileRange range, DownloadRetryOptions options,
         DataLakeRequestConditions requestConditions, boolean getRangeContentMd5, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
@@ -667,7 +665,6 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param expression The query expression.
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public InputStream openQueryInputStream(String expression) {
         return openQueryInputStreamWithResponse(new FileQueryOptions(expression)).getValue();
     }
@@ -686,7 +683,6 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @return A response containing status code and HTTP headers including an <code>InputStream</code> object
      * that represents the stream to use for reading the query response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InputStream> openQueryInputStreamWithResponse(FileQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
@@ -716,7 +712,6 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public void query(OutputStream stream, String expression) {
         queryWithResponse(new FileQueryOptions(expression, stream), null, Context.NONE);
     }
@@ -738,7 +733,6 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public FileQueryResponse queryWithResponse(FileQueryOptions queryOptions, Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
             BlobQueryResponse response = blockBlobClient.queryWithResponse(

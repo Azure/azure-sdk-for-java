@@ -764,7 +764,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * @return A reactive response containing the file data.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> read() {
         try {
             return readWithResponse(null, null, null, false)
@@ -790,7 +789,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param getRangeContentMd5 Whether the contentMD5 for the specified file range should be returned.
      * @return A reactive response containing the file data.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileReadAsyncResponse> readWithResponse(FileRange range, DownloadRetryOptions options,
         DataLakeRequestConditions requestConditions, boolean getRangeContentMd5) {
         try {
@@ -966,7 +964,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param expression The query expression.
      * @return A reactive response containing the queried data.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> query(String expression) {
         return queryWithResponse(new FileQueryOptions(expression))
             .flatMapMany(FileQueryAsyncResponse::getValue);
@@ -985,7 +982,6 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      * @param queryOptions {@link FileQueryOptions The query options}
      * @return A reactive response containing the queried data.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FileQueryAsyncResponse> queryWithResponse(FileQueryOptions queryOptions) {
         return blockBlobAsyncClient.queryWithResponse(Transforms.toBlobQueryOptions(queryOptions))
             .map(Transforms::toFileQueryAsyncResponse)
