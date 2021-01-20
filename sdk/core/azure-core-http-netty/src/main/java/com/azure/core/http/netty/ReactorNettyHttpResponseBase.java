@@ -94,10 +94,10 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
         @Override
         public Map<String, String> toMap() {
             if (map == null) {
-                map = new AbstractMap<>() {
+                map = new AbstractMap<String, String>() {
                     @Override
                     public Set<Entry<String, String>> entrySet() {
-                        return new AbstractSet<>() {
+                        return new AbstractSet<Entry<String, String>>() {
                             @Override
                             public Iterator<Entry<String, String>> iterator() {
                                 return nettyHeaders.iteratorAsString();
