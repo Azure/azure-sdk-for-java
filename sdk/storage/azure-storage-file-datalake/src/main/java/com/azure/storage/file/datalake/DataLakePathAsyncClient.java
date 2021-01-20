@@ -258,7 +258,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.create}
      *
      * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
      * @return A reactive response containing information about the created resource.
@@ -280,7 +280,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.create#boolean}
      *
      * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
      * @param overwrite Whether or not to overwrite, should data exist on the file.
@@ -308,7 +308,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.createWithResponse#String-String-PathHttpHeaders-Map-DataLakeRequestConditions}
      *
      * <p>For more information see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/create">Azure
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/create">Azure
      * Docs</a></p>
      *
      * @param permissions POSIX access permissions for the resource owner, the resource owning group, and others.
@@ -385,7 +385,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setMetadata#Map}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
      * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
@@ -409,7 +409,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setMetadata#Map-DataLakeRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-metadata">Azure Docs</a></p>
      *
      * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
      * metadata key or value, it must be removed or encoded.
@@ -437,7 +437,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeaders#PathHttpHeaders}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link PathHttpHeaders}
      * @return A reactive response signalling completion.
@@ -460,7 +460,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setHttpHeadersWithResponse#PathHttpHeaders-DataLakeRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a></p>
      *
      * @param headers {@link PathHttpHeaders}
      * @param requestConditions {@link DataLakeRequestConditions}
@@ -486,7 +486,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.getProperties}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
      * @return A reactive response containing the resource's properties and metadata.
      */
@@ -507,7 +507,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A reactive response containing the resource's properties and metadata.
@@ -574,7 +574,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlList#List-String-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param accessControlList A list of {@link PathAccessControlEntry} objects.
      * @param group The group of the resource.
@@ -599,7 +599,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlListWithResponse#List-String-String-DataLakeRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param accessControlList A list of {@link PathAccessControlEntry} objects.
      * @param group The group of the resource.
@@ -626,7 +626,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissions#PathPermissions-String-String}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param permissions {@link PathPermissions}
      * @param group The group of the resource.
@@ -650,7 +650,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setPermissionsWithResponse#PathPermissions-String-String-DataLakeRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param permissions {@link PathPermissions}
      * @param group The group of the resource.
@@ -704,7 +704,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursive#List}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return A reactive response containing the result of the operation.
@@ -730,7 +730,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.setAccessControlRecursiveWithResponse#PathSetAccessControlRecursiveOptions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param options {@link PathSetAccessControlRecursiveOptions}
      * @return A reactive response containing the result of the operation.
@@ -760,7 +760,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursive#List}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return A reactive response containing the result of the operation.
@@ -788,7 +788,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.updateAccessControlRecursiveWithResponse#PathUpdateAccessControlRecursiveOptions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param options {@link PathUpdateAccessControlRecursiveOptions}
      * @return A reactive response containing the result of the operation.
@@ -818,7 +818,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursive#List}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param accessControlList The POSIX access control list for the file or directory.
      * @return A reactive response containing the result of the operation.
@@ -846,7 +846,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.removeAccessControlRecursiveWithResponse#PathRemoveAccessControlRecursiveOptions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/update">Azure Docs</a></p>
      *
      * @param options {@link PathRemoveAccessControlRecursiveOptions}
      * @return A reactive response containing the result of the operation.
@@ -1018,7 +1018,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControl}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
      *
      * @return A reactive response containing the resource access control.
      */
@@ -1039,7 +1039,7 @@ public class DataLakePathAsyncClient {
      * {@codesnippet com.azure.storage.file.datalake.DataLakePathAsyncClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions}
      *
      * <p>For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/getproperties">Azure Docs</a></p>
      *
      * @param userPrincipalNameReturned When true, user identity values returned as User Principal Names. When false,
      * user identity values returned as Azure Active Directory Object IDs. Default value is false.

@@ -139,7 +139,7 @@ public class DataLakeServiceClient {
 
     /**
      * Deletes the specified file system in the storage account. If the file system doesn't exist the operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -155,7 +155,7 @@ public class DataLakeServiceClient {
 
     /**
      * Deletes the specified file system in the storage account. If the file system doesn't exist the operation fails.
-     * For more information see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/delete-container">Azure
+     * For more information see the <a href="https://docs.microsoft.com/rest/api/storageservices/delete-container">Azure
      * Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
