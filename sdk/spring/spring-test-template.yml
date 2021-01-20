@@ -2,6 +2,7 @@ parameters:
   OSVmImage: $(OSVmImage)
   EnvVars: {}
   TestName: ''
+  Artifacts: []
 
 jobs:
     - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
@@ -13,6 +14,11 @@ jobs:
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
+        Artifacts: 
+        ${{ each artifact in parameters.Artifacts }}
+          - name: ${{artifact.name}}
+          - groupId: ${{artifact.groupId}}
+          - safeName: ${{artifact.safeName}}  
 
         PreRunSteps:
           - task: PythonScript@0
