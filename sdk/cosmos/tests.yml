@@ -252,7 +252,8 @@ jobs:
         Session_Single_Master_Multi_Region_Tcp_MultiRegion:
           ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
           DisplayName: Single Master Multi Region Multi-Region
-          OSVmImage: 'ubuntu-18.04'
+          Pool: azsdk-pool-mms-ubuntu-1804-general
+          OSVmImage: MMSUbuntu18.04
           ProfileFlag: '-Pmulti-region'
           PROTOCOLS: '["Tcp"]'
           ACCOUNT_CONSISTENCY: 'Session'
