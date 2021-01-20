@@ -1164,7 +1164,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private Channel pollChannel() {
         ensureInEventLoop();
 
-        final Channel first = this.availableChannels.pollLast();
+        final Channel first = this.availableChannels.pollFirst();
 
         if (first == null) {
             return null;  // because there are no available channels
@@ -1182,7 +1182,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         this.availableChannels.offer(first);  // because we need a non-null sentinel to stop the search for a channel
 
-        for (Channel next = this.availableChannels.pollLast(); next != first; next = this.availableChannels.pollLast()) {
+        for (Channel next = this.availableChannels.pollFirst(); next != first; next = this.availableChannels.pollFirst()) {
             assert next != null : "impossible";
 
             if (next.isActive()) {

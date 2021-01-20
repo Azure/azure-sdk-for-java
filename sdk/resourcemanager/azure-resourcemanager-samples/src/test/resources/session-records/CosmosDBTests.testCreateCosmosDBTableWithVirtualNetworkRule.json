@@ -429,7 +429,7 @@
       "x-ms-gatewayversion" : "version=2.11.0",
       "Content-Length" : "461",
       "x-ms-request-id" : "1c347eda-2a39-45dd-a8e7-92437e682855",
-      "Body" : "{\"primaryMasterKey\":\"105xGlYMcakVOncZ6hAx49b2YY1n3gEk8OvaWCig50eU56t18TYPsxaW1hCIeZavMeCfQQaSl3BbA8x8DxXWHw==\",\"secondaryMasterKey\":\"ouxforUgDNGcSsa56nj28r4t2U24yrywsPcynDU5tG5lk1LNceORVncrgFEq2E7DTWwpqfBR7tMqw9XnwlOCRw==\",\"primaryReadonlyMasterKey\":\"lMqqSWFx8x0UqIlkN0xGIYWBcalR8PMFSRbVc2kS9bsPDaFTlEa0zRLPjfkM1WWvyFuLxNGpsPlnYReD43OONw==\",\"secondaryReadonlyMasterKey\":\"rtJgVWUI2aQvCCUdKqgUdd6wDHXTlL34DVDJE1JssoMnRYyCTPLl9FFXGyDt8f1MGMdMObWr48FdDTlp3XHHLA==\"}",
+      "Body" : "{\"primaryMasterKey\":\"***REMOVED***\",\"secondaryMasterKey\":\"***REMOVED***\",\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}",
       "Content-Type" : "application/json"
     },
     "Exception" : null
@@ -456,7 +456,7 @@
       "x-ms-gatewayversion" : "version=2.11.0",
       "Content-Length" : "239",
       "x-ms-request-id" : "296da9e2-d38b-42e6-81e8-0c8b68e803ab",
-      "Body" : "{\"primaryReadonlyMasterKey\":\"lMqqSWFx8x0UqIlkN0xGIYWBcalR8PMFSRbVc2kS9bsPDaFTlEa0zRLPjfkM1WWvyFuLxNGpsPlnYReD43OONw==\",\"secondaryReadonlyMasterKey\":\"rtJgVWUI2aQvCCUdKqgUdd6wDHXTlL34DVDJE1JssoMnRYyCTPLl9FFXGyDt8f1MGMdMObWr48FdDTlp3XHHLA==\"}",
+      "Body" : "{\"primaryReadonlyMasterKey\":\"***REMOVED***\",\"secondaryReadonlyMasterKey\":\"***REMOVED***\"}",
       "Content-Type" : "application/json"
     },
     "Exception" : null

@@ -334,6 +334,57 @@ public final class TransactionalBatch {
     }
 
     /**
+     * Adds a patch operations for an item into the batch.
+     *
+     * @param id  the item id.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     *
+     * @return The added operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosItemOperation patchItemOperation(String id, CosmosPatchOperations cosmosPatchOperations) {
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
+
+        return this.patchItemOperation(id, cosmosPatchOperations, new TransactionalBatchItemRequestOptions());
+    }
+
+    /**
+     * Adds a patch operations for an item into the batch.
+     *
+     * @param id  the item id.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param requestOptions The options for the item request.
+     *
+     * @return The added operation.
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public CosmosItemOperation patchItemOperation(
+        String id,
+        CosmosPatchOperations cosmosPatchOperations,
+        TransactionalBatchItemRequestOptions requestOptions) {
+
+        checkNotNull(id, "expected non-null id");
+        checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
+
+        if (requestOptions == null) {
+            requestOptions = new TransactionalBatchItemRequestOptions();
+        }
+
+        ItemBatchOperation<?> operation = new ItemBatchOperation<>(
+            CosmosItemOperationType.PATCH,
+            id,
+            this.getPartitionKeyValue(),
+            requestOptions.toRequestOptions(),
+            cosmosPatchOperations
+        );
+
+        this.operations.add(operation);
+
+        return operation;
+    }
+
+    /**
      * Return the list of operation in an unmodifiable instance  so no one can change it in the down path.
      *
      * @return The list of operations which are to be executed.

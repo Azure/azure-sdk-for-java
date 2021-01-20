@@ -10,7 +10,7 @@ import com.azure.core.util.CoreUtils;
  */
 public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
     
-    private final String id;
+    private final String userId;
     private final boolean isAnonymous;
 
     /**
@@ -25,7 +25,7 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
         if (CoreUtils.isNullOrEmpty(userId)) {
             throw new IllegalArgumentException("The initialization parameter [userId] cannot be null or empty.");
         }
-        this.id = userId;
+        this.userId = userId;
         this.isAnonymous = isAnonymous;
     }
 
@@ -42,8 +42,8 @@ public class MicrosoftTeamsUserIdentifier extends CommunicationIdentifier {
     /**
      * @return the string identifier representing the MicrosoftTeamsUserIdentifier object
      */
-    public String getId() {
-        return this.id;
+    public String getUserId() {
+        return this.userId;
     }
 
     /**
