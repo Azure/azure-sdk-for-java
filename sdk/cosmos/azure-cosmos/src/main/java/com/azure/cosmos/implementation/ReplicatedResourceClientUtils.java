@@ -34,10 +34,24 @@ public class ReplicatedResourceClientUtils {
                 resourceType == ResourceType.Topology ||
                 resourceType == ResourceType.DatabaseAccount ||
                 resourceType == ResourceType.PartitionKeyRange ||
-                resourceType == ResourceType.DocumentCollection) {
+                resourceType == ResourceType.DocumentCollection ||
+                resourceType == ResourceType.Trigger ||
+                resourceType == ResourceType.UserDefinedFunction) {
             return true;
         }
 
         return false;
+    }
+
+    public static boolean isMasterOperation(ResourceType resourceType, OperationType operationType) {
+        // Stored procedures, trigger, and user defined functions CRUD operations are done on
+        // master so they do not require the session token. Stored procedures execute is not a master operation
+        return isMasterResource(resourceType) ||
+            isStoredProcedureMasterOperation(resourceType, operationType) ||
+            operationType == OperationType.QueryPlan;
+    }
+
+    private static boolean isStoredProcedureMasterOperation(ResourceType resourceType, OperationType operationType) {
+        return resourceType == ResourceType.StoredProcedure && operationType != OperationType.ExecuteJavaScript;
     }
 }

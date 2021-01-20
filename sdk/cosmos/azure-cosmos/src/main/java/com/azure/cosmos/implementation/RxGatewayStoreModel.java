@@ -455,15 +455,13 @@ class RxGatewayStoreModel implements RxStoreModel {
                         request.getResourceType() != ResourceType.Document ||
                         !Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.EVENTUAL.toString())));
 
-        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
-            if (!sessionTokenApplicable || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
+        // Only apply the session token in case of session consistency and when resource is not a master resource
+        if (!sessionTokenApplicable || ReplicatedResourceClientUtils.isMasterOperation(request.getResourceType(), request.getOperationType())) {
+            if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
                 request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
             }
-            return; //User is explicitly controlling the session.
-        }
 
-        if (!sessionTokenApplicable || ReplicatedResourceClientUtils.isMasterResource(request.getResourceType())) {
-            return; // Only apply the session token in case of session consistency and when resource is not a master resource
+            return;
         }
 
         //Apply the ambient session.
