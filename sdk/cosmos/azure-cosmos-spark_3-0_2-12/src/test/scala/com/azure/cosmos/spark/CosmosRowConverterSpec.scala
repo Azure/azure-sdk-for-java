@@ -7,8 +7,10 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.sql.{Date, Timestamp}
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, ObjectNode}
 import org.apache.spark.sql.catalyst.expressions.GenericRowWithSchema
-import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType, Decimal, DecimalType, DoubleType,
-    FloatType, IntegerType, LongType, MapType, NullType, StringType, StructField, StructType, TimestampType}
+import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DateType, Decimal, DecimalType, DoubleType, FloatType, IntegerType, LongType, MapType, NullType, StringType, StructField, StructType, TimestampType}
+
+import java.time.{OffsetDateTime, ZoneId, ZoneOffset}
+import java.time.format.DateTimeFormatter
 
 class CosmosRowConverterSpec extends UnitSpec {
     //scalastyle:off null
@@ -266,39 +268,75 @@ class CosmosRowConverterSpec extends UnitSpec {
     "time in ObjectNode" should "translate to Row" in {
         val colName1 = "testCol1"
         val colName2 = "testCol2"
+        val colName3 = "testCol3"
+        val colName4 = "testCol4"
         val colVal1 = System.currentTimeMillis()
         val colVal1AsTime = new Timestamp(colVal1)
         val colVal2 = System.currentTimeMillis()
         val colVal2AsTime = new Timestamp(colVal2)
+        val colVal3 = "2021-01-20T20:10:15+01:00"
+        val colVal3AsTime = Timestamp.valueOf(OffsetDateTime.parse(colVal3, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDateTime)
+        val colVal4 = "2021-01-20T20:10:15Z"
+        val ff = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
+        val colVal4AsTime = Timestamp.valueOf(OffsetDateTime.parse(colVal4, ff).toLocalDateTime)
 
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         objectNode.put(colName1, colVal1)
         objectNode.put(colName2, colVal2)
-        val schema = StructType(Seq(StructField(colName1, TimestampType), StructField(colName2, TimestampType)))
+        objectNode.put(colName3, colVal3)
+        objectNode.put(colName4, colVal4)
+        val schema = StructType(Seq(
+            StructField(colName1, TimestampType),
+            StructField(colName2, TimestampType),
+            StructField(colName3, TimestampType),
+            StructField(colName4, TimestampType)))
         val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
         val asTime = row.get(0).asInstanceOf[Timestamp]
         asTime.compareTo(colVal1AsTime) shouldEqual 0
         val asTime2 = row.get(1).asInstanceOf[Timestamp]
         asTime2.compareTo(colVal2AsTime) shouldEqual 0
+        val asTime3 = row.get(2).asInstanceOf[Timestamp]
+        asTime3.compareTo(colVal3AsTime) shouldEqual 0
+        val asTime4 = row.get(3).asInstanceOf[Timestamp]
+        asTime4.compareTo(colVal4AsTime) shouldEqual 0
     }
 
     "date in ObjectNode" should "translate to Row" in {
         val colName1 = "testCol1"
         val colName2 = "testCol2"
+        val colName3 = "testCol3"
+        val colName4 = "testCol4"
         val colVal1 = System.currentTimeMillis()
         val colVal1AsTime = new Date(colVal1)
         val colVal2 = System.currentTimeMillis()
         val colVal2AsTime = new Date(colVal2)
+        val colVal3 = "2021-01-20T20:10:15+01:00"
+        val colVal3AsTime = Date.valueOf(OffsetDateTime.parse(colVal3, DateTimeFormatter.ISO_OFFSET_DATE_TIME).toLocalDate)
+        val colVal4 = "2021-01-20T20:10:15Z"
+        val ff = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
+        val colVal4AsTime = Date.valueOf(OffsetDateTime.parse(colVal4, ff).toLocalDate)
 
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         objectNode.put(colName1, colVal1)
         objectNode.put(colName2, colVal2)
-        val schema = StructType(Seq(StructField(colName1, DateType), StructField(colName2, DateType)))
+        objectNode.put(colName3, colVal3)
+        objectNode.put(colName4, colVal4)
+        val schema = StructType(Seq(
+            StructField(colName1, DateType),
+            StructField(colName2, DateType),
+            StructField(colName3, DateType),
+            StructField(colName4, DateType)))
         val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
         val asTime = row.get(0).asInstanceOf[Date]
         asTime.compareTo(colVal1AsTime) shouldEqual 0
         val asTime2 = row.get(1).asInstanceOf[Date]
         asTime2.compareTo(colVal2AsTime) shouldEqual 0
+        val asTime3 = row.get(2).asInstanceOf[Date]
+        asTime3.compareTo(colVal3AsTime) shouldEqual 0
+        val asTime4 = row.get(3).asInstanceOf[Date]
+        asTime4.compareTo(colVal4AsTime) shouldEqual 0
     }
 
     "nested in ObjectNode" should "translate to Row" in {

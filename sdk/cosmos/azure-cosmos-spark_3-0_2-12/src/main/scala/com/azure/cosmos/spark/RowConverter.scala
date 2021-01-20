@@ -3,12 +3,15 @@
 package com.azure.cosmos.spark
 
 import java.sql.{Date, Timestamp}
-import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, ObjectNode, NullNode}
+import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, NullNode, ObjectNode, TextNode}
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.RowEncoder
 import org.apache.spark.sql.catalyst.expressions.{GenericRowWithSchema, UnsafeMapData}
+
+import java.time.{OffsetDateTime, ZoneOffset}
+import java.time.format.DateTimeFormatter
 
 // scalastyle:off underscore.import
 import org.apache.spark.sql.types._
@@ -25,6 +28,9 @@ object CosmosRowConverter
     // TODO: Expose configuration to handle duplicate fields
     // See: https://github.com/Azure/azure-sdk-for-java/pull/18642#discussion_r558638474
     val objectMapper = new ObjectMapper()
+
+    val utcFormatter = DateTimeFormatter
+        .ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC)
 
     def fromObjectNodeToInternalRow(schema: StructType, objectNode: ObjectNode): InternalRow = {
         val row = fromObjectNodeToRow(schema, objectNode)
@@ -200,6 +206,11 @@ object CosmosRowConverter
     private def toTimestamp(value: JsonNode): Timestamp = {
         value match {
             case isJsonNumber() => new Timestamp(value.asLong())
+            case textNode : TextNode =>  {
+                parseDateTimefromString(textNode.asText()) match {
+                    case Some(odt) => Timestamp.valueOf(odt.toLocalDateTime)
+                }
+            }
             case _ => Timestamp.valueOf(value.asText())
         }
     }
@@ -207,7 +218,29 @@ object CosmosRowConverter
     private def toDate(value: JsonNode): Date = {
         value match {
             case isJsonNumber() => new Date(value.asLong())
+            case textNode : TextNode =>  {
+                parseDateTimefromString(textNode.asText()) match {
+                    case Some(odt) => Date.valueOf(odt.toLocalDate)
+                }
+            }
             case _ => Date.valueOf(value.asText())
+        }
+    }
+
+    private def parseDateTimefromString (value: String) : Option[OffsetDateTime] = {
+        try {
+            val odt = OffsetDateTime.parse(value, DateTimeFormatter.ISO_OFFSET_DATE_TIME) //yyyy-MM-ddTHH:mm:ss+01:00
+            Some(odt)
+        }
+        catch {
+            case _ =>
+                try {
+                    val odt = OffsetDateTime.parse(value, utcFormatter) //yyyy-MM-ddTHH:mm:ssZ
+                    Some(odt)
+                }
+                catch {
+                    case e: Exception => None
+                }
         }
     }
 
