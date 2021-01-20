@@ -140,11 +140,11 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T extends Resour
         List<PartitionKeyRange> replacementRanges;
 
         // find what ranges make up the supplied continuation token
-        replacementRanges =
-            partitionKeyRanges.stream().filter(p -> range.getMin().compareTo(p.getMinInclusive()) <= 0 &&
-                                                           range.getMax().compareTo(p.getMaxExclusive()) >= 0)
-                .sorted(Comparator.comparing(PartitionKeyRange::getId))
-                .collect(Collectors.toList());
+        replacementRanges = partitionKeyRanges.stream()
+                                .filter(p -> range.getMin().compareTo(p.getMinInclusive()) <= 0 &&
+                                                 range.getMax().compareTo(p.getMaxExclusive()) >= 0)
+                                .sorted(Comparator.comparing(PartitionKeyRange::getId))
+                                .collect(Collectors.toList());
 
         if (replacementRanges.isEmpty()) {
             throw BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,

@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 public class ParallelDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
     private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
-    private Map<PartitionKeyRange, String> partitionKeyRangeToContinuationTokenMap = new HashMap<>();
+    private final Map<PartitionKeyRange, String> partitionKeyRangeToContinuationTokenMap;
 
     private ParallelDocumentQueryExecutionContext(
             DiagnosticsClientContext diagnosticsClientContext,
@@ -62,6 +62,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         super(diagnosticsClientContext, client, partitionKeyRanges, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
                 rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
+        partitionKeyRangeToContinuationTokenMap = new HashMap<>();
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(

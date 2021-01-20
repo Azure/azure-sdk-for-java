@@ -326,7 +326,7 @@ public class QueryValidationTests extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
-    public void splitQueryContinuationToken() {
+    public void splitQueryContinuationToken() throws Exception {
         String containerId = "splittestcontainer_" + UUID.randomUUID();
         int itemCount = 20;
 
@@ -387,11 +387,7 @@ public class QueryValidationTests extends TestSuiteBase {
                 break;
             }
             logger.info("Waiting for split to complete");
-            try {
-                Thread.sleep(10 * 1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            Thread.sleep(10 * 1000);
             throughputResponse = container.readThroughput().block();
         }
 
@@ -425,6 +421,7 @@ public class QueryValidationTests extends TestSuiteBase {
         for (FeedResponse<TestObject> nodeFeedResponse : orderfeedResponseFlux.toIterable()) {
             orderByResultList.addAll(nodeFeedResponse.getResults());
         }
+
         List<String> sourceIds = testObjects.stream().map(obj -> obj.getId()).collect(Collectors.toList());
         List<String> resultIds = resultList.stream().map(obj -> obj.getId()).collect(Collectors.toList());
         List<String> orderResultIds = orderByResultList.stream().map(obj -> obj.getId()).collect(Collectors.toList());
