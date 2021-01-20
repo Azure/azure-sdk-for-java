@@ -57,8 +57,9 @@ public class AttestationClientTestBase extends TestBase {
         Aad,
     }
 
-    ClientTypes classifyClient(String clientUri)
+    ClientTypes classifyClient(@NotNull String clientUri)
     {
+        assertNotNull(clientUri);
         String regionShortName = Configuration.getGlobalConfiguration().get("locationShortName");
         String sharedUri = "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net";
         if (sharedUri.equals(clientUri)) {
