@@ -3,6 +3,9 @@
 
 package com.azure.core.util;
 
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -13,7 +16,13 @@ import java.util.Objects;
  */
 public class Header {
     private final String name;
-    private String value;
+
+    // this is the actual internal representation of all values
+    private List<String> values;
+
+    // but we also cache it to faster serve our public API
+    private String cachedStringValue;
+    private String[] cachedStringValues;
 
     /**
      * Create a Header instance using the provided name and value.
@@ -25,7 +34,15 @@ public class Header {
     public Header(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        this.value = value;
+        this.cachedStringValue = value;
+        this.values = new LinkedList<>();
+        this.values.add(value);
+    }
+
+    public Header(String name, List<String> values) {
+        Objects.requireNonNull(name, "'name' cannot be null.");
+        this.name = name;
+        this.values = values;
     }
 
     /**
@@ -38,12 +55,15 @@ public class Header {
     }
 
     /**
-     * Gets the value of this {@link Header}.
+     * Gets the combined, comma-separated value of this {@link Header}, taking into account all values provided.
      *
      * @return the value of this Header
      */
     public String getValue() {
-        return value;
+        if (cachedStringValue == null) {
+            cachedStringValue = String.join(",", values);
+        }
+        return cachedStringValue;
     }
 
     /**
@@ -52,7 +72,14 @@ public class Header {
      * @return the values of this {@link Header} that are separated by a comma
      */
     public String[] getValues() {
-        return value == null ? null : value.split(",");
+        if (cachedStringValues == null) {
+            cachedStringValues = values.toArray(new String[] { });
+        }
+        return cachedStringValues;
+    }
+
+    public List<String> getValuesList() {
+        return Collections.unmodifiableList(values);
     }
 
     /**
@@ -61,11 +88,9 @@ public class Header {
      * @param value the value to add
      */
     public void addValue(String value) {
-        if (this.value != null) {
-            this.value += "," + value;
-        } else {
-            this.value = value;
-        }
+        this.cachedStringValue = null;
+        this.cachedStringValues = null;
+        this.values.add(value);
     }
 
     /**
@@ -75,6 +100,6 @@ public class Header {
      */
     @Override
     public String toString() {
-        return name + ":" + value;
+        return name + ":" + cachedStringValue;
     }
 }

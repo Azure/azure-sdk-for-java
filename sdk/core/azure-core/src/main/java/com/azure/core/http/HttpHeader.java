@@ -5,6 +5,8 @@ package com.azure.core.http;
 
 import com.azure.core.util.Header;
 
+import java.util.List;
+
 /**
  * A single header within a HTTP request or response.
  *
@@ -22,5 +24,9 @@ public class HttpHeader extends Header {
      */
     public HttpHeader(String name, String value) {
         super(name, value);
+    }
+
+    public HttpHeader(String name, List<String> values) {
+        super(name, values);
     }
 }

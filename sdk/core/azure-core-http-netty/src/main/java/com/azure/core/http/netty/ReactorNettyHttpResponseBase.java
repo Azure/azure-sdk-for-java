@@ -12,6 +12,7 @@ import reactor.netty.http.client.HttpClientResponse;
 import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -48,9 +49,15 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
         return headers;
     }
 
+    // This class wraps a Netty HttpHeaders instance and provides an azure-core HttpHeaders view onto it.
+    // This avoids the need to copy the Netty HttpHeaders into an azure-core HttpHeaders instance.
     static class NettyHttpHeaders extends HttpHeaders {
+        // THe Netty HttpHeaders we are wrapping
         private final io.netty.handler.codec.http.HttpHeaders nettyHeaders;
-        private Map<String, String> map;
+
+        // this is an AbstractMap that we create to virtualize a view onto the Netty HttpHeaders type.
+        // We lazily instantiate it when toMap is called, and then use that for all future calls.
+        private Map<String, String> abstractMap;
 
         NettyHttpHeaders(io.netty.handler.codec.http.HttpHeaders nettyHeaders) {
             this.nettyHeaders = nettyHeaders;
@@ -90,7 +97,7 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
             if (value == null) {
                 remove(name);
             } else {
-                nettyHeaders.add(formatKey(name), value);
+                nettyHeaders.add(name, value);
             }
             return this;
         }
@@ -99,7 +106,12 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
         public HttpHeader get(String name) {
             name = formatKey(name);
             if (nettyHeaders.contains(name)) {
-                return new NettyHttpHeader(this, name, nettyHeaders.get(name));
+                // Be careful here: Netty's HttpHeaders 'get' method will return only the first value,
+                // which is obviously not what we want to call!
+                // We call 'getAll' instead, but unfortunately there is a representation mismatch:
+                // Netty HttpHeaders uses List<String>, whereas azure-core HttpHeaders joins it all into a
+                // comma-separated String.
+                return new NettyHttpHeader(this, name, nettyHeaders.getAll(name));
             }
             return null;
         }
@@ -124,8 +136,8 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
 
         @Override
         public Map<String, String> toMap() {
-            if (map == null) {
-                map = new AbstractMap<String, String>() {
+            if (abstractMap == null) {
+                abstractMap = new AbstractMap<String, String>() {
                     @Override
                     public Set<Entry<String, String>> entrySet() {
                         return new AbstractSet<Entry<String, String>>() {
@@ -142,7 +154,7 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
                     }
                 };
             }
-            return map;
+            return abstractMap;
         }
 
         @Override
@@ -169,8 +181,14 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
             this(allHeaders, entry.getKey(), entry.getValue());
         }
 
+        NettyHttpHeader(NettyHttpHeaders allHeaders, String name, List<String> values) {
+            super(name, values);
+            this.allHeaders = allHeaders;
+        }
+
         @Override
         public void addValue(String value) {
+            super.addValue(value);
             allHeaders.add(getName(), value);
         }
     }

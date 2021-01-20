@@ -38,18 +38,18 @@ public class CookiePolicy implements HttpPipelinePolicy {
 
             Map<String, List<String>> cookieHeaders = new HashMap<>();
             for (HttpHeader header : httpRequest.getHeaders()) {
-                cookieHeaders.put(header.getName(), Arrays.asList(header.getValues()));
+                cookieHeaders.put(header.getName(), header.getValuesList());
             }
 
             Map<String, List<String>> requestCookies = cookies.get(uri, cookieHeaders);
             for (Map.Entry<String, List<String>> entry : requestCookies.entrySet()) {
-                httpRequest.getHeaders().put(entry.getKey(), String.join(",", entry.getValue()));
+                httpRequest.getHeaders().put(entry.getKey(), entry.getValue());
             }
 
             return next.process().map(httpResponse -> {
                 Map<String, List<String>> responseHeaders = new HashMap<>();
                 for (HttpHeader header : httpResponse.getHeaders()) {
-                    responseHeaders.put(header.getName(), Collections.singletonList(header.getValue()));
+                    responseHeaders.put(header.getName(), header.getValuesList());
                 }
 
                 try {

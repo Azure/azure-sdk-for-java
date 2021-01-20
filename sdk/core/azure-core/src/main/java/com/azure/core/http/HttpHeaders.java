@@ -3,8 +3,10 @@
 
 package com.azure.core.http;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,9 +30,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param headers the map of initial headers
      */
     public HttpHeaders(Map<String, String> headers) {
-        for (final Map.Entry<String, String> header : headers.entrySet()) {
-            this.put(header.getKey(), header.getValue());
-        }
+        headers.forEach(this::put);
     }
 
     /**
@@ -39,8 +39,6 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param headers the collection of initial headers
      */
     public HttpHeaders(Iterable<HttpHeader> headers) {
-        this();
-
         for (final HttpHeader header : headers) {
             this.put(header.getName(), header.getValue());
         }
@@ -66,6 +64,11 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public HttpHeaders put(String name, String value) {
         headers.put(formatKey(name), new HttpHeader(name, value));
+        return this;
+    }
+
+    public HttpHeaders put(String name, List<String> values) {
+        headers.put(formatKey(name), new HttpHeader(name, values));
         return this;
     }
 
@@ -120,16 +123,16 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
-     * Gets a {@link Map} representation of the HttpHeaders collection.
+     * Gets an unmodifiable {@link Map} representation of the HttpHeaders collection.
      *
-     * @return the headers as map
+     * @return the headers as map in an unmodifiable form.
      */
     public Map<String, String> toMap() {
         final Map<String, String> result = new HashMap<>();
         for (final HttpHeader header : headers.values()) {
             result.put(header.getName(), header.getValue());
         }
-        return result;
+        return Collections.unmodifiableMap(result);
     }
 
     /**
