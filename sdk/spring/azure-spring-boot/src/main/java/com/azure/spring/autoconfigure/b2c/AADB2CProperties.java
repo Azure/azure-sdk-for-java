@@ -32,6 +32,10 @@ public class AADB2CProperties {
 
     public static final String USER_FLOW_SIGN_UP_OR_SIGN_IN = USER_FLOWS + ".sign-up-or-sign-in";
 
+    public static final String USER_FLOW_SIGN_UP = USER_FLOWS + ".sign-up";
+
+    public static final String USER_FLOW_SIGN_IN = USER_FLOWS + ".sign-in";
+
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 
     public static final String PREFIX = "azure.activedirectory.b2c";
