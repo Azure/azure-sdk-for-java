@@ -75,6 +75,7 @@ public final class AzureMonitorExporter implements SpanExporter {
     private final ClientLogger logger = new ClientLogger(AzureMonitorExporter.class);
     private final String instrumentationKey;
     private final String telemetryItemNamePrefix;
+    private final String endpoint;
 
     /**
      * Creates an instance of exporter that is configured with given exporter client that sends telemetry events to
@@ -83,11 +84,20 @@ public final class AzureMonitorExporter implements SpanExporter {
      * @param client The client used to send data to Azure Monitor.
      * @param instrumentationKey The instrumentation key of Application Insights resource.
      */
-    AzureMonitorExporter(MonitorExporterClient client, String instrumentationKey) {
+    AzureMonitorExporter(MonitorExporterClient client, String instrumentationKey, String endpoint) {
         this.client = client;
         this.instrumentationKey = instrumentationKey;
+        this.endpoint = endpoint;
         String formattedInstrumentationKey = instrumentationKey.replaceAll("-", "");
         this.telemetryItemNamePrefix = "Microsoft.ApplicationInsights." + formattedInstrumentationKey + ".";
+    }
+
+    /**
+     * Returns the endpoint of the Application Insights resource.
+     * @return The endpoint of the Application Insights resource.
+     */
+    public String getEndpoint() {
+        return endpoint;
     }
 
     /**
