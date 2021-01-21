@@ -40,31 +40,35 @@ public class ReadmeSamples {
         // Build a new SmsClient
         SmsClient smsClient = smsClientBuilder.buildClient();
 
-        //Send an sms to one phone number
-        List<PhoneNumber> to = new ArrayList<PhoneNumber>();
-        to.add(new PhoneNumber("<to-phone-number>"));
-
-        // SendSmsOptions is an optional field. It can be used
         // to enable a delivery report to the Azure Event Grid
         SendSmsOptions options = new SendSmsOptions();
         options.setEnableDeliveryReport(true);
 
-        // Send the message to a list of  phone Nunbers and check the response for a messages ids
-        PagedIterable<SendSmsResponseItem> response = smsClient.sendMessage(
+    }
+
+    public void sendMessageToOneRecipient (SmsClient smsClient, SendSmsOptions options ){
+        //Send an sms to only one phone number
+        String to = "<to-phone-number>";
+
+        // SendSmsOptions is an optional field.
+        //sms
+
+        // Send the message to a list of  phone Numbers and check the response for a messages ids
+        SendSmsResponseItem response = smsClient.sendMessage(
             new PhoneNumber("<leased-phone-number>"),
             to,
             "your message",null,
             options /* Optional */);
 
-        for (SendSmsResponseItem messageResponseItem
-            : response) {
-            System.out.println("MessageId: " + messageResponseItem.getMessageId());
-        }
+            System.out.println("MessageId: " + response.getMessageId());
 
+    }
+
+    public void sendMessageToMultipleRecipients (SmsClient smsClient, SendSmsOptions options){
         //Send an sms to multiple phone numbers
-        List<PhoneNumber> toMultiplePhones = new ArrayList<PhoneNumber>();
-        to.add(new PhoneNumber("<to-phone-number1>"));
-        to.add(new PhoneNumber("<to-phone-number2>"));
+        List<String> toMultiplePhones = new ArrayList<String>();
+        toMultiplePhones.add("<to-phone-number1>");
+        toMultiplePhones.add("<to-phone-number2>");
 
         // Send the message to a list of  phone Numbers and check the response for a messages ids
         PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.sendMessage(
@@ -77,12 +81,30 @@ public class ReadmeSamples {
             : responseMultiplePhones) {
             System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
         }
-
-
-
-
-
     }
+
+    public void addATagForTheMessagesSent (SmsClient smsClient){
+        //Send an sms to multiple phone numbers
+        List<String> toMultiplePhones = new ArrayList<String>();
+        toMultiplePhones.add("<to-phone-number1>");
+        toMultiplePhones.add("<to-phone-number2>");
+
+        SendSmsOptions options = new SendSmsOptions();
+        options.setTag("Tag");
+
+        // Send the message to a list of  phone Numbers and check the response for a messages ids
+        PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.sendMessage(
+            new PhoneNumber("<leased-phone-number>"),
+            toMultiplePhones,
+            "your message",null,
+            options /* Optional */);
+
+        for (SendSmsResponseItem messageResponseItem
+            : responseMultiplePhones) {
+            System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
+        }
+    }
+
 
     public void createCommunicationIdentityClientWithConnectionString() {
         // Create an HttpClient builder of your choice and customize it
