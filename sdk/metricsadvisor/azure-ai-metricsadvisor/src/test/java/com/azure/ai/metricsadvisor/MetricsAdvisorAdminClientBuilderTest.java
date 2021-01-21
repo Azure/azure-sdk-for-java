@@ -19,7 +19,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.METRIC_ID;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.metricsadvisor.TestUtils.INVALID_ENDPOINT;

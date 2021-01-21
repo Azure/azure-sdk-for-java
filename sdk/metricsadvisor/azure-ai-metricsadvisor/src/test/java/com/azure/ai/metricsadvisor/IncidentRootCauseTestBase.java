@@ -7,13 +7,6 @@ import com.azure.ai.metricsadvisor.implementation.models.DimensionGroupIdentity;
 import com.azure.ai.metricsadvisor.implementation.models.RootCause;
 import com.azure.ai.metricsadvisor.implementation.util.IncidentRootCauseTransforms;
 import com.azure.ai.metricsadvisor.models.IncidentRootCause;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 
 import java.util.Collections;
