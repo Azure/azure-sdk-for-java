@@ -13,7 +13,8 @@ import com.azure.storage.blob.BlobClient;
  */
 public enum ConsistentReadControl {
     /**
-     * No consistent read control. 'requestConditions.ifMatch' and 'client.versionId' must not be set.
+     * No consistent read control. The client will honor user provided {@link BlobRequestConditions#getIfMatch()} and
+     * {@link BlobClient#getVersionId()}.
      */
     NONE,
 
@@ -21,6 +22,8 @@ public enum ConsistentReadControl {
      * Default value. Consistent read control based on eTag.
      * If {@link BlobRequestConditions#getIfMatch()} is set, the client will honor this value.
      * Otherwise, {@link BlobRequestConditions#getIfMatch()} is set to the latest eTag.
+     * Note: Modification of the base blob will result in an {@code Exception} if eTag is the only form of consistent
+     * read control being employed.
      */
     ETAG,
 
@@ -28,6 +31,8 @@ public enum ConsistentReadControl {
      * Consistent control based on versionId. Note: Versioning must be supported by the account to use this value.
      * If {@link BlobClient#getVersionId()} is set, the client will honor this value.
      * Otherwise, {@link BlobClient#getVersionId()} is set to the latest versionId.
+     * Note: Modification of the base blob will not result in an {@code Exception} and allow you to continue reading the
+     * entirety of the appropriate version of the blob determined at the time of opening the {@code InputStream}.
      */
     VERSION_ID
 }

@@ -278,30 +278,14 @@ public class BlobClientBase {
 
         switch (consistentReadControl) {
             case NONE:
-                if (requestConditions.getIfMatch() != null) {
-                    throw logger.logExceptionAsError(generateConsistentReadControlException("requestConditions.ifMatch",
-                        ConsistentReadControl.NONE.toString(), ConsistentReadControl.ETAG.toString()));
-                }
-                if (this.client.getVersionId() != null) {
-                    throw logger.logExceptionAsError(generateConsistentReadControlException("client.versionId",
-                        ConsistentReadControl.NONE.toString(), ConsistentReadControl.VERSION_ID.toString()));
-                }
                 break;
             case ETAG:
-                if (this.client.getVersionId() != null) {
-                    throw logger.logExceptionAsError(generateConsistentReadControlException("client.versionId",
-                        ConsistentReadControl.ETAG.toString(), ConsistentReadControl.VERSION_ID.toString()));
-                }
                 // Target the user specified eTag by default. If not provided, target the latest eTag.
                 if (requestConditions.getIfMatch() == null) {
                     requestConditions.setIfMatch(eTag);
                 }
                 break;
             case VERSION_ID:
-                if (requestConditions.getIfMatch() != null) {
-                    throw logger.logExceptionAsError(generateConsistentReadControlException("requestConditions.ifMatch",
-                        ConsistentReadControl.VERSION_ID.toString(), ConsistentReadControl.ETAG.toString()));
-                }
                 if (versionId == null) {
                     throw logger.logExceptionAsError(
                         new UnsupportedOperationException("Versioning is not supported on this account."));
@@ -319,13 +303,6 @@ public class BlobClientBase {
 
         return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
             requestConditions, properties);
-    }
-
-    private IllegalStateException generateConsistentReadControlException(String wrongVariable, String originalControl,
-        String expectedControl) {
-        return new IllegalStateException(String.format("'%s' can not be set when 'consistentReadControl'"
-            + " is set to '%s'. Set 'consistentReadControl' to '%s'.", wrongVariable, originalControl,
-            expectedControl));
     }
 
     /**

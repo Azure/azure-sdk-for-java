@@ -1,7 +1,6 @@
 package com.azure.storage.blob
 
 import com.azure.storage.blob.models.BlobRequestConditions
-import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlobType
 import com.azure.storage.blob.models.ConsistentReadControl
 import com.azure.storage.blob.options.BlobInputStreamOptions
@@ -170,7 +169,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         thrown(IOException)
     }
 
-    def "Input stream consistent read control none"() {
+    def "IS consistent read control none"() {
         setup:
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
@@ -191,78 +190,238 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         notThrown(IOException)
     }
 
-    def "Input stream consistent read control etag"() {
+    def "IS consistent read control etag client chooses etag"() {
         setup:
-        int length = 6 * Constants.MB
+        int length = Constants.KB
+        byte[] randomBytes = getRandomByteArray(length)
+        def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+        blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
+
+        when:
+        // No eTag specified - client will lock on latest one.
+        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.ETAG))
+        def outputStream = new ByteArrayOutputStream()
+
+        then: "Successful read"
+        def b
+        while ((b = inputStream.read()) != -1) {
+            outputStream.write(b)
+        }
+
+        byte[] randomBytes1 = outputStream.toByteArray()
+        assert randomBytes1 == randomBytes
+    }
+
+    def "IS consistent read control etag user provides etag"() {
+        setup:
+        int length = Constants.KB
         byte[] randomBytes = getRandomByteArray(length)
         def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
         def blobClient = blobContainerClient.getBlobClient(generateBlobName())
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
         def properties = blobClient.getProperties()
 
-        when: "Use recent eTag"
+        when:
         def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.ETAG)
+        // User provides eTag to use
             .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
-
-        then: "Data should be read successfully"
         def outputStream = new ByteArrayOutputStream()
+
+        then: "Successful read"
         def b
         while ((b = inputStream.read()) != -1) {
             outputStream.write(b)
         }
 
-        byte[] randomBytes2 = outputStream.toByteArray()
-        assert randomBytes2 == randomBytes
-
-        when: "Use old eTag"
-        // Write more bytes (just to change eTag).
-        blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
-
-        blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConsistentReadControl(ConsistentReadControl.ETAG)
-            .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag()))).read()
-
-        then: "An old etag will fail due to ConditionNotMet"
-        thrown(BlobStorageException)
+        byte[] randomBytes1 = outputStream.toByteArray()
+        assert randomBytes1 == randomBytes
     }
 
-    def "Input stream consistent read control version"() {
+    def "IS consistent read control etag user provides version and etag"() {
         setup:
-        int length = 6 * Constants.MB
+        int length = Constants.KB
         byte[] randomBytes = getRandomByteArray(length)
         def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
         def blobClient = blobContainerClient.getBlobClient(generateBlobName())
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
-        def oldProperties = blobClient.getProperties()
+        def properties = blobClient.getProperties()
 
-        when: "Use recent version"
+        when:
+        // User provides version client
+        def inputStream = blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.ETAG)
+        // User provides eTag to use
+            .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
+        def outputStream = new ByteArrayOutputStream()
+
+        then: "Successful read"
+        def b
+        while ((b = inputStream.read()) != -1) {
+            outputStream.write(b)
+        }
+
+        byte[] randomBytes1 = outputStream.toByteArray()
+        assert randomBytes1 == randomBytes
+    }
+
+    def "IS consistent read control etag user provides version client chooses etag"() {
+        setup:
+        int length = Constants.KB
+        byte[] randomBytes = getRandomByteArray(length)
+        def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+        blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
+        def properties = blobClient.getProperties()
+
+        when:
+        // User provides version client
+        def inputStream = blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.ETAG))
+        def outputStream = new ByteArrayOutputStream()
+        // When a versioned client is used it should still succeed if the blob has been modified
+        blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
+
+        then: "Successful read"
+        def b
+        while ((b = inputStream.read()) != -1) {
+            outputStream.write(b)
+        }
+
+        byte[] randomBytes1 = outputStream.toByteArray()
+        assert randomBytes1 == randomBytes
+    }
+
+    // Error case
+    def "IS consistent read control etag user provides old etag"() {
+        setup:
+        int length = Constants.KB
+        byte[] randomBytes = getRandomByteArray(length)
+        def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+        blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
+        def properties = blobClient.getProperties()
+
+        when:
+        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setBlockSize(1).setConsistentReadControl(ConsistentReadControl.ETAG)
+            .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
+
+        // Since eTag is the only form of consistentReadControl and the blob is modified, we will throw.
+        blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
+
+        inputStream.read()
+
+        then: "Failed read"
+        thrown(IOException) // BlobStorageException = ConditionNotMet
+    }
+
+    def "IS consistent read control version client chooses version"() {
+        setup:
+        int length = Constants.KB
+        byte[] randomBytes = getRandomByteArray(length)
+        def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+        blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
+
+        when:
+        // No version specified - client will lock on it.
         def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID))
-        // Write more bytes (just to change version).
+        def outputStream = new ByteArrayOutputStream()
+
+        // When a versioned client is used it should still succeed if the blob has been modified
         blobClient.upload(new ByteArrayInputStream(getRandomByteArray(length)), length, true)
 
         then:
-        def outputStream = new ByteArrayOutputStream()
         def b
         while ((b = inputStream.read()) != -1) {
             outputStream.write(b)
         }
         byte[] randomBytes2 = outputStream.toByteArray()
         assert randomBytes2 == randomBytes
+    }
 
-        when: "Use old version"
-        inputStream = blobClient.getVersionClient(oldProperties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID))
+    def "IS consistent read control version user provides version"() {
+        setup:
+        int length = Constants.KB
+        byte[] randomBytes = getRandomByteArray(length)
+        def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+        blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
+        def properties = blobClient.getProperties()
 
-        outputStream = new ByteArrayOutputStream()
+        when:
+        // User provides version client
+        def inputStream = blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID))
+        def outputStream = new ByteArrayOutputStream()
+
+        // When a versioned client is used it should still succeed if the blob has been modified
+        blobClient.upload(new ByteArrayInputStream(getRandomByteArray(length)), length, true)
+
+        then:
+        def b
         while ((b = inputStream.read()) != -1) {
             outputStream.write(b)
         }
-        randomBytes2 = outputStream.toByteArray()
-
-        then:
+        byte[] randomBytes2 = outputStream.toByteArray()
         assert randomBytes2 == randomBytes
     }
 
+    def "IS consistent read control version user provides version and etag"() {
+        setup:
+        int length = Constants.KB
+        byte[] randomBytes = getRandomByteArray(length)
+        def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+        blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
+        def properties = blobClient.getProperties()
+
+        when:
+        // User provides version client
+        def inputStream = blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID)
+        // User provides eTag to use
+            .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
+        def outputStream = new ByteArrayOutputStream()
+
+        // When a versioned client is used it should still succeed if the blob has been modified
+        blobClient.upload(new ByteArrayInputStream(getRandomByteArray(length)), length, true)
+
+        then:
+        def b
+        while ((b = inputStream.read()) != -1) {
+            outputStream.write(b)
+        }
+        byte[] randomBytes2 = outputStream.toByteArray()
+        assert randomBytes2 == randomBytes
+    }
+
+    def "IS consistent read control version user provides etag client chooses version"() {
+        setup:
+        int length = Constants.KB
+        byte[] randomBytes = getRandomByteArray(length)
+        def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+        blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
+        def properties = blobClient.getProperties()
+
+        when:
+        // No version specified - client will lock on it.
+        def inputStream = blobClient.openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID)
+        // User provides eTag to use
+            .setRequestConditions(new BlobRequestConditions().setIfMatch(properties.getETag())))
+        def outputStream = new ByteArrayOutputStream()
+        // When a versioned client is used it should still succeed if the blob has been modified
+        blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
+
+        then: "Successful read"
+        def b
+        while ((b = inputStream.read()) != -1) {
+            outputStream.write(b)
+        }
+
+        byte[] randomBytes1 = outputStream.toByteArray()
+        assert randomBytes1 == randomBytes
+    }
+
     @Unroll
-    def "Input stream consistent read control error"() {
+    def "IS consistent read control valid states"() {
         setup:
         def blobContainerClient = versionedBlobServiceClient.createBlobContainer(containerName)
         def blobClient = blobContainerClient.getBlobClient(generateBlobName())
@@ -281,7 +440,7 @@ class BlockBlobInputOutputStreamTest extends APISpec {
             .setRequestConditions(requestConditions))
 
         then:
-        thrown(IllegalStateException)
+        notThrown(IllegalStateException)
 
         where:
         useETag | useVersionId | consistentReadControl            || _
