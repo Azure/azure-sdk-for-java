@@ -1,7 +1,7 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
-
+- Support Azure Active Directory (AAD) authentication for Metrics Advisor clients. 
 
 ## 1.0.0-beta.2 (2020-11-10)
 
