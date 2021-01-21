@@ -92,4 +92,9 @@ public class PartitionKeyMismatchRetryPolicy extends DocumentClientRetryPolicy {
         this.request = request;
         this.nextRetryPolicy.onBeforeSendRequest(request);
     }
+
+    @Override
+    public RetryContext getRetryContext() {
+        return this.nextRetryPolicy.getRetryContext();
+    }
 }

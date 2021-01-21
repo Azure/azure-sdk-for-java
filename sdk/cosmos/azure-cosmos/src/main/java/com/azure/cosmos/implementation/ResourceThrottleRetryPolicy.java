@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +29,12 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     // should we make this atomic int?
     private int currentAttemptCount;
     private Duration cumulativeRetryDelay;
+    private CosmosDiagnostics cosmosDiagnostics;
+
+    public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime, CosmosDiagnostics cosmosDiagnostics) {
+        this(maxAttemptCount, maxWaitTime);
+        this.cosmosDiagnostics = cosmosDiagnostics;
+    }
 
     public ResourceThrottleRetryPolicy(int maxAttemptCount, Duration maxWaitTime) {
         this(maxAttemptCount, maxWaitTime, 1);
@@ -72,6 +80,11 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     @Override
     public void onBeforeSendRequest(RxDocumentServiceRequest request) {
         // no op
+    }
+
+    @Override
+    public RetryContext getRetryContext() {
+        return BridgeInternal.getRetryContext(cosmosDiagnostics);
     }
 
     // if retry not needed reaturns null

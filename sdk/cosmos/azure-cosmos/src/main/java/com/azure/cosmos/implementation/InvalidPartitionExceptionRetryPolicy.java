@@ -47,6 +47,11 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
     }
 
     @Override
+    public RetryContext getRetryContext() {
+        return this.nextPolicy.getRetryContext();
+    }
+
+    @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
         CosmosException clientException = Utils.as(e, CosmosException.class);
         if (clientException != null &&

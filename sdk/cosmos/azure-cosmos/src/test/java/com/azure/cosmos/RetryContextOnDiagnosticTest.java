@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
@@ -64,8 +65,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         StoreResponse response = validateSuccess(monoResponse);
 
         assertThat(response.getResponseBody()).isEqualTo(getUTF8BytesOrNull(responseText));
-        assertThat(retryPolicy.getRetryCount()).isEqualTo(5);
-        assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount());
+        assertThat(retryPolicy.getRetryContext().getRetryCount()).isEqualTo(5);
+        assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
 
     @Test(groups = {"simple"})
@@ -84,8 +85,8 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mono<StoreResponse> monoResponse = BackoffRetryUtility.executeRetry(callbackMethod, retryPolicy);
         validateFailure(monoResponse);
 
-        assertThat(retryPolicy.getRetryCount()).isGreaterThanOrEqualTo(5);
-        assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount() + 1);
+        assertThat(retryPolicy.getRetryContext().getRetryCount()).isGreaterThanOrEqualTo(5);
+        assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount() + 1);
     }
 
     @Test(groups = {"simple"})
@@ -109,10 +110,9 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             addressSelector);
         StoreResponse response = validateSuccess(monoResponse);
 
-        assertThat(serviceRequest.requestContext.retryContext.retryCount).isEqualTo(5);
         assertThat(response.getResponseBody()).isEqualTo(getUTF8BytesOrNull(responseText));
-        assertThat(retryPolicy.getRetryCount()).isEqualTo(5);
-        assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount());
+        assertThat(retryPolicy.getRetryContext().getRetryCount()).isEqualTo(5);
+        assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
 
     @Test(groups = {"simple"})
@@ -138,9 +138,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
             addressSelector);
         validateFailure(monoResponse);
 
-        assertThat(serviceRequest.requestContext.retryContext.retryCount).isGreaterThanOrEqualTo(5);
-        assertThat(retryPolicy.getRetryCount()).isGreaterThanOrEqualTo(5);
-        assertThat(retryPolicy.getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryCount() + 1);
+        assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
 
     @Test(groups = {"simple"})
@@ -164,7 +162,9 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         resetSessionTokenRetryPolicyField.set(rxDocumentClient, mockRetryFactory);
 
         TestRetryPolicy retryPolicy = Mockito.mock(TestRetryPolicy.class);
-        Mockito.when(retryPolicy.getRetryCount()).thenReturn(1);
+        RetryContext retryContext = Mockito.mock(RetryContext.class);
+        Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
+        Mockito.when(retryContext.getRetryCount()).thenReturn(1);
 
         Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
         Mockito.when(mockStoreModel.processMessage(Matchers.any(RxDocumentServiceRequest.class))).thenReturn(Mono.just(mockRxDocumentServiceResponse));
@@ -175,44 +175,47 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         Mono<ResourceResponse<Document>>  responseFlux = rxDocumentClient.createDocument(cosmosAsyncContainer.getLink(), new Document(), requestOptions, false);
         validateServiceResponseSuccess(responseFlux);
 
-        Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
-        Mockito.verify(retryPolicy, Mockito.times(3)).getStatusAndSubStatusCodes();
+        Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
 
         retryPolicy = Mockito.mock(TestRetryPolicy.class);
-        Mockito.when(retryPolicy.getRetryCount()).thenReturn(1);
+        retryContext = Mockito.mock(RetryContext.class);
+        Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
+        Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
         responseFlux = rxDocumentClient.readDocument(itemSelfLink,requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
-        Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
-        Mockito.verify(retryPolicy, Mockito.times(3)).getStatusAndSubStatusCodes();
+        Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
 
         retryPolicy = Mockito.mock(TestRetryPolicy.class);
-        Mockito.when(retryPolicy.getRetryCount()).thenReturn(1);
+        retryContext = Mockito.mock(RetryContext.class);
+        Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
+        Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
         responseFlux = rxDocumentClient.deleteDocument(itemSelfLink,requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
-        Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
-        Mockito.verify(retryPolicy, Mockito.times(3)).getStatusAndSubStatusCodes();
+        Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
 
         retryPolicy = Mockito.mock(TestRetryPolicy.class);
-        Mockito.when(retryPolicy.getRetryCount()).thenReturn(1);
+        retryContext = Mockito.mock(RetryContext.class);
+        Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
+        Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
         responseFlux = rxDocumentClient.replaceDocument(itemSelfLink, new Document(),requestOptions);
         validateServiceResponseSuccess(responseFlux);
 
-        Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
-        Mockito.verify(retryPolicy, Mockito.times(3)).getStatusAndSubStatusCodes();
+        Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
 
         retryPolicy = Mockito.mock(TestRetryPolicy.class);
-        Mockito.when(retryPolicy.getRetryCount()).thenReturn(1);
+        retryContext = Mockito.mock(RetryContext.class);
+        Mockito.when(retryPolicy.getRetryContext()).thenReturn(retryContext);
+        Mockito.when(retryContext.getRetryCount()).thenReturn(1);
         Mockito.when(mockRetryFactory.getRequestPolicy()).thenReturn(retryPolicy);
         responseFlux = rxDocumentClient.upsertDocument(itemSelfLink, new Document(),requestOptions, false);
         validateServiceResponseSuccess(responseFlux);
 
-        Mockito.verify(retryPolicy, Mockito.times(2)).getRetryCount();
-        Mockito.verify(retryPolicy, Mockito.times(3)).getStatusAndSubStatusCodes();
+        Mockito.verify(retryContext, Mockito.times(1)).getRetryCount();
 
         cosmosClient.close();
     }
@@ -246,7 +249,11 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
 
     private class TestRetryPolicy extends DocumentClientRetryPolicy {
         boolean noRetry;
+        RetryContext retryContext;
 
+        public TestRetryPolicy() {
+            retryContext = new RetryContext();
+        }
         @Override
         public Mono<ShouldRetryResult> shouldRetry(Exception e) {
             if (noRetry) {
@@ -258,6 +265,11 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         @Override
         public void onBeforeSendRequest(RxDocumentServiceRequest request) {
             //no implementation needed for mock test
+        }
+
+        @Override
+        public RetryContext getRetryContext() {
+            return retryContext;
         }
     }
 }

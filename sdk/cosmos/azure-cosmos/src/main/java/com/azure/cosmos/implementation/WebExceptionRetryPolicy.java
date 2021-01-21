@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-public class WebExceptionRetryPolicy extends RetryPolicyWithDiagnostics {
+public class WebExceptionRetryPolicy implements IRetryPolicy {
     private final static Logger logger = LoggerFactory.getLogger(WebExceptionRetryPolicy.class);
 
     // total wait time in seconds to retry. should be max of primary reconfigrations/replication wait duration etc
@@ -24,11 +24,16 @@ public class WebExceptionRetryPolicy extends RetryPolicyWithDiagnostics {
     private int attemptCount = 1;
     // Don't penalise first retry with delay.
     private int currentBackoffSeconds = WebExceptionRetryPolicy.initialBackoffSeconds;
+    private RetryContext retryContext;
 
     public WebExceptionRetryPolicy() {
         durationTimer.start();
     }
 
+    public WebExceptionRetryPolicy(RetryContext retryContext) {
+        durationTimer.start();
+        this.retryContext = retryContext;
+    }
 
     @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
@@ -55,5 +60,10 @@ public class WebExceptionRetryPolicy extends RetryPolicyWithDiagnostics {
         logger.warn("Received retriable web exception, will retry", exception);
 
         return Mono.just(ShouldRetryResult.retryAfter(backoffTime));
+    }
+
+    @Override
+    public RetryContext getRetryContext() {
+        return this.retryContext;
     }
 }

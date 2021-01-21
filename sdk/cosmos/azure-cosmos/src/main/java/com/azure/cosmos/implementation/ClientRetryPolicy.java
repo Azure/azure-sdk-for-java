@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.CosmosException;
@@ -289,6 +290,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             request.requestContext.routeToLocation(this.locationEndpoint);
         }
     }
+
+    @Override
+    public com.azure.cosmos.implementation.RetryContext getRetryContext() {
+        return BridgeInternal.getRetryContext(this.getCosmosDiagnostics());
+    }
+
+    CosmosDiagnostics getCosmosDiagnostics() {
+        return cosmosDiagnostics;
+    }
+
     private static class RetryContext {
 
         public int retryCount;

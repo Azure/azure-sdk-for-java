@@ -115,4 +115,9 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
         this.nextRetryPolicy.onBeforeSendRequest(request);
     }
 
+    @Override
+    public RetryContext getRetryContext() {
+        return this.nextRetryPolicy.getRetryContext();
+    }
+
 }

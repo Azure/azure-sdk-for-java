@@ -36,6 +36,11 @@ public class RenameCollectionAwareClientRetryPolicy extends DocumentClientRetryP
     }
 
     @Override
+    public RetryContext getRetryContext() {
+        return this.retryPolicy.getRetryContext();
+    }
+
+    @Override
     public Mono<ShouldRetryResult> shouldRetry(Exception e) {
         return this.retryPolicy.shouldRetry(e).flatMap(shouldRetryResult -> {
             if (!shouldRetryResult.shouldRetry && !this.hasTriggered) {

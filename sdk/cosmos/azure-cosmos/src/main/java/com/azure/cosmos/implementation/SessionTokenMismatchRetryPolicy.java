@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class SessionTokenMismatchRetryPolicy extends RetryPolicyWithDiagnostics {
+public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(SessionTokenMismatchRetryPolicy.class);
 
@@ -23,6 +23,7 @@ public class SessionTokenMismatchRetryPolicy extends RetryPolicyWithDiagnostics 
     private final AtomicInteger retryCount;
 
     private Duration currentBackoff;
+    private RetryContext retryContext;
 
     public SessionTokenMismatchRetryPolicy(int waitTimeInMilliSeconds)
     {
@@ -34,8 +35,9 @@ public class SessionTokenMismatchRetryPolicy extends RetryPolicyWithDiagnostics 
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
     }
 
-    public SessionTokenMismatchRetryPolicy() {
+    public SessionTokenMismatchRetryPolicy(RetryContext retryContext) {
         this(Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
+        this.retryContext = retryContext;
     }
 
     @Override
@@ -89,6 +91,11 @@ public class SessionTokenMismatchRetryPolicy extends RetryPolicyWithDiagnostics 
             effectiveBackoff.toMillis());
 
         return Mono.just(ShouldRetryResult.retryAfter(effectiveBackoff));
+    }
+
+    @Override
+    public RetryContext getRetryContext() {
+        return this.retryContext;
     }
 
     private static Duration getEffectiveBackoff(Duration backoff, Duration remainingTime) {

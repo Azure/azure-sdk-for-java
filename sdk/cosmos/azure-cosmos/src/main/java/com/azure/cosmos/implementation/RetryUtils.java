@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
@@ -27,16 +28,16 @@ public class RetryUtils {
             if (e == null) {
                 return Flux.error(t);
             }
-            policy.captureStartTimeIfNotSet();
+            policy.getRetryContext().captureStartTimeIfNotSet();
             Flux<ShouldRetryResult> shouldRetryResultFlux = policy.shouldRetry(e).flux();
             return shouldRetryResultFlux.flatMap(s -> {
                 CosmosException clientException = Utils.as(e, CosmosException.class);
                 if(clientException != null) {
-                    policy.addStatusAndSubStatusCode(null, clientException.getStatusCode(), clientException.getSubStatusCode());
+                    policy.getRetryContext().addStatusAndSubStatusCode(null, clientException.getStatusCode(), clientException.getSubStatusCode());
                 }
 
                 if (s.backOffTime != null) {
-                    policy.incrementRetry();
+                    policy.getRetryContext().incrementRetry();
                     return Mono.delay(Duration.ofMillis(s.backOffTime.toMillis())).flux();
                 } else if (s.exception != null) {
                     return Flux.error(s.exception);
@@ -58,7 +59,6 @@ public class RetryUtils {
      * @param minBackoffForInBackoffCallback Minimum backoff for InBackoffCallbackMethod
      * @return
      */
-
     public static <T> Function<Throwable, Mono<T>> toRetryWithAlternateFunc(Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<T>> callbackMethod,
                                                                             IRetryPolicy retryPolicy,
                                                                             Function<Quadruple<Boolean, Boolean, Duration, Integer>,
@@ -66,25 +66,21 @@ public class RetryUtils {
                                                                             RxDocumentServiceRequest rxDocumentServiceRequest,
                                                                             AddressSelector addressSelector) {
         return throwable -> {
-            if(rxDocumentServiceRequest.requestContext != null && retryPolicy.getRetryCount() > 0) {
-                retryPolicy.updateEndTime();
-                rxDocumentServiceRequest.requestContext.updateRetryContext(retryPolicy, false);
+            RetryContext retryContext = retryPolicy.getRetryContext();
+            if(retryContext != null && retryContext.getRetryCount() > 0) {
+                retryContext.updateEndTime();
             }
 
             Exception e = Utils.as(throwable, Exception.class);
             if (e == null) {
                 return Mono.error(throwable);
             }
-            retryPolicy.captureStartTimeIfNotSet();
+            retryContext.captureStartTimeIfNotSet();
             Mono<ShouldRetryResult> shouldRetryResultFlux = retryPolicy.shouldRetry(e);
+            RetryContext finalRetryContext = retryContext;
             return shouldRetryResultFlux.flatMap(shouldRetryResult -> {
-                CosmosException clientException = Utils.as(e, CosmosException.class);
-                if(clientException != null) {
-                    retryPolicy.addStatusAndSubStatusCode(null, clientException.getStatusCode(), clientException.getSubStatusCode());
-                }
-
                 if (!shouldRetryResult.shouldRetry) {
-                    retryPolicy.updateEndTime();
+                    finalRetryContext.updateEndTime();
 
                     final Throwable errorToReturn = shouldRetryResult.exception != null ? shouldRetryResult.exception : e;
                     final Mono<T> failure = Mono.error(errorToReturn);
@@ -99,10 +95,14 @@ public class RetryUtils {
 
                     return failure;
                 }
-                retryPolicy.incrementRetry();
-                if(rxDocumentServiceRequest.requestContext != null && retryPolicy.getRetryCount() > 0) {
-                    retryPolicy.updateEndTime();
-                    rxDocumentServiceRequest.requestContext.updateRetryContext(retryPolicy, false);
+
+                CosmosException clientException = Utils.as(e, CosmosException.class);
+                if(clientException != null) {
+                    finalRetryContext.addStatusAndSubStatusCode(null, clientException.getStatusCode(), clientException.getSubStatusCode());
+                }
+                finalRetryContext.incrementRetry();
+                if(finalRetryContext != null && finalRetryContext.getRetryCount() > 0) {
+                    finalRetryContext.updateEndTime();
                 }
 
                 if (inBackoffAlternateCallbackMethod != null

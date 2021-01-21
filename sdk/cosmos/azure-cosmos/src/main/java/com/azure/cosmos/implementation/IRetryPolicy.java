@@ -26,21 +26,5 @@ public interface IRetryPolicy  {
     /// <returns>If the retry needs to be attempted or not</returns>
     Mono<ShouldRetryResult> shouldRetry(Exception e);
 
-    int getRetryCount();
-
-    void incrementRetry();
-
-    void captureStartTimeIfNotSet();
-
-    void updateEndTime();
-
-    Duration getRetryLatency();
-
-    Instant getStartTime();
-
-    Instant getEndTime();
-
-    void addStatusAndSubStatusCode(Integer index, int statusCode, int subStatusCode);
-
-    List<int[]> getStatusAndSubStatusCodes();
+    RetryContext getRetryContext();
 }

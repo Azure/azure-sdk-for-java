@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 
 public class ResetSessionTokenRetryPolicyFactory implements IRetryPolicyFactory {
@@ -20,4 +21,10 @@ public class ResetSessionTokenRetryPolicyFactory implements IRetryPolicyFactory 
     public DocumentClientRetryPolicy getRequestPolicy() {
         return new RenameCollectionAwareClientRetryPolicy(this.sessionContainer, this.collectionCache, retryPolicy.getRequestPolicy());
     }
+
+    @Override
+    public RetryContext getRetryContext() {
+        return retryPolicy.getRetryContext();
+    }
+
 }
