@@ -38,7 +38,7 @@ public class ChangeFeedStateTest {
         assertThat(jsonRepresentation)
             .isEqualTo(
                 String.format(
-                    "{\"V\":0," +
+                    "{\"V\":1," +
                         "\"Rid\":\"%s\"," +
                         "\"Mode\":\"INCREMENTAL\"," +
                         "\"StartFrom\":{\"Type\":\"NOW\"}," +
@@ -58,7 +58,7 @@ public class ChangeFeedStateTest {
 
         String continuationDummy = UUID.randomUUID().toString();
         String continuationJson = String.format(
-            "{\"V\":0," +
+            "{\"V\":1," +
                 "\"Rid\":\"%s\"," +
                 "\"Continuation\":[" +
                 "{\"token\":\"%s\",\"range\":{\"min\":\"AA\",\"max\":\"BB\"}}," +
@@ -82,7 +82,7 @@ public class ChangeFeedStateTest {
         assertThat(jsonRepresentation)
             .isEqualTo(
                 String.format(
-                    "{\"V\":0," +
+                    "{\"V\":1," +
                         "\"Rid\":\"%s\"," +
                         "\"Mode\":\"INCREMENTAL\"," +
                         "\"StartFrom\":{\"Type\":\"NOW\"}," +

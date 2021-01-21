@@ -38,7 +38,7 @@ public class FeedRangeContinuationTest {
         assertThat(representation)
             .isEqualTo(
                 String.format(
-                    "{\"V\":0," +
+                    "{\"V\":1," +
                         "\"Rid\":\"%s\"," +
                         "\"Continuation\":[" +
                         "{\"token\":\"%s\",\"range\":{\"min\":\"AA\",\"max\":\"BB\"}}," +
@@ -83,7 +83,7 @@ public class FeedRangeContinuationTest {
         assertThat(representation)
             .isEqualTo(
                 String.format(
-                    "{\"V\":0," +
+                    "{\"V\":1," +
                         "\"Rid\":\"%s\"," +
                         "\"Continuation\":[" +
                         "{\"token\":\"%s\",\"range\":{\"min\":\"AA\",\"max\":\"BB\"}}," +
@@ -130,7 +130,7 @@ public class FeedRangeContinuationTest {
         assertThat(representation)
             .isEqualTo(
                 String.format(
-                    "{\"V\":0," +
+                    "{\"V\":1," +
                         "\"Rid\":\"%s\"," +
                         "\"Continuation\":[" +
                         "{\"token\":\"%s\",\"range\":{\"min\":\"AA\",\"max\":\"BB\"}}," +
