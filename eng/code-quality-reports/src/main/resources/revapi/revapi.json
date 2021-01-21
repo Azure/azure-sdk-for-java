@@ -272,14 +272,14 @@
       },
       {
         "code": "java.annotation.attributeValueChanged",
-        "old": "com.azure.storage.file.share.models.ShareProtocolSettings",
-        "new": "com.azure.storage.file.share.models.ShareProtocolSettings",
+        "old": "class com.azure.storage.file.share.models.ShareProtocolSettings",
+        "new": "class com.azure.storage.file.share.models.ShareProtocolSettings",
         "justification": "Annotation required to resolve a swagger error. The value is now correct."
       },
       {
         "code": "java.annotation.attributeValueChanged",
-        "old": "com.azure.storage.file.share.models.ShareSmbSettings",
-        "new": "com.azure.storage.file.share.models.ShareSmbSettings",
+        "old": "class com.azure.storage.file.share.models.ShareSmbSettings",
+        "new": "class com.azure.storage.file.share.models.ShareSmbSettings",
         "justification": "Annotation required to resolve a swagger error. The value is now correct."
       },
       {
