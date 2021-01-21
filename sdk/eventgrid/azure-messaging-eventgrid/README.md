@@ -79,6 +79,7 @@ az eventgrid topic show --name <your-resource-name> --resource-group <your-resou
 
 Once you have your access key and topic endpoint, you can create the publisher client as follows:
 
+Sync client:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L38-L41 -->
 ```java
 EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
@@ -86,7 +87,7 @@ EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
     .credential(new AzureKeyCredential(key))
     .buildClient();
 ```
-or
+Async client:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L45-L48 -->
 ```java
 EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilder()
@@ -97,6 +98,8 @@ EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilde
 
 If you have a SAS (**Shared Access Signature**) that can be used to send events to an Event Grid Topic or Domain for
 limited time, you can use it to create the publisher client:
+
+Sync client:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L52-L55 -->
 ```java
 EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
@@ -104,7 +107,7 @@ EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
     .credential(new AzureSasCredential(key))
     .buildClient();
 ```
-or
+Async client:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L59-L62 -->
 ```java
 EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
@@ -269,8 +272,8 @@ You can use this SDK's convenience APIs to deal with System Events and their dat
 - look up the System Event data class that a System Event can be deserialized to;
 - deserialize the System Event data to a specific class type;
 ```java
-    String cloudEventJsonData = "Your cloud event Json data";
-    List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(cloudEventJsonData);
+    String eventGridEventJsonData = "Your event grid event Json data";
+    List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(eventGridEventJsonData);
     CloudEvent event = events.get(0);
 
     // Tell if an event is a System Event

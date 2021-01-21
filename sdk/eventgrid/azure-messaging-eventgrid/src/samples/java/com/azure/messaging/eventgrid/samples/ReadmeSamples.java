@@ -140,8 +140,8 @@ public class ReadmeSamples {
     }
 
     public void systemEventDataSampleCode() {
-        String cloudEventJsonData = "Your cloud event Json data";
-        List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(cloudEventJsonData);
+        String eventGridEventJsonData = "Your event grid event Json data";
+        List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(eventGridEventJsonData);
         CloudEvent event = events.get(0);
 
         // Tell if an event is a System Event

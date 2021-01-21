@@ -5,15 +5,14 @@ package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.messaging.eventgrid.CloudEvent;
 import com.azure.messaging.eventgrid.EventGridDeserializer;
 import com.azure.messaging.eventgrid.EventGridEvent;
-import com.azure.messaging.eventgrid.SystemEventMappings;
 import com.azure.messaging.eventgrid.samples.models.User;
 import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.QueueClientBuilder;
 import com.azure.storage.queue.models.QueueMessageItem;
 
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -29,8 +28,8 @@ public class ReceiveEventsFromEventHandler {
 
         Iterable<QueueMessageItem> messages = storageQueueClient.receiveMessages(10);
         for (QueueMessageItem messageItem : messages) {
-            String messageText = messageItem.getMessageText();
-            deserializeAndProcessEvents(messageText);
+            String decodedMessage = new String(Base64.getDecoder().decode(messageItem.getMessageText()));
+            deserializeAndProcessEvents(decodedMessage);
         }
     }
 
