@@ -31,6 +31,16 @@ public class PerfStressProgram {
     private static int[] completedOperations;
     private static long[] lastCompletionNanoTimes;
 
+    private static int getCompletedOperations() {
+        return IntStream.of(completedOperations).sum();
+    }
+
+    private static double getOperationsPerSecond() {
+        return IntStream.range(0, completedOperations.length)
+            .mapToDouble(i -> completedOperations[i] / (((double) lastCompletionNanoTimes[i]) / 1000000000))
+            .sum();
+    }
+
     /**
      * Runs the performance tests passed to be executed.
      *
@@ -177,11 +187,13 @@ public class PerfStressProgram {
 
         int[] lastCompleted = new int[] { 0 };
         Disposable progressStatus = printStatus(
-                "=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal", () -> {
-                int totalCompleted = IntStream.of(completedOperations).sum();
+                "=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal\t\tAverage", () -> {
+                int totalCompleted = getCompletedOperations();
                 int currentCompleted = totalCompleted - lastCompleted[0];
+                double averageCompleted = getOperationsPerSecond();
+
                 lastCompleted[0] = totalCompleted;
-                return currentCompleted + "\t\t" + totalCompleted;
+                return String.format("%d\t\t%d\t\t%.0f", currentCompleted, totalCompleted, averageCompleted);
             }, true, true);
 
         if (sync) {
@@ -206,14 +218,12 @@ public class PerfStressProgram {
 
         System.out.println("=== Results ===");
 
-        int totalOperations = IntStream.of(completedOperations).sum();
-        double operationsPerSecond = IntStream.range(0, parallel)
-                .mapToDouble(i -> completedOperations[i] / (((double) lastCompletionNanoTimes[i]) / 1000000000))
-                .sum();
+        int totalOperations = getCompletedOperations();
+        double operationsPerSecond = getOperationsPerSecond();
         double secondsPerOperation = 1 / operationsPerSecond;
         double weightedAverageSeconds = totalOperations / operationsPerSecond;
 
-        System.out.printf("Completed %d operations in a weighted-average of %.2fs (%.2f ops/s, %.3f s/op)%n",
+        System.out.printf("Completed %,d operations in a weighted-average of %,.2fs (%,.2f ops/s, %,.3f s/op)%n",
                 totalOperations, weightedAverageSeconds, operationsPerSecond, secondsPerOperation);
         System.out.println();
     }
