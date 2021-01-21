@@ -5,12 +5,15 @@ package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADClientRegistrationRepository;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,7 +76,14 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                 .principal(principal)
                 .attributes(getAttributesConsumer(scopes))
                 .build();
-            return (T) provider.authorize(context);
+            result = provider.authorize(context);
+            ServletRequestAttributes attributes =
+                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+            delegate.saveAuthorizedClient(result,
+                SecurityContextHolder.getContext().getAuthentication(),
+                attributes.getRequest(),
+                attributes.getResponse());
+            return (T) result;
         }
         return null;
     }
