@@ -98,7 +98,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
             }
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | ParseException e) {
-            e.printStackTrace();
+            logger.logExceptionAsError(new RuntimeException(e.toString()));
         } finally {
             PolicyResponse resetResponse = null;
             switch (clientType) {
@@ -143,7 +143,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                     try {
                         return verifyAttestationToken(httpClient, clientUri, response.getToken());
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        logger.logExceptionAsError(new RuntimeException(e.toString()));
                     }
                     return null;
                 }).doOnNext(responseClaims -> {
@@ -159,7 +159,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                             try {
                                 resetToken = new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize();
                             } catch (JOSEException e) {
-                                e.printStackTrace();
+                                logger.logExceptionAsError(new RuntimeException(e.toString()));
                             }
                             break;
                         default:
@@ -170,7 +170,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                                 try {
                                     return verifyAttestationToken(httpClient, clientUri, response.getToken());
                                 } catch (ParseException e) {
-                                    e.printStackTrace();
+                                    logger.logExceptionAsError(new RuntimeException(e.toString()));
                                 }
                                 return null;
                             });
@@ -206,7 +206,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                     try {
                         policyJose = JOSEObject.parse(policyDocument);
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        logger.logExceptionAsError(new RuntimeException(e.toString()));
                     }
                     assertNotNull(policyJose);
                     Map<String, Object> jsonObject = policyJose.getPayload().toJSONObject();

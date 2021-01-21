@@ -11,6 +11,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.JsonWebKey;
@@ -49,6 +50,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AttestationClientTestBase extends TestBase {
 
     private static final String DATAPLANE_SCOPE = "https://attest.azure.net/.default";
+
+    final ClientLogger logger = new ClientLogger(AttestationClientTestBase.class);
 
     enum ClientTypes {
         SHARED,
@@ -113,7 +116,7 @@ public class AttestationClientTestBase extends TestBase {
                 try {
                     assertTrue(token.verify(verifier));
                 } catch (JOSEException e) {
-                    e.printStackTrace();
+                    logger.logExceptionAsError(new RuntimeException(e.toString()));
                 }
 
 
@@ -121,7 +124,7 @@ public class AttestationClientTestBase extends TestBase {
                 try {
                     claims = token.getJWTClaimsSet();
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    logger.logExceptionAsError(new RuntimeException(e.toString()));
                 }
                 assertNotNull(claims);
                 return Mono.just(claims);
@@ -161,7 +164,7 @@ public class AttestationClientTestBase extends TestBase {
                 try {
                     cf = CertificateFactory.getInstance("X.509");
                 } catch (CertificateException e) {
-                    e.printStackTrace();
+                    logger.logExceptionAsError(new RuntimeException(e.toString()));
                 }
 
                 String keyId = token.getHeader().getKeyID();
@@ -173,7 +176,7 @@ public class AttestationClientTestBase extends TestBase {
                             assert cf != null;
                             cert = cf.generateCertificate(base64ToStream(key.getX5C().get(0)));
                         } catch (CertificateException e) {
-                            e.printStackTrace();
+                            logger.logExceptionAsError(new RuntimeException(e.toString()));
                         }
 
                         assertTrue(cert instanceof X509Certificate);

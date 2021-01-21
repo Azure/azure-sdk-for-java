@@ -85,7 +85,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
                         }
                     }
                 } catch (CertificateException e) {
-                    e.printStackTrace();
+                    logger.logExceptionAsError(new RuntimeException(e.toString()));
                     throw new RuntimeException(e);
                 }
             });

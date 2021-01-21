@@ -60,7 +60,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
                     try {
                         return verifyAttestationToken(httpClient, clientUri, response.getToken());
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        logger.logExceptionAsError(new RuntimeException(e.toString()));
                     }
                     return null;
                 }))
@@ -222,7 +222,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
                 try {
                     return verifyAttestationToken(httpClient, clientUri, response.getToken());
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    logger.logExceptionAsError(new RuntimeException(e.toString()));
                 }
                 return null;
             })
@@ -234,7 +234,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
                     try {
                         return verifyAttestationToken(httpClient, clientUri, response.getToken());
                     } catch (ParseException e) {
-                        e.printStackTrace();
+                        logger.logExceptionAsError(new RuntimeException(e.toString()));
                     }
                     return null;
                 }))
