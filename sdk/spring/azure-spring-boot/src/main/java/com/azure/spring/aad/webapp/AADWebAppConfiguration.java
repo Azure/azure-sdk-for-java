@@ -141,8 +141,8 @@ public class AADWebAppConfiguration {
     @ControllerAdvice
     public static class ConditionalAccessExceptionAdvice {
         @ExceptionHandler(ConditionalAccessException.class)
-        public void handleUserNotFound(HttpServletRequest request,
-                                       HttpServletResponse response, Exception exception) {
+        public void handleConditionalAccessException(HttpServletRequest request,
+                                                     HttpServletResponse response, Exception exception) {
             Optional.of(exception)
                     .map(e -> (ConditionalAccessException) e)
                     .ifPresent(aadConditionalAccessException -> {

@@ -31,9 +31,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * <p>
@@ -95,9 +97,9 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                 oAuth2AccessToken);
             request.setAttribute(oboAuthorizedClientAttributeName, (T) oAuth2AuthorizedClient);
             return (T) oAuth2AuthorizedClient;
-        } catch (Throwable throwable) {
+        } catch (ExecutionException exception) {
             // Handle conditional access policy for obo flow.
-            String claims = Optional.of(throwable)
+            String claims = Optional.of(exception)
                                     .map(Throwable::getCause)
                                     .filter(e -> e instanceof MsalInteractionRequiredException)
                                     .map(e -> (MsalInteractionRequiredException) e)
@@ -119,7 +121,9 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                     LOGGER.error("An exception occurred while operating the responseOutputStream.", e);
                 }
             }
-            LOGGER.error("Failed to load authorized client.", throwable);
+            LOGGER.error("Failed to load authorized client.", exception);
+        }catch (InterruptedException | ParseException exception) {
+            LOGGER.error("Failed to load authorized client.", exception);
         }
         return null;
     }
