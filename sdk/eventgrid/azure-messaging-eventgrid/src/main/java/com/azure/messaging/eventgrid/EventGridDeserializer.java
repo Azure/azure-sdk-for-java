@@ -2,24 +2,30 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * This is convenience class that has methods to parse json into events.
- * {@link #deserializeCloudEvents(String)} parses a JSON string into a list of {@link CloudEvent} instances.
- * {@link #deserializeEventGridEvents(String)} parses a JSON string into a list of {@link EventGridEvent} instances.
+ * This is a convenience class that deserializes a json string into events.
+ * {@link #deserializeCloudEvents(String)} deserializes a JSON string into a list of {@link CloudEvent} instances.
+ * {@link #deserializeEventGridEvents(String)} deserializes a JSON string into a list of {@link EventGridEvent}
+ * instances.
  *
  */
 public final class EventGridDeserializer {
+    private static final ClientLogger LOGGER = new ClientLogger(EventGridDeserializer.class);
+
     private EventGridDeserializer() {
         // Hide the constructor
     }
@@ -30,37 +36,60 @@ public final class EventGridDeserializer {
         .build();                                  // becomes public in core
 
     /**
-     * Parse the EventGrid Event from a JSON string. This can be used to interpret the event at the event destination
-     * from raw JSON into rich event(s).
+     * Deserialize the {@link EventGridEvent} from a JSON string.
      * @param eventGridEventsJson the JSON payload containing one or more events.
      *
-     * @return all of the events in the payload parsed as {@link EventGridEvent}s.
+     * @return all of the events in the payload deserialized as {@link EventGridEvent}s.
+     * @throws IllegalArgumentException if the input parameter isn't a JSON string for a eventgrid event
+     * or an array of it.
      */
     public static List<EventGridEvent> deserializeEventGridEvents(String eventGridEventsJson) {
-        return Flux.fromArray(DESERIALIZER
-            .deserialize(new ByteArrayInputStream(eventGridEventsJson.getBytes(StandardCharsets.UTF_8)),
-                TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class))
-        )
-            .map(EventGridEvent::new)
-            .collectList()
-            .block();
+        try {
+            return Arrays.stream(DESERIALIZER
+                .deserialize(new ByteArrayInputStream(eventGridEventsJson.getBytes(StandardCharsets.UTF_8)),
+                    TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.EventGridEvent[].class)))
+                .map(internalEvent -> {
+                    if (internalEvent.getSubject() == null || internalEvent.getEventType() == null
+                        || internalEvent.getData() == null) {
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                            "'subject', 'type', and 'data' are mandatory attributes for an EventGridEvent. " +
+                                "Check if the input param is a JSON string for an EventGridEvent or an array of it."));
+                    }
+                    return new EventGridEvent(internalEvent);
+                })
+                .collect(Collectors.toList());
+        } catch (UncheckedIOException uncheckedIOException) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The input parameter isn't a JSON string.",
+                uncheckedIOException.getCause()));
+        }
     }
 
     /**
-     * Parse the Cloud Event from a JSON string. This can be used to interpret the event at the event destination
-     * from raw JSON into rich event(s).
+     * Deserialize the {@link CloudEvent} from a JSON string.
      * @param cloudEventsJson the JSON payload containing one or more events.
      *
-     * @return all of the events in the payload parsed as {@link CloudEvent}s.
+     * @return all of the events in the payload deserialized as {@link CloudEvent}s.
+     * @throws IllegalArgumentException if the input parameter isn't a JSON string for a cloud event or an array of it.
      */
     public static List<CloudEvent> deserializeCloudEvents(String cloudEventsJson) {
-        return Flux.fromArray(DESERIALIZER
-            .deserialize(new ByteArrayInputStream(cloudEventsJson.getBytes(StandardCharsets.UTF_8)),
-                TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.CloudEvent[].class))
-        )
-            .map(CloudEvent::new)
-            .collectList()
-            .block();
+        try {
+            return Arrays.stream(DESERIALIZER
+                .deserialize(new ByteArrayInputStream(cloudEventsJson.getBytes(StandardCharsets.UTF_8)),
+                    TypeReference.createInstance(com.azure.messaging.eventgrid.implementation.models.CloudEvent[].class))
+            )
+                .map(internalEvent -> {
+                    if (internalEvent.getSource() == null || internalEvent.getType() == null) {
+                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                            "'source' and 'type' are mandatory attributes for a CloudEvent. " +
+                                "Check if the input param is a JSON string for a CloudEvent or an array of it."));
+                    }
+                    return new CloudEvent(internalEvent);
+                })
+                .collect(Collectors.toList());
+        } catch (UncheckedIOException uncheckedIOException) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The input parameter isn't a JSON string.",
+                uncheckedIOException.getCause()));
+        }
     }
 
     static Object getSystemEventData(BinaryData data, String eventType) {
