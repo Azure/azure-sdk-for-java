@@ -377,7 +377,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         appends are allowed.
          */
         if (!optionsList.contains(StandardOpenOption.WRITE)
-            && !(optionsList.contains(StandardOpenOption.TRUNCATE_EXISTING)
+            || !(optionsList.contains(StandardOpenOption.TRUNCATE_EXISTING)
             || optionsList.contains(StandardOpenOption.CREATE_NEW))) {
             throw LoggingUtility.logError(logger,
                 new IllegalArgumentException("Write and either CreateNew or TruncateExisting must be specified to open "
