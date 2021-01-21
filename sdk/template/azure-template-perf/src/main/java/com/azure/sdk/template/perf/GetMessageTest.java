@@ -5,8 +5,8 @@ package com.azure.sdk.template.perf;
 
 import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.PerfStressOptions;
-import reactor.core.publisher.Mono;
 import com.azure.sdk.template.Hello;
+import reactor.core.publisher.Mono;
 
 public class GetMessageTest extends PerfStressTest<PerfStressOptions> {
     private final Hello hello;
