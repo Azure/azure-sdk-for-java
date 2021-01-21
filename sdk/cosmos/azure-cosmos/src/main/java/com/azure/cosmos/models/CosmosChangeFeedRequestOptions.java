@@ -344,14 +344,13 @@ public final class CosmosChangeFeedRequestOptions {
      * mode requires configuring a retention duration in the change feed policy of the
      * container. {@link ChangeFeedPolicy}
      * <p>
-     * intermediary snapshots of changes as well as deleted documents would be
-     * * available for processing for 8 minutes before they vanish.
+     * Intermediary snapshots of changes as well as deleted documents would be
+     * available for processing for 8 minutes before they vanish.
      * When enabling full fidelity mode you will only be able to process change feed events
      * within the retention window configured in the change feed policy of the container.
-     * Processing the change feed with full fidelity mode will only be able within this retention
-     * window - if you attempt to process a change feed after more than the retention window
-     * an error will be returned because the events for intermediary updates and deletes have
-     * vanished.
+     * If you attempt to process a change feed after more than the retention window
+     * an error (Status Code 400) will be returned because the events for intermediary
+     * updates and deletes have vanished.
      * It would still be possible to process changes using Incremental mode even when
      * configuring a full fidelity change feed policy with retention window on the container
      * and when using Incremental mode it doesn't matter whether your are out of the retention
