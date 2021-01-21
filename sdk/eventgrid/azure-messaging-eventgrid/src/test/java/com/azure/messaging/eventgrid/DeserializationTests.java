@@ -142,13 +142,16 @@ public class DeserializationTests {
         // using a storageBlobDeletedEvent
         String jsonData = getTestPayloadFromFile("EventGridNullData.json");
         //
+        assertThrows(IllegalArgumentException.class, () -> {
+            EventGridEvent.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+        });
 
-        EventGridEvent[] events = EventGridEvent.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
-
-        assertNotNull(events);
-        assertEquals(1, events.length);
-        assertNull(events[0].asSystemEventData());
-        assertEquals("/blobServices/default/containers/testcontainer/blobs/testfile.txt", events[0].getSubject());
+//        EventGridEvent[] events = EventGridEvent.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
+//
+//        assertNotNull(events);
+//        assertEquals(1, events.length);
+//        assertNull(events[0].asSystemEventData());
+//        assertEquals("/blobServices/default/containers/testcontainer/blobs/testfile.txt", events[0].getSubject());
     }
 
     @Test
@@ -616,7 +619,6 @@ public class DeserializationTests {
         //
 
         EventGridEvent[] events = EventGridEvent.deserializeEventGridEvents(jsonData).toArray(new EventGridEvent[0]);
-
         assertNotNull(events);
         assertTrue(events[0].asSystemEventData() instanceof MediaJobFinishedEventData);
         MediaJobFinishedEventData eventData = (MediaJobFinishedEventData) events[0].asSystemEventData();

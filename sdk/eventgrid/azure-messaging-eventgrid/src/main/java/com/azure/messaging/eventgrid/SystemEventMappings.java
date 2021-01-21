@@ -80,6 +80,7 @@ import com.azure.messaging.eventgrid.systemevents.ServiceBusActiveMessagesAvaila
 import com.azure.messaging.eventgrid.systemevents.ServiceBusDeadletterMessagesAvailableWithNoListenersEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 import com.azure.messaging.eventgrid.systemevents.WebAppServicePlanUpdatedEventData;
@@ -372,6 +373,11 @@ public final class SystemEventMappings {
      */
     public static final String STORAGE_BLOB_DELETED_EVENT = "Microsoft.Storage.BlobDeleted";
 
+    /**
+     * indicates an event of blob renaming.
+     */
+    public static final String STORAGE_BLOB_RENAMED_EVENT = "Microsoft.Storage.BlobRenamed";
+
     // Communication Services events.
     public static final String COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER =
         "Microsoft.Communication.ChatMemberAddedToThreadWithUser";
@@ -502,6 +508,7 @@ public final class SystemEventMappings {
         // Storage events.
         put(STORAGE_BLOB_CREATED_EVENT, StorageBlobCreatedEventData.class);
         put(STORAGE_BLOB_DELETED_EVENT, StorageBlobDeletedEventData.class);
+        put(STORAGE_BLOB_RENAMED_EVENT, StorageBlobRenamedEventData.class);
 
         // Communication service events.
         put(COMMUNICATION_CHAT_MEMBER_ADDED_TO_THREAD_WITH_USER, AcsChatMemberAddedToThreadWithUserEventData.class);
