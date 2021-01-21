@@ -197,81 +197,12 @@
       }
     },
     {
-      "name": "[concat(variables('vmName'), '/CustomScriptForLinux')]",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "apiVersion": "2019-03-01",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))]"
-      ],
-      "properties": {
-        "publisher": "Microsoft.OSTCExtensions",
-        "type": "CustomScriptForLinux",
-        "typeHandlerVersion": "1.4",
-        "autoUpgradeMinorVersion": true,
-        "settings": {
-          "fileUris": [
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/spring/azure-spring-boot-test-keyvault/install_apps.sh",
-            "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/spring/azure-spring-boot-test-keyvault/install_apps_with_retry.sh"
-          ],
-          "commandToExecute": "bash install_apps_with_retry.sh"
-        },
-        "protectedSettings": {
-          "commandToExecute": ""
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2019-03-01",
-      "name": "[variables('vmName')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[variables('niId')]"
-      ],
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "[variables('vmSize')]"
-        },
-        "storageProfile": {
-          "osDisk": {
-            "createOption": "fromImage",
-            "managedDisk": {
-              "storageAccountType": "Premium_LRS"
-            }
-          },
-          "imageReference": {
-            "publisher": "Canonical",
-            "offer": "UbuntuServer",
-            "sku": "[variables('ubuntuOSVersion')]",
-            "version": "latest"
-          }
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[variables('niId')]"
-            }
-          ]
-        },
-        "osProfile": {
-          "computerName": "[variables('vmName')]",
-          "adminUsername": "[variables('adminUsername')]",
-          "adminPassword": "[variables('adminPassword')]"
-        }
-      },
-      "identity": {
-        "type": "SystemAssigned"
-      }
-    },
-    {
       "type": "Microsoft.KeyVault/vaults",
       "apiVersion": "2016-10-01",
       "name": "[variables('keyVaultName')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Web/sites', variables('appServiceName'))]",
-        "[resourceId('Microsoft.Compute/virtualMachines', variables('vmName'))]"
+        "[resourceId('Microsoft.Web/sites', variables('appServiceName'))]"
       ],
       "properties": {
         "sku": {
@@ -293,16 +224,6 @@
           {
             "tenantId": "[parameters('tenantId')]",
             "objectId": "[reference(resourceId('Microsoft.Web/sites', variables('appServiceName')), '2019-08-01', 'Full').identity.principalId]",
-            "permissions": {
-              "secrets": [
-                "get",
-                "list"
-              ]
-            }
-          },
-          {
-            "tenantId": "[parameters('tenantId')]",
-            "objectId": "[reference(resourceId('Microsoft.Compute/virtualMachines', variables('vmName')), '2019-03-01', 'Full').identity.principalId]",
             "permissions": {
               "secrets": [
                 "get",

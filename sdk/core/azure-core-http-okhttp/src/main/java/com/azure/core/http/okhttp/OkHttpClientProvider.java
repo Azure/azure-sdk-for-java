@@ -4,6 +4,7 @@
 package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.http.HttpClientProvider;
 
 /**
@@ -14,5 +15,19 @@ public final class OkHttpClientProvider implements HttpClientProvider {
     @Override
     public HttpClient createInstance() {
         return new OkHttpAsyncHttpClientBuilder().build();
+    }
+
+    @Override
+    public HttpClient createInstance(HttpClientOptions clientOptions) {
+        OkHttpAsyncHttpClientBuilder builder = new OkHttpAsyncHttpClientBuilder();
+
+        if (clientOptions != null) {
+            builder = builder.proxy(clientOptions.getProxyOptions())
+                .configuration(clientOptions.getConfiguration())
+                .writeTimeout(clientOptions.getWriteTimeout())
+                .readTimeout(clientOptions.getReadTimeout());
+        }
+
+        return builder.build();
     }
 }

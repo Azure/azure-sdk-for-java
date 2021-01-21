@@ -96,7 +96,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String modelId, String formUrl) {
         return beginRecognizeCustomFormsFromUrl(modelId, formUrl, null);
@@ -122,7 +122,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl}, {@code modelId} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String modelId, String formUrl,
         RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
@@ -185,7 +185,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form}, {@code modelId} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(String modelId, Flux<ByteBuffer> form, long length) {
         return beginRecognizeCustomForms(modelId, form, length, null);
@@ -215,7 +215,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form}, {@code modelId} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(String modelId, Flux<ByteBuffer> form, long length,
         RecognizeCustomFormsOptions recognizeCustomFormsOptions) {
@@ -272,7 +272,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContentFromUrl(String formUrl) {
         return beginRecognizeContentFromUrl(formUrl, null);
     }
@@ -300,7 +300,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code formUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<FormPage>>
         beginRecognizeContentFromUrl(String formUrl, RecognizeContentOptions recognizeContentOptions) {
         return beginRecognizeContentFromUrl(formUrl, recognizeContentOptions, Context.NONE);
@@ -355,7 +355,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContent(
         Flux<ByteBuffer> form, long length) {
         return beginRecognizeContent(form, length, null);
@@ -387,7 +387,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code form} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<FormPage>> beginRecognizeContent(Flux<ByteBuffer> form,
         long length, RecognizeContentOptions recognizeContentOptions) {
         return beginRecognizeContent(form, length, recognizeContentOptions, Context.NONE);
@@ -440,7 +440,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl) {
         return beginRecognizeReceiptsFromUrl(receiptUrl, null);
@@ -465,7 +465,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receiptUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeReceiptsFromUrl(String receiptUrl, RecognizeReceiptsOptions recognizeReceiptsOptions) {
         return beginRecognizeReceiptsFromUrl(receiptUrl, recognizeReceiptsOptions, Context.NONE);
@@ -526,7 +526,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeReceipts(
         Flux<ByteBuffer> receipt, long length) {
         return beginRecognizeReceipts(receipt, length, null);
@@ -556,7 +556,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code receipt} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeReceipts(Flux<ByteBuffer> receipt, long length,
         RecognizeReceiptsOptions recognizeReceiptsOptions) {
@@ -617,7 +617,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code businessCardUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
         String businessCardUrl) {
         return beginRecognizeBusinessCardsFromUrl(businessCardUrl, null);
@@ -643,7 +643,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code businessCardUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCardsFromUrl(
         String businessCardUrl, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions) {
         return beginRecognizeBusinessCardsFromUrl(businessCardUrl, recognizeBusinessCardsOptions, Context.NONE);
@@ -703,7 +703,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code businessCard} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
         Flux<ByteBuffer> businessCard, long length) {
         return beginRecognizeBusinessCards(businessCard, length, null);
@@ -733,7 +733,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code businessCard} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeBusinessCards(
         Flux<ByteBuffer> businessCard, long length, RecognizeBusinessCardsOptions recognizeBusinessCardsOptions) {
         return beginRecognizeBusinessCards(businessCard, length, recognizeBusinessCardsOptions, Context.NONE);
@@ -880,7 +880,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code invoiceUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeInvoicesFromUrl(String invoiceUrl) {
         return beginRecognizeInvoicesFromUrl(invoiceUrl, null);
@@ -905,7 +905,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code invoiceUrl} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeInvoicesFromUrl(String invoiceUrl, RecognizeInvoicesOptions recognizeInvoicesOptions) {
         return beginRecognizeInvoicesFromUrl(invoiceUrl, recognizeInvoicesOptions, Context.NONE);
@@ -966,7 +966,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code invoice} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>> beginRecognizeInvoices(
         Flux<ByteBuffer> invoice, long length) {
         return beginRecognizeInvoices(invoice, length, null);
@@ -996,7 +996,7 @@ public final class FormRecognizerAsyncClient {
      * an {@link OperationStatus#FAILED}.
      * @throws NullPointerException If {@code invoice} is null.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<FormRecognizerOperationResult, List<RecognizedForm>>
         beginRecognizeInvoices(Flux<ByteBuffer> invoice, long length,
         RecognizeInvoicesOptions recognizeInvoicesOptions) {

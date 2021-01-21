@@ -23,7 +23,7 @@ Use the client library for App Configuration to create and manage application co
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.1.7</version>
+  <version>1.1.8</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
