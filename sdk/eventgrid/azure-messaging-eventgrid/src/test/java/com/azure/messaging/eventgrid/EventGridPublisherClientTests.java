@@ -233,7 +233,7 @@ public class EventGridPublisherClientTests extends TestBase {
             "1.0")
             .setEventTime(OffsetDateTime.now()));
 
-        Response<Void> response = egClient.sendEventsWithResponse(events, Context.NONE);
+        Response<Void> response = egClient.sendEventGridEventsWithResponse(events, Context.NONE);
 
         assertNotNull(response);
         assertEquals(response.getStatusCode(), 200);

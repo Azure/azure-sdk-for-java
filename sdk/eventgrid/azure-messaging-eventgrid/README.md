@@ -153,11 +153,11 @@ publishing:
 
 | Event Schema       | Publishing Method     |
 | ------------ | --------------------- |
-| Event Grid Events  | `publishEvents`       |
-| Cloud Events | `publishCloudEvents`  |
-| Custom Events       | `publishCustomEvents` |
+| Event Grid Events  | `sendEventGridEvents`       |
+| Cloud Events | `sendCloudEvents`  |
+| Custom Events       | `sendCustomEvents` |
 
-Using the wrong method will result in an error from the service and your events will not be published.
+Using the wrong method will result in a BadRequest error from the service and your events will not be published.
 
 ### Event Handlers and event deserialization.
 
@@ -185,7 +185,7 @@ Note: figure out what schema (cloud event, event grid event, or custom event) th
 List<EventGridEvent> events = new ArrayList<>();
 User user = new User("John", "James");
 events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", user, "1"));
-egClient.sendEvents(events);
+egClient.sendEventGridEvents(events);
 ```
 
 #### Sending `CloudEvent` to a topic that accepts CloudEvent schema
@@ -214,7 +214,7 @@ List<EventGridEvent> events = new ArrayList<>();
 User user = new User("John", "James");
 events.add(new EventGridEvent("com/example", "Com.Example.ExampleEventType", user, "1")
     .setTopic("yourtopic"));
-egClient.sendEvents(events);
+egClient.sendEventGridEvents(events);
 ```
 
 If the domain accepts `CloudEvent` schema, the CloudEvent's attribute that is configured to map the `topic` when the 

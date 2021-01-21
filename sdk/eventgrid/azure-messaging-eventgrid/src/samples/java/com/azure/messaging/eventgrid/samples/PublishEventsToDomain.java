@@ -22,6 +22,6 @@ public class PublishEventsToDomain {
         EventGridEvent eventModelClass = new EventGridEvent("A user is created", "User.Created.Object", newUser, "0.1")
             .setTopic("usertopic");  // topic must be set when sending to an Event Grid Domain.
 
-        publisherClient.sendEvents(List.of(eventModelClass));
+        publisherClient.sendEventGridEvents(List.of(eventModelClass));
     }
 }

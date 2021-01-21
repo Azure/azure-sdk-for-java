@@ -35,6 +35,6 @@ public class PublishEventGridEventsToTopic {
         byte[] byteSample = "FirstName: John3, LastName: James".getBytes(StandardCharsets.UTF_8);
         EventGridEvent eventBytes = new EventGridEvent("com/example/MyApp", "User.Created.Binary", byteSample, "0.1");
         // Send them to the event grid topic altogether.
-        publisherClient.sendEvents(List.of(eventJson, eventModelClass, eventBytes));
+        publisherClient.sendEventGridEvents(List.of(eventJson, eventModelClass, eventBytes));
     }
 }

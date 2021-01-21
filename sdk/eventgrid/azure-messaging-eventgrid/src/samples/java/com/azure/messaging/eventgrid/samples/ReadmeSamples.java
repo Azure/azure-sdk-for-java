@@ -72,7 +72,7 @@ public class ReadmeSamples {
         List<EventGridEvent> events = new ArrayList<>();
         User user = new User("John", "James");
         events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", user, "1"));
-        egClient.sendEvents(events);
+        egClient.sendEventGridEvents(events);
     }
 
     public void sendCloudEventsToTopic() {
@@ -136,7 +136,7 @@ public class ReadmeSamples {
         events.add(
             new EventGridEvent("com/example", "Com.Example.ExampleEventType", user, "1")
                 .setTopic("yourtopic"));
-        egClient.sendEvents(events);
+        egClient.sendEventGridEvents(events);
     }
 
     public void systemEventDataSampleCode() {
