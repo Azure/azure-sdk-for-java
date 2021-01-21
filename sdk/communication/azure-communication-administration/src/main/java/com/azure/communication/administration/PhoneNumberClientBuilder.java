@@ -228,7 +228,7 @@ public final class PhoneNumberClientBuilder {
             return new HmacAuthenticationPolicy(this.accessKeyCredential);            
         } else {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Missing credential information while building a client."));
+                new NullPointerException("Missing credential information while building a client."));
         }
     }
 
