@@ -16,14 +16,14 @@ steps:
   - powershell: |
       Write-Host "Getting Cosmos DB Emulator Version"
       $ProductName = "Azure Cosmos DB Emulator"
-      $Emulator = (Join-Path $env:temp (Join-Path $ProductName "CosmosDB.Emulator.exe"))
+      $Emulator = (Join-Path $env:temp (Join-Path $ProductName "Microsoft.Azure.Cosmos.Emulator.exe"))
       $fileVersion = Get-ChildItem $Emulator
       Write-Host $Emulator $fileVersion.VersionInfo
     displayName: Get Cosmos DB Emulator Version
   - powershell: |
       Write-Host "Launching Cosmos DB Emulator"
       $ProductName = "Azure Cosmos DB Emulator"
-      $Emulator = (Join-Path $env:temp (Join-Path $ProductName "CosmosDB.Emulator.exe"))
+      $Emulator = (Join-Path $env:temp (Join-Path $ProductName "Microsoft.Azure.Cosmos.Emulator.exe"))
       if (!(Test-Path $Emulator)) {
         Write-Error "The emulator is not installed where expected at '$Emulator'"
         return
