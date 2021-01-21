@@ -3,19 +3,20 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextAutoConfiguration;
-import com.azure.spring.cloud.context.core.api.ResourceManager;
-import com.azure.spring.cloud.context.core.api.ResourceManagerProvider;
+import com.azure.spring.cloud.context.core.config.AzureProperties;
+import com.azure.spring.cloud.context.core.impl.ServiceBusNamespaceManager;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
-import com.microsoft.azure.management.servicebus.AuthorizationKeys;
-import com.microsoft.azure.management.servicebus.ServiceBusNamespace;
+import com.azure.spring.integration.servicebus.factory.ServiceBusConnectionStringProvider;
 import com.microsoft.azure.servicebus.IMessage;
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -35,21 +36,9 @@ import javax.annotation.PostConstruct;
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", matchIfMissing = true)
 @EnableConfigurationProperties(AzureServiceBusProperties.class)
 public class AzureServiceBusAutoConfiguration {
-    private static final Logger LOG = LoggerFactory.getLogger(AzureServiceBusAutoConfiguration.class);
-    private static final String SERVICE_BUS = "ServiceBus";
 
-    @SuppressWarnings("rawtypes")
-    private static String buildConnectionString(ResourceManager<ServiceBusNamespace, String> serviceBusNamespaceManager,
-                                                String namespace) {
-        return serviceBusNamespaceManager.getOrCreate(namespace).authorizationRules().list().stream().findFirst()
-                                         .map(com.microsoft.azure.management.servicebus.AuthorizationRule::getKeys)
-                                         .map(AuthorizationKeys::primaryConnectionString)
-                                         .map(s -> new ConnectionStringBuilder(s, namespace).toString())
-                                         .orElseThrow(
-                                             () -> new RuntimeException(
-                                                 String.format("Service bus namespace '%s' key is empty", namespace),
-                                                 null));
-    }
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusAutoConfiguration.class);
+    private static final String SERVICE_BUS = "ServiceBus";
 
     @PostConstruct
     public void collectTelemetry() {
@@ -57,19 +46,44 @@ public class AzureServiceBusAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(ResourceManagerProvider.class)
-    public AzureServiceBusProperties serviceBusProperties(ResourceManagerProvider resourceManagerProvider,
-                                                          AzureServiceBusProperties serviceBusProperties) {
-        if (!StringUtils.hasText(serviceBusProperties.getConnectionString())) {
-            ResourceManager<ServiceBusNamespace, String> serviceBusNamespaceManager =
-                resourceManagerProvider.getServiceBusNamespaceManager();
-            serviceBusNamespaceManager.getOrCreate(serviceBusProperties.getNamespace());
-            serviceBusProperties.setConnectionString(
-                buildConnectionString(resourceManagerProvider.getServiceBusNamespaceManager(),
-                    serviceBusProperties.getNamespace()));
-            LOG.info("'spring.cloud.azure.servicebus.connection-string' auto configured");
+    @ConditionalOnMissingBean
+    @ConditionalOnBean({ AzureResourceManager.class, AzureProperties.class })
+    public ServiceBusNamespaceManager serviceBusNamespaceManager(AzureResourceManager azureResourceManager,
+                                                                 AzureProperties azureProperties) {
+        return new ServiceBusNamespaceManager(azureResourceManager, azureProperties);
+    }
+
+    /**
+     * Create a {@link ServiceBusConnectionStringProvider} bean. The bean will hold the connection string to the service
+     * bus. If connection-string property is configured in the property files, it will use it. Otherwise, it will try to
+     * construct the connection-string using the resource manager.
+     *
+     * @param namespaceManager The resource manager for Service Bus namespaces.
+     * @param properties The Service Bus properties.
+     * @return The {@link ServiceBusConnectionStringProvider} bean.
+     * @throws IllegalArgumentException If connection string is empty.
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public ServiceBusConnectionStringProvider serviceBusConnectionStringProvider(
+        @Autowired(required = false) ServiceBusNamespaceManager namespaceManager,
+        AzureServiceBusProperties properties) {
+
+        final String namespace = properties.getNamespace();
+        final String connectionString = properties.getConnectionString();
+
+        if (StringUtils.hasText(connectionString)) {
+            return new ServiceBusConnectionStringProvider(connectionString);
+        } else if (namespaceManager != null && namespace != null) {
+            LOGGER.info("'spring.cloud.azure.servicebus.connection-string' auto configured");
+
+            return new ServiceBusConnectionStringProvider(namespaceManager.getOrCreate(namespace));
         }
 
-        return serviceBusProperties;
+        LOGGER.warn("Can't construct the ServiceBusConnectionStringProvider, namespace: {}, connectionString: {}",
+            namespace, connectionString);
+
+        return null;
     }
+
 }

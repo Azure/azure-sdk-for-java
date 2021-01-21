@@ -14,12 +14,14 @@ import com.azure.resourcemanager.compute.models.DiskState;
 import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
+import com.azure.resourcemanager.compute.models.NetworkAccessPolicy;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.ShareInfoElement;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
 
 /** Disk resource. */
 @JsonFlatten
@@ -174,6 +176,26 @@ public class DiskInner extends Resource {
      */
     @JsonProperty(value = "properties.shareInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<ShareInfoElement> shareInfo;
+
+    /*
+     * Policy for accessing the disk via network.
+     */
+    @JsonProperty(value = "properties.networkAccessPolicy")
+    private NetworkAccessPolicy networkAccessPolicy;
+
+    /*
+     * ARM id of the DiskAccess resource for using private endpoints on disks.
+     */
+    @JsonProperty(value = "properties.diskAccessId")
+    private String diskAccessId;
+
+    /*
+     * Performance tier of the disk (e.g, P4, S10) as described here:
+     * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does
+     * not apply to Ultra disks.
+     */
+    @JsonProperty(value = "properties.tier")
+    private String tier;
 
     /**
      * Get the managedBy property: A relative URI containing the ID of the VM that has the disk attached.
@@ -531,6 +553,82 @@ public class DiskInner extends Resource {
      */
     public List<ShareInfoElement> shareInfo() {
         return this.shareInfo;
+    }
+
+    /**
+     * Get the networkAccessPolicy property: Policy for accessing the disk via network.
+     *
+     * @return the networkAccessPolicy value.
+     */
+    public NetworkAccessPolicy networkAccessPolicy() {
+        return this.networkAccessPolicy;
+    }
+
+    /**
+     * Set the networkAccessPolicy property: Policy for accessing the disk via network.
+     *
+     * @param networkAccessPolicy the networkAccessPolicy value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withNetworkAccessPolicy(NetworkAccessPolicy networkAccessPolicy) {
+        this.networkAccessPolicy = networkAccessPolicy;
+        return this;
+    }
+
+    /**
+     * Get the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
+     *
+     * @return the diskAccessId value.
+     */
+    public String diskAccessId() {
+        return this.diskAccessId;
+    }
+
+    /**
+     * Set the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
+     *
+     * @param diskAccessId the diskAccessId value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withDiskAccessId(String diskAccessId) {
+        this.diskAccessId = diskAccessId;
+        return this;
+    }
+
+    /**
+     * Get the tier property: Performance tier of the disk (e.g, P4, S10) as described here:
+     * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does not apply to Ultra disks.
+     *
+     * @return the tier value.
+     */
+    public String tier() {
+        return this.tier;
+    }
+
+    /**
+     * Set the tier property: Performance tier of the disk (e.g, P4, S10) as described here:
+     * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does not apply to Ultra disks.
+     *
+     * @param tier the tier value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withTier(String tier) {
+        this.tier = tier;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DiskInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DiskInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

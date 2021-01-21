@@ -6,6 +6,8 @@ package com.azure.messaging.eventhubs;
 /**
  * The strategy used by event processor for load balancing the partition ownership to distribute the event processing
  * work with other processor instances.
+ *
+ * @see EventProcessorClientBuilder#loadBalancingStrategy(LoadBalancingStrategy)
  */
 public enum LoadBalancingStrategy {
 

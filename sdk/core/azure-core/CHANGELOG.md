@@ -1,7 +1,22 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
+## 1.13.0-beta.1 (Unreleased)
 
+
+## 1.12.0 (2021-01-11)
+
+### New Features
+
+- Added `AzureSasCredential` and `AzureSasCredentialPolicy` to standardize the ability to add SAS tokens to HTTP requests.
+
+### Bug Fixes
+
+- Fixed a bug where environment proxy configurations were not sanitizing the non-proxy host string into a valid `Pattern` format. [#18156](https://github.com/Azure/azure-sdk-for-java/issues/18156)
+
+### Dependency Updates
+
+- Updated `reactor-core` from `3.3.11.RELEASE` to `3.3.12.RELEASE`.
+- Updated `netty-tcnative-boringssl-static` from `2.0.34.Final` to `2.0.35.Final`.
 
 ## 1.11.0 (2020-11-24)
 

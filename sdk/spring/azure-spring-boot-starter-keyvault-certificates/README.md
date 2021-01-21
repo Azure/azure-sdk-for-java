@@ -15,7 +15,7 @@ Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Ke
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-keyvault-certificates</artifactId>
-    <version>3.0.0-beta.2</version>
+    <version>3.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -55,9 +55,9 @@ Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
 azure.keyvault.uri=<the URI of the Azure Key Vault to use>
-azure.keyvault.tenantId=<the ID of your Azure tenant>
-azure.keyvault.clientId=<the client ID with access to Azure Key Vault>
-azure.keyvault.clientSecret=<the client secret associated wit the client ID>
+azure.keyvault.tenant-id=<the ID of your Azure tenant>
+azure.keyvault.client-id=<the client ID with access to Azure Key Vault>
+azure.keyvault.client-secret=<the client secret associated wit the client ID>
 server.ssl.key-alias=<the name of the certificate in Azure Key Vault to use>
 server.ssl.key-store-type=AzureKeyVault
 ```
@@ -112,9 +112,9 @@ Server for its configuration add it to the `bootstrap.yml` of the application)
 
 ```
 azure.keyvault.uri=<the URI of the Azure Key Vault to use>
-azure.keyvault.tenantId=<the ID of your Azure tenant>
-azure.keyvault.clientId=<the client ID with access to Azure Key Vault>
-azure.keyvault.clientSecret=<the client secret associated wit the client ID>
+azure.keyvault.tenant-id=<the ID of your Azure tenant>
+azure.keyvault.client-id=<the client ID with access to Azure Key Vault>
+azure.keyvault.client-secret=<the client secret associated wit the client ID>
 ```
 
 Note: make sure the client ID has access to the Azure Key Vault to access

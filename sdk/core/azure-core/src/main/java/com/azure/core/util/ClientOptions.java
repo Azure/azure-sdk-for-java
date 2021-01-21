@@ -4,66 +4,60 @@
 package com.azure.core.util;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Collections;
 
 /**
- * This class represents various options to be set on the client. A user can set {@code applicationId} and a list of
- * {@link Header} on the {@link ClientOptions}.
- * <p><strong>Headers</strong></p>
- * The {@link Header} could be set using {@link ClientOptions#setHeaders(Iterable) setHeaders}. For example if you set
- * a header, {@link Header Header("name", "value")}, on {@link ClientOptions}, it will be set on the request being sent
- * to Azure Service.
- * <p><strong>ApplicationId</strong></p>
- * The {@code applicationId} is used to configure {@link UserAgentPolicy} for telemetry/monitoring purpose. It can be
- * set using {@link ClientOptions#setApplicationId(String) ClientOptions#setApplicationId(String)}.
- * <p>
- * More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
+ * General configuration options for clients.
  */
 @Fluent
-public final class ClientOptions {
+public class ClientOptions {
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private final ClientLogger logger = new
-        ClientLogger(ClientOptions.class);
+    private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
+        + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
+
+    private final ClientLogger logger = new ClientLogger(ClientOptions.class);
     private Iterable<Header> headers;
 
     private String applicationId;
 
     /**
-     * Gets the applicationId.
-     * @return The applicationId.
+     * Gets the application ID.
+     *
+     * @return The application ID.
      */
     public String getApplicationId() {
         return applicationId;
     }
 
     /**
-     * Sets the applicationId provided. The {@code applicationId} is used to configure {@link UserAgentPolicy} for
-     * telemetry/monitoring purpose. It can be set using {@link ClientOptions#setApplicationId(String)
-     * ClientOptions#setApplicationId(String)}.
+     * Sets the application ID.
      * <p>
-     * More About <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry policy</a>
-     * @param applicationId to be set.
+     * The {@code applicationId} is used to configure {@link UserAgentPolicy} for telemetry/monitoring purposes.
+     * <p>
+     * See <a href="https://azure.github.io/azure-sdk/general_azurecore.html#telemetry-policy">Azure Core: Telemetry
+     * policy</a> for additional information.
      *
-     * @return updated {@link ClientOptions}.
-     * @throws IllegalArgumentException If {@code applicationId} contains space or larger than 24 in length.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create ClientOptions with application ID 'myApplicationId'</p>
+     *
+     * {@codesnippet com.azure.core.util.ClientOptions.setApplicationId#String}
+     *
+     * @param applicationId The application ID.
+     * @return The updated ClientOptions object.
+     * @throws IllegalArgumentException If {@code applicationId} contains spaces or larger than 24 in length.
      */
     public ClientOptions setApplicationId(String applicationId) {
-
         if (CoreUtils.isNullOrEmpty(applicationId)) {
             this.applicationId = applicationId;
-            return this;
-        }
-
-        if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("'applicationId' length cannot be greater than "
-                    + MAX_APPLICATION_ID_LENGTH));
+        } else if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
         } else if (applicationId.contains(" ")) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("'applicationId' must not contain a space."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
         } else {
             this.applicationId = applicationId;
         }
@@ -72,12 +66,20 @@ public final class ClientOptions {
     }
 
     /**
-     * Sets the headers, overwriting all previously set headers in the process. For example if you set a header,
-     * {@link Header Header("name", "value")}, on {@link ClientOptions}, it will be set on the request being sent to
-     * Azure Service.
-     * @param headers to be set on the request being sent to Azure Service.
+     * Sets the {@link Header Headers}.
+     * <p>
+     * The passed headers are applied to each request sent with the client.
+     * <p>
+     * This overwrites all previously set headers.
      *
-     * @return updated {@link ClientOptions}.
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create ClientOptions with Header 'myCustomHeader':'myStaticValue'</p>
+     *
+     * {@codesnippet com.azure.core.util.ClientOptions.setHeaders#Iterable}
+     *
+     * @param headers The headers.
+     * @return The updated ClientOptions object.
      */
     public ClientOptions setHeaders(Iterable<Header> headers) {
         this.headers = headers;
@@ -85,8 +87,9 @@ public final class ClientOptions {
     }
 
     /**
-     * Gets a {@link Iterable} representation of the {@link Header}.
-     * @return the headers. If {@link Header} is not set previously, it returns an empty list (immutable).
+     * Gets the {@link Header Headers}.
+     *
+     * @return The {@link Header Headers}, if headers weren't set previously an empty list is returned.
      */
     public Iterable<Header> getHeaders() {
         if (headers == null) {

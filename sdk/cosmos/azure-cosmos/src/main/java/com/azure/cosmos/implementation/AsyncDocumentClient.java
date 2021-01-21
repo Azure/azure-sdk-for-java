@@ -5,12 +5,14 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosPatchOperations;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.TransactionalBatchResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clientTelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
@@ -23,6 +25,8 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.concurrent.ConcurrentMap;
+
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB
  * database service. This async client is used to configure and execute requests
@@ -559,6 +563,21 @@ public interface AsyncDocumentClient {
      * @return a {@link Mono} containing the single resource response with the replaced document or an error.
      */
     Mono<ResourceResponse<Document>> replaceDocument(String documentLink, Object document, RequestOptions options);
+
+    /**
+     * Apply patch on an item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single resource response with the patched document.
+     * In case of failure the {@link Mono} will error.
+     *
+     * @param documentLink the document link.
+     * @param cosmosPatchOperations container with the list of patch operations.
+     * @param options the request options.
+     *
+     * @return a {@link Mono} containing the single resource response with the patched document or an error.
+     */
+    Mono<ResourceResponse<Document>> patchDocument(String documentLink, CosmosPatchOperations cosmosPatchOperations, RequestOptions options);
 
     /**
      * Replaces a document with the passed in document.
@@ -1458,6 +1477,8 @@ public interface AsyncDocumentClient {
         PartitionKey partitionKey,
         CosmosQueryRequestOptions options
     );
+
+    ConcurrentMap<String, PartitionedQueryExecutionInfo> getQueryPlanCache();
 
     /**
      * Gets the collection cache.

@@ -27,6 +27,12 @@ public final class ManagedClusterApiServerAccessProfile {
     @JsonProperty(value = "enablePrivateCluster")
     private Boolean enablePrivateCluster;
 
+    /*
+     * Private dns zone mode for private cluster.
+     */
+    @JsonProperty(value = "privateDNSZone")
+    private String privateDnsZone;
+
     /**
      * Get the authorizedIpRanges property: Authorized IP Ranges to kubernetes API server.
      *
@@ -64,6 +70,26 @@ public final class ManagedClusterApiServerAccessProfile {
      */
     public ManagedClusterApiServerAccessProfile withEnablePrivateCluster(Boolean enablePrivateCluster) {
         this.enablePrivateCluster = enablePrivateCluster;
+        return this;
+    }
+
+    /**
+     * Get the privateDnsZone property: Private dns zone mode for private cluster.
+     *
+     * @return the privateDnsZone value.
+     */
+    public String privateDnsZone() {
+        return this.privateDnsZone;
+    }
+
+    /**
+     * Set the privateDnsZone property: Private dns zone mode for private cluster.
+     *
+     * @param privateDnsZone the privateDnsZone value to set.
+     * @return the ManagedClusterApiServerAccessProfile object itself.
+     */
+    public ManagedClusterApiServerAccessProfile withPrivateDnsZone(String privateDnsZone) {
+        this.privateDnsZone = privateDnsZone;
         return this;
     }
 

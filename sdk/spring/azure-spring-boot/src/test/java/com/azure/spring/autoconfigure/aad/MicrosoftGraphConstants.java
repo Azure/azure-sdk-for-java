@@ -3,26 +3,13 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class MicrosoftGraphConstants {
 
-    public static final String SERVICE_ENVIRONMENT_PROPERTY = "azure.activedirectory.environment";
-    public static final String CLIENT_ID_PROPERTY = "azure.activedirectory.client-id";
-    public static final String CLIENT_SECRET_PROPERTY = "azure.activedirectory.client-secret";
-    public static final String TARGETED_GROUPS_PROPERTY = "azure.activedirectory.user-group.allowed-groups";
-    public static final String TENANT_ID_PROPERTY = "azure.activedirectory.tenant-id";
-
-    public static final String DEFAULT_ENVIRONMENT = "global";
-    public static final String CLIENT_ID = "real_client_id";
-    public static final String CLIENT_SECRET = "real_client_secret";
-    public static final List<String> TARGETED_GROUPS = Arrays.asList("group1", "group2", "group3");
-
-    public static final String TOKEN_HEADER = "Authorization";
     public static final String BEARER_TOKEN = "Bearer real_jtw_bearer_token";
-
-    /** Token from https://docs.microsoft.com/azure/active-directory/develop/v2-id-and-access-tokens */
+    public static final String CLIENT_ID = "real_client_id";
+    /**
+     * Token from https://docs.microsoft.com/azure/active-directory/develop/v2-id-and-access-tokens
+     */
     public static final String JWT_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik1uQ19WWmNBVGZNNXBPWWlKSE1"
         + "iYTlnb0VLWSJ9.eyJhdWQiOiI2NzMxZGU3Ni0xNGE2LTQ5YWUtOTdiYy02ZWJhNjkxNDM5MWUiLCJpc3MiOiJodHRwczovL2xvZ2lu"
         + "Lm1pY3Jvc29mdG9ubGluZS5jb20vYjk0MTk4MTgtMDlhZi00OWMyLWIwYzMtNjUzYWRjMWYzNzZlL3YyLjAiLCJpYXQiOjE0NTIyOD"

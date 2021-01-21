@@ -100,6 +100,13 @@ public class VirtualMachineImageResourceInner extends SubResource {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineImageResourceInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
