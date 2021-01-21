@@ -1,5 +1,8 @@
 # Release History
 
+## 5.5.0-beta.1 (Unreleased)
+
+
 ## 5.4.0 (2021-01-14)
 ### New features
 - Add `clientOptions` to `EventProcessorClientBuilder` to support setting user's application id used in user-agent

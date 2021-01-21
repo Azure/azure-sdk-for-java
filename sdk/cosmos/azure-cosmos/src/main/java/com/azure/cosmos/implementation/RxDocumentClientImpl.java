@@ -39,6 +39,7 @@ import com.azure.cosmos.implementation.query.DocumentQueryExecutionContextFactor
 import com.azure.cosmos.implementation.query.IDocumentQueryClient;
 import com.azure.cosmos.implementation.query.IDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.Paginator;
+import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.query.PipelinedDocumentQueryExecutionContext;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
@@ -136,6 +137,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
     private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
     private final boolean contentResponseOnWriteEnabled;
+    private ConcurrentMap<String, PartitionedQueryExecutionInfo> queryPlanCache;
 
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final int clientId;
@@ -341,6 +343,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
+            this.queryPlanCache = new ConcurrentHashMap<>();
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -406,6 +409,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 connectionPolicy.getConnectionMode(), globalEndpointManager.getLatestDatabaseAccount().getId(),
                 null, null, httpClient(), connectionPolicy.isClientTelemetryEnabled());
             clientTelemetry.init();
+            this.queryPlanCache = new ConcurrentHashMap<>();
         } catch (Exception e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -727,7 +731,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             UUID activityId) {
 
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
-                DocumentQueryExecutionContextFactory.createDocumentQueryExecutionContextAsync(this, queryClient, resourceTypeEnum, klass, sqlQuery , options, resourceLink, false, activityId);
+            DocumentQueryExecutionContextFactory
+                .createDocumentQueryExecutionContextAsync(this, queryClient, resourceTypeEnum, klass, sqlQuery,
+                                                          options, resourceLink, false, activityId,
+                                                          Configs.isQueryPlanCachingEnabled(), queryPlanCache);
 
         AtomicBoolean isFirstResponse = new AtomicBoolean(true);
         return executionContext.flatMap(iDocumentQueryExecutionContext -> {
@@ -1870,9 +1877,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
             return requestObs.flatMap(req -> {
-                if (retryPolicyInstance != null) {
-                    retryPolicyInstance.onBeforeSendRequest(request);
-                }
                 return this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
             });
 
@@ -2301,6 +2305,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 },
                 invalidPartitionExceptionRetryPolicy);
         });
+    }
+
+    @Override
+    public ConcurrentMap<String, PartitionedQueryExecutionInfo> getQueryPlanCache() {
+        return queryPlanCache;
     }
 
     @Override
