@@ -76,10 +76,10 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
         assertNotNull(phoneNumberAsyncClient);
 
         // Smoke test using phoneNumberAsyncClient to list all phone numbers
-        PagedFlux<PhoneNumberCountry> pagedFlux = phoneNumberAsyncClient.listAllSupportedCountries(LOCALE);
+        PagedFlux<AcquiredPhoneNumber> pagedFlux = phoneNumberAsyncClient.listAllPhoneNumbers(LOCALE);
         StepVerifier.create(pagedFlux.next())
             .assertNext(item -> {
-                assertNotNull(item.getCountryCode());
+                assertNotNull(item.getPhoneNumber());
             })
             .verifyComplete();
     }
