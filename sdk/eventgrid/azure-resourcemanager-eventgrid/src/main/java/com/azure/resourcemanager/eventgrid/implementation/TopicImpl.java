@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
@@ -16,6 +17,8 @@ import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventgrid.models.Topic;
 import com.azure.resourcemanager.eventgrid.models.TopicProvisioningState;
+import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
+import com.azure.resourcemanager.eventgrid.models.TopicSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.TopicUpdateParameters;
 import java.util.Collections;
 import java.util.List;
@@ -198,6 +201,25 @@ public final class TopicImpl implements Topic, Topic.Definition, Topic.Update {
                 .getByResourceGroupWithResponse(resourceGroupName, topicName, context)
                 .getValue();
         return this;
+    }
+
+    public TopicSharedAccessKeys listSharedAccessKeys() {
+        return serviceManager.topics().listSharedAccessKeys(resourceGroupName, topicName);
+    }
+
+    public Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(Context context) {
+        return serviceManager.topics().listSharedAccessKeysWithResponse(resourceGroupName, topicName, context);
+    }
+
+    public TopicSharedAccessKeys regenerateKey(TopicRegenerateKeyRequest regenerateKeyRequest) {
+        return serviceManager.topics().regenerateKey(resourceGroupName, topicName, regenerateKeyRequest);
+    }
+
+    public Response<TopicSharedAccessKeys> regenerateKeyWithResponse(
+        TopicRegenerateKeyRequest regenerateKeyRequest, Context context) {
+        return serviceManager
+            .topics()
+            .regenerateKeyWithResponse(resourceGroupName, topicName, regenerateKeyRequest, context);
     }
 
     public TopicImpl withRegion(Region location) {

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.eventgrid.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
@@ -353,4 +354,48 @@ public interface Topic {
      * @return the refreshed resource.
      */
     Topic refresh(Context context);
+
+    /**
+     * List the two keys used to publish to a topic.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    TopicSharedAccessKeys listSharedAccessKeys();
+
+    /**
+     * List the two keys used to publish to a topic.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    Response<TopicSharedAccessKeys> listSharedAccessKeysWithResponse(Context context);
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    TopicSharedAccessKeys regenerateKey(TopicRegenerateKeyRequest regenerateKeyRequest);
+
+    /**
+     * Regenerate a shared access key for a topic.
+     *
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    Response<TopicSharedAccessKeys> regenerateKeyWithResponse(
+        TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
 }

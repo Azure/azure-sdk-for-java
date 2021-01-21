@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner;
@@ -12,6 +13,7 @@ import com.azure.resourcemanager.eventgrid.models.EventDeliverySchema;
 import com.azure.resourcemanager.eventgrid.models.EventSubscription;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionDestination;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
+import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFullUrl;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.RetryPolicy;
@@ -179,6 +181,14 @@ public final class EventSubscriptionImpl
                 .getWithResponse(scope, eventSubscriptionName, context)
                 .getValue();
         return this;
+    }
+
+    public EventSubscriptionFullUrl getFullUrl() {
+        return serviceManager.eventSubscriptions().getFullUrl(scope, eventSubscriptionName);
+    }
+
+    public Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context) {
+        return serviceManager.eventSubscriptions().getFullUrlWithResponse(scope, eventSubscriptionName, context);
     }
 
     public EventSubscriptionImpl withDestination(EventSubscriptionDestination destination) {
