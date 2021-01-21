@@ -106,4 +106,19 @@ public final class Criteria {
     public static Criteria getInstance(CriteriaType type) {
         return new Criteria(type);
     }
+    
+    /**
+     * To get a criteria instance with subject and Unary CriteriaType
+     * @param type CriteriaType
+     * @param subject subject
+     * @return Criteria instance
+     */
+    public static Criteria getInstance(CriteriaType type, @NonNull String subject) {
+        final Criteria criteria = new Criteria(type);
+        
+        criteria.subject = subject;
+   
+        return criteria;
+    }
+
 }
