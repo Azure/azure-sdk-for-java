@@ -535,8 +535,8 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service9.class).putBodyAndContentLength(body, 4L);
 
         assertEquals("test", json.data());
-        assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.headers().get(("Content-Type")));
-        assertEquals("4", json.headers().get(("Content-Length")));
+        assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
+        assertEquals("4", json.getHeaderValue("Content-Length"));
     }
 
     @Test
@@ -566,8 +566,8 @@ public abstract class RestProxyTests {
         StepVerifier.create(createService(Service9.class).putAsyncBodyAndContentLength(body, 4L))
             .assertNext(json -> {
                 assertEquals("test", json.data());
-                assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.headers().get(("Content-Type")));
-                assertEquals("4", json.headers().get(("Content-Length")));
+                assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
+                assertEquals("4", json.getHeaderValue("Content-Length"));
             }).verifyComplete();
     }
 

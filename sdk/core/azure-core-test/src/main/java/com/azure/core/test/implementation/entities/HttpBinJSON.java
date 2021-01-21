@@ -48,6 +48,11 @@ public class HttpBinJSON {
         return headers;
     }
 
+    public String getHeaderValue(String name) {
+        name = name.toLowerCase();
+        return headers.containsKey(name) ? headers.get(name).get(0) : null;
+    }
+
     /**
      * Sets the response headers.
      *
