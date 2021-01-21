@@ -72,7 +72,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
         ClientTypes clientType = classifyClient(clientUri);
         // We can't set attestation policy on the shared client, so just exit early.
-        if (clientType.equals(ClientTypes.Shared)) {
+        if (clientType.equals(ClientTypes.SHARED)) {
             return;
         }
 
@@ -102,14 +102,14 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         } finally {
             PolicyResponse resetResponse = null;
             switch (clientType) {
-                case Aad:
+                case AAD:
                     resetResponse = client.reset(attestationType, new PlainPolicyResetToken().serialize());
                     break;
-                case Isolated:
+                case ISOLATED:
                     resetResponse = client.reset(attestationType, new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize());
                     break;
                 default:
-                    throw new RuntimeException("Cannot ever hit this - unknown client type: " + clientType.toString());
+                    fail("Cannot ever hit this - unknown client type: " + clientType.toString());
             }
             JWTClaimsSet resetClaims = verifyAttestationToken(httpClient, clientUri, resetResponse.getToken()).block();
             assertNotNull(resetClaims);
@@ -123,7 +123,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     public void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri, AttestationType attestationType) {
         ClientTypes clientType = classifyClient(clientUri);
         // We can't set attestation policy on the shared client, so just exit early.
-        if (clientType.equals(ClientTypes.Shared)) {
+        if (clientType.equals(ClientTypes.SHARED)) {
             return;
         }
 
@@ -152,10 +152,10 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                 }).flatMap(responseClaims -> {
                     String resetToken = null;
                     switch (clientType) {
-                        case Aad:
+                        case AAD:
                             resetToken = new PlainPolicyResetToken().serialize();
                             break;
-                        case Isolated:
+                        case ISOLATED:
                             try {
                                 resetToken = new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize();
                             } catch (JOSEException e) {
@@ -262,11 +262,11 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         securedObject.sign(signer);
 
         switch (clientType) {
-            case Aad:
+            case AAD:
                 policySetObjects.add(plainObject);
                 policySetObjects.add(securedObject);
                 break;
-            case Isolated:
+            case ISOLATED:
                 policySetObjects.add(securedObject);
                 break;
             default:

@@ -51,9 +51,9 @@ public class AttestationClientTestBase extends TestBase {
     private static final String DATAPLANE_SCOPE = "https://attest.azure.net/.default";
 
     enum ClientTypes {
-        Shared,
-        Isolated,
-        Aad,
+        SHARED,
+        ISOLATED,
+        AAD,
     }
 
     ClientTypes classifyClient(@NotNull String clientUri) {
@@ -61,11 +61,11 @@ public class AttestationClientTestBase extends TestBase {
         String regionShortName = Configuration.getGlobalConfiguration().get("locationShortName");
         String sharedUri = "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net";
         if (sharedUri.equals(clientUri)) {
-            return ClientTypes.Shared;
+            return ClientTypes.SHARED;
         } else if (Configuration.getGlobalConfiguration().get("ATTESTATION_ISOLATED_URL").equals(clientUri)) {
-            return ClientTypes.Isolated;
+            return ClientTypes.ISOLATED;
         } else if (Configuration.getGlobalConfiguration().get("ATTESTATION_AAD_URL").equals(clientUri)) {
-            return ClientTypes.Aad;
+            return ClientTypes.AAD;
         }
         throw new IllegalArgumentException();
     }
@@ -191,9 +191,9 @@ public class AttestationClientTestBase extends TestBase {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
 
-        assertTrue(Configuration.getGlobalConfiguration().contains("locationShortName"), "Required property locationShortName not found.");
-        assertTrue(Configuration.getGlobalConfiguration().contains("ATTESTATION_ISOLATED_URL"), "Required property ATTESTATION_ISOLATED_URL not found.");
-        assertTrue(Configuration.getGlobalConfiguration().contains("ATTESTATION_AAD_URL"), "Required property ATTESTATION_AAD_URL not found.");
+        assertNotNull(Configuration.getGlobalConfiguration().get("locationShortName"), "Required property locationShortName not found.");
+        assertNotNull(Configuration.getGlobalConfiguration().get("ATTESTATION_ISOLATED_URL"), "Required property ATTESTATION_ISOLATED_URL not found.");
+        assertNotNull(Configuration.getGlobalConfiguration().get("ATTESTATION_AAD_URL"), "Required property ATTESTATION_AAD_URL not found.");
 
         List<Arguments> argumentsList = new ArrayList<>();
 

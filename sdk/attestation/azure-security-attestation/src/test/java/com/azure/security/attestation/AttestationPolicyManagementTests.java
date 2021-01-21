@@ -10,7 +10,12 @@ import com.azure.security.attestation.models.PolicyCertificatesModifyResponse;
 import com.azure.security.attestation.models.PolicyCertificatesResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.*;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.Payload;
 import com.nimbusds.jwt.JWTClaimsSet;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -79,7 +84,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         JSONArray certificateArray = (JSONArray) certificates.get("keys");
 
         ClientTypes clientType = classifyClient(clientUri);
-        if (clientType == ClientTypes.Shared || clientType == ClientTypes.Aad) {
+        if (clientType == ClientTypes.SHARED || clientType == ClientTypes.AAD) {
             assertEquals(0, certificateArray.size());
         } else {
             assertNotEquals(0, certificateArray.size());
@@ -121,7 +126,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         ClientTypes clientType = classifyClient(clientUri);
 
         // This test only works on isolated instances.
-        if (clientType != ClientTypes.Isolated) {
+        if (clientType != ClientTypes.ISOLATED) {
             return;
         }
 
@@ -177,7 +182,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         ClientTypes clientType = classifyClient(clientUri);
         // This test only works on isolated instances.
-        if (clientType != ClientTypes.Isolated) {
+        if (clientType != ClientTypes.ISOLATED) {
             return;
         }
 

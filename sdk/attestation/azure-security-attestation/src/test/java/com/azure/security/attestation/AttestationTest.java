@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class AttestationTest extends AttestationClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
 
-    private final String runtimeData =
+    private final String RUNTIME_DATA =
         "wFdC6gBMrrej2JTuNlTjWOe-ebL7Rz34WjmEUnbfFEc_5BITs2t4V8uuEI8JX73t0g_nUTu6g07xyC6rx9wl8IUQFYyP"
             + "KhsMk3FLESkryhb5dz9cDxoxwMNnGbu-B7AsOBCe3lckQmoRAEf4_5qUm-PS26DD3SkbNRT-XjMQMQ19Q33dpKFvXPrQ"
             + "yvCK0ly0pL-JXXdnT4hsJUn8tJKW152W2gZWeXIKO8Ge2er_8xXUvQ6gCLZwwcD1--Whg90h9n5tVRNQdqCnWwsFL0LE"
@@ -32,7 +32,7 @@ public class AttestationTest extends AttestationClientTestBase {
             + "xEHoNWZBUCWAS9Qy4OpdQZ1-vINHJaTIZsehSZrkk1a5ttJdghTSUJGbEPWt3Azstjidyq8x1l5q-PIClhJE_Q_vHOvT"
             + "zxCebqZOhFJl08rx8I2OYxzekLA1miJ4aZs8h3eB6tOHZF06gJC8wcIORvy8d8ysEZvja40AWSg";
 
-    private final String sgxQuote =
+    private final String SGX_QUOTE =
         "AwACAAAAAAAFAAoAk5pyM_ecTKmUCg2zlX8GBxikFG2RGHbLfXx_vS5gtP8AAAAADg4CBf-ABwAAAAAAAA"
             + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQAAAAAAAAAHAAAAAAAAANlxlh9yS3HfxfFV"
             + "OsTvtorRYOhJYCzdhRy4QEI-WSpzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACFaCMSMCcBDt"
@@ -112,14 +112,14 @@ public class AttestationTest extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    public void testAttestSgxEnclave(HttpClient httpClient, String clientUri) throws Exception {
+    void testAttestSgxEnclave(HttpClient httpClient, String clientUri) throws Exception {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
         AttestationClient client = attestationBuilder.buildAttestationClient();
 
-        byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
-        byte[] decodedSgxQuote = Base64.getUrlDecoder().decode(sgxQuote);
+        byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(RUNTIME_DATA);
+        byte[] decodedSgxQuote = Base64.getUrlDecoder().decode(SGX_QUOTE);
 
         AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest();
         request.setQuote(decodedSgxQuote);
@@ -138,13 +138,13 @@ public class AttestationTest extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    public void testAttestSgxEnclaveAsync(HttpClient httpClient, String clientUri) {
+    void testAttestSgxEnclaveAsync(HttpClient httpClient, String clientUri) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         AttestationAsyncClient client = attestationBuilder.buildAttestationAsyncClient();
 
-        byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(runtimeData);
-        byte[] decodedSgxQuote = Base64.getUrlDecoder().decode(sgxQuote);
+        byte[] decodedRuntimeData = Base64.getUrlDecoder().decode(RUNTIME_DATA);
+        byte[] decodedSgxQuote = Base64.getUrlDecoder().decode(SGX_QUOTE);
 
         AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest();
         request.setQuote(decodedSgxQuote);

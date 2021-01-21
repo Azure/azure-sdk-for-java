@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SecuredPolicyResetToken {
-    private JWSSigner signer;
-    private Base64 signingCertificate;
+    private final JWSSigner signer;
+    private final Base64 signingCertificate;
 
     SecuredPolicyResetToken(JWSSigner signer, String signingCertificateBase64) {
         this.signer = signer;
