@@ -11,10 +11,13 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder;
 
+import java.util.UUID;
+
 @ServiceClientBuilder(serviceClients = {RemoteRenderingClient.class, RemoteRenderingAsyncClient.class})
 public class RemoteRenderingClientBuilder {
 
     private MixedRealityRemoteRenderingImplBuilder builder;
+    private UUID accountId;
 
     public RemoteRenderingClientBuilder() {
         builder = new MixedRealityRemoteRenderingImplBuilder();
@@ -25,7 +28,18 @@ public class RemoteRenderingClientBuilder {
     }
 
     public RemoteRenderingAsyncClient buildAsyncClient() {
-        return new RemoteRenderingAsyncClient(builder.buildClient());
+        return new RemoteRenderingAsyncClient(builder.buildClient(), accountId);
+    }
+
+    /**
+     * Sets the accountId.
+     *
+     * @param accountId the accountId value.
+     * @return the RemoteRenderingClientBuilder.
+     */
+    public RemoteRenderingClientBuilder accountId(UUID accountId) {
+        this.accountId = accountId;
+        return this;
     }
 
     /**
