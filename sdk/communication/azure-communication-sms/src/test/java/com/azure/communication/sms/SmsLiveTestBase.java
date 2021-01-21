@@ -40,6 +40,28 @@ public class SmsLiveTestBase extends TestBase {
             "COMMUNICATION_LIVETEST_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
 
+    private static String endPoint;
+
+    private static String getTestEndPoint() {
+        parseConnectionString();
+        return endPoint;
+    }
+
+    private static String accessKey;
+
+    private static String getAccessKey() {
+        parseConnectionString();
+        return accessKey;
+    }
+
+    private static void parseConnectionString() {
+        if (endPoint == null) {
+            CommunicationConnectionString envConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
+            endPoint = envConnectionString.getEndpoint();
+            accessKey = envConnectionString.getAccessKey();
+        }
+    }
+
     protected SmsClientBuilder getSmsClientBuilder(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
 

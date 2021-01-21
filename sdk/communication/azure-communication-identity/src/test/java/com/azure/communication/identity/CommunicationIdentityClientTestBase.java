@@ -15,6 +15,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
+import com.azure.communication.common.implementation.CommunicationConnectionString;
+
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -49,10 +51,9 @@ public class CommunicationIdentityClientTestBase extends TestBase {
 
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClient(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-        builder.endpoint(ENDPOINT)
-            .accessKey(ACCESSKEY)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-       
+        builder.endpoint(getTestEndPoint()).accessKey(getAccessKey())
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
             redactors.add(data -> redact(data, JSON_PROPERTY_VALUE_REDACTION_PATTERN.matcher(data), "REDACTED"));
@@ -62,12 +63,12 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilderUsingManagedIdentity(HttpClient httpClient) {
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilderUsingManagedIdentity(
+            HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-        builder
-            .endpoint(ENDPOINT)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-        
+        builder.endpoint(getTestEndPoint())
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
         } else {
@@ -83,11 +84,11 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         return builder;
     }
 
-    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(HttpClient httpClient) {
+    protected CommunicationIdentityClientBuilder getCommunicationIdentityClientUsingConnectionString(
+            HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-        builder
-            .connectionString(CONNECTION_STRING)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        builder.connectionString(CONNECTION_STRING)
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
@@ -114,8 +115,9 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             return TestMode.PLAYBACK;
         }
     }
-    
-    protected CommunicationIdentityClientBuilder addLoggingPolicy(CommunicationIdentityClientBuilder builder, String testName) {
+
+    protected CommunicationIdentityClientBuilder addLoggingPolicy(CommunicationIdentityClientBuilder builder,
+            String testName) {
         return builder.addPolicy(new CommunicationLoggerPolicy(testName));
     }
 

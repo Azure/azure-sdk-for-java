@@ -23,6 +23,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import reactor.core.publisher.Mono;
 
+import com.azure.communication.common.implementation.CommunicationConnectionString;
+
 public class PhoneNumberIntegrationTestBase extends TestBase {
     private static final String ENV_ACCESS_KEY = Configuration.getGlobalConfiguration()
             .get("COMMUNICATION_SERVICE_ACCESS_KEY", "QWNjZXNzS2V5");

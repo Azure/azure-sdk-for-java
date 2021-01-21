@@ -15,6 +15,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 
+import com.azure.communication.common.implementation.CommunicationConnectionString;
+
 import java.time.ZonedDateTime;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -39,11 +41,31 @@ public class ChatClientTestBase extends TestBase {
 
     protected static final TestMode TEST_MODE = initializeTestMode();
 
-    protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://playback.chat.azurefd.net");
+    static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
+            "COMMUNICATION_LIVETEST_CONNECTION_STRING",
+            "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
 
-    protected static final String ACCESS_KEY = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ACCESS_KEY", "pw==");
+    private static String endPoint;
+
+    private static String getTestEndPoint() {
+        parseConnectionString();
+        return endPoint;
+    }
+
+    private static String accessKey;
+
+    private static String getAccessKey() {
+        parseConnectionString();
+        return accessKey;
+    }
+
+    private static void parseConnectionString() {
+        if (endPoint == null) {
+            CommunicationConnectionString envConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
+            endPoint = envConnectionString.getEndpoint();
+            accessKey = envConnectionString.getAccessKey();
+        }
+    }
 
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
@@ -58,9 +80,8 @@ public class ChatClientTestBase extends TestBase {
     protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();
 
-        builder
-            .endpoint(ENDPOINT)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        builder.endpoint(getTestEndPoint())
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new CommunicationTokenCredential(generateRawToken()));
@@ -80,9 +101,8 @@ public class ChatClientTestBase extends TestBase {
 
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClientBuilder(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
-        builder.endpoint(ENDPOINT)
-            .accessKey(ACCESS_KEY)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        builder.endpoint(getTestEndPoint()).accessKey(getAccessKey())
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();
@@ -96,7 +116,12 @@ public class ChatClientTestBase extends TestBase {
         assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
     }
 
+<<<<<<< HEAD
     static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+=======
+    static void assertRestException(Runnable exceptionThrower, Class<? extends ErrorException> expectedExceptionType,
+            int expectedStatusCode) {
+>>>>>>> e3ff6c8bd3... Parse connection string to reduce env variables
         try {
             exceptionThrower.run();
             fail();
@@ -106,17 +131,25 @@ public class ChatClientTestBase extends TestBase {
     }
 
     /**
-     * Helper method to verify the error was a ErrorException and it has a specific HTTP response code.
+     * Helper method to verify the error was a ErrorException and it has a specific
+     * HTTP response code.
      *
-     * @param exception Expected error thrown during the test
-     * @param expectedStatusCode Expected HTTP status code contained in the error response
+     * @param exception          Expected error thrown during the test
+     * @param expectedStatusCode Expected HTTP status code contained in the error
+     *                           response
      */
     static void assertRestException(Throwable exception, int expectedStatusCode) {
         assertRestException(exception, ErrorException.class, expectedStatusCode);
     }
 
+<<<<<<< HEAD
     static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         assertTrue(expectedExceptionType.isAssignableFrom(exception.getClass()));
+=======
+    static void assertRestException(Throwable exception, Class<? extends ErrorException> expectedExceptionType,
+            int expectedStatusCode) {
+        assertEquals(expectedExceptionType, exception.getClass());
+>>>>>>> e3ff6c8bd3... Parse connection string to reduce env variables
         assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
     }
 
@@ -143,14 +176,20 @@ public class ChatClientTestBase extends TestBase {
         long expSeconds = ldtUTC.toInstant().toEpochMilli() / 1000;
         builder.claim("exp", expSeconds);
 
-        JWTClaimsSet claims =  builder.build();
+        JWTClaimsSet claims = builder.build();
         JWT idToken = new PlainJWT(claims);
         return idToken.serialize();
     }
 
+<<<<<<< HEAD
     protected boolean checkParticipantsListContainsParticipantId(List<ChatParticipant> participantList, String participantId) {
         for (ChatParticipant participant: participantList) {
             if (participant.getUser().getId().equals(participantId)) {
+=======
+    protected boolean checkMembersListContainsMemberId(List<ChatThreadMember> memberList, String memberId) {
+        for (ChatThreadMember member : memberList) {
+            if (member.getUser().getId().equals(memberId)) {
+>>>>>>> e3ff6c8bd3... Parse connection string to reduce env variables
                 return true;
             }
         }
@@ -158,8 +197,13 @@ public class ChatClientTestBase extends TestBase {
         return false;
     }
 
+<<<<<<< HEAD
     protected boolean checkReadReceiptListContainsMessageId(List<ChatMessageReadReceipt> receiptList, String messageId) {
         for (ChatMessageReadReceipt receipt: receiptList) {
+=======
+    protected boolean checkReadReceiptListContainsMessageId(List<ReadReceipt> receiptList, String messageId) {
+        for (ReadReceipt receipt : receiptList) {
+>>>>>>> e3ff6c8bd3... Parse connection string to reduce env variables
             if (receipt.getChatMessageId().equals(messageId)) {
                 return true;
             }
