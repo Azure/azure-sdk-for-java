@@ -26,8 +26,8 @@ import java.util.Base64;
  * {@link EventGridPublisherClientBuilder#credential(AzureSasCredential)} to to create a client to publish events.
  *
  */
-public final class EventGridSharedAccessSingatureGenerator {
-    private EventGridSharedAccessSingatureGenerator() {
+public final class EventGridSasGenerator {
+    private EventGridSasGenerator() {
         // Hide the constructor
     }
     private static final ClientLogger logger = new ClientLogger(EventGridPublisherClient.class);
@@ -42,7 +42,7 @@ public final class EventGridSharedAccessSingatureGenerator {
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
      */
-    public static String generateSharedAccessSignature(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
+    public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
         try {
             String resKey = "r";
             String expKey = "e";
