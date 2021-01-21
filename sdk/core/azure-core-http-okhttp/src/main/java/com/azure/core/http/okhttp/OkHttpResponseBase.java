@@ -12,7 +12,6 @@ import okhttp3.Response;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
 /**
  * Base response class for OkHttp with implementations for response metadata.
