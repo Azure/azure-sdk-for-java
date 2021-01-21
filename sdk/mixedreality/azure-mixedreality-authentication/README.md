@@ -61,22 +61,39 @@ Tokens obtained from the Mixed Reality STS have a lifetime of **24 hours**.
 
 ### Create the client
 
+For a synchronous client:
+
 ```java
 AzureKeyCredential keyCredential = new AzureKeyCredential(accountKey);
-MixedRealityStsClient client = new MixedRealityStsClientBuilder(accountId, accountDomain)
+MixedRealityStsClient client = new MixedRealityStsClientBuilder()
+    .accountDomain(accountDomain)
+    .accountId(accountId)
     .credential(keyCredential)
     .buildClient();
+```
+
+For an asynchronous client (note the call to `buildAsyncClient` instead of `buildClient`):
+
+```java
+AzureKeyCredential keyCredential = new AzureKeyCredential(accountKey);
+MixedRealityStsAsyncClient client = new MixedRealityStsClientBuilder()
+    .accountDomain(accountDomain)
+    .accountId(accountId)
+    .credential(keyCredential)
+    .buildAsyncClient();
 ```
 
 ### Retrieve an access token
 
 ```java
 AzureKeyCredential keyCredential = new AzureKeyCredential(accountKey);
-MixedRealityStsClient client = new MixedRealityStsClientBuilder(accountId, accountDomain)
+MixedRealityStsClient client = new MixedRealityStsClientBuilder()
+    .accountDomain(accountDomain)
+    .accountId(accountId)
     .credential(keyCredential)
     .buildClient();
 
-AccessToken token = client.GetToken();
+AccessToken token = client.getToken();
 ```
 
 See the authentication examples [above](#authenticate-the-client) for more complex authentication scenarios.
