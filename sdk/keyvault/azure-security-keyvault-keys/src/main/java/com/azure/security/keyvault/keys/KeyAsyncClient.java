@@ -788,7 +788,7 @@ public final class KeyAsyncClient {
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a key with {@code name} is empty string.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedKey, Void> beginDeleteKey(String name) {
         return beginDeleteKey(name, getDefaultPollingInterval());
     }
@@ -813,7 +813,7 @@ public final class KeyAsyncClient {
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a key with {@code name} is empty string.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DeletedKey, Void> beginDeleteKey(String name, Duration pollingInterval) {
         return new PollerFlux<>(pollingInterval,
             activationOperation(name),
@@ -990,7 +990,7 @@ public final class KeyAsyncClient {
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a key with {@code name} is empty string.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
         return beginRecoverDeletedKey(name, getDefaultPollingInterval());
     }
@@ -1012,7 +1012,7 @@ public final class KeyAsyncClient {
      * @throws ResourceNotFoundException when a key with {@code name} doesn't exist in the key vault.
      * @throws HttpResponseException when a key with {@code name} is empty string.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<KeyVaultKey, Void> beginRecoverDeletedKey(String name, Duration pollingInterval) {
         return new PollerFlux<>(pollingInterval,
             recoverActivationOperation(name),

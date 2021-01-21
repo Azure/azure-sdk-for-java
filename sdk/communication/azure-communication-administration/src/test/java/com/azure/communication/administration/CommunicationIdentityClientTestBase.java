@@ -21,12 +21,12 @@ import java.util.Locale;
 public class CommunicationIdentityClientTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("ADMINISTRATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
-
+        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
+        
     protected static final String ACCESSKEYRAW = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
     protected static final String ACCESSKEYENCODED = Base64.getEncoder().encodeToString(ACCESSKEYRAW.getBytes());
     protected static final String ACCESSKEY = Configuration.getGlobalConfiguration()
-        .get("ADMINISTRATION_SERVICE_ACCESS_TOKEN", ACCESSKEYENCODED);
+        .get("COMMUNICATION_SERVICE_ACCESS_KEY", ACCESSKEYENCODED);
 
     protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);

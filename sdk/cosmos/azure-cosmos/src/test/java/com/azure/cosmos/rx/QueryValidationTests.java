@@ -5,8 +5,11 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -18,13 +21,17 @@ import com.azure.cosmos.models.CosmosTriggerProperties;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
+import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import io.reactivex.subscribers.TestSubscriber;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -34,6 +41,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -57,12 +65,24 @@ public class QueryValidationTests extends TestSuiteBase {
 
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
+        System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "true");
         client = this.getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdContainer);
 
         createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
+    }
+
+    @Test(groups = {"unit"}, priority = 1)
+    public void queryPlanCacheEnabledFlag() {
+        System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "false");
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder();
+        assertThat(Configs.isQueryPlanCachingEnabled()).isFalse();
+        System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "true");
+        assertThat(Configs.isQueryPlanCachingEnabled()).isTrue();
+        System.setProperty("COSMOS.QUERYPLAN_CACHING_ENABLED", "false");
+        assertThat(Configs.isQueryPlanCachingEnabled()).isFalse();
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
@@ -203,6 +223,106 @@ public class QueryValidationTests extends TestSuiteBase {
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
         }
         createdContainer.readAllConflicts(null).byPage(1).blockFirst();
+    }
+
+    @DataProvider(name = "query")
+    private Object[][] query() {
+        return new Object[][]{
+            new Object[] { "Select * from c "},
+            new Object[] { "select * from c order by c.prop ASC"},
+        };
+    }
+
+    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT)
+    public void queryPlanCacheSinglePartitionCorrectness(String query) {
+
+        String pk1 = "pk1";
+        String pk2 = "pk2";
+        int partitionDocCount = 5;
+
+        List<TestObject> documentsInserted = new ArrayList<>();
+        documentsInserted.addAll(this.insertDocuments(
+            partitionDocCount,
+            Collections.singletonList(pk1),
+            createdContainer));
+        AsyncDocumentClient contextClient = CosmosBridgeInternal.getContextClient(createdContainer);
+        documentsInserted.addAll(this.insertDocuments(
+            partitionDocCount,
+            Collections.singletonList(pk2),
+            createdContainer));
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setPartitionKey(new PartitionKey(pk2));
+
+        // As we are enabling caching on this client, the query might be cached on other tests using same client so
+        // disabling below check
+        // assertThat(contextClient.getQueryPlanCache().containsKey(query)).isFalse();
+        List<TestObject> values1 = queryAndGetResults(new SqlQuerySpec(query), options, TestObject.class);
+        List<String> ids1 = values1.stream().map(TestObject::getId).collect(Collectors.toList());
+        // Second time the query plan has to be fetched from the query plan cache and complete the query.
+        assertThat(contextClient.getQueryPlanCache().containsKey(query)).isTrue();
+        List<TestObject> values2 = queryAndGetResults(new SqlQuerySpec(query), options, TestObject.class);
+        List<String> ids2 = values2.stream().map(TestObject::getId).collect(Collectors.toList());
+
+        assertThat(ids1).containsExactlyElementsOf(ids2);
+
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void queryPlanCacheSinglePartitionParameterizedQueriesCorrectness() {
+        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
+        sqlQuerySpec.setQueryText("select * from c where c.id = @id");
+
+        String pk1 = "pk1";
+        String pk2 = "pk2";
+        int partitionDocCount = 5;
+
+        List<TestObject> documentsInserted = new ArrayList<>();
+        documentsInserted.addAll(this.insertDocuments(
+            partitionDocCount,
+            Collections.singletonList(pk1),
+            createdContainer));
+        AsyncDocumentClient contextClient = CosmosBridgeInternal.getContextClient(createdContainer);
+        List<TestObject> pk2Docs = this.insertDocuments(
+            partitionDocCount,
+            Collections.singletonList(pk2),
+            createdContainer);
+        documentsInserted.addAll(pk2Docs);
+
+
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setPartitionKey(new PartitionKey(pk2));
+
+        sqlQuerySpec.setParameters(Collections.singletonList(new SqlParameter("@id", pk2Docs.get(0).getId())));
+        assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
+        List<TestObject> values1 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
+        List<String> ids1 = values1.stream().map(TestObject::getId).collect(Collectors.toList());
+
+        // Second time the query plan has to be fetched from the query plan cache and complete the query.
+        sqlQuerySpec.setParameters(Collections.singletonList(new SqlParameter("@id", pk2Docs.get(1).getId())));
+        assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isTrue();
+        List<TestObject> values2 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
+        List<String> ids2 = values2.stream().map(TestObject::getId).collect(Collectors.toList());
+
+        // Since the value of parameters changed, query results should not match
+        assertThat(ids1).doesNotContainAnyElementsOf(ids2);
+
+        sqlQuerySpec.setQueryText("select top @top * from c");
+        int topValue = 2;
+        sqlQuerySpec.setParameters(Collections.singletonList(new SqlParameter("@top", 2)));
+        assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
+        values1 = queryAndGetResults(sqlQuerySpec, options, TestObject.class);
+        // Top query should not be cached
+        assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
+
+    }
+
+    private <T> List<T> queryAndGetResults(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> type) {
+        CosmosPagedFlux<T> queryPagedFlux = createdContainer.queryItems(querySpec, options, type);
+        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
+        queryPagedFlux.subscribe(testSubscriber);
+        testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
+        return testSubscriber.values();
     }
 
     private <T> List<T> queryWithContinuationTokens(String query, int pageSize, CosmosAsyncContainer container, Class<T> klass) {
