@@ -80,7 +80,7 @@ public class RetryUtil {
             .doOnError(error -> LOGGER.error(timeoutMessage, error));
     }
 
-    private static Retry createRetry(AmqpRetryOptions options) {
+    static Retry createRetry(AmqpRetryOptions options) {
         if (options.getDelay() == null || options.getDelay().equals(Duration.ZERO)) {
             return Retry.max(0L);
         }
