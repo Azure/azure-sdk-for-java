@@ -4,5 +4,5 @@
 package com.azure.cosmos.implementation.feedranges;
 
 public final class FeedRangeContinuationVersions {
-    public final static int V1 = 0;
+    public final static int V1 = 1;
 }
