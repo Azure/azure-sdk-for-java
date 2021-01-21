@@ -77,6 +77,7 @@ az eventgrid topic show --name <your-resource-name> --resource-group <your-resou
 
 #### Creating the Client
 
+##### Using endpoint and access key to create the client
 Once you have your access key and topic endpoint, you can create the publisher client as follows:
 
 Sync client:
@@ -96,6 +97,7 @@ EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilde
     .buildAsyncClient();
 ```
 
+##### Using endpoint and SAS token to create the client
 If you have a SAS (**Shared Access Signature**) that can be used to send events to an Event Grid Topic or Domain for
 limited time, you can use it to create the publisher client:
 
@@ -104,7 +106,7 @@ Sync client:
 ```java
 EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
     .endpoint(endpoint)
-    .credential(new AzureSasCredential(key))
+    .credential(new AzureSasCredential(sasToken))
     .buildClient();
 ```
 Async client:
@@ -112,11 +114,11 @@ Async client:
 ```java
 EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
     .endpoint(endpoint)
-    .credential(new AzureSasCredential(key))
+    .credential(new AzureSasCredential(sasToken))
     .buildAsyncClient();
 ```
 
-#### Create a SAS key for other people to send events for a limited period of time
+#### Create a SAS token for other people to send events for a limited period of time
 If you'd like to give permission to other people to publish events to your Event Grid Topic or Domain for some time, you can create
 a SAS (**Shared Access Signature**) for them so they can create an `EventGridPublisherClient` like the above to use `AzureSasCredential`
 to create the publisher client.
@@ -142,9 +144,10 @@ For information about general Event Grid concepts: [Concepts in Azure Event Grid
 
 Event Grid supports multiple schemas for encoding events. When an Event Grid Topic or Domain is created, you specify the
 schema that will be used when publishing events. While you may configure your topic to use a _custom schema_ it is
-more common to use the already defined _Event Grid schema_ or _CloudEvents 1.0 schema_. 
-[CloudEvents](https://cloudevents.io/) is a Cloud Native Computing Foundation project which produces a specification 
-for describing event data in a common way. Regardless of what schema your topic or domain is configured to use, 
+more common to use the already defined [EventGridEvent schema](https://docs.microsoft.com/en-us/azure/event-grid/event-schema) or [CloudEvent schema](https://docs.microsoft.com/en-us/azure/event-grid/cloud-event-schema). 
+CloudEvent is a Cloud Native Computing Foundation project which produces a specification for describing event data in a common way.
+Event Grid service is compatible with the [CloudEvent specification](https://cloudevents.io/)
+Regardless of what schema your topic or domain is configured to use, 
 `EventGridPublisherClient` will be used to publish events to it. However, you must use the correct method for 
 publishing:
 
@@ -170,29 +173,32 @@ deserialize the events, which are in JSON format. The data part of the events ca
 
 ### Sending Events To Event Grid Topics
 
-Events can be sent in the `EventGridEvent`, `CloudEvent`, or a custom schema, as detailed in the Key Concepts above.
+Events can be sent in the `EventGridEvent`, `CloudEvent`, or a custom schema, as detailed in [Event Schemas](#event-schemas).
 The topic or domain must be configured to accept the schema being sent. For simplicity,
 the synchronous client is used for samples, however the asynchronous client has the same method names.
 
-#### Sending `EventGridEvent`
+Note: figure out what schema (cloud event, event grid event, or custom event) the event grid topic accepts before you start sending.
+#### Sending `EventGridEvent` to a topic that accepts EventGridEvent schema
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L66-L70 -->
 ```java
+// Make sure that the event grid topic or domain you're sending to accepts EventGridEvent schema.
 List<EventGridEvent> events = new ArrayList<>();
 User user = new User("John", "James");
 events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", user, "1"));
 egClient.sendEvents(events);
 ```
 
-#### Sending `CloudEvent`
+#### Sending `CloudEvent` to a topic that accepts CloudEvent schema
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L74-L78 -->
 ```java
+// Make sure that the event grid topic or domain you're sending to accepts CloudEvent schema.
 List<CloudEvent> events = new ArrayList<>();
 User user = new User("John", "James");
 events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType", user));
 egClient.sendCloudEvents(events);
 ```
 
-#### Sending Custom Events
+#### Sending Custom Events to a topic that accepts custom event schema
 
 To send custom events in any defined schema, use the `sendCustomEvents` method
 on the `PublisherClient`.
