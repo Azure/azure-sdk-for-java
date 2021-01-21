@@ -9,11 +9,11 @@ import com.azure.core.util.CoreUtils;
  */
 public class PhoneNumberIdentifier extends CommunicationIdentifier {
 
-    private final String value;
+    private final String phoneNumber;
 
     /**
      * Creates a PhoneNumberIdentifier object
-     * 
+     *
      * @param phoneNumber the string identifier representing the PhoneNumber in E.164 format.
      * E.164 is a phone number formatted as +[CountryCode][AreaCode][LocalNumber] eg. "+18005555555"
      * @throws IllegalArgumentException thrown if phoneNumber parameter fail the validation.
@@ -22,13 +22,13 @@ public class PhoneNumberIdentifier extends CommunicationIdentifier {
         if (CoreUtils.isNullOrEmpty(phoneNumber)) {
             throw new IllegalArgumentException("The initialization parameter [phoneNumber] cannot be null to empty.");
         }
-        this.value = phoneNumber;
+        this.phoneNumber = phoneNumber;
     }
 
     /**
      * @return the string identifier representing the object identity
      */
-    public String getValue() {
-        return value;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 }
