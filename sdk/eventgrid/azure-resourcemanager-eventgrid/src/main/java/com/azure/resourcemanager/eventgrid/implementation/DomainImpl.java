@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.eventgrid.implementation;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
@@ -11,6 +12,8 @@ import com.azure.resourcemanager.eventgrid.fluent.models.DomainInner;
 import com.azure.resourcemanager.eventgrid.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.eventgrid.models.Domain;
 import com.azure.resourcemanager.eventgrid.models.DomainProvisioningState;
+import com.azure.resourcemanager.eventgrid.models.DomainRegenerateKeyRequest;
+import com.azure.resourcemanager.eventgrid.models.DomainSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.DomainUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
@@ -198,6 +201,25 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
                 .getByResourceGroupWithResponse(resourceGroupName, domainName, context)
                 .getValue();
         return this;
+    }
+
+    public DomainSharedAccessKeys listSharedAccessKeys() {
+        return serviceManager.domains().listSharedAccessKeys(resourceGroupName, domainName);
+    }
+
+    public Response<DomainSharedAccessKeys> listSharedAccessKeysWithResponse(Context context) {
+        return serviceManager.domains().listSharedAccessKeysWithResponse(resourceGroupName, domainName, context);
+    }
+
+    public DomainSharedAccessKeys regenerateKey(DomainRegenerateKeyRequest regenerateKeyRequest) {
+        return serviceManager.domains().regenerateKey(resourceGroupName, domainName, regenerateKeyRequest);
+    }
+
+    public Response<DomainSharedAccessKeys> regenerateKeyWithResponse(
+        DomainRegenerateKeyRequest regenerateKeyRequest, Context context) {
+        return serviceManager
+            .domains()
+            .regenerateKeyWithResponse(resourceGroupName, domainName, regenerateKeyRequest, context);
     }
 
     public DomainImpl withRegion(Region location) {
