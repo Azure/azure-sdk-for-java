@@ -17,7 +17,7 @@ import java.util.List;
 
 /**
  * An Event Grid Domain or Topic Subscription can use other Azure Services such as Event Hubs, Service Bus,
- * Storage Queue. This sample uses Storage Queue as the event handler to store the events received by an Event Grid Topic.
+ * Storage Queue. This sample uses Storage Queue as the event handler to store the events sent to an Event Grid Topic.
  */
 public class ReceiveEventsFromEventHandler {
     public static void main(String[] args) {
