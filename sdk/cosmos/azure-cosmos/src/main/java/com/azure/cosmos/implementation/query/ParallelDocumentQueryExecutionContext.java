@@ -35,7 +35,6 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
-import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 /**
@@ -204,7 +203,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
     }
 
     private static class EmptyPagesFilterTransformer<T extends Resource>
-            implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<FeedResponse<T>>> {
+        implements Function<Flux<DocumentProducer<T>.DocumentProducerFeedResponse>, Flux<FeedResponse<T>>> {
         private final RequestChargeTracker tracker;
         private DocumentProducer<T>.DocumentProducerFeedResponse previousPage;
         private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
@@ -267,7 +266,8 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             // results.
             return source.filter(documentProducerFeedResponse -> {
                 if (documentProducerFeedResponse.pageResult.getResults().isEmpty()
-                        && !ModelBridgeInternal.getEmptyPagesAllowedFromQueryRequestOptions(this.cosmosQueryRequestOptions)) {
+                        && !ModelBridgeInternal
+                                .getEmptyPagesAllowedFromQueryRequestOptions(this.cosmosQueryRequestOptions)) {
                     // filter empty pages and accumulate charge
                     tracker.addCharge(documentProducerFeedResponse.pageResult.getRequestCharge());
                     ConcurrentMap<String, QueryMetrics> currentQueryMetrics =

@@ -322,7 +322,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT, enabled = false)
+    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT*2)
     public void queryDiagnosticsDirectMode(String query, Boolean qmEnabled) {
         CosmosClient testDirectClient = new CosmosClientBuilder()
                                             .endpoint(TestConfigurations.HOST)
@@ -370,6 +370,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     private void validateDirectModeQueryDiagnostics(String diagnostics) {
         assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
         assertThat(diagnostics).contains("supplementalResponseStatisticsList");
+        assertThat(diagnostics).contains("responseStatisticsList");
         assertThat(diagnostics).contains("\"gatewayStatistics\":null");
         assertThat(diagnostics).contains("addressResolutionStatistics");
         assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
@@ -379,13 +380,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
         assertThat(diagnostics).doesNotContain(("\"gatewayStatistics\":null"));
         assertThat(diagnostics).contains("\"operationType\":\"Query\"");
-        //   assertThat(diagnostics).contains("\"metaDataName\":\"CONTAINER_LOOK_UP\"");
-        //   assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
         assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
         assertThat(diagnostics).contains("\"regionsContacted\"");
     }
 
-    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT, enabled = false)
+    @Test(groups = {"simple"}, dataProvider = "query", timeOut = TIMEOUT*2, enabled = false)
     public void queryDiagnosticsGatewayMode(String query, Boolean qmEnabled) {
         CosmosClient testDirectClient = new CosmosClientBuilder()
                                             .endpoint(TestConfigurations.HOST)

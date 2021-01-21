@@ -507,7 +507,7 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static List<ClientSideRequestStatistics> getClientSideRequestStatics(CosmosDiagnostics cosmosDiagnostics) {
+    public static List<ClientSideRequestStatistics> getClientSideRequestStatisticsList(CosmosDiagnostics cosmosDiagnostics) {
         //Used only during aggregations like Aggregate/Orderby/Groupby which may contain clientSideStats in
         //feedResponseDiagnostics. So we need to add from both the places
         List<ClientSideRequestStatistics> clientSideRequestStatisticsList = new ArrayList<>();
@@ -520,6 +520,15 @@ public final class BridgeInternal {
             }
         }
         return clientSideRequestStatisticsList;
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static ClientSideRequestStatistics getClientSideRequestStatics(CosmosDiagnostics cosmosDiagnostics) {
+        ClientSideRequestStatistics clientSideRequestStatistics = null;
+        if (cosmosDiagnostics != null) {
+            clientSideRequestStatistics = cosmosDiagnostics.clientSideRequestStatistics();
+        }
+        return clientSideRequestStatistics;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
