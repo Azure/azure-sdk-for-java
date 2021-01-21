@@ -10,9 +10,9 @@ import com.azure.cosmos.benchmark.linkedin.impl.metrics.MetricsFactory;
 import com.azure.cosmos.benchmark.linkedin.impl.models.CollectionKey;
 import com.azure.cosmos.benchmark.linkedin.impl.models.GetRequestOptions;
 import com.azure.cosmos.benchmark.linkedin.impl.models.Result;
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
 import com.microsoft.applicationinsights.core.dependencies.http.HttpStatus;
 import java.time.Clock;
@@ -65,8 +65,8 @@ class GetExecutor<K, V> {
         final long startTime = _clock.millis();
 
         try {
-            final CosmosItemResponse<InternalObjectNode> response = _dataLocator.getAsyncContainer(activeCollection)
-                .readItem(id, partitioningKey, InternalObjectNode.class)
+            final CosmosItemResponse<ObjectNode> response = _dataLocator.getAsyncContainer(activeCollection)
+                .readItem(id, partitioningKey, ObjectNode.class)
                 .block();
 
             // Usually we get an Exception when the document does not exist. But in the new SDK,

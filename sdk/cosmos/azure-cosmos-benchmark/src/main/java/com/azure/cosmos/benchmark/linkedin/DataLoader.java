@@ -11,12 +11,10 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosItemOperation;
 import com.azure.cosmos.benchmark.Configuration;
 import com.azure.cosmos.benchmark.linkedin.data.Key;
-import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
-import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -76,8 +74,8 @@ public class DataLoader {
         LOGGER.info("Validating {} documents were loaded into [{}:{}]",
             expectedSize, _configuration.getDatabaseId(), containerName);
 
-        final List<FeedResponse<InternalObjectNode>> queryItemsResponseList = container
-            .queryItems(COUNT_ALL_QUERY, InternalObjectNode.class)
+        final List<FeedResponse<ObjectNode>> queryItemsResponseList = container
+            .queryItems(COUNT_ALL_QUERY, ObjectNode.class)
             .byPage()
             .collectList()
             .block(BULK_LOAD_WAIT_DURATION);
@@ -85,15 +83,7 @@ public class DataLoader {
             .map(responseList -> responseList.get(0))
             .map(FeedResponse::getResults)
             .map(list -> list.get(0))
-            .map(internalObjectNode -> {
-                try {
-                    final ObjectNode result = internalObjectNode.getObject(ObjectNode.class);
-                    return result.get(COUNT_ALL_QUERY_RESULT_FIELD).intValue();
-                } catch (IOException ex) {
-                    LOGGER.error("Error extracting the result count from the response");
-                }
-                return 0;
-            })
+            .map(objectNode -> objectNode.get(COUNT_ALL_QUERY_RESULT_FIELD).intValue())
             .orElse(0);
 
         if (resultCount != expectedSize) {
@@ -114,8 +104,8 @@ public class DataLoader {
             .stream()
             .map(record -> {
                 final String partitionKey = record.getKey().getPartitioningKey();
-                final InternalObjectNode objectNode = new InternalObjectNode(record.getValue());
-                return BulkOperations.getCreateItemOperation(objectNode, new PartitionKey(partitionKey));
+                final ObjectNode value = record.getValue();
+                return BulkOperations.getCreateItemOperation(value, new PartitionKey(partitionKey));
             })
             .collect(Collectors.toList());
     }

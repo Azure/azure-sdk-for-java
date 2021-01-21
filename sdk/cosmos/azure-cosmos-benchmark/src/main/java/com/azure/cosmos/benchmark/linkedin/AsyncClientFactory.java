@@ -54,7 +54,6 @@ public class AsyncClientFactory {
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
             cosmosClientBuilder.directMode(DIRECT_CONNECTION_CONFIG, GATEWAY_CONNECTION_CONFIG);
         } else {
-
             cosmosClientBuilder.gatewayMode(GATEWAY_CONNECTION_CONFIG);
         }
 
@@ -84,7 +83,6 @@ public class AsyncClientFactory {
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
             cosmosClientBuilder.directMode(DIRECT_CONNECTION_CONFIG, GATEWAY_CONNECTION_CONFIG);
         } else {
-
             cosmosClientBuilder.gatewayMode(GATEWAY_CONNECTION_CONFIG);
         }
 

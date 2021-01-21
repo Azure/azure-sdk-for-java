@@ -4,14 +4,13 @@
 package com.azure.cosmos.benchmark.linkedin.impl.keyextractor;
 
 import com.azure.cosmos.benchmark.linkedin.data.Key;
-import com.azure.cosmos.implementation.InternalObjectNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
 import javax.annotation.concurrent.ThreadSafe;
 
 
 /**
- * Extractor for cases where the key is a String, and the id is used as the
- * partitioningKey for documents stored in CosmosDB.
+ * Extractor for cases where the key is modeling using the Key class
  */
 @ThreadSafe
 public class KeyExtractorImpl implements KeyExtractor<Key> {
@@ -32,7 +31,7 @@ public class KeyExtractorImpl implements KeyExtractor<Key> {
     }
 
     @Override
-    public Key getKey(InternalObjectNode document) {
+    public Key getKey(final ObjectNode document) {
         Preconditions.checkNotNull(document, "The Document from CosmosDB can't be null");
         return getKey(getId(document), getPartitioningKey(document));
     }

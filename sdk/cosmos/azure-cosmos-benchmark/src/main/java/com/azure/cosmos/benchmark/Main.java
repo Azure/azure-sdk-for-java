@@ -4,7 +4,7 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.benchmark.ctl.AsyncCtlWorkload;
-import com.azure.cosmos.benchmark.linkedin.CtlWorkload;
+import com.azure.cosmos.benchmark.linkedin.LICtlWorkload;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 import java.util.Optional;
@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import static com.azure.cosmos.benchmark.Configuration.Operation.CtlWorkload;
 import static com.azure.cosmos.benchmark.Configuration.Operation.LinkedInCtlWorkload;
 import static com.azure.cosmos.benchmark.Configuration.Operation.ReadThroughputWithMultipleClients;
-
 
 public class Main {
 
@@ -190,9 +189,9 @@ public class Main {
 
     private static void linkedInCtlWorkload(Configuration cfg) {
         LOGGER.info("Executing the LinkedIn ctl workload");
-        com.azure.cosmos.benchmark.linkedin.CtlWorkload workload = null;
+        LICtlWorkload workload = null;
         try {
-            workload = new CtlWorkload(cfg);
+            workload = new LICtlWorkload(cfg);
 
             LOGGER.info("Setting up the LinkedIn ctl workload");
             workload.setup();
@@ -205,7 +204,7 @@ public class Main {
         }
         finally {
             Optional.ofNullable(workload)
-                .ifPresent(com.azure.cosmos.benchmark.linkedin.CtlWorkload::shutdown);
+                .ifPresent(LICtlWorkload::shutdown);
         }
         LOGGER.info("Completed LinkedIn ctl workload execution");
     }

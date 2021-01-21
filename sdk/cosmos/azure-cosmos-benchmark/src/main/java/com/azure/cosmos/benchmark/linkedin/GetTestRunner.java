@@ -80,28 +80,31 @@ public class GetTestRunner {
         final ArrayList<Key> keys = new ArrayList<>(testData.keySet());
         Collections.shuffle(keys);
         final long runStartTime = System.currentTimeMillis();
+        final AtomicLong successCount = new AtomicLong(0);
         final AtomicLong errorCount = new AtomicLong(0);
         long i = 0;
         for (; BenchmarkHelper.shouldContinue(runStartTime, i, _configuration); i++) {
             int index = (int) ((i % keys.size()) % Integer.MAX_VALUE);
             final Key key = keys.get(index);
-            _executorService.submit(() -> runOperation(key, testData, errorCount));
+            _executorService.submit(() -> runOperation(key, testData, successCount, errorCount));
         }
 
         try {
-            _executorService.awaitTermination(10, TimeUnit.SECONDS);
+            _executorService.awaitTermination(60, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             LOGGER.error("Error awaiting the completion of all tasks", e);
         }
 
         final Instant runEndTime = Instant.now();
-        LOGGER.info("Number of iterations: {}, Errors: {}, Runtime: {} millis", i,
+        LOGGER.info("Number of iterations: {}, Errors: {}, Runtime: {} millis",
+            successCount.get(),
             errorCount.get(),
             runEndTime.minusMillis(runStartTime).toEpochMilli());
         _executorService.shutdown();
     }
 
-    private void runOperation(final Key key, final Map<Key, ObjectNode> testData, final AtomicLong errorCount) {
+    private void runOperation(final Key key, final Map<Key, ObjectNode> testData,
+        final AtomicLong successCount, final AtomicLong errorCount) {
         try {
             final Result<Key, JsonNode> result = _accessor.get(key, GetRequestOptions.EMPTY_REQUEST_OPTIONS);
             if (VALIDATE_RESULTS && !expectedResponse(testData.get(key), result)) {
@@ -109,6 +112,7 @@ public class GetTestRunner {
                     testData.get(key));
                 errorCount.getAndIncrement();
             }
+            successCount.getAndIncrement();
         } catch (AccessorException e) {
             errorCount.getAndIncrement();
         }
@@ -144,7 +148,7 @@ public class GetTestRunner {
             new ResponseHandler<>(documentTransformer, keyExtractor),
             new MetricsFactory(metricsRegistry, clock),
             clock,
-            new OperationsLogger(Duration.ofMillis(100)));
+            new OperationsLogger(Duration.ofSeconds(10)));
     }
 
     private StaticDataLocator createDataLocator(Configuration configuration, CosmosAsyncClient client) {

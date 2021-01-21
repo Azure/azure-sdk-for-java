@@ -12,14 +12,11 @@ import com.azure.cosmos.benchmark.linkedin.impl.models.Result;
 import com.azure.cosmos.benchmark.linkedin.impl.models.ResultMetadata;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Optional;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -53,8 +50,8 @@ public class ResponseHandler<K, V> {
         Preconditions.checkNotNull(key, "The key requested is null!");
 
         final Optional<? extends CosmosItemResponse<?>> maybeResponse = Optional.ofNullable(response);
-        final InternalObjectNode document = (InternalObjectNode) maybeResponse.map(CosmosItemResponse::getItem)
-            .filter(item -> item instanceof InternalObjectNode)
+        final ObjectNode document = (ObjectNode) maybeResponse.map(CosmosItemResponse::getItem)
+            .filter(item -> item instanceof ObjectNode)
             .orElse(null);
         double requestCharges = maybeResponse.map(CosmosItemResponse::getRequestCharge)
             .orElse(0.0);
@@ -106,12 +103,11 @@ public class ResponseHandler<K, V> {
         return builder.build();
     }
 
-    private Optional<Entity<V>> convertDocument(@Nullable final InternalObjectNode document,
+    private Optional<Entity<V>> convertDocument(@Nullable final ObjectNode document,
         final boolean includeTombstone) {
 
-        final Optional<InternalObjectNode> maybeDocument = Optional.ofNullable(document);
-        return maybeDocument.map(doc -> doc.toObject(ObjectNode.class))
-            .map(_transformer::deserialize)
+        final Optional<ObjectNode> maybeDocument = Optional.ofNullable(document);
+        return maybeDocument.map(_transformer::deserialize)
             .map(entity -> {
                 final boolean isTombstoned = maybeDocument.map(doc -> doc.get(DELETED_INDICATOR)).isPresent();
                 if (!includeTombstone && isTombstoned) {
@@ -119,9 +115,11 @@ public class ResponseHandler<K, V> {
                 }
 
                 final EntityAttributes.Builder entityAttributes = new EntityAttributes.Builder();
-                maybeDocument.map(Resource::getETag).ifPresent(entityAttributes::setEtag);
-                maybeDocument.map(Resource::getTimestamp)
-                    .map(Instant::getEpochSecond)
+                maybeDocument.map(doc -> doc.get(Constants.Properties.E_TAG))
+                    .map(JsonNode::asText)
+                    .ifPresent(entityAttributes::setEtag);
+                maybeDocument.map(doc -> doc.get(Constants.Properties.LAST_MODIFIED))
+                    .map(JsonNode::asLong)
                     .ifPresent(entityAttributes::setTs);
                 maybeDocument.map(doc -> doc.get(Constants.Properties.TTL))
                     .map(Object::toString)

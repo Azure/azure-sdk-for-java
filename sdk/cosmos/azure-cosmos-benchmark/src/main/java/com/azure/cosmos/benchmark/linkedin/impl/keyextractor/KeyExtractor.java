@@ -3,11 +3,15 @@
 
 package com.azure.cosmos.benchmark.linkedin.impl.keyextractor;
 
-import com.azure.cosmos.implementation.InternalObjectNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.base.Preconditions;
 import java.util.Objects;
 import java.util.Optional;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import static com.azure.cosmos.benchmark.linkedin.impl.Constants.ID;
+import static com.azure.cosmos.benchmark.linkedin.impl.Constants.PARTITION_KEY;
 
 
 /**
@@ -18,8 +22,6 @@ import javax.annotation.Nonnull;
  * @param <K> the Entity's key type
  */
 public interface KeyExtractor<K> {
-
-    String PARTITION_KEY_FIELD_NAME = "partitioningKey";
 
     /**
      * Default method to check if the Key is valid.
@@ -37,23 +39,37 @@ public interface KeyExtractor<K> {
     /**
      * Default method to return the id associated with the Document stored in CosmosDB
      *
-     * @param document CosmosItemProperties returned from CosmosDB
-     * @return the CosmosItemProperties's id
+     * @param document ObjectNode modeling the document in CosmosDB
+     * @return the document's id
      */
-    default String getId(@Nonnull final InternalObjectNode document) {
-        return Preconditions.checkNotNull(document.getId(), "A Document object must have the id defined");
+    default String getId(@Nonnull final ObjectNode document) {
+        return Preconditions.checkNotNull(getField(document, ID),
+            "The document must have the id defined");
     }
 
     /**
      * Default method to extract the partitioningKey from the Document stored in CosmosDB.
      *
-     * @param document CosmosItemProperties returned from CosmosDB
-     * @return the partitioningKey of the CosmosItemProperties
+     * @param document ObjectNode modeling the document in CosmosDB
+     * @return the document's partitioningKey
      */
-    default String getPartitioningKey(@Nonnull final InternalObjectNode document) {
+    default String getPartitioningKey(@Nonnull final ObjectNode document) {
         return Preconditions.checkNotNull(
-            Optional.ofNullable(document.get(PARTITION_KEY_FIELD_NAME)).map(Object::toString).orElse(null),
-            "partitioningKey not present in the document %s", document.getId());
+            getField(document, PARTITION_KEY),
+            "partitioningKey not present in the document %s", getField(document, ID));
+    }
+
+    /**
+     *
+     * @param document ObjectNode modeling the document in CosmosDB
+     * @param fieldName the fieldName to retrieve from the ObjectNode
+     * @return String representation of the field value if found, else Null
+     */
+    @Nullable
+    default String getField(@Nonnull final ObjectNode document, @Nonnull final String fieldName) {
+        return Optional.ofNullable(document.get(fieldName))
+            .map(Object::toString)
+            .orElse(null);
     }
 
     /**
@@ -75,10 +91,10 @@ public interface KeyExtractor<K> {
     /**
      * Interface to map the Document/Entity stored in CosmosDB to the Key
      *
-     * @param document CosmosItemProperties returned from CosmosDB
+     * @param document ObjectNode modeling the document in CosmosDB
      * @return The Entity's key extracted from CosmosItemProperties data
      */
-    K getKey(final InternalObjectNode document);
+    K getKey(final ObjectNode document);
 
     /**
      * Maps the id and partitioningKey to the corresponding Key

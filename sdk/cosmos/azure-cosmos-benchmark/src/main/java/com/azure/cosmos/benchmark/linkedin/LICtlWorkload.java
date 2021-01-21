@@ -18,12 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-/**
- * TODOs
- *  - Initialize the metrics reporter
- */
-public class CtlWorkload {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CtlWorkload.class);
+public class LICtlWorkload {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LICtlWorkload.class);
 
     private final Configuration _configuration;
     private final CosmosAsyncClient _client;
@@ -35,7 +31,7 @@ public class CtlWorkload {
     private final DataLoader _dataLoader;
     private final GetTestRunner _getTestRunner;
 
-    public CtlWorkload(final Configuration configuration) {
+    public LICtlWorkload(final Configuration configuration) {
         Preconditions.checkNotNull(configuration, "The Workload configuration defining the parameters can not be null");
 
         _configuration = configuration;
@@ -56,6 +52,8 @@ public class CtlWorkload {
         _resourceManager.createContainer();
         LOGGER.info("Loading data");
         _dataLoader.loadData(_testData);
+        LOGGER.info("Data loading completed");
+        _bulkLoadClient.close();
     }
 
     public void run() {
@@ -72,7 +70,6 @@ public class CtlWorkload {
      */
     public void shutdown() {
         _resourceManager.deleteResources();
-        _bulkLoadClient.close();
         _client.close();
         _reporter.close();
     }
