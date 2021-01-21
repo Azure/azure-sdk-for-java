@@ -19,7 +19,7 @@ public class GetMessageTest extends PerfStressTest<PerfStressOptions> {
 
     @Override
     public void run() {
-        String message = hello.getMessage();
+        hello.getMessage();
     }
 
     @Override
