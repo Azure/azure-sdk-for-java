@@ -8,21 +8,21 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AddChatParticipantsErrors model. */
+/** Errors encountered during the addition of the chat participant to the chat thread. */
 @Fluent
 public final class AddChatParticipantsErrors {
     /*
      * The participants that failed to be added to the chat thread.
      */
     @JsonProperty(value = "invalidParticipants", required = true)
-    private List<Error> invalidParticipants;
+    private List<CommunicationError> invalidParticipants;
 
     /**
      * Get the invalidParticipants property: The participants that failed to be added to the chat thread.
      *
      * @return the invalidParticipants value.
      */
-    public List<Error> getInvalidParticipants() {
+    public List<CommunicationError> getInvalidParticipants() {
         return this.invalidParticipants;
     }
 
@@ -32,7 +32,7 @@ public final class AddChatParticipantsErrors {
      * @param invalidParticipants the invalidParticipants value to set.
      * @return the AddChatParticipantsErrors object itself.
      */
-    public AddChatParticipantsErrors setInvalidParticipants(List<Error> invalidParticipants) {
+    public AddChatParticipantsErrors setInvalidParticipants(List<CommunicationError> invalidParticipants) {
         this.invalidParticipants = invalidParticipants;
         return this;
     }

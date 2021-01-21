@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ChatMessageReadReceipt model. */
+/** A chat message read receipt indicates the time a chat message was read by a recipient. */
 @Fluent
 public final class ChatMessageReadReceipt {
     /*

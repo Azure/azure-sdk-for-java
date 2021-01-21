@@ -136,7 +136,8 @@ public final class ChatThreadAsyncClient {
     public Mono<Response<AddChatParticipantsResult>> addParticipants(AddChatParticipantsOptions options) {
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");
-            return withContext(context -> addParticipants(options, context));        } catch (RuntimeException ex) {
+            return withContext(context -> addParticipants(options, context));
+        } catch (RuntimeException ex) {
 
             return monoError(logger, ex);
         }
@@ -152,7 +153,8 @@ public final class ChatThreadAsyncClient {
     public Mono<Response<AddChatParticipantsResult>> addParticipantsWithResponse(AddChatParticipantsOptions options) {
         try {
             Objects.requireNonNull(options, "'options' cannot be null.");
-            return withContext(context -> addParticipants(options, context));        } catch (RuntimeException ex) {
+            return withContext(context -> addParticipants(options, context));
+        } catch (RuntimeException ex) {
 
             return monoError(logger, ex);
         }
