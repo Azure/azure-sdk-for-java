@@ -52,7 +52,7 @@ case class CosmosPartitionReader(config: Map[String, String],
 
   override def get(): InternalRow = {
     val objectNode = iterator.next()
-    CosmosRowConverter.toInternalRow(readSchema, objectNode)
+    CosmosRowConverter.fromObjectNodeToInternalRow(readSchema, objectNode)
   }
 
   override def close(): Unit = {
