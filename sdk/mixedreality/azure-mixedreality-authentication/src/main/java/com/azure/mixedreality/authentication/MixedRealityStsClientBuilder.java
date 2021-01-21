@@ -86,7 +86,7 @@ public final class MixedRealityStsClientBuilder {
     /**
      * Sets the Mixed Reality service account identifier.
      *
-     * @param accountId The Mixed Reality service account identifier
+     * @param accountId The Mixed Reality service account identifier.
      * @return The updated {@link MixedRealityStsClientBuilder} object.
      * @throws NullPointerException If {@code accountId} is null.
      */
@@ -144,11 +144,6 @@ public final class MixedRealityStsClientBuilder {
             pipeline = createHttpPipeline(this.httpClient, authPolicy, this.customPolicies);
         }
 
-        MixedRealityStsRestClientImpl serviceClient = new MixedRealityStsRestClientImplBuilder()
-            .pipeline(pipeline)
-            .host(endpoint)
-            .buildClient();
-
         MixedRealityStsServiceVersion version;
 
         if (this.apiVersion != null) {
@@ -157,7 +152,13 @@ public final class MixedRealityStsClientBuilder {
             version = MixedRealityStsServiceVersion.getLatest();
         }
 
-        return new MixedRealityStsAsyncClient(serviceClient, version);
+        MixedRealityStsRestClientImpl serviceClient = new MixedRealityStsRestClientImplBuilder()
+            //.apiVersion(version.getVersion())
+            .pipeline(pipeline)
+            .host(endpoint)
+            .buildClient();
+
+        return new MixedRealityStsAsyncClient(this.accountId, serviceClient);
     }
 
     /**
