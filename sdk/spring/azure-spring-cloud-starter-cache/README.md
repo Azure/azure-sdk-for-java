@@ -15,7 +15,7 @@ This starter provides auto-configuration of Azure Cache for Redis. Azure Cache f
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-starter-cache</artifactId>
-    <version>2.2.0-beta.1</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
