@@ -48,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AttestationClientTestBase extends TestBase {
 
-    private static final String DataPlaneScope = "https://attest.azure.net/.default";
+    private static final String DATAPLANE_SCOPE = "https://attest.azure.net/.default";
 
     enum ClientTypes {
         Shared,
@@ -88,7 +88,7 @@ public class AttestationClientTestBase extends TestBase {
 
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         if (credential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(credential, DataPlaneScope));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, DATAPLANE_SCOPE));
         }
 
         if (getTestMode() == TestMode.RECORD) {
@@ -190,7 +190,13 @@ public class AttestationClientTestBase extends TestBase {
     static Stream<Arguments> getAttestationClients() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
+
+        assertTrue(Configuration.getGlobalConfiguration().contains("locationShortName"), "Required property locationShortName not found.");
+        assertTrue(Configuration.getGlobalConfiguration().contains("ATTESTATION_ISOLATED_URL"), "Required property ATTESTATION_ISOLATED_URL not found.");
+        assertTrue(Configuration.getGlobalConfiguration().contains("ATTESTATION_AAD_URL"), "Required property ATTESTATION_AAD_URL not found.");
+
         List<Arguments> argumentsList = new ArrayList<>();
+
         String regionShortName = Configuration.getGlobalConfiguration().get("locationShortName");
         getHttpClients().forEach(httpClient -> Stream.of(
             "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net",

@@ -174,12 +174,12 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                                 }
                                 return null;
                             });
-                    })
+                })
                 .doOnNext(responseClaims -> {
                     assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
                     assertEquals("Removed", responseClaims.getClaims().get("x-ms-policy-result").toString());
                 }))
-                .assertNext(claimSet -> {})
+                .assertNext(claimSet -> { })
                 .verifyComplete();
         }
     }
@@ -252,27 +252,23 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         PlainObject plainObject = new PlainObject(setPolicyPayload);
         JWSObject securedObject;
 
-        {
-            List<com.nimbusds.jose.util.Base64> certs = new ArrayList<>();
-            certs.add(new com.nimbusds.jose.util.Base64(signingCertificateBase64));
-            JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
-                .x509CertChain(certs)
-                .build();
+        List<com.nimbusds.jose.util.Base64> certs = new ArrayList<>();
+        certs.add(new com.nimbusds.jose.util.Base64(signingCertificateBase64));
+        JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
+            .x509CertChain(certs)
+            .build();
 
-            securedObject = new JWSObject(header, setPolicyPayload);
-            securedObject.sign(signer);
-        }
+        securedObject = new JWSObject(header, setPolicyPayload);
+        securedObject.sign(signer);
 
         switch (clientType) {
-            case Aad: {
+            case Aad:
                 policySetObjects.add(plainObject);
                 policySetObjects.add(securedObject);
                 break;
-            }
-            case Isolated: {
+            case Isolated:
                 policySetObjects.add(securedObject);
                 break;
-            }
             default:
                 throw new IllegalStateException("Unexpected value: " + classifyClient(clientUri));
         }

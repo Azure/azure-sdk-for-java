@@ -70,7 +70,7 @@ Each example in the *Examples* section starts with an H3 that describes the exam
 
 Use the `create_thing` method to create a Thing reference; this method does not make a network call. To persist the Thing in the service, call `Thing.save`.
 
-```python
+```py
 thing = client.create_thing(id, name)
 thing.save()
 ```
@@ -79,7 +79,7 @@ thing.save()
 
 The `get_thing` method retrieves a Thing from the service. The `id` parameter is the unique ID of the Thing, not its "name" property.
 
-```python
+```py
 thing = client.get_thing(id)
 ```
 
@@ -87,7 +87,7 @@ thing = client.get_thing(id)
 
 Use `list_things` to get one or more Thing objects from the service. If there are no Things available, a `404` exception is thrown (see [Troubleshooting](#troubleshooting) for details on handling exceptions).
 
-```python
+```py
 things = client.list_things()
 ```
 
