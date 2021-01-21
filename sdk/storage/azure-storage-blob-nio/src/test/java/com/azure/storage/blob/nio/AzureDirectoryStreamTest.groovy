@@ -198,7 +198,7 @@ class AzureDirectoryStreamTest extends APISpec {
 
         then:
         def e = thrown(DirectoryIteratorException)
-        e.getCause().getClass() == IOException.class
+        e.getCause().getClass() == ClosedFileSystemException.class
     }
 
     def "Filter"() {

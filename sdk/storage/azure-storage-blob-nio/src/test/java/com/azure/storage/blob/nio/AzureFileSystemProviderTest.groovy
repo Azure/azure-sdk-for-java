@@ -25,6 +25,7 @@ import java.nio.ByteBuffer
 import java.nio.charset.Charset
 import java.nio.file.AccessDeniedException
 import java.nio.file.AccessMode
+import java.nio.file.ClosedFileSystemException
 import java.nio.file.DirectoryNotEmptyException
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.FileSystem
@@ -778,7 +779,7 @@ class AzureFileSystemProviderTest extends APISpec {
         fs.provider().delete(path)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     def "DirectoryStream"() {
@@ -820,7 +821,7 @@ class AzureFileSystemProviderTest extends APISpec {
         fs.provider().newDirectoryStream(path, null)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     @Unroll
@@ -899,7 +900,7 @@ class AzureFileSystemProviderTest extends APISpec {
         fs.provider().newInputStream(path)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     def "OutputStream options default"() {
@@ -1071,7 +1072,7 @@ class AzureFileSystemProviderTest extends APISpec {
         fs.provider().newOutputStream(path)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     def "CheckAccess"() {
@@ -1217,7 +1218,7 @@ class AzureFileSystemProviderTest extends APISpec {
         fs.provider().checkAccess(path)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     @Unroll
@@ -1312,7 +1313,7 @@ class AzureFileSystemProviderTest extends APISpec {
         fs.provider().readAttributes(path, AzureBasicFileAttributes.class)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     @Unroll
@@ -1581,7 +1582,7 @@ class AzureFileSystemProviderTest extends APISpec {
         fs.provider().setAttribute(path, "azureBlob:blobHttpHeaders", new BlobHttpHeaders())
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     def basicSetupForCopyTest(FileSystem fs) {

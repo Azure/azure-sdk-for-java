@@ -5,6 +5,7 @@ import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobHttpHeaders
 import spock.lang.Unroll
 
+import java.nio.file.ClosedFileSystemException
 import java.nio.file.attribute.FileTime
 import java.security.MessageDigest
 
@@ -69,7 +70,7 @@ class AttributeViewTest extends APISpec {
         new AzureBasicFileAttributeView(path).readAttributes()
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     def "AzureBlobFileAttributeView readAttributes"() {
@@ -157,7 +158,7 @@ class AttributeViewTest extends APISpec {
         new AzureBlobFileAttributeView(path).readAttributes()
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     @Unroll
@@ -199,7 +200,7 @@ class AttributeViewTest extends APISpec {
         new AzureBlobFileAttributeView(path).setBlobHttpHeaders(new BlobHttpHeaders())
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     @Unroll
@@ -237,7 +238,7 @@ class AttributeViewTest extends APISpec {
         new AzureBlobFileAttributeView(path).setMetadata(Collections.emptyMap())
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     @Unroll
@@ -271,7 +272,7 @@ class AttributeViewTest extends APISpec {
         new AzureBlobFileAttributeView(path).setTier(AccessTier.HOT)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     @Unroll

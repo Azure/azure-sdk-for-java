@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.ClosedFileSystemException;
 import java.nio.file.FileSystem;
 import java.nio.file.InvalidPathException;
 import java.nio.file.LinkOption;
@@ -777,7 +778,7 @@ public final class AzurePath implements Path {
     static void ensureFileSystemOpen(Path p) throws IOException {
         if (!p.getFileSystem().isOpen()) {
             throw LoggingUtility.logError(((AzurePath) p).logger,
-                new IOException("FileSystem for path has been closed. Path: " + p.toString()));
+                new ClosedFileSystemException());
         }
     }
 }
