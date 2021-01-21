@@ -17,9 +17,9 @@ Use the guidelines in each section of this template to ensure consistency and re
 
 ## Getting started
 ### Adding the package to your project
-Maven dependency for the Azure Key Vault Administration library. Add it to your project's POM file.
+Maven dependency for the Azure Attestation  library. Add it to your project's POM file.
 
-[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-administration;current})
+[//]: # ({x-version-update-start;com.azure:azure-security-attestation;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
