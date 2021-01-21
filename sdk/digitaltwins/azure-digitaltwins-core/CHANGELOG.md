@@ -3,8 +3,10 @@
 ## 1.0.2 (2021-1-21)
 
 - Added diagnostic contexts to async APIs including service namespace.
-- Increased dependency version of azure-core from 1.11.0 to 1.12.0
-- Increased dependency version of azure-identity from 1.2.1 to 1.2.2
+- Increased dependency version of azure-core from 1.11.0 to 1.12.0 
+  - [azure-core changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/CHANGELOG.md#1120-2021-01-11)
+- Increased dependency version of azure-identity from 1.2.1 to 1.2.2 
+  - [azure-identity changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/CHANGELOG.md#122-2021-01-12)
 
 ## 1.0.1 (2020-11-05)
 
