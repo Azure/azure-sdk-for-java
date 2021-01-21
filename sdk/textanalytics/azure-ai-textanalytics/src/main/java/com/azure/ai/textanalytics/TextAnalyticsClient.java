@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.BatchActions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
@@ -20,7 +20,7 @@ import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -373,7 +373,7 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
-     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
      *
      * @return The {@link PiiEntityCollection recognized PII entities collection}.
@@ -383,7 +383,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PiiEntityCollection recognizePiiEntities(String document, String language,
-        RecognizePiiEntityOptions options) {
+        RecognizePiiEntitiesOptions options) {
         return client.recognizePiiEntities(document, language, options).block();
     }
 
@@ -401,7 +401,7 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
-     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
      *
      * @return A {@link RecognizePiiEntitiesResultCollection}.
@@ -411,7 +411,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RecognizePiiEntitiesResultCollection recognizePiiEntitiesBatch(
-        Iterable<String> documents, String language, RecognizePiiEntityOptions options) {
+        Iterable<String> documents, String language, RecognizePiiEntitiesOptions options) {
         return client.recognizePiiEntitiesBatch(documents, language, options).block();
     }
 
@@ -428,7 +428,7 @@ public final class TextAnalyticsClient {
      * @param documents A list of {@link TextDocumentInput documents} to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -439,7 +439,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatchWithResponse(
-        Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options, Context context) {
+        Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options, Context context) {
         return client.recognizePiiEntityAsyncClient.recognizePiiEntitiesBatchWithContext(documents, options,
             context).block();
     }
@@ -957,9 +957,9 @@ public final class TextAnalyticsClient {
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param tasks
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
-     * @param tasks
      * @param options The additional configurable {@link AnalyzeBatchTasksOptions options} that may be passed when
      * analyzing a collection of tasks.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -974,7 +974,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>> beginAnalyzeBatchTasks(
-        Iterable<String> documents, String language, AnalyzeBatchTasks tasks, AnalyzeBatchTasksOptions options,
+        Iterable<String> documents, BatchActions tasks, String language, AnalyzeBatchTasksOptions options,
         Context context) {
         return null;
     }
@@ -1004,7 +1004,7 @@ public final class TextAnalyticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SyncPoller<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>> beginAnalyzeBatchTasks(
-        Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchTasksOptions options,
+        Iterable<TextDocumentInput> documents, BatchActions tasks, AnalyzeBatchTasksOptions options,
         Context context) {
         return client.analyzeBatchTasksAsyncClient.beginAnalyzeTasksIterable(documents, tasks, options, context)
                    .getSyncPoller();

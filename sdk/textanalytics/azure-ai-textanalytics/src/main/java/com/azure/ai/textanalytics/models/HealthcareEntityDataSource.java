@@ -11,7 +11,7 @@ public final class HealthcareEntityDataSource {
     /*
      * Entity id in the given source catalog.
      */
-    private String id;
+    private String entityId;
 
     /*
      * Entity Catalog. Examples include: UMLS, CHV, MSH, etc.
@@ -27,9 +27,8 @@ public final class HealthcareEntityDataSource {
                 }
 
                 @Override
-                public void setId(HealthcareEntityDataSource healthcareEntityDataSource,
-                    String id) {
-                    healthcareEntityDataSource.setId(id);
+                public void setEntityId(HealthcareEntityDataSource healthcareEntityDataSource, String entityId) {
+                    healthcareEntityDataSource.setEntityId(entityId);
                 }
             });
     }
@@ -44,12 +43,12 @@ public final class HealthcareEntityDataSource {
     }
 
     /**
-     * Get the data source ID property: data source ID in the given source catalog.
+     * Get the data source entity ID property: data source entity ID in the given source catalog.
      *
-     * @return the data source iD.
+     * @return the data source entity ID.
      */
-    public String getId() {
-        return this.id;
+    public String getEntityId() {
+        return this.entityId;
     }
 
     /**
@@ -63,12 +62,12 @@ public final class HealthcareEntityDataSource {
     }
 
     /**
-     * The private setter to set the data source ID property
+     * The private setter to set the data source entity ID property
      * via {@link HealthcareEntityDataSourcePropertiesHelper.HealthcareEntityDataSourceAccessor}.
      *
-     * @param id The data source ID in the given source catalog.
+     * @param entityId The data source entity ID in the given source catalog.
      */
-    private void setId(String id) {
-        this.id = id;
+    private void setEntityId(String entityId) {
+        this.entityId = entityId;
     }
 }

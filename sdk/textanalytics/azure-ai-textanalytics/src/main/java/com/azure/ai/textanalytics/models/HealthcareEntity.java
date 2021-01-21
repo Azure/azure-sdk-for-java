@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class HealthcareEntity {
     private String text;
-    private EntityCategory category;
+    private String category;
     private String subcategory;
     private double confidenceScore;
     private int offset;
@@ -30,7 +30,7 @@ public final class HealthcareEntity {
             }
 
             @Override
-            public void setCategory(HealthcareEntity healthcareEntity, EntityCategory category) {
+            public void setCategory(HealthcareEntity healthcareEntity, String category) {
                 healthcareEntity.setCategory(category);
             }
 
@@ -82,7 +82,7 @@ public final class HealthcareEntity {
      *
      * @return The category value.
      */
-    public EntityCategory getCategory() {
+    public String getCategory() {
         return this.category;
     }
 
@@ -145,7 +145,7 @@ public final class HealthcareEntity {
         this.text = text;
     }
 
-    private void setCategory(EntityCategory category) {
+    private void setCategory(String category) {
         this.category = category;
     }
 

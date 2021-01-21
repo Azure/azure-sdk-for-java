@@ -3,9 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.BatchActions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
-import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
@@ -13,7 +13,7 @@ import com.azure.ai.textanalytics.models.AnalyzeBatchTasksResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationResult;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -758,7 +758,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizePiiLanguageHintRunner((inputs, language) ->
             StepVerifier.create(client.recognizePiiEntitiesBatch(inputs, language,
-                new RecognizePiiEntityOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION)))
+                new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION)))
                 .assertNext(response -> validatePiiEntitiesResultCollection(false, getExpectedBatchPiiEntitiesForDomainFilter(), response))
                 .verifyComplete());
     }
@@ -769,7 +769,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         recognizeBatchPiiEntitiesRunner((inputs) ->
             StepVerifier.create(client.recognizePiiEntitiesBatchWithResponse(inputs,
-                new RecognizePiiEntityOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION)))
+                new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION)))
                 .assertNext(response -> validatePiiEntitiesResultCollectionWithResponse(false, getExpectedBatchPiiEntitiesForDomainFilter(), 200, response))
                 .verifyComplete());
     }
@@ -1668,8 +1668,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeTasksLroRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchTasksOperationResult, PagedFlux<AnalyzeBatchTasksResult>> syncPoller =
-                client.beginAnalyzeBatchTasks(documents, tasks,
-                    new AnalyzeBatchTasksOptions().setName("Test1")
+                client.beginBatchActions(documents, tasks,
+                    new AnalyzeBatchTasksOptions().setDisplayName("Test1")
                         .setIncludeStatistics(false)).getSyncPoller();
             syncPoller.waitForCompletion();
             PagedFlux<AnalyzeBatchTasksResult> result = syncPoller.getFinalResult();
@@ -1688,8 +1688,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         analyzeTasksPaginationRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchTasksOperationResult, PagedFlux<AnalyzeBatchTasksResult>>
-                syncPoller = client.beginAnalyzeBatchTasks(documents, tasks,
-                new AnalyzeBatchTasksOptions().setName("Test1").setIncludeStatistics(false)).getSyncPoller();
+                syncPoller = client.beginBatchActions(documents, tasks,
+                new AnalyzeBatchTasksOptions().setDisplayName("Test1").setIncludeStatistics(false)).getSyncPoller();
             syncPoller.waitForCompletion();
             PagedFlux<AnalyzeBatchTasksResult> result = syncPoller.getFinalResult();
             validateAnalyzeTasksResultList(false,
@@ -1703,9 +1703,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void analyzeTasksEmptyInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         emptyListRunner((documents, errorMessage) ->
-            StepVerifier.create(client.beginAnalyzeBatchTasks(documents,
-                new AnalyzeBatchTasks()
-                    .setRecognizeEntityOptions(new RecognizeEntityOptions()), null))
+            StepVerifier.create(client.beginBatchActions(documents,
+                new BatchActions()
+                    .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions()), null))
                 .expectErrorMatches(throwable -> throwable instanceof IllegalArgumentException
                     && errorMessage.equals(throwable.getMessage()))
                 .verify());

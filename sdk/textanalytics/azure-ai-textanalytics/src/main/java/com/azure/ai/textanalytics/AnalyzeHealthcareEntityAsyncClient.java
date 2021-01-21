@@ -342,7 +342,7 @@ class AnalyzeHealthcareEntityAsyncClient {
 
         AnalyzeHealthcareEntitiesOperationResultPropertiesHelper.setCreatedAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getCreatedDateTime());
-        AnalyzeHealthcareEntitiesOperationResultPropertiesHelper.setUpdatedAt(operationResultPollResponse.getValue(),
+        AnalyzeHealthcareEntitiesOperationResultPropertiesHelper.setLastModifiedAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getLastUpdateDateTime());
         AnalyzeHealthcareEntitiesOperationResultPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
             analyzeOperationResultResponse.getValue().getExpirationDateTime());

@@ -3,9 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.BatchActions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
-import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
@@ -16,7 +16,7 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationResul
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -732,7 +732,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizePiiLanguageHintRunner((inputs, language) -> {
             final RecognizePiiEntitiesResultCollection response = client.recognizePiiEntitiesBatch(inputs, language,
-                new RecognizePiiEntityOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION));
+                new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION));
             validatePiiEntitiesResultCollection(false, getExpectedBatchPiiEntitiesForDomainFilter(), response);
         });
     }
@@ -743,7 +743,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeBatchPiiEntitiesRunner((inputs) -> {
             final Response<RecognizePiiEntitiesResultCollection> response = client.recognizePiiEntitiesBatchWithResponse(inputs,
-                new RecognizePiiEntityOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION), Context.NONE);
+                new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION), Context.NONE);
             validatePiiEntitiesResultCollectionWithResponse(false, getExpectedBatchPiiEntitiesForDomainFilter(), 200, response);
         });
     }
@@ -1605,7 +1605,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         analyzeTasksLroRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>> syncPoller =
                 client.beginAnalyzeBatchTasks(documents, tasks,
-                    new AnalyzeBatchTasksOptions().setName("Test1").setIncludeStatistics(false),
+                    new AnalyzeBatchTasksOptions().setDisplayName("Test1").setIncludeStatistics(false),
                     Context.NONE);
             syncPoller.waitForCompletion();
             PagedIterable<AnalyzeBatchTasksResult> result = syncPoller.getFinalResult();
@@ -1625,7 +1625,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         analyzeTasksPaginationRunner((documents, tasks) -> {
             SyncPoller<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>>
                 syncPoller = client.beginAnalyzeBatchTasks(documents, tasks,
-                new AnalyzeBatchTasksOptions().setName("Test1")
+                new AnalyzeBatchTasksOptions().setDisplayName("Test1")
                     .setIncludeStatistics(false),
                 Context.NONE);
             syncPoller.waitForCompletion();
@@ -1643,7 +1643,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         emptyListRunner((documents, errorMessage) -> {
             final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                 () -> client.beginAnalyzeBatchTasks(documents,
-                    new AnalyzeBatchTasks().setRecognizeEntityOptions(new RecognizeEntityOptions()),
+                    new BatchActions().setRecognizeEntitiesOptions(new RecognizeEntitiesOptions()),
                     null, Context.NONE)
                     .getFinalResult());
             assertEquals(errorMessage, exception.getMessage());

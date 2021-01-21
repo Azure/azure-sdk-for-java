@@ -4,7 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.BatchActions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
@@ -21,7 +21,7 @@ import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -462,7 +462,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
-     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
      *
      * @return A {@link Mono} contains a {@link PiiEntityCollection recognized PII entities collection}.
@@ -472,7 +472,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PiiEntityCollection> recognizePiiEntities(String document, String language,
-        RecognizePiiEntityOptions options) {
+        RecognizePiiEntitiesOptions options) {
         return recognizePiiEntityAsyncClient.recognizePiiEntities(document, language, options);
     }
 
@@ -490,7 +490,7 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
-     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
      *
      * @return A {@link Mono} contains a {@link RecognizePiiEntitiesResultCollection}.
@@ -500,7 +500,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecognizePiiEntitiesResultCollection> recognizePiiEntitiesBatch(
-        Iterable<String> documents, String language, RecognizePiiEntityOptions options) {
+        Iterable<String> documents, String language, RecognizePiiEntitiesOptions options) {
         try {
             inputDocumentsValidation(documents);
             return recognizePiiEntitiesBatchWithResponse(
@@ -528,7 +528,7 @@ public final class TextAnalyticsAsyncClient {
      * @param documents A list of {@link TextDocumentInput documents} to recognize PII entities for.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param options The additional configurable {@link RecognizePiiEntityOptions options} that may be passed when
+     * @param options The additional configurable {@link RecognizePiiEntitiesOptions options} that may be passed when
      * recognizing PII entities.
      *
      * @return A {@link Mono} contains a {@link Response} which contains a {@link RecognizePiiEntitiesResultCollection}.
@@ -538,7 +538,7 @@ public final class TextAnalyticsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecognizePiiEntitiesResultCollection>> recognizePiiEntitiesBatchWithResponse(
-        Iterable<TextDocumentInput> documents, RecognizePiiEntityOptions options) {
+        Iterable<TextDocumentInput> documents, RecognizePiiEntitiesOptions options) {
         return recognizePiiEntityAsyncClient.recognizePiiEntitiesBatch(documents, options);
     }
 
@@ -1101,9 +1101,9 @@ public final class TextAnalyticsAsyncClient {
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
+     * @param actions
      * @param language The 2 letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
-     * @param tasks
      * @param options The additional configurable {@link AnalyzeBatchTasksOptions options} that may be passed when
      * analyzing a collection of tasks.
      *
@@ -1116,14 +1116,14 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeBatchTasksOperationResult, PagedFlux<AnalyzeBatchTasksResult>> beginAnalyzeBatchTasks(
-        Iterable<String> documents, String language, AnalyzeBatchTasks tasks, AnalyzeBatchTasksOptions options) {
-        return beginAnalyzeBatchTasks(
+    public PollerFlux<AnalyzeBatchTasksOperationResult, PagedFlux<AnalyzeBatchTasksResult>> beginBatchActions(
+        Iterable<String> documents, BatchActions actions, String language, AnalyzeBatchTasksOptions options) {
+        return beginBatchActions(
             mapByIndex(documents, (index, value) -> {
                 final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
                 textDocumentInput.setLanguage(language);
                 return textDocumentInput;
-            }), tasks, options);
+            }), actions, options);
     }
 
     /**
@@ -1136,7 +1136,7 @@ public final class TextAnalyticsAsyncClient {
      * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeBatchTasks#Iterable-AnalyzeTasksOptions}
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
-     * @param tasks
+     * @param actions
      * @param options The additional configurable {@link AnalyzeBatchTasksOptions options} that may be passed when
      * analyzing a collection of tasks.
      *
@@ -1149,8 +1149,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AnalyzeBatchTasksOperationResult, PagedFlux<AnalyzeBatchTasksResult>> beginAnalyzeBatchTasks(
-        Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchTasksOptions options) {
-        return analyzeBatchTasksAsyncClient.beginAnalyzeTasks(documents, tasks, options, Context.NONE);
+    public PollerFlux<AnalyzeBatchTasksOperationResult, PagedFlux<AnalyzeBatchTasksResult>> beginBatchActions(
+        Iterable<TextDocumentInput> documents, BatchActions actions, AnalyzeBatchTasksOptions options) {
+        return analyzeBatchTasksAsyncClient.beginAnalyzeTasks(documents, actions, options, Context.NONE);
     }
 }

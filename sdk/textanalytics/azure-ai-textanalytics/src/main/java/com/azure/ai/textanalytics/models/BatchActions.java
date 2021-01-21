@@ -1,0 +1,82 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.ai.textanalytics.models;
+
+import com.azure.core.annotation.Fluent;
+
+import java.util.Arrays;
+
+/**
+ * The {@link BatchActions} model.
+ */
+@Fluent
+public final class BatchActions {
+    private Iterable<RecognizeEntitiesOptions> recognizeEntitiesOptions;
+    private Iterable<RecognizePiiEntitiesOptions> recognizePiiEntitiesOptions;
+    private Iterable<ExtractKeyPhrasesOptions> extractKeyPhrasesOptions;
+
+    /**
+     * Get the list of {@link RecognizeEntitiesOptions} to be analyzed.
+     *
+     * @return the categorizedEntitiesRecognitionTasks value.
+     */
+    public Iterable<RecognizeEntitiesOptions> getRecognizeEntitiesOptions() {
+        return this.recognizeEntitiesOptions;
+    }
+
+    /**
+     * Set the list of {@link RecognizeEntitiesOptions} to be analyzed.
+     *
+     * @param recognizeEntitiesOptions the list of {@link RecognizeEntitiesOptions} to be analyzed.
+     *
+     * @return the AnalyzeTasksOptions object itself.
+     */
+    public BatchActions setRecognizeEntitiesOptions(
+        RecognizeEntitiesOptions... recognizeEntitiesOptions) {
+        this.recognizeEntitiesOptions = Arrays.asList(recognizeEntitiesOptions);
+        return this;
+    }
+
+    /**
+     * Get the list of {@link RecognizePiiEntitiesOptions} to be analyzed.
+     *
+     * @return the list of {@link RecognizePiiEntitiesOptions} to be analyzed.
+     */
+    public Iterable<RecognizePiiEntitiesOptions> getRecognizePiiEntitiesOptions() {
+        return this.recognizePiiEntitiesOptions;
+    }
+
+    /**
+     * Set the list of {@link RecognizePiiEntitiesOptions} to be analyzed.
+     *
+     * @param recognizePiiEntitiesOptions the list of {@link RecognizePiiEntitiesOptions} to be analyzed.
+     *
+     * @return the AnalyzeTasksOptions object itself.
+     */
+    public BatchActions setRecognizePiiEntitiesOptions(RecognizePiiEntitiesOptions... recognizePiiEntitiesOptions) {
+        this.recognizePiiEntitiesOptions = Arrays.asList(recognizePiiEntitiesOptions);
+        return this;
+    }
+
+    /**
+     * Get the list of {@link ExtractKeyPhrasesOptions} to be analyzed.
+     *
+     * @return the list of {@link ExtractKeyPhrasesOptions} to be analyzed.
+     */
+    public Iterable<ExtractKeyPhrasesOptions> getExtractKeyPhrasesOptions() {
+        return this.extractKeyPhrasesOptions;
+    }
+
+    /**
+     * Set the list of {@link ExtractKeyPhrasesOptions} to be analyzed.
+     *
+     * @param extractKeyPhrasesOptions the list of {@link ExtractKeyPhrasesOptions} to be analyzed.
+     *
+     * @return the AnalyzeTasksOptions object itself.
+     */
+    public BatchActions setExtractKeyPhrasesOptions(ExtractKeyPhrasesOptions... extractKeyPhrasesOptions) {
+        this.extractKeyPhrasesOptions = Arrays.asList(extractKeyPhrasesOptions);
+        return this;
+    }
+}

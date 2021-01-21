@@ -3,8 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
+import com.azure.ai.textanalytics.models.BatchActions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
@@ -222,7 +222,7 @@ public class ReadmeSamples {
                     if (healthcareEntityDataSources != null) {
                         healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
                             "\t\tHealthcare data source ID: %s, data source: %s.%n",
-                            healthcareEntityLink.getId(), healthcareEntityLink.getName()));
+                            healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
                     }
                     Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
                         healthcareEntity.getRelatedEntities();
@@ -263,10 +263,10 @@ public class ReadmeSamples {
 
         SyncPoller<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>> syncPoller =
             textAnalyticsClient.beginAnalyzeBatchTasks(documents,
-                new AnalyzeBatchTasks()
-                    .setExtractKeyPhraseOptions(new ExtractKeyPhrasesOptions())
-                    .setRecognizePiiEntityOptions(new RecognizePiiEntityOptions()),
-                new AnalyzeBatchTasksOptions().setName("{tasks_display_name}"),
+                new BatchActions()
+                    .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
+                    .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()),
+                new AnalyzeBatchTasksOptions().setDisplayName("{tasks_display_name}"),
                 Context.NONE);
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(analyzeJobState -> {

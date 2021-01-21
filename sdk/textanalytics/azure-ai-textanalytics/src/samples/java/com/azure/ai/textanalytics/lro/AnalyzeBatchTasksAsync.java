@@ -5,10 +5,10 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.BatchActions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
-import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
@@ -52,18 +52,18 @@ public class AnalyzeBatchTasksAsync {
             ));
         }
 
-        client.beginAnalyzeBatchTasks(documents,
-            new AnalyzeBatchTasks()
-                .setRecognizeEntityOptions(new RecognizeEntityOptions())
-                .setExtractKeyPhraseOptions(
+        client.beginBatchActions(documents,
+            new BatchActions()
+                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
+                .setExtractKeyPhrasesOptions(
                     new ExtractKeyPhrasesOptions().setModelVersion("invalidVersion"),
                     new ExtractKeyPhrasesOptions().setModelVersion("latest")),
-            new AnalyzeBatchTasksOptions().setName("{tasks_display_name}"))
+            new AnalyzeBatchTasksOptions().setDisplayName("{tasks_display_name}"))
             .flatMap(result -> {
                 AnalyzeBatchTasksOperationResult operationResult = result.getValue();
                 System.out.printf("Job display name: %s, Successfully completed tasks: %d, in-process tasks: %d, failed tasks: %d, total tasks: %d%n",
-                    operationResult.getName(), operationResult.getSuccessfullyCompletedTasksCount(),
-                    operationResult.getInProgressTaskCount(), operationResult.getFailedTasksCount(), operationResult.getTotalTasksCount());
+                    operationResult.getDisplayName(), operationResult.getSuccessfullyCompletedTasks(),
+                    operationResult.getInProgressTasks(), operationResult.getFailedTasks(), operationResult.getTotalTasks());
                 return result.getFinalResult();
             })
             .subscribe(

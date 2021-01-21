@@ -94,7 +94,7 @@ public class AnalyzeHealthcareEntities {
                         if (dataSources != null) {
                             dataSources.forEach(dataSource -> System.out.printf(
                                 "\t\tHealthcare data source ID: %s, data source: %s.%n",
-                                dataSource.getId(), dataSource.getName()));
+                                dataSource.getEntityId(), dataSource.getName()));
                         }
                         // Entities relationship
                         Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =

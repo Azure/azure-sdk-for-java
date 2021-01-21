@@ -20,7 +20,7 @@ public final class AnalyzeHealthcareEntitiesOperationResultPropertiesHelper {
         void setOperationId(AnalyzeHealthcareEntitiesOperationResult operationResult, String operationId);
         void setCreatedAt(AnalyzeHealthcareEntitiesOperationResult operationResult, OffsetDateTime createdAt);
         void setExpiresAt(AnalyzeHealthcareEntitiesOperationResult operationResult, OffsetDateTime expiresAt);
-        void setUpdatedAt(AnalyzeHealthcareEntitiesOperationResult operationResult, OffsetDateTime updatedAt);
+        void setLastModifiedAt(AnalyzeHealthcareEntitiesOperationResult operationResult, OffsetDateTime lastModifiedAt);
     }
 
     /**
@@ -47,8 +47,8 @@ public final class AnalyzeHealthcareEntitiesOperationResultPropertiesHelper {
         accessor.setExpiresAt(operationResult, expiresAt);
     }
 
-    public static void setUpdatedAt(AnalyzeHealthcareEntitiesOperationResult operationResult,
-        OffsetDateTime updatedAt) {
-        accessor.setUpdatedAt(operationResult, updatedAt);
+    public static void setLastModifiedAt(AnalyzeHealthcareEntitiesOperationResult operationResult,
+        OffsetDateTime lastModifiedAt) {
+        accessor.setLastModifiedAt(operationResult, lastModifiedAt);
     }
 }

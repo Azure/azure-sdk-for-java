@@ -3,12 +3,12 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.BatchActions;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksResult;
 import com.azure.ai.textanalytics.models.AspectSentiment;
-import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -24,7 +24,7 @@ import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -431,9 +431,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(PII_ENTITY_INPUTS.get(0));
     }
 
-    void recognizePiiDomainFilterRunner(BiConsumer<String, RecognizePiiEntityOptions> testRunner) {
+    void recognizePiiDomainFilterRunner(BiConsumer<String, RecognizePiiEntitiesOptions> testRunner) {
         testRunner.accept(PII_ENTITY_INPUTS.get(0),
-            new RecognizePiiEntityOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION));
+            new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION));
     }
 
     void recognizePiiLanguageHintRunner(BiConsumer<List<String>, String> testRunner) {
@@ -458,16 +458,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     void recognizeBatchPiiEntitiesShowStatsRunner(
-        BiConsumer<List<TextDocumentInput>, RecognizePiiEntityOptions> testRunner) {
+        BiConsumer<List<TextDocumentInput>, RecognizePiiEntitiesOptions> testRunner) {
         final List<TextDocumentInput> textDocumentInputs = TestUtils.getTextDocumentInputs(PII_ENTITY_INPUTS);
-        RecognizePiiEntityOptions options = new RecognizePiiEntityOptions().setIncludeStatistics(true);
+        RecognizePiiEntitiesOptions options = new RecognizePiiEntitiesOptions().setIncludeStatistics(true);
 
         testRunner.accept(textDocumentInputs, options);
     }
 
     void recognizeStringBatchPiiEntitiesShowStatsRunner(
-        BiConsumer<List<String>, RecognizePiiEntityOptions> testRunner) {
-        testRunner.accept(PII_ENTITY_INPUTS, new RecognizePiiEntityOptions().setIncludeStatistics(true));
+        BiConsumer<List<String>, RecognizePiiEntitiesOptions> testRunner) {
+        testRunner.accept(PII_ENTITY_INPUTS, new RecognizePiiEntitiesOptions().setIncludeStatistics(true));
     }
 
     // Linked Entity runner
@@ -680,28 +680,28 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     // Analyze LRO
-    void analyzeTasksLroRunner(BiConsumer<List<TextDocumentInput>, AnalyzeBatchTasks> testRunner) {
+    void analyzeTasksLroRunner(BiConsumer<List<TextDocumentInput>, BatchActions> testRunner) {
         testRunner.accept(
             asList(
                 new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
                 new TextDocumentInput("1", PII_ENTITY_INPUTS.get(0))),
-            new AnalyzeBatchTasks()
-                .setRecognizeEntityOptions(new RecognizeEntityOptions())
-                .setExtractKeyPhraseOptions(new ExtractKeyPhrasesOptions())
-                .setRecognizePiiEntityOptions(new RecognizePiiEntityOptions()));
+            new BatchActions()
+                .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
+                .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
+                .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()));
     }
 
-    void analyzeTasksPaginationRunner(BiConsumer<List<TextDocumentInput>, AnalyzeBatchTasks> testRunner,
+    void analyzeTasksPaginationRunner(BiConsumer<List<TextDocumentInput>, BatchActions> testRunner,
         int totalDocument) {
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < totalDocument; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i), PII_ENTITY_INPUTS.get(0)));
         }
         testRunner.accept(documents,
-            new AnalyzeBatchTasks()
-            .setRecognizeEntityOptions(new RecognizeEntityOptions())
-            .setExtractKeyPhraseOptions(new ExtractKeyPhrasesOptions())
-            .setRecognizePiiEntityOptions(new RecognizePiiEntityOptions()));
+            new BatchActions()
+            .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
+            .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions())
+            .setRecognizePiiEntitiesOptions(new RecognizePiiEntitiesOptions()));
     }
 
     String getEndpoint() {

@@ -5,12 +5,8 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.time.Duration;
-
-import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
-
 /**
- * The {@link RecognizePiiEntityOptions} model.
+ * The {@link RecognizePiiEntitiesOptions} model.
  */
 @Fluent
 public final class AnalyzeHealthcareEntitiesOptions extends TextAnalyticsRequestOptions {

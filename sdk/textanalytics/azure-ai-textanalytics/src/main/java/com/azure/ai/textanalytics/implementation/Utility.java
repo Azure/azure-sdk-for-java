@@ -442,12 +442,10 @@ public final class Utility {
                     entity -> {
                         final HealthcareEntity healthcareEntity = new HealthcareEntity();
                         HealthcareEntityPropertiesHelper.setText(healthcareEntity, entity.getText());
-                        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity,
-                            EntityCategory.fromString(entity.getCategory()));
+                        HealthcareEntityPropertiesHelper.setCategory(healthcareEntity, entity.getCategory());
                         HealthcareEntityPropertiesHelper.setConfidenceScore(healthcareEntity,
                             entity.getConfidenceScore());
                         HealthcareEntityPropertiesHelper.setOffset(healthcareEntity, entity.getOffset());
-                        HealthcareEntityPropertiesHelper.setNegated(healthcareEntity, entity.isNegated());
                         HealthcareEntityPropertiesHelper.setDataSources(healthcareEntity,
                             entity.getLinks() == null ? null : IterableStream.of(entity.getLinks().stream()
                                 .map(healthcareEntityLink -> {
@@ -455,7 +453,7 @@ public final class Utility {
                                         new HealthcareEntityDataSource();
                                     HealthcareEntityDataSourcePropertiesHelper.setName(healthcareEntityDataSourceOrigin,
                                         healthcareEntityLink.getDataSource());
-                                    HealthcareEntityDataSourcePropertiesHelper.setId(
+                                    HealthcareEntityDataSourcePropertiesHelper.setEntityId(
                                         healthcareEntityDataSourceOrigin, healthcareEntityLink.getId());
                                     return healthcareEntityDataSourceOrigin;
                                 })

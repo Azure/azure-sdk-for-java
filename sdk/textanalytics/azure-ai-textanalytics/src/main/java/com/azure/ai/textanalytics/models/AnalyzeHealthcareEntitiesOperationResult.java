@@ -14,7 +14,7 @@ public final class AnalyzeHealthcareEntitiesOperationResult {
     private String operationId;
     private OffsetDateTime createdAt;
     private OffsetDateTime expiresAt;
-    private OffsetDateTime updatedAt;
+    private OffsetDateTime lastModifiedAt;
 
     static {
         AnalyzeHealthcareEntitiesOperationResultPropertiesHelper.setAccessor(
@@ -39,9 +39,9 @@ public final class AnalyzeHealthcareEntitiesOperationResult {
                 }
 
                 @Override
-                public void setUpdatedAt(AnalyzeHealthcareEntitiesOperationResult operationResult,
-                    OffsetDateTime updatedAt) {
-                    operationResult.setUpdatedAt(updatedAt);
+                public void setLastModifiedAt(AnalyzeHealthcareEntitiesOperationResult operationResult,
+                    OffsetDateTime lastModifiedAt) {
+                    operationResult.setLastModifiedAt(lastModifiedAt);
                 }
             }
         );
@@ -79,8 +79,8 @@ public final class AnalyzeHealthcareEntitiesOperationResult {
      *
      * @return the last updated time of a task.
      */
-    public OffsetDateTime getUpdatedAt() {
-        return updatedAt;
+    public OffsetDateTime getLastModifiedAt() {
+        return lastModifiedAt;
     }
 
     private void setOperationId(String operationId) {
@@ -95,7 +95,7 @@ public final class AnalyzeHealthcareEntitiesOperationResult {
         this.expiresAt = expiresAt;
     }
 
-    private void setUpdatedAt(OffsetDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    private void setLastModifiedAt(OffsetDateTime lastModifiedAt) {
+        this.lastModifiedAt = lastModifiedAt;
     }
 }

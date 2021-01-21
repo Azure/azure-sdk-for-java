@@ -23,7 +23,7 @@ import com.azure.ai.textanalytics.implementation.models.TasksStateTasks;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionPiiTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksKeyPhraseExtractionTasksItem;
-import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.BatchActions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksResult;
@@ -75,7 +75,7 @@ class AnalyzeBatchTasksAsyncClient {
     }
 
     PollerFlux<AnalyzeBatchTasksOperationResult, PagedFlux<AnalyzeBatchTasksResult>> beginAnalyzeTasks(
-        Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchTasksOptions options,
+        Iterable<TextDocumentInput> documents, BatchActions tasks, AnalyzeBatchTasksOptions options,
         Context context) {
         try {
             inputDocumentsValidation(documents);
@@ -86,7 +86,7 @@ class AnalyzeBatchTasksAsyncClient {
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
                     .setTasks(getJobManifestTasks(tasks));
-            analyzeBatchInput.setDisplayName(options.getName()); // setDisplayName() returns JobDescriptor
+            analyzeBatchInput.setDisplayName(options.getDisplayName()); // setDisplayName() returns JobDescriptor
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL, // TODO: after poller has the poll interval, change it back to it.
@@ -113,7 +113,7 @@ class AnalyzeBatchTasksAsyncClient {
     }
 
     PollerFlux<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>> beginAnalyzeTasksIterable(
-        Iterable<TextDocumentInput> documents, AnalyzeBatchTasks tasks, AnalyzeBatchTasksOptions options,
+        Iterable<TextDocumentInput> documents, BatchActions tasks, AnalyzeBatchTasksOptions options,
         Context context) {
         try {
             inputDocumentsValidation(documents);
@@ -124,7 +124,7 @@ class AnalyzeBatchTasksAsyncClient {
                 new AnalyzeBatchInput()
                     .setAnalysisInput(new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)))
                     .setTasks(getJobManifestTasks(tasks));
-            analyzeBatchInput.setDisplayName(options.getName()); // setDisplayName() returns JobDescriptor
+            analyzeBatchInput.setDisplayName(options.getDisplayName()); // setDisplayName() returns JobDescriptor
             final boolean finalIncludeStatistics = options.isIncludeStatistics();
             return new PollerFlux<>(
                 DEFAULT_POLL_INTERVAL, // TODO: after poller has the poll interval, change it back to it.
@@ -150,10 +150,10 @@ class AnalyzeBatchTasksAsyncClient {
         }
     }
 
-    private JobManifestTasks getJobManifestTasks(AnalyzeBatchTasks tasks) {
+    private JobManifestTasks getJobManifestTasks(BatchActions tasks) {
         return new JobManifestTasks()
-            .setEntityRecognitionTasks(tasks.getRecognizeEntityOptions() == null ? null
-                : StreamSupport.stream(tasks.getRecognizeEntityOptions().spliterator(), false).map(
+            .setEntityRecognitionTasks(tasks.getRecognizeEntitiesOptions() == null ? null
+                : StreamSupport.stream(tasks.getRecognizeEntitiesOptions().spliterator(), false).map(
                     entitiesTask -> {
                         if (entitiesTask == null) {
                             return null;
@@ -167,8 +167,8 @@ class AnalyzeBatchTasksAsyncClient {
                                 entitiesTask.getModelVersion() == null ? "latest" : entitiesTask.getModelVersion()));
                         return entitiesTaskImpl;
                     }).collect(Collectors.toList()))
-            .setEntityRecognitionPiiTasks(tasks.getRecognizePiiEntityOptions() == null ? null
-                : StreamSupport.stream(tasks.getRecognizePiiEntityOptions().spliterator(), false).map(
+            .setEntityRecognitionPiiTasks(tasks.getRecognizePiiEntitiesOptions() == null ? null
+                : StreamSupport.stream(tasks.getRecognizePiiEntitiesOptions().spliterator(), false).map(
                     piiEntitiesTask -> {
                         if (piiEntitiesTask == null) {
                             return null;
@@ -186,8 +186,8 @@ class AnalyzeBatchTasksAsyncClient {
                                         : piiEntitiesTask.getDomainFilter().toString())));
                         return piiTaskImpl;
                     }).collect(Collectors.toList()))
-            .setKeyPhraseExtractionTasks(tasks.getExtractKeyPhraseOptions() == null ? null
-                : StreamSupport.stream(tasks.getExtractKeyPhraseOptions().spliterator(), false).map(
+            .setKeyPhraseExtractionTasks(tasks.getExtractKeyPhrasesOptions() == null ? null
+                : StreamSupport.stream(tasks.getExtractKeyPhrasesOptions().spliterator(), false).map(
                     keyPhrasesTask -> {
                         if (keyPhrasesTask == null) {
                             return null;
@@ -401,16 +401,16 @@ class AnalyzeBatchTasksAsyncClient {
             analyzeJobStateResponse.getValue().getCreatedDateTime());
         AnalyzeBatchOperationResultPropertiesHelper.setExpiresAt(operationResultPollResponse.getValue(),
             analyzeJobStateResponse.getValue().getExpirationDateTime());
-        AnalyzeBatchOperationResultPropertiesHelper.setUpdatedAt(operationResultPollResponse.getValue(),
+        AnalyzeBatchOperationResultPropertiesHelper.setLastModifiedAt(operationResultPollResponse.getValue(),
             analyzeJobStateResponse.getValue().getLastUpdateDateTime());
         final TasksStateTasks tasksResult = analyzeJobStateResponse.getValue().getTasks();
-        AnalyzeBatchOperationResultPropertiesHelper.setFailedTasksCount(operationResultPollResponse.getValue(),
+        AnalyzeBatchOperationResultPropertiesHelper.setFailedTasks(operationResultPollResponse.getValue(),
             tasksResult.getFailed());
-        AnalyzeBatchOperationResultPropertiesHelper.setInProgressTaskCount(operationResultPollResponse.getValue(),
+        AnalyzeBatchOperationResultPropertiesHelper.setInProgressTasks(operationResultPollResponse.getValue(),
             tasksResult.getInProgress());
-        AnalyzeBatchOperationResultPropertiesHelper.setSuccessfullyCompletedTasksCount(
+        AnalyzeBatchOperationResultPropertiesHelper.setSuccessfullyCompletedTasks(
             operationResultPollResponse.getValue(), tasksResult.getCompleted());
-        AnalyzeBatchOperationResultPropertiesHelper.setTotalTasksCount(operationResultPollResponse.getValue(),
+        AnalyzeBatchOperationResultPropertiesHelper.setTotalTasks(operationResultPollResponse.getValue(),
             tasksResult.getTotal());
         return Mono.just(new PollResponse<>(status, operationResultPollResponse.getValue()));
     }

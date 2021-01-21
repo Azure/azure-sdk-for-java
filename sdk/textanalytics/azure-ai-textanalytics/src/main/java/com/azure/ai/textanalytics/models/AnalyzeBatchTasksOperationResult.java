@@ -12,14 +12,14 @@ import java.time.OffsetDateTime;
  */
 public final class AnalyzeBatchTasksOperationResult {
     private String operationId;
-    private String name;
-    private int failedTasksCount;
-    private int inProgressTaskCount;
-    private int successfullyCompletedTasksCount;
-    private int totalTasksCount;
+    private String displayName;
+    private int failedTasks;
+    private int inProgressTasks;
+    private int successfullyCompletedTasks;
+    private int totalTasks;
     private OffsetDateTime expiresAt;
     private OffsetDateTime createdAt;
-    private OffsetDateTime updatedAt;
+    private OffsetDateTime lastModifiedAt;
 
     static {
         AnalyzeBatchOperationResultPropertiesHelper.setAccessor(
@@ -30,31 +30,31 @@ public final class AnalyzeBatchTasksOperationResult {
                 }
 
                 @Override
-                public void setName(AnalyzeBatchTasksOperationResult operationResult, String name) {
-                    operationResult.setName(name);
+                public void setDisplayName(AnalyzeBatchTasksOperationResult operationResult, String name) {
+                    operationResult.setDisplayName(name);
                 }
 
                 @Override
-                public void setFailedTasksCount(AnalyzeBatchTasksOperationResult operationResult,
-                    int failedTasksCount) {
-                    operationResult.setFailedTasksCount(failedTasksCount);
+                public void setFailedTasks(AnalyzeBatchTasksOperationResult operationResult,
+                    int failedTasks) {
+                    operationResult.setFailedTasks(failedTasks);
                 }
 
                 @Override
-                public void setInProgressTaskCount(AnalyzeBatchTasksOperationResult operationResult,
-                    int inProgressTaskCount) {
-                    operationResult.setInProgressTaskCount(inProgressTaskCount);
+                public void setInProgressTasks(AnalyzeBatchTasksOperationResult operationResult,
+                    int inProgressTasks) {
+                    operationResult.setInProgressTasks(inProgressTasks);
                 }
 
                 @Override
-                public void setSuccessfullyCompletedTasksCount(AnalyzeBatchTasksOperationResult operationResult,
-                    int successfullyCompletedTasksCount) {
-                    operationResult.setSuccessfullyCompletedTasksCount(successfullyCompletedTasksCount);
+                public void setSuccessfullyCompletedTasks(AnalyzeBatchTasksOperationResult operationResult,
+                    int successfullyCompletedTasks) {
+                    operationResult.setSuccessfullyCompletedTasks(successfullyCompletedTasks);
                 }
 
                 @Override
-                public void setTotalTasksCount(AnalyzeBatchTasksOperationResult operationResult, int totalTasksCount) {
-                    operationResult.setTotalTasksCount(totalTasksCount);
+                public void setTotalTasks(AnalyzeBatchTasksOperationResult operationResult, int totalTasks) {
+                    operationResult.setTotalTasks(totalTasks);
                 }
 
                 @Override
@@ -70,9 +70,9 @@ public final class AnalyzeBatchTasksOperationResult {
                 }
 
                 @Override
-                public void setUpdatedAt(AnalyzeBatchTasksOperationResult operationResult,
-                    OffsetDateTime updatedAt) {
-                    operationResult.setUpdatedAt(updatedAt);
+                public void setLastModifiedAt(AnalyzeBatchTasksOperationResult operationResult,
+                    OffsetDateTime lastModifiedAt) {
+                    operationResult.setLastModifiedAt(lastModifiedAt);
                 }
             });
     }
@@ -91,8 +91,8 @@ public final class AnalyzeBatchTasksOperationResult {
      *
      * @return the displayName property of the {@link AnalyzeBatchTasksOperationResult}.
      */
-    public String getName() {
-        return name;
+    public String getDisplayName() {
+        return displayName;
     }
 
     /**
@@ -100,8 +100,8 @@ public final class AnalyzeBatchTasksOperationResult {
      *
      * @return the failed number of tasks.
      */
-    public int getFailedTasksCount() {
-        return failedTasksCount;
+    public int getFailedTasks() {
+        return failedTasks;
     }
 
     /**
@@ -109,8 +109,8 @@ public final class AnalyzeBatchTasksOperationResult {
      *
      * @return the in-progress number of tasks.
      */
-    public int getInProgressTaskCount() {
-        return inProgressTaskCount;
+    public int getInProgressTasks() {
+        return inProgressTasks;
     }
 
     /**
@@ -118,8 +118,8 @@ public final class AnalyzeBatchTasksOperationResult {
      *
      * @return the successfully completed number of tasks.
      */
-    public int getSuccessfullyCompletedTasksCount() {
-        return successfullyCompletedTasksCount;
+    public int getSuccessfullyCompletedTasks() {
+        return successfullyCompletedTasks;
     }
 
     /**
@@ -127,8 +127,8 @@ public final class AnalyzeBatchTasksOperationResult {
      *
      * @return the total number of tasks.
      */
-    public int getTotalTasksCount() {
-        return totalTasksCount;
+    public int getTotalTasks() {
+        return totalTasks;
     }
 
     /**
@@ -154,32 +154,32 @@ public final class AnalyzeBatchTasksOperationResult {
      *
      * @return the last updated time of a task.
      */
-    public OffsetDateTime getUpdatedAt() {
-        return updatedAt;
+    public OffsetDateTime getLastModifiedAt() {
+        return lastModifiedAt;
     }
 
     private void setOperationId(String operationId) {
         this.operationId = operationId;
     }
 
-    private void setName(String name) {
-        this.name = name;
+    private void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
-    private void setFailedTasksCount(int failedTasksCount) {
-        this.failedTasksCount = failedTasksCount;
+    private void setFailedTasks(int failedTasks) {
+        this.failedTasks = failedTasks;
     }
 
-    private void setInProgressTaskCount(int inProgressTaskCount) {
-        this.inProgressTaskCount = inProgressTaskCount;
+    private void setInProgressTasks(int inProgressTasks) {
+        this.inProgressTasks = inProgressTasks;
     }
 
-    private void setSuccessfullyCompletedTasksCount(int successfullyCompletedTasksCount) {
-        this.successfullyCompletedTasksCount = successfullyCompletedTasksCount;
+    private void setSuccessfullyCompletedTasks(int successfullyCompletedTasks) {
+        this.successfullyCompletedTasks = successfullyCompletedTasks;
     }
 
-    private void setTotalTasksCount(int totalTasksCount) {
-        this.totalTasksCount = totalTasksCount;
+    private void setTotalTasks(int totalTasks) {
+        this.totalTasks = totalTasks;
     }
 
     private void setCreatedAt(OffsetDateTime createdAt) {
@@ -190,7 +190,7 @@ public final class AnalyzeBatchTasksOperationResult {
         this.expiresAt = expiresAt;
     }
 
-    private void setUpdatedAt(OffsetDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+    private void setLastModifiedAt(OffsetDateTime lastModifiedAt) {
+        this.lastModifiedAt = lastModifiedAt;
     }
 }

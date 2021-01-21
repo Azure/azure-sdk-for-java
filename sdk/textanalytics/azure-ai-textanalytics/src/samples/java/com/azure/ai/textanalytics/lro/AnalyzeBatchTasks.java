@@ -8,10 +8,11 @@ import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOperationResult;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksResult;
+import com.azure.ai.textanalytics.models.BatchActions;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -59,21 +60,21 @@ public class AnalyzeBatchTasks {
 
         SyncPoller<AnalyzeBatchTasksOperationResult, PagedIterable<AnalyzeBatchTasksResult>> syncPoller =
             client.beginAnalyzeBatchTasks(documents,
-                new com.azure.ai.textanalytics.models.AnalyzeBatchTasks()
-                    .setRecognizeEntityOptions(new RecognizeEntityOptions())
-                    .setExtractKeyPhraseOptions(
+                new BatchActions()
+                    .setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
+                    .setExtractKeyPhrasesOptions(
                         new ExtractKeyPhrasesOptions().setModelVersion("invalidVersion"),
                         new ExtractKeyPhrasesOptions().setModelVersion("latest")),
-                new AnalyzeBatchTasksOptions().setName("{tasks_display_name}"),
+                new AnalyzeBatchTasksOptions().setDisplayName("{tasks_display_name}"),
                 Context.NONE);
 
         // Task operation statistics
         while (syncPoller.poll().getStatus() == LongRunningOperationStatus.IN_PROGRESS) {
             final AnalyzeBatchTasksOperationResult operationResult = syncPoller.poll().getValue();
             System.out.printf("Job display name: %s, Successfully completed tasks: %d, in-process tasks: %d, failed tasks: %d, total tasks: %d%n",
-                operationResult.getName(), operationResult.getSuccessfullyCompletedTasksCount(),
-                operationResult.getInProgressTaskCount(), operationResult.getFailedTasksCount(),
-                operationResult.getTotalTasksCount());
+                operationResult.getDisplayName(), operationResult.getSuccessfullyCompletedTasks(),
+                operationResult.getInProgressTasks(), operationResult.getFailedTasks(),
+                operationResult.getTotalTasks());
         }
 
         syncPoller.waitForCompletion();

@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeBatchTasks;
+import com.azure.ai.textanalytics.models.BatchActions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeBatchTasksOptions;
 import com.azure.ai.textanalytics.models.AspectSentiment;
@@ -11,7 +11,7 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.RecognizeEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesOptions;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
@@ -22,7 +22,7 @@ import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
-import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
+import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -292,13 +292,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(String, String, RecognizePiiEntityOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntities(String, String, RecognizePiiEntitiesOptions)}
      */
     public void recognizePiiEntitiesWithRecognizePiiEntityOptions() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntities#string-string-RecognizePiiEntityOptions
         String document = "My SSN is 859-98-0987";
         textAnalyticsAsyncClient.recognizePiiEntities(document, "en",
-            new RecognizePiiEntityOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION))
+            new RecognizePiiEntitiesOptions().setDomainFilter(PiiEntityDomainType.PROTECTED_HEALTH_INFORMATION))
             .subscribe(piiEntityCollection -> {
                 System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
                 piiEntityCollection.forEach(entity -> System.out.printf(
@@ -310,7 +310,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntitiesBatch(Iterable, String, RecognizePiiEntityOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntitiesBatch(Iterable, String, RecognizePiiEntitiesOptions)}
      */
     public void recognizePiiEntitiesStringListWithOptions() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-String-RecognizePiiEntityOptions
@@ -320,7 +320,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         );
 
         // Show statistics and model version
-        RecognizePiiEntityOptions requestOptions = new RecognizePiiEntityOptions().setIncludeStatistics(true)
+        RecognizePiiEntitiesOptions requestOptions = new RecognizePiiEntitiesOptions().setIncludeStatistics(true)
             .setModelVersion("latest");
 
         textAnalyticsAsyncClient.recognizePiiEntitiesBatch(documents, "en", requestOptions)
@@ -344,7 +344,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     /**
      * Code snippet for {@link TextAnalyticsAsyncClient#recognizePiiEntitiesBatchWithResponse(Iterable,
-     * RecognizePiiEntityOptions)}
+     * RecognizePiiEntitiesOptions)}
      */
     public void recognizeBatchPiiEntitiesMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizePiiEntitiesBatch#Iterable-RecognizePiiEntityOptions
@@ -353,7 +353,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "Visa card 0111 1111 1111 1111."));
 
         // Show statistics and model version
-        RecognizePiiEntityOptions requestOptions = new RecognizePiiEntityOptions().setIncludeStatistics(true)
+        RecognizePiiEntitiesOptions requestOptions = new RecognizePiiEntitiesOptions().setIncludeStatistics(true)
             .setModelVersion("latest");
 
         textAnalyticsAsyncClient.recognizePiiEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
@@ -852,7 +852,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                                 if (healthcareEntityDataSources != null) {
                                     healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
                                         "\t\tHealthcare data source ID: %s, data source: %s.%n",
-                                        healthcareEntityLink.getId(), healthcareEntityLink.getName()));
+                                        healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
                                 }
                                 Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
                                     healthcareEntity.getRelatedEntities();
@@ -886,7 +886,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Analyze Tasks
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#beginAnalyzeBatchTasks(Iterable, com.azure.ai.textanalytics.models.AnalyzeBatchTasks, AnalyzeBatchTasksOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginBatchActions(Iterable, BatchActions, AnalyzeBatchTasksOptions)}
      */
     public void analyzeTasksMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.beginAnalyzeBatchTasks#Iterable-AnalyzeTasksOptions
@@ -894,10 +894,10 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             new TextDocumentInput("0", "Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("en"),
             new TextDocumentInput("1", "My SSN is 859-98-0987").setLanguage("en")
         );
-        textAnalyticsAsyncClient.beginAnalyzeBatchTasks(documents,
-            new AnalyzeBatchTasks().setRecognizeEntityOptions(new RecognizeEntityOptions())
-                .setExtractKeyPhraseOptions(new ExtractKeyPhrasesOptions()),
-            new AnalyzeBatchTasksOptions().setName("{tasks_display_name}"))
+        textAnalyticsAsyncClient.beginBatchActions(documents,
+            new BatchActions().setRecognizeEntitiesOptions(new RecognizeEntitiesOptions())
+                .setExtractKeyPhrasesOptions(new ExtractKeyPhrasesOptions()),
+            new AnalyzeBatchTasksOptions().setDisplayName("{tasks_display_name}"))
             .flatMap(AsyncPollResponse::getFinalResult)
             .subscribe(analyzeTasksResultPagedFlux ->
                 analyzeTasksResultPagedFlux.subscribe(analyzeTasksResult -> {

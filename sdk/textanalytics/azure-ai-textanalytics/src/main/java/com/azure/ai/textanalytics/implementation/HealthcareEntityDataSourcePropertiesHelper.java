@@ -18,7 +18,7 @@ public final class HealthcareEntityDataSourcePropertiesHelper {
      */
     public interface HealthcareEntityDataSourceAccessor {
         void setName(HealthcareEntityDataSource healthcareEntityDataSource, String name);
-        void setId(HealthcareEntityDataSource healthcareEntityDataSource, String id);
+        void setEntityId(HealthcareEntityDataSource healthcareEntityDataSource, String entityId);
     }
 
     /**
@@ -34,7 +34,7 @@ public final class HealthcareEntityDataSourcePropertiesHelper {
         accessor.setName(healthcareEntityDataSource, name);
     }
 
-    public static void setId(HealthcareEntityDataSource healthcareEntityDataSource, String id) {
-        accessor.setId(healthcareEntityDataSource, id);
+    public static void setEntityId(HealthcareEntityDataSource healthcareEntityDataSource, String entityId) {
+        accessor.setEntityId(healthcareEntityDataSource, entityId);
     }
 }

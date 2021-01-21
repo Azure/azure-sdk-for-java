@@ -19,15 +19,15 @@ public final class AnalyzeBatchOperationResultPropertiesHelper {
      */
     public interface AnalyzeTasksOperationResultAccessor {
         void setOperationId(AnalyzeBatchTasksOperationResult operationResult, String operationId);
-        void setName(AnalyzeBatchTasksOperationResult operationResult, String name);
-        void setFailedTasksCount(AnalyzeBatchTasksOperationResult operationResult, int failedTasksCount);
-        void setInProgressTaskCount(AnalyzeBatchTasksOperationResult operationResult, int inProgressTaskCount);
-        void setSuccessfullyCompletedTasksCount(AnalyzeBatchTasksOperationResult operationResult,
-            int successfullyCompletedTasksCount);
-        void setTotalTasksCount(AnalyzeBatchTasksOperationResult operationResult, int totalTasksCount);
+        void setDisplayName(AnalyzeBatchTasksOperationResult operationResult, String name);
+        void setFailedTasks(AnalyzeBatchTasksOperationResult operationResult, int failedTasks);
+        void setInProgressTasks(AnalyzeBatchTasksOperationResult operationResult, int inProgressTasks);
+        void setSuccessfullyCompletedTasks(AnalyzeBatchTasksOperationResult operationResult,
+            int successfullyCompletedTasks);
+        void setTotalTasks(AnalyzeBatchTasksOperationResult operationResult, int totalTasks);
         void setExpiresAt(AnalyzeBatchTasksOperationResult operationResult, OffsetDateTime expiresAt);
         void setCreatedAt(AnalyzeBatchTasksOperationResult operationResult, OffsetDateTime createdAt);
-        void setUpdatedAt(AnalyzeBatchTasksOperationResult operationResult, OffsetDateTime updatedAt);
+        void setLastModifiedAt(AnalyzeBatchTasksOperationResult operationResult, OffsetDateTime lastModifiedAt);
     }
 
     /**
@@ -46,25 +46,25 @@ public final class AnalyzeBatchOperationResultPropertiesHelper {
     }
 
     public static void setDisplayName(AnalyzeBatchTasksOperationResult operationResult, String displayName) {
-        accessor.setName(operationResult, displayName);
+        accessor.setDisplayName(operationResult, displayName);
     }
 
-    public static void setFailedTasksCount(AnalyzeBatchTasksOperationResult operationResult, int failedTasksCount) {
-        accessor.setFailedTasksCount(operationResult, failedTasksCount);
+    public static void setFailedTasks(AnalyzeBatchTasksOperationResult operationResult, int failedTasks) {
+        accessor.setFailedTasks(operationResult, failedTasks);
     }
 
-    public static void setInProgressTaskCount(AnalyzeBatchTasksOperationResult operationResult,
-        int inProgressTaskCount) {
-        accessor.setInProgressTaskCount(operationResult, inProgressTaskCount);
+    public static void setInProgressTasks(AnalyzeBatchTasksOperationResult operationResult,
+        int inProgressTasks) {
+        accessor.setInProgressTasks(operationResult, inProgressTasks);
     }
 
-    public static void setSuccessfullyCompletedTasksCount(AnalyzeBatchTasksOperationResult operationResult,
-        int successfullyCompletedTasksCount) {
-        accessor.setSuccessfullyCompletedTasksCount(operationResult, successfullyCompletedTasksCount);
+    public static void setSuccessfullyCompletedTasks(AnalyzeBatchTasksOperationResult operationResult,
+        int successfullyCompletedTasks) {
+        accessor.setSuccessfullyCompletedTasks(operationResult, successfullyCompletedTasks);
     }
 
-    public static void setTotalTasksCount(AnalyzeBatchTasksOperationResult operationResult, int totalTasksCount) {
-        accessor.setTotalTasksCount(operationResult, totalTasksCount);
+    public static void setTotalTasks(AnalyzeBatchTasksOperationResult operationResult, int totalTasks) {
+        accessor.setTotalTasks(operationResult, totalTasks);
     }
 
     public static void setCreatedAt(AnalyzeBatchTasksOperationResult operationResult, OffsetDateTime createdAt) {
@@ -75,7 +75,8 @@ public final class AnalyzeBatchOperationResultPropertiesHelper {
         accessor.setExpiresAt(operationResult, expiresAt);
     }
 
-    public static void setUpdatedAt(AnalyzeBatchTasksOperationResult operationResult, OffsetDateTime updatedAt) {
-        accessor.setUpdatedAt(operationResult, updatedAt);
+    public static void setLastModifiedAt(AnalyzeBatchTasksOperationResult operationResult,
+        OffsetDateTime lastModifiedAt) {
+        accessor.setLastModifiedAt(operationResult, lastModifiedAt);
     }
 }

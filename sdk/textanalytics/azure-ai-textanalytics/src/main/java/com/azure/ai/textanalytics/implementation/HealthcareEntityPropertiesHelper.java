@@ -3,10 +3,9 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.EntityCategory;
-import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityDataSource;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.core.util.IterableStream;
 
 import java.util.Map;
@@ -24,7 +23,7 @@ public final class HealthcareEntityPropertiesHelper {
      */
     public interface HealthcareEntityAccessor {
         void setText(HealthcareEntity healthcareEntity, String text);
-        void setCategory(HealthcareEntity healthcareEntity, EntityCategory category);
+        void setCategory(HealthcareEntity healthcareEntity, String category);
         void setSubcategory(HealthcareEntity healthcareEntity, String subcategory);
         void setConfidenceScore(HealthcareEntity healthcareEntity, double confidenceScore);
         void setOffset(HealthcareEntity healthcareEntity, int offset);
@@ -47,7 +46,7 @@ public final class HealthcareEntityPropertiesHelper {
         accessor.setText(healthcareEntity, text);
     }
 
-    public static void setCategory(HealthcareEntity healthcareEntity, EntityCategory category) {
+    public static void setCategory(HealthcareEntity healthcareEntity, String category) {
         accessor.setCategory(healthcareEntity, category);
     }
 
