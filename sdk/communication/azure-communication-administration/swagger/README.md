@@ -32,7 +32,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=phonenumber
 These settings apply only when `--tag=identity` is specified on the command line.
 
 ``` yaml $(tag) == 'identity'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/084de2711f77d12d644c7628b61cdd7634341ee8/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/stable/2021-03-07/CommunicationIdentity.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/14bfbf5d0ff8f0dc1358e6e60362e99d0a649ba7/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/stable/2021-03-07/CommunicationIdentity.json
 add-context-parameter: true
 ```
 
