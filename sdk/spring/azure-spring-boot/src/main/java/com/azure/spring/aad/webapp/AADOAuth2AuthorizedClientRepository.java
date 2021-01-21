@@ -4,6 +4,8 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADClientRegistrationRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
@@ -26,6 +28,8 @@ import java.util.function.Consumer;
  * OAuth2AuthorizedClientRepository used for AAD oauth2 clients.
  */
 public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADOAuth2AuthorizedClientRepository.class);
 
     private final AADWebAppClientRegistrationRepository repo;
     private final OAuth2AuthorizedClientRepository delegate;
@@ -77,12 +81,16 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                 .attributes(getAttributesConsumer(scopes))
                 .build();
             result = provider.authorize(context);
-            ServletRequestAttributes attributes =
-                (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-            delegate.saveAuthorizedClient(result,
-                SecurityContextHolder.getContext().getAuthentication(),
-                attributes.getRequest(),
-                attributes.getResponse());
+            try {
+                ServletRequestAttributes attributes =
+                    (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+                delegate.saveAuthorizedClient(result,
+                    SecurityContextHolder.getContext().getAuthentication(),
+                    attributes.getRequest(),
+                    attributes.getResponse());
+            } catch (IllegalStateException exception) {
+                LOGGER.warn("Can not save OAuth2AuthorizedClient.", exception);
+            }
             return (T) result;
         }
         return null;
