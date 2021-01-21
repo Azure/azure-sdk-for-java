@@ -6,7 +6,6 @@ package com.azure.core.test.implementation.entities;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -50,7 +49,6 @@ public class HttpBinJSON {
     }
 
     public String getHeaderValue(String name) {
-//        name = name.toLowerCase(Locale.ROOT);
         return headers == null ? null : headers.containsKey(name) ? headers.get(name).get(0) : null;
     }
 
