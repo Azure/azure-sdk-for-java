@@ -22,7 +22,6 @@ public class Header {
 
     // but we also cache it to faster serve our public API
     private String cachedStringValue;
-    private String[] cachedStringValues;
 
     /**
      * Create a Header instance using the provided name and value.
@@ -87,13 +86,12 @@ public class Header {
     }
 
     /**
-     * Gets the comma separated value as an array.
+     * Gets the comma separated value as an array. Changes made to this array will not be reflected in the headers.
      *
      * @return the values of this {@link Header} that are separated by a comma
      */
     public String[] getValues() {
-        checkCachedStringValue();
-        return cachedStringValues;
+        return values.toArray(new String[] { });
     }
 
     /**
@@ -113,7 +111,6 @@ public class Header {
     public void addValue(String value) {
         this.values.add(value);
         this.cachedStringValue = null;
-        this.cachedStringValues = null;
     }
 
     /**
@@ -128,9 +125,6 @@ public class Header {
     }
 
     private void checkCachedStringValue() {
-        if (cachedStringValues == null) {
-            cachedStringValues = values.toArray(new String[] { });
-        }
         if (cachedStringValue == null) {
             cachedStringValue = String.join(",", values);
         }
