@@ -6,7 +6,7 @@ package com.azure.sdk.template.perf;
 import com.azure.perf.test.core.PerfStressProgram;
 
 /**
- * Runs the Storage performance test.
+ * Runs the Template performance test.
  *
  * <p>To run from command line. Package the project into a jar with dependencies via mvn clean package.
  * Then run the program via java -jar 'compiled-jar-with-dependencies-path' </p>
