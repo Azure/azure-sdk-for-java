@@ -7,15 +7,11 @@
 package com.microsoft.azure.quantum.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An error response from Azure. */
 @Fluent
 public final class ErrorData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorData.class);
-
     /*
      * An identifier for the error. Codes are invariant and are intended to be
      * consumed programmatically.
@@ -73,11 +69,4 @@ public final class ErrorData {
         this.message = message;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

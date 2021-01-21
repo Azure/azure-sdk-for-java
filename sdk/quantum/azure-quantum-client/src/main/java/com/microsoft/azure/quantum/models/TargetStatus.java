@@ -7,15 +7,11 @@
 package com.microsoft.azure.quantum.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Target status. */
 @Immutable
 public final class TargetStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetStatus.class);
-
     /*
      * Target id.
      */
@@ -75,11 +71,4 @@ public final class TargetStatus {
     public String getStatusPage() {
         return this.statusPage;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

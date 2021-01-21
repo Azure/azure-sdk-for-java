@@ -7,15 +7,11 @@
 package com.microsoft.azure.quantum.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Blob details. */
 @Fluent
 public final class BlobDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobDetails.class);
-
     /*
      * The container name.
      */
@@ -66,17 +62,5 @@ public final class BlobDetails {
     public BlobDetails setBlobName(String blobName) {
         this.blobName = blobName;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getContainerName() == null) {
-            throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Missing required property containerName in model BlobDetails"));
-        }
     }
 }

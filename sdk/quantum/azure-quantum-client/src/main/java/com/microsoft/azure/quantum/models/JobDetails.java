@@ -7,8 +7,6 @@
 package com.microsoft.azure.quantum.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Job details. */
 @Fluent
 public final class JobDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobDetails.class);
-
     /*
      * The job id.
      */
@@ -410,32 +406,5 @@ public final class JobDetails {
      */
     public ErrorData getErrorData() {
         return this.errorData;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getContainerUri() == null) {
-            throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Missing required property containerUri in model JobDetails"));
-        }
-        if (getInputDataFormat() == null) {
-            throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Missing required property inputDataFormat in model JobDetails"));
-        }
-        if (getProviderId() == null) {
-            throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Missing required property providerId in model JobDetails"));
-        }
-        if (getTarget() == null) {
-            throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Missing required property target in model JobDetails"));
-        }
-        if (getErrorData() != null) {
-            getErrorData().validate();
-        }
     }
 }

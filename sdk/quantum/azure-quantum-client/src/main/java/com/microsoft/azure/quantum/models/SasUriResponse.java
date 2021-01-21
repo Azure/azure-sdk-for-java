@@ -7,15 +7,11 @@
 package com.microsoft.azure.quantum.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Get SAS URL operation response. */
 @Fluent
 public final class SasUriResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SasUriResponse.class);
-
     /*
      * A URL with a SAS token to upload a blob for execution in the given
      * workspace.
@@ -42,11 +38,4 @@ public final class SasUriResponse {
         this.sasUri = sasUri;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

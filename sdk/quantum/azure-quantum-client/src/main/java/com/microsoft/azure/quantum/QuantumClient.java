@@ -7,77 +7,208 @@
 package com.microsoft.azure.quantum;
 
 import com.azure.core.http.HttpPipeline;
-import java.time.Duration;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
-/** The interface for QuantumClient class. */
-public interface QuantumClient {
+/** Initializes a new instance of the QuantumClient type. */
+public final class QuantumClient {
+    /** The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000). */
+    private final String subscriptionId;
+
     /**
      * Gets The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
      *
      * @return the subscriptionId value.
      */
-    String getSubscriptionId();
+    public String getSubscriptionId() {
+        return this.subscriptionId;
+    }
+
+    /** Name of an Azure resource group. */
+    private final String resourceGroupName;
 
     /**
      * Gets Name of an Azure resource group.
      *
      * @return the resourceGroupName value.
      */
-    String getResourceGroupName();
+    public String getResourceGroupName() {
+        return this.resourceGroupName;
+    }
+
+    /** Name of the workspace. */
+    private final String workspaceName;
 
     /**
      * Gets Name of the workspace.
      *
      * @return the workspaceName value.
      */
-    String getWorkspaceName();
+    public String getWorkspaceName() {
+        return this.workspaceName;
+    }
+
+    /** server parameter. */
+    private final String host;
 
     /**
      * Gets server parameter.
      *
      * @return the host value.
      */
-    String getHost();
+    public String getHost() {
+        return this.host;
+    }
+
+    /** The HTTP pipeline to send requests through. */
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
      *
      * @return the httpPipeline value.
      */
-    HttpPipeline getHttpPipeline();
+    public HttpPipeline getHttpPipeline() {
+        return this.httpPipeline;
+    }
+
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
 
     /**
-     * Gets The default poll interval for long-running operation.
+     * Gets The serializer to serialize an object into a string.
      *
-     * @return the defaultPollInterval value.
+     * @return the serializerAdapter value.
      */
-    Duration getDefaultPollInterval();
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
+    /** The Jobs object to access its operations. */
+    private final Jobs jobs;
 
     /**
-     * Gets the JobsClient object to access its operations.
+     * Gets the Jobs object to access its operations.
      *
-     * @return the JobsClient object.
+     * @return the Jobs object.
      */
-    JobsClient getJobs();
+    public Jobs getJobs() {
+        return this.jobs;
+    }
+
+    /** The Providers object to access its operations. */
+    private final Providers providers;
 
     /**
-     * Gets the ProvidersClient object to access its operations.
+     * Gets the Providers object to access its operations.
      *
-     * @return the ProvidersClient object.
+     * @return the Providers object.
      */
-    ProvidersClient getProviders();
+    public Providers getProviders() {
+        return this.providers;
+    }
+
+    /** The Storages object to access its operations. */
+    private final Storages storages;
 
     /**
-     * Gets the StoragesClient object to access its operations.
+     * Gets the Storages object to access its operations.
      *
-     * @return the StoragesClient object.
+     * @return the Storages object.
      */
-    StoragesClient getStorages();
+    public Storages getStorages() {
+        return this.storages;
+    }
+
+    /** The Quotas object to access its operations. */
+    private final Quotas quotas;
 
     /**
-     * Gets the QuotasClient object to access its operations.
+     * Gets the Quotas object to access its operations.
      *
-     * @return the QuotasClient object.
+     * @return the Quotas object.
      */
-    QuotasClient getQuotas();
+    public Quotas getQuotas() {
+        return this.quotas;
+    }
+
+    /**
+     * Initializes an instance of QuantumClient client.
+     *
+     * @param subscriptionId The Azure subscription ID. This is a GUID-formatted string (e.g.
+     *     00000000-0000-0000-0000-000000000000).
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param workspaceName Name of the workspace.
+     * @param host server parameter.
+     */
+    QuantumClient(String subscriptionId, String resourceGroupName, String workspaceName, String host) {
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                subscriptionId,
+                resourceGroupName,
+                workspaceName,
+                host);
+    }
+
+    /**
+     * Initializes an instance of QuantumClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param subscriptionId The Azure subscription ID. This is a GUID-formatted string (e.g.
+     *     00000000-0000-0000-0000-000000000000).
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param workspaceName Name of the workspace.
+     * @param host server parameter.
+     */
+    QuantumClient(
+            HttpPipeline httpPipeline,
+            String subscriptionId,
+            String resourceGroupName,
+            String workspaceName,
+            String host) {
+        this(
+                httpPipeline,
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                subscriptionId,
+                resourceGroupName,
+                workspaceName,
+                host);
+    }
+
+    /**
+     * Initializes an instance of QuantumClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param subscriptionId The Azure subscription ID. This is a GUID-formatted string (e.g.
+     *     00000000-0000-0000-0000-000000000000).
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param workspaceName Name of the workspace.
+     * @param host server parameter.
+     */
+    QuantumClient(
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String subscriptionId,
+            String resourceGroupName,
+            String workspaceName,
+            String host) {
+        this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
+        this.subscriptionId = subscriptionId;
+        this.resourceGroupName = resourceGroupName;
+        this.workspaceName = workspaceName;
+        this.host = host;
+        this.jobs = new Jobs(this);
+        this.providers = new Providers(this);
+        this.storages = new Storages(this);
+        this.quotas = new Quotas(this);
+    }
 }

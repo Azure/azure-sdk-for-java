@@ -7,15 +7,11 @@
 package com.microsoft.azure.quantum.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Quota information. */
 @Fluent
 public final class Quota {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Quota.class);
-
     /*
      * The name of the dimension associated with the quota.
      */
@@ -201,11 +197,4 @@ public final class Quota {
         this.period = period;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }
