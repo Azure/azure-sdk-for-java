@@ -50,7 +50,7 @@ public class HttpBinJSON {
     }
 
     public String getHeaderValue(String name) {
-        name = name.toLowerCase(Locale.ROOT);
+//        name = name.toLowerCase(Locale.ROOT);
         return headers == null ? null : headers.containsKey(name) ? headers.get(name).get(0) : null;
     }
 

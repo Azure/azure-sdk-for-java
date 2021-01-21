@@ -52,7 +52,7 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
     // This class wraps a Netty HttpHeaders instance and provides an azure-core HttpHeaders view onto it.
     // This avoids the need to copy the Netty HttpHeaders into an azure-core HttpHeaders instance.
     static class NettyHttpHeaders extends HttpHeaders {
-        // THe Netty HttpHeaders we are wrapping
+        // The Netty HttpHeaders we are wrapping
         private final io.netty.handler.codec.http.HttpHeaders nettyHeaders;
 
         // this is an AbstractMap that we create to virtualize a view onto the Netty HttpHeaders type.
@@ -61,10 +61,6 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
 
         NettyHttpHeaders(io.netty.handler.codec.http.HttpHeaders nettyHeaders) {
             this.nettyHeaders = nettyHeaders;
-        }
-
-        private String formatKey(final String key) {
-            return key == null ? null : key.toLowerCase(Locale.ROOT);
         }
 
         @Override
@@ -78,7 +74,6 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
                 return this;
             }
 
-            name = formatKey(name);
             if (value == null) {
                 remove(name);
             } else {
@@ -93,7 +88,6 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
                 return this;
             }
 
-            name = formatKey(name);
             if (values == null) {
                 remove(name);
             } else {
@@ -107,7 +101,6 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
                 return this;
             }
 
-            name = formatKey(name);
             if (value == null) {
                 remove(name);
             } else {
@@ -118,7 +111,6 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
 
         @Override
         public HttpHeader get(String name) {
-            name = formatKey(name);
             if (nettyHeaders.contains(name)) {
                 // Be careful here: Netty's HttpHeaders 'get' method will return only the first value,
                 // which is obviously not what we want to call!
@@ -132,7 +124,6 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
 
         @Override
         public HttpHeader remove(String name) {
-            name = formatKey(name);
             HttpHeader header = get(name);
             nettyHeaders.remove(name);
             return header;
@@ -140,12 +131,12 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
 
         @Override
         public String getValue(String name) {
-            return nettyHeaders.get(formatKey(name));
+            return nettyHeaders.get(name);
         }
 
         @Override
         public String[] getValues(String name) {
-            return nettyHeaders.getAll(formatKey(name)).toArray(new String[] { });
+            return nettyHeaders.getAll(name).toArray(new String[] { });
         }
 
         @Override

@@ -16,6 +16,7 @@ import java.util.stream.Stream;
  * A collection of headers on an HTTP request or response.
  */
 public class HttpHeaders implements Iterable<HttpHeader> {
+    // This map is a case-insensitive key (i.e. lower-cased), but the returned HttpHeader key will be as-provided to us
     private final Map<String, HttpHeader> headers = new HashMap<>();
 
     /**
@@ -80,11 +81,11 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         if (name == null) {
             return this;
         }
-        name = formatKey(name);
+        String caseInsensitiveName = formatKey(name);
         if (value == null) {
-            remove(name);
+            remove(caseInsensitiveName);
         } else {
-            headers.put(name, new HttpHeader(name, value));
+            headers.put(caseInsensitiveName, new HttpHeader(name, value));
         }
         return this;
     }
@@ -102,11 +103,11 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         if (name == null) {
             return this;
         }
-        name = formatKey(name);
+        String caseInsensitiveName = formatKey(name);
         if (values == null) {
-            remove(name);
+            remove(caseInsensitiveName);
         } else {
-            headers.put(name, new HttpHeader(name, values));
+            headers.put(caseInsensitiveName, new HttpHeader(name, values));
         }
         return this;
     }
