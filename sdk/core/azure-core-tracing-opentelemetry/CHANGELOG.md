@@ -1,7 +1,9 @@
 # Release History
 
 ## 1.0.0-beta.7 (Unreleased)
-- Support `opentelemetry-api` latest `0.13.1` version.
+
+### Dependency Updates
+- Added support for `opentelemetry-api` latest `0.14.1` version.
 For more detailed information, look [here](https://github.com/open-telemetry/opentelemetry-java/blob/master/CHANGELOG.md#version-0130---2020-12-17)
 
 ## 1.0.0-beta.6 (2020-08-07)
