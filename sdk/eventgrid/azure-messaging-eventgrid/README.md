@@ -69,10 +69,10 @@ az eventgrid topic show --name <your-resource-name> --resource-group <your-resou
 #### Access Key
 
 The keys are listed in the "Access Keys" tab of the [Azure Portal][portal], or can be obtained
-using the following command in [Azure CLI][cli].
+using the following command in [Azure CLI][cli]. Anyone of the keys listed will work.
 
 ```bash
-az eventgrid topic show --name <your-resource-name> --resource-group <your-resource-group-name> --query "key"
+az eventgrid topic key list --name <your-resource-name> --resource-group <your-resource-group-name>
 ```
 
 #### Creating the Client
@@ -80,7 +80,7 @@ az eventgrid topic show --name <your-resource-name> --resource-group <your-resou
 ##### Using endpoint and access key to create the client
 Once you have your access key and topic endpoint, you can create the publisher client as follows:
 
-Sync client:
+Sync client that works for Java developer:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L38-L41 -->
 ```java
 EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
@@ -88,7 +88,7 @@ EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
     .credential(new AzureKeyCredential(key))
     .buildClient();
 ```
-Async client:
+or async client if your technology stack has reactive programming such as project reactor:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L45-L48 -->
 ```java
 EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilder()
@@ -158,6 +158,10 @@ publishing:
 | Custom Events       | `sendCustomEvents` |
 
 Using the wrong method will result in a BadRequest error from the service and your events will not be published.
+Use this command to query which schema an Event Grid Topic accepts if you don't know it:
+```bash
+az eventgrid topic show --name <your-resource-name> --resource-group <your-resource-group-name> --query inputSchema
+```
 
 ### Event Handlers and event deserialization.
 
