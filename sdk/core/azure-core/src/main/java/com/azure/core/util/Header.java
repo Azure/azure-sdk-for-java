@@ -3,7 +3,6 @@
 
 package com.azure.core.util;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -97,6 +96,11 @@ public class Header {
         return cachedStringValues;
     }
 
+    /**
+     * Returns all values associated with this header, represented as an unmodifiable list of strings.
+     *
+     * @return An unmodifiable list containing all values associated with this header.
+     */
     public List<String> getValuesList() {
         return Collections.unmodifiableList(values);
     }
