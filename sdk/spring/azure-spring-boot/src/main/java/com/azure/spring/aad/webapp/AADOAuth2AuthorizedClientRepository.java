@@ -80,18 +80,15 @@ public class AADOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClie
                 .principal(principal)
                 .attributes(getAttributesConsumer(scopes))
                 .build();
-            result = provider.authorize(context);
+            OAuth2AuthorizedClient clientGotByRefreshToken = provider.authorize(context);
             try {
                 ServletRequestAttributes attributes =
                     (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-                delegate.saveAuthorizedClient(result,
-                    SecurityContextHolder.getContext().getAuthentication(),
-                    attributes.getRequest(),
-                    attributes.getResponse());
+                delegate.saveAuthorizedClient(clientGotByRefreshToken, principal, request, attributes.getResponse());
             } catch (IllegalStateException exception) {
                 LOGGER.warn("Can not save OAuth2AuthorizedClient.", exception);
             }
-            return (T) result;
+            return (T) clientGotByRefreshToken;
         }
         return null;
     }
