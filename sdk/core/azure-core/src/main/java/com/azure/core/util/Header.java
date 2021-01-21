@@ -19,7 +19,7 @@ public class Header {
     private final String name;
 
     // this is the actual internal representation of all values
-    private List<String> values;
+    private final List<String> values;
 
     // but we also cache it to faster serve our public API
     private String cachedStringValue;
@@ -39,13 +39,29 @@ public class Header {
         this.values.add(value);
     }
 
+    /**
+     * Create a Header instance using the provided name and values.
+     *
+     * @param name the name of the header.
+     * @param values the values of the header.
+     * @throws NullPointerException if {@code name} is null.
+     */
     public Header(String name, String... values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
         this.values = new LinkedList<>();
-        this.values.addAll(Arrays.asList(values));
+        for (String value : values) {
+            this.values.add(value);
+        }
     }
 
+    /**
+     * Create a Header instance using the provided name and values.
+     *
+     * @param name the name of the header.
+     * @param values the values of the header.
+     * @throws NullPointerException if {@code name} is null.
+     */
     public Header(String name, List<String> values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
