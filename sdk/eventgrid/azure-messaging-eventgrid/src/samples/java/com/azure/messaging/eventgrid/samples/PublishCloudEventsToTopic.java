@@ -27,15 +27,15 @@ public class PublishCloudEventsToTopic {
 
         // Create a CloudEvent with String data
         String str = "FirstName: John1, LastName:James";
-        CloudEvent cloudEventJson = new CloudEvent("com/example/MyApp", "User.Created.Text", str);
+        CloudEvent cloudEventJson = new CloudEvent("https://com.example.myapp", "User.Created.Text", str);
         // TODO: apache avro format using binary format data
 
         // Create a CloudEvent with Object data
         User newUser = new User("John2", "James");
-        CloudEvent cloudEventModel = new CloudEvent("com/example/MyApp", "User.Created.Object", newUser);
+        CloudEvent cloudEventModel = new CloudEvent("https://com.example.myapp", "User.Created.Object", newUser);
         // Create a CloudEvent with binary data
         byte[] byteSample = "FirstName: John3, LastName: James".getBytes(StandardCharsets.UTF_8);
-        CloudEvent cloudEventBytes = new CloudEvent("com/example/MyApp", "User.Created.Binary", byteSample);
+        CloudEvent cloudEventBytes = new CloudEvent("https://com.example.myapp", "User.Created.Binary", byteSample);
 
         // Send them to the event grid topic altogether.
         publisherClient.sendCloudEvents(List.of(cloudEventJson, cloudEventModel, cloudEventBytes));

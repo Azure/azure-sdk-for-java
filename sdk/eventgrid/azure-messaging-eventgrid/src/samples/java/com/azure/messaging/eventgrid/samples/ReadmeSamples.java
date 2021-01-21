@@ -7,13 +7,19 @@ import com.azure.core.credential.AzureKeyCredential;
 
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.messaging.eventgrid.CloudEvent;
 import com.azure.messaging.eventgrid.EventGridDeserializer;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
-import com.azure.messaging.eventgrid.EventGridSharedAccessSingatureGenerator;
+import com.azure.messaging.eventgrid.EventGridSasGenerator;
+import com.azure.messaging.eventgrid.SystemEventMappings;
+import com.azure.messaging.eventgrid.samples.models.User;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageBlobRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionValidationEventData;
 
 import java.time.OffsetDateTime;
@@ -62,19 +68,17 @@ public class ReadmeSamples {
             .buildAsyncClient();
     }
 
-    public void sendEventGridEvents() {
+    public void sendEventGridEventsToTopic() {
         List<EventGridEvent> events = new ArrayList<>();
-        events.add(
-            new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", "Example Data", "1")
-        );
+        User user = new User("John", "James");
+        events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", user, "1"));
         egClient.sendEvents(events);
     }
 
-    public void sendCloudEvents() {
+    public void sendCloudEventsToTopic() {
         List<CloudEvent> events = new ArrayList<>();
-        events.add(
-            new CloudEvent("com/example/source", "Com.Example.ExampleEventType", "Example Data")
-        );
+        User user = new User("John", "James");
+        events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType", user));
         egClient.sendCloudEvents(events);
     }
 
@@ -122,7 +126,51 @@ public class ReadmeSamples {
 
     public void createSharedAccessSignature() {
         OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
-        String sasToken = EventGridSharedAccessSingatureGenerator
-            .generateSharedAccessSignature(endpoint, new AzureKeyCredential(key), expiration);
+        String sasToken = EventGridSasGenerator
+            .generateSas(endpoint, new AzureKeyCredential(key), expiration);
+    }
+
+    public void sendEventGridEventsToDomain() {
+        List<EventGridEvent> events = new ArrayList<>();
+        User user = new User("John", "James");
+        events.add(
+            new EventGridEvent("com/example", "Com.Example.ExampleEventType", user, "1")
+                .setTopic("yourtopic"));
+        egClient.sendEvents(events);
+    }
+
+    public void systemEventDataSampleCode() {
+        String cloudEventJsonData = "Your cloud event Json data";
+        List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(cloudEventJsonData);
+        CloudEvent event = events.get(0);
+
+        // Tell if an event is a System Event
+        boolean isSystemEvent = event.isSystemEvent();
+
+        // Look up the System Event data class
+        Class<?> eventDataClazz = SystemEventMappings.getSystemEventMappings().get(event.getType());
+
+        // Deserialize the event data to an instance of a specific System Event data class type
+        BinaryData data = event.getData();
+        if (data != null) {
+            StorageBlobCreatedEventData blobCreatedData = data.toObject(TypeReference.createInstance(StorageBlobCreatedEventData.class));
+            System.out.println(blobCreatedData.getUrl());
+        }
+
+        // A more convenient way to deserialize the System Event data
+        Object systemEventData = event.asSystemEventData();
+        if (systemEventData != null) {
+            if (systemEventData instanceof StorageBlobCreatedEventData) {
+                StorageBlobCreatedEventData blobCreatedData = (StorageBlobCreatedEventData) systemEventData;
+                // do something ...
+            } else if (systemEventData instanceof StorageBlobDeletedEventData) {
+                StorageBlobDeletedEventData blobDeletedData = (StorageBlobDeletedEventData) systemEventData;
+                // do something ...
+            } else if (systemEventData instanceof StorageBlobRenamedEventData) {
+                StorageBlobRenamedEventData blobRenamedData = (StorageBlobRenamedEventData) systemEventData;
+                // do something ...
+            }
+
+        }
     }
 }

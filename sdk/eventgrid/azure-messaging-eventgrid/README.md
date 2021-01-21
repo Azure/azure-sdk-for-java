@@ -95,7 +95,7 @@ EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilde
     .buildAsyncClient();
 ```
 
-If you have a **Shared Access Signature** that be used to send events to an Event Grid Topic or Domain for
+If you have a SAS (**Shared Access Signature**) that can be used to send events to an Event Grid Topic or Domain for
 limited time, you can use it to create the publisher client:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L52-L55 -->
 ```java
@@ -114,23 +114,23 @@ EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
 ```
 
 #### Create a SAS key for other people to send events for a limited period of time
-If you'd like to allow other people to publish events to your Event Grid Topic or Domain for some time, you can create
-a **Shared Access Signature** for them so they can create an `EventGridPublisherClient` like the above to use `AzureSasCredential`
+If you'd like to give permission to other people to publish events to your Event Grid Topic or Domain for some time, you can create
+a SAS (**Shared Access Signature**) for them so they can create an `EventGridPublisherClient` like the above to use `AzureSasCredential`
 to create the publisher client.
 
-Here is sample code to produce a shared access signature that expires after 20 minutes:
+Here is sample code to create a shared access signature that expires after 20 minutes:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L124-L126 -->
 ```java
 OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
     
-String sasToken = EventGridSharedAccessSingatureGenerator
-    .generateSharedAccessSignature(endpoint, new AzureKeyCredential(key), expiration);
+String sasToken = EventGridSasGenerator
+    .generateSas(endpoint, new AzureKeyCredential(key), expiration);
 ```
 
 ## Key concepts
 For information about general Event Grid concepts: [Concepts in Azure Event Grid](https://docs.microsoft.com/azure/event-grid/concepts).
 
-### Event Publishing
+### EventGridPublisherClient
     
 `EventGridPublisherClient` is used sending events to an Event Grid Topic or an Event Grid Domain.
 `EventGridPublisherAsyncClient` is the async version of `EventGridPublisherClient`.
@@ -160,13 +160,12 @@ EventGrid Topic or Domain](https://docs.microsoft.com/en-us/azure/event-grid/sub
 The events sent to the topic or domain will be stored into the subscription's endpoint, also known as 
 ["Event Handler"](https://docs.microsoft.com/en-us/azure/event-grid/event-handlers).
 
-You may use the event handler's SDK to receive the events and then use the `EventGridDeserializer.parseCloudEvents()`
-or `EventGridDeserializer.parseEventGridEvents()` of this SDK to deserialize the events, which are in JSON format.
-The payload of the events can be in binary, String, or JSON data. 
+You may use the event handler's SDK to receive the events and then use the `EventGridDeserializer` of this SDK to 
+deserialize the events, which are in JSON format. The data part of the events can be in binary, String, or JSON data. 
 
 ## Examples
 
-### Sending Events
+### Sending Events To Event Grid Topics
 
 Events can be sent in the `EventGridEvent`, `CloudEvent`, or a custom schema, as detailed in the Key Concepts above.
 The topic or domain must be configured to accept the schema being sent. For simplicity,
@@ -176,7 +175,8 @@ the synchronous client is used for samples, however the asynchronous client has 
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L66-L70 -->
 ```java
 List<EventGridEvent> events = new ArrayList<>();
-events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", "Example Data", "1"));
+User user = new User("John", "James");
+events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", user, "1"));
 egClient.sendEvents(events);
 ```
 
@@ -184,7 +184,8 @@ egClient.sendEvents(events);
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L74-L78 -->
 ```java
 List<CloudEvent> events = new ArrayList<>();
-events.add(new CloudEvent("com/example/source", "Com.Example.ExampleEventType", "Example Data"));
+User user = new User("John", "James");
+events.add(new CloudEvent("https://source.example.com", "Com.Example.ExampleEventType", user));
 egClient.sendCloudEvents(events);
 ```
 
@@ -193,66 +194,117 @@ egClient.sendCloudEvents(events);
 To send custom events in any defined schema, use the `sendCustomEvents` method
 on the `PublisherClient`.
 
-### Recieving and Consuming Events
+### Sending Events To Event Grid Domain
 
-Events can be sent to a variety of event handlers, including ServiceBus
-EventHubs, Blob Storage Queue, WebHook endpoint, or many other supported Azure Services.
-However, currently all events will be sent as encoded JSON data. Here is some basic code that details the deserialization 
+An [Event Grid Domain](https://docs.microsoft.com/en-us/azure/event-grid/event-domains) can have thousands of topics
+but has a single endpoint. You can use a domain to manage a set of related topics. Sending events to the topics of
+an Event Grid Domain is the same as sending events to a regular Event Grid Topic except that you need to 
+specify the `topic` of an `EventGridEvent` if the domain accepts `EventGridEvent` schema.
+```java
+List<EventGridEvent> events = new ArrayList<>();
+User user = new User("John", "James");
+events.add(new EventGridEvent("com/example", "Com.Example.ExampleEventType", user, "1")
+    .setTopic("yourtopic"));
+egClient.sendEvents(events);
+```
+
+If the domain accepts `CloudEvent` schema, the CloudEvent's attribute that is configured to map the `topic` when the 
+domain is created must be set. The default mapping attribute is `source`.
+
+### Recieving and Consuming Events
+The Event Grid service doesn't store events. So this Event Grid SDK doesn't have an event receiver.
+Instead, events are stored in the [Event Handlers](#event-handlers-and-event-deserialization), including ServiceBus, EventHubs, Storage Queue, WebHook endpoint, or many other supported Azure Services.
+However, currently all events will be sent and stored as encoded JSON data. Here is some basic code that details the deserialization 
 of events after they're received by the event handlers. Again, the handling is different based on the event schema being received
 from the topic/subscription.
 
-#### Deserialize `EventGridEvent`
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L82-L99 -->
+#### Deserialize `EventGridEvent` or `CloudEvent` from a Json String
+The Json String can have a single event or an array of events. The returned result is a list of events.
 ```java
-List<EventGridEvent> events = EventGridDeserializer.deserializeEventGridEvents(jsonData);
+// Deserialize an EventGridEvent
+String eventGridEventJsonData = "your EventGridEvent json String";
+List<EventGridEvent> events = EventGridDeserializer.deserializeEventGridEvents(eventGridEventJsonData);
 
-for (EventGridEvent event : events) {
-    if (event.isSystemEvent()) {
-        Object systemEventData = event.asSystemEventData();
-        if (systemEventData instanceof SubscriptionValidationEventData) {
-            SubscriptionValidationEventData validationData = (SubscriptionValidationEventData) systemEventData;
-            System.out.println(validationData.getValidationCode());
-        }
-    }
-    else {
-        BinaryData binaryData = event.getData();
-        // we can turn the data into the correct type by calling BinaryData.toString(), BinaryData.toObject(), 
-        // or BinaryData.toBytes(). This sample uses toString.
-        if (binaryData != null) {
-            System.out.println(binaryData.toString()); // "Example Data"
-        }
-    }
-}
-
+// Deserialize a CloudEvent
+String cloudEventJsonData = "your CloudEvent json String";
+List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(cloudEventJsonData);
 ```
 
-#### Deserialize `CloudEvent`
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L103-L120 -->
+#### Deserialize data from a `CloudEvent` or `EventGridEvent`
+Once you deserialize the `EventGridEvent` or `CloudEvent` from a Json String, you can use `getData()` of 
+`CloudEvent` or `EventGridEvent` to get the payload of the event. It returns a `BinaryData`
+object, which has methods to further deserialize the data into usable types:
+- `BinaryData.toBytes()` gets the data as a byte[]
+- `BinaryData.toString()` gets the data as a String
+- `BinaryData.toObject()` gets the data as an object of a specific type. It uses Json deserializer by default. It has
+  an overload to accept your deserializer if you want to use your own.
+
 ```java
-public void deserializeCloudEvent() {
-    List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(jsonData);
-    for (CloudEvent event : events) {
-        if (event.isSystemEvent()) {
-            Object systemEventData = event.asSystemEventData();
-            if (systemEventData instanceof SubscriptionValidationEventData) {
-                SubscriptionValidationEventData validationData = (SubscriptionValidationEventData) systemEventData;
-                System.out.println(validationData.getValidationCode());
-            }
-        }
-        else {
-            // we can turn the data into the correct type by calling BinaryData.toString(), BinaryData.toObject(), 
-            // or BinaryData.toBytes(). This sample uses toString.
-            BinaryData binaryData = event.getData();
-            if (binaryData != null) {
-                System.out.println(binaryData.toString()); // "Example Data"
-            }
-        }
+BinaryData data = eventGridEvent.getData();
+
+//Deserialize data to a model class
+User dataInModelClass = eventData.toObject(TypeReference.createInstance(User.class));
+
+Deserialize data to a Map
+Map<?, ?> dataMap = eventData.toObject(TypeReference.createInstance(Map.class));
+
+//Deserialize data to a String
+String dataString = eventData.toString();
+
+//Deserialize data to byte array (byte[])
+byte[] dataInBytes = eventData.toBytes();
+```  
+
+#### Deserialize system event data from `CloudEvent` or `EventGridEvent`
+An event that is sent to a [System Topic](https://docs.microsoft.com/en-us/azure/event-grid/system-topics) is called a
+System Topic Event, or System Event.
+A system topic in Event Grid represents events published by Azure services such as Azure Storage, Azure Event Hubs, App Configuration and so on.
+An example is when a KeyValue in an App Configuration resource is created/modified or deleted, a system event is sent to the configured System Topic. 
+You can't send a System Event to a System Topic by using this SDK.
+
+Receiving and consuming system events is the same as other events. For convenience, we have pre-defined a set of classes
+that represent the data part of the system events. These classes are under package `com.azure.messaging.eventgrid.systemevents`.
+You can use this SDK's convenience APIs to deal with System Events and their data:
+- tell whether an event is a System Event;
+- look up the System Event data class that a System Event can be deserialized to;
+- deserialize the System Event data to a specific class type;
+```java
+    String cloudEventJsonData = "Your cloud event Json data";
+    List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(cloudEventJsonData);
+    CloudEvent event = events.get(0);
+
+    // Tell if an event is a System Event
+    boolean isSystemEvent = event.isSystemEvent();
+
+    // Look up the System Event data class 
+    Class<?> eventDataClazz = SystemEventMappings.getSystemEventMappings().get(event.getType());
+
+    // Deserialize the event data to an instance of a specific System Event data class type
+    BinaryData data = event.getData();
+    if (data != null) {
+        StorageBlobCreatedEventData blobCreatedData = data.toObject(TypeReference.createInstance(StorageBlobCreatedEventData.class));
+        System.out.println(blobCreatedData.getUrl());
     }
-}
+
+    // A more convenient way to deserialize the System Event data
+    Object systemEventData = event.asSystemEventData();
+    if (systemEventData != null) {
+        if (systemEventData instanceof StorageBlobCreatedEventData) {
+            StorageBlobCreatedEventData blobCreatedData = (StorageBlobCreatedEventData) systemEventData;
+            // do something ...
+        } else if (systemEventData instanceof StorageBlobDeletedEventData) {
+            StorageBlobDeletedEventData blobDeletedData = (StorageBlobDeletedEventData) systemEventData;
+            // do something ...
+        } else if (systemEventData instanceof StorageBlobRenamedEventData) {
+            StorageBlobRenamedEventData blobRenamedData = (StorageBlobRenamedEventData) systemEventData;
+            // do something ...
+        }
+        
+    }
 ```
 
-Some additional sample code can be found [here][samples]. 
-Be sure to check back for more samples in the future.
+### More samples
+Some additional sample code can be found [here][samples].
 
 ## Troubleshooting
 
