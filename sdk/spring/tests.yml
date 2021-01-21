@@ -72,7 +72,7 @@ jobs:
         TestName: LiveTestInAzureChina
         ScenarioName: AzureChinaCloud
         SubscriptionConfiguration: $(sub-config-cn-test-resources)
-        MaxParallel: 1
+        MaxParallel: 2
         Artifacts:
           - name: azure-spring-boot-test-core
             groupId: com.azure.spring
