@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.Resource;
@@ -79,7 +78,7 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
                            this.changeFeedState.getContinuation();
 
                        if (continuationSnapshot != null &&
-                           continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_IMMEDIATELY) {
+                           continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
 
                            // not all continuations have been drained yet
                            // repeat with the next continuation

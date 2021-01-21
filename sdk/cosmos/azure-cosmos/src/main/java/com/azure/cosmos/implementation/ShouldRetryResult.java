@@ -7,7 +7,7 @@ import java.time.Duration;
 public class ShouldRetryResult {
     public final static ShouldRetryResult NO_RETRY =
         ShouldRetryResult.noRetry();
-    public final static ShouldRetryResult RETRY_IMMEDIATELY =
+    public final static ShouldRetryResult RETRY_NOW =
         ShouldRetryResult.retryAfter(Duration.ZERO);
 
     /// <summary>

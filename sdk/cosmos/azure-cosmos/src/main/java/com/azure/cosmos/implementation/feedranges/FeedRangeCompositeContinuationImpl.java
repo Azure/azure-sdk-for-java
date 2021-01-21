@@ -6,11 +6,9 @@ package com.azure.cosmos.implementation.feedranges;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.Integers;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
@@ -186,13 +184,13 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                 this.initialNoResultsRange = this.currentToken.getRange().getMin();
                 this.replaceContinuation(eTag);
                 this.moveToNextToken();
-                return ShouldRetryResult.RETRY_IMMEDIATELY;
+                return ShouldRetryResult.RETRY_NOW;
             }
 
             if (!this.initialNoResultsRange.equalsIgnoreCase(this.currentToken.getRange().getMin())) {
                 this.replaceContinuation(eTag);
                 this.moveToNextToken();
-                return ShouldRetryResult.RETRY_IMMEDIATELY;
+                return ShouldRetryResult.RETRY_NOW;
             }
         }
 
@@ -231,7 +229,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                 this.createChildRanges(resolvedRanges.v);
             }
 
-            return Mono.just(ShouldRetryResult.RETRY_IMMEDIATELY);
+            return Mono.just(ShouldRetryResult.RETRY_NOW);
         });
     }
 
