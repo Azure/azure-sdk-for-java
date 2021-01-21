@@ -111,6 +111,16 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return this;
     }
 
+    /**
+     * Sets all provided header key/values pairs into this HttpHeaders instance. This is equivalent to calling
+     * {@code headers.forEach(this::set)}, and therefore the behavior is as specified in {@link #set(String, List)}.
+     * In other words, this will create a header for each key in the provided map, replacing or removing an existing
+     * one, depending on the value. If the given values list is null, the header with the given name will be removed.
+     * If the given name is already a header, it will be removed and replaced with the headers provided.
+     *
+     * @param headers a map containing keys representing header names, and keys representing the associated values.
+     * @return The updated HttpHeaders object
+     */
     public HttpHeaders setAll(Map<String, List<String>> headers) {
         headers.forEach(this::set);
         return this;

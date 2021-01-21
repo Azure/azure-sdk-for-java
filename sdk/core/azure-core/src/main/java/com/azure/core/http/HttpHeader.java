@@ -26,6 +26,13 @@ public class HttpHeader extends Header {
         super(name, value);
     }
 
+    /**
+     * Create a HttpHeader instance using the provided name and values, resulting in a single HttpHeader instance with
+     * a single name and multiple values set within it.
+     *
+     * @param name the name
+     * @param values the values
+     */
     public HttpHeader(String name, List<String> values) {
         super(name, values);
     }

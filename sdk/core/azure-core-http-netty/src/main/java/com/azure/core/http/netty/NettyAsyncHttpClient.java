@@ -92,10 +92,10 @@ class NettyAsyncHttpClient implements HttpClient {
     private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(
         final HttpRequest restRequest) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
-            for (HttpHeader header : restRequest.getHeaders()) {
-                if (header.getValue() != null) {
-                    reactorNettyRequest.header(header.getName(), header.getValue());
-                }
+            for (HttpHeader hdr : restRequest.getHeaders()) {
+                // Reactor-Netty allows for headers with multiple values, but it treats them as separate headers,
+                // therefore, we must call rb.addHeader for each value, using the same key for all of them
+                hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
             }
             if (restRequest.getBody() != null) {
                 Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);

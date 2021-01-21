@@ -12,6 +12,7 @@ import okhttp3.Response;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /**
  * Base response class for OkHttp with implementations for response metadata.
@@ -54,14 +55,10 @@ abstract class OkHttpResponseBase extends HttpResponse {
     /**
      * Creates azure-core HttpHeaders from okhttp headers.
      *
-     * @param headers okhttp headers
+     * @param okHttpHeaders okhttp headers
      * @return azure-core HttpHeaders
      */
-    private static HttpHeaders fromOkHttpHeaders(Headers headers) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        for (String headerName : headers.names()) {
-            httpHeaders.set(headerName, headers.get(headerName));
-        }
-        return httpHeaders;
+    private static HttpHeaders fromOkHttpHeaders(Headers okHttpHeaders) {
+        return new HttpHeaders().setAll(okHttpHeaders.toMultimap());
     }
 }

@@ -82,16 +82,13 @@ class OkHttpAsyncHttpClient implements HttpClient {
             .map(rb -> {
                 rb.url(request.getUrl());
                 if (request.getHeaders() != null) {
-                    Map<String, String> headers = new HashMap<>();
                     for (HttpHeader hdr : request.getHeaders()) {
-                        if (hdr.getValue() != null) {
-                            headers.put(hdr.getName(), hdr.getValue());
-                        }
+                        // OkHttp allows for headers with multiple values, but it treats them as separate headers,
+                        // therefore, we must call rb.addHeader for each value, using the same key for all of them
+                        hdr.getValuesList().forEach(value -> rb.addHeader(hdr.getName(), value));
                     }
-                    return rb.headers(okhttp3.Headers.of(headers));
-                } else {
-                    return rb.headers(okhttp3.Headers.of(new HashMap<>()));
                 }
+                return rb;
             })
             .flatMap((Function<Request.Builder, Mono<Request.Builder>>) rb -> {
                 if (request.getHttpMethod() == HttpMethod.GET) {
