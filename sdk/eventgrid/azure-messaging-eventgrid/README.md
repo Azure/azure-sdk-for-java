@@ -80,7 +80,7 @@ az eventgrid topic key list --name <your-resource-name> --resource-group <your-r
 ##### Using endpoint and access key to create the client
 Once you have your access key and topic endpoint, you can create the publisher client as follows:
 
-Sync client that works for Java developer:
+Sync client that works for every Java developer:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L38-L41 -->
 ```java
 EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
