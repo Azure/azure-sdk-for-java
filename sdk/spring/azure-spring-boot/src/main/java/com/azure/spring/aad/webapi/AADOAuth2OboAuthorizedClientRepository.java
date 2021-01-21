@@ -22,6 +22,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.server.resource.authentication.AbstractOAuth2TokenAuthenticationToken;
+import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -110,7 +111,7 @@ public class AADOAuth2OboAuthorizedClientRepository implements OAuth2AuthorizedC
                 ServletRequestAttributes attr =
                     (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
                 HttpServletResponse response = attr.getResponse();
-                assert response != null;
+                Assert.notNull(response,"HttpServletResponse should not be null.");
                 response.setStatus(HttpStatus.FORBIDDEN.value());
                 try {
                     ServletOutputStream outputStream = response.getOutputStream();
