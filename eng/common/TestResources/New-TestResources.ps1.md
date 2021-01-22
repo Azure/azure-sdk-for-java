@@ -15,7 +15,7 @@ Deploys live test resources defined for a service directory to Azure.
 ### Default (Default)
 ```
 New-TestResources.ps1 [-BaseName <String>] [-ResourceGroupName <String>] [-ServiceDirectory] <String>
- [-TestApplicationId <String>] [-TestApplicationSecret <String>] [-TestApplicationOid <String>]
+ [-Artifacts <String>] [-TestApplicationId <String>] [-TestApplicationSecret <String>] [-TestApplicationOid <String>]
  [-DeleteAfterHours <Int32>] [-Location <String>] [-Environment <String>] [-ArmTemplateParameters <Hashtable>]
  [-AdditionalParameters <Hashtable>] [-EnvironmentVariables <Hashtable>] [-CI] [-Force] [-OutFile] [-WhatIf]
  [-Confirm] [<CommonParameters>]
@@ -35,8 +35,9 @@ New-TestResources.ps1 [-BaseName <String>] [-ResourceGroupName <String>] [-Servi
 Deploys live test resouces specified in test-resources.json files to a resource
 group.
 
-This script searches the directory specified in $ServiceDirectory recursively
-for files named test-resources.json.
+This script searches for files named test-resources.json in each artifact project
+of $Artifacts under $ServiceDirectory recursively. When $Artifacts is not set, the
+script will search the directory $ServiceDirectory directly.
 All found test-resources.json files will be
 deployed to the test resource group.
 
@@ -70,6 +71,7 @@ the SecureString to plaintext by another means.
 New-TestResources.ps1 `
     -BaseName 'Generated' `
     -ServiceDirectory '$(ServiceDirectory)' `
+    -Artifacts '$(Artifacts)' `
     -TenantId '$(TenantId)' `
     -ProvisionerApplicationId '$(ProvisionerId)' `
     -ProvisionerApplicationSecret '$(ProvisionerSecret)' `
@@ -137,6 +139,23 @@ Aliases:
 
 Required: True
 Position: 1
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -Artifacts
+A string of all artifact names defined in tests.yml under ServiceDirectory. If the
+value is not set, then all ARM templates under ServiceDirectory will be found to deploy
+test resources. Otherwise, only templates under ServiceDirectory/artifact will be discovered.
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False

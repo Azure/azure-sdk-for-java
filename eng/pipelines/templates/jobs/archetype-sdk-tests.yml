@@ -102,6 +102,7 @@ jobs:
             SubscriptionConfiguration: $(SubscriptionConfiguration)
             ArmTemplateParameters: $(ArmTemplateParameters)
             Location: $(Location)
+            Artifacts: ${{ parameters.Artifacts }}
 
       - ${{ parameters.PreRunSteps }}
 
@@ -109,7 +110,7 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
-      
+
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:

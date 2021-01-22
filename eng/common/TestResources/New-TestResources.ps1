@@ -22,6 +22,9 @@ param (
     [string] $ServiceDirectory,
 
     [Parameter()]
+    [string] $Artifacts,
+
+    [Parameter()]
     [ValidatePattern('^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$')]
     [string] $TestApplicationId,
 
@@ -144,16 +147,30 @@ try {
     # Azure SDK Developer Playground
     $defaultSubscription = "faa080af-c1d8-40ad-9cce-e1a450ca5b57"
 
-    Write-Verbose "Checking for '$templateFileName' files under '$root'"
-    Get-ChildItem -Path $root -Filter $templateFileName -Recurse | ForEach-Object {
-        $templateFile = $_.FullName
+    # Deploy test resources according to Artifacts
+    if ($Artifacts) {
+        $Artifacts.TrimStart(",").Split(",") | ForEach-Object {
+            $templateFilePath = Join-Path $root $_
+            Write-Verbose "Checking for '$templateFileName' files under '$templateFilePath'"
+            Get-ChildItem -Path $templateFilePath -Filter $templateFileName -Recurse | ForEach-Object {
+                $templateFile = $_.FullName
 
-        Write-Verbose "Found template '$templateFile'"
-        $templateFiles += $templateFile
+                Write-Verbose "Found template '$templateFile'"
+                $templateFiles += $templateFile
+            }
+        }
+    } else {
+        Write-Verbose "Checking for '$templateFileName' files under '$root'"
+        Get-ChildItem -Path $root -Filter $templateFileName -Recurse | ForEach-Object {
+            $templateFile = $_.FullName
+
+            Write-Verbose "Found template '$templateFile'"
+            $templateFiles += $templateFile
+        }
     }
 
     if (!$templateFiles) {
-        Write-Warning -Message "No template files found under '$root'"
+        Write-Warning -Message "No template files found"
         exit
     }
 
@@ -549,6 +566,11 @@ created.
 A directory under 'sdk' in the repository root - optionally with subdirectories
 specified - in which to discover ARM templates named 'test-resources.json'.
 This can also be an absolute path or specify parent directories.
+
+.PARAMETER Artifacts
+A string of all artifact names defined in tests.yml under ServiceDirectory. If the
+value is not set, then all ARM templates under ServiceDirectory will be found to deploy
+test resources. Otherwise, only templates under ServiceDirectory/artifact will be discovered.
 
 .PARAMETER TestApplicationId
 The AAD Application ID to authenticate the test runner against deployed
