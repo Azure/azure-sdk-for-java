@@ -42,13 +42,19 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
     private final OAuth2AuthorizationRequestResolver defaultResolver;
 
     private final String passwordResetUserFlow;
+    private final String signUpOrSignIn;
 
     private final AADB2CProperties properties;
+    private final ClientRegistrationRepository clientRegistrationRepository;
 
     public AADB2CAuthorizationRequestResolver(@NonNull ClientRegistrationRepository repository,
                                               @NonNull AADB2CProperties properties) {
         this.properties = properties;
+        this.clientRegistrationRepository = repository;
+
         this.passwordResetUserFlow = this.properties.getUserFlows().getPasswordReset();
+        this.signUpOrSignIn = this.properties.getUserFlows().getSignUpOrSignIn();
+
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
     }
 
@@ -64,10 +70,15 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
             return getB2CAuthorizationRequest(authRequest, passwordResetUserFlow);
         }
 
-        if (StringUtils.hasText(registrationId) && REQUEST_MATCHER.matches(request)) {
-            return getB2CAuthorizationRequest(defaultResolver.resolve(request), registrationId);
-        }
+        if (StringUtils.hasText(registrationId)) {
+            if (REQUEST_MATCHER.matches(request)) {
+                return getB2CAuthorizationRequest(defaultResolver.resolve(request), registrationId);
+            }
 
+            if (isOtherAuthorizationClient(registrationId)) {
+                return getB2CAuthorizationRequest(defaultResolver.resolve(request, registrationId), signUpOrSignIn);
+            }
+        }
         // Return null may not be the good practice, but we need to align with oauth2.client.web
         // DefaultOAuth2AuthorizationRequestResolver.
         return null;
@@ -115,5 +126,18 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
         }
 
         return false;
+    }
+
+    /**
+     * Ensure oauth redirect request from other client.
+     * @param registrationId
+     * @return
+     */
+    private boolean isOtherAuthorizationClient(@NonNull String registrationId) {
+        if (signUpOrSignIn.equalsIgnoreCase(registrationId)) {
+            return false;
+        }
+
+        return null != clientRegistrationRepository.findByRegistrationId(registrationId);
     }
 }

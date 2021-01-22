@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.b2c;
 
-import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
+import com.azure.spring.autoconfigure.b2c.AADB2CWebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
@@ -15,20 +14,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * Code samples for the AADB2COidcLoginConfigurer in README.md
  */
 @EnableWebSecurity
-public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
-
-    private final AADB2COidcLoginConfigurer configurer;
-
-    public AADB2COidcLoginConfigSample(AADB2COidcLoginConfigurer configurer) {
-        this.configurer = configurer;
-    }
+public class AADB2COidcLoginConfigSample extends AADB2CWebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .apply(configurer);
+        super.configure(http);
     }
 }

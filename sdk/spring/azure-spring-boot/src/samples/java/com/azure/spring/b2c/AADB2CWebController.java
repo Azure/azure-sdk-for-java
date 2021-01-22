@@ -21,7 +21,6 @@ public class AADB2CWebController {
     private void initializeModel(Model model, OAuth2AuthenticationToken token) {
         if (token != null) {
             final OAuth2User user = token.getPrincipal();
-
             model.addAttribute("grant_type", user.getAuthorities());
             model.addAllAttributes(user.getAttributes());
         }
@@ -30,21 +29,12 @@ public class AADB2CWebController {
     @GetMapping(value = "/")
     public String index(Model model, OAuth2AuthenticationToken token) {
         initializeModel(model, token);
-
         return "home";
-    }
-
-    @GetMapping(value = "/greeting")
-    public String greeting(Model model, OAuth2AuthenticationToken token) {
-        initializeModel(model, token);
-
-        return "greeting";
     }
 
     @GetMapping(value = "/home")
     public String home(Model model, OAuth2AuthenticationToken token) {
         initializeModel(model, token);
-
         return "home";
     }
 }

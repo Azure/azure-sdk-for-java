@@ -5,12 +5,11 @@ package com.azure.spring.autoconfigure.b2c;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.lang.NonNull;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
-import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeAuthenticationProvider;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import java.net.MalformedURLException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -41,12 +40,6 @@ public class AADB2CProperties {
      */
     @NotBlank(message = "tenant name should not be blank")
     private String tenant;
-
-    /**
-     * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false,
-     * will use Oauth2 ${@link OAuth2AuthorizationCodeAuthenticationProvider}.
-     */
-    private Boolean oidcEnabled = true;
 
     /**
      * The application ID that registered under b2c tenant.
@@ -83,6 +76,8 @@ public class AADB2CProperties {
      */
     private boolean allowTelemetry = true;
 
+    private Map<String, AuthorizationClientScopesProperties> authorizationClients = new HashMap<>();
+
     private String getReplyURLPath(@URL String replyURL) {
         try {
             return new java.net.URL(replyURL).getPath();
@@ -96,8 +91,16 @@ public class AADB2CProperties {
         return getReplyURLPath(replyUrl);
     }
 
+    public Map<String, AuthorizationClientScopesProperties> getAuthorizationClients() {
+        return authorizationClients;
+    }
+
+    public void setAuthorizationClients(Map<String, AuthorizationClientScopesProperties> authorizationClients) {
+        this.authorizationClients = authorizationClients;
+    }
+
     @Validated
-    protected static class UserFlows {
+    public static class UserFlows {
 
         protected UserFlows() {
 
@@ -150,14 +153,6 @@ public class AADB2CProperties {
 
     public void setTenant(String tenant) {
         this.tenant = tenant;
-    }
-
-    public Boolean getOidcEnabled() {
-        return oidcEnabled;
-    }
-
-    public void setOidcEnabled(Boolean oidcEnabled) {
-        this.oidcEnabled = oidcEnabled;
     }
 
     public String getClientId() {

@@ -7,7 +7,7 @@ import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
 import static com.azure.test.aad.b2c.selenium.AADB2CSeleniumITHelper.createDefaultProperteis;
 
-import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
+import com.azure.spring.autoconfigure.b2c.AADB2CWebSecurityConfigurerAdapter;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -75,21 +75,11 @@ public class AADB2CIT {
     @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
     @SpringBootApplication
     @Controller
-    public static class DumbApp extends WebSecurityConfigurerAdapter {
-
-        private final AADB2COidcLoginConfigurer configurer;
-
-        public DumbApp(AADB2COidcLoginConfigurer configurer) {
-            this.configurer = configurer;
-        }
+    public static class DumbApp extends AADB2CWebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .apply(configurer);
+            super.configure(http);
         }
 
         @GetMapping(value = "/")

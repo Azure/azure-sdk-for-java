@@ -3,16 +3,16 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import org.junit.Test;
-import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class AADB2CAutoConfigurationTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AADB2CAutoConfiguration.class))
+        .withUserConfiguration(AADB2CAutoConfiguration.class)
         .withPropertyValues(
             String.format("%s=%s", AADB2CConstants.TENANT, AADB2CConstants.TEST_TENANT),
             String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
@@ -54,6 +54,16 @@ public class AADB2CAutoConfigurationTest {
             assertThat(signUpOrSignIn).isEqualTo(AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME);
             assertThat(prompt).isEqualTo(AADB2CConstants.TEST_PROMPT);
             assertThat(loginHint).isEqualTo(AADB2CConstants.TEST_LOGIN_HINT);
+        });
+    }
+
+    @Test
+    public void testOAuth2AuthorizedClientRepositoryBean() {
+        this.contextRunner
+            .run(c -> {
+                final OAuth2AuthorizedClientRepository authorizedClientRepository = c.getBean(OAuth2AuthorizedClientRepository.class);
+
+                assertThat(authorizedClientRepository).isNotNull();
         });
     }
 

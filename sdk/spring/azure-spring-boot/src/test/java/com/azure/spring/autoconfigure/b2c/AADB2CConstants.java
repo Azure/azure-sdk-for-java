@@ -4,6 +4,7 @@ package com.azure.spring.autoconfigure.b2c;
 
 
 import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.PREFIX;
+import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_PROFILE_EDIT;
 import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN;
 
 public class AADB2CConstants {
@@ -11,6 +12,10 @@ public class AADB2CConstants {
         + ".login-hint";
 
     public static final String AUTHENTICATE_ADDITIONAL_PARAMETERS_PROMPT = ".authenticate-additional-parameters.prompt";
+
+    public static final String AUTHENTICATE_AUTHORIZATION_CLIENTS = ".authorization-clients";
+
+    public static final String AUTHENTICATE_SCOPES = ".scopes";
 
     public static final String PROMPT = "prompt";
 
@@ -30,7 +35,14 @@ public class AADB2CConstants {
 
     public static final String TEST_SIGN_UP_OR_IN_NAME = "fake-sign-in-or-up";
 
+    public static final String TEST_PROFILE_EDIT_NAME = "profile_edit";
+
     public static final String TEST_LOGOUT_SUCCESS_URL = "https://fake-logout-success-url";
+
+    public static final String TEST_AUTHORIZATION_CLIENTS_NAME = "CUSTOM";
+
+    public static final String TEST_SCOPE_READ = "Test.Read";
+    public static final String TEST_SCOPE_WRITE = "Test.Write";
 
     public static final String TENANT = String.format("%s.%s", PREFIX, "tenant");
 
@@ -48,9 +60,14 @@ public class AADB2CConstants {
 
     public static final String SIGN_UP_OR_SIGN_IN = String.format("%s.%s", PREFIX, USER_FLOW_SIGN_UP_OR_SIGN_IN);
 
+    public static final String PROFILE_EDIT = String.format("%s.%s", PREFIX, USER_FLOW_PROFILE_EDIT);
+
     public static final Object CONFIG_PROMPT = String.format("%s.%s", PREFIX,
         AUTHENTICATE_ADDITIONAL_PARAMETERS_PROMPT);
 
     public static final String CONFIG_LOGIN_HINT = String.format("%s.%s", PREFIX,
         AUTHENTICATE_ADDITIONAL_PARAMETERS_LOGIN_HINT);
+
+    public static final String CONFIG_AUTHORIZATION_CLIENTS = String.format("%s.%s", PREFIX,
+        AUTHENTICATE_AUTHORIZATION_CLIENTS);
 }

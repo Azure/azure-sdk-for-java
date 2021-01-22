@@ -43,7 +43,7 @@ while protecting the identities of your customers at the same time.
 
 1. Select **Azure AD B2C** from the portal menu, click **Applications**, and then click **Add**.
 
-2. Specify your application **Name**, add `https://localhost:8080/home` for the **Reply URL**, record the
+2. Specify your application **Name**, add `http://localhost:8080/login/oauth2/code` for the **Reply URL**, record the
 **Application ID** as your `${your-client-id}` and then click **Save**.
 
 3. Select **Keys** from your application, click **Generate key** to generate `${your-client-secret}` and then **Save**.
@@ -130,7 +130,7 @@ This starter provides following properties to be customized:
 9. Create a new Java file named *AADB2CWebController.java* in the *controller* folder and open it in a text editor.
 
 10. Enter the following code, then save and close the file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/btoc/AADB2CWebController.java#L18-L50 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/btoc/AADB2CWebController.java#L18-L40 -->
 ```java
 @Controller
 public class AADB2CWebController {
@@ -138,7 +138,6 @@ public class AADB2CWebController {
     private void initializeModel(Model model, OAuth2AuthenticationToken token) {
         if (token != null) {
             final OAuth2User user = token.getPrincipal();
-
             model.addAttribute("grant_type", user.getAuthorities());
             model.addAllAttributes(user.getAttributes());
         }
@@ -147,21 +146,12 @@ public class AADB2CWebController {
     @GetMapping(value = "/")
     public String index(Model model, OAuth2AuthenticationToken token) {
         initializeModel(model, token);
-
         return "home";
-    }
-
-    @GetMapping(value = "/greeting")
-    public String greeting(Model model, OAuth2AuthenticationToken token) {
-        initializeModel(model, token);
-
-        return "greeting";
     }
 
     @GetMapping(value = "/home")
     public String home(Model model, OAuth2AuthenticationToken token) {
         initializeModel(model, token);
-
         return "home";
     }
 }
@@ -172,28 +162,18 @@ public class AADB2CWebController {
 12. Create a new Java file named *AADB2COidcLoginConfigSample.java* in the *security* folder and open it in a text editor.
 
 13. Enter the following code, then save and close the file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/btoc/AADB2COidcLoginConfigSample.java#L17-L34 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/b2c/AADB2COidcLoginConfigSample.java#L16-L23 -->
 ```java
 @EnableWebSecurity
-public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
-
-    private final AADB2COidcLoginConfigurer configurer;
-
-    public AADB2COidcLoginConfigSample(AADB2COidcLoginConfigurer configurer) {
-        this.configurer = configurer;
-    }
+public class AADB2COidcLoginConfigSample extends AADB2CWebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .apply(configurer);
+        super.configure(http);
     }
 }
 ```
-14. Copy the `greeting.html` and `home.html` from [Azure AD B2C Spring Boot Sample](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/resources/templates), and replace the
+14. Copy the `home.html` from [Azure AD B2C Spring Boot Sample](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/resources/templates), and replace the
 `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` with your user flow name
 respectively that completed earlier.
 
