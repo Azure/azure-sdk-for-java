@@ -3,6 +3,7 @@
 
 package com.azure.spring.aad.webapp;
 
+import com.azure.spring.common.JacksonHttpSessionOAuth2AuthorizedClientRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.assertj.AssertableWebApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;

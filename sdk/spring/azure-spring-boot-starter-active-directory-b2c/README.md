@@ -8,6 +8,10 @@ while protecting the identities of your customers at the same time.
 
 ## Getting started
 
+In this documentation, you created a new Java web application using the Azure Active Directory B2C starter,
+configured a new Azure AD B2C tenant and registered a new application in it, and then configured your
+application to use the Spring annotations and classes to protect the web app.
+
 ### Prerequisites
 - [Java Development Kit (JDK)][jdk_link] with version 8 or above
 - [Azure Subscription][azure_subscription]
@@ -54,9 +58,14 @@ while protecting the identities of your customers at the same time.
 respectively. Specify your user flow **Name** and **User attributes and claims**, click **Create**.
 
 ## Key concepts
-In this documentation, you created a new Java web application using the Azure Active Directory B2C starter,
-configured a new Azure AD B2C tenant and registered a new application in it, and then configured your
-application to use the Spring annotations and classes to protect the web app.
+This starter provides a way to integrate with Spring Security and authenticate with Azure Active Directory B2C, which are designed for scenario of web application.
+
+The authorization flow for web application includes:
+* Login with credentials by self-defined sign up or sign in client registration that will be the default client, and trigger **authorization code flow**. Application acquires access token by the fixed scopes, which are `clientId` of the sign in or sign up user flow, `openid`, and `offline_access`.
+* Each user flow instance will act as a client registration.
+* Support built-in other resources or custom resources, also act as a client registration.
+* When resources are visited, associated clients will be loaded and trigger **authorization code flow** like the default client.
+
 
 ### Configurable properties
 This starter provides following properties to be customized:
@@ -69,11 +78,13 @@ This starter provides following properties to be customized:
    | `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |
    | `azure.activedirectory.b2c.reply-url` | The reply URL of a registered application. It's the same as the **Redirect URI** configured on Azure Portal.|   
    | `azure.activedirectory.b2c.tenant` | The Azure AD B2C's tenant name. |
-   | `azure.activedirectory.b2c.user-flows.signUpOrSignIn` | The name of the **sign up and sign in** user flow. |
-   | `azure.activedirectory.b2c.user-flows.profileEdit` | The name of the **profile editing** user flow. |
-   | `azure.activedirectory.b2c.user-flows.passwordReset` | The name of the **password reset** user flow. |
+   | `azure.activedirectory.b2c.user-flows.sign-up-or-sign-in` | The name of the **sign up and sign in** user flow. |
+   | `azure.activedirectory.b2c.user-flows.profile-edit` | The name of the **profile editing** user flow. |
+   | `azure.activedirectory.b2c.user-flows.password-reset` | The name of the **password reset** user flow. |
    | `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|   
-   
+   | `azure.activedirectory.b2c.authorization-clients`     | Resource server name that the application is going to visit. |
+   | `azure.activedirectory.b2c.authorization-clients.{client-name}.scopes` | API permissions of a resource server that the application is going to acquire. |
+
 ## Examples
 ### Configure and compile your app
 

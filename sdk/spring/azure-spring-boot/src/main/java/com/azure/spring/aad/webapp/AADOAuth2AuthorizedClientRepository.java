@@ -4,6 +4,7 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.aad.AADClientRegistrationRepository;
+import com.azure.spring.common.JacksonHttpSessionOAuth2AuthorizedClientRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.OAuth2AuthorizationContext;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;

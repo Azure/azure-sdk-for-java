@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
-import com.azure.spring.aad.webapp.JacksonHttpSessionOAuth2AuthorizedClientRepository;
+import com.azure.spring.common.JacksonHttpSessionOAuth2AuthorizedClientRepository;
 import com.azure.spring.telemetry.TelemetrySender;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -171,7 +171,7 @@ public class AADB2CAutoConfiguration {
     }
 
     /**
-     * Automatic configuration class of AADB2COidc
+     * Automatic configuration class for oauth2 login.
      */
     @Configuration
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)

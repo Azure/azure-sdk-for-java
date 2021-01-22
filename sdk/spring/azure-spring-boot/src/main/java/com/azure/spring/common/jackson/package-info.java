@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package com.azure.spring.aad.webapp.jackson
+ * Package com.azure.spring.common.jackson
  */
-package com.azure.spring.aad.webapp.jackson;
+package com.azure.spring.common.jackson;

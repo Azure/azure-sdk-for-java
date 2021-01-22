@@ -4,6 +4,8 @@
 package com.azure.spring.aad.webapp;
 
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
+import com.azure.spring.common.AADOAuth2AuthorizationCodeGrantRequestEntityConverter;
+import com.azure.spring.utils.ApplicationId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -77,7 +79,8 @@ public abstract class AADWebSecurityConfigurerAdapter extends WebSecurityConfigu
         restTemplate.setErrorHandler(new ConditionalAccessResponseErrorHandler());
         result.setRestOperations(restTemplate);
         result.setRequestEntityConverter(
-            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(repo.getAzureClient()));
+            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(ApplicationId.AZURE_SPRING_AAD,
+                repo.getAzureClient()));
         return result;
     }
 

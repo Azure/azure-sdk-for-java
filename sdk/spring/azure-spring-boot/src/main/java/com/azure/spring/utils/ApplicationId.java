@@ -23,7 +23,7 @@ public class ApplicationId {
     //    cfg: for App Config
     //    cos: for Cosmos
     //    aad: for AAD
-    //    b2c: for AAD B2C
+    //    aadb2c: for AAD B2C
     public static final String VERSION = Optional.of(ApplicationId.class)
                                                  .map(Class::getPackage)
                                                  .map(Package::getImplementationVersion)
@@ -38,6 +38,6 @@ public class ApplicationId {
      * 2. x-client-VER;
      */
     public static final String AZURE_SPRING_AAD = "az-sp-aad";
-    public static final String AZURE_SPRING_ABC = "az-sp-aadb2c";
+    public static final String AZURE_SPRING_AADB2C = "az-sp-aadb2c";
 
 }

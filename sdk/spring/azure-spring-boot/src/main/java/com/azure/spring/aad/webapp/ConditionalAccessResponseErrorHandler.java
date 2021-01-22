@@ -28,7 +28,7 @@ public class ConditionalAccessResponseErrorHandler implements ResponseErrorHandl
 
     private final ResponseErrorHandler defaultErrorHandler = new DefaultResponseErrorHandler();
 
-    protected ConditionalAccessResponseErrorHandler() {
+    public ConditionalAccessResponseErrorHandler() {
         this.oauth2ErrorConverter.setErrorConverter(new AADOAuth2ErrorConverter());
     }
 

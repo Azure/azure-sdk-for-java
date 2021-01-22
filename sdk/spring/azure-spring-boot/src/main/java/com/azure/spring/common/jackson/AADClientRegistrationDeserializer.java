@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.webapp.jackson;
+package com.azure.spring.common.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -16,11 +16,11 @@ import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 
 import java.io.IOException;
 
-import static com.azure.spring.aad.webapp.jackson.AADJsonNodeUtil.MAP_TYPE_REFERENCE;
-import static com.azure.spring.aad.webapp.jackson.AADJsonNodeUtil.SET_TYPE_REFERENCE;
-import static com.azure.spring.aad.webapp.jackson.AADJsonNodeUtil.findObjectNode;
-import static com.azure.spring.aad.webapp.jackson.AADJsonNodeUtil.findStringValue;
-import static com.azure.spring.aad.webapp.jackson.AADJsonNodeUtil.findValue;
+import static com.azure.spring.common.jackson.AADJsonNodeUtil.MAP_TYPE_REFERENCE;
+import static com.azure.spring.common.jackson.AADJsonNodeUtil.SET_TYPE_REFERENCE;
+import static com.azure.spring.common.jackson.AADJsonNodeUtil.findObjectNode;
+import static com.azure.spring.common.jackson.AADJsonNodeUtil.findStringValue;
+import static com.azure.spring.common.jackson.AADJsonNodeUtil.findValue;
 
 
 /**

@@ -3,11 +3,16 @@
 
 package com.azure.spring.autoconfigure.b2c;
 
+import com.azure.spring.common.AADOAuth2AuthorizationCodeGrantRequestEntityConverter;
+import com.azure.spring.utils.ApplicationId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
+import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
@@ -41,6 +46,9 @@ public abstract class AADB2CWebSecurityConfigurerAdapter extends WebSecurityConf
                 .authorizationEndpoint()
                     .authorizationRequestResolver(requestResolver)
                     .and()
+                .tokenEndpoint()
+                    .accessTokenResponseClient(accessTokenResponseClient())
+                    .and()
             .and()
             .logout()
                 .logoutSuccessHandler(b2cLogoutSuccessHandler())
@@ -52,5 +60,12 @@ public abstract class AADB2CWebSecurityConfigurerAdapter extends WebSecurityConf
     @ConditionalOnMissingBean
     public LogoutSuccessHandler b2cLogoutSuccessHandler() {
         return new AADB2CLogoutSuccessHandler(properties);
+    }
+
+    protected OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient() {
+        DefaultAuthorizationCodeTokenResponseClient result = new DefaultAuthorizationCodeTokenResponseClient();
+        result.setRequestEntityConverter(
+            new AADOAuth2AuthorizationCodeGrantRequestEntityConverter(ApplicationId.AZURE_SPRING_AADB2C));
+        return result;
     }
 }

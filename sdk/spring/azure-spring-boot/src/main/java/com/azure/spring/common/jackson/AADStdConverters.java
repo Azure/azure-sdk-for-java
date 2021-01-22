@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.webapp.jackson;
+package com.azure.spring.common.jackson;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.util.StdConverter;
@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
 
-import static com.azure.spring.aad.webapp.jackson.AADJsonNodeUtil.findStringValue;
+import static com.azure.spring.common.jackson.AADJsonNodeUtil.findStringValue;
 
 /**
  * StdConverters used for AAD

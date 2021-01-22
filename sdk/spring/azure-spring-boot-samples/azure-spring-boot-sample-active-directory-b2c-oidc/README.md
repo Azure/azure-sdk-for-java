@@ -54,7 +54,7 @@ azure:
         password-reset: ${your-password-reset-user-flow}  # optional
 ```
 
-#### Templates greeting.html and home.html
+#### Templates home.html
 1. Fill in the `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` from the portal `User flows`.
 Please make sure that these two placeholders should be the same as `application.yml` respectively.
 
@@ -66,15 +66,14 @@ mvn spring-boot:run
 
 ### Validation
 
-1. Access `http://localhost:8080/` as index page.
+1. Access `http://localhost:8080/login` as index page.
 2. Sign up/in.
-3. Access greeting button.
-4. Logout.
-5. Sign in.
-6. Profile edit.
-7. Password reset.
-8. Logout
-9. Sign in.
+3. Logout.
+4. Sign in.
+5. Profile edit.
+6. Password reset.
+7. Logout
+8. Sign in.
 
 ## Troubleshooting
 - `Missing attribute 'name' in attributes `

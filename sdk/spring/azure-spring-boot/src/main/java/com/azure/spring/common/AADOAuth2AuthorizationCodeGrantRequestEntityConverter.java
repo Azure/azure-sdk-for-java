@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.aad.webapp;
+package com.azure.spring.common;
 
+import com.azure.spring.aad.webapp.AzureClientRegistration;
 import com.azure.spring.utils.ApplicationId;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,15 +18,24 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Used to set "scope" parameter when use "auth-code" to get "access_token".
+ * When using "auth-code" in AAD and AAD B2C, it's used to set the azure service header tag.
+ * When using in AAD, it also sets  "scope" parameter for the request.
  */
 public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter
     extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
 
     private final AzureClientRegistration azureClient;
+    private final String xClientSku;
 
-    public AADOAuth2AuthorizationCodeGrantRequestEntityConverter(AzureClientRegistration client) {
-        azureClient = client;
+    public AADOAuth2AuthorizationCodeGrantRequestEntityConverter(String xClientSku, AzureClientRegistration client) {
+        Assert.notNull(client, "azure client can not be null");
+        this.xClientSku = xClientSku;
+        this.azureClient = client;
+    }
+
+    public AADOAuth2AuthorizationCodeGrantRequestEntityConverter(String xClientSku) {
+        this.xClientSku = xClientSku;
+        this.azureClient = null;
     }
 
     @Override
@@ -34,18 +44,19 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter
         RequestEntity<?> requestEntity = super.convert(request);
         Assert.notNull(requestEntity, "requestEntity can not be null");
 
-        HttpHeaders httpHeaders = getHttpHeaders();
+        HttpHeaders httpHeaders = getHttpHeaders(xClientSku);
         Optional.of(requestEntity)
                 .map(HttpEntity::getHeaders)
                 .ifPresent(headers -> headers.forEach(httpHeaders::put));
 
         MultiValueMap<String, String> body = (MultiValueMap<String, String>) requestEntity.getBody();
         Assert.notNull(body, "body can not be null");
-        String scopes = String.join(" ", isRequestForDefaultClient(request)
-            ? azureClient.getAccessTokenScopes()
-            : request.getClientRegistration().getScopes());
-        body.add("scope", scopes);
-
+        if (ApplicationId.AZURE_SPRING_AAD.equalsIgnoreCase(xClientSku)) {
+            String scopes = String.join(" ", isRequestForDefaultClient(request)
+                ? azureClient.getAccessTokenScopes()
+                : request.getClientRegistration().getScopes());
+            body.add("scope", scopes);
+        }
         return new RequestEntity<>(body, httpHeaders, requestEntity.getMethod(), requestEntity.getUrl());
     }
 
@@ -53,9 +64,9 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverter
         return request.getClientRegistration().equals(azureClient.getClient());
     }
 
-    static HttpHeaders getHttpHeaders() {
+    public static HttpHeaders getHttpHeaders(String xClientSku) {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.put("x-client-SKU", Collections.singletonList(ApplicationId.AZURE_SPRING_AAD));
+        httpHeaders.put("x-client-SKU", Collections.singletonList(xClientSku));
         httpHeaders.put("x-client-VER", Collections.singletonList(ApplicationId.VERSION));
         httpHeaders.put("client-request-id", Collections.singletonList(UUID.randomUUID().toString()));
         return httpHeaders;
