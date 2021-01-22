@@ -17,6 +17,8 @@ import java.util.Set;
 public class UserPrincipal implements Serializable {
     private static final long serialVersionUID = -3725690847771476854L;
 
+    private static final String PERSONAL_ACCOUNT_TENANT_ID = "9188040d-6c67-4c5b-b112-36a304b66dad";
+
     private String aadIssuedBearerToken; // id_token or access_token
 
     private final JWSObject jwsObject;
@@ -111,6 +113,10 @@ public class UserPrincipal implements Serializable {
 
     public String getUserPrincipalName() {
         return jwtClaimsSet == null ? null : (String) jwtClaimsSet.getClaim("preferred_username");
+    }
+
+    public boolean isPersonalAccount() {
+        return PERSONAL_ACCOUNT_TENANT_ID.equals(getTenantId());
     }
 }
 

@@ -61,6 +61,12 @@ public final class NatRule extends FirewallPolicyRule {
     @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
 
+    /*
+     * The translated FQDN for this NAT rule.
+     */
+    @JsonProperty(value = "translatedFqdn")
+    private String translatedFqdn;
+
     /**
      * Get the ipProtocols property: Array of FirewallPolicyRuleNetworkProtocols.
      *
@@ -198,6 +204,40 @@ public final class NatRule extends FirewallPolicyRule {
      */
     public NatRule withSourceIpGroups(List<String> sourceIpGroups) {
         this.sourceIpGroups = sourceIpGroups;
+        return this;
+    }
+
+    /**
+     * Get the translatedFqdn property: The translated FQDN for this NAT rule.
+     *
+     * @return the translatedFqdn value.
+     */
+    public String translatedFqdn() {
+        return this.translatedFqdn;
+    }
+
+    /**
+     * Set the translatedFqdn property: The translated FQDN for this NAT rule.
+     *
+     * @param translatedFqdn the translatedFqdn value to set.
+     * @return the NatRule object itself.
+     */
+    public NatRule withTranslatedFqdn(String translatedFqdn) {
+        this.translatedFqdn = translatedFqdn;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NatRule withName(String name) {
+        super.withName(name);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NatRule withDescription(String description) {
+        super.withDescription(description);
         return this;
     }
 

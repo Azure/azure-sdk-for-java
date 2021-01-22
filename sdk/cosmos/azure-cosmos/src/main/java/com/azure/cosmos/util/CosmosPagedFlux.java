@@ -68,7 +68,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
      * @param feedResponseConsumer handler
      * @return CosmosPagedFlux instance with attached handler
      */
-    @Beta(value = Beta.SinceVersion.V4_6_0)
+    @Beta(value = Beta.SinceVersion.V4_6_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> feedResponseConsumer) {
         return new CosmosPagedFlux<T>(this.optionsFluxFunction, feedResponseConsumer);
     }
@@ -170,7 +170,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         });
     }
 
-    public void fillClientTelemetry(CosmosAsyncClient cosmosAsyncClient,
+    private void fillClientTelemetry(CosmosAsyncClient cosmosAsyncClient,
                                     int statusCode,
                                     String containerId,
                                     String databaseId,

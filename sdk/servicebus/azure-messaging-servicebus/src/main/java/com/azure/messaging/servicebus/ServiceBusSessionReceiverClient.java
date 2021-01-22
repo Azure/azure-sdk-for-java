@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.util.Objects;
 
 /**
- * This session receiver client is used to acquire session locks from a queue or topic and create
+ * This <b>synchronous</b> session receiver client is used to acquire session locks from a queue or topic and create
  * {@link ServiceBusReceiverClient} instances that are tied to the locked sessions.
  *
  * <p><strong>Receive messages from a specific session</strong></p>
@@ -23,7 +23,7 @@ import java.util.Objects;
  * <p><strong>Receive messages from the first available session</strong></p>
  * <p>Use {@link #acceptNextSession()} to acquire the lock of the next available session without specifying the session
  * id.</p>
- * * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession}
+ * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession}
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public final class ServiceBusSessionReceiverClient implements AutoCloseable {

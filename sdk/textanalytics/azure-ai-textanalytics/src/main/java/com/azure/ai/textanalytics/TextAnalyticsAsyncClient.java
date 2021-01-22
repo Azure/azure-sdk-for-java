@@ -1043,7 +1043,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<TextAnalyticsOperationResult, PagedFlux<HealthcareTaskResult>> beginAnalyzeHealthcare(
         Iterable<TextDocumentInput> documents, RecognizeHealthcareEntityOptions options) {
         return analyzeHealthcareAsyncClient.beginAnalyzeHealthcare(documents, options, Context.NONE);
@@ -1069,7 +1069,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException If {@code healthcareTaskId} is null.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<TextAnalyticsOperationResult, Void> beginCancelHealthcareTask(String healthcareTaskId,
         RecognizeHealthcareEntityOptions options) {
         return analyzeHealthcareAsyncClient.beginCancelAnalyzeHealthcare(healthcareTaskId, options, Context.NONE);
@@ -1096,7 +1096,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws IllegalArgumentException if {@code documents} is empty.
      * @throws TextAnalyticsException If analyze operation fails.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<TextAnalyticsOperationResult, PagedFlux<AnalyzeTasksResult>> beginAnalyzeTasks(
         Iterable<TextDocumentInput> documents, AnalyzeTasksOptions options) {
         return analyzeTasksAsyncClient.beginAnalyzeTasks(documents, options, Context.NONE);

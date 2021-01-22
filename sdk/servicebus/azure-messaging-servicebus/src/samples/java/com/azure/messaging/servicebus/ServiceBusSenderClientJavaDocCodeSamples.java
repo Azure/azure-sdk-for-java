@@ -15,9 +15,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains code snippets when generating javadocs through doclets for {@link ServiceBusSenderClient}.
  */
 public class ServiceBusSenderClientJavaDocCodeSamples {
-    private final ServiceBusClientBuilder builder = new ServiceBusClientBuilder()
-        .connectionString("fake-string");
-
     /**
      * Code snippet demonstrating how to create an {@link ServiceBusSenderClient}.
      */
@@ -48,11 +45,11 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             .buildClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch
-
         List<ServiceBusMessage> messages = Arrays.asList(new ServiceBusMessage(BinaryData.fromBytes("test-1".getBytes(UTF_8))),
             new ServiceBusMessage(BinaryData.fromBytes("test-2".getBytes(UTF_8))));
 
-        final CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(10 * 1024);
+        CreateMessageBatchOptions options = new CreateMessageBatchOptions().setMaximumSizeInBytes(10 * 1024);
+
         // Creating a batch without options set.
         ServiceBusMessageBatch batch = sender.createMessageBatch(options);
         for (ServiceBusMessage message : messages) {
@@ -80,21 +77,19 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             .queueName("<< QUEUE NAME >>")
             .buildClient();
 
-        final ServiceBusMessage firstMessage = new ServiceBusMessage(BinaryData.fromBytes("message-1".getBytes(UTF_8)));
+        ServiceBusMessage firstMessage = new ServiceBusMessage(BinaryData.fromBytes("message-1".getBytes(UTF_8)));
         firstMessage.getApplicationProperties().put("telemetry", "latency");
-        final ServiceBusMessage secondMessage = new ServiceBusMessage(BinaryData.fromBytes("message-2".getBytes(UTF_8)));
+        ServiceBusMessage secondMessage = new ServiceBusMessage(BinaryData.fromBytes("message-2".getBytes(UTF_8)));
         secondMessage.getApplicationProperties().put("telemetry", "cpu-temperature");
-        final ServiceBusMessage thirdMessage = new ServiceBusMessage(BinaryData.fromBytes("message-3".getBytes(UTF_8)));
+        ServiceBusMessage thirdMessage = new ServiceBusMessage(BinaryData.fromBytes("message-3".getBytes(UTF_8)));
         thirdMessage.getApplicationProperties().put("telemetry", "fps");
 
         // BEGIN: com.azure.messaging.servicebus.servicebussenderclient.createMessageBatch#CreateMessageBatchOptions-int
-
-
-        final List<ServiceBusMessage> telemetryMessages = Arrays.asList(firstMessage, secondMessage, thirdMessage);
+        List<ServiceBusMessage> telemetryMessages = Arrays.asList(firstMessage, secondMessage, thirdMessage);
 
         // Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
         // In this case, all the batches created with these options are limited to 256 bytes.
-        final CreateMessageBatchOptions options = new CreateMessageBatchOptions()
+        CreateMessageBatchOptions options = new CreateMessageBatchOptions()
             .setMaximumSizeInBytes(256);
 
         ServiceBusMessageBatch currentBatch = sender.createMessageBatch(options);

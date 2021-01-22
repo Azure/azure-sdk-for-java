@@ -179,6 +179,13 @@ public interface ComputeManagementClient {
     VirtualMachineRunCommandsClient getVirtualMachineRunCommands();
 
     /**
+     * Gets the VirtualMachineScaleSetVMRunCommandsClient object to access its operations.
+     *
+     * @return the VirtualMachineScaleSetVMRunCommandsClient object.
+     */
+    VirtualMachineScaleSetVMRunCommandsClient getVirtualMachineScaleSetVMRunCommands();
+
+    /**
      * Gets the ResourceSkusClient object to access its operations.
      *
      * @return the ResourceSkusClient object.
@@ -205,6 +212,13 @@ public interface ComputeManagementClient {
      * @return the DiskEncryptionSetsClient object.
      */
     DiskEncryptionSetsClient getDiskEncryptionSets();
+
+    /**
+     * Gets the DiskAccessesClient object to access its operations.
+     *
+     * @return the DiskAccessesClient object.
+     */
+    DiskAccessesClient getDiskAccesses();
 
     /**
      * Gets the GalleriesClient object to access its operations.

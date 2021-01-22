@@ -62,7 +62,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.2.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
+      <version>4.2.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -73,7 +73,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-security-keyvault-secrets</artifactId>
-      <version>4.2.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
+      <version>4.2.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-secrets;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>
@@ -96,7 +96,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -180,10 +180,16 @@
         <artifactId>revapi-maven-plugin</artifactId>
         <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
+          <skip>true</skip>
           <analysisConfiguration>
             <revapi.ignore>
               <item>
                 <code>java.method.addedToInterface</code>
+              </item>
+              <item>
+                <regex>true</regex>
+                <code>.*</code>
+                <package>com\.azure\.resourcemanager(\.[^.]+)+\.fluent(\.[^.]+)*</package>
               </item>
             </revapi.ignore>
           </analysisConfiguration>

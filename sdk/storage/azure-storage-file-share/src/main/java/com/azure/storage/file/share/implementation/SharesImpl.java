@@ -41,6 +41,7 @@ import com.azure.storage.file.share.implementation.models.SharesSetMetadataRespo
 import com.azure.storage.file.share.implementation.models.SharesSetPropertiesResponse;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareAccessTier;
+import com.azure.storage.file.share.models.ShareRootSquash;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +82,7 @@ public final class SharesImpl {
         @Put("{shareName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<SharesCreateResponse> create(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-version") String version, @QueryParam("restype") String restype, Context context);
+        Mono<SharesCreateResponse> create(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-enabled-protocols") String enabledProtocols, @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @QueryParam("restype") String restype, Context context);
 
         @Get("{shareName}")
         @ExpectedResponses({200})
@@ -136,7 +137,7 @@ public final class SharesImpl {
         @Put("{shareName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<SharesSetPropertiesResponse> setProperties(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<SharesSetPropertiesResponse> setProperties(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-share-quota") Integer quota, @HeaderParam("x-ms-access-tier") ShareAccessTier accessTier, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-root-squash") ShareRootSquash rootSquash, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{shareName}")
         @ExpectedResponses({200})
@@ -178,8 +179,10 @@ public final class SharesImpl {
         final Map<String, String> metadata = null;
         final Integer quota = null;
         final ShareAccessTier accessTier = null;
+        final String enabledProtocols = null;
+        final ShareRootSquash rootSquash = null;
         final String restype = "share";
-        return service.create(shareName, this.client.getUrl(), timeout, metadata, quota, accessTier, this.client.getVersion(), restype, context);
+        return service.create(shareName, this.client.getUrl(), timeout, metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash, restype, context);
     }
 
     /**
@@ -190,14 +193,16 @@ public final class SharesImpl {
      * @param metadata A name-value pair to associate with a file storage object.
      * @param quota Specifies the maximum size of the share, in gigabytes.
      * @param accessTier Specifies the access tier of the share. Possible values include: 'TransactionOptimized', 'Hot', 'Cool'.
+     * @param enabledProtocols Protocols to enable on the share.
+     * @param rootSquash Root squash to set on the share.  Only valid for NFS shares. Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesCreateResponse> createWithRestResponseAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, Context context) {
+    public Mono<SharesCreateResponse> createWithRestResponseAsync(String shareName, Integer timeout, Map<String, String> metadata, Integer quota, ShareAccessTier accessTier, String enabledProtocols, ShareRootSquash rootSquash, Context context) {
         final String restype = "share";
-        return service.create(shareName, this.client.getUrl(), timeout, metadata, quota, accessTier, this.client.getVersion(), restype, context);
+        return service.create(shareName, this.client.getUrl(), timeout, metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash, restype, context);
     }
 
     /**
@@ -592,9 +597,10 @@ public final class SharesImpl {
         final Integer quota = null;
         final ShareAccessTier accessTier = null;
         final String leaseId = null;
+        final ShareRootSquash rootSquash = null;
         final String restype = "share";
         final String comp = "properties";
-        return service.setProperties(shareName, this.client.getUrl(), timeout, this.client.getVersion(), quota, accessTier, leaseId, restype, comp, context);
+        return service.setProperties(shareName, this.client.getUrl(), timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash, restype, comp, context);
     }
 
     /**
@@ -605,15 +611,16 @@ public final class SharesImpl {
      * @param quota Specifies the maximum size of the share, in gigabytes.
      * @param accessTier Specifies the access tier of the share. Possible values include: 'TransactionOptimized', 'Hot', 'Cool'.
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
+     * @param rootSquash Root squash to set on the share.  Only valid for NFS shares. Possible values include: 'NoRootSquash', 'RootSquash', 'AllSquash'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesSetPropertiesResponse> setPropertiesWithRestResponseAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, Context context) {
+    public Mono<SharesSetPropertiesResponse> setPropertiesWithRestResponseAsync(String shareName, Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash, Context context) {
         final String restype = "share";
         final String comp = "properties";
-        return service.setProperties(shareName, this.client.getUrl(), timeout, this.client.getVersion(), quota, accessTier, leaseId, restype, comp, context);
+        return service.setProperties(shareName, this.client.getUrl(), timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash, restype, comp, context);
     }
 
     /**

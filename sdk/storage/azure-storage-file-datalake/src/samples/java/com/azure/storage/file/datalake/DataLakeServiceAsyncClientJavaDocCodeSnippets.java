@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.util.Context;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
@@ -136,5 +137,25 @@ public class DataLakeServiceAsyncClientJavaDocCodeSnippets {
         // Client must be authenticated via StorageSharedKeyCredential
         String sas = client.generateAccountSas(sasValues);
         // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.generateAccountSas#AccountSasSignatureValues
+    }
+
+    /**
+     * Code snippet for {@link DataLakeServiceAsyncClient#generateAccountSas(AccountSasSignatureValues, Context)}
+     */
+    public void generateAccountSasWithContext() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context
+        AccountSasPermission permissions = new AccountSasPermission()
+            .setListPermission(true)
+            .setReadPermission(true);
+        AccountSasResourceType resourceTypes = new AccountSasResourceType().setContainer(true);
+        AccountSasService services = new AccountSasService().setBlobAccess(true).setFileAccess(true);
+        OffsetDateTime expiryTime = OffsetDateTime.now().plus(Duration.ofDays(2));
+
+        AccountSasSignatureValues sasValues =
+            new AccountSasSignatureValues(expiryTime, permissions, services, resourceTypes);
+
+        // Client must be authenticated via StorageSharedKeyCredential
+        String sas = client.generateAccountSas(sasValues, new Context("key", "value"));
+        // END: com.azure.storage.file.datalake.DataLakeServiceAsyncClient.generateAccountSas#AccountSasSignatureValues-Context
     }
 }

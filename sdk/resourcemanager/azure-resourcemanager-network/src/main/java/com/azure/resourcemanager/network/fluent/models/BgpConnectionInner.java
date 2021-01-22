@@ -157,6 +157,13 @@ public class BgpConnectionInner extends SubResource {
         return this.connectionState;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public BgpConnectionInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

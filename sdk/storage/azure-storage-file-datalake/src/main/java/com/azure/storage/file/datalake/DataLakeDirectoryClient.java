@@ -191,7 +191,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the file.
+     * @param metadata Metadata to associate with the file. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -315,7 +316,8 @@ public class DataLakeDirectoryClient extends DataLakePathClient {
      * others.
      * @param umask Restricts permissions of the sub-directory to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the sub-directory.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.

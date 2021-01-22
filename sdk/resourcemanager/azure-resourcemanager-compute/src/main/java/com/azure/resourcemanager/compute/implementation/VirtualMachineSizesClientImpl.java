@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.implementation;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -58,7 +59,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface VirtualMachineSizesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/vmSizes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -67,6 +68,7 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
             @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -97,13 +99,19 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .list(
-                            this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), context))
+                            this.client.getEndpoint(),
+                            location,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
             .<PagedResponse<VirtualMachineSizeInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -139,10 +147,11 @@ public final class VirtualMachineSizesClientImpl implements VirtualMachineSizesC
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-12-01";
+        final String apiVersion = "2020-06-01";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), context)
+            .list(this.client.getEndpoint(), location, apiVersion, this.client.getSubscriptionId(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

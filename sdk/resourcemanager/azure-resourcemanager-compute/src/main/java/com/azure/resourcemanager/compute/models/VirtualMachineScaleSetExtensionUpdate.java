@@ -66,6 +66,13 @@ public class VirtualMachineScaleSetExtensionUpdate extends SubResourceReadOnly {
     private Boolean autoUpgradeMinorVersion;
 
     /*
+     * Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version of the extension available.
+     */
+    @JsonProperty(value = "properties.enableAutomaticUpgrade")
+    private Boolean enableAutomaticUpgrade;
+
+    /*
      * Json formatted public settings for the extension.
      */
     @JsonProperty(value = "properties.settings")
@@ -212,6 +219,28 @@ public class VirtualMachineScaleSetExtensionUpdate extends SubResourceReadOnly {
      */
     public VirtualMachineScaleSetExtensionUpdate withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion) {
         this.autoUpgradeMinorVersion = autoUpgradeMinorVersion;
+        return this;
+    }
+
+    /**
+     * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version of the extension available.
+     *
+     * @return the enableAutomaticUpgrade value.
+     */
+    public Boolean enableAutomaticUpgrade() {
+        return this.enableAutomaticUpgrade;
+    }
+
+    /**
+     * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version of the extension available.
+     *
+     * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
+     * @return the VirtualMachineScaleSetExtensionUpdate object itself.
+     */
+    public VirtualMachineScaleSetExtensionUpdate withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        this.enableAutomaticUpgrade = enableAutomaticUpgrade;
         return this;
     }
 

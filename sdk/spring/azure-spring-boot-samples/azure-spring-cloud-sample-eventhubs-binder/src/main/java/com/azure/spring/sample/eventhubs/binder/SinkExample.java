@@ -5,6 +5,8 @@ package com.azure.spring.sample.eventhubs.binder;
 
 import com.azure.spring.integration.core.AzureHeaders;
 import com.azure.spring.integration.core.api.reactor.Checkpointer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
@@ -18,12 +20,14 @@ import org.springframework.messaging.handler.annotation.Header;
 @EnableBinding(Sink.class)
 public class SinkExample {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(SinkExample.class);
+
     @StreamListener(Sink.INPUT)
     public void handleMessage(String message, @Header(AzureHeaders.CHECKPOINTER) Checkpointer checkpointer) {
-        System.out.println(String.format("New message received: '%s'", message));
+        LOGGER.info("New message received: '{}'", message);
         checkpointer.success()
-            .doOnSuccess(s -> System.out.println(String.format("Message '%s' successfully checkpointed", message)))
-            .doOnError(System.out::println)
+            .doOnSuccess(success -> LOGGER.info("Message '{}' successfully checkpointed", message))
+            .doOnError(error -> LOGGER.error("Exception: {}", error.getMessage()))
             .subscribe();
     }
 
@@ -31,13 +35,12 @@ public class SinkExample {
     // Replace group with spring.cloud.stream.bindings.input.group
     @ServiceActivator(inputChannel = "{destination}.{group}.errors")
     public void consumerError(Message<?> message) {
-        System.out.println("Handling customer ERROR: " + message);
+        LOGGER.error("Handling customer ERROR: " + message);
     }
-
 
     // Replace destination with spring.cloud.stream.bindings.output.destination
     @ServiceActivator(inputChannel = "{destination}.errors")
     public void producerError(Message<?> message) {
-        System.out.println("Handling Producer ERROR: " + message);
+        LOGGER.error("Handling Producer ERROR: " + message);
     }
 }

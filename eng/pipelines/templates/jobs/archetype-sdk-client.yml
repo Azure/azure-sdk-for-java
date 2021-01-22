@@ -1,43 +1,75 @@
 parameters:
-  SDKType: client
-  ServiceDirectory: not-specified # Set a default that breaks in obvious ways.
-  TestPipeline: false
-  Artifacts: []
-  AdditionalModules: []
-  PreTestSteps: []
-  TestOptions: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
-  TestGoals: verify
-  TestMatrix:
-    Linux - Java 8:
-      OSVmImage: 'ubuntu-18.04'
-      JavaTestVersion: '1.8'
-      RunTitle: 'Linux on Java 1.8'
-    macOS - Java 8:
-      OSVmImage: 'macOS-10.15'
-      JavaTestVersion: '1.8'
-      RunTitle: 'macOS on Java 1.8'
-    Windows - Java 8:
-      OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.8'
-      RunTitle: 'Windows on Java 1.8'
-    Linux - Java 11:
-      OSVmImage: 'ubuntu-18.04'
-      JavaTestVersion: '1.11'
-      RunTitle: 'Linux on Java 1.11'
-    macOS - Java 11:
-      OSVmImage: 'macOS-10.15'
-      JavaTestVersion: '1.11'
-      RunTitle: 'macOS on Java 1.11'
-    Windows - Java 11:
-      OSVmImage: 'windows-2019'
-      JavaTestVersion: '1.11'
-      RunTitle: 'Windows on Java 1.11'
-    Linux From Source - Java 11:
-      OSVmImage: 'ubuntu-18.04'
-      JavaTestVersion: '1.11'
-      RunTitle: 'From Source: Linux on Java 1.11'
-      AdditionalOptions: '-amd'
-      TestFromSource: true
+  - name: SDKType
+    type: string
+    default: client
+  - name: ServiceDirectory
+    type: string
+    default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: TestPipeline
+    type: boolean
+    default: false
+  - name: Artifacts
+    type: object
+    default: []
+  - name: AdditionalModules
+    type: object
+    default: []
+  - name: PreTestSteps
+    type: object
+    default: []
+  - name: TestOptions
+    type: string
+    default: '$(DefaultOptions) -DtrimStackTrace=false -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dparallel-test-playback'
+  - name: TestGoals
+    type: string
+    default: verify
+  - name: WindowsPool
+    type: string
+    default: azsdk-pool-mms-win-2019-general
+  - name: LinuxPool
+    type: string
+    default: azsdk-pool-mms-ubuntu-1804-general
+  - name: TestMatrix
+    type: object
+    default:
+      Linux - Java 8:
+        Pool: $(LinuxPool)
+        OSVmImage:
+        JavaTestVersion: '1.8'
+        RunTitle: 'Linux on Java 1.8'
+      macOS - Java 8:
+        Pool:
+        OSVmImage: 'macOS-10.15'
+        JavaTestVersion: '1.8'
+        RunTitle: 'macOS on Java 1.8'
+      Windows - Java 8:
+        Pool: $(WindowsPool)
+        OSVmImage:
+        JavaTestVersion: '1.8'
+        RunTitle: 'Windows on Java 1.8'
+      Linux - Java 11:
+        Pool: $(LinuxPool)
+        OSVmImage:
+        JavaTestVersion: '1.11'
+        RunTitle: 'Linux on Java 1.11'
+      macOS - Java 11:
+        Pool:
+        OSVmImage: 'macOS-10.15'
+        JavaTestVersion: '1.11'
+        RunTitle: 'macOS on Java 1.11'
+      Windows - Java 11:
+        Pool: $(WindowsPool)
+        OSVmImage:
+        JavaTestVersion: '1.11'
+        RunTitle: 'Windows on Java 1.11'
+      Linux From Source - Java 11:
+        Pool: $(LinuxPool)
+        OSVmImage:
+        JavaTestVersion: '1.11'
+        RunTitle: 'From Source: Linux on Java 1.11'
+        AdditionalOptions: '-amd'
+        TestFromSource: true
+
 
 jobs:
   - job: 'Build'
@@ -46,7 +78,7 @@ jobs:
       - template: ../variables/globals.yml
 
     pool:
-      vmImage: 'ubuntu-18.04'
+      name: ${{ parameters.LinuxPool }}
 
     strategy:
       matrix:
@@ -135,16 +167,18 @@ jobs:
 
       - template: ../steps/upload-repository-on-failure.yml
 
+      - template: /eng/pipelines/templates/steps/create-apireview.yml
+        parameters:
+          Artifacts: ${{parameters.Artifacts}}
+
   - job: 'Analyze'
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
     variables:
       - template: ../variables/globals.yml
-      - name: OSVmImage
-        value: 'ubuntu-18.04'
 
     pool:
-      vmImage: $(OSVmImage)
+      name: ${{ parameters.LinuxPool }}
 
     steps:
       - pwsh: |
@@ -227,8 +261,15 @@ jobs:
   - job: 'Test'
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'))
 
+    # HACK: We can't reference parameters to define other parameters, so I am
+    #       setting some variables with the value of parameters which can then
+    #       be used later in the test evaluations.
     variables:
       - template: ../variables/globals.yml
+      - name: WindowsPool
+        value: ${{parameters.WindowsPool}}
+      - name: LinuxPool
+        value: ${{parameters.LinuxPool}}
 
     strategy:
       matrix:
@@ -239,11 +280,10 @@ jobs:
               ${{ insert }}: ${{ matrixEntry.value }}
 
     pool:
-      vmImage: $(OSVmImage)
+      name: $[coalesce(variables['Pool'], '')]
+      vmImage: $[coalesce(variables['OSVmImage'], '')]
 
     steps:
-      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
-
       - template: ../steps/cache-maven-repository.yml
 
       - template: ../steps/install-reporting-tools.yml
@@ -307,6 +347,20 @@ jobs:
         condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
 
       - task: Maven@3
+        displayName: 'Generate aggregate code coverage report'
+        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
+        inputs:
+          mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
+          options: -Pcoverage
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          goals: jacoco:report-aggregate
+          # we want to run this when TestFromSource isn't true
+          condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
+
+      - task: Maven@3
         displayName: 'Build for From Source run'
         inputs:
           mavenPomFile: ClientAggregatePom.xml
@@ -352,3 +406,13 @@ jobs:
         inputs:
           mergeTestResults: true
           testRunTitle: $(RunTitle)
+
+      # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
+      # Code coverage reporting is setup only for Track 2 modules.
+      - task: PublishCodeCoverageResults@1
+        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.SDKType }}', 'client'))
+        inputs:
+          codeCoverageTool: JaCoCo
+          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/jacoco.xml
+          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/
+          failIfCoverageEmpty: false

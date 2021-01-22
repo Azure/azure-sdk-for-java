@@ -346,7 +346,7 @@ public class CosmosContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
+    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> FeedResponse<T> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         Class<T> classType) {
@@ -363,7 +363,7 @@ public class CosmosContainer {
      * @param classType   class type
      * @return a Mono with feed response of cosmos items
      */
-    @Beta(Beta.SinceVersion.V4_4_0)
+    @Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> FeedResponse<T> readMany(
         List<CosmosItemIdentity> itemIdentityList,
         String sessionToken,
@@ -459,6 +459,50 @@ public class CosmosContainer {
     }
 
     /**
+     * Run patch operations on an Item.
+     *
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param itemType the item type.
+     *
+     * @return the Cosmos item resource response with the patched item or an exception.
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> CosmosItemResponse<T> patchItem(
+        String itemId,
+        PartitionKey partitionKey,
+        CosmosPatchOperations cosmosPatchOperations,
+        Class<T> itemType) {
+
+        return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, cosmosPatchOperations, itemType));
+    }
+
+    /**
+     * Run patch operations on an Item.
+     *
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param options the request options.
+     * @param itemType the item type.
+     *
+     * @return the Cosmos item resource response with the patched item or an exception.
+     */
+    @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public <T> CosmosItemResponse<T> patchItem(
+        String itemId,
+        PartitionKey partitionKey,
+        CosmosPatchOperations cosmosPatchOperations,
+        CosmosItemRequestOptions options,
+        Class<T> itemType) {
+
+        return this.blockItemResponse(asyncContainer.patchItem(itemId, partitionKey, cosmosPatchOperations, options, itemType));
+    }
+
+    /**
      * Deletes an item in the current container.
      *
      * @param itemId the item id.
@@ -512,7 +556,7 @@ public class CosmosContainer {
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(Beta.SinceVersion.V4_7_0)
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchResponse executeTransactionalBatch(TransactionalBatch transactionalBatch) {
         return this.blockBatchResponse(asyncContainer.executeTransactionalBatch(transactionalBatch));
     }
@@ -547,7 +591,7 @@ public class CosmosContainer {
      * Use {@link TransactionalBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(Beta.SinceVersion.V4_7_0)
+    @Beta(value = Beta.SinceVersion.V4_7_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public TransactionalBatchResponse executeTransactionalBatch(
         TransactionalBatch transactionalBatch,
         TransactionalBatchRequestOptions requestOptions) {
@@ -575,7 +619,7 @@ public class CosmosContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Iterable<CosmosItemOperation> operations) {
 
@@ -605,7 +649,7 @@ public class CosmosContainer {
      * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
      * get the exception.
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <TContext> List<CosmosBulkOperationResponse<TContext>> processBulkOperations(
         Iterable<CosmosItemOperation> operations,
         BulkProcessingOptions<TContext> bulkOptions) {
@@ -637,7 +681,7 @@ public class CosmosContainer {
      *
      * @return An unmodifiable list of {@link FeedRange}
      */
-    @Beta(Beta.SinceVersion.V4_9_0)
+    @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public List<FeedRange> getFeedRanges() {
         try {
             return asyncContainer.getFeedRanges().block();

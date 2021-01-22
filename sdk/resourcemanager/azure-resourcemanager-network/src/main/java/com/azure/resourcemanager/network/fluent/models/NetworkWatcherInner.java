@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** Network watcher in a resource group. */
 @JsonFlatten
@@ -71,6 +72,20 @@ public class NetworkWatcherInner extends Resource {
      */
     public NetworkWatcherInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkWatcherInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NetworkWatcherInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

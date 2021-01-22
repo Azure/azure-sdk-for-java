@@ -3,11 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
+import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -19,8 +15,9 @@ import com.nimbusds.jose.util.Resource;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.IOException;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
@@ -29,8 +26,9 @@ import java.security.interfaces.RSAPublicKey;
 import java.time.Instant;
 import java.util.Date;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class UserPrincipalManagerAudienceTest {
 
@@ -41,12 +39,12 @@ public class UserPrincipalManagerAudienceTest {
     private String jwkString;
     private ResourceRetriever resourceRetriever;
 
-    private ServiceEndpointsProperties serviceEndpointsProperties;
-    private AADAuthenticationProperties aadAuthenticationProperties;
+    private AADAuthorizationServerEndpoints endpoints;
+    private AADAuthenticationProperties properties;
     private UserPrincipalManager userPrincipalManager;
 
     @Before
-    public void setupKeys() throws NoSuchAlgorithmException, IOException {
+    public void setupKeys() throws NoSuchAlgorithmException {
         final KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
         kpg.initialize(2048);
 
@@ -64,13 +62,11 @@ public class UserPrincipalManagerAudienceTest {
 
         resourceRetriever = url -> new Resource(jwkString, "application/json");
 
-        serviceEndpointsProperties = mock(ServiceEndpointsProperties.class);
-        aadAuthenticationProperties = new AADAuthenticationProperties();
-        aadAuthenticationProperties.setClientId(FAKE_CLIENT_ID);
-        aadAuthenticationProperties.setAppIdUri(FAKE_APPLICATION_URI);
-        final ServiceEndpoints serviceEndpoints = new ServiceEndpoints();
-        serviceEndpoints.setAadKeyDiscoveryUri("file://dummy");
-        when(serviceEndpointsProperties.getServiceEndpoints(anyString())).thenReturn(serviceEndpoints);
+        endpoints = mock(AADAuthorizationServerEndpoints.class);
+        properties = new AADAuthenticationProperties();
+        properties.setClientId(FAKE_CLIENT_ID);
+        properties.setAppIdUri(FAKE_APPLICATION_URI);
+        when(endpoints.jwkSetEndpoint()).thenReturn("file://dummy");
     }
 
     @Test
@@ -85,7 +81,7 @@ public class UserPrincipalManagerAudienceTest {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(serviceEndpointsProperties, aadAuthenticationProperties,
+        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
             resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .doesNotThrowAnyException();
@@ -103,7 +99,7 @@ public class UserPrincipalManagerAudienceTest {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(serviceEndpointsProperties, aadAuthenticationProperties,
+        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
             resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .doesNotThrowAnyException();
@@ -121,7 +117,7 @@ public class UserPrincipalManagerAudienceTest {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(serviceEndpointsProperties, aadAuthenticationProperties,
+        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
             resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .hasMessageContaining("Invalid token audience.");
@@ -141,7 +137,7 @@ public class UserPrincipalManagerAudienceTest {
         final String orderTwo = signedJWT.serialize();
         final String invalidToken = orderTwo.substring(0, orderTwo.length() - 5);
 
-        userPrincipalManager = new UserPrincipalManager(serviceEndpointsProperties, aadAuthenticationProperties,
+        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
             resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(invalidToken))
             .hasMessageContaining("JWT rejected: Invalid signature");
