@@ -554,6 +554,7 @@
         <module>sdk/cognitiveservices</module>
         <module>sdk/communication</module>
         <module>sdk/confluent</module>
+        <module>sdk/containerinstance</module>
         <module>sdk/core</module>
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
