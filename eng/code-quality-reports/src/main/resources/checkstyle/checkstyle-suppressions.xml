@@ -569,7 +569,7 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress checks on AutoRest generated Attestation service code -->
   <suppress checks="(MissingJavadocMethod|EnforceFinalFields)"
             files=".*[/\\]azure[/\\]security[/\\]attestation[/\\]AttestationClientBuilder.java"/>
-  <suppress checks="(WhitespaceAround|ThrowFromClientLogger|PZLA_PREFER_ZERO_LENGTH_ARRAYS)"
+  <suppress checks="WhitespaceAround|ThrowFromClientLogger"
             files="com.azure.security.attestation.models.*\.java"/>
 
 </suppressions>
