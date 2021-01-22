@@ -131,10 +131,13 @@ public class ConfigStore {
     }
 
     /**
+     * @param profiles List of current Spring profiles to default to using is null label is set.
      * @return List of reversed label values, which are split by the separator, the latter label has higher priority
      */
-    public String[] getLabels() {
-        if (!StringUtils.hasText(this.getLabel())) {
+    public String[] getLabels(List<String> profiles) {
+        if (this.getLabel() == null && profiles.size() > 0) {
+            return profiles.toArray(new String[profiles.size()]);
+        } else if (!StringUtils.hasText(this.getLabel())) {
             return EMPTY_LABEL_ARRAY;
         }
 
