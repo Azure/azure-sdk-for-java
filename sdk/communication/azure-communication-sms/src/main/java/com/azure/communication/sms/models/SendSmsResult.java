@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The SendSmsResponse model. */
+/** The SendSmsResult model. */
 @Fluent
-public final class SendSmsResponse {
+public final class SendSmsResult {
     /*
      * The value property.
      */
@@ -36,9 +36,9 @@ public final class SendSmsResponse {
      * Set the value property: The value property.
      *
      * @param value the value value to set.
-     * @return the SendSmsResponse object itself.
+     * @return the SendSmsResult object itself.
      */
-    public SendSmsResponse setValue(List<SendSmsResponseItem> value) {
+    public SendSmsResult setValue(List<SendSmsResponseItem> value) {
         this.value = value;
         return this;
     }
@@ -56,9 +56,9 @@ public final class SendSmsResponse {
      * Set the nextLink property: The nextLink property.
      *
      * @param nextLink the nextLink value to set.
-     * @return the SendSmsResponse object itself.
+     * @return the SendSmsResult object itself.
      */
-    public SendSmsResponse setNextLink(String nextLink) {
+    public SendSmsResult setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

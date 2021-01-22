@@ -5,8 +5,9 @@
 package com.azure.communication.sms.implementation;
 
 import com.azure.communication.sms.models.SendMessageRequest;
-import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.communication.sms.models.SendSmsResponseItem;
+import com.azure.communication.sms.models.SmsSendNextResponse;
+import com.azure.communication.sms.models.SmsSendResponse;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -25,7 +26,6 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -57,19 +57,20 @@ public final class SmsImpl {
     @ServiceInterface(name = "AzureCommunicationSM")
     private interface SmsService {
         @Post("/sms")
-        @ExpectedResponses({202, 207})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SendSmsResponse>> send(
+        Mono<SmsSendResponse> send(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("repeatability-Request-ID") String repeatabilityRequestID,
+                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
                 @BodyParam("application/json") SendMessageRequest sendMessageRequest,
                 Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({202, 207})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SendSmsResponse>> sendNext(
+        Mono<SmsSendNextResponse> sendNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
@@ -77,10 +78,14 @@ public final class SmsImpl {
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
      *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
-     *     is an opaque string representing a client-generated, GUID, identifier for the request.
+     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
+     *     UUID (GUID), identifier for the request.
+     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
+     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
+     *     26 Mar 2019 16:06:51 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -88,13 +93,14 @@ public final class SmsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SendSmsResponseItem>> sendSinglePageAsync(
-            SendMessageRequest sendMessageRequest, String repeatabilityRequestID) {
+            SendMessageRequest sendMessageRequest, String repeatabilityRequestId, String repeatabilityFirstSent) {
         return FluxUtil.withContext(
                         context ->
                                 service.send(
                                         this.client.getEndpoint(),
                                         this.client.getApiVersion(),
-                                        repeatabilityRequestID,
+                                        repeatabilityRequestId,
+                                        repeatabilityFirstSent,
                                         sendMessageRequest,
                                         context))
                 .map(
@@ -105,17 +111,21 @@ public final class SmsImpl {
                                         res.getHeaders(),
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
-                                        null));
+                                        res.getDeserializedHeaders()));
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
      *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
-     *     is an opaque string representing a client-generated, GUID, identifier for the request.
+     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
+     *     UUID (GUID), identifier for the request.
+     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
+     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
+     *     26 Mar 2019 16:06:51 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -124,11 +134,15 @@ public final class SmsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SendSmsResponseItem>> sendSinglePageAsync(
-            SendMessageRequest sendMessageRequest, String repeatabilityRequestID, Context context) {
+            SendMessageRequest sendMessageRequest,
+            String repeatabilityRequestId,
+            String repeatabilityFirstSent,
+            Context context) {
         return service.send(
                         this.client.getEndpoint(),
                         this.client.getApiVersion(),
-                        repeatabilityRequestID,
+                        repeatabilityRequestId,
+                        repeatabilityFirstSent,
                         sendMessageRequest,
                         context)
                 .map(
@@ -139,17 +153,21 @@ public final class SmsImpl {
                                         res.getHeaders(),
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
-                                        null));
+                                        res.getDeserializedHeaders()));
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
      *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
-     *     is an opaque string representing a client-generated, GUID, identifier for the request.
+     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
+     *     UUID (GUID), identifier for the request.
+     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
+     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
+     *     26 Mar 2019 16:06:51 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -157,9 +175,9 @@ public final class SmsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SendSmsResponseItem> sendAsync(
-            SendMessageRequest sendMessageRequest, String repeatabilityRequestID) {
+            SendMessageRequest sendMessageRequest, String repeatabilityRequestId, String repeatabilityFirstSent) {
         return new PagedFlux<>(
-                () -> sendSinglePageAsync(sendMessageRequest, repeatabilityRequestID),
+                () -> sendSinglePageAsync(sendMessageRequest, repeatabilityRequestId, repeatabilityFirstSent),
                 nextLink -> sendNextSinglePageAsync(nextLink));
     }
 
@@ -167,10 +185,14 @@ public final class SmsImpl {
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
      *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
-     *     is an opaque string representing a client-generated, GUID, identifier for the request.
+     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
+     *     UUID (GUID), identifier for the request.
+     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
+     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
+     *     26 Mar 2019 16:06:51 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -179,9 +201,12 @@ public final class SmsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SendSmsResponseItem> sendAsync(
-            SendMessageRequest sendMessageRequest, String repeatabilityRequestID, Context context) {
+            SendMessageRequest sendMessageRequest,
+            String repeatabilityRequestId,
+            String repeatabilityFirstSent,
+            Context context) {
         return new PagedFlux<>(
-                () -> sendSinglePageAsync(sendMessageRequest, repeatabilityRequestID, context),
+                () -> sendSinglePageAsync(sendMessageRequest, repeatabilityRequestId, repeatabilityFirstSent, context),
                 nextLink -> sendNextSinglePageAsync(nextLink));
     }
 
@@ -189,10 +214,14 @@ public final class SmsImpl {
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
      *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
-     *     is an opaque string representing a client-generated, GUID, identifier for the request.
+     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
+     *     UUID (GUID), identifier for the request.
+     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
+     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
+     *     26 Mar 2019 16:06:51 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -200,18 +229,22 @@ public final class SmsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SendSmsResponseItem> send(
-            SendMessageRequest sendMessageRequest, String repeatabilityRequestID) {
-        return new PagedIterable<>(sendAsync(sendMessageRequest, repeatabilityRequestID));
+            SendMessageRequest sendMessageRequest, String repeatabilityRequestId, String repeatabilityFirstSent) {
+        return new PagedIterable<>(sendAsync(sendMessageRequest, repeatabilityRequestId, repeatabilityFirstSent));
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
      *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
      *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
-     *     is an opaque string representing a client-generated, GUID, identifier for the request.
+     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
+     *     UUID (GUID), identifier for the request.
+     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
+     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
+     *     26 Mar 2019 16:06:51 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -220,8 +253,12 @@ public final class SmsImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SendSmsResponseItem> send(
-            SendMessageRequest sendMessageRequest, String repeatabilityRequestID, Context context) {
-        return new PagedIterable<>(sendAsync(sendMessageRequest, repeatabilityRequestID, context));
+            SendMessageRequest sendMessageRequest,
+            String repeatabilityRequestId,
+            String repeatabilityFirstSent,
+            Context context) {
+        return new PagedIterable<>(
+                sendAsync(sendMessageRequest, repeatabilityRequestId, repeatabilityFirstSent, context));
     }
 
     /**
@@ -244,7 +281,7 @@ public final class SmsImpl {
                                         res.getHeaders(),
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
-                                        null));
+                                        res.getDeserializedHeaders()));
     }
 
     /**
@@ -268,6 +305,6 @@ public final class SmsImpl {
                                         res.getHeaders(),
                                         res.getValue().getValue(),
                                         res.getValue().getNextLink(),
-                                        null));
+                                        res.getDeserializedHeaders()));
     }
 }

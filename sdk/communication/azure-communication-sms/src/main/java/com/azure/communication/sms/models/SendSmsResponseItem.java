@@ -11,32 +11,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class SendSmsResponseItem {
     /*
-     * The recipients' phone number in E.164 format
+     * The recipients's phone number in E.164 format.
      */
     @JsonProperty(value = "to", required = true)
     private String to;
 
     /*
      * The identifier of the outgoing SMS message. Only present if message
-     * processed
+     * processed.
      */
     @JsonProperty(value = "messageId")
     private String messageId;
 
     /*
-     * HTTP Status code
+     * HTTP Status code.
      */
     @JsonProperty(value = "httpStatusCode", required = true)
     private int httpStatusCode;
 
     /*
-     * Optional error message in case of 4xx or 5xx errors
+     * Optional error message in case of 4xx or 5xx errors.
      */
     @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /**
-     * Get the to property: The recipients' phone number in E.164 format.
+     * Get the to property: The recipients's phone number in E.164 format.
      *
      * @return the to value.
      */
@@ -45,7 +45,7 @@ public final class SendSmsResponseItem {
     }
 
     /**
-     * Set the to property: The recipients' phone number in E.164 format.
+     * Set the to property: The recipients's phone number in E.164 format.
      *
      * @param to the to value to set.
      * @return the SendSmsResponseItem object itself.

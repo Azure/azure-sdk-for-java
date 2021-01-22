@@ -12,13 +12,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class SendSmsOptions {
     /*
      * Enable this flag to receive a delivery report for this message on the
-     * Azure Resource EventGrid
+     * Azure Resource EventGrid.
      */
     @JsonProperty(value = "enableDeliveryReport")
     private Boolean enableDeliveryReport;
 
     /*
-     * Use this field to provide metadata that will then be send back in the
+     * Use this field to provide metadata that will then be sent back in the
      * corresponding Delivery Report.
      */
     @JsonProperty(value = "tag")
@@ -47,7 +47,7 @@ public final class SendSmsOptions {
     }
 
     /**
-     * Get the tag property: Use this field to provide metadata that will then be send back in the corresponding
+     * Get the tag property: Use this field to provide metadata that will then be sent back in the corresponding
      * Delivery Report.
      *
      * @return the tag value.
@@ -57,7 +57,7 @@ public final class SendSmsOptions {
     }
 
     /**
-     * Set the tag property: Use this field to provide metadata that will then be send back in the corresponding
+     * Set the tag property: Use this field to provide metadata that will then be sent back in the corresponding
      * Delivery Report.
      *
      * @param tag the tag value to set.

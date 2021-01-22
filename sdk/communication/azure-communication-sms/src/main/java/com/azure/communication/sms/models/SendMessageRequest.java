@@ -19,7 +19,7 @@ public final class SendMessageRequest {
     private String from;
 
     /*
-     * The recipients' phone number in E.164 format. In this version, a minimum
+     * The recipient's phone number in E.164 format. In this version, a minimum
      * of 1 and upto 100 recipients in the list are supported.
      */
     @JsonProperty(value = "to", required = true)
@@ -33,7 +33,7 @@ public final class SendMessageRequest {
     private String message;
 
     /*
-     * Optional configuration for sending SMS messages
+     * Optional configuration for sending SMS messages.
      */
     @JsonProperty(value = "sendSmsOptions")
     private SendSmsOptions sendSmsOptions;
@@ -59,7 +59,7 @@ public final class SendMessageRequest {
     }
 
     /**
-     * Get the to property: The recipients' phone number in E.164 format. In this version, a minimum of 1 and upto 100
+     * Get the to property: The recipient's phone number in E.164 format. In this version, a minimum of 1 and upto 100
      * recipients in the list are supported.
      *
      * @return the to value.
@@ -69,7 +69,7 @@ public final class SendMessageRequest {
     }
 
     /**
-     * Set the to property: The recipients' phone number in E.164 format. In this version, a minimum of 1 and upto 100
+     * Set the to property: The recipient's phone number in E.164 format. In this version, a minimum of 1 and upto 100
      * recipients in the list are supported.
      *
      * @param to the to value to set.

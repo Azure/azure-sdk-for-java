@@ -7,7 +7,7 @@ import com.azure.communication.common.PhoneNumber;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.communication.sms.models.SendSmsOptions;
-import com.azure.communication.sms.models.SendSmsResponse;
+import com.azure.communication.sms.models.SendSmsResult;
 import com.azure.communication.sms.models.SendSmsResponseItem;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -44,14 +44,10 @@ public final class SmsAsyncClient {
      * @param from Number that is sending the message.
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
-     *       client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
-     *       response without the server executing the request multiple times. The value of the Repeatability-Request-ID
-     *     is an opaque string representing a client-generated, GUID, identifier for the request.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponseItem> sendMessage(PhoneNumber from, String to, String message,String repeatabilityRequestID) {
+    public Mono<SendSmsResponseItem> send(String from, String to, String message) {
         return null;
     }
 
@@ -61,16 +57,12 @@ public final class SmsAsyncClient {
      * @param from Number that is sending the message.
      * @param to The recipient's phone number.
      * @param message message to send to recipient.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
-     *       client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
-     *       response without the server executing the request multiple times. The value of the Repeatability-Request-ID
-     *       is an opaque string representing a client-generated, GUID, identifier for the request.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
      * for this message to the Azure Resource Event Grid.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponseItem> sendMessage(PhoneNumber from, String to, String message, String repeatabilityRequestID,
+    public Mono<SendSmsResponseItem> send(String from, String to, String message,
                                                       SendSmsOptions smsOptions) {
         return null;
     }
@@ -81,14 +73,10 @@ public final class SmsAsyncClient {
      * @param from Number that is sending the message.
      * @param to A list of the recipient's phone numbers.
      * @param message message to send to recipient.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
-     *       client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
-     *       response without the server executing the request multiple times. The value of the Repeatability-Request-ID
-     *       is an opaque string representing a client-generated, GUID, identifier for the request.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SendSmsResponseItem> sendMessage(PhoneNumber from, List<String> to, String message, String repeatabilityRequestID) {
+    public PagedFlux<SendSmsResponseItem> send(String from, List<String> to, String message) {
 
 
         return null;
@@ -102,14 +90,10 @@ public final class SmsAsyncClient {
      * @param message message to send to recipient.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
      * for this message to the Azure Resource Event Grid.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
-     *       client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
-     *       response without the server executing the request multiple times. The value of the Repeatability-Request-ID
-     *       is an opaque string representing a client-generated, GUID, identifier for the request.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SendSmsResponseItem> sendMessage(PhoneNumber from, List<String> to, String message, String repeatabilityRequestID,
+    public PagedFlux<SendSmsResponseItem> send(String from, List<String> to, String message,
                                                       SendSmsOptions smsOptions) {
 
 
@@ -122,28 +106,24 @@ public final class SmsAsyncClient {
      * @param from Number that is sending the message.
      * @param to A list of the recipient's phone numbers.
      * @param message message to send to recipient.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, the
-     *       client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
-     *       response without the server executing the request multiple times. The value of the Repeatability-Request-ID
-     *       is an opaque string representing a client-generated, GUID, identifier for the request.
      * @param smsOptions set options on the SMS request, like enable delivery report, which sends a report
      * for this message to the Azure Resource Event Grid.
      * @param context The context to associate with this operation.
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SendSmsResponseItem> sendMessageWithContext(PhoneNumber from, List<String> to, String message, String repeatabilityRequestID,
+    public PagedFlux<SendSmsResponseItem> sendWithContext(PhoneNumber from, List<String> to, String message,
                                                       SendSmsOptions smsOptions, Context context) {
 
 
        return null;
     }
 
-    private SendMessageRequest createSmsMessageRequest(PhoneNumber from, List<PhoneNumber> to, String message,
+    private SendMessageRequest createSmsMessageRequest(String from, List<PhoneNumber> to, String message,
         SendSmsOptions smsOptions) {
         Stream<String> s = to.stream().map(n -> n.getValue());
         SendMessageRequest sendMessageRequest = new SendMessageRequest();
-        sendMessageRequest.setFrom(from.getValue())
+        sendMessageRequest.setFrom(from)
             .setTo(s.collect(Collectors.toList()))
             .setMessage(message)
             .setSendSmsOptions(smsOptions);

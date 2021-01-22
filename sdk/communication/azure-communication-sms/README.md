@@ -88,10 +88,10 @@ endSmsOptions is an optional field.
 s
 
 end the message to a list of  phone Numbers and check the response for a messages ids
-SmsResponseItem response = smsClient.sendMessage(
-new PhoneNumber("<leased-phone-number>"),
+SmsResponseItem response = smsClient.send(
+"<leased-phone-number>",
 to,
-"your message",null,
+"your message",
 options /* Optional */);
 
 System.out.println("MessageId: " + response.getMessageId());
@@ -110,10 +110,10 @@ toMultiplePhones.add("<to-phone-number1>");
 toMultiplePhones.add("<to-phone-number2>");
 
 // Send the message to a list of  phone Numbers and check the response for a messages ids
-PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.sendMessage(
-    new PhoneNumber("<leased-phone-number>"),
+PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.send(
+    "<leased-phone-number>",
     toMultiplePhones,
-    "your message",null,
+    "your message",
     options /* Optional */);
 
 for (SendSmsResponseItem messageResponseItem
@@ -134,10 +134,10 @@ SendSmsOptions options = new SendSmsOptions();
 options.setTag("Tag");
 
 // Send the message to a list of  phone Numbers and check the response for a messages ids
-PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.sendMessage(
-    new PhoneNumber("<leased-phone-number>"),
+PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.send(
+    "<leased-phone-number>",
     toMultiplePhones,
-    "your message",null,
+    "your message",
     options /* Optional */);
 
 for (SendSmsResponseItem messageResponseItem

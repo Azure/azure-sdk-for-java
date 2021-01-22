@@ -9,7 +9,7 @@ import com.azure.communication.common.PhoneNumber;
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.models.SendSmsOptions;
-import com.azure.communication.sms.models.SendSmsResponse;
+
 import com.azure.communication.sms.models.SendSmsResponseItem;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
@@ -54,10 +54,10 @@ public class ReadmeSamples {
         //sms
 
         // Send the message to a list of  phone Numbers and check the response for a messages ids
-        SendSmsResponseItem response = smsClient.sendMessage(
-            new PhoneNumber("<leased-phone-number>"),
+        SendSmsResponseItem response = smsClient.send(
+            "<leased-phone-number>",
             to,
-            "your message",null,
+            "your message",
             options /* Optional */);
 
             System.out.println("MessageId: " + response.getMessageId());
@@ -71,10 +71,10 @@ public class ReadmeSamples {
         toMultiplePhones.add("<to-phone-number2>");
 
         // Send the message to a list of  phone Numbers and check the response for a messages ids
-        PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.sendMessage(
-            new PhoneNumber("<leased-phone-number>"),
+        PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.send(
+            "<leased-phone-number>",
             toMultiplePhones,
-            "your message",null,
+            "your message",
             options /* Optional */);
 
         for (SendSmsResponseItem messageResponseItem
@@ -93,10 +93,10 @@ public class ReadmeSamples {
         options.setTag("Tag");
 
         // Send the message to a list of  phone Numbers and check the response for a messages ids
-        PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.sendMessage(
-            new PhoneNumber("<leased-phone-number>"),
+        PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.send(
+            "<leased-phone-number>",
             toMultiplePhones,
-            "your message",null,
+            "your message",
             options /* Optional */);
 
         for (SendSmsResponseItem messageResponseItem

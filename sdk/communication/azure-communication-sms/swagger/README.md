@@ -42,3 +42,13 @@ custom-types-subpackage: models
 add-context-parameter: true
 context-client-method-parameter: true
 ```
+### Rename searchId to reservationId in CreateSearchResponse
+
+### Rename SendSmsResponse to SenSmsResult
+
+``` yaml
+directive:
+    - rename-model:
+        from: SendSmsResponse
+        to: SendSmsResult
+```
