@@ -4,7 +4,6 @@
 package com.azure.core.util;
 
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Publisher;
@@ -253,8 +252,7 @@ public final class CoreUtils {
     }
 
     /**
-     * Retrieves the application ID from either a {@link ClientOptions} or {@link HttpLogOptions} for use in a
-     * {@link UserAgentPolicy}.
+     * Retrieves the application ID from either a {@link ClientOptions} or {@link HttpLogOptions}.
      * <p>
      * This method first checks {@code clientOptions} for having an application ID then {@code logOptions}, finally
      * returning null if neither are set.
