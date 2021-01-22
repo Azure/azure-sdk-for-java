@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -41,6 +42,55 @@ public final class ImageDataDisk extends ImageDisk {
      */
     public ImageDataDisk withLun(int lun) {
         this.lun = lun;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageDataDisk withSnapshot(SubResource snapshot) {
+        super.withSnapshot(snapshot);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageDataDisk withManagedDisk(SubResource managedDisk) {
+        super.withManagedDisk(managedDisk);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageDataDisk withBlobUri(String blobUri) {
+        super.withBlobUri(blobUri);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageDataDisk withCaching(CachingTypes caching) {
+        super.withCaching(caching);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageDataDisk withDiskSizeGB(Integer diskSizeGB) {
+        super.withDiskSizeGB(diskSizeGB);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageDataDisk withStorageAccountType(StorageAccountTypes storageAccountType) {
+        super.withStorageAccountType(storageAccountType);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ImageDataDisk withDiskEncryptionSet(SubResource diskEncryptionSet) {
+        super.withDiskEncryptionSet(diskEncryptionSet);
         return this;
     }
 

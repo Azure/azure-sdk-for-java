@@ -112,7 +112,7 @@ public final class ShareLeaseClientBuilder {
      * @return the updated ShareLeaseClientBuilder object
      * @throws NullPointerException If {@code fileClient} is {@code null}.
      */
-    public ShareLeaseClientBuilder shareClient(ShareClient shareClient) {
+    ShareLeaseClientBuilder shareClient(ShareClient shareClient) {
         Objects.requireNonNull(shareClient);
         this.pipeline = shareClient.getHttpPipeline();
         this.url = shareClient.getShareUrl();
@@ -130,7 +130,7 @@ public final class ShareLeaseClientBuilder {
      * @return the updated ShareLeaseClientBuilder object
      * @throws NullPointerException If {@code fileAsyncClient} is {@code null}.
      */
-    public ShareLeaseClientBuilder shareAsyncClient(ShareAsyncClient shareAsyncClient) {
+    ShareLeaseClientBuilder shareAsyncClient(ShareAsyncClient shareAsyncClient) {
         Objects.requireNonNull(shareAsyncClient);
         this.pipeline = shareAsyncClient.getHttpPipeline();
         this.url = shareAsyncClient.getShareUrl();

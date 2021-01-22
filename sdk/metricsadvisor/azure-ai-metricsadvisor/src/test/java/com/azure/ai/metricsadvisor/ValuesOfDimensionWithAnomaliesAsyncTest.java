@@ -32,14 +32,15 @@ public final class ValuesOfDimensionWithAnomaliesAsyncTest extends ValuesOfDimen
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Override
     public void listValuesOfDimensionWithAnomalies(HttpClient httpClient,
                                                    MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
 
-        PagedFlux<String> dimensionValuesFlux = client.listValuesOfDimensionWithAnomalies(
+        PagedFlux<String> dimensionValuesFlux = client.listDimensionValuesWithAnomalies(
             ListValuesOfDimensionWithAnomaliesInput.INSTANCE.detectionConfigurationId,
             ListValuesOfDimensionWithAnomaliesInput.INSTANCE.dimensionName,
+            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.startTime,
+            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.endTime,
             ListValuesOfDimensionWithAnomaliesInput.INSTANCE.options);
 
         Assertions.assertNotNull(dimensionValuesFlux);

@@ -4,8 +4,11 @@
 package com.azure.storage.file.share
 
 import com.azure.core.http.rest.Response
+import com.azure.core.util.CoreUtils
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.file.share.models.ClearRange
+import com.azure.storage.file.share.models.FileRange
 import com.azure.storage.file.share.models.ShareCorsRule
 import com.azure.storage.file.share.models.ShareErrorCode
 import com.azure.storage.file.share.models.ShareItem
@@ -14,6 +17,7 @@ import com.azure.storage.file.share.models.ShareRetentionPolicy
 import com.azure.storage.file.share.models.ShareServiceProperties
 import com.azure.storage.file.share.models.ShareStorageException
 
+import java.nio.ByteBuffer
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -178,6 +182,10 @@ class FileTestHelper {
         return file
     }
 
+    static ByteBuffer getRandomByteBuffer(int length) {
+        return ByteBuffer.wrap(getRandomBuffer(length))
+    }
+
     // TODO : Move this into a common package test class?
     static byte[] getRandomBuffer(int length) {
         final Random randGenerator = new Random()
@@ -218,5 +226,33 @@ class FileTestHelper {
             stream1.close()
             stream2.close()
         }
+    }
+
+    static def createFileRanges(long ... offsets) {
+        def fileRanges = [] as List<FileRange>
+
+        if (CoreUtils.isNullOrEmpty(offsets)) {
+            return fileRanges
+        }
+
+        for (def i = 0; i < offsets.length / 2; i++) {
+            fileRanges.add(new FileRange().setStart(offsets[i * 2]).setEnd(offsets[i * 2 + 1]))
+        }
+
+        return fileRanges
+    }
+
+    static def createClearRanges(long ... offsets) {
+        def clearRanges = [] as List<ClearRange>
+
+        if (CoreUtils.isNullOrEmpty(offsets)) {
+            return clearRanges
+        }
+
+        for (def i = 0; i < offsets.length / 2; i++) {
+            clearRanges.add(new ClearRange().setStart(offsets[i * 2]).setEnd(offsets[i * 2 + 1]))
+        }
+
+        return clearRanges
     }
 }

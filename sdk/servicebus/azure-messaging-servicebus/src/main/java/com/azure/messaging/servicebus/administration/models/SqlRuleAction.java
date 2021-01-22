@@ -12,6 +12,9 @@ import java.util.Map;
 /**
  * Represents set of actions written in SQL language-based syntax that is performed against a {@link
  * ServiceBusMessage}.
+ *
+ * @see CreateRuleOptions#setAction(RuleAction)
+ * @see RuleProperties#setAction(RuleAction)
  */
 public class SqlRuleAction extends RuleAction {
     private final Map<String, Object> properties = new HashMap<>();
@@ -69,7 +72,7 @@ public class SqlRuleAction extends RuleAction {
      *
      * @return Whether or not requires preprocessing.
      */
-    Boolean getRequiresPreprocessing() {
+    Boolean isPreprocessingRequired() {
         return requiresPreprocessing;
     }
 
@@ -78,7 +81,7 @@ public class SqlRuleAction extends RuleAction {
      *
      * @return the properties for this action.
      */
-    public Map<String, Object> getProperties() {
+    public Map<String, Object> getParameters() {
         return properties;
     }
 

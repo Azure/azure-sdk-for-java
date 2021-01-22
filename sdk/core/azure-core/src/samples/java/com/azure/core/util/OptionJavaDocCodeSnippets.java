@@ -3,6 +3,8 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.Option;
+
 import java.util.NoSuchElementException;
 
 /**

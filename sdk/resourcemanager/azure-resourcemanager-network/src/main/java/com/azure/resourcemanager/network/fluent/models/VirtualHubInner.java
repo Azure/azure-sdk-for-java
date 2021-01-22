@@ -15,6 +15,7 @@ import com.azure.resourcemanager.network.models.VirtualHubRouteTable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** VirtualHub Resource. */
 @JsonFlatten
@@ -129,6 +130,12 @@ public class VirtualHubInner extends Resource {
      */
     @JsonProperty(value = "properties.virtualRouterIps")
     private List<String> virtualRouterIps;
+
+    /*
+     * Flag to control transit for VirtualRouter hub.
+     */
+    @JsonProperty(value = "properties.allowBranchToBranchTraffic")
+    private Boolean allowBranchToBranchTraffic;
 
     /*
      * Resource ID.
@@ -444,6 +451,26 @@ public class VirtualHubInner extends Resource {
     }
 
     /**
+     * Get the allowBranchToBranchTraffic property: Flag to control transit for VirtualRouter hub.
+     *
+     * @return the allowBranchToBranchTraffic value.
+     */
+    public Boolean allowBranchToBranchTraffic() {
+        return this.allowBranchToBranchTraffic;
+    }
+
+    /**
+     * Set the allowBranchToBranchTraffic property: Flag to control transit for VirtualRouter hub.
+     *
+     * @param allowBranchToBranchTraffic the allowBranchToBranchTraffic value to set.
+     * @return the VirtualHubInner object itself.
+     */
+    public VirtualHubInner withAllowBranchToBranchTraffic(Boolean allowBranchToBranchTraffic) {
+        this.allowBranchToBranchTraffic = allowBranchToBranchTraffic;
+        return this;
+    }
+
+    /**
      * Get the id property: Resource ID.
      *
      * @return the id value.
@@ -460,6 +487,20 @@ public class VirtualHubInner extends Resource {
      */
     public VirtualHubInner withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualHubInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualHubInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 

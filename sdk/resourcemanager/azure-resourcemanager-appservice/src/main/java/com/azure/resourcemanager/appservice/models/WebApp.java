@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure Web App. */
 @Fluent
-public interface WebApp extends WebAppBasic, WebAppBase, Updatable<WebApp.Update> {
+public interface WebApp extends WebAppBasic, SupportsOneDeploy, WebAppBase, Updatable<WebApp.Update> {
     /** @return the entry point to deployment slot management API under the web app */
     DeploymentSlots deploymentSlots();
 

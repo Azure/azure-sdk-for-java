@@ -15,8 +15,8 @@ import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.cpu.CpuListener;
-import com.azure.cosmos.implementation.cpu.CpuMonitor;
+import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
+import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
@@ -163,11 +163,11 @@ public class ReflectionUtils {
     }
 
     public static Future<?> getFuture() {
-        return getStaticField(CpuMonitor.class, "future");
+        return getStaticField(CpuMemoryMonitor.class, "future");
     }
 
-    public static List<WeakReference<CpuListener>> getListeners() {
-        return getStaticField(CpuMonitor.class, "cpuListeners");
+    public static List<WeakReference<CpuMemoryListener>> getListeners() {
+        return getStaticField(CpuMemoryMonitor.class, "cpuListeners");
     }
 
     public static RxStoreModel getGatewayProxy(RxDocumentClientImpl rxDocumentClient){
@@ -178,6 +178,9 @@ public class ReflectionUtils {
         return get(RxStoreModel.class, rxDocumentClient, "storeModel");
     }
 
+    public static GlobalEndpointManager getGlobalEndpointManager(RxDocumentClientImpl rxDocumentClient){
+        return get(GlobalEndpointManager.class, rxDocumentClient, "globalEndpointManager");
+    }
 
     public static void setGatewayProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
         set(client, storeModel, "gatewayProxy");
@@ -187,4 +190,27 @@ public class ReflectionUtils {
         set(client, storeModel, "storeModel");
     }
 
+    public static ReplicatedResourceClient getReplicatedResourceClient(StoreClient storeClient) {
+        return get(ReplicatedResourceClient.class, storeClient, "replicatedResourceClient");
+    }
+
+    public static ConsistencyReader getConsistencyReader(ReplicatedResourceClient replicatedResourceClient) {
+        return get(ConsistencyReader.class, replicatedResourceClient, "consistencyReader");
+    }
+
+    public static ConsistencyWriter getConsistencyWriter(ReplicatedResourceClient replicatedResourceClient) {
+        return get(ConsistencyWriter.class, replicatedResourceClient, "consistencyWriter");
+    }
+
+    public static StoreReader getStoreReader(ConsistencyReader consistencyReader) {
+        return get(StoreReader.class, consistencyReader, "storeReader");
+    }
+
+    public static void setTransportClient(StoreReader storeReader, TransportClient transportClient) {
+        set(storeReader, transportClient, "transportClient");
+    }
+
+    public static void setTransportClient(ConsistencyWriter consistencyWriter, TransportClient transportClient) {
+        set(consistencyWriter, transportClient, "transportClient");
+    }
 }

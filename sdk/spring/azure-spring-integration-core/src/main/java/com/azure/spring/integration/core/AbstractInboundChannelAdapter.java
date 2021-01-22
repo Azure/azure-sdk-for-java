@@ -13,6 +13,9 @@ import org.springframework.util.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The abstract inbound channel adapter. The subscriber will start to subscribe on start and stop subscribing on stop.
+ */
 public abstract class AbstractInboundChannelAdapter extends MessageProducerSupport {
     private final String destination;
     protected String consumerGroup = null;

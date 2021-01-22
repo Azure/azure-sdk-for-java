@@ -22,6 +22,9 @@ import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
+/**
+ * A test implementation of {@link ServiceBusQueueTemplate}. This is used for testing.
+ */
 public class ServiceBusQueueTestOperation extends ServiceBusQueueTemplate {
     private final Multimap<String, IMessage> topicsByName = ArrayListMultimap.create();
     private final Multimap<String, IMessageHandler> handlersByQueue = ArrayListMultimap.create();

@@ -195,7 +195,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @BeforeSuite(groups = {"simple", "long", "direct", "multi-master", "emulator", "non-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "non-emulator"}, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -211,7 +211,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
-    @AfterSuite(groups = {"simple", "long", "direct", "multi-master", "emulator", "non-emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"simple", "long", "direct", "multi-region", "multi-master", "emulator", "non-emulator"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");
@@ -974,6 +974,25 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     @DataProvider
     public static Object[][] clientBuildersWithDirectTcpWithContentResponseOnWriteDisabled() {
         return clientBuildersWithDirectAllConsistencies(false, Protocol.TCP);
+    }
+
+    @DataProvider
+    public static Object[][] clientBuildersWithContentResponseOnWriteEnabledAndDisabled() {
+        Object[][] clientBuildersWithDisabledContentResponseOnWrite =
+            clientBuildersWithDirectSession(false, Protocol.TCP);
+        Object[][] clientBuildersWithEnabledContentResponseOnWrite =
+            clientBuildersWithDirectSession(true, Protocol.TCP);
+        int length = clientBuildersWithDisabledContentResponseOnWrite.length
+            + clientBuildersWithEnabledContentResponseOnWrite.length;
+        Object[][] clientBuilders = new Object[length][];
+        int index = 0;
+        for (int i = 0; i < clientBuildersWithDisabledContentResponseOnWrite.length; i++, index++) {
+            clientBuilders[index] = clientBuildersWithDisabledContentResponseOnWrite[i];
+        }
+        for (int i = 0; i < clientBuildersWithEnabledContentResponseOnWrite.length; i++, index++) {
+            clientBuilders[index] = clientBuildersWithEnabledContentResponseOnWrite[i];
+        }
+        return clientBuilders;
     }
 
     @DataProvider

@@ -3,58 +3,32 @@
 
 package com.azure.ai.metricsadvisor.models;
 
-import java.time.OffsetDateTime;
-
 /**
  * Describes the additional parameters for the API to list the alerts triggered.
  */
 public final class ListAlertOptions {
-    private final OffsetDateTime startTime;
-    private final OffsetDateTime endTime;
-    private final TimeMode timeMode;
     private Integer top;
     private Integer skip;
+    private AlertQueryTimeMode alertQueryTimeMode;
 
     /**
-     * Creates a new instance of ListAlertOptions.
+     * Set the query time mode.
      *
-     * @param startTime The start time of the time range within which the alerts were triggered.
-     * @param endTime The end time of the time range within which the alerts were triggered.
-     * @param timeMode The time mode.
+     * @param alertQueryTimeMode the alert Query Time Mode value to set.
+     * @return the ListAlertOptions object itself.
      */
-    public ListAlertOptions(OffsetDateTime startTime,
-                            OffsetDateTime endTime,
-                            TimeMode timeMode) {
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.timeMode = timeMode;
+    public ListAlertOptions setAlertQueryTimeMode(AlertQueryTimeMode alertQueryTimeMode) {
+        this.alertQueryTimeMode = alertQueryTimeMode;
+        return this;
     }
 
     /**
-     * Gets the start time of the time range within which the alerts were triggered.
-     *
-     * @return The start time.
-     */
-    public OffsetDateTime getStartTime() {
-        return this.startTime;
-    }
-
-    /**
-     * Gets the end time of the time range within which the alerts were triggered.
-     *
-     * @return The end time.
-     */
-    public OffsetDateTime getEndTime() {
-        return this.endTime;
-    }
-
-    /**
-     * Gets the time model.
+     * Gets the time mode.
      *
      * @return The time mode.
      */
-    public TimeMode getTimeMode() {
-        return this.timeMode;
+    public AlertQueryTimeMode getTimeMode() {
+        return this.alertQueryTimeMode;
     }
 
     /**

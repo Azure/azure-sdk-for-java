@@ -5,13 +5,16 @@
 package com.azure.resourcemanager.cdn.implementation;
 
 import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -65,7 +68,7 @@ public final class OriginsClientImpl implements OriginsClient {
     @Host("{$host}")
     @ServiceInterface(name = "CdnManagementClientO")
     private interface OriginsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/origins")
@@ -78,9 +81,10 @@ public final class OriginsClientImpl implements OriginsClient {
             @PathParam("endpointName") String endpointName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/origins/{originName}")
@@ -94,9 +98,28 @@ public final class OriginsClientImpl implements OriginsClient {
             @PathParam("originName") String originName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
+                + "/{profileName}/endpoints/{endpointName}/origins/{originName}")
+        @ExpectedResponses({200, 201, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("profileName") String profileName,
+            @PathParam("endpointName") String endpointName,
+            @PathParam("originName") String originName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") OriginInner origin,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
                 + "/{profileName}/endpoints/{endpointName}/origins/{originName}")
@@ -111,14 +134,35 @@ public final class OriginsClientImpl implements OriginsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") OriginUpdateParameters originUpdateProperties,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles"
+                + "/{profileName}/endpoints/{endpointName}/origins/{originName}")
+        @ExpectedResponses({202, 204})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("profileName") String profileName,
+            @PathParam("endpointName") String endpointName,
+            @PathParam("originName") String originName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<OriginListResult>> listByEndpointNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -157,6 +201,7 @@ public final class OriginsClientImpl implements OriginsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -168,6 +213,7 @@ public final class OriginsClientImpl implements OriginsClient {
                             endpointName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .<PagedResponse<OriginInner>>map(
                 res ->
@@ -218,6 +264,7 @@ public final class OriginsClientImpl implements OriginsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByEndpoint(
@@ -227,6 +274,7 @@ public final class OriginsClientImpl implements OriginsClient {
                 endpointName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context)
             .map(
                 res ->
@@ -353,6 +401,7 @@ public final class OriginsClientImpl implements OriginsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -365,6 +414,7 @@ public final class OriginsClientImpl implements OriginsClient {
                             originName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -410,6 +460,7 @@ public final class OriginsClientImpl implements OriginsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -420,6 +471,7 @@ public final class OriginsClientImpl implements OriginsClient {
                 originName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
+                accept,
                 context);
     }
 
@@ -486,13 +538,358 @@ public final class OriginsClientImpl implements OriginsClient {
     }
 
     /**
+     * Creates a new origin within the specified endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin that is unique within the endpoint.
+     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
+     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+     *     configured origins.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cDN origin is the source of the content being delivered via CDN.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (profileName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+        }
+        if (endpointName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
+        }
+        if (originName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter originName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (origin == null) {
+            return Mono.error(new IllegalArgumentException("Parameter origin is required and cannot be null."));
+        } else {
+            origin.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .create(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            profileName,
+                            endpointName,
+                            originName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            origin,
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Creates a new origin within the specified endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin that is unique within the endpoint.
+     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
+     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+     *     configured origins.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cDN origin is the source of the content being delivered via CDN.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String originName,
+        OriginInner origin,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (profileName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+        }
+        if (endpointName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
+        }
+        if (originName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter originName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (origin == null) {
+            return Mono.error(new IllegalArgumentException("Parameter origin is required and cannot be null."));
+        } else {
+            origin.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .create(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                profileName,
+                endpointName,
+                originName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                origin,
+                accept,
+                context);
+    }
+
+    /**
+     * Creates a new origin within the specified endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin that is unique within the endpoint.
+     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
+     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+     *     configured origins.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cDN origin is the source of the content being delivered via CDN.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<OriginInner>, OriginInner> beginCreateAsync(
+        String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, profileName, endpointName, originName, origin);
+        return this
+            .client
+            .<OriginInner, OriginInner>getLroResult(
+                mono, this.client.getHttpPipeline(), OriginInner.class, OriginInner.class, Context.NONE);
+    }
+
+    /**
+     * Creates a new origin within the specified endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin that is unique within the endpoint.
+     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
+     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+     *     configured origins.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cDN origin is the source of the content being delivered via CDN.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<OriginInner>, OriginInner> beginCreateAsync(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String originName,
+        OriginInner origin,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, profileName, endpointName, originName, origin, context);
+        return this
+            .client
+            .<OriginInner, OriginInner>getLroResult(
+                mono, this.client.getHttpPipeline(), OriginInner.class, OriginInner.class, context);
+    }
+
+    /**
+     * Creates a new origin within the specified endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin that is unique within the endpoint.
+     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
+     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+     *     configured origins.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cDN origin is the source of the content being delivered via CDN.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<OriginInner>, OriginInner> beginCreate(
+        String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, originName, origin).getSyncPoller();
+    }
+
+    /**
+     * Creates a new origin within the specified endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin that is unique within the endpoint.
+     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
+     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+     *     configured origins.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cDN origin is the source of the content being delivered via CDN.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<OriginInner>, OriginInner> beginCreate(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String originName,
+        OriginInner origin,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, originName, origin, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates a new origin within the specified endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin that is unique within the endpoint.
+     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
+     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+     *     configured origins.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cDN origin is the source of the content being delivered via CDN.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OriginInner> createAsync(
+        String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, originName, origin)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a new origin within the specified endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin that is unique within the endpoint.
+     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
+     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+     *     configured origins.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cDN origin is the source of the content being delivered via CDN.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<OriginInner> createAsync(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String originName,
+        OriginInner origin,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, originName, origin, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates a new origin within the specified endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin that is unique within the endpoint.
+     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
+     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+     *     configured origins.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cDN origin is the source of the content being delivered via CDN.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OriginInner create(
+        String resourceGroupName, String profileName, String endpointName, String originName, OriginInner origin) {
+        return createAsync(resourceGroupName, profileName, endpointName, originName, origin).block();
+    }
+
+    /**
+     * Creates a new origin within the specified endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin that is unique within the endpoint.
+     * @param origin CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by
+     *     an endpoint do not have the requested content cached, they attempt to fetch it from one or more of the
+     *     configured origins.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cDN origin is the source of the content being delivered via CDN.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OriginInner create(
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        String originName,
+        OriginInner origin,
+        Context context) {
+        return createAsync(resourceGroupName, profileName, endpointName, originName, origin, context).block();
+    }
+
+    /**
      * Updates an existing origin within an endpoint.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin creation or update.
+     * @param originUpdateProperties Origin properties needed for origin update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -537,6 +934,7 @@ public final class OriginsClientImpl implements OriginsClient {
         } else {
             originUpdateProperties.validate();
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -550,6 +948,7 @@ public final class OriginsClientImpl implements OriginsClient {
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
                             originUpdateProperties,
+                            accept,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
@@ -561,7 +960,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin creation or update.
+     * @param originUpdateProperties Origin properties needed for origin update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -608,6 +1007,7 @@ public final class OriginsClientImpl implements OriginsClient {
         } else {
             originUpdateProperties.validate();
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -619,6 +1019,7 @@ public final class OriginsClientImpl implements OriginsClient {
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
                 originUpdateProperties,
+                accept,
                 context);
     }
 
@@ -629,7 +1030,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin creation or update.
+     * @param originUpdateProperties Origin properties needed for origin update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -657,7 +1058,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin creation or update.
+     * @param originUpdateProperties Origin properties needed for origin update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -689,7 +1090,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin creation or update.
+     * @param originUpdateProperties Origin properties needed for origin update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -713,7 +1114,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin creation or update.
+     * @param originUpdateProperties Origin properties needed for origin update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -740,7 +1141,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin creation or update.
+     * @param originUpdateProperties Origin properties needed for origin update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -765,7 +1166,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin creation or update.
+     * @param originUpdateProperties Origin properties needed for origin update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -793,7 +1194,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin creation or update.
+     * @param originUpdateProperties Origin properties needed for origin update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -816,7 +1217,7 @@ public final class OriginsClientImpl implements OriginsClient {
      * @param profileName Name of the CDN profile which is unique within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param originName Name of the origin which is unique within the endpoint.
-     * @param originUpdateProperties Origin properties needed for origin creation or update.
+     * @param originUpdateProperties Origin properties needed for origin update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -836,6 +1237,278 @@ public final class OriginsClientImpl implements OriginsClient {
     }
 
     /**
+     * Deletes an existing origin within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String profileName, String endpointName, String originName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (profileName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+        }
+        if (endpointName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
+        }
+        if (originName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter originName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            profileName,
+                            endpointName,
+                            originName,
+                            this.client.getSubscriptionId(),
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Deletes an existing origin within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin which is unique within the endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String profileName, String endpointName, String originName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (profileName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
+        }
+        if (endpointName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter endpointName is required and cannot be null."));
+        }
+        if (originName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter originName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                profileName,
+                endpointName,
+                originName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Deletes an existing origin within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String profileName, String endpointName, String originName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, profileName, endpointName, originName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    }
+
+    /**
+     * Deletes an existing origin within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin which is unique within the endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String profileName, String endpointName, String originName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, profileName, endpointName, originName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Deletes an existing origin within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String profileName, String endpointName, String originName) {
+        return beginDeleteAsync(resourceGroupName, profileName, endpointName, originName).getSyncPoller();
+    }
+
+    /**
+     * Deletes an existing origin within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin which is unique within the endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String profileName, String endpointName, String originName, Context context) {
+        return beginDeleteAsync(resourceGroupName, profileName, endpointName, originName, context).getSyncPoller();
+    }
+
+    /**
+     * Deletes an existing origin within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteAsync(
+        String resourceGroupName, String profileName, String endpointName, String originName) {
+        return beginDeleteAsync(resourceGroupName, profileName, endpointName, originName)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes an existing origin within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin which is unique within the endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(
+        String resourceGroupName, String profileName, String endpointName, String originName, Context context) {
+        return beginDeleteAsync(resourceGroupName, profileName, endpointName, originName, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes an existing origin within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin which is unique within the endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String profileName, String endpointName, String originName) {
+        deleteAsync(resourceGroupName, profileName, endpointName, originName).block();
+    }
+
+    /**
+     * Deletes an existing origin within an endpoint.
+     *
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param originName Name of the origin which is unique within the endpoint.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(
+        String resourceGroupName, String profileName, String endpointName, String originName, Context context) {
+        deleteAsync(resourceGroupName, profileName, endpointName, originName, context).block();
+    }
+
+    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -849,8 +1522,15 @@ public final class OriginsClientImpl implements OriginsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByEndpointNext(nextLink, context))
+            .withContext(context -> service.listByEndpointNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<OriginInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -878,9 +1558,16 @@ public final class OriginsClientImpl implements OriginsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByEndpointNext(nextLink, context)
+            .listByEndpointNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

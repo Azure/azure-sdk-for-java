@@ -136,10 +136,15 @@ class DocumentProducer<T extends Resource> {
                 } catch (Exception e) {
                     return Mono.error(e);
                 }
-                retryPolicy.onBeforeSendRequest(request);
             }
+
+            DocumentClientRetryPolicy finalRetryPolicy = retryPolicy;
             return ObservableHelper.inlineIfPossibleAsObs(
                     () -> {
+                        if(finalRetryPolicy != null) {
+                            finalRetryPolicy.onBeforeSendRequest(request);
+                        }
+
                         ++retries;
                         return executeRequestFunc.apply(request);
                     }, retryPolicy);
@@ -147,7 +152,9 @@ class DocumentProducer<T extends Resource> {
 
         this.correlatedActivityId = correlatedActivityId;
 
-        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions != null ? cosmosQueryRequestOptions : new CosmosQueryRequestOptions();
+        this.cosmosQueryRequestOptions = cosmosQueryRequestOptions != null ?
+                                             ModelBridgeInternal.createQueryRequestOptions(cosmosQueryRequestOptions)
+                                             : new CosmosQueryRequestOptions();
         ModelBridgeInternal.setQueryRequestOptionsContinuationToken(this.cosmosQueryRequestOptions, initialContinuationToken);
         this.lastResponseContinuationToken = initialContinuationToken;
         this.resourceType = resourceType;

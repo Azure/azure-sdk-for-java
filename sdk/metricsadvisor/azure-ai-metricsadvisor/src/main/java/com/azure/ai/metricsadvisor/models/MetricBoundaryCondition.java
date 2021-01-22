@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.MetricBoundaryConditionHelper;
+
 /**
  * Defines the boundary conditions for the anomaly (abnormal data points)
  * to be included in the alert.
@@ -13,6 +15,25 @@ public final class MetricBoundaryCondition {
     private Double upperBoundary;
     private String companionMetricId;
     private Boolean alertIfMissing;
+
+    static {
+        MetricBoundaryConditionHelper.setAccessor(new MetricBoundaryConditionHelper.MetricBoundaryConditionAccessor() {
+            @Override
+            public void setLowerBoundary(MetricBoundaryCondition condition, Double lowerBoundary) {
+                condition.setLowerBoundary(lowerBoundary);
+            }
+
+            @Override
+            public void setUpperBoundary(MetricBoundaryCondition condition, Double upperBoundary) {
+                condition.setUpperBoundary(upperBoundary);
+            }
+
+            @Override
+            public void setBoundaryDirection(MetricBoundaryCondition condition, BoundaryDirection boundaryDirection) {
+                condition.setBoundaryDirection(boundaryDirection);
+            }
+        });
+    }
 
     /**
      * Gets the boundary direction.
@@ -144,5 +165,17 @@ public final class MetricBoundaryCondition {
         this.companionMetricId = companionMetricId;
         this.alertIfMissing = alertIfMissing;
         return this;
+    }
+
+    void setLowerBoundary(Double lowerBoundary) {
+        this.lowerBoundary = lowerBoundary;
+    }
+
+    void setUpperBoundary(Double upperBoundary) {
+        this.upperBoundary = upperBoundary;
+    }
+
+    void setBoundaryDirection(BoundaryDirection boundaryDirection) {
+        this.boundaryDirection = boundaryDirection;
     }
 }

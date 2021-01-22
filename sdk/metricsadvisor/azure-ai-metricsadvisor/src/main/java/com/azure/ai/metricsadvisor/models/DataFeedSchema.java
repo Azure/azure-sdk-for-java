@@ -12,24 +12,24 @@ import java.util.List;
  */
 @Fluent
 public final class DataFeedSchema {
-    private final List<Metric> metrics;
-    private List<Dimension> dimensions;
+    private final List<DataFeedMetric> dataFeedMetrics;
+    private List<DataFeedDimension> dataFeedDimensions;
     private String timestampColumn;
 
     /**
-     * @param metrics the metric columns to set.
+     * @param dataFeedMetrics the metric columns to set.
      */
-    public DataFeedSchema(final List<Metric> metrics) {
-        this.metrics = metrics;
+    public DataFeedSchema(final List<DataFeedMetric> dataFeedMetrics) {
+        this.dataFeedMetrics = dataFeedMetrics;
     }
 
     /**
-     * Get the related metrics list.
+     * Get the related dataFeedMetrics list.
      *
-     * @return the list of metrics column set.
+     * @return the list of dataFeedMetrics column set.
      */
-    public List<Metric> getMetrics() {
-        return this.metrics;
+    public List<DataFeedMetric> getMetrics() {
+        return this.dataFeedMetrics;
     }
 
     /**
@@ -37,8 +37,8 @@ public final class DataFeedSchema {
      *
      * @return the dimension list
      */
-    public List<Dimension> getDimensions() {
-        return this.dimensions;
+    public List<DataFeedDimension> getDimensions() {
+        return this.dataFeedDimensions;
     }
 
     /**
@@ -58,8 +58,8 @@ public final class DataFeedSchema {
      *
      * @return the DataFeedSchema object itself.
      */
-    public DataFeedSchema setDimensions(List<Dimension> dimensions) {
-        this.dimensions = dimensions;
+    public DataFeedSchema setDimensions(List<DataFeedDimension> dimensions) {
+        this.dataFeedDimensions = dimensions;
         return this;
     }
 

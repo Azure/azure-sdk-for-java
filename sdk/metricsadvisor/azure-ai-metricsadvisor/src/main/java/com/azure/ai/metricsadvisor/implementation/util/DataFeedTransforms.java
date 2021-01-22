@@ -53,6 +53,7 @@ import com.azure.ai.metricsadvisor.models.DataFeedAutoRollUpMethod;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillSettings;
 import com.azure.ai.metricsadvisor.models.DataFeedOptions;
 import com.azure.ai.metricsadvisor.models.DataFeedRollupSettings;
@@ -61,11 +62,10 @@ import com.azure.ai.metricsadvisor.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.models.DataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeedSourceType;
 import com.azure.ai.metricsadvisor.models.DataFeedStatus;
-import com.azure.ai.metricsadvisor.models.DataSourceMissingDataPointFillType;
+import com.azure.ai.metricsadvisor.models.DataFeedMissingDataPointFillType;
 import com.azure.ai.metricsadvisor.models.ElasticsearchDataFeedSource;
 import com.azure.ai.metricsadvisor.models.HttpRequestDataFeedSource;
 import com.azure.ai.metricsadvisor.models.InfluxDBDataFeedSource;
-import com.azure.ai.metricsadvisor.models.Metric;
 import com.azure.ai.metricsadvisor.models.MongoDBDataFeedSource;
 import com.azure.ai.metricsadvisor.models.MySqlDataFeedSource;
 import com.azure.ai.metricsadvisor.models.PostgreSqlDataFeedSource;
@@ -90,8 +90,9 @@ public final class DataFeedTransforms {
     public static DataFeed fromInner(final DataFeedDetail dataFeedDetail) {
         final DataFeedGranularity dataFeedGranularity = new DataFeedGranularity()
             .setGranularityType(DataFeedGranularityType.fromString(dataFeedDetail.getGranularityName().toString()));
-        PrivateFieldAccessHelper.set(dataFeedGranularity, "customGranularityValue",
-            dataFeedDetail.getGranularityAmount());
+        if (dataFeedDetail.getGranularityAmount() != null) {
+            dataFeedGranularity.setCustomGranularityValue(dataFeedDetail.getGranularityAmount());
+        }
 
         final DataFeed dataFeed = setDataFeedSourceType(dataFeedDetail);
         dataFeed
@@ -109,26 +110,25 @@ public final class DataFeedTransforms {
                 .setDescription(dataFeedDetail.getDataFeedDescription())
                 .setMissingDataPointFillSettings(new DataFeedMissingDataPointFillSettings()
                     .setCustomFillValue(dataFeedDetail.getFillMissingPointValue())
-                    .setFillType(DataSourceMissingDataPointFillType.fromString(
+                    .setFillType(DataFeedMissingDataPointFillType.fromString(
                         dataFeedDetail.getFillMissingPointType().toString())))
                 .setAccessMode(DataFeedAccessMode.fromString(dataFeedDetail.getViewMode().toString()))
-                .setAdmins(dataFeedDetail.getAdmins())
+                .setAdminEmails(dataFeedDetail.getAdmins())
                 .setRollupSettings(new DataFeedRollupSettings()
                     .setAlreadyRollup(dataFeedDetail.getAllUpIdentification())
                     .setAutoRollup(DataFeedAutoRollUpMethod.fromString(dataFeedDetail.getRollUpMethod().toString()),
                         dataFeedDetail.getRollUpColumns())
                     .setRollupType(DataFeedRollupType.fromString(dataFeedDetail.getNeedRollup().toString())))
                 .setActionLinkTemplate(dataFeedDetail.getActionLinkTemplate())
-                .setViewers(dataFeedDetail.getViewers()));
+                .setViewerEmails(dataFeedDetail.getViewers()));
 
-        PrivateFieldAccessHelper.set(dataFeed, "id", dataFeedDetail.getDataFeedId().toString());
-        PrivateFieldAccessHelper.set(dataFeed, "createdTime", dataFeedDetail.getCreatedTime());
-        PrivateFieldAccessHelper.set(dataFeed, "isAdmin", dataFeedDetail.isAdmin());
-        PrivateFieldAccessHelper.set(dataFeed, "creator", dataFeedDetail.getCreator());
-        PrivateFieldAccessHelper.set(dataFeed, "dataFeedStatus",
-            DataFeedStatus.fromString(dataFeedDetail.getStatus().toString()));
-        PrivateFieldAccessHelper.set(dataFeed, "metricIds",
-            dataFeedDetail.getMetrics().stream().map(Metric::getId).collect(Collectors.toList()));
+        DataFeedHelper.setId(dataFeed, dataFeedDetail.getDataFeedId().toString());
+        DataFeedHelper.setCreatedTime(dataFeed, dataFeedDetail.getCreatedTime());
+        DataFeedHelper.setIsAdmin(dataFeed, dataFeedDetail.isAdmin());
+        DataFeedHelper.setCreator(dataFeed, dataFeedDetail.getCreator());
+        DataFeedHelper.setStatus(dataFeed, DataFeedStatus.fromString(dataFeedDetail.getStatus().toString()));
+        DataFeedHelper.setMetricIds(dataFeed,
+            dataFeedDetail.getMetrics().stream().map(DataFeedMetric::getId).collect(Collectors.toList()));
         return dataFeed;
     }
 
@@ -253,7 +253,7 @@ public final class DataFeedTransforms {
             throw LOGGER.logExceptionAsError(new RuntimeException(
                 String.format("Data feed source type %s not supported", dataFeedDetail.getClass().getCanonicalName())));
         }
-        PrivateFieldAccessHelper.set(dataFeed, "dataFeedSourceType", dataFeedSourceType);
+        DataFeedHelper.setSourceType(dataFeed, dataFeedSourceType);
         return dataFeed;
     }
 

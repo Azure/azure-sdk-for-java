@@ -73,6 +73,13 @@ public interface CdnManagementClient {
     OriginsClient getOrigins();
 
     /**
+     * Gets the OriginGroupsClient object to access its operations.
+     *
+     * @return the OriginGroupsClient object.
+     */
+    OriginGroupsClient getOriginGroups();
+
+    /**
      * Gets the CustomDomainsClient object to access its operations.
      *
      * @return the CustomDomainsClient object.
@@ -99,6 +106,20 @@ public interface CdnManagementClient {
      * @return the EdgeNodesClient object.
      */
     EdgeNodesClient getEdgeNodes();
+
+    /**
+     * Gets the PoliciesClient object to access its operations.
+     *
+     * @return the PoliciesClient object.
+     */
+    PoliciesClient getPolicies();
+
+    /**
+     * Gets the ManagedRuleSetsClient object to access its operations.
+     *
+     * @return the ManagedRuleSetsClient object.
+     */
+    ManagedRuleSetsClient getManagedRuleSets();
 
     /**
      * Check the availability of a resource name. This is needed for resources where name is globally unique, such as a

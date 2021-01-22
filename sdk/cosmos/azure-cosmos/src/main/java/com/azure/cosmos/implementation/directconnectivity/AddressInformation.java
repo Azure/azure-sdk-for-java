@@ -4,7 +4,9 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdUtils;
 
+import java.net.URI;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -51,6 +53,10 @@ public class AddressInformation {
 
     public String getProtocolScheme() {
         return this.protocol.scheme();
+    }
+
+    public URI getServerKey() {
+        return RntbdUtils.getServerKey(this.physicalUri.getURI());
     }
 
     @Override

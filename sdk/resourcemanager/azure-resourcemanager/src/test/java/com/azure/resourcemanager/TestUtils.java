@@ -6,6 +6,7 @@ package com.azure.resourcemanager;
 import com.azure.core.util.Configuration;
 import com.azure.resourcemanager.compute.models.DataDisk;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
+import com.azure.resourcemanager.resources.models.ManagementLock;
 
 /** Test utilities. */
 public final class TestUtils {
@@ -20,13 +21,13 @@ public final class TestUtils {
         return "RECORD".equalsIgnoreCase(azureTestMode);
     }
 
-    //    public static void print(ManagementLock lock) {
-    //        StringBuffer info = new StringBuffer();
-    //        info.append("\nLock ID: ").append(lock.id())
-    //            .append("\nLocked resource ID: ").append(lock.lockedResourceId())
-    //            .append("\nLevel: ").append(lock.level());
-    //        System.out.println(info.toString());
-    //    }
+    public static void print(ManagementLock lock) {
+        StringBuffer info = new StringBuffer();
+        info.append("\nLock ID: ").append(lock.id())
+            .append("\nLocked resource ID: ").append(lock.lockedResourceId())
+            .append("\nLevel: ").append(lock.level());
+        System.out.println(info.toString());
+    }
 
     /**
      * Shows the virtual machine.

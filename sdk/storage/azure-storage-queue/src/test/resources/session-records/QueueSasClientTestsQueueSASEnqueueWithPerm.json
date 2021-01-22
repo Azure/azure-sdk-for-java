@@ -42,7 +42,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm34108e/messages?sv=2020-02-10&spr=https%2Chttp&st=2020-06-03T00%3A05%3A33Z&se=2020-06-05T00%3A05%3A33Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm34108e/messages?sv=2020-04-08&spr=https%2Chttp&st=2020-06-03T00%3A05%3A33Z&se=2020-06-05T00%3A05%3A33Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
@@ -64,7 +64,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm34108e/messages?numofmessages=2&visibilitytimeout=30&sv=2020-02-10&spr=https%2Chttp&st=2020-06-03T00%3A05%3A33Z&se=2020-06-05T00%3A05%3A33Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm34108e/messages?numofmessages=2&visibilitytimeout=30&sv=2020-04-08&spr=https%2Chttp&st=2020-06-03T00%3A05%3A33Z&se=2020-06-05T00%3A05%3A33Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",
@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm34108e/messages/0f4e9756-a3e8-4055-ab2c-1187d732cd2e?popreceipt=AgAAAAMAAAAAAAAAkI3W3QM61gE%3D&visibilitytimeout=3600&sv=2020-02-10&spr=https%2Chttp&st=2020-06-03T00%3A05%3A33Z&se=2020-06-05T00%3A05%3A33Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
+    "Uri" : "https://REDACTED.queue.core.windows.net/queuesasclienttestsqueuesasenqueuewithperm34108e/messages/0f4e9756-a3e8-4055-ab2c-1187d732cd2e?popreceipt=AgAAAAMAAAAAAAAAkI3W3QM61gE%3D&visibilitytimeout=3600&sv=2020-04-08&spr=https%2Chttp&st=2020-06-03T00%3A05%3A33Z&se=2020-06-05T00%3A05%3A33Z&sip=0.0.0.0-255.255.255.255&sp=rap&sig=REDACTED",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-queue/12.6.0-beta.1 (11.0.6; Windows 10 10.0)",

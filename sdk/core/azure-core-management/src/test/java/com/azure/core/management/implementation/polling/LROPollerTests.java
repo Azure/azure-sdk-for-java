@@ -337,7 +337,7 @@ public class LROPollerTests {
     }
 
     @Test
-    public void lroSucceededNoPoll() {
+    public void lro200SucceededNoPoll() {
         final String resourceEndpoint = "/resource/1";
         final String sampleVaultUpdateSucceededResponse = "{\"id\":\"/subscriptions/###/resourceGroups/rg-weidxu/providers/Microsoft.KeyVault/vaults/v1weidxu\",\"name\":\"v1weidxu\",\"type\":\"Microsoft.KeyVault/vaults\",\"location\":\"centralus\",\"tags\":{},\"properties\":{\"sku\":{\"family\":\"A\",\"name\":\"standard\"},\"tenantId\":\"###\",\"accessPolicies\":[],\"enabledForDeployment\":false,\"vaultUri\":\"https://v1weidxu.vault.azure.net/\",\"provisioningState\":\"Succeeded\"}}";
         ResponseTransformer provisioningStateLroService = new ResponseTransformer() {
@@ -411,7 +411,7 @@ public class LROPollerTests {
     }
 
     @Test
-    public void lroAsyncOperationSucceededNoPoll() {
+    public void lro201AsyncOperationSucceededNoPoll() {
         final String resourceEndpoint = "/resource/1";
         final String sampleNicCreateSucceededResponse = "{\"name\":\"nic4159682782\",\"id\":\"/subscriptions/###/resourceGroups/javanwmrg59122/providers/Microsoft.Network/networkInterfaces/nic4159682782\",\"etag\":\"W/\\\"92581fdf-b55d-4ca1-a1fa-9de0cf117b4f\\\"\",\"location\":\"eastus\",\"tags\":{},\"properties\":{\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"e0a8ecd1-faa0-468c-8e30-411ca27417a1\",\"ipConfigurations\":[{\"name\":\"primary\",\"id\":\"/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/javanwmrg59122/providers/Microsoft.Network/networkInterfaces/nic4159682782/ipConfigurations/primary\",\"etag\":\"W/\\\"92581fdf-b55d-4ca1-a1fa-9de0cf117b4f\\\"\",\"type\":\"Microsoft.Network/networkInterfaces/ipConfigurations\",\"properties\":{\"provisioningState\":\"Succeeded\",\"privateIPAddress\":\"10.0.0.6\",\"privateIPAllocationMethod\":\"Dynamic\",\"subnet\":{\"id\":\"/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/javanwmrg59122/providers/Microsoft.Network/virtualNetworks/neta3e8953331/subnets/subnet1\"},\"primary\":true,\"privateIPAddressVersion\":\"IPv4\"}}],\"dnsSettings\":{\"dnsServers\":[],\"appliedDnsServers\":[],\"internalDomainNameSuffix\":\"a4vv4vgg2cluvfhfgw43jtn2aa.bx.internal.cloudapp.net\"},\"enableAcceleratedNetworking\":false,\"enableIPForwarding\":false,\"hostedWorkloads\":[],\"tapConfigurations\":[]},\"type\":\"Microsoft.Network/networkInterfaces\"}";
         ResponseTransformer provisioningStateLroService = new ResponseTransformer() {
@@ -428,7 +428,7 @@ public class LROPollerTests {
                         .build();
                 }
                 if (request.getMethod().isOneOf(RequestMethod.PUT)) {
-                    // 200 response with provisioningState=Succeeded.
+                    // 201 response with provisioningState=Succeeded.
                     return new com.github.tomakehurst.wiremock.http.Response.Builder()
                         .headers(new HttpHeaders(
                             new HttpHeader("Azure-AsyncOperation", "https://management.azure.com/subscriptions/###/providers/Microsoft.Network/locations/eastus/operations/###")))
@@ -479,6 +479,82 @@ public class LROPollerTests {
             Assertions.assertNotNull(result.id());
             Assertions.assertEquals("nic4159682782", result.name());
             Assertions.assertEquals("Microsoft.Network/networkInterfaces", result.type());
+        } finally {
+            if (lroServer.isRunning()) {
+                lroServer.shutdown();
+            }
+        }
+    }
+
+    @Test
+    public void lro201SucceededNoPoll() {
+        final String resourceEndpoint = "/resource/1";
+        final String sampleSearchServiceCreateSucceededResponse = "{\"id\":\"/subscriptions/###/resourceGroups/rg86829b7a87d74/providers/Microsoft.Search/searchServices/ss3edfb54d\",\"name\":\"ss3edfb54d\",\"type\":\"Microsoft.Search/searchServices\",\"location\":\"West US\",\"properties\":{\"replicaCount\":1,\"partitionCount\":1,\"status\":\"running\",\"statusDetails\":\"\",\"provisioningState\":\"succeeded\",\"hostingMode\":\"Default\",\"publicNetworkAccess\":\"Enabled\",\"networkRuleSet\":{\"ipRules\":[],\"bypass\":\"None\"},\"privateEndpointConnections\":[],\"sharedPrivateLinkResources\":[]},\"sku\":{\"name\":\"free\"}}";
+        ResponseTransformer provisioningStateLroService = new ResponseTransformer() {
+            @Override
+            public com.github.tomakehurst.wiremock.http.Response transform(Request request,
+                                                                           com.github.tomakehurst.wiremock.http.Response response,
+                                                                           FileSource fileSource,
+                                                                           Parameters parameters) {
+
+                if (!request.getUrl().endsWith(resourceEndpoint)) {
+                    return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                        .status(500)
+                        .body("Unsupported path:" + request.getUrl())
+                        .build();
+                }
+                if (request.getMethod().isOneOf(RequestMethod.PUT)) {
+                    // 201 response with provisioningState=Succeeded.
+                    return new com.github.tomakehurst.wiremock.http.Response.Builder()
+                        .headers(new HttpHeaders(
+                            new HttpHeader("Location", "https://management.azure.com/subscriptions/###/resourceGroups/rg86829b7a87d74/providers/Microsoft.Search/searchServices/ss3edfb54d")))
+                        .body(sampleSearchServiceCreateSucceededResponse)
+                        .status(201)
+                        .build();
+                }
+                return response;
+            }
+
+            @Override
+            public String getName() {
+                return "LroService";
+            }
+        };
+
+        WireMockServer lroServer = createServer(provisioningStateLroService, resourceEndpoint);
+        lroServer.start();
+
+        try {
+            final ProvisioningStateLroServiceClient client = RestProxy.create(ProvisioningStateLroServiceClient.class,
+                createHttpPipeline(lroServer.port()),
+                SERIALIZER);
+
+            PollerFlux<PollResult<Resource>, Resource> lroFlux
+                = PollerFactory.create(SERIALIZER,
+                new HttpPipelineBuilder().build(),
+                Resource.class,
+                Resource.class,
+                POLLING_DURATION,
+                newLroInitFunction(client));
+
+            StepVerifier.create(lroFlux)
+                .expectSubscription()
+                .expectNextMatches(response -> {
+                    PollResult<Resource> pollResult = response.getValue();
+                    return response.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+                        && pollResult != null
+                        && pollResult.getValue() != null
+                        && pollResult.getValue().id() != null;
+                }).verifyComplete();
+
+            AsyncPollResponse<PollResult<Resource>, Resource> asyncPollResponse = lroFlux.blockLast();
+            Assertions.assertNotNull(asyncPollResponse);
+
+            Resource result = asyncPollResponse.getFinalResult().block();
+            Assertions.assertNotNull(result);
+            Assertions.assertNotNull(result.id());
+            Assertions.assertEquals("ss3edfb54d", result.name());
+            Assertions.assertEquals("Microsoft.Search/searchServices", result.type());
         } finally {
             if (lroServer.isRunning()) {
                 lroServer.shutdown();

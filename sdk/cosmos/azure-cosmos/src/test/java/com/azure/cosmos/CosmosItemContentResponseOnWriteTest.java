@@ -27,7 +27,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
     private CosmosContainer container;
 
     //  Currently Gateway and Direct TCP support minimal response feature.
-    @Factory(dataProvider = "clientBuildersWithDirectTcpWithContentResponseOnWriteDisabled")
+    @Factory(dataProvider = "clientBuildersWithContentResponseOnWriteEnabledAndDisabled")
     public CosmosItemContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -49,23 +49,47 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createItem_withContentResponseOnWriteDisabled() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+        if (this.getClientBuilder().isContentResponseOnWriteEnabled()) {
+            cosmosItemRequestOptions.setContentResponseOnWriteEnabled(false);
+        }
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties, cosmosItemRequestOptions);
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         validateMinimalItemResponse(properties, itemResponse, true);
 
         properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<InternalObjectNode> itemResponse1 = container.createItem(properties, new CosmosItemRequestOptions());
+        CosmosItemResponse<InternalObjectNode> itemResponse1 = container.createItem(properties, cosmosItemRequestOptions);
         validateMinimalItemResponse(properties, itemResponse1, true);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void createItem_withContentResponseOnWriteEnabledThroughRequestOptions() throws Exception {
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+        if (!this.getClientBuilder().isContentResponseOnWriteEnabled()) {
+            cosmosItemRequestOptions.setContentResponseOnWriteEnabled(true);
+        }
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties, cosmosItemRequestOptions);
+        assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
+        validateItemResponse(properties, itemResponse);
+
+        properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemResponse<InternalObjectNode> itemResponse1 = container.createItem(properties, cosmosItemRequestOptions);
+        validateItemResponse(properties, itemResponse1);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readItem_withContentResponseOnWriteDisabled() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
-        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+        if (this.getClientBuilder().isContentResponseOnWriteEnabled()) {
+            cosmosItemRequestOptions.setContentResponseOnWriteEnabled(false);
+        }
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties, cosmosItemRequestOptions);
 
         CosmosItemResponse<InternalObjectNode> readResponse1 = container.readItem(properties.getId(),
                                                                                     new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
-                                                                                    new CosmosItemRequestOptions(),
+                                                                                    cosmosItemRequestOptions,
                                                                                     InternalObjectNode.class);
         //  Read item should have full response irrespective of the flag - contentResponseOnWriteEnabled
         validateItemResponse(properties, readResponse1);
@@ -73,21 +97,66 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void replaceItem_withContentResponseOnWriteDisabled() throws Exception{
+    public void readItem_withContentResponseOnWriteEnabledThroughRequestOptions() throws Exception {
         InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+        if (!this.getClientBuilder().isContentResponseOnWriteEnabled()) {
+            cosmosItemRequestOptions.setContentResponseOnWriteEnabled(true);
+        }
+
+        CosmosItemResponse<InternalObjectNode> readResponse1 = container.readItem(properties.getId(),
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+            cosmosItemRequestOptions,
+            InternalObjectNode.class);
+        //  Read item should have full response irrespective of the flag - contentResponseOnWriteEnabled
+        validateItemResponse(properties, readResponse1);
+
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void replaceItem_withContentResponseOnWriteDisabled() {
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+        if (this.getClientBuilder().isContentResponseOnWriteEnabled()) {
+            cosmosItemRequestOptions.setContentResponseOnWriteEnabled(false);
+        }
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties, cosmosItemRequestOptions);
 
         validateMinimalItemResponse(properties, itemResponse, true);
         String newPropValue = UUID.randomUUID().toString();
         BridgeInternal.setProperty(properties, "newProp", newPropValue);
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-        ModelBridgeInternal.setPartitionKey(options, new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
+        ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions,
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
         // replace document
         CosmosItemResponse<InternalObjectNode> replace = container.replaceItem(properties,
-                                                              properties.getId(),
-                                                              new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
-                                                              options);
+            properties.getId(),
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+            cosmosItemRequestOptions);
         validateMinimalItemResponse(properties, replace, true);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void replaceItem_withContentResponseOnWriteEnabledThroughRequestOptions() throws Exception{
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+        if (!this.getClientBuilder().isContentResponseOnWriteEnabled()) {
+            cosmosItemRequestOptions.setContentResponseOnWriteEnabled(true);
+        }
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties, cosmosItemRequestOptions);
+
+        validateItemResponse(properties, itemResponse);
+        String newPropValue = UUID.randomUUID().toString();
+        BridgeInternal.setProperty(properties, "newProp", newPropValue);
+        ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions,
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")));
+        // replace document
+        CosmosItemResponse<InternalObjectNode> replace = container.replaceItem(properties,
+            properties.getId(),
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+            cosmosItemRequestOptions);
+        validateItemResponse(properties, replace);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
@@ -99,6 +168,22 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
         CosmosItemResponse<?> deleteResponse = container.deleteItem(properties.getId(),
                                                                     new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
                                                                     options);
+        assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
+        validateMinimalItemResponse(properties, deleteResponse, false);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void deleteItem_withContentResponseOnWriteEnabledThroughRequestOptions() throws Exception {
+        InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+        CosmosItemResponse<InternalObjectNode> itemResponse = container.createItem(properties);
+        CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+        if (!this.getClientBuilder().isContentResponseOnWriteEnabled()) {
+            cosmosItemRequestOptions.setContentResponseOnWriteEnabled(true);
+        }
+
+        CosmosItemResponse<?> deleteResponse = container.deleteItem(properties.getId(),
+            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+            cosmosItemRequestOptions);
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
         validateMinimalItemResponse(properties, deleteResponse, false);
     }

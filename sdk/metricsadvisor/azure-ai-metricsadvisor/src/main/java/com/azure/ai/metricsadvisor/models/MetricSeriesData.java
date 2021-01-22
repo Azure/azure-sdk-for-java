@@ -3,6 +3,8 @@
 
 package com.azure.ai.metricsadvisor.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.MetricSeriesDataHelper;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -21,15 +23,39 @@ public final class MetricSeriesData {
     /*
      * timestamps of the data related to this time series
      */
-    private List<OffsetDateTime> timestampList;
+    private List<OffsetDateTime> timestamps;
 
     /*
      * values of the data related to this time series
      */
-    private List<Double> valueList;
+    private List<Double> metricValues;
+
+    static {
+        MetricSeriesDataHelper.setAccessor(new MetricSeriesDataHelper.MetricSeriesDataAccessor() {
+            @Override
+            public void setMetricId(MetricSeriesData seriesData, String metricId) {
+                seriesData.setMetricId(metricId);
+            }
+
+            @Override
+            public void setSeriesKey(MetricSeriesData seriesData, DimensionKey seriesKey) {
+                seriesData.setSeriesKey(seriesKey);
+            }
+
+            @Override
+            public void setTimestampList(MetricSeriesData seriesData, List<OffsetDateTime> timestamps) {
+                seriesData.setTimestampList(timestamps);
+            }
+
+            @Override
+            public void setValueList(MetricSeriesData seriesData, List<Double> metricValues) {
+                seriesData.setValueList(metricValues);
+            }
+        });
+    }
 
     /**
-     * Get the metricId property: metric unique id.
+     * Get the metric unique id.
      *
      * @return the metricId value.
      */
@@ -50,20 +76,36 @@ public final class MetricSeriesData {
     }
 
     /**
-     * Get the timestampList property: timestamps of the data related to this time series.
+     * Get the timestamps of the data related to this time series.
      *
-     * @return the timestampList value.
+     * @return the timestamps value.
      */
-    public List<OffsetDateTime> getTimestampList() {
-        return this.timestampList;
+    public List<OffsetDateTime> getTimestamps() {
+        return this.timestamps;
     }
 
     /**
-     * Get the valueList property: values of the data related to this time series.
+     * Get the values of the data related to this time series.
      *
-     * @return the valueList value.
+     * @return the metricValues value.
      */
-    public List<Double> getValueList() {
-        return this.valueList;
+    public List<Double> getMetricValues() {
+        return this.metricValues;
+    }
+
+    void setMetricId(String metricId) {
+        this.metricId = metricId;
+    }
+
+    void setSeriesKey(DimensionKey seriesKey) {
+        this.seriesKey = seriesKey;
+    }
+
+    void setTimestampList(List<OffsetDateTime> timestamps) {
+        this.timestamps = timestamps;
+    }
+
+    void setValueList(List<Double> metricValues) {
+        this.metricValues = metricValues;
     }
 }

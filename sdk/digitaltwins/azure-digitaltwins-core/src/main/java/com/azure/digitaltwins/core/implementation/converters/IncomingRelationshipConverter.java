@@ -20,12 +20,11 @@ public final class IncomingRelationshipConverter {
             return null;
         }
         
-        IncomingRelationship mappedIncomingRelationship = new IncomingRelationship();
-        mappedIncomingRelationship.setRelationshipId(input.getRelationshipId());
-        mappedIncomingRelationship.setSourceId(input.getSourceId());
-        mappedIncomingRelationship.setRelationshipName(input.getRelationshipName());
-        mappedIncomingRelationship.setRelationshipLink(input.getRelationshipLink());
-        return mappedIncomingRelationship;
+        return new IncomingRelationship(
+            input.getRelationshipId(),
+            input.getSourceId(),
+            input.getRelationshipName(),
+            input.getRelationshipLink());
     }
 
     /**

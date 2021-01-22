@@ -70,8 +70,8 @@ public class GetBoundingBoxes {
                             System.out.printf("Cell text %s has following words: %n", formTableCell.getText());
                             // FormElements only exists if you set includeFieldElements to true in your
                             // call to beginRecognizeCustomFormsFromUrl
-                            // It is also a list of FormWords and FormLines, but in this example, we only deal with
-                            // FormWords
+                            // It is also a list of FormWords, FormLines and FormSelectionMarks, but in this example,
+                            // we only deal with FormWords.
                             formTableCell.getFieldElements().stream()
                                 .filter(formContent -> formContent instanceof FormWord)
                                 .map(formContent -> (FormWord) (formContent))

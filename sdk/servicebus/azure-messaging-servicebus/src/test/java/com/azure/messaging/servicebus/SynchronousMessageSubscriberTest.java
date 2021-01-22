@@ -36,7 +36,7 @@ public class SynchronousMessageSubscriberTest {
     @Mock
     private Subscription subscription;
 
-    private SynchronousMessageSubscriber syncSybscriber;
+    private SynchronousMessageSubscriber syncSubscriber;
 
     @BeforeAll
     static void beforeAll() {
@@ -68,12 +68,11 @@ public class SynchronousMessageSubscriberTest {
         when(work1.getId()).thenReturn(1L);
 
         // Act
-        syncSybscriber = new SynchronousMessageSubscriber(100, work1);
+        syncSubscriber = new SynchronousMessageSubscriber(100, work1);
 
         // Assert
-        Assertions.assertEquals(1, syncSybscriber.getWorkQueueSize());
-        Assertions.assertEquals(100, syncSybscriber.getRequested());
-
+        Assertions.assertEquals(1, syncSubscriber.getWorkQueueSize());
+        Assertions.assertEquals(100, syncSubscriber.getRequested());
     }
 
     /**
@@ -83,11 +82,11 @@ public class SynchronousMessageSubscriberTest {
     void workAddedInQueueOnCreation() {
         // Arrange & Act
         when(work1.getNumberOfEvents()).thenReturn(3);
-        syncSybscriber = new SynchronousMessageSubscriber(0, work1);
+        syncSubscriber = new SynchronousMessageSubscriber(0, work1);
 
         // Assert
-        Assertions.assertEquals(1, syncSybscriber.getWorkQueueSize());
-        Assertions.assertEquals(3, syncSybscriber.getRequested());
+        Assertions.assertEquals(1, syncSubscriber.getWorkQueueSize());
+        Assertions.assertEquals(3, syncSubscriber.getRequested());
 
     }
 
@@ -97,14 +96,14 @@ public class SynchronousMessageSubscriberTest {
     @Test
     void queueWorkTest() {
         // Arrange
-        syncSybscriber = new SynchronousMessageSubscriber(PREFETCH, work1);
+        syncSubscriber = new SynchronousMessageSubscriber(PREFETCH, work1);
 
         // Act
-        syncSybscriber.queueWork(work2);
+        syncSubscriber.queueWork(work2);
 
         // Assert
-        Assertions.assertEquals(2, syncSybscriber.getWorkQueueSize());
-        Assertions.assertEquals(1, syncSybscriber.getRequested());
+        Assertions.assertEquals(2, syncSubscriber.getWorkQueueSize());
+        Assertions.assertEquals(1, syncSubscriber.getRequested());
 
     }
 
@@ -114,18 +113,18 @@ public class SynchronousMessageSubscriberTest {
     @Test
     void hookOnSubscribeTest() {
         // Arrange
-        syncSybscriber = new SynchronousMessageSubscriber(PREFETCH, work1);
+        syncSubscriber = new SynchronousMessageSubscriber(PREFETCH, work1);
         when(work1.getTimeout()).thenReturn(Duration.ofSeconds(10));
         when(work1.isTerminal()).thenReturn(true);
         doNothing().when(subscription).request(1);
 
         // Act
-        syncSybscriber.hookOnSubscribe(subscription);
+        syncSubscriber.hookOnSubscribe(subscription);
 
         // Assert
-        Assertions.assertTrue(syncSybscriber.isSubscriberInitialized());
-        Assertions.assertEquals(0, syncSybscriber.getWorkQueueSize());
-        Assertions.assertEquals(1, syncSybscriber.getRequested());
+        Assertions.assertTrue(syncSubscriber.isSubscriberInitialized());
+        Assertions.assertEquals(0, syncSubscriber.getWorkQueueSize());
+        Assertions.assertEquals(1, syncSubscriber.getRequested());
 
     }
 }

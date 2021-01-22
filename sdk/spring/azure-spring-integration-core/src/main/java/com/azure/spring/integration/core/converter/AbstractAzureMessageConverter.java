@@ -30,6 +30,12 @@ public abstract class AbstractAzureMessageConverter<T> implements AzureMessageCo
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
+    /**
+     * Convert payload object to byte array.
+     * @param object The payload object.
+     * @return The byte array.
+     * @throws ConversionException When fail to convert the object to bytes.
+     */
     protected static byte[] toPayload(Object object) {
         try {
             return OBJECT_MAPPER.writeValueAsBytes(object);
@@ -38,6 +44,15 @@ public abstract class AbstractAzureMessageConverter<T> implements AzureMessageCo
         }
     }
 
+    /**
+     * Convert payload from byte array to object.
+     *
+     * @param payload The payload byte array.
+     * @param payloadType The target type of payload.
+     * @param <U> The type class.
+     * @return The converted object.
+     * @throws ConversionException When fail to convert to object from byte array.
+     */
     private static <U> U fromPayload(byte[] payload, Class<U> payloadType) {
         try {
             return OBJECT_MAPPER.readerFor(payloadType).readValue(payload);
@@ -120,6 +135,7 @@ public abstract class AbstractAzureMessageConverter<T> implements AzureMessageCo
      * @param targetType target class to convert
      * @param <M> Target class type
      * @return Return the corresponding class instance
+     * @throws ConversionException When fail to convert.
      */
     protected <M> M readValue(String value, Class<M> targetType) {
         try {
@@ -151,6 +167,7 @@ public abstract class AbstractAzureMessageConverter<T> implements AzureMessageCo
      * Convert the object to json string
      * @param value object to be converted
      * @return json string
+     * @throws ConversionException When fail to convert.
      */
     protected String toJson(Object value) {
         try {

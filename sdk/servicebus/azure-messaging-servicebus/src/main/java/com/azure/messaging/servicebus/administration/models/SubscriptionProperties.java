@@ -5,6 +5,8 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.models.EntityAvailabilityStatus;
 import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
@@ -16,7 +18,12 @@ import java.util.Objects;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimitive;
 
-/** The SubscriptionProperties model. */
+/**
+ * Properties on a subscription.
+ *
+ * @see ServiceBusAdministrationAsyncClient#getSubscription(String, String)
+ * @see ServiceBusAdministrationClient#getSubscription(String, String)
+ */
 @Fluent
 public final class SubscriptionProperties {
     private Duration lockDuration;
@@ -53,8 +60,8 @@ public final class SubscriptionProperties {
                     .setAutoDeleteOnIdle(subscription.getAutoDeleteOnIdle())
                     .setCreatedAt(subscription.getCreatedAt())
                     .setDeadLetteringOnFilterEvaluationExceptions(
-                        subscription.enableDeadLetteringOnFilterEvaluationExceptions())
-                    .setDeadLetteringOnMessageExpiration(subscription.deadLetteringOnMessageExpiration())
+                        subscription.isDeadLetteringOnFilterEvaluationExceptions())
+                    .setDeadLetteringOnMessageExpiration(subscription.isDeadLetteringOnMessageExpiration())
                     .setDefaultMessageTimeToLive(subscription.getDefaultMessageTimeToLive())
                     .setEnableBatchedOperations(subscription.enableBatchedOperations)
                     .setEntityAvailabilityStatus(subscription.entityAvailabilityStatus)
@@ -65,7 +72,7 @@ public final class SubscriptionProperties {
                     .setMessageCount(subscription.messageCount)
                     .setMessageCountDetails(subscription.getMessageCountDetails())
                     .setStatus(subscription.getStatus())
-                    .setRequiresSession(subscription.requiresSession())
+                    .setRequiresSession(subscription.isSessionRequired())
                     .setUpdatedAt(subscription.getUpdatedAt())
                     .setUserMetadata(subscription.getUserMetadata());
             }
@@ -181,7 +188,7 @@ public final class SubscriptionProperties {
      *
      * @return the requiresSession value.
      */
-    public boolean requiresSession() {
+    public boolean isSessionRequired() {
         return this.requiresSession;
     }
 
@@ -215,7 +222,7 @@ public final class SubscriptionProperties {
      *
      * @return the deadLetteringOnMessageExpiration value.
      */
-    public boolean deadLetteringOnMessageExpiration() {
+    public boolean isDeadLetteringOnMessageExpiration() {
         return this.deadLetteringOnMessageExpiration;
     }
 
@@ -237,7 +244,7 @@ public final class SubscriptionProperties {
      *
      * @return the deadLetteringOnFilterEvaluationExceptions value.
      */
-    public boolean enableDeadLetteringOnFilterEvaluationExceptions() {
+    public boolean isDeadLetteringOnFilterEvaluationExceptions() {
         return this.deadLetteringOnFilterEvaluationExceptions;
     }
 
@@ -302,7 +309,7 @@ public final class SubscriptionProperties {
      *
      * @return the enableBatchedOperations value.
      */
-    public boolean enableBatchedOperations() {
+    public boolean isBatchedOperationsEnabled() {
         return this.enableBatchedOperations;
     }
 
@@ -313,7 +320,7 @@ public final class SubscriptionProperties {
      * @param enableBatchedOperations the enableBatchedOperations value to set.
      * @return the SubscriptionProperties object itself.
      */
-    public SubscriptionProperties setEnableBatchedOperations(boolean enableBatchedOperations) {
+    public SubscriptionProperties setBatchedOperationsEnabled(boolean enableBatchedOperations) {
         this.enableBatchedOperations = enableBatchedOperations;
         return this;
     }

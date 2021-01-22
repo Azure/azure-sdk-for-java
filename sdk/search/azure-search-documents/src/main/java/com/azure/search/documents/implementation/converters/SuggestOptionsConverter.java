@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.implementation.converters;
 
-import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.SuggestOptions;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public final class SuggestOptionsConverter {
 
         if (obj.getSelect() != null) {
             List<String> select = new ArrayList<>(obj.getSelect());
-            PrivateFieldAccessHelper.set(suggestOptions, "select", select);
+            SuggestOptionsHelper.setSelect(suggestOptions, select);
         }
 
         Integer top = obj.getTop();
@@ -45,12 +44,12 @@ public final class SuggestOptionsConverter {
 
         if (obj.getOrderBy() != null) {
             List<String> orderBy = new ArrayList<>(obj.getOrderBy());
-            PrivateFieldAccessHelper.set(suggestOptions, "orderBy", orderBy);
+            SuggestOptionsHelper.setOrderBy(suggestOptions, orderBy);
         }
 
         if (obj.getSearchFields() != null) {
             List<String> searchFields = new ArrayList<>(obj.getSearchFields());
-            PrivateFieldAccessHelper.set(suggestOptions, "searchFields", searchFields);
+            SuggestOptionsHelper.setSearchFields(suggestOptions, searchFields);
         }
 
         String highlightPreTag = obj.getHighlightPreTag();
@@ -79,7 +78,7 @@ public final class SuggestOptionsConverter {
 
         if (obj.getSelect() != null) {
             List<String> select = new ArrayList<>(obj.getSelect());
-            PrivateFieldAccessHelper.set(suggestOptions, "select", select);
+            suggestOptions.setSelect(select);
         }
 
         Integer top = obj.getTop();
@@ -90,12 +89,12 @@ public final class SuggestOptionsConverter {
 
         if (obj.getOrderBy() != null) {
             List<String> orderBy = new ArrayList<>(obj.getOrderBy());
-            PrivateFieldAccessHelper.set(suggestOptions, "orderBy", orderBy);
+            suggestOptions.setOrderBy(orderBy);
         }
 
         if (obj.getSearchFields() != null) {
             List<String> searchFields = new ArrayList<>(obj.getSearchFields());
-            PrivateFieldAccessHelper.set(suggestOptions, "searchFields", searchFields);
+            suggestOptions.setSearchFields(searchFields);
         }
 
         String highlightPreTag = obj.getHighlightPreTag();

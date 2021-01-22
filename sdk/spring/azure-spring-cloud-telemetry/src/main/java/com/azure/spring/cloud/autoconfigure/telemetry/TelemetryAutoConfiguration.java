@@ -3,11 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.telemetry;
 
-import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.azure.spring.cloud.telemetry.TelemetryCollector;
 import com.azure.spring.cloud.telemetry.TelemetryProperties;
 import com.azure.spring.cloud.telemetry.TelemetrySender;
-import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
+import javax.annotation.PostConstruct;
+
+/**
+ * Auto-configuration for telemetry.
+ */
 @Configuration
 @PropertySource(value = "classpath:telemetry.config")
 @EnableConfigurationProperties(TelemetryProperties.class)
@@ -28,7 +31,7 @@ public class TelemetryAutoConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(TelemetryAutoConfiguration.class);
 
     @Autowired(required = false)
-    private AzureTokenCredentials credentials;
+    private SubscriptionSupplier subscriptionSupplier;
 
     @Bean
     public TelemetrySender telemetrySender(TelemetryProperties telemetryProperties) {
@@ -47,8 +50,8 @@ public class TelemetryAutoConfiguration {
 
     @PostConstruct
     private void initSubscription() {
-        if (credentials != null) {
-            this.telemetryCollector().setSubscription(credentials.defaultSubscriptionId());
+        if (subscriptionSupplier != null) {
+            this.telemetryCollector().setSubscription(subscriptionSupplier.getSubscriptionId());
         }
     }
 }

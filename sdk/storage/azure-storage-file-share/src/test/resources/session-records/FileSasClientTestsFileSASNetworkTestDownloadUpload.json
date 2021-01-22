@@ -75,7 +75,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesasclienttestsfilesasnetworktestdownloadupload877989f/filename?sv=2020-02-10&spr=https%2Chttp&st=2020-06-03T00%3A09%3A27Z&se=2020-06-05T00%3A09%3A27Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesasclienttestsfilesasnetworktestdownloadupload877989f/filename?sv=2020-04-08&spr=https%2Chttp&st=2020-06-03T00%3A09%3A27Z&se=2020-06-05T00%3A09%3A27Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",
@@ -113,7 +113,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.file.core.windows.net/filesasclienttestsfilesasnetworktestdownloadupload877989f/filename?comp=range&sv=2020-02-10&spr=https%2Chttp&st=2020-06-03T00%3A09%3A27Z&se=2020-06-05T00%3A09%3A27Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.file.core.windows.net/filesasclienttestsfilesasnetworktestdownloadupload877989f/filename?comp=range&sv=2020-04-08&spr=https%2Chttp&st=2020-06-03T00%3A09%3A27Z&se=2020-06-05T00%3A09%3A27Z&sip=0.0.0.0-255.255.255.255&sr=f&sp=rcwd&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2019-12-12",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.5.0-beta.1 (11.0.6; Windows 10 10.0)",

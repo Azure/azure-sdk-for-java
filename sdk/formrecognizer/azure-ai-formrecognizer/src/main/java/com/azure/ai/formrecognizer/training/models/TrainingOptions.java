@@ -7,12 +7,13 @@ import com.azure.core.annotation.Fluent;
 
 import java.time.Duration;
 
+import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
+
 /**
  * Options that may be passed when using training APIs on Form Training client.
  */
 @Fluent
 public final class TrainingOptions {
-    private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(5);
     private Duration pollInterval = DEFAULT_POLL_INTERVAL;
     private TrainingFileFilter trainingFileFilter;
     private String modelName;

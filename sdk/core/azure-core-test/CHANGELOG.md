@@ -3,6 +3,22 @@
 ## 1.6.0-beta.1 (Unreleased)
 
 
+## 1.5.2 (2021-01-11)
+
+### Dependency Updates
+
+- Updated `azure-core` from `1.10.0` to `1.12.0`.
+
+## 1.5.1 (2020-10-29)
+
+### Dependency Updates
+
+- Updated `azure-core` to `1.10.0`.
+
+### Bug Fixes
+
+- Fixed a bug in test recording redaction for redacting empty values for json key-value pairs.
+
 ## 1.5.0 (2020-10-01)
 
 ### New Features

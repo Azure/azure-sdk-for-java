@@ -117,11 +117,23 @@ public interface Cluster extends HasInner<ClusterInner>, Indexable, Refreshable<
         }
 
         /**
+         * The stage of the cluster definition allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             * @param provisioningState The state of the cluster provisioning. Possible values include: 'Succeeded', 'Failed', 'Cancelled', 'Deleting', 'Updating'
+             * @return the next definition stage
+             */
+            WithCreate withProvisioningState(ClusterProvisioningState provisioningState);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<Cluster>, DefinitionStages.WithClusterSize {
+        interface WithCreate extends Creatable<Cluster>, DefinitionStages.WithClusterSize, DefinitionStages.WithProvisioningState {
         }
     }
     /**

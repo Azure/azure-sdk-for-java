@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.ConflictResolutionMode;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -81,7 +82,7 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
             // when (e.StatusCode == HttpStatusCode.BadRequest)
             CosmosException dce = Utils.as(e, CosmosException.class);
             if (dce != null && dce.getStatusCode() == 400) {
-                assertThat(dce.getMessage()).contains("Invalid path '\\/a\\/b' for last writer wins conflict resolution");
+                assertThat(dce.getMessage()).contains("Invalid path '\\\\/a\\\\/b' for last writer wins conflict resolution");
             } else {
                 throw e;
             }
@@ -176,6 +177,25 @@ public class MultiMasterConflictResolutionTest extends TestSuiteBase {
                 .errorMessageContains("Custom conflict resolution mode should not have conflict resolution path set.")
                 .build();
         validateFailure(createObservable, validator);
+    }
+
+    @Test(groups = "multi-master", timeOut = 10 * TIMEOUT)
+    public void updateConflictResolutionWithException() {
+        CosmosContainerProperties containerSettings = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
+        database.createContainer(containerSettings, new CosmosContainerRequestOptions()).block();
+        CosmosAsyncContainer container = database.getContainer(containerSettings.getId());
+        containerSettings = container.read().block().getProperties();
+        assertThat(containerSettings.getConflictResolutionPolicy().getMode()).isEqualTo(ConflictResolutionMode.LAST_WRITER_WINS);
+
+        //Update on resolution property is currently not allowed from BE service
+        containerSettings.setConflictResolutionPolicy(ConflictResolutionPolicy.createLastWriterWinsPolicy("/userProvidedField"));
+        try {
+            container.replace(containerSettings, null).block().getProperties();
+            fail("Updating conflict resolution policy should");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.BADREQUEST);
+            assertThat(ex.getMessage()).contains("Updating conflict resolution policy is currently not supported");
+        }
     }
 
     @BeforeClass(groups = {"multi-master"}, timeOut = SETUP_TIMEOUT)

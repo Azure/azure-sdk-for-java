@@ -72,6 +72,8 @@ public final class Constants {
 
     public static final String STORAGE_SCOPE = "https://storage.azure.com/.default";
 
+    public static final String STORAGE_LOG_STRING_TO_SIGN = "Azure-Storage-Log-String-To-Sign";
+
     private Constants() {
     }
 
@@ -196,7 +198,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2020-02-10";
+        public static final String TARGET_STORAGE_VERSION = "2020-04-08";
 
         /**
          * Error code returned from the service.
@@ -221,6 +223,12 @@ public final class Constants {
         public static final String ETAG_WILDCARD = "*";
 
         public static final String DIRECTORY_METADATA_KEY = "hdi_isfolder";
+
+        public static final String X_MS_META = "x-ms-meta";
+
+        public static final String SMB_PROTOCOL = "SMB";
+
+        public static final String NFS_PROTOCOL = "NFS";
 
         private HeaderConstants() {
             // Private to prevent construction.

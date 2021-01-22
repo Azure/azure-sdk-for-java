@@ -37,7 +37,7 @@ general and for an overview of Event Hubs Client for Java.
 For more concepts and deeper discussion, see: 
 [Event Hubs Features](https://docs.microsoft.com/azure/event-hubs/event-hubs-features). Also, the concepts for AMQP
 are well documented in [OASIS Advanced Messaging Queuing Protocol (AMQP) Version 
-1.0](http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html).
+1.0](https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html).
 
 ### Referencing the library
 
@@ -92,7 +92,7 @@ Issues related to runtime behavior of the service, such as sporadic exceptions o
 reliability issues cannot be handled here.
 
 Generally, if you want to discuss Azure Event Hubs or this client library with the community and the maintainers, you
-can turn to [stackoverflow.com under the #azure-eventhub tag](http://stackoverflow.com/questions/tagged/azure-eventhub)
+can turn to [stackoverflow.com under the #azure-eventhub tag](https://stackoverflow.com/questions/tagged/azure-eventhub)
 or the [MSDN Service Bus Forum](https://social.msdn.microsoft.com/Forums/home?forum=servbus).
 
 ## Examples

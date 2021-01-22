@@ -4,9 +4,10 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.models.Alert;
+import com.azure.ai.metricsadvisor.models.AnomalyAlert;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** The AlertResultList model. */
@@ -22,7 +23,7 @@ public final class AlertResultList {
      * The value property.
      */
     @JsonProperty(value = "value", required = true)
-    private List<Alert> value;
+    private List<AnomalyAlert> value;
 
     /**
      * Get the nextLink property: The @nextLink property.
@@ -49,7 +50,7 @@ public final class AlertResultList {
      *
      * @return the value value.
      */
-    public List<Alert> getValue() {
+    public List<AnomalyAlert> getValue() {
         return this.value;
     }
 
@@ -59,7 +60,7 @@ public final class AlertResultList {
      * @param value the value value to set.
      * @return the AlertResultList object itself.
      */
-    public AlertResultList setValue(List<Alert> value) {
+    public AlertResultList setValue(List<AnomalyAlert> value) {
         this.value = value;
         return this;
     }

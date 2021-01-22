@@ -25,6 +25,12 @@ public abstract class CheckpointManager {
         this.checkpointConfig = checkpointConfig;
     }
 
+    /**
+     * Mapping checkpoint mode in config to a {@link CheckpointManager}.
+     * @param checkpointConfig The configured checkpoint config.
+     * @return CheckpointManager.
+     * @throws IllegalArgumentException If no checkpoint manager could be found.
+     */
     public static CheckpointManager of(CheckpointConfig checkpointConfig) {
         switch (checkpointConfig.getCheckpointMode()) {
             case TIME:

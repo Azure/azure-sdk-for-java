@@ -20,6 +20,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+/**
+ * A test implementation of {@link ServiceBusTopicTemplate}. This is used for testing.
+ */
 public class ServiceBusTopicTestOperation extends ServiceBusTopicTemplate {
     private final Multimap<String, IMessage> topicsByName = ArrayListMultimap.create();
     private final Map<String, Map<String, ServiceBusMessageHandler<?>>> handlersByNameAndGroup =

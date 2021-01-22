@@ -62,7 +62,7 @@ public final class ManageZonalVirtualMachine {
                     .withRootPassword(password)
                     // Optional
                     .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     // Create VM
                     .create();
 
@@ -125,7 +125,7 @@ public final class ManageZonalVirtualMachine {
                     // Optional
                     .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                     .withExistingDataDisk(dataDisk)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     // Create VM
                     .create();
 

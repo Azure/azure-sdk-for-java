@@ -4,6 +4,8 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
+import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.models.CorrelationFilterImpl;
 import com.azure.messaging.servicebus.implementation.models.EmptyRuleActionImpl;
@@ -21,7 +23,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Represents the properties of a rule.
+ * Properties on a rule.
+ *
+ * @see ServiceBusAdministrationAsyncClient#getRule(String, String, String)
+ * @see ServiceBusAdministrationClient#getRule(String, String, String)
  */
 @Fluent
 public class RuleProperties {
@@ -33,7 +38,7 @@ public class RuleProperties {
         EntityHelper.setRuleAccessor(new EntityHelper.RuleAccessor() {
             private final EmptyRuleActionImpl emptyRuleAction = new EmptyRuleActionImpl();
             private final SqlFilterImpl trueFilter = new TrueFilterImpl().setSqlExpression("1=1");
-            private final SqlFilterImpl falseFilter = new TrueFilterImpl().setSqlExpression("1=0");
+            private final SqlFilterImpl falseFilter = new FalseFilterImpl().setSqlExpression("1=0");
 
             @Override
             public RuleProperties toModel(RuleDescription description) {
@@ -58,7 +63,7 @@ public class RuleProperties {
 
                     if (action.getParameters() != null) {
                         for (KeyValueImpl parameter : action.getParameters()) {
-                            returned.getProperties().put(parameter.getKey(), parameter.getValue());
+                            returned.getParameters().put(parameter.getKey(), parameter.getValue());
                         }
                     }
 
@@ -99,7 +104,7 @@ public class RuleProperties {
 
                     if (filter.getParameters() != null) {
                         filter.getParameters().forEach(keyValue ->
-                            returned.getProperties().put(keyValue.getKey(), keyValue.getValue()));
+                            returned.getParameters().put(keyValue.getKey(), keyValue.getValue()));
                     }
 
                     return returned;
@@ -132,10 +137,10 @@ public class RuleProperties {
                     final SqlRuleActionImpl returned = new SqlRuleActionImpl()
                         .setSqlExpression(action.getSqlExpression())
                         .setCompatibilityLevel(action.getCompatibilityLevel())
-                        .setRequiresPreprocessing(action.getRequiresPreprocessing());
+                        .setRequiresPreprocessing(action.isPreprocessingRequired());
 
-                    if (!action.getProperties().isEmpty()) {
-                        final List<KeyValueImpl> parameters = action.getProperties().entrySet().stream()
+                    if (!action.getParameters().isEmpty()) {
+                        final List<KeyValueImpl> parameters = action.getParameters().entrySet().stream()
                             .map(entry -> new KeyValueImpl()
                                 .setKey(entry.getKey()).setValue(entry.getValue().toString()))
                             .collect(Collectors.toList());
@@ -183,10 +188,10 @@ public class RuleProperties {
                     final SqlFilterImpl returned = new SqlFilterImpl()
                         .setSqlExpression(filter.getSqlExpression())
                         .setCompatibilityLevel(filter.getCompatibilityLevel())
-                        .setRequiresPreprocessing(filter.getRequiresPreprocessing());
+                        .setRequiresPreprocessing(filter.isPreprocessingRequired());
 
-                    if (!filter.getProperties().isEmpty()) {
-                        final List<KeyValueImpl> parameters = filter.getProperties().entrySet()
+                    if (!filter.getParameters().isEmpty()) {
+                        final List<KeyValueImpl> parameters = filter.getParameters().entrySet()
                             .stream()
                             .map(entry -> new KeyValueImpl()
                                 .setKey(entry.getKey()).setValue(entry.getValue().toString()))

@@ -11,13 +11,11 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 
 public abstract class MetricsAdvisorClientTestBase extends TestBase {
-
-    static final String INCIDENT_ROOT_CAUSE_ID = "1516ffd506462aca05198391bb279aff-1746b031c00";
-    static final String INCIDENT_ROOT_CAUSE_CONFIGURATION_ID = "59f26a57-55f7-41eb-8899-a7268d125557";
 
     @Override
     protected void beforeTest() {
@@ -33,12 +31,9 @@ public abstract class MetricsAdvisorClientTestBase extends TestBase {
             .addPolicy(interceptorManager.getRecordPolicy());
 
         if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new MetricsAdvisorKeyCredential("", ""));
+            builder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
         } else {
-            builder.credential(
-                new MetricsAdvisorKeyCredential(
-                    Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY"),
-                    Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_API_KEY")));
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         return builder;
     }

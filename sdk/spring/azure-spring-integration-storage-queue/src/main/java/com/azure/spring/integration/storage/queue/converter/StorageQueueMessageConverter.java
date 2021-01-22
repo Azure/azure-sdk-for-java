@@ -3,11 +3,14 @@
 
 package com.azure.spring.integration.storage.queue.converter;
 
-import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.spring.integration.core.converter.AbstractAzureMessageConverter;
+import com.azure.storage.queue.models.QueueMessageItem;
 
 import java.nio.charset.StandardCharsets;
 
+/**
+ * A converter to turn a {@link org.springframework.messaging.Message} to {@link QueueMessageItem} and vice versa.
+ */
 public class StorageQueueMessageConverter extends AbstractAzureMessageConverter<QueueMessageItem> {
 
     @Override

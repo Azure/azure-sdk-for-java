@@ -4,11 +4,9 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import io.netty.handler.timeout.ReadTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -170,7 +168,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     // on all locations, then don't retry the request
                     return ShouldRetryResult.noRetry();
                 } else {
-                    this.retryContext = new RetryContext(this.sessionTokenRetryCount - 1, this.sessionTokenRetryCount > 1);
+                    this.retryContext = new RetryContext(this.sessionTokenRetryCount , true);
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
             } else {
@@ -179,7 +177,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                     // we have already tried this request on the write location
                     return ShouldRetryResult.noRetry();
                 } else {
-                    this.retryContext = new RetryContext(this.sessionTokenRetryCount - 1, false);
+                    this.retryContext = new RetryContext(0, false);
                     return ShouldRetryResult.retryAfter(Duration.ZERO);
                 }
             }

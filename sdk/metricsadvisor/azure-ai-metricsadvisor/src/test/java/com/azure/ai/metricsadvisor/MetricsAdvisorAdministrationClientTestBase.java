@@ -12,6 +12,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 
@@ -31,12 +32,9 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestBas
             .addPolicy(interceptorManager.getRecordPolicy());
 
         if (getTestMode() == TestMode.PLAYBACK) {
-            builder.credential(new MetricsAdvisorKeyCredential("", ""));
+            builder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
         } else {
-            builder.credential(
-                new MetricsAdvisorKeyCredential(
-                    Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_SUBSCRIPTION_KEY"),
-                    Configuration.getGlobalConfiguration().get("AZURE_METRICS_ADVISOR_API_KEY")));
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
         return builder;
     }

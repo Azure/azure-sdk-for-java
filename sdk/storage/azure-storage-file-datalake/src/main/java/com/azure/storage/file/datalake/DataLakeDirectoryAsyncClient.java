@@ -4,8 +4,12 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
@@ -14,16 +18,22 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.datalake.implementation.models.FileSystemsListPathsResponse;
+import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.implementation.models.PathResourceType;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
+import com.azure.storage.file.datalake.models.PathItem;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 
 /**
@@ -163,8 +173,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         return new DataLakeFileAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(fileName))).toString(),
-            getServiceVersion(), getAccountName(), getFileSystemName(), getObjectPath() + "/"
-            + Utility.urlDecode(fileName), blockBlobAsyncClient);
+            getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(getObjectPath() + "/"
+            + Utility.urlDecode(fileName)), blockBlobAsyncClient);
     }
 
     /**
@@ -224,7 +234,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * @param permissions POSIX access permissions for the file owner, the file owning group, and others.
      * @param umask Restricts permissions of the file to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the file.
+     * @param metadata Metadata to associate with the file. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeFileAsyncClient} used to interact with the file created.
@@ -304,8 +315,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
 
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(),
             StorageImplUtils.appendToUrlPath(getPathUrl(), Utility.urlEncode(Utility.urlDecode(subdirectoryName)))
-                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(), getObjectPath() + "/"
-            + Utility.urlDecode(subdirectoryName), blockBlobAsyncClient);
+                .toString(), getServiceVersion(), getAccountName(), getFileSystemName(),
+            Utility.urlEncode(getObjectPath() + "/" + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient);
     }
 
     /**
@@ -365,7 +376,8 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * others.
      * @param umask Restricts permissions of the sub-directory to be created.
      * @param headers {@link PathHttpHeaders}
-     * @param metadata Metadata to associate with the sub-directory.
+     * @param metadata Metadata to associate with the resource. If there is leading or trailing whitespace in any
+     * metadata key or value, it must be removed or encoded.
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * DataLakeDirectoryAsyncClient} used to interact with the sub-directory created.
@@ -483,6 +495,71 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the files/directories in this directory lazily as needed. For more
+     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths}
+     *
+     * @return A reactive response emitting the list of files/directories.
+     */
+    public PagedFlux<PathItem> listPaths() {
+        return this.listPaths(false, false, null);
+    }
+
+    /**
+     * Returns a reactive Publisher emitting all the files/directories in this directory lazily as needed. For more
+     * information, see the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/datalakestoragegen2/filesystem/list">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.datalake.DataLakeDirectoryAsyncClient.listPaths#boolean-boolean-Integer}
+     *
+     * @param recursive Specifies if the call should recursively include all paths.
+     * @param userPrincipleNameReturned If "true", the user identity values returned in the x-ms-owner, x-ms-group,
+     * and x-ms-acl response headers will be transformed from Azure Active Directory Object IDs to User Principal Names.
+     * If "false", the values will be returned as Azure Active Directory Object IDs.
+     * The default value is false. Note that group and application Object IDs are not translated because they do not
+     * have unique friendly names.
+     * @param maxResults Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the
+     * request does not specify maxResults or specifies a value greater than 5,000, the server will return up to
+     * 5,000 items.
+     * @return A reactive response emitting the list of files/directories.
+     */
+    public PagedFlux<PathItem> listPaths(boolean recursive, boolean userPrincipleNameReturned, Integer maxResults) {
+        try {
+            return listPathsWithOptionalTimeout(recursive, userPrincipleNameReturned, maxResults, null);
+        } catch (RuntimeException ex) {
+            return pagedFluxError(logger, ex);
+        }
+    }
+
+    PagedFlux<PathItem> listPathsWithOptionalTimeout(boolean recursive, boolean userPrincipleNameReturned,
+        Integer maxResults, Duration timeout) {
+        Function<String, Mono<PagedResponse<Path>>> func =
+            marker -> listPathsSegment(marker, recursive, userPrincipleNameReturned, maxResults, timeout)
+                .map(response -> new PagedResponseBase<>(
+                    response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    response.getValue().getPaths(),
+                    response.getDeserializedHeaders().getContinuation(),
+                    response.getDeserializedHeaders()));
+
+        return new PagedFlux<>(() -> func.apply(null), func).mapPage(Transforms::toPathItem);
+    }
+
+    private Mono<FileSystemsListPathsResponse> listPathsSegment(String marker, boolean recursive,
+        boolean userPrincipleNameReturned, Integer maxResults, Duration timeout) {
+
+        return StorageImplUtils.applyOptionalTimeout(
+            this.fileSystemDataLakeStorage.fileSystems().listPathsWithRestResponseAsync(
+                recursive, marker, getDirectoryPath(), maxResults, userPrincipleNameReturned, null,
+                null, Context.NONE), timeout);
     }
 
     /**

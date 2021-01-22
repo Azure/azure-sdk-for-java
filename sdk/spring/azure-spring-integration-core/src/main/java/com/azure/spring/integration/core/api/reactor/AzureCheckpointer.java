@@ -8,6 +8,9 @@ import reactor.core.publisher.Mono;
 
 import java.util.function.Supplier;
 
+/**
+ * Azure implementation for check point callback.
+ */
 public class AzureCheckpointer implements Checkpointer {
 
     private final Supplier<Mono<Void>> success;

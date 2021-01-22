@@ -8,6 +8,9 @@ import java.util.Map;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
+/**
+ *
+ */
 public class TelemetryEventData {
 
     private static final String NAME = "Microsoft.ApplicationInsights.Event";

@@ -3,15 +3,21 @@
 
 package com.azure.communication.sms;
 
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
+import com.azure.communication.common.ConnectionString;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
+import java.time.OffsetDateTime;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -25,49 +31,56 @@ public class SmsLiveTestBase extends TestBase {
         .get("SMS_SERVICE_PHONE_NUMBER", "+18005555555");
 
     static final String ACCESSKEY = Configuration.getGlobalConfiguration()
-        .get("SMS_SERVICE_ACCESS_KEY", DEFAULT_ACCESS_KEY);
+        .get("COMMUNICATION_SERVICE_ACCESS_KEY", DEFAULT_ACCESS_KEY);
 
     static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("SMS_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
+        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
 
     static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
+        .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
 
-    protected SmsClientBuilder getSmsClientBuilder() {
+    protected SmsClientBuilder getSmsClientBuilder(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
 
         builder.endpoint(ENDPOINT)
-               .accessKey(ACCESSKEY);
+                .accessKey(ACCESSKEY)
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-            return builder;
-        } else {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
-            builder.httpClient(client);
-        }
-
-        if (!interceptorManager.isLiveMode()) {
+        if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         return builder;
     }
 
-    protected SmsClientBuilder getSmsClientBuilderWithConnectionString() {
+    protected SmsClientBuilder getSmsClientBuilderWithManagedIdentity(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
+        String livetestEndpoint = new ConnectionString(CONNECTION_STRING).getEndpoint();
 
-        builder.connectionString(CONNECTION_STRING);
+        builder.endpoint(livetestEndpoint)
+               .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
-            return builder;
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new FakeCredentials());
         } else {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
-            builder.httpClient(client);
+            builder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
-        if (!interceptorManager.isLiveMode()) {
+        if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
+    }
+
+    protected SmsClientBuilder getSmsClientBuilderWithConnectionString(HttpClient httpClient) {
+        SmsClientBuilder builder = new SmsClientBuilder();
+
+        builder
+            .connectionString(CONNECTION_STRING)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
+        if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -100,5 +113,16 @@ public class SmsLiveTestBase extends TestBase {
             logger.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", "AZURE_TEST_MODE");
             return TestMode.PLAYBACK;
         }
-    }    
+    }
+    
+    protected SmsClientBuilder addLoggingPolicy(SmsClientBuilder builder, String testName) {
+        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
+
+    static class FakeCredentials implements TokenCredential {
+        @Override
+        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
+        }
+    }
 }

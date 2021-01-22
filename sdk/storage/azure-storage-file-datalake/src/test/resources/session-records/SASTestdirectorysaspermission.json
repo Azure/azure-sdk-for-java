@@ -107,7 +107,7 @@
     "Exception" : null
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdirectorysaspermission021185128c1defe74a44c/javapathdirectorysaspermission211652df491c544da34?sv=2020-02-10&spr=https%2Chttp&st=2020-08-26T20%3A22%3A30Z&se=2020-08-28T20%3A22%3A30Z&sip=0.0.0.0-255.255.255.255&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtfsdirectorysaspermission021185128c1defe74a44c/javapathdirectorysaspermission211652df491c544da34?sv=2020-04-08&spr=https%2Chttp&st=2020-08-26T20%3A22%3A30Z&se=2020-08-28T20%3A22%3A30Z&sip=0.0.0.0-255.255.255.255&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.9.0-beta.1 (11.0.7; Windows 10; 10.0)",
@@ -142,7 +142,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdirectorysaspermission021185128c1defe74a44c/javapathdirectorysaspermission211652df491c544da34/javapathdirectorysaspermission398747c526179070544?resource=directory&sv=2020-02-10&spr=https%2Chttp&st=2020-08-26T20%3A22%3A30Z&se=2020-08-28T20%3A22%3A30Z&sip=0.0.0.0-255.255.255.255&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
+    "Uri" : "https://REDACTED.dfs.core.windows.net/jtfsdirectorysaspermission021185128c1defe74a44c/javapathdirectorysaspermission211652df491c544da34/javapathdirectorysaspermission398747c526179070544?resource=directory&sv=2020-04-08&spr=https%2Chttp&st=2020-08-26T20%3A22%3A30Z&se=2020-08-28T20%3A22%3A30Z&sip=0.0.0.0-255.255.255.255&sr=d&sp=racwdlmeop&sdd=1&sig=REDACTED&rscc=cache&rscd=disposition&rsce=encoding&rscl=language&rsct=type",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.3.0-beta.1 (11.0.7; Windows 10; 10.0)",

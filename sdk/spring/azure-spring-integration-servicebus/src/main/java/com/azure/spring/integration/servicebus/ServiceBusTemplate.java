@@ -27,7 +27,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 /**
- * Azure service bus template to support send {@link Message} asynchronously
+ * Azure Service Bus template to support send {@link Message} asynchronously.
  *
  * @author Warren Zhu
  * @author Eduardo Sciullo

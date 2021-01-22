@@ -18,6 +18,9 @@ import java.util.Map;
  * SQL subset implements testing for existence of properties (EXISTS), testing for null-values (IS NULL), logical
  * NOT/AND/OR, relational operators, numeric arithmetic, and simple text pattern matching with LIKE.
  * </p>
+ *
+ * @see CreateRuleOptions#setFilter(RuleFilter)
+ * @see RuleProperties#setFilter(RuleFilter)
  */
 public class SqlRuleFilter extends RuleFilter {
     private final Map<String, Object> properties = new HashMap<>();
@@ -75,7 +78,7 @@ public class SqlRuleFilter extends RuleFilter {
      *
      * @return Whether or not requires preprocessing.
      */
-    Boolean getRequiresPreprocessing() {
+    Boolean isPreprocessingRequired() {
         return requiresPreprocessing;
     }
 
@@ -84,7 +87,7 @@ public class SqlRuleFilter extends RuleFilter {
      *
      * @return Gets the value of a filter expression.
      */
-    public Map<String, Object> getProperties() {
+    public Map<String, Object> getParameters() {
         return properties;
     }
 

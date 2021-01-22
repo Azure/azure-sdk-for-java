@@ -48,7 +48,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsasonendpoint255185ac1ab67df0974fc4a?restype=container&sv=2020-02-10&se=2020-08-14T18%3A55%3A12Z&sp=rc&sig=REDACTED&ss=b&srt=sco",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsasonendpoint255185ac1ab67df0974fc4a?restype=container&sv=2020-04-08&se=2020-08-14T18%3A55%3A12Z&sp=rc&sig=REDACTED&ss=b&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
@@ -69,7 +69,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsasonendpoint0468865f92336dbe884b389?restype=container&sv=2020-02-10&se=2020-08-14T18%3A55%3A12Z&sp=rc&sig=REDACTED&ss=b&srt=sco",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcaccountsasonendpoint0468865f92336dbe884b389?restype=container&sv=2020-04-08&se=2020-08-14T18%3A55%3A12Z&sp=rc&sig=REDACTED&ss=b&srt=sco",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",

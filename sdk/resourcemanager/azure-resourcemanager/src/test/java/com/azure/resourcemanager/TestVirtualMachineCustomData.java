@@ -60,7 +60,7 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
                 .withRootUsername("testuser")
                 .withRootPassword("12NewPA$$w0rd!")
                 .withCustomData(cloudInitEncodedString)
-                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                 .create();
 
         pip.refresh();

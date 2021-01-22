@@ -5,12 +5,12 @@ package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.models.AzureBlobDataFeedSource;
 import com.azure.ai.metricsadvisor.models.DataFeed;
+import com.azure.ai.metricsadvisor.models.DataFeedDimension;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.models.DataFeedGranularityType;
 import com.azure.ai.metricsadvisor.models.DataFeedIngestionSettings;
+import com.azure.ai.metricsadvisor.models.DataFeedMetric;
 import com.azure.ai.metricsadvisor.models.DataFeedSchema;
-import com.azure.ai.metricsadvisor.models.Dimension;
-import com.azure.ai.metricsadvisor.models.Metric;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorServiceVersion;
 import com.azure.ai.metricsadvisor.models.SQLServerDataFeedSource;
 import com.azure.core.http.HttpClient;
@@ -35,12 +35,14 @@ public final class TestUtils {
     private static final String AZURE_METRICS_ADVISOR_TEST_SERVICE_VERSIONS =
         "AZURE_METRIC_ADVISOR_TEST_SERVICE_VERSIONS";
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
+    static final String INVALID_ENDPOINT = "https://notreal.azure.com";
+
     static final String INCORRECT_UUID = "a0a3998a-4c4affe66b7";
     static final String INCORRECT_UUID_ERROR = "Invalid UUID string: " + INCORRECT_UUID;
     static final String DATAFEED_ID_REQUIRED_ERROR = "'dataFeedId' cannot be null.";
+    static final OffsetDateTime INGESTION_START_TIME = OffsetDateTime.parse("2019-10-01T00:00:00Z");
 
     public static final String AZURE_METRICS_ADVISOR_ENDPOINT = "AZURE_METRICS_ADVISOR_ENDPOINT";
-    protected static final String INGESTION_START_TIME = "2019-10-01T00:00:00Z";
 
     static final String TEMPLATE_QUERY = "select * from adsample2 where Timestamp = @StartTime";
     static final String TABLE_QUERY = "PartitionKey ge '@StartTime' and PartitionKey lt '@EndTime'";
@@ -61,19 +63,19 @@ public final class TestUtils {
 
     static final String SQL_SERVER_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_SQL_SERVER_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_SQL_SERVER_CONNECTION_STRING", "conn-string");
 
     static final String BLOB_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_BLOB_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_AZURE_BLOB_CONNECTION_STRING", "con-string");
 
     static final String DATA_EXPLORER_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_DATA_EXPLORER_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_AZURE_DATA_EXPLORER_CONNECTION_STRING", "con-string");
 
     static final String TABLE_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_TABLE_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_AZURE_TABLE_CONNECTION_STRING", "con-string");
 
     static final String INFLUX_DB_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
@@ -81,15 +83,15 @@ public final class TestUtils {
 
     static final String MONGO_DB_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_MONGO_DB_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_AZURE_MONGODB_CONNECTION_STRING", "con-string");
 
     static final String POSTGRE_SQL_DB_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_POSTGRE_SQL_DB_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_POSTGRESQL_CONNECTION_STRING", "con-string");
 
     static final String MYSQL_DB_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_MYSQL_DB_CONNECTION_STRING", "con-string");
+        .get("AZURE_METRICS_ADVISOR_MYSQL_CONNECTION_STRING", "con-string");
 
     static final String COSMOS_DB_CONNECTION_STRING = Configuration
         .getGlobalConfiguration()
@@ -97,22 +99,19 @@ public final class TestUtils {
 
     static final String APP_INSIGHTS_API_KEY = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_APP_INSIGHTS_API_KEY", "apiKey");
+        .get("AZURE_METRICS_ADVISOR_APPLICATION_INSIGHTS_API_KEY", "apiKey");
 
     static final String APP_INSIGHTS_APPLICATION_ID = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_APP_INSIGHTS_APPLICATION_ID", "applicationId");
+        .get("AZURE_METRICS_ADVISOR_APPLICATION_INSIGHTS_APPLICATION_ID", "applicationId");
 
-    static final String INFLUX_DB_USER = Configuration
-        .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_INFLUX_DB_USER", "testUser");
     static final String INFLUX_DB_PASSWORD = Configuration
         .getGlobalConfiguration()
         .get("AZURE_METRICS_ADVISOR_INFLUX_DB_PASSWORD", "testPassword");
 
     static final String HTTP_URL = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_HTTP_SOURCE_URL", "httpUrl");
+        .get("AZURE_METRICS_ADVISOR_HTTP_GET_URL", "httpUrl");
 
     static final String ELASTIC_SEARCH_HOST = Configuration
         .getGlobalConfiguration()
@@ -120,15 +119,11 @@ public final class TestUtils {
 
     static final String ELASTIC_SEARCH_AUTH_HEADER = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_ELASTIC_SEARCH_AUTH_HEADER", "authHeader");
-
-    static final String AZURE_DATALAKEGEN2_ACCOUNT_NAME = Configuration
-        .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_DATALAKEGEN2_ACCOUNT_NAME", "azDataLakeAccountName");
+        .get("AZURE_METRICS_ADVISOR_ELASTICSEARCH_AUTH_HEADER", "authHeader");
 
     static final String AZURE_DATALAKEGEN2_ACCOUNT_KEY = Configuration
         .getGlobalConfiguration()
-        .get("AZURE_METRICS_ADVISOR_DATALAKEGEN2_ACCOUNT_KEY", "azDataLakeAccountKey");
+        .get("AZURE_METRICS_ADVISOR_AZURE_DATALAKE_ACCOUNT_KEY", "azDataLakeAccountKey");
 
     private TestUtils() {
     }
@@ -136,27 +131,27 @@ public final class TestUtils {
     static DataFeed getSQLDataFeedSample() {
         return new DataFeed().setSource(new SQLServerDataFeedSource(SQL_SERVER_CONNECTION_STRING,
             TEMPLATE_QUERY)).setSchema(new DataFeedSchema(Arrays.asList(
-            new Metric().setName("cost"),
-            new Metric().setName("revenue")))
+            new DataFeedMetric().setName("cost"),
+            new DataFeedMetric().setName("revenue")))
             .setDimensions(Arrays.asList(
-                new Dimension().setName("city"),
-                new Dimension().setName("category"))))
+                new DataFeedDimension().setName("city"),
+                new DataFeedDimension().setName("category"))))
             .setName("java_SQL_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
-            .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse(INGESTION_START_TIME)));
+            .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));
     }
 
     static DataFeed getAzureBlobDataFeedSample() {
         return new DataFeed().setSource(new AzureBlobDataFeedSource(BLOB_CONNECTION_STRING,
             "BLOB_CONTAINER", "BLOB_TEMPLATE_NAME")).setSchema(new DataFeedSchema(Arrays.asList(
-            new Metric().setName("cost"),
-            new Metric().setName("revenue")))
+            new DataFeedMetric().setName("cost"),
+            new DataFeedMetric().setName("revenue")))
             .setDimensions(Arrays.asList(
-                new Dimension().setName("city"),
-                new Dimension().setName("category"))))
+                new DataFeedDimension().setName("city"),
+                new DataFeedDimension().setName("category"))))
             .setName("java_BLOB_create_data_feed_test_sample" + UUID.randomUUID())
             .setGranularity(new DataFeedGranularity().setGranularityType(DataFeedGranularityType.DAILY))
-            .setIngestionSettings(new DataFeedIngestionSettings(OffsetDateTime.parse(INGESTION_START_TIME)));
+            .setIngestionSettings(new DataFeedIngestionSettings(INGESTION_START_TIME));
     }
 
     /**
@@ -190,7 +185,6 @@ public final class TestUtils {
      * e.g. {@code set AZURE_TEST_SERVICE_VERSIONS = V1_0, V2_0}
      *
      * @param serviceVersion ServiceVersion needs to check
-     *
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(MetricsAdvisorServiceVersion serviceVersion) {

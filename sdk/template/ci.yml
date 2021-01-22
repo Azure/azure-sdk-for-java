@@ -8,8 +8,8 @@ trigger:
       - release/*
   paths:
     include:
+      - common/perf-test-core/
       - sdk/template/
-      - eng/common/
 
 pr:
   branches:
@@ -20,6 +20,7 @@ pr:
       - release/*
   paths:
     include:
+      - common/perf-test-core/
       - sdk/template/
 
 extends:
@@ -30,3 +31,6 @@ extends:
       - name: azure-sdk-template
         groupId: com.azure
         safeName: azuresdktemplate
+    AdditionalModules:
+      - name: azure-template-perf
+        groupId: com.azure

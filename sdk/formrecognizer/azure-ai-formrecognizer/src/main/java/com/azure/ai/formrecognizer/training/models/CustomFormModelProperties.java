@@ -3,12 +3,23 @@
 
 package com.azure.ai.formrecognizer.training.models;
 
+import com.azure.ai.formrecognizer.implementation.CustomFormModelPropertiesHelper;
+
 /**
  * The metadata properties for a custom model.
  */
 public final class CustomFormModelProperties {
     private boolean isComposed;
 
+    static {
+        CustomFormModelPropertiesHelper.setAccessor(
+            new CustomFormModelPropertiesHelper.CustomFormModelPropertiesAccessor() {
+                @Override
+                public void setIsComposed(CustomFormModelProperties formModelProperties, boolean isComposed) {
+                    formModelProperties.setIsComposed(isComposed);
+                }
+            });
+    }
     /**
      * Is this model composed?
      *
@@ -16,5 +27,15 @@ public final class CustomFormModelProperties {
      */
     public boolean isComposed() {
         return this.isComposed;
+    }
+
+    /**
+     * The private setter to set the state property
+     * via {@link CustomFormModelPropertiesHelper.CustomFormModelPropertiesAccessor}.
+     *
+     * @param isComposed the isComposed value.
+     */
+    private void setIsComposed(boolean isComposed) {
+        this.isComposed = isComposed;
     }
 }

@@ -171,6 +171,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A Flux of identifiers for the partitions of an Event Hub.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<String> getPartitionIds() {
         return getEventHubProperties().flatMapMany(properties -> Flux.fromIterable(properties.getPartitionIds()));
     }
@@ -194,6 +195,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventDataBatch> createBatch() {
         return createBatch(DEFAULT_BATCH_OPTIONS);
     }
@@ -205,6 +207,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return A new {@link EventDataBatch} that can fit as many events as the transport allows.
      * @throws NullPointerException if {@code options} is null.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EventDataBatch> createBatch(CreateBatchOptions options) {
         if (options == null) {
             return monoError(logger, new NullPointerException("'options' cannot be null."));
@@ -312,6 +315,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(Iterable<EventData> events) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
@@ -338,6 +342,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @return A {@link Mono} that completes when all events are pushed to the service.
      * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(Iterable<EventData> events, SendOptions options) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
@@ -392,6 +397,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * @see EventHubProducerAsyncClient#createBatch()
      * @see EventHubProducerAsyncClient#createBatch(CreateBatchOptions)
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> send(EventDataBatch batch) {
         if (batch == null) {
             return monoError(logger, new NullPointerException("'batch' cannot be null."));

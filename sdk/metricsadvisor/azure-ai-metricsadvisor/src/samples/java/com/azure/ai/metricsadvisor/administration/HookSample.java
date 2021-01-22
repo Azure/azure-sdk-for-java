@@ -3,10 +3,10 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.models.EmailHook;
-import com.azure.ai.metricsadvisor.models.Hook;
+import com.azure.ai.metricsadvisor.models.EmailNotificationHook;
+import com.azure.ai.metricsadvisor.models.NotificationHook;
 import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
-import com.azure.ai.metricsadvisor.models.WebHook;
+import com.azure.ai.metricsadvisor.models.WebNotificationHook;
 import com.azure.core.http.rest.PagedIterable;
 
 /**
@@ -20,69 +20,69 @@ public class HookSample {
                 .credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"))
                 .buildClient();
 
-        // Create email hook.
-        System.out.printf("Creating Hook%n");
-        Hook emailHookToCreate = new EmailHook("email hook")
-            .setDescription("my email hook")
+        // Create email notificationHook.
+        System.out.printf("Creating NotificationHook%n");
+        NotificationHook emailNotificationHookToCreate = new EmailNotificationHook("email notification Hook")
+            .setDescription("my email notification Hook")
             .addEmailToAlert("alertme@alertme.com")
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
-        Hook hook = advisorAdministrationClient.createHook(emailHookToCreate);
-        System.out.printf("Created hook: %s%n", hook.getId());
+        NotificationHook notificationHook = advisorAdministrationClient.createHook(emailNotificationHookToCreate);
+        System.out.printf("Created notification Hook: %s%n", notificationHook.getId());
 
-        // Retrieve the hook that just created.
-        System.out.printf("Fetching hook: %s%n", hook.getId());
-        hook = advisorAdministrationClient.getHook(hook.getId());
-        EmailHook createdEmailHook = (EmailHook) hook;
-        System.out.printf("Hook Id: %s%n", createdEmailHook.getId());
-        System.out.printf("Hook Name: %s%n", createdEmailHook.getName());
-        System.out.printf("Hook Description: %s%n", createdEmailHook.getDescription());
-        System.out.printf("Hook External Link: %s%n", createdEmailHook.getExternalLink());
-        System.out.printf("Hook Emails: %s%n", String.join(",", createdEmailHook.getEmailsToAlert()));
+        // Retrieve the notification Hook that just created.
+        System.out.printf("Fetching notification Hook: %s%n", notificationHook.getId());
+        notificationHook = advisorAdministrationClient.getHook(notificationHook.getId());
+        EmailNotificationHook createdEmailHook = (EmailNotificationHook) notificationHook;
+        System.out.printf("Email Hook Id: %s%n", createdEmailHook.getId());
+        System.out.printf("Email Hook Name: %s%n", createdEmailHook.getName());
+        System.out.printf("Email Hook Description: %s%n", createdEmailHook.getDescription());
+        System.out.printf("Email Hook External Link: %s%n", createdEmailHook.getExternalLink());
+        System.out.printf("Email Hook Emails: %s%n", String.join(",", createdEmailHook.getEmailsToAlert()));
 
-        // Update the hook.
-        System.out.printf("Updating hook: %s%n", hook.getId());
-        EmailHook emailHookToUpdate = (EmailHook) hook;
+        // Update the notificationHook.
+        System.out.printf("Updating notification Hook: %s%n", notificationHook.getId());
+        EmailNotificationHook emailHookToUpdate = (EmailNotificationHook) notificationHook;
         emailHookToUpdate
             .removeEmailToAlert("alertme@alertme.com")
             .addEmailToAlert("alertme2@alertme.com")
             .addEmailToAlert("alertme3@alertme.com");
         advisorAdministrationClient.updateHook(emailHookToUpdate);
-        System.out.printf("Updated hook: %s%n", hook.getId());
+        System.out.printf("Updated notification Hook: %s%n", notificationHook.getId());
 
-        // Delete the hook.
-        System.out.printf("Deleting Hook: %s%n", hook.getId());
-        advisorAdministrationClient.deleteHook(hook.getId());
-        System.out.printf("Deleted Hook%n");
+        // Delete the notificationHook.
+        System.out.printf("Deleting Notification Hook: %s%n", notificationHook.getId());
+        advisorAdministrationClient.deleteHook(notificationHook.getId());
+        System.out.printf("Deleted Notification Hook%n");
 
-        // Create a web hook
-        System.out.printf("Creating web Hook%n");
-        Hook webHookToCreate = new WebHook("web hook", "https://httpbin.org/post")
-            .setDescription("my web hook")
+        // Create a web notification Hook
+        System.out.printf("Creating web NotificationHook%n");
+        NotificationHook webNotificationHookToCreate = new WebNotificationHook("web notification Hook", "https://httpbin.org/post")
+            .setDescription("my web notification Hook")
             .setUserCredentials("web-user", "web-user-pwd!")
             .setExternalLink("https://adwiki.azurewebsites.net/articles/howto/alerts/create-hooks.html");
-        advisorAdministrationClient.createHook(webHookToCreate);
-        System.out.printf("Created web hook: %s%n", hook.getId());
+        advisorAdministrationClient.createHook(webNotificationHookToCreate);
+        System.out.printf("Created web notification Hook: %s%n", notificationHook.getId());
 
         // List hooks.
         System.out.printf("Listing hooks%n");
-        PagedIterable<Hook> hooksIterable
+        PagedIterable<NotificationHook> hooksIterable
             = advisorAdministrationClient.listHooks();
-        for (Hook hookItem : hooksIterable) {
-            if (hookItem instanceof EmailHook) {
-                EmailHook emailHook = (EmailHook) hookItem;
-                System.out.printf("Hook Id: %s%n", emailHook.getId());
-                System.out.printf("Hook Name: %s%n", emailHook.getName());
-                System.out.printf("Hook Description: %s%n", emailHook.getDescription());
-                System.out.printf("Hook External Link: %s%n", emailHook.getExternalLink());
-                System.out.printf("Hook Emails: %s%n", String.join(",", emailHook.getEmailsToAlert()));
-            } else if (hookItem instanceof WebHook) {
-                WebHook webHook = (WebHook) hookItem;
-                System.out.printf("Hook Id: %s%n", webHook.getId());
-                System.out.printf("Hook Name: %s%n", webHook.getName());
-                System.out.printf("Hook Description: %s%n", webHook.getDescription());
-                System.out.printf("Hook External Link: %s%n", webHook.getExternalLink());
-                System.out.printf("Hook Endpoint: %s%n", webHook.getEndpoint());
-                System.out.printf("Hook Headers: %s%n", webHook.getHttpHeaders());
+        for (NotificationHook notificationHookItem : hooksIterable) {
+            if (notificationHookItem instanceof EmailNotificationHook) {
+                EmailNotificationHook emailHook = (EmailNotificationHook) notificationHookItem;
+                System.out.printf("Email Hook Id: %s%n", emailHook.getId());
+                System.out.printf("Email Hook Name: %s%n", emailHook.getName());
+                System.out.printf("Email Hook Description: %s%n", emailHook.getDescription());
+                System.out.printf("Email Hook External Link: %s%n", emailHook.getExternalLink());
+                System.out.printf("Email Hook Emails: %s%n", String.join(",", emailHook.getEmailsToAlert()));
+            } else if (notificationHookItem instanceof WebNotificationHook) {
+                WebNotificationHook webHook = (WebNotificationHook) notificationHookItem;
+                System.out.printf("Web Hook Id: %s%n", webHook.getId());
+                System.out.printf("Web Hook Name: %s%n", webHook.getName());
+                System.out.printf("Web Hook Description: %s%n", webHook.getDescription());
+                System.out.printf("Web Hook External Link: %s%n", webHook.getExternalLink());
+                System.out.printf("Web Hook Endpoint: %s%n", webHook.getEndpoint());
+                System.out.printf("Web Hook Headers: %s%n", webHook.getHttpHeaders());
             }
         }
     }

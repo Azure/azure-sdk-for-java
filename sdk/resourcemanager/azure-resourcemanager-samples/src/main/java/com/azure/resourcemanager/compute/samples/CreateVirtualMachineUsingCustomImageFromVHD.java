@@ -53,7 +53,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
         final String publicIPDnsLabel = Utils.randomResourceName(azureResourceManager, "pip", 10);
         final String userName = "tirekicker";
         final String password = Utils.password();
-        final Region region = Region.US_WEST_CENTRAL;
+        final Region region = Region.US_WEST;
 
         final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_apache.sh";
         final String apacheInstallCommand = "bash install_apache.sh";
@@ -97,7 +97,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
                         .withPublicSetting("fileUris", apacheInstallScriptUris)
                         .withPublicSetting("commandToExecute", apacheInstallCommand)
                         .attach()
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             System.out.println("Created a Linux VM with un-managed OS and data disks: " + linuxVM.id());
@@ -165,7 +165,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
                     .withGeneralizedLinuxCustomImage(virtualMachineCustomImage.id())
                     .withRootUsername(userName)
                     .withRootPassword(password)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             System.out.println("Created Linux VM");
@@ -188,7 +188,7 @@ public final class CreateVirtualMachineUsingCustomImageFromVHD {
                     .withNewDataDiskFromImage(2, 100, CachingTypes.READ_ONLY)
                     .withNewDataDiskFromImage(3, 100, CachingTypes.READ_WRITE)
                     .withNewDataDisk(50)
-                    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
                     .create();
 
             Utils.print(linuxVM3);

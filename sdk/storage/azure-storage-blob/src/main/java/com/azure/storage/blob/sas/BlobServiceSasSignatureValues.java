@@ -45,7 +45,7 @@ public final class BlobServiceSasSignatureValues {
 
     private final ClientLogger logger = new ClientLogger(BlobServiceSasSignatureValues.class);
 
-    private final String version = BlobSasServiceVersion.V2019_12_12.getVersion();
+    private final String version = BlobSasServiceVersion.getLatest().getVersion();
 
     private SasProtocol protocol;
 
@@ -76,6 +76,10 @@ public final class BlobServiceSasSignatureValues {
     private String contentLanguage;
 
     private String contentType;
+
+    private String preauthorizedAgentObjectId; /* saoid */
+
+    private String correlationId;
 
     /**
      * Creates an object with empty values for all fields.
@@ -483,6 +487,52 @@ public final class BlobServiceSasSignatureValues {
      */
     public BlobServiceSasSignatureValues setContentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * @return The AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform
+     * the action granted by the SAS token. The service will validate the SAS token and ensure that the owner of the
+     * user delegation key has the required permissions before granting access but no additional permission check for
+     * the agent object id will be performed.
+     */
+    public String getPreauthorizedAgentObjectId() {
+        return preauthorizedAgentObjectId;
+    }
+
+    /**
+     * Sets the AAD object ID of a user assumed to be authorized by the owner of the user delegation key to perform the
+     * action granted by the SAS token.
+     *
+     * @param preauthorizedAgentObjectId The AAD object ID of a user assumed to be authorized by the owner of the user
+     * delegation key to perform the action granted by the SAS token. The service will validate the SAS token and
+     * ensure that the owner of the user delegation key has the required permissions before granting access but no
+     * additional permission check for the agent object id will be performed.
+     * @return the updated BlobServiceSASSignatureValues object
+     */
+    public BlobServiceSasSignatureValues setPreauthorizedAgentObjectId(String preauthorizedAgentObjectId) {
+        this.preauthorizedAgentObjectId = preauthorizedAgentObjectId;
+        return this;
+    }
+
+    /**
+     * @return the correlation id value for the SAS.
+     */
+    public String getCorrelationId() {
+        return correlationId;
+    }
+
+    /**
+     * Sets the correlation id value for the SAS.
+     *
+     * <p>Note: This parameter is only valid for user delegation SAS. </p>
+     *
+     * @param correlationId A correlation ID used to correlate the storage audit logs with the audit logs used by the
+     * principal generating and distributing SAS.
+     * @return the updated BlobServiceSasSignatureValues object
+     */
+    public BlobServiceSasSignatureValues setCorrelationId(String correlationId) {
+        this.correlationId = correlationId;
         return this;
     }
 

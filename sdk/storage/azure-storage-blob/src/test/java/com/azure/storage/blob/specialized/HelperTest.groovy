@@ -3,11 +3,15 @@
 
 package com.azure.storage.blob.specialized
 
+import com.azure.core.util.Context
+import com.azure.core.util.serializer.JacksonAdapter
+import com.azure.core.util.serializer.SerializerEncoding
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
 import com.azure.storage.blob.models.BlobRange
+import com.azure.storage.blob.models.PageList
 import com.azure.storage.blob.sas.BlobSasPermission
 import com.azure.storage.blob.sas.BlobSasServiceVersion
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
@@ -99,7 +103,7 @@ class HelperTest extends APISpec {
         def sasValues = new BlobServiceSasSignatureValues(e, p)
 
         def implUtil = new BlobSasImplUtil(sasValues, "containerName", "blobName", "snapshot", null)
-        def sas = implUtil.generateSas(primaryCredential)
+        def sas = implUtil.generateSas(primaryCredential, Context.NONE)
 
         parts.setCommonSasQueryParameters(new CommonSasQueryParameters(SasImplUtils.parseQueryString(sas), true))
 
@@ -131,7 +135,7 @@ class HelperTest extends APISpec {
         def data = getRandomByteArray(1024)
 
         when:
-        def flux = Utility.convertStreamToByteBuffer(new ByteArrayInputStream(data), 1024, 1024)
+        def flux = Utility.convertStreamToByteBuffer(new ByteArrayInputStream(data), 1024, 1024, true)
 
         then:
         StepVerifier.create(flux)
@@ -141,5 +145,73 @@ class HelperTest extends APISpec {
         StepVerifier.create(flux)
             .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data)) == 0 }
             .verifyComplete()
+    }
+
+    /*
+    This test covers the switch from using available() to using read() to check that a stream is done when converting
+    from a stream to a flux. We previously used to assert that, when we had read length bytes from the stream that
+    available() == 0, but available only returns an estimate and is not reliable. Now we assert that read() == -1
+     */
+    def "Utility convertStreamToBuffer available"() {
+        setup:
+        def data = getRandomByteArray(10)
+
+        when:
+        def flux = Utility.convertStreamToByteBuffer(new testBAIS(data), 10, 10, true)
+
+        then: "When the stream is the right length but available always returns > 0, do not throw"
+        StepVerifier.create(flux)
+            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data)) == 0 }
+            .verifyComplete()
+        // subscribe multiple times and ensure data is same each time
+        StepVerifier.create(flux)
+            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data)) == 0 }
+            .verifyComplete()
+
+        when: "When the stream is actually longer than the length, throw"
+        flux = Utility.convertStreamToByteBuffer(new testBAIS(data), 9, 10, true)
+
+        then:
+        StepVerifier.create(flux)
+            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data, 0, 9)) == 0}
+            .verifyError(IllegalStateException.class)
+    }
+
+    class testBAIS extends ByteArrayInputStream {
+
+        testBAIS(byte[] data) {
+            super(data)
+        }
+
+        @Override
+        public synchronized int available() {
+            return 10
+        }
+    }
+
+    def "PageList custom deserializer"() {
+        setup:
+        def responseXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>  \n" +
+            "<PageList>  \n" +
+            "   <PageRange>  \n" +
+            "      <Start>0</Start>  \n" +
+            "      <End>511</End>  \n" +
+            "   </PageRange>  \n" +
+            "   <ClearRange>  \n" +
+            "      <Start>512</Start>  \n" +
+            "      <End>1023</End>  \n" +
+            "   </ClearRange>  \n" +
+            "   <PageRange>  \n" +
+            "      <Start>1024</Start>  \n" +
+            "      <End>2047</End>  \n" +
+            "   </PageRange>  \n" +
+            "</PageList>"
+
+        when:
+        def pageList = (PageList) new JacksonAdapter().deserialize(responseXml, PageList.class, SerializerEncoding.XML)
+
+        then:
+        pageList.getPageRange().size() == 2
+        pageList.getClearRange().size() == 1
     }
 }

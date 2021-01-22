@@ -27,7 +27,7 @@ public class CopyAuthorizationSerializerTest {
      * Test for {@link CopyAuthorization#fromJson(String)}.
      */
     @Test
-    public void fromJson() throws IOException {
+    public void fromJson() {
         CopyAuthorization copyAuthorization = new CopyAuthorization(MODEL_ID, ACCESS_TOKEN, RESOURCE_ID, REGION,
             EXPIRES_ON);
         String copyAuthorizationString = copyAuthorization.toJson();
