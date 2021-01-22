@@ -5,7 +5,7 @@ jobs:
     parameters:
       ServiceDirectory: tables
       Timeout: 60
-      MaxParallel: 12
+      MaxParallel: 14
       EnvVars:
         AZURE_TEST_MODE: LIVE
       Artifacts:

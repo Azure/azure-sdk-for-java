@@ -2,14 +2,6 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingSelector;
-import com.microsoft.azure.spring.cloud.config.feature.management.entity.FeatureSet;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
-import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
-import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +24,15 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.StringUtils;
 
+import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingSelector;
+import com.microsoft.azure.spring.cloud.config.feature.management.entity.FeatureSet;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationStoreTrigger;
+import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
+import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
+
 public class AppConfigurationPropertySourceLocator implements PropertySourceLocator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPropertySourceLocator.class);
@@ -38,16 +40,23 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     private static final String SPRING_APP_NAME_PROP = "spring.application.name";
 
     private static final String PROPERTY_SOURCE_NAME = "azure-config-store";
-
+    
     private static final String PATH_SPLITTER = "/";
+
     private final AppConfigurationProperties properties;
-    private final String profileSeparator;
+
     private final List<ConfigStore> configStores;
+
     private final Map<String, List<String>> storeContextsMap = new ConcurrentHashMap<>();
+
     private final AppConfigurationProviderProperties appProperties;
+
     private final ClientStore clients;
+
     private final KeyVaultCredentialProvider keyVaultCredentialProvider;
+
     private final SecretClientBuilderSetup keyVaultClientProvider;
+
     private static AtomicBoolean startup = new AtomicBoolean(true);
 
     public AppConfigurationPropertySourceLocator(AppConfigurationProperties properties,
@@ -55,7 +64,6 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         KeyVaultCredentialProvider keyVaultCredentialProvider, SecretClientBuilderSetup keyVaultClientProvider) {
         this.properties = properties;
         this.appProperties = appProperties;
-        this.profileSeparator = properties.getProfileSeparator();
         this.configStores = properties.getStores();
         this.clients = clients;
         this.keyVaultCredentialProvider = keyVaultCredentialProvider;
@@ -102,21 +110,20 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     /**
      * Adds a new Property Source
      *
-     * @param composite        PropertySource being added
-     * @param store            Config Store the PropertySource is being generated from
-     * @param applicationName  Name of the application
-     * @param profiles         Active profiles in the Store
+     * @param composite PropertySource being added
+     * @param store Config Store the PropertySource is being generated from
+     * @param applicationName Name of the application
+     * @param profiles Active profiles in the Store
      * @param storeContextsMap the Map storing the storeName -> List of contexts map
-     * @param initFeatures     determines if Feature Management is set in the PropertySource. When generating more than
-     *                         one it needs to be in the last one.
+     * @param initFeatures determines if Feature Management is set in the PropertySource. When generating more than one
+     * it needs to be in the last one.
      */
     private void addPropertySource(CompositePropertySource composite, ConfigStore store, String applicationName,
         List<String> profiles, Map<String, List<String>> storeContextsMap, boolean initFeatures) {
         /*
-         * Generate which contexts(key prefixes) will be used for key-value items search
-         * If key prefix is empty, default context is: application, current application
-         * name is: foo, active profile is: dev, profileSeparator is: _ Will generate
-         * these contexts: /application/, /application_dev/, /foo/, /foo_dev/
+         * Generate which contexts(key prefixes) will be used for key-value items search If key prefix is empty, default
+         * context is: application, current application name is: foo, active profile is: dev, profileSeparator is: _
+         * Will generate these contexts: /application/, /application_dev/, /foo/, /foo_dev/
          */
         List<String> contexts = new ArrayList<>();
         contexts.addAll(generateContexts(this.properties.getDefaultContext(), profiles, store));
@@ -132,7 +139,7 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         Collections.reverse(contexts);
         for (String sourceContext : contexts) {
             try {
-                sourceList.addAll(create(sourceContext, store, storeContextsMap, initFeatures, featureSet));
+                sourceList.addAll(create(sourceContext, store, storeContextsMap, profiles, initFeatures, featureSet));
 
                 LOGGER.debug("PropertySource context [{}] is added.", sourceContext);
             } catch (Exception e) {
@@ -166,7 +173,6 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
 
         String prefixedContext = propWithAppName(prefix, applicationName);
         result.add(prefixedContext + PATH_SPLITTER);
-        profiles.forEach(profile -> result.add(propWithProfile(prefixedContext, profile)));
 
         return result;
     }
@@ -180,26 +186,25 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
         return PATH_SPLITTER + applicationName;
     }
 
-    private String propWithProfile(String context, String profile) {
-        return context + this.profileSeparator + profile + PATH_SPLITTER;
-    }
-
     /**
      * Creates a new set of AppConfigurationProertySources, 1 per Label.
      *
-     * @param context          Context of the application, part of uniquely define a PropertySource
-     * @param store            Config Store the PropertySource is being generated from
+     * @param context Context of the application, part of uniquely define a PropertySource
+     * @param store Config Store the PropertySource is being generated from
      * @param storeContextsMap the Map storing the storeName -> List of contexts map
-     * @param initFeatures     determines if Feature Management is set in the PropertySource. When generating more than
-     *                         one it needs to be in the last one.
+     * @param initFeatures determines if Feature Management is set in the PropertySource. When generating more than one
+     * it needs to be in the last one.
      * @return a list of AppConfigurationPropertySources
      */
     private List<AppConfigurationPropertySource> create(String context, ConfigStore store,
-        Map<String, List<String>> storeContextsMap, boolean initFeatures, FeatureSet featureSet) throws Exception {
+        Map<String, List<String>> storeContextsMap, List<String> profiles, boolean initFeatures, FeatureSet featureSet)
+        throws Exception {
         List<AppConfigurationPropertySource> sourceList = new ArrayList<>();
 
         try {
-            for (String label : store.getLabels()) {
+            String[] labels = store.getLabels(profiles);
+            
+            for (String label : labels) {
                 putStoreContext(store.getEndpoint(), context, storeContextsMap);
                 AppConfigurationPropertySource propertySource = new AppConfigurationPropertySource(context, store,
                     label, properties, clients, appProperties, keyVaultCredentialProvider, keyVaultClientProvider);
@@ -234,8 +239,8 @@ public class AppConfigurationPropertySourceLocator implements PropertySourceLoca
     /**
      * Put certain context to the store contexts map
      *
-     * @param storeName        the name of the configuration store
-     * @param context          the context text for the PropertySource, e.g., "/application"
+     * @param storeName the name of the configuration store
+     * @param context the context text for the PropertySource, e.g., "/application"
      * @param storeContextsMap the Map storing the storeName -> List of contexts map
      */
     private void putStoreContext(String storeName, String context,

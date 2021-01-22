@@ -31,9 +31,8 @@ Acquired phone numbers can come with many capabilities, depending on the country
 There are two forms of authentication to use the Administration SDK:
 
 ### Azure Active Directory Token Authentication
-Currently, Azure Active Directory (AAD) authentication is only possible for CommunicationIdentityClient.
-The `DefaultAzureCredential` object must be passed to the `CommunicationIdentityClientBuilder` via
-the credential() funtion. Endpoint and httpClient must also be set
+A `DefaultAzureCredential` object must be passed to the `CommunicationIdentityClientBuilder` or
+`PhoneNumberClientBuilder` via the credential() funtion. Endpoint and httpClient must also be set
 via the endpoint() and httpClient() functions respectively.
 
 `AZURE_CLIENT_SECRET`, `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables 
@@ -90,7 +89,22 @@ CommunicationIdentityClient communicationIdentityClient = new CommunicationIdent
     .buildClient();
 ```
 ### Initializing Phone Number Client
+As it was mentioned before, the PhoneNumberClientBuilder is also enabled to use Azure Active Directory Authentication
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L398-L407 -->
+```java
+String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
+// Create an HttpClient builder of your choice and customize it
+HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+PhoneNumberClient phoneNumberClient = new PhoneNumberClientBuilder()
+    .endpoint(endpoint)
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .httpClient(httpClient)
+    .buildClient();
+```
+
+Using the endpoint and access key from the communication resource to authenticate is also posible.
 <!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L128-L139 -->
 ```java
 // You can find your endpoint and access token from your resource in the Azure Portal

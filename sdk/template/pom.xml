@@ -51,6 +51,7 @@
       </activation>
       <modules>
         <module>azure-sdk-template</module>
+        <module>azure-template-perf</module>
       </modules>
     </profile>
   </profiles>
