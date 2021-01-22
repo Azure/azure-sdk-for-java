@@ -13,4 +13,6 @@ public class AADTokenClaim {
     public static final String ROLES = "roles";
     public static final String ISS = "iss";
     public static final String AUD = "aud";
+    public static final String AZP = "azp";
+    public static final String APPID = "appid";
 }

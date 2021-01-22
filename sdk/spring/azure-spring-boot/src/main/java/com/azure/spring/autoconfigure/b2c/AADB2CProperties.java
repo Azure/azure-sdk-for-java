@@ -2,16 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
+import java.net.MalformedURLException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
 import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeAuthenticationProvider;
 import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotBlank;
-import java.net.MalformedURLException;
-import java.util.Map;
 
 /**
  * Configuration properties for Azure Active Directory B2C.
@@ -41,6 +42,21 @@ public class AADB2CProperties {
      */
     @NotBlank(message = "tenant name should not be blank")
     private String tenant;
+
+    /**
+     * The id of the b2c tenant.
+     */
+    @NotBlank(message = "tenant id should not be blank")
+    private String tenantId;
+
+    /**
+     * App ID URI which might be used in the <code>"aud"</code> claim of an token.
+     */
+    private String AppIdUri;
+
+    private String baseUri;
+
+    private Set<String> accessControlLists = new HashSet<>();
 
     /**
      * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false,
@@ -222,5 +238,37 @@ public class AADB2CProperties {
 
     public void setUserNameAttributeName(String userNameAttributeName) {
         this.userNameAttributeName = userNameAttributeName;
+    }
+
+    public void setAccessControlLists(Set<String> accessControlLists) {
+        this.accessControlLists = accessControlLists;
+    }
+
+    public Set<String> getAccessControlLists() {
+        return accessControlLists;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
+    }
+
+    public String getBaseUri() {
+        return baseUri;
+    }
+
+    public void setBaseUri(String baseUri) {
+        this.baseUri = baseUri;
+    }
+
+    public String getAppIdUri() {
+        return AppIdUri;
+    }
+
+    public void setAppIdUri(String appIdUri) {
+        AppIdUri = appIdUri;
     }
 }

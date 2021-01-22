@@ -2,7 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
+import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
+import static com.azure.spring.telemetry.TelemetryData.TENANT_NAME;
+import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
+
+import com.azure.spring.aad.AADAuthorizationServerEndpoints;
+import com.azure.spring.aad.b2c.validator.AADB2CJwtAppIdValidator;
+import com.azure.spring.aad.b2c.validator.AADB2CJwtAzpValidator;
+import com.azure.spring.aad.webapi.validator.AADJwtAudienceValidator;
+import com.azure.spring.aad.webapi.validator.AADJwtIssuerValidator;
 import com.azure.spring.telemetry.TelemetrySender;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -17,19 +31,15 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
-
-import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
-import static com.azure.spring.telemetry.TelemetryData.TENANT_NAME;
-import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for AAD B2C Authentication.
@@ -61,9 +71,37 @@ public class AADB2CAutoConfiguration {
     private final AADB2CProperties properties;
 
     public AADB2CAutoConfiguration(@NonNull ClientRegistrationRepository repository,
-                                   @NonNull AADB2CProperties properties) {
+        @NonNull AADB2CProperties properties) {
         this.repository = repository;
         this.properties = properties;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(JwtDecoder.class)
+    public JwtDecoder jwtDecoder() {
+        AADAuthorizationServerEndpoints identityEndpoints = new AADAuthorizationServerEndpoints(properties.getBaseUri(),
+            properties.getTenantId());
+        NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder.withJwkSetUri(identityEndpoints.jwkSetEndpoint()).build();
+        List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator();
+        nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
+        return nimbusJwtDecoder;
+    }
+
+    public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
+        List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
+        List<String> validAudiences = new ArrayList<>();
+        if (!StringUtils.isEmpty(properties.getAppIdUri())) {
+            validAudiences.add(properties.getAppIdUri());
+            validators.add(new AADB2CJwtAppIdValidator(properties.getAccessControlLists()));
+        }
+        if (!StringUtils.isEmpty(properties.getClientId())) {
+            validAudiences.add(properties.getClientId());
+            validators.add(new AADB2CJwtAzpValidator(properties.getAccessControlLists()));
+        }
+        validators.add(new JwtTimestampValidator());
+        validators.add(new AADJwtIssuerValidator());
+        validators.add(new AADJwtAudienceValidator(validAudiences));
+        return validators;
     }
 
     @Bean
@@ -81,7 +119,7 @@ public class AADB2CAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AADB2COidcLoginConfigurer b2cLoginConfigurer(AADB2CLogoutSuccessHandler handler,
-                                                        AADB2CAuthorizationRequestResolver resolver) {
+        AADB2CAuthorizationRequestResolver resolver) {
         return new AADB2COidcLoginConfigurer(properties, handler, resolver);
     }
 
@@ -104,9 +142,9 @@ public class AADB2CAutoConfiguration {
     @Configuration
     @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
     @ConditionalOnProperty(prefix = AADB2CProperties.PREFIX,
-                           value = "oidc-enabled",
-                           havingValue = "true",
-                           matchIfMissing = true)
+        value = "oidc-enabled",
+        havingValue = "true",
+        matchIfMissing = true)
     public static class AADB2COidcAutoConfiguration {
 
         private final AADB2CProperties properties;
@@ -126,7 +164,6 @@ public class AADB2CAutoConfiguration {
         public ClientRegistrationRepository clientRegistrationRepository() {
             final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(1);
             final List<ClientRegistration> otherRegistrations = new ArrayList<>();
-
 
             addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignUpOrSignIn());
             addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getProfileEdit());

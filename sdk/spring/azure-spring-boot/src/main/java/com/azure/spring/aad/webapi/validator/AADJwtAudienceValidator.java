@@ -24,8 +24,12 @@ public class AADJwtAudienceValidator implements OAuth2TokenValidator<Jwt> {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public AADJwtAudienceValidator(List<String> audiences) {
         Assert.notNull(audiences, "audiences cannot be null");
-        this.validator = new AADJwtClaimValidator(AADTokenClaim.AUD,
-            aud -> audiences.containsAll((List<String>) aud));
+        if (!audiences.isEmpty()) {
+            this.validator = new AADJwtClaimValidator(AADTokenClaim.AUD,
+                aud -> audiences.containsAll((List<String>) aud));
+        } else {
+            this.validator = new AADJwtClaimValidator(AADTokenClaim.AUD, aud -> true);
+        }
     }
 
     /**
