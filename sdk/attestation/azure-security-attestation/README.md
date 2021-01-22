@@ -19,11 +19,11 @@ Use the guidelines in each section of this template to ensure consistency and re
 ### Adding the package to your project
 Maven dependency for the Azure Attestation  library. Add it to your project's POM file.
 
-[//]: # ({x-version-update-start;com.azure:azure-security-attestation-service;current})
+[//]: # ({x-version-update-start;com.azure:azure-security-attestation;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-security-attestation-service</artifactId>
+    <artifactId>azure-security-attestation</artifactId>
     <version>1.0.0-beta.1</version>
 </dependency>
 ```
