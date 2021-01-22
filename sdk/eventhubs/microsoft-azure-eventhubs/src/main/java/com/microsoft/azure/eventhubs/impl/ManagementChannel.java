@@ -54,6 +54,7 @@ final class ManagementChannel {
                     new DispatchHandler() {
                         @Override
                         public void onEvent() {
+                            // NOTE: this timer is not cancelled on success and will fire anyway.
                             final RequestResponseChannel channel = innerChannel.unsafeGetIfOpened();
                             final String errorMessage;
                             if (channel != null && channel.getState() == IOObject.IOObjectState.OPENED) {
@@ -64,7 +65,9 @@ final class ManagementChannel {
                                 errorMessage = "Management request timed out on the client - enable info level tracing to diagnose.";
                             }
 
-                            resultFuture.completeExceptionally(new TimeoutException(errorMessage));
+                            if (!resultFuture.isDone()) {
+                                resultFuture.completeExceptionally(new TimeoutException(errorMessage));
+                            }
                         }
                     });
         } catch (final IOException ioException) {
