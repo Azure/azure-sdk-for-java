@@ -195,7 +195,7 @@ public class PerfStressProgram {
                 double averageCompleted = getOperationsPerSecond();
 
                 lastCompleted[0] = totalCompleted;
-                return String.format("%d\t\t%d\t\t%.0f", currentCompleted, totalCompleted, averageCompleted);
+                return String.format("%d\t\t%d\t\t%.2f", currentCompleted, totalCompleted, averageCompleted);
             }, true, true);
 
         if (sync) {
