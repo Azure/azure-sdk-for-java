@@ -16,7 +16,7 @@ public class CommunicationIdentifierSerializerTests {
 
     final String someId = "some id";
     final String teamsUserId = "Teams user id";
-    final String fullId = "some MRI string";
+    final String fullId = "some lengthy id string";
 
     @Test
     public void missingPropertyDeserializerThrows() {

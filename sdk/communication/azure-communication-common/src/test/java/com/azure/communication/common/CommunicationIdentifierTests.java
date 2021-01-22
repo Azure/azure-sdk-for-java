@@ -10,10 +10,10 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 public class CommunicationIdentifierTests {
 
     final String userId = "user id";
-    final String fullId = "some full MRI string";
+    final String fullId = "some lengthy id string";
 
     @Test
-    public void equalityOnlyTestIfPresentOnBothSide() {
+    public void equalityOnlyTestIdIfPresentOnBothSide() {
         assertEquals(new MicrosoftTeamsUserIdentifier(userId, true).setId(fullId),
             new MicrosoftTeamsUserIdentifier(userId, true));
         assertEquals(new MicrosoftTeamsUserIdentifier(userId, true),
