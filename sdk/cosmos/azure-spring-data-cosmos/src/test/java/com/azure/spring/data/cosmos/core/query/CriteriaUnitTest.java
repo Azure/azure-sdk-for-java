@@ -11,11 +11,45 @@ import org.springframework.data.repository.query.parser.Part;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static com.azure.spring.data.cosmos.common.TestConstants.CRITERIA_KEY;
 import static com.azure.spring.data.cosmos.common.TestConstants.CRITERIA_OBJECT;
 
 public class CriteriaUnitTest {
+    @Test
+    public void testBooleanCriteria() {
+        final Criteria trueCriteria = Criteria.getInstance(CriteriaType.TRUE,
+            CRITERIA_KEY);
+
+        Assert.assertTrue(trueCriteria.getSubCriteria().isEmpty());
+        Assert.assertTrue(Objects.isNull(trueCriteria.getSubjectValues()));
+        Assert.assertEquals(CriteriaType.TRUE, trueCriteria.getType());
+        Assert.assertEquals(CRITERIA_KEY, trueCriteria.getSubject());
+        Assert.assertTrue(CriteriaType.isUnary(trueCriteria.getType()));
+        Assert.assertTrue(Objects.isNull(trueCriteria.getIgnoreCase()));
+        
+        final Criteria falseCriteria = Criteria.getInstance(CriteriaType.FALSE,
+            CRITERIA_KEY);
+
+        AAssert.assertTrue(falseCriteria.getSubCriteria().isEmpty());
+        Assert.assertTrue(Objects.isNull(falseCriteria.getSubjectValues()));
+        Assert.assertEquals(CriteriaType.FALSE, falseCriteria.getType());
+        Assert.assertEquals(CRITERIA_KEY, falseCriteria.getSubject());
+        Assert.assertTrue(CriteriaType.isUnary(falseCriteria.getType()));
+        Assert.assertTrue(Objects.isNull(falseCriteria.getIgnoreCase()));
+        
+        
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_NULL,
+            CRITERIA_KEY);
+
+        Assert.assertTrue(criteria.getSubCriteria().isEmpty());
+        Assert.assertTrue(Objects.isNull(criteria.getSubjectValues()));
+        Assert.assertEquals(CriteriaType.IS_NULL, criteria.getType());
+        Assert.assertEquals(CRITERIA_KEY, criteria.getSubject());
+        Assert.assertTrue(CriteriaType.isUnary(criteria.getType()));
+        Assert.assertTrue(Objects.isNull(criteria.getIgnoreCase()));
+    }
 
     @Test
     public void testUnaryCriteria() {
