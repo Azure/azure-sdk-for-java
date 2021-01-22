@@ -448,12 +448,12 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
-  <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf|azure-search-perf|azure-identity-perf[/\\].*\.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf|azure-search-perf|azure-identity-perf|azure-template-perf[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFields"
             files=".*[/\\]azure-identity-perf|azure-search-perf[/\\].*\.java"/>
   <suppress checks="GoodLogging" files=".*[/\\]azure-storage-perf|azure-search-perf|perf-test-core[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files=".*[/\\]azure-identity-perf|azure-search-perf|azure-storage-perf|perf-test-core[/\\].*\.java"/>
+            files=".*[/\\]azure-identity-perf|azure-search-perf|azure-storage-perf|perf-test-core|azure-template-perf[/\\].*\.java"/>
   <!-- Azure Search test models -->
   <suppress checks="StaticVariableName|VisibilityModifier"
             files="com.azure.search.perf.*.java|com.azure.messaging.servicebus.perf.*.java"/>
