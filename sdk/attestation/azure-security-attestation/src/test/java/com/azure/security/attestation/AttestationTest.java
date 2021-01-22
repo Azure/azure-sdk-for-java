@@ -3,6 +3,7 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.TestMode;
 import com.azure.security.attestation.models.AttestSgxEnclaveRequest;
 import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.DataType;
@@ -18,6 +19,7 @@ import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AttestationTest extends AttestationClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -132,7 +134,12 @@ public class AttestationTest extends AttestationClientTestBase {
         JWTClaimsSet claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
 
         assertNotNull(claims);
-        Assertions.assertEquals(clientUri, claims.getClaims().get("iss"));
+        assertTrue(claims.getClaims().containsKey("iss"));
+
+        // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.
+        if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
+            Assertions.assertEquals(clientUri, claims.getClaims().get("iss"));
+        }
 
     }
 
@@ -162,7 +169,15 @@ public class AttestationTest extends AttestationClientTestBase {
                     }
                     return null;
                 }))
-            .assertNext(claims -> assertEquals(clientUri, claims.getClaims().get("iss")))
+            .assertNext(claims ->
+            {
+                assertTrue(claims.getClaims().containsKey("iss"));
+
+                // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.
+                if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
+                    Assertions.assertEquals(clientUri, claims.getClaims().get("iss"));
+                }
+            })
             .verifyComplete();
 
     }

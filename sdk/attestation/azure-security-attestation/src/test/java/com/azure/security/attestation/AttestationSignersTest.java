@@ -3,6 +3,7 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.TestMode;
 import com.azure.security.attestation.models.JsonWebKeySet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -81,7 +82,10 @@ public class AttestationSignersTest extends AttestationClientTestBase {
                         } else if (x5c.getIssuerDN().toString().contains("AttestationService-LocalTest-ReportSigning")) {
                             assertEquals("CN=AttestationService-LocalTest-ReportSigning", x5c.getIssuerDN().getName());
                         } else {
-                            assertEquals("CN=" + clientUri, x5c.getSubjectDN().getName());
+                            // In playback mode, the clientUri is bogus, so it cannot be validated.
+                            if (testContextManager.getTestMode() != TestMode.PLAYBACK) {
+                                assertEquals("CN=" + clientUri, x5c.getSubjectDN().getName());
+                            }
                         }
                     }
                 } catch (CertificateException e) {

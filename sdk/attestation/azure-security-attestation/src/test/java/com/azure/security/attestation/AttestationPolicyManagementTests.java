@@ -133,10 +133,10 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         PolicyCertificatesClient client = attestationBuilder.buildPolicyCertificatesClient();
 
-        String signingCertificateBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningCertificate");
-        String signingKeyBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
+        String signingCertificateBase64 = getIsolatedSigningCertificate();
+        String signingKeyBase64 = getIsolatedSigningKey();
 
-        String newPolicyCertificateBase64 = Configuration.getGlobalConfiguration().get("policySigningCertificate0");
+        String newPolicyCertificateBase64 = getPolicySigningCertificate0();
 //        String newPolicySigner = Configuration.getGlobalConfiguration().get("policySigningKey0");
 
         JWSSigner existingSigner = getJwsSigner(signingKeyBase64);
@@ -175,7 +175,6 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         assertEquals("IsAbsent", responseClaims.getClaims().get("x-ms-policycertificates-result").toString());
     }
 
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     public void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri) throws JOSEException, InvalidKeySpecException, NoSuchAlgorithmException, JsonProcessingException {
@@ -189,10 +188,10 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         PolicyCertificatesAsyncClient client = attestationBuilder.buildPolicyCertificatesAsyncClient();
 
-        String signingCertificateBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningCertificate");
-        String signingKeyBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
+        String signingCertificateBase64 = getIsolatedSigningCertificate();
+        String signingKeyBase64 = getIsolatedSigningKey();
 
-        String newPolicyCertificateBase64 = Configuration.getGlobalConfiguration().get("policySigningCertificate0");
+        String newPolicyCertificateBase64 = getPolicySigningCertificate0();
 //        String newPolicySigner = Configuration.getGlobalConfiguration().get("policySigningKey0");
 
         JWSSigner existingSigner = getJwsSigner(signingKeyBase64);

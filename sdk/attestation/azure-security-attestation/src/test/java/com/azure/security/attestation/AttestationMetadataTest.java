@@ -3,6 +3,7 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.TestMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
@@ -51,8 +52,13 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
         @SuppressWarnings("unchecked")
         LinkedHashMap<String, Object> metadataConfig = (LinkedHashMap<String, Object>) metadataConfigResponse;
 
-        assertEquals(clientUri, metadataConfig.get("issuer"));
-        assertEquals(clientUri + "/certs", metadataConfig.get("jwks_uri"));
+        assertTrue(metadataConfig.containsKey("issuer"));
+        assertTrue(metadataConfig.containsKey("jwks_uri"));
+        // In playback mode, thee clientUri is a dummy value which cannot be associated with the actual response :(.
+        if (!testContextManager.getTestMode().equals(TestMode.PLAYBACK)) {
+            assertEquals(clientUri, metadataConfig.get("issuer"));
+            assertEquals(clientUri + "/certs", metadataConfig.get("jwks_uri"));
+        }
     }
 
 

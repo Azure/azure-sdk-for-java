@@ -79,8 +79,8 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         PolicyClient client = attestationBuilder.buildPolicyClient();
 
-        String signingCertificateBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningCertificate");
-        String signingKeyBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
+        String signingCertificateBase64 = getIsolatedSigningCertificate();
+        String signingKeyBase64 = getIsolatedSigningKey();
 
         JWSSigner signer = getJwsSigner(signingKeyBase64);
 
@@ -118,6 +118,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
         }
     }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
     public void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri, AttestationType attestationType) {
@@ -130,8 +131,8 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         PolicyAsyncClient client = attestationBuilder.buildPolicyAsyncClient();
 
-        String signingCertificateBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningCertificate");
-        String signingKeyBase64 = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
+        String signingCertificateBase64 = getIsolatedSigningCertificate();
+        String signingKeyBase64 = getIsolatedSigningKey();
 
         JWSSigner signer = Assertions.assertDoesNotThrow(() -> getJwsSigner(signingKeyBase64));
 
