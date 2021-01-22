@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit;
  * messages.
  */
 public class ServiceBusProcessorSample {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
     /**
      * Main method to start the sample application.
@@ -44,8 +46,6 @@ public class ServiceBusProcessorSample {
         // 3. "queueName" will be the name of the Service Bus queue instance you created
         //    inside the Service Bus namespace.
 
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
         // Create an instance of the processor through the ServiceBusClientBuilder
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()

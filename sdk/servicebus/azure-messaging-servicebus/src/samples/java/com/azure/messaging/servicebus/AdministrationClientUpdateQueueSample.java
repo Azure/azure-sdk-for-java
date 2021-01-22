@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClientBuilder;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -14,6 +15,8 @@ import java.time.Duration;
  * Sample example showing how to update properties of Service Bus Queue.
  */
 public class AdministrationClientUpdateQueueSample {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
     /**
      * Main method to show how to update properties of Service Bus Queue.
@@ -39,11 +42,8 @@ public class AdministrationClientUpdateQueueSample {
         // The 'connectionString' format is shown below.
         // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // 3. "<<queue-name>>" will be the name of the Service Bus queue instance you created
+        // 3. "queueName" will be the name of the Service Bus queue instance you created
         //    inside the Service Bus namespace.
-
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
         // Create a administrator client using connection string.
         ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
@@ -64,6 +64,9 @@ public class AdministrationClientUpdateQueueSample {
 
         System.out.printf("After queue properties LockDuration: [%d seconds], Max Delivery count: [%d].%n",
             updatedProperties.getLockDuration().getSeconds(), updatedProperties.getMaxDeliveryCount());
+
+        // This assertion is to ensure samples are working. Users should remove this.
+        Assertions.assertEquals(10, updatedProperties.getMaxDeliveryCount());
     }
 
 }

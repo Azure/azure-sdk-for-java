@@ -4,17 +4,23 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Demonstrates how to receive messages from a named session.
  */
 public class ReceiveNamedSessionAsyncSample {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
+
     /**
      * Main method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
      * Bus Queue.
@@ -36,6 +42,8 @@ public class ReceiveNamedSessionAsyncSample {
      */
     @Test
     public void run() throws InterruptedException {
+        AtomicBoolean sampleSuccessful = new AtomicBoolean(true);
+        CountDownLatch countdownLatch = new CountDownLatch(1);
 
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
@@ -46,9 +54,6 @@ public class ReceiveNamedSessionAsyncSample {
         // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // 3. "queueName" will be the name of the Service Bus queue instance you created
         //    inside the Service Bus namespace.
-
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
         // Create a receiver.
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
@@ -79,15 +84,21 @@ public class ReceiveNamedSessionAsyncSample {
                 // thrown in here, the message is abandoned.
                 // To disable this behaviour, toggle ServiceBusSessionReceiverClientBuilder.disableAutoComplete()
                 // when building the session receiver.
-            }, error -> System.err.println("Error occurred: " + error));
+            }, error -> {
+                System.err.println("Error occurred: " + error);
+                sampleSuccessful.set(false);
+            });
 
-        // Subscribe is not a blocking call so we sleep here so the program does not end.
-        TimeUnit.SECONDS.sleep(10);
+        // Subscribe is not a blocking call so we wait here so the program does not end.
+        countdownLatch.await(10, TimeUnit.SECONDS);
 
         // Disposing of the subscription will cancel the receive() operation.
         subscription.dispose();
 
         // Close the receiver.
         sessionReceiver.close();
+
+        // This assertion is to ensure samples are working. Users should remove this.
+        Assertions.assertTrue(sampleSuccessful.get());
     }
 }

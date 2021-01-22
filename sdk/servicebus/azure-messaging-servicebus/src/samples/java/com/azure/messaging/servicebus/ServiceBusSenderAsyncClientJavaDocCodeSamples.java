@@ -19,6 +19,15 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Contains code snippets when generating javadocs through doclets for {@link ServiceBusSenderAsyncClient}.
  */
 public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
+    // The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+    // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
+    // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
+    // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+    // 3. "queueName" will be the name of the Service Bus queue instance you created
+    //    inside the Service Bus namespace.
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+
     ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
         .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
         .sender()
@@ -35,9 +44,9 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
         // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
         // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
+            .connectionString(connectionString)
             .sender()
-            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
+            .queueName(queueName)
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusasyncsenderclient.instantiation
 
@@ -72,9 +81,9 @@ public class ServiceBusSenderAsyncClientJavaDocCodeSamples {
         // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
         // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
+            .connectionString(connectionString)
             .sender()
-            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
+            .queueName(queueName)
             .buildAsyncClient();
 
         // Creating a batch without options set, will allow for automatic routing of events to any partition.

@@ -13,6 +13,9 @@ import java.util.function.Consumer;
  * @see ServiceBusProcessorClient
  */
 public class ServiceBusProcessorClientJavaDocCodeSamples {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
+
     /**
      * Creates a non session-enabled {@link ServiceBusProcessorClient}.
      */
@@ -39,8 +42,6 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
         };
 
         // Retrieve 'connectionString/queueName' from your configuration.
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
         ServiceBusProcessorClient processor = new ServiceBusClientBuilder()
             .connectionString(connectionString)
@@ -80,10 +81,7 @@ public class ServiceBusProcessorClientJavaDocCodeSamples {
             }
         };
 
-        // We are reading 'connectionString/queueName' from environment variable.
-        // You can configure it as it fits suitable for your application.
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
+        // Retrieve 'connectionString/queueName' from your configuration.
 
         ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder()
             .connectionString(connectionString)

@@ -47,9 +47,9 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
 
         ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
-            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
+            .connectionString(connectionString)
             .receiver()
-            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
+            .queueName(queueName)
             .buildAsyncClient();
         // END: com.azure.messaging.servicebus.servicebusreceiverasyncclient.instantiation
 
@@ -76,10 +76,10 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
     @Test
     public void receiveWithReceiveAndDeleteMode() {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
+            .connectionString(connectionString)
             .receiver()
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
-            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
+            .queueName(queueName)
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverasyncclient.receiveWithReceiveAndDeleteMode
@@ -157,9 +157,9 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
         // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
-            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
+            .connectionString(connectionString)
             .sessionReceiver()
-            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
+            .queueName(queueName)
             .buildAsyncClient();
 
         // acceptNextSession() completes successfully with a receiver when it acquires the next available session.
@@ -191,9 +191,9 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
         // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
         // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSessionReceiverAsyncClient sessionReceiver = new ServiceBusClientBuilder()
-            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
+            .connectionString(connectionString)
             .sessionReceiver()
-            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
+            .queueName(queueName)
             .buildAsyncClient();
 
         // acceptSession(String) completes successfully with a receiver when "<< my-session-id >>" session is

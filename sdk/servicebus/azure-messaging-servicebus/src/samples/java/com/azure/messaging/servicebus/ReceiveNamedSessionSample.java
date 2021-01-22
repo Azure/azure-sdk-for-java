@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -15,6 +16,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The sample below runs for 2 minutes. In those two minutes, it will poll Service Bus for batches of messages.
  */
 public class ReceiveNamedSessionSample {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
     /**
      * Main method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
@@ -34,6 +37,7 @@ public class ReceiveNamedSessionSample {
     @Test
     public void run() {
         final AtomicBoolean isRunning = new AtomicBoolean(true);
+        CountDownLatch countdownLatch = new CountDownLatch(1);
 
         Mono.delay(Duration.ofMinutes(1)).subscribe(index -> {
             System.out.println("1 minutes has elapsed, stopping receive loop.");
@@ -49,9 +53,6 @@ public class ReceiveNamedSessionSample {
         // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // 3. "queueName" will be the name of the Service Bus queue instance you created
         //    inside the Service Bus namespace.
-
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
         // Create a receiver.
         ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder()

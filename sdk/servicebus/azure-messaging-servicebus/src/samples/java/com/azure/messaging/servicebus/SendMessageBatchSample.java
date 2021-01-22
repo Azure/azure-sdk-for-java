@@ -15,6 +15,9 @@ import java.util.List;
  * sender.
  */
 public class SendMessageBatchSample {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String topicName = System.getenv("AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME");
+
     /**
      * Main method to invoke this demo on how to send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
      *
@@ -44,9 +47,6 @@ public class SendMessageBatchSample {
         // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // 3. "topicName" will be the name of the Service Bus topic instance you created in the Service Bus namespace.
-
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String topicName = System.getenv("AZURE_SERVICEBUS_SAMPLE_TOPIC_NAME");
 
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()

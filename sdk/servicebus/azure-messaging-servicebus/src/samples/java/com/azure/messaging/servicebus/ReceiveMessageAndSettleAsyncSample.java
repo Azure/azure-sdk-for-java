@@ -3,10 +3,13 @@
 
 package com.azure.messaging.servicebus;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Sample demonstrates how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue and settle
@@ -22,6 +25,8 @@ import java.util.concurrent.TimeUnit;
  *
  */
 public class ReceiveMessageAndSettleAsyncSample {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
     /**
      * Main method to invoke this demo on how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus
@@ -43,6 +48,8 @@ public class ReceiveMessageAndSettleAsyncSample {
      */
     @Test
     public void run() throws InterruptedException {
+        AtomicBoolean sampleSuccessful = new AtomicBoolean(true);
+        CountDownLatch countdownLatch = new CountDownLatch(1);
 
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
@@ -51,11 +58,8 @@ public class ReceiveMessageAndSettleAsyncSample {
         // The 'connectionString' format is shown below.
         // 1. "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // 3. "<<queue-name>>" will be the name of the Service Bus queue instance you created
+        // 3. "queueName" will be the name of the Service Bus queue instance you created
         //    inside the Service Bus namespace.
-
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
         // Create a receiver.
         // Messages are not automatically settled when `disableAutoComplete()` is toggled.
@@ -80,16 +84,22 @@ public class ReceiveMessageAndSettleAsyncSample {
                 } else {
                     return receiver.abandon(message);
                 }
-            }).subscribe();
+            }).subscribe(
+                ignore -> {},
+                error -> sampleSuccessful.set(false),
+                () -> {});
 
-        // Subscribe is not a blocking call so we sleep here so the program does not end.
-        TimeUnit.SECONDS.sleep(30);
+        // Subscribe is not a blocking call so we wait here so the program does not end.
+        countdownLatch.await(10, TimeUnit.SECONDS);
 
         // Disposing of the subscription will cancel the receive() operation.
         subscription.dispose();
 
         // Close the receiver.
         receiver.close();
+
+        // This assertion is to ensure samples are working. Users should remove this.
+        Assertions.assertTrue(sampleSuccessful.get());
     }
 
     private static boolean processMessage(ServiceBusReceivedMessage message) {

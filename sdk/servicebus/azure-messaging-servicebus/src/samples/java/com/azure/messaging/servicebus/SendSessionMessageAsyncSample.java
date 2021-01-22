@@ -4,11 +4,14 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.BinaryData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
@@ -17,6 +20,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Samples for receiving are {@link ReceiveNamedSessionAsyncSample} or {@link ReceiveNamedSessionSample}.
  */
 public class SendSessionMessageAsyncSample {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+
     /**
      * Main method to invoke this demo on how to send and receive a {@link ServiceBusMessage} to and from a
      * session-enabled Azure Service Bus queue.
@@ -38,6 +44,9 @@ public class SendSessionMessageAsyncSample {
      */
     @Test
     public void run() throws InterruptedException {
+        AtomicBoolean sampleSuccessful = new AtomicBoolean(false);
+        CountDownLatch countdownLatch = new CountDownLatch(1);
+
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
@@ -47,9 +56,6 @@ public class SendSessionMessageAsyncSample {
         // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // 3. "queueName" will be the name of the Service Bus queue instance you created
         //    inside the Service Bus namespace.
-
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
         // We want all our greetings in the same session to be processed.
         String sessionId = "greetings-id";
@@ -77,12 +83,19 @@ public class SendSessionMessageAsyncSample {
         // while sending the message.
         sender.sendMessages(messages).subscribe(unused -> System.out.println("Batch sent."),
             error -> System.err.println("Error occurred while publishing message batch: " + error),
-            () -> System.out.println("Batch send complete."));
+            () -> {
+            System.out.println("Batch send complete.");
+            sampleSuccessful.set(true);
 
-        // subscribe() is not a blocking call. We sleep here so the program does not end before the send is complete.
-        TimeUnit.SECONDS.sleep(10);
+        });
+
+        // subscribe() is not a blocking call. We wait here so the program does not end before the send is complete.
+        countdownLatch.await(10, TimeUnit.SECONDS);
 
         // Close the sender.
         sender.close();
+
+        // This assertion is to ensure samples are working. Users should remove this.
+        Assertions.assertTrue(sampleSuccessful.get());
     }
 }

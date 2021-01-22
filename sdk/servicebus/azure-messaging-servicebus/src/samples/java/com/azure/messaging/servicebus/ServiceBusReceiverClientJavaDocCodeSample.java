@@ -19,6 +19,8 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
     //    inside the Service Bus namespace.
     String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
     String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+    String sessionQueueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
+
     ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
         .connectionString(connectionString)
         .receiver()
@@ -35,9 +37,9 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
         // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
         // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
-            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
+            .connectionString(connectionString)
             .receiver()
-            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
+            .queueName(queueName)
             .buildClient();
 
         // Use the receiver and finally close it.
@@ -50,6 +52,8 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
      */
     public void sessionReceiverSingleInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#nextsession
+        // The connectionString/sessionQueueName must be set by the application. The 'connectionString' format is shown below.
+        // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder()
             .connectionString(
                 "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}")
@@ -70,12 +74,12 @@ public class ServiceBusReceiverClientJavaDocCodeSample {
     @Test
     public void sessionReceiverSessionIdInstantiation() {
         // BEGIN: com.azure.messaging.servicebus.servicebusreceiverclient.instantiation#sessionId
-        // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
+        // The connectionString/sessionQueueName must be set by the application. The 'connectionString' format is shown below.
         // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSessionReceiverClient sessionReceiver = new ServiceBusClientBuilder()
-            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
+            .connectionString(connectionString)
             .sessionReceiver()
-            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME"))
+            .queueName(sessionQueueName)
             .buildClient();
         ServiceBusReceiverClient receiver = sessionReceiver.acceptSession("<< my-session-id >>");
 

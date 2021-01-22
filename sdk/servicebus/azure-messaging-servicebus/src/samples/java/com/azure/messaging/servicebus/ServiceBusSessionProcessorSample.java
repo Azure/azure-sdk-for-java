@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit;
  * to receive messages.
  */
 public class ServiceBusSessionProcessorSample {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String sessionQueueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
     /**
      * Main method to start the sample application.
@@ -38,9 +40,6 @@ public class ServiceBusSessionProcessorSample {
         // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // 3. "sessionQueueName" will be the name of the session enabled Service Bus queue instance you created inside
         //    the Service Bus namespace.
-
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String sessionQueueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_SESSION_QUEUE_NAME");
 
         // Create an instance of session-enabled processor through the ServiceBusClientBuilder that processes
         // two sessions concurrently.

@@ -32,7 +32,6 @@ public class ServiceBusAdministrationClientJavaDocCodeSamples {
     public void instantiate() {
         // BEGIN: com.azure.messaging.servicebus.administration.servicebusadministrationclient.instantiation
         // Retrieve 'connectionString' from your configuration.
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
 
         HttpLogOptions logOptions = new HttpLogOptions()
             .setLogLevel(HttpLogDetailLevel.HEADERS);

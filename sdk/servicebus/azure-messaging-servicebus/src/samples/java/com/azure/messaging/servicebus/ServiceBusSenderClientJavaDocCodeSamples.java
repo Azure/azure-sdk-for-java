@@ -41,9 +41,9 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
         // The connectionString/queueName must be set by the application. The 'connectionString' format is shown below.
         // "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}"
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-            .connectionString(System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING"))
+            .connectionString(connectionString)
             .sender()
-            .queueName(System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME"))
+            .queueName(queueName)
             .buildClient();
         // END: com.azure.messaging.servicebus.servicebussenderclient.instantiation
 

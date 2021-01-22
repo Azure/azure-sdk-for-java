@@ -4,14 +4,20 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.BinaryData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Sample demonstrates how to send an {@link ServiceBusMessage} to an Azure Service Bus queue.
  */
 public class SendMessageAsyncSample {
+    String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
+
     /**
      * Main method to invoke this demo on how to send an {@link ServiceBusMessageBatch} to an Azure Service Bus.
      *
@@ -30,6 +36,9 @@ public class SendMessageAsyncSample {
      */
     @Test
     public void run() throws InterruptedException {
+        AtomicBoolean sampleSuccessful = new AtomicBoolean(false);
+        CountDownLatch countdownLatch = new CountDownLatch(1);
+
         // The connection string value can be obtained by:
         // 1. Going to your Service Bus namespace in Azure Portal.
         // 2. Go to "Shared access policies"
@@ -39,9 +48,6 @@ public class SendMessageAsyncSample {
         // 2. "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // 3. "queueName" will be the name of the Service Bus queue instance you created
         //    inside the Service Bus namespace.
-
-        String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
-        String queueName = System.getenv("AZURE_SERVICEBUS_SAMPLE_QUEUE_NAME");
 
         // Instantiate a client that will be used to call the service.
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
@@ -59,12 +65,18 @@ public class SendMessageAsyncSample {
         sender.sendMessage(message).subscribe(
             unused -> System.out.println("Sent."),
             error -> System.err.println("Error occurred while publishing message: " + error),
-            () -> System.out.println("Send complete."));
+            () -> {
+                System.out.println("Send complete.");
+                sampleSuccessful.set(true);
+            });
 
         // subscribe() is not a blocking call. We sleep here so the program does not end before the send is complete.
         TimeUnit.SECONDS.sleep(5);
 
         // Close the sender.
         sender.close();
+
+        // This assertion is to ensure samples are working. Users should remove this.
+        Assertions.assertTrue(sampleSuccessful.get());
     }
 }
