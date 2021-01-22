@@ -6,7 +6,7 @@ A local copy of the official swagger documents are stored in this directory for 
 
 ## Official swagger document
 
-The official swagger specification for Microsoft Azure Attestationcan be found [here](https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/attestation/data-plane/Microsoft.Attestation/stable/2020-10-01/attestation.json).
+The official swagger specification for Microsoft Azure Attestation can be found [here](https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/attestation/data-plane/Microsoft.Attestation/stable/2020-10-01/attestation.json).
 
 ## Code generation
 
