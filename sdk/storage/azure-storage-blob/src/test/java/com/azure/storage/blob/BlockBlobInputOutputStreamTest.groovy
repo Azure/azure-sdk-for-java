@@ -347,6 +347,8 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         blobClient.upload(new ByteArrayInputStream(randomBytes), length, true)
         def properties = blobClient.getProperties()
 
+        blobClient.upload(new ByteArrayInputStream(getRandomByteArray(length)), length, true)
+
         when:
         // User provides version client
         def inputStream = blobClient.getVersionClient(properties.getVersionId()).openInputStream(new BlobInputStreamOptions().setConsistentReadControl(ConsistentReadControl.VERSION_ID))
