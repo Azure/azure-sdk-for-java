@@ -17,7 +17,6 @@ import reactor.test.StepVerifier;
 import java.text.ParseException;
 import java.util.Base64;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -169,8 +168,7 @@ public class AttestationTest extends AttestationClientTestBase {
                     }
                     return null;
                 }))
-            .assertNext(claims ->
-            {
+            .assertNext(claims -> {
                 assertTrue(claims.getClaims().containsKey("iss"));
 
                 // In playback mode, the client URI is bogus and thus cannot be relied on for test purposes.

@@ -251,30 +251,28 @@ public class AttestationClientTestBase extends TestBase {
         return certificate;
     }
 
-    static private String getLocationShortName()
+    private static String getLocationShortName()
     {
         String shortName = Configuration.getGlobalConfiguration().get("locationShortName");
-        if (shortName == null)
-        {
+        if (shortName == null) {
             shortName = "wus";
         }
         return shortName;
     }
 
-    static private String getIsolatedUrl()
+    private static String getIsolatedUrl()
     {
         String url = Configuration.getGlobalConfiguration().get("ATTESTATION_ISOLATED_URL");
-        if (url == null)
-        {
+        if (url == null) {
             url = "https://attestation_isolated_url";
         }
         return url;
     }
-    static private String getAadUrl()
+
+    private static String getAadUrl()
     {
         String url = Configuration.getGlobalConfiguration().get("ATTESTATION_AAD_URL");
-        if (url == null)
-        {
+        if (url == null) {
             url = "https://attestation_aad_url";
         }
         return url;
@@ -304,6 +302,5 @@ public class AttestationClientTestBase extends TestBase {
             .forEach(attestationType -> argumentsList.add(Arguments.of(clientParams.get()[0], clientParams.get()[1], attestationType))));
         return argumentsList.stream();
     }
-
 
 }

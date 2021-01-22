@@ -3,10 +3,16 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.Configuration;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyResponse;
-import com.nimbusds.jose.*;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JOSEObject;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.JWSSigner;
+import com.nimbusds.jose.Payload;
+import com.nimbusds.jose.PlainObject;
 import com.nimbusds.jwt.JWTClaimsSet;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
@@ -23,7 +29,11 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class AttestationPolicyTests extends AttestationClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -97,8 +107,6 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                 assertEquals("Updated", responseClaims.getClaims().get("x-ms-policy-result").toString());
 
             }
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException | ParseException e) {
-            logger.logExceptionAsError(new RuntimeException(e.toString()));
         } finally {
             PolicyResponse resetResponse = null;
             switch (clientType) {
@@ -234,11 +242,9 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
      * Retrieve the policy set objects for the specified client URI.
      * @param clientUri - client URI
      * @return An array of JOSEObjects which should be used to set attestation policy on the client.
-     * @throws NoSuchAlgorithmException Thrown if the RSA signing suite is not supported.
-     * @throws InvalidKeySpecException Thrown if the configuration returns an invalid key
      * @throws JOSEException Thrown if we can't sign the JSON.
      */
-    private ArrayList<JOSEObject> getPolicySetObjects(String clientUri, String signingCertificateBase64, JWSSigner signer) throws NoSuchAlgorithmException, InvalidKeySpecException, JOSEException {
+    private ArrayList<JOSEObject> getPolicySetObjects(String clientUri, String signingCertificateBase64, JWSSigner signer) throws JOSEException {
         ClientTypes clientType = classifyClient(clientUri);
         ArrayList<JOSEObject> policySetObjects = new ArrayList<>();
 

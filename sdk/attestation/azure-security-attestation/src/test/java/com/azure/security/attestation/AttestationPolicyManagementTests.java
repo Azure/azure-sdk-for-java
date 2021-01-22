@@ -3,7 +3,6 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.util.Configuration;
 import com.azure.security.attestation.models.AttestationCertificateManagementBody;
 import com.azure.security.attestation.models.JsonWebKey;
 import com.azure.security.attestation.models.PolicyCertificatesModifyResponse;
