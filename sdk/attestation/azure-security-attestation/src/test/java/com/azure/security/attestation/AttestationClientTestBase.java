@@ -21,7 +21,6 @@ import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Mono;
 
@@ -59,7 +58,7 @@ public class AttestationClientTestBase extends TestBase {
         AAD,
     }
 
-    ClientTypes classifyClient(@NotNull String clientUri) {
+    ClientTypes classifyClient(String clientUri) {
         assertNotNull(clientUri);
         String regionShortName = Configuration.getGlobalConfiguration().get("locationShortName");
         String sharedUri = "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net";
@@ -138,7 +137,6 @@ public class AttestationClientTestBase extends TestBase {
      * @throws NoSuchAlgorithmException - should never  throws this.
      * @throws InvalidKeySpecException - Can throw this if the key is invalid.
      */
-    @NotNull
     JWSSigner getJwsSigner(String signingKeyBase64) throws NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] signingKey = Base64.getDecoder().decode(signingKeyBase64);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(signingKey);

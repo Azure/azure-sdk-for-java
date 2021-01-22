@@ -1,19 +1,19 @@
 # Azure Attestation client library for Java
 
-Use the guidelines in each section of this template to ensure consistency and readability of your README. The README resides in your package's GitHub repository at the root of its directory within the repo. It's also used as the package distribution page (NuGet, PyPi, npm, etc.) and as a Quickstart on docs.microsoft.com. 
+Microsoft Azure Attestation (preview) is a unified solution for remotely verifying the trustworthiness of a platform and integrity of the binaries running inside it. The service supports attestation of the platforms backed by Trusted Platform Modules (TPMs) alongside the ability to attest to the state of Trusted Execution Environments (TEEs) such as Intel® Software Guard Extensions (SGX) enclaves and Virtualization-based Security (VBS) enclaves.
 
-**Title**: The H1 of your README should be in the format: `# [Product Name] client library for [Language]`
+Attestation is a process for demonstrating that software binaries were properly instantiated on a trusted platform. Remote relying parties can then gain confidence that only such intended software is running on trusted hardware. Azure Attestation is a unified customer-facing service and framework for attestation.
 
-* All headings, including the H1, should use **sentence-style capitalization**. Refer to the [Microsoft Style Guide][style-guide-msft].
-* Example: `# Azure Batch client library for Python`
+Azure Attestation enables cutting-edge security paradigms such as Azure Confidential computing and Intelligent Edge protection. Customers have been requesting the ability to independently verify the location of a machine, the posture of a virtual machine (VM) on that machine, and the environment within which enclaves are running on that VM. Azure Attestation will empower these and many additional customer requests.
 
-**Introduction**: The introduction appears directly under the title (H1) of your README.
+Azure Attestation receives evidence from compute entities, turns them into a set of claims, validates them against configurable policies, and produces cryptographic proofs for claims-based applications (for example, relying parties and auditing authorities).
 
-* **DO NOT** use an "Introduction" or "Overview" heading (H2) for this section.
-* First sentence: **Describe the service** briefly. You can usually use the first line of the service's docs landing page for this (Example: [Cosmos DB docs landing page](https://docs.microsoft.com/azure/cosmos-db/)).
-* Next, add a **bulleted list** of the **most common tasks** supported by the package or library, prefaced with "Use the client library for [Product Name] to:". Then, provide code snippets for these tasks in the [Examples](#examples) section later in the document. Keep the task list short but include those tasks most developers need to perform with your package.
+Use the client library for attestation to perform the following operations:
+- Attesting SGX or TPM protected enclaves hosted on Azure machines
+- Modifying the attestation policies used in performing attestations.
 
-> TIP: Your README should be as **brief** as possible but **no more brief** than necessary to get a developer new to Azure, the service, or the package up and running quickly. Keep it brief, but include everything a developer needs to make their first API call successfully.
+> NOTE: This is a preliminary SDK for the Microsoft Azure Attestation service. It provides all the essential functionality to access the Azure Attestation service, but requires a significant amount of infrastructure to work correctly.
+
 
 ## Getting started
 ### Adding the package to your project
@@ -39,18 +39,17 @@ Maven dependency for the Azure Attestation  library. Add it to your project's PO
     ```
 
 ### Authenticate the client
-In order to interact with the Azure Attestation service
+In order to interact with the Azure Attestation service, your client must present an Azure Active Directory bearer token to the service.
 
-The `DefaultAzureCredential` way of authentication by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
+The simplest way of providing a bearer token is to use the  `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
 
-
-### Authenticate the client
-
-If your library requires authentication for use, such as for Azure services, include instructions and example code needed for initializing and authenticating.
-
-For example, include details on obtaining an account key and endpoint URI, setting environment variables for each, and initializing the client object.
 
 ## Key concepts
+
+The Microsoft Azure Attestation service runs in two separate modes: "Isolated" and "AAD". When the service is running in "Isolated" mode, the customer needs to 
+provide additional information beyond their authentication credentials to verify that they are authorized to modify the state of an attestation instance.
+
+There are four major components in the preview  
 
 The *Key concepts* section should describe the functionality of the main classes. Point out the most important and useful classes in the package (with links to their reference pages) and explain how those classes work together. Feel free to use bulleted lists, tables, code blocks, or even diagrams for clarity.
 
@@ -62,33 +61,63 @@ If possible, use the same example snippets that your in-code documentation uses.
 
 Each example in the *Examples* section starts with an H3 that describes the example. At the top of this section, just under the *Examples* H2, add a bulleted list linking to each example H3. Each example should deep-link to the types and/or members used in the example.
 
-* [Create the thing](#create-the-thing)
-* [Get the thing](#get-the-thing)
-* [List the things](#list-the-things)
+* [Attest an SGX enclave](#attest-sgx-enclave)
+* [Get attestation policy](#get-attestation-policy)
+* [Retrieve token validation certificates](#retrieve-token-certificates)
 
-### Create the thing
+### Attest SGX Enclave
 
-Use the `create_thing` method to create a Thing reference; this method does not make a network call. To persist the Thing in the service, call `Thing.save`.
+Use the `attestSgxEnclave` method to attest an SGX enclave.
 
-```py
-thing = client.create_thing(id, name)
-thing.save()
+```java
+    AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest();
+    request.setQuote(decodedSgxQuote);
+    RuntimeData runtimeData = new RuntimeData();
+    runtimeData.setDataType(DataType.BINARY);
+    runtimeData.setData(decodedRuntimeData);
+    request.setRuntimeData(runtimeData);
+    AttestationResponse response = client.attestSgxEnclave(request);
 ```
 
-### Get the thing
+### Get attestation policy
 
 The `get_thing` method retrieves a Thing from the service. The `id` parameter is the unique ID of the Thing, not its "name" property.
 
-```py
-thing = client.get_thing(id)
+```java
+PolicyResponse response = attestationPolicyClient.get(AttestationType.SGX_ENCLAVE);
+verifyAttestationToken(client, clientUri, policyResponse.getToken())
+    .subscribe(claims -> {
+    if (claims != null) {
+
+        String policyDocument = claims.getClaims().get("x-ms-policy").toString();
+
+        JOSEObject policyJose = null;
+        try {
+            policyJose = JOSEObject.parse(policyDocument);
+        } catch (ParseException e) {
+            logger.logExceptionAsError(new RuntimeException(e.toString()));
+        }
+        Map<String, Object> jsonObject = policyJose.getPayload().toJSONObject();
+        if (jsonObject != null) {
+            assertTrue(jsonObject.containsKey("AttestationPolicy"));
+            String base64urlPolicy = jsonObject.get("AttestationPolicy").toString();
+
+            byte[] attestationPolicyUtf8 = Base64.getUrlDecoder().decode(base64urlPolicy);
+            String attestationPolicy;
+            attestationPolicy = new String(attestationPolicyUtf8, StandardCharsets.UTF_8);
+            // Inspect the retrieved policy.
+        } else {
+            assertEquals("Tpm", attestationType.toString());
+        }
+    }
 ```
 
-### List the things
+### Retrieve Token Certificates
 
-Use `list_things` to get one or more Thing objects from the service. If there are no Things available, a `404` exception is thrown (see [Troubleshooting](#troubleshooting) for details on handling exceptions).
+Use `SigningCertificatesClient.get` to retrieve the certificates which can be used to validate the token returned from the attestation service.
 
-```py
-things = client.list_things()
+```java
+    JsonWebKeySet certs = signingCertificatesClient.get();
 ```
 
 ## Troubleshooting
