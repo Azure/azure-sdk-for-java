@@ -28,6 +28,8 @@ import reactor.core.scheduler.Schedulers;
  * Represents the main program class which reflectively runs and manages the performance tests.
  */
 public class PerfStressProgram {
+    private static final int NANOSECONDS_PER_SECOND = 1_000_000_000;
+
     private static int[] completedOperations;
     private static long[] lastCompletionNanoTimes;
 
@@ -37,7 +39,7 @@ public class PerfStressProgram {
 
     private static double getOperationsPerSecond() {
         return IntStream.range(0, completedOperations.length)
-            .mapToDouble(i -> completedOperations[i] / (((double) lastCompletionNanoTimes[i]) / 1000000000))
+            .mapToDouble(i -> completedOperations[i] / (((double) lastCompletionNanoTimes[i]) / NANOSECONDS_PER_SECOND))
             .sum();
     }
 
