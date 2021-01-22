@@ -5,7 +5,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>azure-security-attestation</artifactId>
+  <artifactId>azure-security-attestation-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <profiles>
@@ -18,7 +18,7 @@
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-security-attestation</artifactId>
+          <artifactId>azure-security-attestation
           <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-attestation;current} -->
         </dependency>
       </dependencies>
