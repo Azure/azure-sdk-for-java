@@ -7,7 +7,7 @@ package com.azure.communication.chat.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AddChatParticipantsResult model. */
+/** Result of the add chat participants operation. */
 @Fluent
 public final class AddChatParticipantsResult {
     /*

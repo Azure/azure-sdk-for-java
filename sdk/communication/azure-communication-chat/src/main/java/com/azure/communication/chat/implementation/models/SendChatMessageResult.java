@@ -7,7 +7,7 @@ package com.azure.communication.chat.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SendChatMessageResult model. */
+/** Result of the send message operation. */
 @Fluent
 public final class SendChatMessageResult {
     /*

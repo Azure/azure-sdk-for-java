@@ -7,7 +7,7 @@ package com.azure.communication.chat.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SendReadReceiptRequest model. */
+/** Request payload for sending a read receipt. */
 @Fluent
 public final class SendReadReceiptRequest {
     /*

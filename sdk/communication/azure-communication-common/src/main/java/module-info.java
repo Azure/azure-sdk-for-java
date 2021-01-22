@@ -7,4 +7,7 @@ module com.azure.communication.common {
 
     // public API surface area
     exports com.azure.communication.common;
+
+    opens com.azure.communication.common
+        to com.fasterxml.jackson.databind;
 }

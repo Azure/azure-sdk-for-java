@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ChatMessageReadReceiptsCollection model. */
+/** A paged collection of chat message read receipts. */
 @Fluent
 public final class ChatMessageReadReceiptsCollection {
     /*

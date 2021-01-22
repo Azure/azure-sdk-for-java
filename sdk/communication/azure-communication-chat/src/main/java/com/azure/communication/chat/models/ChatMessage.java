@@ -25,12 +25,6 @@ public final class ChatMessage {
     private ChatMessageType type;
 
     /*
-     * The chat message priority.
-     */
-    @JsonProperty(value = "priority", required = true)
-    private ChatMessagePriority priority;
-
-    /*
      * Version of the chat message.
      */
     @JsonProperty(value = "version", required = true)
@@ -117,26 +111,6 @@ public final class ChatMessage {
      */
     public ChatMessage setType(ChatMessageType type) {
         this.type = type;
-        return this;
-    }
-
-    /**
-     * Get the priority property: The chat message priority.
-     *
-     * @return the priority value.
-     */
-    public ChatMessagePriority getPriority() {
-        return this.priority;
-    }
-
-    /**
-     * Set the priority property: The chat message priority.
-     *
-     * @param priority the priority value to set.
-     * @return the ChatMessage object itself.
-     */
-    public ChatMessage setPriority(ChatMessagePriority priority) {
-        this.priority = priority;
         return this;
     }
 

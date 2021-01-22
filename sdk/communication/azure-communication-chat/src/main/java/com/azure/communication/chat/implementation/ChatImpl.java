@@ -9,7 +9,7 @@ import com.azure.communication.chat.implementation.models.ChatThreadsInfoCollect
 import com.azure.communication.chat.implementation.models.CreateChatThreadOptions;
 import com.azure.communication.chat.implementation.models.CreateChatThreadResult;
 import com.azure.communication.chat.models.ChatThreadInfo;
-import com.azure.communication.chat.models.ErrorException;
+import com.azure.communication.chat.models.CommunicationErrorResponseException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -32,23 +32,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-
 import java.time.OffsetDateTime;
-
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in Chats.
- */
+/** An instance of this class provides access to all the operations defined in Chats. */
 public final class ChatImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final ChatsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final AzureCommunicationChatServiceImpl client;
 
     /**
@@ -70,69 +62,74 @@ public final class ChatImpl {
     private interface ChatsService {
         @Post("/chat/threads")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CreateChatThreadResult>> createChatThread(
             @HostParam("endpoint") String endpoint,
             @HeaderParam("repeatability-Request-ID") String repeatabilityRequestID,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CreateChatThreadOptions createChatThreadRequest,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Get("/chat/threads")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatThreadsInfoCollection>> listChatThreads(
             @HostParam("endpoint") String endpoint,
             @QueryParam("maxPageSize") Integer maxPageSize,
             @QueryParam("startTime") OffsetDateTime startTime,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Get("/chat/threads/{chatThreadId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatThread>> getChatThread(
             @HostParam("endpoint") String endpoint,
             @PathParam("chatThreadId") String chatThreadId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Delete("/chat/threads/{chatThreadId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> deleteChatThread(
             @HostParam("endpoint") String endpoint,
             @PathParam("chatThreadId") String chatThreadId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<ChatThreadsInfoCollection>> listChatThreadsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestID  If specified, the client directs that the request is repeatable; that is, that the
-     *                                client can make the request multiple times with the same Repeatability-Request-ID
-     *                                and get back an appropriate
-     *                                response without the server executing the request multiple times. The value of the
-     *                                Repeatability-Request-ID
-     *                                is an opaque string representing a client-generated, globally unique for all time,
-     *                                identifier for the
-     *                                request. It is recommended to use version 4 (random) UUIDs.
-     * @return result of the create chat thread operation.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
+     *     request. It is recommended to use version 4 (random) UUIDs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the create chat thread operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateChatThreadResult>> createChatThreadWithResponseAsync(
         CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestID) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
             context ->
                 service.createChatThread(
@@ -140,6 +137,7 @@ public final class ChatImpl {
                     repeatabilityRequestID,
                     this.client.getApiVersion(),
                     createChatThreadRequest,
+                    accept,
                     context));
     }
 
@@ -147,28 +145,27 @@ public final class ChatImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestID  If specified, the client directs that the request is repeatable; that is, that the
-     *                                client can make the request multiple times with the same Repeatability-Request-ID
-     *                                and get back an appropriate
-     *                                response without the server executing the request multiple times. The value of the
-     *                                Repeatability-Request-ID
-     *                                is an opaque string representing a client-generated, globally unique for all time,
-     *                                identifier for the
-     *                                request. It is recommended to use version 4 (random) UUIDs.
-     * @param context                 The context to associate with this operation.
-     * @return result of the create chat thread operation.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
+     *     request. It is recommended to use version 4 (random) UUIDs.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the create chat thread operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CreateChatThreadResult>> createChatThreadWithResponseAsync(
         CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestID, Context context) {
+        final String accept = "application/json";
         return service.createChatThread(
             this.client.getEndpoint(),
             repeatabilityRequestID,
             this.client.getApiVersion(),
             createChatThreadRequest,
+            accept,
             context);
     }
 
@@ -176,18 +173,15 @@ public final class ChatImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestID  If specified, the client directs that the request is repeatable; that is, that the
-     *                                client can make the request multiple times with the same Repeatability-Request-ID
-     *                                and get back an appropriate
-     *                                response without the server executing the request multiple times. The value of the
-     *                                Repeatability-Request-ID
-     *                                is an opaque string representing a client-generated, globally unique for all time,
-     *                                identifier for the
-     *                                request. It is recommended to use version 4 (random) UUIDs.
-     * @return result of the create chat thread operation.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
+     *     request. It is recommended to use version 4 (random) UUIDs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the create chat thread operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateChatThreadResult> createChatThreadAsync(
@@ -207,19 +201,39 @@ public final class ChatImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestID  If specified, the client directs that the request is repeatable; that is, that the
-     *                                client can make the request multiple times with the same Repeatability-Request-ID
-     *                                and get back an appropriate
-     *                                response without the server executing the request multiple times. The value of the
-     *                                Repeatability-Request-ID
-     *                                is an opaque string representing a client-generated, globally unique for all time,
-     *                                identifier for the
-     *                                request. It is recommended to use version 4 (random) UUIDs.
-     * @param context                 The context to associate with this operation.
-     * @return result of the create chat thread operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the create chat thread operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CreateChatThreadResult> createChatThreadAsync(CreateChatThreadOptions createChatThreadRequest) {
+        final String repeatabilityRequestID = null;
+        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestID)
+            .flatMap(
+                (Response<CreateChatThreadResult> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Creates a chat thread.
+     *
+     * @param createChatThreadRequest Request payload for creating a chat thread.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
+     *     request. It is recommended to use version 4 (random) UUIDs.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the create chat thread operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateChatThreadResult> createChatThreadAsync(
@@ -239,42 +253,15 @@ public final class ChatImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @return result of the create chat thread operation.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
+     *     request. It is recommended to use version 4 (random) UUIDs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateChatThreadResult> createChatThreadAsync(CreateChatThreadOptions createChatThreadRequest) {
-        final String repeatabilityRequestID = null;
-        final Context context = null;
-        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestID)
-            .flatMap(
-                (Response<CreateChatThreadResult> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates a chat thread.
-     *
-     * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestID  If specified, the client directs that the request is repeatable; that is, that the
-     *                                client can make the request multiple times with the same Repeatability-Request-ID
-     *                                and get back an appropriate
-     *                                response without the server executing the request multiple times. The value of the
-     *                                Repeatability-Request-ID
-     *                                is an opaque string representing a client-generated, globally unique for all time,
-     *                                identifier for the
-     *                                request. It is recommended to use version 4 (random) UUIDs.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the create chat thread operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CreateChatThreadResult createChatThread(
@@ -286,57 +273,53 @@ public final class ChatImpl {
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @param repeatabilityRequestID  If specified, the client directs that the request is repeatable; that is, that the
-     *                                client can make the request multiple times with the same Repeatability-Request-ID
-     *                                and get back an appropriate
-     *                                response without the server executing the request multiple times. The value of the
-     *                                Repeatability-Request-ID
-     *                                is an opaque string representing a client-generated, globally unique for all time,
-     *                                identifier for the
-     *                                request. It is recommended to use version 4 (random) UUIDs.
-     * @param context                 The context to associate with this operation.
-     * @return result of the create chat thread operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the create chat thread operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateChatThreadResult createChatThread(
-        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestID, Context context) {
-        return createChatThreadAsync(createChatThreadRequest, repeatabilityRequestID, context).block();
+    public CreateChatThreadResult createChatThread(CreateChatThreadOptions createChatThreadRequest) {
+        final String repeatabilityRequestID = null;
+        return createChatThreadAsync(createChatThreadRequest, repeatabilityRequestID).block();
     }
 
     /**
      * Creates a chat thread.
      *
      * @param createChatThreadRequest Request payload for creating a chat thread.
-     * @return result of the create chat thread operation.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, globally unique for all time, identifier for the
+     *     request. It is recommended to use version 4 (random) UUIDs.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the create chat thread operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateChatThreadResult createChatThread(CreateChatThreadOptions createChatThreadRequest) {
-        final String repeatabilityRequestID = null;
-        final Context context = null;
-        return createChatThreadAsync(createChatThreadRequest, repeatabilityRequestID).block();
+    public Response<CreateChatThreadResult> createChatThreadWithResponse(
+        CreateChatThreadOptions createChatThreadRequest, String repeatabilityRequestID, Context context) {
+        return createChatThreadWithResponseAsync(createChatThreadRequest, repeatabilityRequestID, context).block();
     }
 
     /**
      * Gets the list of chat threads of a user.
      *
      * @param maxPageSize The maximum number of chat threads returned per page.
-     * @param startTime   The earliest point in time to get chat threads up to.
-     *                    The timestamp should be in RFC3339 format:
-     *                    `yyyy-MM-ddTHH:mm:ssZ`.
-     * @return the list of chat threads of a user.
+     * @param startTime The earliest point in time to get chat threads up to. The timestamp should be in RFC3339 format:
+     *     `yyyy-MM-ddTHH:mm:ssZ`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatThreadInfo>> listChatThreadsSinglePageAsync(
         Integer maxPageSize, OffsetDateTime startTime) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
             context ->
                 service.listChatThreads(
@@ -344,6 +327,7 @@ public final class ChatImpl {
                     maxPageSize,
                     startTime,
                     this.client.getApiVersion(),
+                    accept,
                     context))
             .map(
                 res ->
@@ -360,20 +344,20 @@ public final class ChatImpl {
      * Gets the list of chat threads of a user.
      *
      * @param maxPageSize The maximum number of chat threads returned per page.
-     * @param startTime   The earliest point in time to get chat threads up to.
-     *                    The timestamp should be in RFC3339 format:
-     *                    `yyyy-MM-ddTHH:mm:ssZ`.
-     * @param context     The context to associate with this operation.
-     * @return the list of chat threads of a user.
+     * @param startTime The earliest point in time to get chat threads up to. The timestamp should be in RFC3339 format:
+     *     `yyyy-MM-ddTHH:mm:ssZ`.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatThreadInfo>> listChatThreadsSinglePageAsync(
         Integer maxPageSize, OffsetDateTime startTime, Context context) {
+        final String accept = "application/json";
         return service.listChatThreads(
-            this.client.getEndpoint(), maxPageSize, startTime, this.client.getApiVersion(), context)
+            this.client.getEndpoint(), maxPageSize, startTime, this.client.getApiVersion(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -389,13 +373,12 @@ public final class ChatImpl {
      * Gets the list of chat threads of a user.
      *
      * @param maxPageSize The maximum number of chat threads returned per page.
-     * @param startTime   The earliest point in time to get chat threads up to.
-     *                    The timestamp should be in RFC3339 format:
-     *                    `yyyy-MM-ddTHH:mm:ssZ`.
-     * @return the list of chat threads of a user.
+     * @param startTime The earliest point in time to get chat threads up to. The timestamp should be in RFC3339 format:
+     *     `yyyy-MM-ddTHH:mm:ssZ`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatThreadInfo> listChatThreadsAsync(Integer maxPageSize, OffsetDateTime startTime) {
@@ -407,15 +390,30 @@ public final class ChatImpl {
     /**
      * Gets the list of chat threads of a user.
      *
-     * @param maxPageSize The maximum number of chat threads returned per page.
-     * @param startTime   The earliest point in time to get chat threads up to.
-     *                    The timestamp should be in RFC3339 format:
-     *                    `yyyy-MM-ddTHH:mm:ssZ`.
-     * @param context     The context to associate with this operation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of chat threads of a user.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ChatThreadInfo> listChatThreadsAsync() {
+        final Integer maxPageSize = null;
+        final OffsetDateTime startTime = null;
+        return new PagedFlux<>(
+            () -> listChatThreadsSinglePageAsync(maxPageSize, startTime),
+            nextLink -> listChatThreadsNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets the list of chat threads of a user.
+     *
+     * @param maxPageSize The maximum number of chat threads returned per page.
+     * @param startTime The earliest point in time to get chat threads up to. The timestamp should be in RFC3339 format:
+     *     `yyyy-MM-ddTHH:mm:ssZ`.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ChatThreadInfo> listChatThreadsAsync(
@@ -428,31 +426,13 @@ public final class ChatImpl {
     /**
      * Gets the list of chat threads of a user.
      *
-     * @return the list of chat threads of a user.
-     * @throws ErrorException   thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ChatThreadInfo> listChatThreadsAsync() {
-        final Integer maxPageSize = null;
-        final OffsetDateTime startTime = null;
-        final Context context = null;
-        return new PagedFlux<>(
-            () -> listChatThreadsSinglePageAsync(maxPageSize, startTime),
-            nextLink -> listChatThreadsNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Gets the list of chat threads of a user.
-     *
      * @param maxPageSize The maximum number of chat threads returned per page.
-     * @param startTime   The earliest point in time to get chat threads up to.
-     *                    The timestamp should be in RFC3339 format:
-     *                    `yyyy-MM-ddTHH:mm:ssZ`.
-     * @return the list of chat threads of a user.
+     * @param startTime The earliest point in time to get chat threads up to. The timestamp should be in RFC3339 format:
+     *     `yyyy-MM-ddTHH:mm:ssZ`.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatThreadInfo> listChatThreads(Integer maxPageSize, OffsetDateTime startTime) {
@@ -462,15 +442,28 @@ public final class ChatImpl {
     /**
      * Gets the list of chat threads of a user.
      *
-     * @param maxPageSize The maximum number of chat threads returned per page.
-     * @param startTime   The earliest point in time to get chat threads up to.
-     *                    The timestamp should be in RFC3339 format:
-     *                    `yyyy-MM-ddTHH:mm:ssZ`.
-     * @param context     The context to associate with this operation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of chat threads of a user.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ChatThreadInfo> listChatThreads() {
+        final Integer maxPageSize = null;
+        final OffsetDateTime startTime = null;
+        return new PagedIterable<>(listChatThreadsAsync(maxPageSize, startTime));
+    }
+
+    /**
+     * Gets the list of chat threads of a user.
+     *
+     * @param maxPageSize The maximum number of chat threads returned per page.
+     * @param startTime The earliest point in time to get chat threads up to. The timestamp should be in RFC3339 format:
+     *     `yyyy-MM-ddTHH:mm:ssZ`.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of chat threads of a user.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ChatThreadInfo> listChatThreads(
@@ -479,60 +472,48 @@ public final class ChatImpl {
     }
 
     /**
-     * Gets the list of chat threads of a user.
-     *
-     * @return the list of chat threads of a user.
-     * @throws ErrorException   thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ChatThreadInfo> listChatThreads() {
-        final Integer maxPageSize = null;
-        final OffsetDateTime startTime = null;
-        final Context context = null;
-        return new PagedIterable<>(listChatThreadsAsync(maxPageSize, startTime));
-    }
-
-    /**
      * Gets a chat thread.
      *
      * @param chatThreadId Id of the thread.
-     * @return a chat thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a chat thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChatThread>> getChatThreadWithResponseAsync(String chatThreadId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
             context ->
                 service.getChatThread(
-                    this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), context));
+                    this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Gets a chat thread.
      *
      * @param chatThreadId Id of the thread.
-     * @param context      The context to associate with this operation.
-     * @return a chat thread.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a chat thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChatThread>> getChatThreadWithResponseAsync(String chatThreadId, Context context) {
-        return service.getChatThread(this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.getChatThread(
+            this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a chat thread.
      *
      * @param chatThreadId Id of the thread.
-     * @return a chat thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a chat thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatThread> getChatThreadAsync(String chatThreadId) {
@@ -551,11 +532,11 @@ public final class ChatImpl {
      * Gets a chat thread.
      *
      * @param chatThreadId Id of the thread.
-     * @param context      The context to associate with this operation.
-     * @return a chat thread.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a chat thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatThread> getChatThreadAsync(String chatThreadId, Context context) {
@@ -574,10 +555,10 @@ public final class ChatImpl {
      * Gets a chat thread.
      *
      * @param chatThreadId Id of the thread.
-     * @return a chat thread.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a chat thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ChatThread getChatThread(String chatThreadId) {
@@ -588,57 +569,60 @@ public final class ChatImpl {
      * Gets a chat thread.
      *
      * @param chatThreadId Id of the thread.
-     * @param context      The context to associate with this operation.
-     * @return a chat thread.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a chat thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ChatThread getChatThread(String chatThreadId, Context context) {
-        return getChatThreadAsync(chatThreadId, context).block();
+    public Response<ChatThread> getChatThreadWithResponse(String chatThreadId, Context context) {
+        return getChatThreadWithResponseAsync(chatThreadId, context).block();
     }
 
     /**
      * Deletes a thread.
      *
      * @param chatThreadId Id of the thread to be deleted.
-     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteChatThreadWithResponseAsync(String chatThreadId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
             context ->
                 service.deleteChatThread(
-                    this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), context));
+                    this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Deletes a thread.
      *
      * @param chatThreadId Id of the thread to be deleted.
-     * @param context      The context to associate with this operation.
-     * @return the completion.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteChatThreadWithResponseAsync(String chatThreadId, Context context) {
-        return service.deleteChatThread(this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), context);
+        final String accept = "application/json";
+        return service.deleteChatThread(
+            this.client.getEndpoint(), chatThreadId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a thread.
      *
      * @param chatThreadId Id of the thread to be deleted.
-     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteChatThreadAsync(String chatThreadId) {
@@ -649,11 +633,11 @@ public final class ChatImpl {
      * Deletes a thread.
      *
      * @param chatThreadId Id of the thread to be deleted.
-     * @param context      The context to associate with this operation.
-     * @return the completion.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteChatThreadAsync(String chatThreadId, Context context) {
@@ -665,8 +649,8 @@ public final class ChatImpl {
      *
      * @param chatThreadId Id of the thread to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteChatThread(String chatThreadId) {
@@ -677,28 +661,31 @@ public final class ChatImpl {
      * Deletes a thread.
      *
      * @param chatThreadId Id of the thread to be deleted.
-     * @param context      The context to associate with this operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteChatThread(String chatThreadId, Context context) {
-        deleteChatThreadAsync(chatThreadId, context).block();
+    public Response<Void> deleteChatThreadWithResponse(String chatThreadId, Context context) {
+        return deleteChatThreadWithResponseAsync(chatThreadId, context).block();
     }
 
     /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
-     * @return collection of chat threads.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of chat threads.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatThreadInfo>> listChatThreadsNextSinglePageAsync(String nextLink) {
-        return FluxUtil.withContext(context -> service.listChatThreadsNext(nextLink, context))
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.listChatThreadsNext(nextLink, this.client.getEndpoint(), accept, context))
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -714,15 +701,16 @@ public final class ChatImpl {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
-     * @param context  The context to associate with this operation.
-     * @return collection of chat threads.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException           thrown if the request is rejected by server.
-     * @throws RuntimeException         all other wrapped checked exceptions if the request fails to be sent.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of chat threads.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ChatThreadInfo>> listChatThreadsNextSinglePageAsync(String nextLink, Context context) {
-        return service.listChatThreadsNext(nextLink, context)
+        final String accept = "application/json";
+        return service.listChatThreadsNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

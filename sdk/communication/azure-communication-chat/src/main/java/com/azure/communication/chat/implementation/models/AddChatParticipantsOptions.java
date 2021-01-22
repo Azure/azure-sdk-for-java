@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AddChatParticipantsOptions model. */
+/** Participants to be added to the thread. */
 @Fluent
 public final class AddChatParticipantsOptions {
     /*

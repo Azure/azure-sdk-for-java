@@ -8,7 +8,7 @@ import com.azure.communication.chat.models.CreateChatThreadErrors;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CreateChatThreadResult model. */
+/** Result of the create chat thread operation. */
 @Fluent
 public final class CreateChatThreadResult {
     /*

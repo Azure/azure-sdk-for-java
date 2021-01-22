@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CreateChatThreadOptions model. */
+/** Request payload for creating a chat thread. */
 @Fluent
 public final class CreateChatThreadOptions {
     /*
