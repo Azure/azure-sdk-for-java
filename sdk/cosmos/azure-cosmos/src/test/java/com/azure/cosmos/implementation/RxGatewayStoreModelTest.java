@@ -59,8 +59,7 @@ public class RxGatewayStoreModelTest {
             {ConsistencyLevel.SESSION, null, OperationType.Read, ResourceType.Document, true, SessionTokenType.USER},
             {ConsistencyLevel.BOUNDED_STALENESS, ConsistencyLevel.SESSION, OperationType.Create, ResourceType.Document, true, SessionTokenType.USER},
             {ConsistencyLevel.SESSION, ConsistencyLevel.SESSION, OperationType.Query, ResourceType.Document, false, SessionTokenType.SDK},
-            {ConsistencyLevel.STRONG, ConsistencyLevel.SESSION, OperationType.ExecuteJavaScript, ResourceType.StoredProcedure, false, SessionTokenType.SDK},
-            {ConsistencyLevel.SESSION, ConsistencyLevel.EVENTUAL, OperationType.Create, ResourceType.Document, true, SessionTokenType.USER},
+            {ConsistencyLevel.STRONG, ConsistencyLevel.SESSION, OperationType.ExecuteJavaScript, ResourceType.StoredProcedure, false, SessionTokenType.SDK}
         };
     }
 
