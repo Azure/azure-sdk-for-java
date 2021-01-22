@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ChatParticipant model. */
+/** A participant of the chat thread. */
 @Fluent
 public final class ChatParticipant {
     /*
@@ -27,7 +27,7 @@ public final class ChatParticipant {
      * Time from which the chat history is shared with the participant. The
      * timestamp is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "shareHistoryTime", required = true)
+    @JsonProperty(value = "shareHistoryTime")
     private OffsetDateTime shareHistoryTime;
 
     /**

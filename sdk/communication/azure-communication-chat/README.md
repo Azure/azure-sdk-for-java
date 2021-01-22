@@ -186,9 +186,9 @@ A `String` response returned from sending a chat message, it contains an id, whi
 
 <!-- embedme ./src/samples/java/com/azure/communication/chat/ReadmeSamples.java#L142-L148 -->
 ```Java
+
 SendChatMessageOptions sendChatMessageOptions = new SendChatMessageOptions()
     .setContent("Message content")
-    .setPriority(ChatMessagePriority.NORMAL)
     .setSenderDisplayName("Sender Display Name");
 
 

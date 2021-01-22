@@ -3,9 +3,6 @@
 
 package com.azure.communication.chat;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
@@ -32,6 +29,8 @@ import java.util.regex.Pattern;
 import com.nimbusds.jwt.PlainJWT;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Abstract base class for all Chat tests
@@ -94,10 +93,10 @@ public class ChatClientTestBase extends TestBase {
     }
 
     static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
-        assertRestException(exceptionThrower, ErrorException.class, expectedStatusCode);
+        assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Runnable exceptionThrower, Class<? extends ErrorException> expectedExceptionType, int expectedStatusCode) {
+    static void assertRestException(Runnable exceptionThrower, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail();
@@ -116,8 +115,8 @@ public class ChatClientTestBase extends TestBase {
         assertRestException(exception, ErrorException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Throwable exception, Class<? extends ErrorException> expectedExceptionType, int expectedStatusCode) {
-        assertEquals(expectedExceptionType, exception.getClass());
+    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+        assertTrue(expectedExceptionType.isAssignableFrom(exception.getClass()));
         assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
     }
 

@@ -27,7 +27,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 ## Update generated files for chat service
 To update generated files for chat service, run the following command
 
-> autorest README.md --java --v4 --use=@autorest/java@4.0.2
+> autorest README.md --java --v4 --use=@autorest/java@4.0.11
 
 ### Code generation settings
 ``` yaml
@@ -37,7 +37,7 @@ output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.chat
 generate-client-as-impl: true
-custom-types: ChatMessagePriority,ChatThreadInfo,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,Error,ErrorException,CreateChatThreadErrors,AddChatParticipantsErrors,AddChatParticipantsResult,ChatMessageContent,ChatMessageType
+custom-types: ChatMessagePriority,ChatThreadInfo,PostReadReceiptOptions,SendChatMessageOptions,UpdateChatMessageOptions,UpdateChatThreadOptions,Error,ErrorException,CreateChatThreadErrors,AddChatParticipantsErrors,AddChatParticipantsResult,ChatMessageContent,ChatMessageType,CommunicationError,CommunicationErrorException,CommunicationErrorResponse,CommunicationErrorResponseException
 custom-types-subpackage: models
 models-subpackage: implementation.models
 generate-client-interfaces: false

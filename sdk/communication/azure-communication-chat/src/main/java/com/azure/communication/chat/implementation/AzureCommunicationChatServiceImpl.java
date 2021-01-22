@@ -86,7 +86,11 @@ public final class AzureCommunicationChatServiceImpl {
         return this.chatClient;
     }
 
-    /** Initializes an instance of AzureCommunicationChatService client. */
+    /**
+     * Initializes an instance of AzureCommunicationChatService client.
+     *
+     * @param endpoint The endpoint of the Azure Communication resource.
+     */
     AzureCommunicationChatServiceImpl(String endpoint) {
         this(
                 new HttpPipelineBuilder()
@@ -100,6 +104,7 @@ public final class AzureCommunicationChatServiceImpl {
      * Initializes an instance of AzureCommunicationChatService client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param endpoint The endpoint of the Azure Communication resource.
      */
     AzureCommunicationChatServiceImpl(HttpPipeline httpPipeline, String endpoint) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
@@ -110,6 +115,7 @@ public final class AzureCommunicationChatServiceImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param endpoint The endpoint of the Azure Communication resource.
      */
     AzureCommunicationChatServiceImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;

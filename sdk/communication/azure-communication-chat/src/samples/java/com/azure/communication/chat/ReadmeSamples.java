@@ -5,7 +5,7 @@ package com.azure.communication.chat;
 
 import com.azure.communication.chat.models.AddChatParticipantsOptions;
 import com.azure.communication.chat.models.ChatMessage;
-import com.azure.communication.chat.models.ChatMessagePriority;
+
 import com.azure.communication.chat.models.ChatThread;
 import com.azure.communication.chat.models.ChatParticipant;
 import com.azure.communication.chat.models.ChatMessageReadReceipt;
@@ -136,11 +136,11 @@ public class ReadmeSamples {
      * Sample code for sending a chat message using the sync chat thread client.
      */
     public void sendChatMessage() {
+
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
         SendChatMessageOptions sendChatMessageOptions = new SendChatMessageOptions()
             .setContent("Message content")
-            .setPriority(ChatMessagePriority.NORMAL)
             .setSenderDisplayName("Sender Display Name");
 
 

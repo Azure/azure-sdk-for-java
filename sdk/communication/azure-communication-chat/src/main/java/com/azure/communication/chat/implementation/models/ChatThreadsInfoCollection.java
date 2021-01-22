@@ -9,7 +9,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ChatThreadsInfoCollection model. */
+/** Collection of chat threads. */
 @Fluent
 public final class ChatThreadsInfoCollection {
     /*

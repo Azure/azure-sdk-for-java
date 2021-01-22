@@ -48,7 +48,6 @@ public class ChatOptionsProvider {
 
     public static SendChatMessageOptions sendMessageOptions() {
         SendChatMessageOptions options = new SendChatMessageOptions();
-        options.setPriority(ChatMessagePriority.NORMAL);
         options.setContent("Content");
         options.setSenderDisplayName("Tester");
         options.setType(ChatMessageType.TEXT);

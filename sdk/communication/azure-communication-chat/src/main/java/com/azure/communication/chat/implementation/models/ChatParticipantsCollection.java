@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ChatParticipantsCollection model. */
+/** Collection of participants belong to a particular thread. */
 @Fluent
 public final class ChatParticipantsCollection {
     /*

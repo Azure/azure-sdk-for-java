@@ -5,13 +5,12 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.communication.chat.models.ChatMessageContent;
-import com.azure.communication.chat.models.ChatMessagePriority;
 import com.azure.communication.chat.models.ChatMessageType;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ChatMessage model. */
+/** Chat message. */
 @Fluent
 public final class ChatMessage {
     /*
@@ -25,12 +24,6 @@ public final class ChatMessage {
      */
     @JsonProperty(value = "type", required = true)
     private ChatMessageType type;
-
-    /*
-     * The chat message priority.
-     */
-    @JsonProperty(value = "priority", required = true)
-    private ChatMessagePriority priority;
 
     /*
      * Sequence of the chat message in the conversation.
@@ -67,7 +60,7 @@ public final class ChatMessage {
     /*
      * The id of the chat message sender.
      */
-    @JsonProperty(value = "senderId", required = true)
+    @JsonProperty(value = "senderId")
     private String senderId;
 
     /*
@@ -121,26 +114,6 @@ public final class ChatMessage {
      */
     public ChatMessage setType(ChatMessageType type) {
         this.type = type;
-        return this;
-    }
-
-    /**
-     * Get the priority property: The chat message priority.
-     *
-     * @return the priority value.
-     */
-    public ChatMessagePriority getPriority() {
-        return this.priority;
-    }
-
-    /**
-     * Set the priority property: The chat message priority.
-     *
-     * @param priority the priority value to set.
-     * @return the ChatMessage object itself.
-     */
-    public ChatMessage setPriority(ChatMessagePriority priority) {
-        this.priority = priority;
         return this;
     }
 
