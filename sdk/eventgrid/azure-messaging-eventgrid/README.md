@@ -84,16 +84,16 @@ Sync client that works for every Java developer:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L38-L41 -->
 ```java
 EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(key))
+    .endpoint("<your event grid endpoint>")
+    .credential(new AzureKeyCredential("your event grid access key"))
     .buildClient();
 ```
 or async client if your technology stack has reactive programming such as project reactor:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L45-L48 -->
 ```java
 EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureKeyCredential(key))
+    .endpoint("<your event grid endpoint>")
+    .credential(new AzureKeyCredential("your event grid access key"))
     .buildAsyncClient();
 ```
 
@@ -105,16 +105,16 @@ Sync client:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L52-L55 -->
 ```java
 EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureSasCredential(sasToken))
+    .endpoint("<your event grid endpoint>")
+    .credential(new AzureSasCredential("<your sas token for this event grid point>"))
     .buildClient();
 ```
 Async client:
 <!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L59-L62 -->
 ```java
 EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
-    .endpoint(endpoint)
-    .credential(new AzureSasCredential(sasToken))
+    .endpoint("<your event grid endpoint>")
+    .credential(new AzureSasCredential("<your sas token for this event grid point>"))
     .buildAsyncClient();
 ```
 
@@ -129,7 +129,7 @@ Here is sample code to create a shared access signature that expires after 20 mi
 OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
     
 String sasToken = EventGridSasGenerator
-    .generateSas(endpoint, new AzureKeyCredential(key), expiration);
+    .generateSas("<your event grid endpoint>", new AzureKeyCredential("<your event grid access key>"), expiration);
 ```
 
 ## Key concepts
@@ -158,7 +158,7 @@ publishing:
 | Custom Events       | `sendCustomEvents` |
 
 Using the wrong method will result in a BadRequest error from the service and your events will not be published.
-Use this command to query which schema an Event Grid Topic accepts if you don't know it:
+Use this Azure CLI command to query which schema an Event Grid Topic or Domain accepts:
 ```bash
 az eventgrid topic show --name <your-resource-name> --resource-group <your-resource-group-name> --query inputSchema
 ```
