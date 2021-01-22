@@ -103,7 +103,7 @@ public class SendScheduledMessageAndCancelAsyncSample {
         // Dispose of the sender and any resources it holds.
         sender.close();
 
-        // This assertion is to ensure samples are working. Users should remove this.
+        // This assertion is to ensure that samples are working. Users should remove this.
         Assertions.assertTrue(sampleSuccessful.get());
     }
 }

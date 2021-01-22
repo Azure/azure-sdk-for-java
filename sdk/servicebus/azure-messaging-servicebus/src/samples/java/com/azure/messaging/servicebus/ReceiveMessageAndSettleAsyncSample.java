@@ -85,9 +85,9 @@ public class ReceiveMessageAndSettleAsyncSample {
                     return receiver.abandon(message);
                 }
             }).subscribe(
-                ignore -> {},
-                error -> sampleSuccessful.set(false),
-                () -> {});
+                (ignore) -> System.out.println("Message processed."),
+                error -> sampleSuccessful.set(false)
+            );
 
         // Subscribe is not a blocking call so we wait here so the program does not end.
         countdownLatch.await(10, TimeUnit.SECONDS);
@@ -98,7 +98,7 @@ public class ReceiveMessageAndSettleAsyncSample {
         // Close the receiver.
         receiver.close();
 
-        // This assertion is to ensure samples are working. Users should remove this.
+        // This assertion is to ensure that samples are working. Users should remove this.
         Assertions.assertTrue(sampleSuccessful.get());
     }
 

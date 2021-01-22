@@ -65,7 +65,7 @@ public class AdministrationClientUpdateQueueSample {
         System.out.printf("After queue properties LockDuration: [%d seconds], Max Delivery count: [%d].%n",
             updatedProperties.getLockDuration().getSeconds(), updatedProperties.getMaxDeliveryCount());
 
-        // This assertion is to ensure samples are working. Users should remove this.
+        // This assertion is to ensure that samples are working. Users should remove this.
         Assertions.assertEquals(10, updatedProperties.getMaxDeliveryCount());
     }
 

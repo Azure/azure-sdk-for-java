@@ -73,7 +73,7 @@ public class PeekMessageAsyncSample {
         // Close the receiver.
         receiver.close();
 
-        // This assertion is to ensure samples are working. Users should remove this.
+        // This assertion is to ensure that samples are working. Users should remove this.
         Assertions.assertTrue(sampleSuccessful.get());
     }
 }
