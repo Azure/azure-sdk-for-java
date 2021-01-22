@@ -48,7 +48,7 @@ steps:
       eng/common/TestResources/New-TestResources.ps1 `
         -BaseName 'Generated' `
         -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
-        -Artifacts '${{ parameters.Artifacts }}' `
+        -Artifacts '${{ join(',', parameters.Artifacts) }}' `
         -Location '${{ parameters.Location }}' `
         -DeleteAfterHours '${{ parameters.DeleteAfterHours }}' `
         @subscriptionConfiguration `
