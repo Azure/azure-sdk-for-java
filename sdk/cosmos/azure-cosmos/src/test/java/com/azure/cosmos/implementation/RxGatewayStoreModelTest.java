@@ -25,7 +25,7 @@ public class RxGatewayStoreModelTest {
     private final static int TIMEOUT = 10000;
 
     @DataProvider(name = "sessionTokenConfigProvider")
-    public Object[][] connectionStateListenerConfigProvider() {
+    public Object[][] sessionTokenConfigProvider() {
         return new Object[][]{
             // defaultConsistencyLevel, requestConsistencyLevel,requestOperationType, requestResourceType, sessionTokenFromUser, finalSessionTokenType
 
