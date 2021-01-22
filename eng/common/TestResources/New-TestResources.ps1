@@ -150,7 +150,7 @@ try {
     # Deploy test resources according to Artifacts
     if ($Artifacts) {
         foreach ($Artifact in $Artifacts) {
-            $templateFilePath = Join-Path $root $Artifact.name
+            $templateFilePath = Join-Path $root $Artifact
             Write-Verbose "Checking for '$templateFileName' files under '$templateFilePath'"
             Get-ChildItem -Path $templateFilePath -Filter $templateFileName -Recurse | ForEach-Object {
                 $templateFile = $_.FullName

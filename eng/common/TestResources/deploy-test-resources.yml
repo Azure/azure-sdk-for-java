@@ -38,6 +38,18 @@ steps:
   - pwsh: |
       eng/common/TestResources/Import-AzModules.ps1
 
+      $artifactsArray = ${{ parameters.Artifacts }}
+      Write-Verbose "There are $artifactsArray.Count artifacts"
+
+      foreach($artifact in $artifactsArray) {
+        Write-Verbose "$artifact"
+      }
+
+      For($i=0;$i -lt $artifactsArray.Count; $i++)
+      {
+        Write-Verbose "parameter $i : $($artifactsArray[$i])"
+      }
+
       $subscriptionConfiguration = @'
         ${{ parameters.SubscriptionConfiguration }}
       '@ | ConvertFrom-Json -AsHashtable;
