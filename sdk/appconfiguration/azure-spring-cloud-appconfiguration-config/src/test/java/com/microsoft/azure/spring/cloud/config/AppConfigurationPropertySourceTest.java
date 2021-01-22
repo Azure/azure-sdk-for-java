@@ -25,8 +25,26 @@ import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_VALUE_3
 import static com.microsoft.azure.spring.cloud.config.TestUtils.createItem;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import org.apache.commons.lang3.ArrayUtils;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -41,21 +59,7 @@ import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProper
 import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProviderProperties;
 import com.microsoft.azure.spring.cloud.config.properties.ConfigStore;
 import com.microsoft.azure.spring.cloud.config.stores.ClientStore;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import org.apache.commons.lang3.ArrayUtils;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -140,6 +144,9 @@ public class AppConfigurationPropertySourceTest {
 
     @Mock
     private PagedResponse<ConfigurationSetting> pagedResponseMock;
+    
+    @Mock
+    private ConfigStore configStoreMock;
 
     private AppConfigurationProviderProperties appProperties;
 
@@ -163,11 +170,9 @@ public class AppConfigurationPropertySourceTest {
         MockitoAnnotations.initMocks(this);
         appConfigurationProperties = new AppConfigurationProperties();
         appProperties = new AppConfigurationProviderProperties();
-        ConfigStore configStore = new ConfigStore();
-        configStore.setEndpoint(TEST_STORE_NAME);
         ArrayList<String> contexts = new ArrayList<String>();
         contexts.add("/application/*");
-        propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, configStore, "\0",
+        propertySource = new AppConfigurationPropertySource(TEST_CONTEXT, configStoreMock, "\0",
             appConfigurationProperties, clientStoreMock, appProperties, tokenCredentialProvider, null);
 
         testItems = new ArrayList<ConfigurationSetting>();
@@ -175,6 +180,7 @@ public class AppConfigurationPropertySourceTest {
         testItems.add(item2);
         testItems.add(item3);
 
+        when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
         when(configClientMock.listConfigurationSettings(Mockito.any())).thenReturn(settingsMock);
         when(settingsMock.byPage()).thenReturn(pageMock);
         when(pageMock.collectList()).thenReturn(collectionMock);
@@ -236,6 +242,7 @@ public class AppConfigurationPropertySourceTest {
     public void testFeatureFlagCanBeInitedAndQueried() throws IOException {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
             .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(FEATURE_ITEMS);
+        when(configStoreMock.isUseFeatureManagement()).thenReturn(true);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -271,6 +278,23 @@ public class AppConfigurationPropertySourceTest {
 
         assertEquals(convertedValue, propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
     }
+    
+    @Test
+    public void testFeatureFlagDisabled() throws IOException {
+        when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
+            .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(FEATURE_ITEMS);
+        when(configStoreMock.isUseFeatureManagement()).thenReturn(false);
+
+        FeatureSet featureSet = new FeatureSet();
+        try {
+            propertySource.initProperties(featureSet);
+        } catch (IOException e) {
+            fail("Failed Reading in Feature Flags");
+        }
+        propertySource.initFeatures(featureSet);
+
+        assertNull(propertySource.getProperty(FEATURE_MANAGEMENT_KEY));
+    }
 
     @Test
     public void testFeatureFlagThrowError() throws IOException {
@@ -285,6 +309,7 @@ public class AppConfigurationPropertySourceTest {
     @Test
     public void testFeatureFlagBuildError() throws IOException {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString())).thenReturn(FEATURE_ITEMS);
+        when(configStoreMock.isUseFeatureManagement()).thenReturn(true);
 
         FeatureSet featureSet = new FeatureSet();
         try {
@@ -375,7 +400,8 @@ public class AppConfigurationPropertySourceTest {
     public void testFeatureFlagTargeting() throws IOException {
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.anyString()))
             .thenReturn(new ArrayList<ConfigurationSetting>()).thenReturn(FEATURE_ITEMS_TARGETING);
-
+        when(configStoreMock.isUseFeatureManagement()).thenReturn(true);
+        
         FeatureSet featureSet = new FeatureSet();
         try {
             propertySource.initProperties(featureSet);
