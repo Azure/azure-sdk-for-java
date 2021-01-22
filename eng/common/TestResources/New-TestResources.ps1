@@ -22,6 +22,9 @@ param (
     [string] $ServiceDirectory,
 
     [Parameter()]
+    [string[]] $Artifacts = @(),
+
+    [Parameter()]
     [ValidatePattern('^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$')]
     [string] $TestApplicationId,
 
@@ -144,16 +147,30 @@ try {
     # Azure SDK Developer Playground
     $defaultSubscription = "faa080af-c1d8-40ad-9cce-e1a450ca5b57"
 
-    Write-Verbose "Checking for '$templateFileName' files under '$root'"
-    Get-ChildItem -Path $root -Filter $templateFileName -Recurse | ForEach-Object {
-        $templateFile = $_.FullName
+    # Deploy test resources according to Artifacts
+    if ($Artifacts) {
+        foreach ($Artifact in $Artifacts) {
+            $templateFilePath = Join-Path $root $Artifact
+            Write-Verbose "Checking for '$templateFileName' files under '$templateFilePath'"
+            Get-ChildItem -Path $templateFilePath -Filter $templateFileName -Recurse | ForEach-Object {
+                $templateFile = $_.FullName
 
-        Write-Verbose "Found template '$templateFile'"
-        $templateFiles += $templateFile
+                Write-Verbose "Found template '$templateFile'"
+                $templateFiles += $templateFile
+            }
+        }
+    } else {
+        Write-Verbose "Checking for '$templateFileName' files under '$root'"
+        Get-ChildItem -Path $root -Filter $templateFileName -Recurse | ForEach-Object {
+            $templateFile = $_.FullName
+
+            Write-Verbose "Found template '$templateFile'"
+            $templateFiles += $templateFile
+        }
     }
 
     if (!$templateFiles) {
-        Write-Warning -Message "No template files found under '$root'"
+        Write-Warning -Message "No template files found"
         exit
     }
 
