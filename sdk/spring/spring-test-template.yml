@@ -3,7 +3,6 @@ parameters:
   TestName: ''
   Artifacts: []
   SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-  MaxParallel: 0
 
 jobs:
     - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
@@ -14,7 +13,6 @@ jobs:
         TestName: ${{ parameters.TestName }}
         SubscriptionConfiguration: ${{ parameters.SubscriptionConfiguration }}
         Artifacts: ${{ parameters.Artifacts }}
-        MaxParallel: ${{ parameters.MaxParallel }}
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
