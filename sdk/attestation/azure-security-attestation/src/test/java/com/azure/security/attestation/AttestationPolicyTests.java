@@ -30,7 +30,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
-    public void testGetAttestationPolicy(HttpClient client, String clientUri, AttestationType attestationType)
+    void testGetAttestationPolicy(HttpClient client, String clientUri, AttestationType attestationType)
         throws ParseException {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
@@ -42,7 +42,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
-    public void testGetAttestationPolicyAsync(HttpClient client, String clientUri, AttestationType attestationType) {
+    void testGetAttestationPolicyAsync(HttpClient client, String clientUri, AttestationType attestationType) {
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
         StepVerifier.create(attestationBuilder.buildPolicyAsyncClient().get(attestationType))
@@ -67,7 +67,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
-    public void testSetAttestationPolicy(HttpClient httpClient, String clientUri, AttestationType attestationType)
+    void testSetAttestationPolicy(HttpClient httpClient, String clientUri, AttestationType attestationType)
         throws JOSEException, InvalidKeySpecException, NoSuchAlgorithmException, ParseException {
 
         ClientTypes clientType = classifyClient(clientUri);
@@ -121,7 +121,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
-    public void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri, AttestationType attestationType) {
+    void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri, AttestationType attestationType) {
         ClientTypes clientType = classifyClient(clientUri);
         // We can't set attestation policy on the shared client, so just exit early.
         if (clientType.equals(ClientTypes.SHARED)) {

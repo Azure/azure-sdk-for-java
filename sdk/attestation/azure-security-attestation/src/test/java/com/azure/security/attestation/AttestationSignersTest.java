@@ -26,7 +26,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    public void testGetSigningCertificates(HttpClient client, String clientUri) throws Exception {
+    void testGetSigningCertificates(HttpClient client, String clientUri) throws Exception {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
@@ -38,7 +38,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    public void testGetSigningCertificatesAsync(HttpClient client, String clientUri) {
+    void testGetSigningCertificatesAsync(HttpClient client, String clientUri) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 

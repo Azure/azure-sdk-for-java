@@ -21,7 +21,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    public void testGetMetadataConfiguration(HttpClient client, String clientUri) {
+    void testGetMetadataConfiguration(HttpClient client, String clientUri) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
@@ -32,7 +32,7 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    public void testGetMetadataConfigurationAsync(HttpClient client, String clientUri) {
+    void testGetMetadataConfigurationAsync(HttpClient client, String clientUri) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 

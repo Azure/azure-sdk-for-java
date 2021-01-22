@@ -36,7 +36,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    public void testGetPolicyManagementCertificates(HttpClient httpClient, String clientUri)
+    void testGetPolicyManagementCertificates(HttpClient httpClient, String clientUri)
         throws ParseException {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
@@ -51,7 +51,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    public void testGetPolicyManagementCertificatesAsync(HttpClient httpClient, String clientUri) {
+    void testGetPolicyManagementCertificatesAsync(HttpClient httpClient, String clientUri) {
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         PolicyCertificatesAsyncClient client = attestationBuilder.buildPolicyCertificatesAsyncClient();
 
@@ -120,7 +120,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    public void testAddAttestationPolicyManagementCertificate(HttpClient httpClient, String clientUri)
+    void testAddAttestationPolicyManagementCertificate(HttpClient httpClient, String clientUri)
         throws JOSEException, InvalidKeySpecException, NoSuchAlgorithmException, ParseException, JsonProcessingException {
 
         ClientTypes clientType = classifyClient(clientUri);
@@ -177,7 +177,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    public void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri) throws JOSEException, InvalidKeySpecException, NoSuchAlgorithmException, JsonProcessingException {
+    void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri) throws JOSEException, InvalidKeySpecException, NoSuchAlgorithmException, JsonProcessingException {
 
         ClientTypes clientType = classifyClient(clientUri);
         // This test only works on isolated instances.
