@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -37,7 +38,7 @@ public abstract class AbstractQueryGenerator {
     }
 
     private String generateUnaryQuery(@NonNull Criteria criteria) {
-        Assert.isTrue(criteria.getSubjectValues().isEmpty(), "Unary criteria should have no one subject value");
+        Assert.isTrue(Objects.isNull(criteria.getSubjectValues()) || criteria.getSubjectValues().isEmpty(), "Unary criteria should have no one subject value");
         Assert.isTrue(CriteriaType.isUnary(criteria.getType()), "Criteria type should be unary operation");
         final String subject = criteria.getSubject();
 
