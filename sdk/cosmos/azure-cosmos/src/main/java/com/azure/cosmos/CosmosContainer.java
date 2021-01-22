@@ -261,25 +261,6 @@ public class CosmosContainer {
         }
     }
 
-    /**
-     * Block on first feed response.
-     *
-     * @param feedResponseFlux the feed response flux mono.
-     * @return the cosmos item response.
-     */
-    <T> FeedResponse<T> blockFirstFeedResponse(Flux<FeedResponse<T>> feedResponseFlux) {
-        try {
-            return feedResponseFlux.blockFirst();
-        } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
-            } else {
-                throw ex;
-            }
-        }
-    }
-
     private CosmosItemResponse<Object> blockDeleteItemResponse(Mono<CosmosItemResponse<Object>> deleteItemMono) {
         try {
             return deleteItemMono.block();
@@ -378,6 +359,7 @@ public class CosmosContainer {
         Class<T> classType) {
 
         checkNotNull(options, "Argument 'options' must not be null.");
+        checkNotNull(classType, "Argument 'classType' must not be null.");
 
         options.setMaxPrefetchPageCount(1);
 

@@ -68,7 +68,8 @@ public class Paginator {
         Class<T> resourceType,
         int top,
         int maxPageSize,
-        int preFetchCount) {
+        int preFetchCount,
+        boolean isSplitHandlingDisabled) {
 
         return getPaginatedQueryResultAsObservable(
             () -> new ChangeFeedFetcher<>(
@@ -77,7 +78,8 @@ public class Paginator {
                 executeFunc,
                 changeFeedState,
                 top,
-                maxPageSize),
+                maxPageSize,
+                isSplitHandlingDisabled),
             preFetchCount);
     }
 

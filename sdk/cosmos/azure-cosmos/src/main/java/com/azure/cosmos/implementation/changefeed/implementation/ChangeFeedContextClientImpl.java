@@ -81,7 +81,13 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     @Override
     public Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(
         CosmosAsyncContainer collectionLink,
-        CosmosChangeFeedRequestOptions requestOptions) {
+        CosmosChangeFeedRequestOptions changeFeedRequestOptions) {
+
+        // ChangeFeed processor relies on getting GoneException signals
+        // to handle split of leases - so we need to suppress the split-proofing
+        // in the underlying fetcher/pipeline for the change feed processor.
+        CosmosChangeFeedRequestOptions effectiveRequestOptions =
+            ModelBridgeInternal.disableSplitHandling(changeFeedRequestOptions);
 
         AsyncDocumentClient clientWrapper =
             CosmosBridgeInternal.getAsyncDocumentClient(collectionLink.getDatabase());
@@ -98,7 +104,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                     }
 
                     return clientWrapper
-                        .queryDocumentChangeFeed(collection, requestOptions)
+                        .queryDocumentChangeFeed(collection, effectiveRequestOptions)
                         .map(response -> {
                             List<JsonNode> results = response.getResults()
                                                              .stream()

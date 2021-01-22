@@ -91,7 +91,8 @@ class ChangeFeedQueryImpl<T extends Resource> {
             this.klass,
             INITIAL_TOP_VALUE,
             this.options.getMaxItemCount(),
-            this.options.getMaxPrefetchPageCount());
+            this.options.getMaxPrefetchPageCount(),
+            ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(this.options));
     }
 
     private RxDocumentServiceRequest createDocumentServiceRequest() {

@@ -800,6 +800,22 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static boolean getChangeFeedIsSplitHandlingDisabled(
+        CosmosChangeFeedRequestOptions requestOptions) {
+
+        checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
+        return requestOptions.isSplitHandlingDisabled();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosChangeFeedRequestOptions disableSplitHandling(
+        CosmosChangeFeedRequestOptions requestOptions) {
+
+        checkNotNull(requestOptions, "Argument 'requestOptions' must not be null.");
+        return requestOptions.disableSplitHandling();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static ChangeFeedState getChangeFeedContinuationState(
         CosmosChangeFeedRequestOptions requestOptions) {
 

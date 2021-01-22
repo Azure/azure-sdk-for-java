@@ -31,6 +31,7 @@ public final class CosmosChangeFeedRequestOptions {
     private Integer maxPrefetchPageCount;
     private ChangeFeedMode mode;
     private ChangeFeedStartFromInternal startFromInternal;
+    private boolean isSplitHandlingDisabled;
 
     private CosmosChangeFeedRequestOptions(
         FeedRangeInternal feedRange,
@@ -63,6 +64,7 @@ public final class CosmosChangeFeedRequestOptions {
 
         this.mode = mode;
         this.properties = new HashMap<>();
+        this.isSplitHandlingDisabled = false;
     }
 
     ChangeFeedState getContinuation() {
@@ -145,6 +147,15 @@ public final class CosmosChangeFeedRequestOptions {
             this.maxPrefetchPageCount = DEFAULT_MAX_PREFETCH_PAGE_COUNT;
         }
 
+        return this;
+    }
+
+    boolean isSplitHandlingDisabled() {
+        return this.isSplitHandlingDisabled;
+    }
+
+    CosmosChangeFeedRequestOptions disableSplitHandling() {
+        this.isSplitHandlingDisabled = true;
         return this;
     }
 

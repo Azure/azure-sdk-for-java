@@ -35,7 +35,8 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
         ChangeFeedState changeFeedState,
         int top,
-        int maxItemCount) {
+        int maxItemCount,
+        boolean isSplitHandlingDisabled) {
 
         super(executeFunc, true, top, maxItemCount);
 
@@ -44,13 +45,20 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
         checkNotNull(changeFeedState, "Argument 'changeFeedState' must not be null.");
         this.createRequestFunc = createRequestFunc;
         this.changeFeedState = changeFeedState;
-        this.feedRangeContinuationSplitRetryPolicy = new FeedRangeContinuationSplitRetryPolicy(
-            client,
-            this.changeFeedState);
+        this.feedRangeContinuationSplitRetryPolicy = isSplitHandlingDisabled ?
+            null
+            : new FeedRangeContinuationSplitRetryPolicy(
+                client,
+                this.changeFeedState);
     }
 
     @Override
     public Mono<FeedResponse<T>> nextPage() {
+
+        if (this.feedRangeContinuationSplitRetryPolicy == null) {
+            return this.nextPageInternal();
+        }
+
         // There are two conditions that require retries
         // in the change feed pipeline
         // 1) On 410 the FeedRangeContinuation needs to evaluate

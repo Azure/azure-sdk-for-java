@@ -27,6 +27,8 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.Instant;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static java.time.temporal.ChronoUnit.MILLIS;
 
 /**
@@ -43,10 +45,13 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private final ChangeFeedContextClient documentClient;
     private volatile RuntimeException resultException;
 
-    private volatile String lastContinuation;
+    private volatile String lastServerContinuationToken;
     private volatile boolean isFirstQueryForChangeFeeds;
 
-    public PartitionProcessorImpl(ChangeFeedObserver observer, ChangeFeedContextClient documentClient, ProcessorSettings settings, PartitionCheckpointer checkpointer) {
+    public PartitionProcessorImpl(ChangeFeedObserver observer,
+                                  ChangeFeedContextClient documentClient,
+                                  ProcessorSettings settings,
+                                  PartitionCheckpointer checkpointer) {
         this.observer = observer;
         this.documentClient = documentClient;
         this.settings = settings;
@@ -88,23 +93,35 @@ class PartitionProcessorImpl implements PartitionProcessor {
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
-                this.lastContinuation = documentFeedResponse.getContinuationToken();
+                final String continuationToken = documentFeedResponse.getContinuationToken();
+                final ChangeFeedState continuationState = ChangeFeedState.fromString(documentFeedResponse.getContinuationToken());
+                checkNotNull(continuationState, "Argument 'continuationState' must not be null.");
+                checkArgument(
+                    continuationState
+                        .getContinuation()
+                        .getContinuationTokenCount() == 1,
+                    "For ChangeFeedProcessor the continuation state should always have one range/continuation");
+                this.lastServerContinuationToken = continuationState
+                    .getContinuation()
+                    .getCurrentContinuationToken()
+                    .getToken();
+
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
-                    return this.dispatchChanges(documentFeedResponse)
+                    return this.dispatchChanges(documentFeedResponse, continuationState)
                         .doOnError(throwable -> logger.debug(
                             "Exception was thrown from thread {}",
                             Thread.currentThread().getId(), throwable))
                         .doOnSuccess((Void) -> {
                             this.options =
                                 CosmosChangeFeedRequestOptions
-                                    .createForProcessingFromContinuation(this.lastContinuation);
+                                    .createForProcessingFromContinuation(continuationToken);
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 }
                 this.options =
                     CosmosChangeFeedRequestOptions
-                        .createForProcessingFromContinuation(this.lastContinuation);
+                        .createForProcessingFromContinuation(continuationToken);
 
                 if (cancellationToken.isCancellationRequested()) {
                     return Flux.error(new TaskCancelledException());
@@ -119,6 +136,11 @@ class PartitionProcessorImpl implements PartitionProcessor {
             })
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
+                    // NOTE - the reason why it is safe to access the this.lastServerContinuationToken
+                    // below in a tread-safe manner is because the CosmosException would never be thrown
+                    // form the flatMap-section above (but only from the "source" (the flatMap-section
+                    // calling createDocumentChangeFeedQuery - so if we ever land in this if-block
+                    // we know it is a terminal event.
 
                     CosmosException clientException = (CosmosException) throwable;
                     logger.warn("CosmosException: FeedRange {} from thread {}",
@@ -127,11 +149,15 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
                     switch (docDbError) {
                         case PARTITION_NOT_FOUND: {
-                            this.resultException = new PartitionNotFoundException("Partition not found.", this.lastContinuation);
+                            this.resultException = new PartitionNotFoundException(
+                                "Partition not found.",
+                                this.lastServerContinuationToken);
                         }
                         break;
                         case PARTITION_SPLIT: {
-                            this.resultException = new PartitionSplitException("Partition split.", this.lastContinuation);
+                            this.resultException = new PartitionSplitException(
+                                "Partition split.",
+                                this.lastServerContinuationToken);
                         }
                         break;
                         case UNDEFINED: {
@@ -142,7 +168,10 @@ class PartitionProcessorImpl implements PartitionProcessor {
                             if (this.options.getMaxItemCount() == null) {
                                 this.options.setMaxItemCount(DefaultMaxItemCount);
                             } else if (this.options.getMaxItemCount() <= 1) {
-                                logger.error("Cannot reduce maxItemCount further as it's already at {}", this.options.getMaxItemCount(), clientException);
+                                logger.error(
+                                    "Cannot reduce maxItemCount further as it's already at {}",
+                                    this.options.getMaxItemCount(),
+                                    clientException);
                                 this.resultException = new RuntimeException(clientException);
                             }
 
@@ -205,11 +234,15 @@ class PartitionProcessorImpl implements PartitionProcessor {
         return this.resultException;
     }
 
-    private Mono<Void> dispatchChanges(FeedResponse<JsonNode> response) {
+    private Mono<Void> dispatchChanges(
+        FeedResponse<JsonNode> response,
+        ChangeFeedState continuationState) {
+
         ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(
-            // TODO fabianm - move observer to FeedRange
+            // TODO fabianm - move observer to FeedRange for merge support
             ((FeedRangePartitionKeyRangeImpl)this.settings.getStartState().getFeedRange()).getPartitionKeyRangeId(),
             response,
+            continuationState,
             this.checkpointer);
 
         return this.observer.processChanges(context, response.getResults());
