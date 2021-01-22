@@ -23,7 +23,7 @@ public class AdministrationClientUpdateQueueSample {
      *
      * @param args Unused arguments to the program.
      */
-    public static void main(String[] args){
+    public static void main(String[] args) {
         AdministrationClientUpdateQueueSample sample = new AdministrationClientUpdateQueueSample();
         sample.run();
     }

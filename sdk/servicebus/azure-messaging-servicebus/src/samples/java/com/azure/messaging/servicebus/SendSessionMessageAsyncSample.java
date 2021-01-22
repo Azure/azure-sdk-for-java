@@ -84,9 +84,8 @@ public class SendSessionMessageAsyncSample {
         sender.sendMessages(messages).subscribe(unused -> System.out.println("Batch sent."),
             error -> System.err.println("Error occurred while publishing message batch: " + error),
             () -> {
-            System.out.println("Batch send complete.");
-            sampleSuccessful.set(true);
-
+                System.out.println("Batch send complete.");
+                sampleSuccessful.set(true);
         });
 
         // subscribe() is not a blocking call. We wait here so the program does not end before the send is complete.

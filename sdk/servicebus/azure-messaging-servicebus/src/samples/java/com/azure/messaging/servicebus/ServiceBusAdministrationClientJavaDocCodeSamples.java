@@ -14,8 +14,6 @@ import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import org.junit.jupiter.api.Test;
 
-import java.time.Duration;
-
 /**
  * Class contains sample code snippets that will be used in javadocs.
  *
@@ -23,7 +21,7 @@ import java.time.Duration;
  * @see ServiceBusAdministrationClient
  */
 public class ServiceBusAdministrationClientJavaDocCodeSamples {
-    public static String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
+    private static String connectionString = System.getenv("AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING");
 
     /**
      * Creates {@link ServiceBusAdministrationClient} with a connection string.

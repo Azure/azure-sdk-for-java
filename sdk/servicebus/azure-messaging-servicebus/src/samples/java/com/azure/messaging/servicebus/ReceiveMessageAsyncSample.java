@@ -73,7 +73,7 @@ public class ReceiveMessageAsyncSample {
             System.out.printf("Sequence #: %s. Contents: %s%n", message.getSequenceNumber(), message.getBody());
         },
             error -> {
-            System.err.println("Error occurred while receiving message: " + error);
+                System.err.println("Error occurred while receiving message: " + error);
                 sampleSuccessful.set(false);
             },
             () -> System.out.println("Receiving complete."));
