@@ -41,13 +41,10 @@ steps:
       $artifactsArray = ${{ parameters.Artifacts }}
       Write-Verbose "There are $artifactsArray.Count artifacts"
 
+      $artifactsNameArray = @()
       foreach($artifact in $artifactsArray) {
-        Write-Verbose "$artifact"
-      }
-
-      For($i=0;$i -lt $artifactsArray.Count; $i++)
-      {
-        Write-Verbose "parameter $i : $($artifactsArray[$i])"
+        Write-Verbose "$artifact.name"
+        $artifactsNameArray += $artifact.name
       }
 
       $subscriptionConfiguration = @'
@@ -60,7 +57,7 @@ steps:
       eng/common/TestResources/New-TestResources.ps1 `
         -BaseName 'Generated' `
         -ServiceDirectory '${{ parameters.ServiceDirectory }}' `
-        -Artifacts ${{ parameters.Artifacts }} `
+        -Artifacts @artifactsNameArray `
         -Location '${{ parameters.Location }}' `
         -DeleteAfterHours '${{ parameters.DeleteAfterHours }}' `
         @subscriptionConfiguration `
