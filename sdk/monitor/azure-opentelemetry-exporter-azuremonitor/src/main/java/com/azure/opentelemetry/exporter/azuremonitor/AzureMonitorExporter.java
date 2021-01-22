@@ -208,14 +208,16 @@ public final class AzureMonitorExporter implements SpanExporter {
                 // TODO (srnagar): eventhubs should use CLIENT instead of PRODUCER
                 // TODO (srnagar): eventhubs should add links to messages?
                 remoteDependencyData.setType("Microsoft.EventHub");
-                String peerAddress = removeAttributeString(attributes, "peer.address");
-                String destination = removeAttributeString(attributes, "message_bus.destination");
+                String peerAddress = removeAttributeString(attributes, SemanticAttributes.PEER_SERVICE.getKey());
+                String destination = removeAttributeString(attributes,
+                    SemanticAttributes.MESSAGING_DESTINATION.getKey());
                 // TODO: (savaity) should we rename this to MESSAGING_DESTINATION
                 remoteDependencyData.setTarget(peerAddress + "/" + destination);
             } else if (span.getName().equals("EventHubs.message")) {
                 // TODO (srnagar): eventhubs should populate peer.address and message_bus.destination
-                String peerAddress = removeAttributeString(attributes, "peer.address");
-                String destination = removeAttributeString(attributes, "message_bus.destination");
+                String peerAddress = removeAttributeString(attributes, SemanticAttributes.PEER_SERVICE.getKey());
+                String destination = removeAttributeString(attributes,
+                    SemanticAttributes.MESSAGING_DESTINATION.getKey());
                 if (peerAddress != null) {
                     remoteDependencyData.setTarget(peerAddress + "/" + destination);
                 }
@@ -367,8 +369,8 @@ public final class AzureMonitorExporter implements SpanExporter {
         if (span.getName().equals("EventHubs.process")) {
             // TODO (srnagar): eventhubs should use CONSUMER instead of SERVER
             // (https://gist.github.com/lmolkova/e4215c0f44a49ef824983382762e6b92#opentelemetry-example-1)
-            String peerAddress = removeAttributeString(attributes, "peer.address");
-            String destination = removeAttributeString(attributes, "message_bus.destination");
+            String peerAddress = removeAttributeString(attributes, SemanticAttributes.PEER_SERVICE.getKey());
+            String destination = removeAttributeString(attributes, SemanticAttributes.MESSAGING_DESTINATION.getKey());
             requestData.setSource(peerAddress + "/" + destination);
         }
         requestData.setId(span.getSpanId());

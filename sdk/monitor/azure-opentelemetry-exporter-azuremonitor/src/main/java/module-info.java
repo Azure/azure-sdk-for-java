@@ -9,7 +9,7 @@ module com.azure.opentelemetry.exporter.azuremonitor {
     requires transitive io.opentelemetry.sdk.trace;
     requires transitive io.opentelemetry.sdk.common;
     requires transitive io.opentelemetry.api;
-    requires io.opentelemetry.semconv;
+    requires transitive io.opentelemetry.semconv;
 
     exports com.azure.opentelemetry.exporter.azuremonitor;
 
