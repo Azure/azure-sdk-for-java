@@ -35,7 +35,7 @@ public class ReceiveNamedSessionAsyncSample {
     }
 
     /**
-     * Method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
+     * This method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
      * Bus Queue.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.

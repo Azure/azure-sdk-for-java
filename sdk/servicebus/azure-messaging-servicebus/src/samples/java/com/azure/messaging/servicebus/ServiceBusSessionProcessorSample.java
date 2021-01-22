@@ -26,7 +26,7 @@ public class ServiceBusSessionProcessorSample {
     }
 
     /**
-     * Main method to start the sample application.
+     * This method to start the sample application.
      * @throws InterruptedException If the application is interrupted.
      */
     @Test

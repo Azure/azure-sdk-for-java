@@ -36,7 +36,7 @@ public class ReceiveSingleSessionAsyncSample {
     }
 
     /**
-     * Method to invoke this demo on how to receive messages from the first available session in a Service Bus
+     * This method to invoke this demo on how to receive messages from the first available session in a Service Bus
      * topic subscription.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.

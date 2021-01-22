@@ -30,7 +30,7 @@ public class SendMessageAsyncSample {
     }
 
     /**
-     * Method to invoke this demo on how to send an {@link ServiceBusMessageBatch} to an Azure Service Bus.
+     * This method to invoke this demo on how to send an {@link ServiceBusMessageBatch} to an Azure Service Bus.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */

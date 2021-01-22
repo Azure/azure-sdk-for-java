@@ -41,7 +41,7 @@ public class ReceiveMessageAndSettleAsyncSample {
     }
 
     /**
-     * Main method to invoke this demo on how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus
+     * This method to invoke this demo on how to receive an {@link ServiceBusReceivedMessage} from an Azure Service Bus
      * Queue.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the receive to complete.

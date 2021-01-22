@@ -37,7 +37,7 @@ public class SendSessionMessageAsyncSample {
     }
 
     /**
-     * Main method to invoke this demo on how to send and receive a {@link ServiceBusMessage} to and from a
+     * This method to invoke this demo on how to send and receive a {@link ServiceBusMessage} to and from a
      * session-enabled Azure Service Bus queue.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.

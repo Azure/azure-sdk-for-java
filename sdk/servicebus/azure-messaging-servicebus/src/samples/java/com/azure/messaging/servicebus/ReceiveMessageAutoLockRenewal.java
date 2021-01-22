@@ -33,7 +33,7 @@ public class ReceiveMessageAutoLockRenewal {
     }
 
     /**
-     * Method to invoke this demo on how to receive an {@link ServiceBusReceivedMessage} from Service Bus and
+     * This method to invoke this demo on how to receive an {@link ServiceBusReceivedMessage} from Service Bus and
      * automatically renew the message lock.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.

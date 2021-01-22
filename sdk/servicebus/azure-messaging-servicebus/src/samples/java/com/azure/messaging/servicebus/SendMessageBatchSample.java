@@ -29,7 +29,7 @@ public class SendMessageBatchSample {
     }
 
     /**
-     * Method to invoke this demo on how to send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
+     * This method to invoke this demo on how to send a {@link ServiceBusMessageBatch} to an Azure Service Bus Topic.
      */
     @Test
     public void run() {

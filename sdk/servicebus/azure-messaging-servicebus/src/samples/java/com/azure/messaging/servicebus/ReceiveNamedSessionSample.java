@@ -31,7 +31,7 @@ public class ReceiveNamedSessionSample {
     }
 
     /**
-     * Main method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
+     * This method to invoke this demo on how to receive messages from a session with id "greetings" in an Azure Service
      * Bus Queue.
      */
     @Test

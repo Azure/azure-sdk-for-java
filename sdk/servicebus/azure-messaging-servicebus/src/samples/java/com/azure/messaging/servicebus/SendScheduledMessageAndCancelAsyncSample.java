@@ -34,7 +34,7 @@ public class SendScheduledMessageAndCancelAsyncSample {
     }
 
     /**
-     * Main method to invoke this demo on how to schedule and then cancel a message to an Azure Service Bus queue.
+     * This method to invoke this demo on how to schedule and then cancel a message to an Azure Service Bus queue.
      *
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
