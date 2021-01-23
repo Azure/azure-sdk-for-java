@@ -60,7 +60,7 @@ public class ReadmeSamples {
             "your message",
             options /* Optional */);
 
-            System.out.println("MessageId: " + response.getMessageId());
+        System.out.println("MessageId: " + response.getMessageId());
 
     }
 
@@ -84,7 +84,7 @@ public class ReadmeSamples {
     }
 
     public void addATagForTheMessagesSent (SmsClient smsClient){
-        //Send an sms to multiple phone numbers
+        //Add a tag to your messages
         List<String> toMultiplePhones = new ArrayList<String>();
         toMultiplePhones.add("<to-phone-number1>");
         toMultiplePhones.add("<to-phone-number2>");

@@ -63,7 +63,7 @@ public final class SmsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SendSmsResponseItem> send(String from, String to, String message,
-                                                      SendSmsOptions smsOptions) {
+                                          SendSmsOptions smsOptions) {
         return null;
     }
 
@@ -94,7 +94,7 @@ public final class SmsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedFlux<SendSmsResponseItem> send(String from, List<String> to, String message,
-                                                      SendSmsOptions smsOptions) {
+                                               SendSmsOptions smsOptions) {
 
 
         return null;
@@ -113,14 +113,14 @@ public final class SmsAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedFlux<SendSmsResponseItem> sendWithContext(PhoneNumber from, List<String> to, String message,
-                                                      SendSmsOptions smsOptions, Context context) {
+                                                          SendSmsOptions smsOptions, Context context) {
 
 
-       return null;
+        return null;
     }
 
     private SendMessageRequest createSmsMessageRequest(String from, List<PhoneNumber> to, String message,
-        SendSmsOptions smsOptions) {
+                                                       SendSmsOptions smsOptions) {
         Stream<String> s = to.stream().map(n -> n.getValue());
         SendMessageRequest sendMessageRequest = new SendMessageRequest();
         sendMessageRequest.setFrom(from)

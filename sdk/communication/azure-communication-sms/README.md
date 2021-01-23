@@ -81,18 +81,18 @@ properties such as the message id with the `response.getMessageId()` function.
 
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L50-L63 -->
 ```java
-nd an sms to only one phone number
-ng to = "<to-phone-number>";
+//Send an sms to only one phone number
+String to = "<to-phone-number>";
 
-endSmsOptions is an optional field.
-s
+// SendSmsOptions is an optional field.
+//sms
 
-end the message to a list of  phone Numbers and check the response for a messages ids
-SmsResponseItem response = smsClient.send(
-"<leased-phone-number>",
-to,
-"your message",
-options /* Optional */);
+// Send the message to a list of  phone Numbers and check the response for a messages ids
+SendSmsResponseItem response = smsClient.send(
+    "<leased-phone-number>",
+    to,
+    "your message",
+    options /* Optional */);
 
 System.out.println("MessageId: " + response.getMessageId());
 ```
@@ -125,7 +125,7 @@ for (SendSmsResponseItem messageResponseItem
 Yo can use the tag property in the `SendSmsOptions` object to indentify the messages by a certain tag.
 <!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L87-L105 -->
 ```java
-//Send an sms to multiple phone numbers
+//Add a tag to your messages
 List<String> toMultiplePhones = new ArrayList<String>();
 toMultiplePhones.add("<to-phone-number1>");
 toMultiplePhones.add("<to-phone-number2>");

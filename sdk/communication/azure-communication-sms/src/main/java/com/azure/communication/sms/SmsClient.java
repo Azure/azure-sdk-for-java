@@ -56,7 +56,7 @@ public final class SmsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SendSmsResponseItem send(String from, String to, String message,
-                                                      SendSmsOptions smsOptions) {
+                                    SendSmsOptions smsOptions) {
         return null;
     }
 
@@ -87,7 +87,7 @@ public final class SmsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedIterable<SendSmsResponseItem> send(String from, List<String> to, String message,
-                                                      SendSmsOptions smsOptions) {
+                                                   SendSmsOptions smsOptions) {
 
 
         return null;
@@ -106,7 +106,7 @@ public final class SmsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedIterable<SendSmsResponseItem> sendWithContext(String from, List<String> to, String message,
-                                                                 SendSmsOptions smsOptions, Context context) {
+                                                              SendSmsOptions smsOptions, Context context) {
 
 
         return null;
