@@ -31,7 +31,7 @@ import java.util.Objects;
 /**
  * SmsClientBuilder that creates SmsAsyncClient and SmsClient.
  */
-@ServiceClientBuilder(serviceClients = {SmsClient.class, SmsAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { SmsClient.class, SmsAsyncClient.class })
 public final class SmsClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
@@ -62,8 +62,8 @@ public final class SmsClientBuilder {
     /**
      * Set endpoint of the service
      *
-     * @param pipeline HttpPipeline to use, if a pipeline is not
-     * supplied, the credential and httpClient fields must be set
+     * @param pipeline HttpPipeline to use, if a pipeline is not supplied, the
+     *                 credential and httpClient fields must be set
      * @return SmsClientBuilder
      */
     public SmsClientBuilder pipeline(HttpPipeline pipeline) {
@@ -86,7 +86,8 @@ public final class SmsClientBuilder {
     /**
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
-     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP
+     *                        requests.
      * @return The updated {@link SmsClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
@@ -95,10 +96,11 @@ public final class SmsClientBuilder {
         return this;
     }
 
-     /**
+    /**
      * Set endpoint and credential to use
      *
-     * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
+     * @param connectionString connection string for setting endpoint and
+     *                         initalizing AzureKeyCredential
      * @return SmsClientBuilder
      */
     public SmsClientBuilder connectionString(String connectionString) {
@@ -106,18 +108,14 @@ public final class SmsClientBuilder {
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
-        this
-            .endpoint(endpoint)
-            .accessKey(accessKey);
+        this.endpoint(endpoint).accessKey(accessKey);
         return this;
     }
-
 
     /**
      * Set httpClient to use
      *
-     * @param httpClient httpClient to use, overridden by the pipeline
-     * field.
+     * @param httpClient httpClient to use, overridden by the pipeline field.
      * @return SmsClientBuilder
      */
     public SmsClientBuilder httpClient(HttpClient httpClient) {
@@ -129,7 +127,8 @@ public final class SmsClientBuilder {
      * Apply additional HttpPipelinePolicy
      *
      * @param customPolicy HttpPipelinePolicy object to be applied after
-     *                       AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
+     *                     AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy,
+     *                     and CookiePolicy
      * @return SmsClientBuilder
      */
     public SmsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -138,9 +137,9 @@ public final class SmsClientBuilder {
     }
 
     /**
-     * Create asynchronous client applying HMACAuthenticationPolicy, UserAgentPolicy,
-     * RetryPolicy, and CookiePolicy.
-     * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     * Create asynchronous client applying HMACAuthenticationPolicy,
+     * UserAgentPolicy, RetryPolicy, and CookiePolicy. Additional HttpPolicies
+     * specified by additionalPolicies will be applied after them
      *
      * @return SmsAsyncClient instance
      */
@@ -150,8 +149,8 @@ public final class SmsClientBuilder {
 
     /**
      * Create synchronous client applying HmacAuthenticationPolicy, UserAgentPolicy,
-     * RetryPolicy, and CookiePolicy.
-     * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     * RetryPolicy, and CookiePolicy. Additional HttpPolicies specified by
+     * additionalPolicies will be applied after them
      *
      * @return SmsClient instance
      */
@@ -174,14 +173,11 @@ public final class SmsClientBuilder {
                 customPolicyArray = customPolicies.toArray(customPolicyArray);
             }
 
-            builderPipeline = createHttpPipeline(httpClient,
-                createHttpPipelineAuthPolicy(),
-                customPolicyArray);
+            builderPipeline = createHttpPipeline(httpClient, createHttpPipelineAuthPolicy(), customPolicyArray);
         }
 
         AzureCommunicationSMSServiceImplBuilder clientBuilder = new AzureCommunicationSMSServiceImplBuilder();
-        clientBuilder.endpoint(endpoint)
-            .pipeline(builderPipeline);
+        clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
 
         return clientBuilder.buildClient();
     }
@@ -189,23 +185,21 @@ public final class SmsClientBuilder {
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
         if (this.tokenCredential != null && this.accessKeyCredential != null) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
+                    new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
         }
         if (this.tokenCredential != null) {
-            return new BearerTokenAuthenticationPolicy(
-                this.tokenCredential, "https://communication.azure.com//.default");
+            return new BearerTokenAuthenticationPolicy(this.tokenCredential,
+                    "https://communication.azure.com//.default");
         } else if (this.accessKeyCredential != null) {
             return new HmacAuthenticationPolicy(this.accessKeyCredential);
         } else {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Missing credential information while building a client."));
+                    new IllegalArgumentException("Missing credential information while building a client."));
         }
     }
 
-
-    private HttpPipeline createHttpPipeline(HttpClient httpClient,
-                                            HttpPipelinePolicy authorizationPolicy,
-                                            HttpPipelinePolicy[] additionalPolicies) {
+    private HttpPipeline createHttpPipeline(HttpClient httpClient, HttpPipelinePolicy authorizationPolicy,
+            HttpPipelinePolicy[] additionalPolicies) {
 
         HttpPipelinePolicy[] policies = new HttpPipelinePolicy[4];
         if (additionalPolicies != null) {
@@ -215,10 +209,7 @@ public final class SmsClientBuilder {
         policies[0] = authorizationPolicy;
         applyRequirePolicies(policies);
 
-        return new HttpPipelineBuilder()
-            .policies(policies)
-            .httpClient(httpClient)
-            .build();
+        return new HttpPipelineBuilder().policies(policies).httpClient(httpClient).build();
     }
 
     private void applyRequirePolicies(HttpPipelinePolicy[] policies) {
@@ -230,8 +221,7 @@ public final class SmsClientBuilder {
         policies[3] = new CookiePolicy();
     }
 
-    private void applyAdditionalPolicies(HttpPipelinePolicy[] policies,
-                                         HttpPipelinePolicy[] customPolicies) {
+    private void applyAdditionalPolicies(HttpPipelinePolicy[] policies, HttpPipelinePolicy[] customPolicies) {
         for (int i = 0; i < customPolicies.length; i++) {
             policies[4 + i] = customPolicies[i];
 

@@ -30,12 +30,13 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Builder for creating clients of Communication Service phone number configuration
+ * Builder for creating clients of Communication Service phone number
+ * configuration
  */
-@ServiceClientBuilder(serviceClients = {PhoneNumberClient.class, PhoneNumberAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { PhoneNumberClient.class, PhoneNumberAsyncClient.class })
 public final class PhoneNumberClientBuilder {
-    private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-communication-administration.properties");
+    private static final Map<String, String> PROPERTIES = CoreUtils
+            .getProperties("azure-communication-administration.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -92,9 +93,13 @@ public final class PhoneNumberClientBuilder {
     /**
      * Sets the logging configuration for HTTP requests and responses.
      *
-     * <p> If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.</p>
+     * <p>
+     * If logLevel is not provided, default value of {@link HttpLogDetailLevel#NONE}
+     * is set.
+     * </p>
      *
-     * @param httpLogOptions The logging configuration to use when sending and receiving HTTP requests/responses.
+     * @param httpLogOptions The logging configuration to use when sending and
+     *                       receiving HTTP requests/responses.
      * @return the updated {@link PhoneNumberClientBuilder} object.
      */
     public PhoneNumberClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -118,7 +123,8 @@ public final class PhoneNumberClientBuilder {
     /**
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
-     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
+     * @param tokenCredential {@link TokenCredential} used to authenticate HTTP
+     *                        requests.
      * @return The updated {@link PhoneNumberClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
@@ -127,11 +133,11 @@ public final class PhoneNumberClientBuilder {
         return this;
     }
 
-
     /**
      * Set the endpoint and AzureKeyCredential for authorization
      *
-     * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
+     * @param connectionString connection string for setting endpoint and
+     *                         initalizing AzureKeyCredential
      * @return The updated {@link PhoneNumberClientBuilder} object.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
@@ -140,16 +146,16 @@ public final class PhoneNumberClientBuilder {
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
-        this
-            .endpoint(endpoint)
-            .accessKey(accessKey);
+        this.endpoint(endpoint).accessKey(accessKey);
         return this;
     }
 
     /**
-     * Sets the configuration object used to retrieve environment configuration values during building of the client.
+     * Sets the configuration object used to retrieve environment configuration
+     * values during building of the client.
      *
-     * @param configuration Configuration store used to retrieve environment configurations.
+     * @param configuration Configuration store used to retrieve environment
+     *                      configurations.
      * @return The updated {@link PhoneNumberClientBuilder} object.
      */
     public PhoneNumberClientBuilder configuration(Configuration configuration) {
@@ -158,7 +164,8 @@ public final class PhoneNumberClientBuilder {
     }
 
     /**
-     * Adds a policy to the set of existing policies that are executed after required policies.
+     * Adds a policy to the set of existing policies that are executed after
+     * required policies.
      *
      * @param policy The retry policy for service requests.
      * @return The updated {@link PhoneNumberClientBuilder} object.
@@ -170,13 +177,17 @@ public final class PhoneNumberClientBuilder {
     }
 
     /**
-     * Sets the {@link PhoneNumberServiceVersion} that is used when making API requests.
+     * Sets the {@link PhoneNumberServiceVersion} that is used when making API
+     * requests.
      * <p>
-     * If a service version is not provided, the service version that will be used will be the latest known service
-     * version based on the version of the client library being used. If no service version is specified, updating to a
-     * newer version the client library will have the result of potentially moving to a newer service version.
+     * If a service version is not provided, the service version that will be used
+     * will be the latest known service version based on the version of the client
+     * library being used. If no service version is specified, updating to a newer
+     * version the client library will have the result of potentially moving to a
+     * newer service version.
      *
-     * @param version {@link PhoneNumberServiceVersion} of the service to be used when making requests.
+     * @param version {@link PhoneNumberServiceVersion} of the service to be used
+     *                when making requests.
      * @return The updated {@link PhoneNumberClientBuilder} object.
      */
     public PhoneNumberClientBuilder serviceVersion(PhoneNumberServiceVersion version) {
@@ -186,8 +197,8 @@ public final class PhoneNumberClientBuilder {
 
     /**
      * Create synchronous client applying CommunicationClientCredentialPolicy,
-     * UserAgentPolicy, RetryPolicy, and CookiePolicy.
-     * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     * UserAgentPolicy, RetryPolicy, and CookiePolicy. Additional HttpPolicies
+     * specified by additionalPolicies will be applied after them
      *
      * @return {@link PhoneNumberClient} instance
      */
@@ -197,8 +208,8 @@ public final class PhoneNumberClientBuilder {
 
     /**
      * Create asynchronous client applying CommunicationClientCredentialPolicy,
-     * UserAgentPolicy, RetryPolicy, and CookiePolicy.
-     * Additional HttpPolicies specified by additionalPolicies will be applied after them
+     * UserAgentPolicy, RetryPolicy, and CookiePolicy. Additional HttpPolicies
+     * specified by additionalPolicies will be applied after them
      *
      * @return {@link PhoneNumberAsyncClient} instance
      */
@@ -219,21 +230,21 @@ public final class PhoneNumberClientBuilder {
     HttpPipelinePolicy createAuthenticationPolicy() {
         if (this.tokenCredential != null && this.azureKeyCredential != null) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
+                    new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
         }
         if (this.tokenCredential != null) {
-            return new BearerTokenAuthenticationPolicy(
-                this.tokenCredential, "https://communication.azure.com//.default");
+            return new BearerTokenAuthenticationPolicy(this.tokenCredential,
+                    "https://communication.azure.com//.default");
         } else if (this.azureKeyCredential != null) {
             return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
             throw logger.logExceptionAsError(
-                new NullPointerException("Missing credential information while building a client."));
+                    new NullPointerException("Missing credential information while building a client."));
         }
     }
 
-    UserAgentPolicy createUserAgentPolicy(
-        String applicationId, String sdkName, String sdkVersion, Configuration configuration) {
+    UserAgentPolicy createUserAgentPolicy(String applicationId, String sdkName, String sdkVersion,
+            Configuration configuration) {
         return new UserAgentPolicy(applicationId, sdkName, sdkVersion, configuration);
     }
 
@@ -263,10 +274,7 @@ public final class PhoneNumberClientBuilder {
 
     private PhoneNumberAdminClientImpl createPhoneNumberAdminClient() {
         PhoneNumberAdminClientImplBuilder clientBuilder = new PhoneNumberAdminClientImplBuilder();
-        return clientBuilder
-            .endpoint(this.endpoint)
-            .pipeline(this.createHttpPipeline())
-            .buildClient();
+        return clientBuilder.endpoint(this.endpoint).pipeline(this.createHttpPipeline()).buildClient();
     }
 
     private HttpPipeline createHttpPipeline() {
@@ -278,12 +286,8 @@ public final class PhoneNumberClientBuilder {
 
         // Add required policies
         policyList.add(this.createAuthenticationPolicy());
-        policyList.add(this.createUserAgentPolicy(
-            this.getHttpLogOptions().getApplicationId(),
-            PROPERTIES.get(SDK_NAME),
-            PROPERTIES.get(SDK_VERSION),
-            this.configuration
-        ));
+        policyList.add(this.createUserAgentPolicy(this.getHttpLogOptions().getApplicationId(), PROPERTIES.get(SDK_NAME),
+                PROPERTIES.get(SDK_VERSION), this.configuration));
         policyList.add(this.createRetryPolicy());
         policyList.add(this.createCookiePolicy());
 
@@ -295,10 +299,8 @@ public final class PhoneNumberClientBuilder {
         // Add logging policy
         policyList.add(this.createHttpLoggingPolicy(this.getHttpLogOptions()));
 
-        return new HttpPipelineBuilder()
-            .policies(policyList.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(this.httpClient)
-            .build();
+        return new HttpPipelineBuilder().policies(policyList.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(this.httpClient).build();
     }
 
     private HttpLogOptions getHttpLogOptions() {

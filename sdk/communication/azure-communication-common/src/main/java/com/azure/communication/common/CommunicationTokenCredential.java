@@ -39,17 +39,17 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      *
      * @param token serialized JWT token
      */
-    public CommunicationTokenCredential(String token) {
-        Objects.requireNonNull(token, "'token' cannot be null.");
-        setToken(token);
+    public CommunicationTokenCredential(String initialToken) {
+        Objects.requireNonNull(initialToken, "'initialToken' cannot be null.");
+        setToken(initialToken);
     }
 
     /**
-     * Create with tokenRefreshOptions, which includes a token supplier and optional serialized JWT token.
-     * If refresh proactively is true, callback function tokenRefresher will be called
-     * ahead of the token expiry by the number of minutes specified by
-     * CallbackOffsetMinutes defaulted to ten minutes. To modify this default, call
-     * setCallbackOffsetMinutes after construction
+     * Create with tokenRefreshOptions, which includes a token supplier and optional
+     * serialized JWT token. If refresh proactively is true, callback function
+     * tokenRefresher will be called ahead of the token expiry by the number of
+     * minutes specified by CallbackOffsetMinutes defaulted to ten minutes. To
+     * modify this default, call setCallbackOffsetMinutes after construction
      *
      * @param tokenRefreshOptions implementation to supply fresh token when reqested
      */
@@ -70,23 +70,22 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      * Get Azure core access token from credential
      *
      * @return Asynchronous call to fetch actual token
-     * @throws ExecutionException when supplier throws this exception
+     * @throws ExecutionException   when supplier throws this exception
      * @throws InterruptedException when supplier throws this exception
      */
     public Mono<AccessToken> getToken() throws InterruptedException, ExecutionException {
         if (isClosed) {
             return FluxUtil.monoError(logger,
-                new RuntimeException("getToken called on closed CommunicationTokenCredential object"));
+                    new RuntimeException("getToken called on closed CommunicationTokenCredential object"));
         }
         if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
             synchronized (this) {
                 // no valid token to return and can refresh
                 if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
-                    return fetchFreshToken()
-                        .map(token -> {
-                            accessToken = tokenParser.parseJWTToken(token);
-                            return accessToken;
-                        });
+                    return fetchFreshToken().map(token -> {
+                        accessToken = tokenParser.parseJWTToken(token);
+                        return accessToken;
+                    });
                 }
             }
         }
@@ -121,7 +120,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         Mono<String> tokenAsync = refresher.getTokenAsync();
         if (tokenAsync == null) {
             return FluxUtil.monoError(logger,
-                new RuntimeException("TokenRefresher returned null when getTokenAsync is called"));
+                    new RuntimeException("TokenRefresher returned null when getTokenAsync is called"));
         }
         return tokenAsync;
     }
@@ -131,8 +130,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         private Timer expiringTimer;
         private OffsetDateTime nextFetchTime;
 
-        FetchingTask(CommunicationTokenCredential tokenHost,
-            OffsetDateTime nextFetchAt) {
+        FetchingTask(CommunicationTokenCredential tokenHost, OffsetDateTime nextFetchAt) {
             host = tokenHost;
             nextFetchTime = nextFetchAt;
             startTimer();

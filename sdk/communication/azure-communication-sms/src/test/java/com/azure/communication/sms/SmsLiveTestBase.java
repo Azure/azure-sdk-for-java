@@ -27,23 +27,23 @@ public class SmsLiveTestBase extends TestBase {
 
     protected static final String DEFAULT_ACCESS_KEY = "VGhpcyBpcyBhIHRlc3Q="; // Base64 encoded "This is a test"
     static final TestMode TEST_MODE = initializeTestMode();
-    static final String PHONENUMBER = Configuration.getGlobalConfiguration()
-        .get("SMS_SERVICE_PHONE_NUMBER", "+18005555555");
+    static final String PHONENUMBER = Configuration.getGlobalConfiguration().get("SMS_SERVICE_PHONE_NUMBER",
+            "+18005555555");
 
-    static final String ACCESSKEY = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ACCESS_KEY", DEFAULT_ACCESS_KEY);
+    static final String ACCESSKEY = Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ACCESS_KEY",
+            DEFAULT_ACCESS_KEY);
 
-    static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
+    static final String ENDPOINT = Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT",
+            "https://REDACTED.communication.azure.com");
 
-    static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_LIVETEST_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
+    static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
+            "COMMUNICATION_LIVETEST_CONNECTION_STRING",
+            "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
 
     protected SmsClientBuilder getSmsClientBuilder(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
 
-        builder.endpoint(ENDPOINT)
-                .accessKey(ACCESSKEY)
+        builder.endpoint(ENDPOINT).accessKey(ACCESSKEY)
                 .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
@@ -55,11 +55,6 @@ public class SmsLiveTestBase extends TestBase {
 
     protected SmsClientBuilder getSmsClientBuilderWithManagedIdentity(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
-        String livetestEndpoint = new CommunicationConnectionString(CONNECTION_STRING).getEndpoint();
-
-        builder.endpoint(livetestEndpoint)
-               .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
-
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
         } else {
@@ -76,9 +71,8 @@ public class SmsLiveTestBase extends TestBase {
     protected SmsClientBuilder getSmsClientBuilderWithConnectionString(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
 
-        builder
-            .connectionString(CONNECTION_STRING)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        builder.connectionString(CONNECTION_STRING)
+                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
