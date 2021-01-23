@@ -6,7 +6,7 @@ package com.azure.communication.chat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.azure.communication.administration.CommunicationIdentityClientBuilder;
+import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.chat.models.ErrorException;
 import com.azure.communication.chat.models.*;
 import com.azure.communication.common.CommunicationTokenCredential;

@@ -22,50 +22,8 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ReadmeSamples {
-    /**
-     * Sample code for creating a sync Communication Identity Client.
-     *
-     * @return the Communication Identity Client.
-     */
-    public CommunicationIdentityClient createCommunicationIdentityClient() {
-        // You can find your endpoint and access key from your resource in the Azure Portal
-        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-        String accessKey = "SECRET";
-
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
-        CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
-            .endpoint(endpoint)
-            .accessKey(accessKey)
-            .httpClient(httpClient)
-            .buildClient();
-
-        return communicationIdentityClient;
-    }
-
-    /**
-     * Sample code for creating a sync Communication Identity Client using connection string.
-     *
-     * @return the Communication Identity Client.
-     */
-    public CommunicationIdentityClient createCommunicationIdentityClientWithConnectionString() {
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
-        // Your can find your connection string from your resource in the Azure Portal
-        String connectionString = "<connection_string>";
-
-        CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
-            .connectionString(connectionString)
-            .httpClient(httpClient)
-            .buildClient();
-
-        return communicationIdentityClient;
-    }
 
     /**
      * Sample code for creating a sync Phone Number Client.
