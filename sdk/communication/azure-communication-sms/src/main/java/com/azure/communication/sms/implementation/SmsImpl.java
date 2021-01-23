@@ -5,11 +5,16 @@
 package com.azure.communication.sms.implementation;
 
 import com.azure.communication.sms.models.SendMessageRequest;
-import com.azure.communication.sms.models.SendSmsResponse;
+import com.azure.communication.sms.models.SendSmsResponseItem;
+import com.azure.communication.sms.models.SmsSendNextResponse;
+import com.azure.communication.sms.models.SmsSendResponse;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -17,7 +22,10 @@ import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -49,119 +57,254 @@ public final class SmsImpl {
     @ServiceInterface(name = "AzureCommunicationSM")
     private interface SmsService {
         @Post("/sms")
-        @ExpectedResponses({200})
+        @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<SendSmsResponse>> send(
+        Mono<SmsSendResponse> send(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
                 @BodyParam("application/json") SendMessageRequest sendMessageRequest,
                 Context context);
+
+        @Get("{nextLink}")
+        @ExpectedResponses({202})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<SmsSendNextResponse> sendNext(
+                @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
+     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
+     *     UUID (GUID), identifier for the request.
+     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
+     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
+     *     26 Mar 2019 16:06:51 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful send Sms request.
+     * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendSmsResponse>> sendWithResponseAsync(SendMessageRequest sendMessageRequest) {
+    public Mono<PagedResponse<SendSmsResponseItem>> sendSinglePageAsync(
+            SendMessageRequest sendMessageRequest, String repeatabilityRequestId, String repeatabilityFirstSent) {
         return FluxUtil.withContext(
-                context ->
-                        service.send(
-                                this.client.getEndpoint(), this.client.getApiVersion(), sendMessageRequest, context));
+                        context ->
+                                service.send(
+                                        this.client.getEndpoint(),
+                                        this.client.getApiVersion(),
+                                        repeatabilityRequestId,
+                                        repeatabilityFirstSent,
+                                        sendMessageRequest,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        res.getDeserializedHeaders()));
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
+     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
+     *     UUID (GUID), identifier for the request.
+     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
+     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
+     *     26 Mar 2019 16:06:51 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful send Sms request.
+     * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SendSmsResponse>> sendWithResponseAsync(
-            SendMessageRequest sendMessageRequest, Context context) {
-        return service.send(this.client.getEndpoint(), this.client.getApiVersion(), sendMessageRequest, context);
+    public Mono<PagedResponse<SendSmsResponseItem>> sendSinglePageAsync(
+            SendMessageRequest sendMessageRequest,
+            String repeatabilityRequestId,
+            String repeatabilityFirstSent,
+            Context context) {
+        return service.send(
+                        this.client.getEndpoint(),
+                        this.client.getApiVersion(),
+                        repeatabilityRequestId,
+                        repeatabilityFirstSent,
+                        sendMessageRequest,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        res.getDeserializedHeaders()));
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
+     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
+     *     UUID (GUID), identifier for the request.
+     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
+     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
+     *     26 Mar 2019 16:06:51 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful send Sms request.
+     * @return response for a successful or multi status send Sms request.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendAsync(SendMessageRequest sendMessageRequest) {
-        return sendWithResponseAsync(sendMessageRequest)
-                .flatMap(
-                        (Response<SendSmsResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SendSmsResponseItem> sendAsync(
+            SendMessageRequest sendMessageRequest, String repeatabilityRequestId, String repeatabilityFirstSent) {
+        return new PagedFlux<>(
+                () -> sendSinglePageAsync(sendMessageRequest, repeatabilityRequestId, repeatabilityFirstSent),
+                nextLink -> sendNextSinglePageAsync(nextLink));
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
+     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
+     *     UUID (GUID), identifier for the request.
+     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
+     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
+     *     26 Mar 2019 16:06:51 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful send Sms request.
+     * @return response for a successful or multi status send Sms request.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendAsync(SendMessageRequest sendMessageRequest, Context context) {
-        return sendWithResponseAsync(sendMessageRequest, context)
-                .flatMap(
-                        (Response<SendSmsResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SendSmsResponseItem> sendAsync(
+            SendMessageRequest sendMessageRequest,
+            String repeatabilityRequestId,
+            String repeatabilityFirstSent,
+            Context context) {
+        return new PagedFlux<>(
+                () -> sendSinglePageAsync(sendMessageRequest, repeatabilityRequestId, repeatabilityFirstSent, context),
+                nextLink -> sendNextSinglePageAsync(nextLink));
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
+     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
+     *     UUID (GUID), identifier for the request.
+     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
+     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
+     *     26 Mar 2019 16:06:51 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful send Sms request.
+     * @return response for a successful or multi status send Sms request.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendSmsResponse send(SendMessageRequest sendMessageRequest) {
-        return sendAsync(sendMessageRequest).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SendSmsResponseItem> send(
+            SendMessageRequest sendMessageRequest, String repeatabilityRequestId, String repeatabilityFirstSent) {
+        return new PagedIterable<>(sendAsync(sendMessageRequest, repeatabilityRequestId, repeatabilityFirstSent));
     }
 
     /**
      * Sends a SMS message from a phone number that belongs to the authenticated account.
      *
      * @param sendMessageRequest Represents the properties of a send message request.
+     * @param repeatabilityRequestId If specified, the client directs that the request is repeatable; that is, the
+     *     client can make the request multiple times with the same Repeatability-Request-ID and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-ID
+     *     is an opaque string representing a client-generated, 36-character hexadecimal case-insensitive encoding of a
+     *     UUID (GUID), identifier for the request.
+     * @param repeatabilityFirstSent MUST be sent by clients to specify that a request is repeatable.
+     *     Repeatability-First-Sent is used to specify the date and time at which the request was first created.eg- Tue,
+     *     26 Mar 2019 16:06:51 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for a successful send Sms request.
+     * @return response for a successful or multi status send Sms request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<SendSmsResponseItem> send(
+            SendMessageRequest sendMessageRequest,
+            String repeatabilityRequestId,
+            String repeatabilityFirstSent,
+            Context context) {
+        return new PagedIterable<>(
+                sendAsync(sendMessageRequest, repeatabilityRequestId, repeatabilityFirstSent, context));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendSmsResponse send(SendMessageRequest sendMessageRequest, Context context) {
-        return sendAsync(sendMessageRequest, context).block();
+    public Mono<PagedResponse<SendSmsResponseItem>> sendNextSinglePageAsync(String nextLink) {
+        return FluxUtil.withContext(context -> service.sendNext(nextLink, context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        res.getDeserializedHeaders()));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for a successful or multi status send Sms request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<SendSmsResponseItem>> sendNextSinglePageAsync(String nextLink, Context context) {
+        return service.sendNext(nextLink, context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        res.getValue().getNextLink(),
+                                        res.getDeserializedHeaders()));
     }
 }
