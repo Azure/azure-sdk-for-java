@@ -9,9 +9,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.azure.communication.administration.CommunicationIdentityClient;
-import com.azure.communication.administration.models.CommunicationUserToken;
-import com.azure.communication.administration.models.CommunicationIdentityTokenScope;
+import com.azure.communication.identity.CommunicationIdentityClient;
+import com.azure.communication.identity.models.CommunicationUserToken;
+import com.azure.communication.identity.models.CommunicationIdentityTokenScope;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
