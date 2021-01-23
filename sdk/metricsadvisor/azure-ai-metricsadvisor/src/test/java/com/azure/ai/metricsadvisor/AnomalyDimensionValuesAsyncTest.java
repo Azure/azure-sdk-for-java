@@ -18,7 +18,7 @@ import java.time.Duration;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
-public final class ValuesOfDimensionWithAnomaliesAsyncTest extends ValuesOfDimensionWithAnomaliesTestBase {
+public final class AnomalyDimensionValuesAsyncTest extends AnomalyDimensionValuesTestBase {
     @BeforeAll
     static void beforeAll() {
         TestBase.setupClass();
@@ -32,22 +32,22 @@ public final class ValuesOfDimensionWithAnomaliesAsyncTest extends ValuesOfDimen
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void listValuesOfDimensionWithAnomalies(HttpClient httpClient,
-                                                   MetricsAdvisorServiceVersion serviceVersion) {
+    public void listAnomalyDimensionValues(HttpClient httpClient,
+                                           MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
 
-        PagedFlux<String> dimensionValuesFlux = client.listDimensionValuesWithAnomalies(
-            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.detectionConfigurationId,
-            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.dimensionName,
-            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.startTime,
-            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.endTime,
-            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.options);
+        PagedFlux<String> dimensionValuesFlux = client.listAnomalyDimensionValues(
+            ListAnomalyDimensionValuesInput.INSTANCE.detectionConfigurationId,
+            ListAnomalyDimensionValuesInput.INSTANCE.dimensionName,
+            ListAnomalyDimensionValuesInput.INSTANCE.startTime,
+            ListAnomalyDimensionValuesInput.INSTANCE.endTime,
+            ListAnomalyDimensionValuesInput.INSTANCE.options);
 
         Assertions.assertNotNull(dimensionValuesFlux);
 
         StepVerifier.create(dimensionValuesFlux)
-            .assertNext(value -> assertListValuesOfDimensionWithAnomaliesOutput(value))
-            .expectNextCount(ListValuesOfDimensionWithAnomaliesOutput.INSTANCE.expectedValues - 1)
+            .assertNext(value -> assertListAnomalyDimensionValuesOutput(value))
+            .expectNextCount(ListAnomalyDimensionValuesOutput.INSTANCE.expectedValues - 1)
             .verifyComplete();
     }
 }
