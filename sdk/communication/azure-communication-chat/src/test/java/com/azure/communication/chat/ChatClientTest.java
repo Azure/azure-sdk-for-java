@@ -10,7 +10,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.azure.communication.administration.CommunicationIdentityClient;
-import com.azure.communication.administration.CommunicationUserToken;
+import com.azure.communication.administration.models.CommunicationUserToken;
+import com.azure.communication.administration.models.CommunicationIdentityTokenScope;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
@@ -52,7 +53,7 @@ public class ChatClientTest extends ChatClientTestBase {
         firstThreadMember = communicationClient.createUser();
         secondThreadMember = communicationClient.createUser();
 
-        List<String> scopes = new ArrayList<String>(Arrays.asList("chat"));
+        List<CommunicationIdentityTokenScope> scopes = new ArrayList<CommunicationIdentityTokenScope>(Arrays.asList(CommunicationIdentityTokenScope.fromString("chat")));
         CommunicationUserToken response = communicationClient.issueToken(firstThreadMember, scopes);
 
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
