@@ -5,14 +5,15 @@ package com.azure.communication.sms.samples.quickstart;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.azure.communication.common.PhoneNumberIdentifier;
+import com.azure.communication.common.PhoneNumber;
 import com.azure.communication.sms.SmsClient;
 import com.azure.communication.sms.SmsClientBuilder;
 import com.azure.communication.sms.models.SendSmsOptions;
-import com.azure.communication.sms.models.SendSmsResponse;
+
+import com.azure.communication.sms.models.SendSmsResponseItem;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.core.http.rest.PagedIterable;
 
 /**
  * Hello world!
@@ -39,26 +40,73 @@ public class ReadmeSamples {
         // Build a new SmsClient
         SmsClient smsClient = smsClientBuilder.buildClient();
 
-        // Currently Sms services only supports one phone number
-        List<PhoneNumberIdentifier> to = new ArrayList<PhoneNumberIdentifier>();
-        to.add(new PhoneNumberIdentifier("<to-phone-number>"));
-
-        // SendSmsOptions is an optional field. It can be used
         // to enable a delivery report to the Azure Event Grid
         SendSmsOptions options = new SendSmsOptions();
         options.setEnableDeliveryReport(true);
 
-        // Send the message and check the response for a message id
-        SendSmsResponse response = smsClient.sendMessage(
-            new PhoneNumberIdentifier("<leased-phone-number>"), 
-            to, 
+    }
+
+    public void sendMessageToOneRecipient (SmsClient smsClient, SendSmsOptions options ){
+        //Send an sms to only one phone number
+        String to = "<to-phone-number>";
+
+        // SendSmsOptions is an optional field.
+        //sms
+
+        // Send the message to a list of  phone Numbers and check the response for a messages ids
+        SendSmsResponseItem response = smsClient.send(
+            "<leased-phone-number>",
+            to,
             "your message",
             options /* Optional */);
 
         System.out.println("MessageId: " + response.getMessageId());
+
     }
 
-    public void createSmsClienttWithConnectionString() {
+    public void sendMessageToMultipleRecipients (SmsClient smsClient, SendSmsOptions options){
+        //Send an sms to multiple phone numbers
+        List<String> toMultiplePhones = new ArrayList<String>();
+        toMultiplePhones.add("<to-phone-number1>");
+        toMultiplePhones.add("<to-phone-number2>");
+
+        // Send the message to a list of  phone Numbers and check the response for a messages ids
+        PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.send(
+            "<leased-phone-number>",
+            toMultiplePhones,
+            "your message",
+            options /* Optional */);
+
+        for (SendSmsResponseItem messageResponseItem
+            : responseMultiplePhones) {
+            System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
+        }
+    }
+
+    public void addATagForTheMessagesSent (SmsClient smsClient){
+        //Add a tag to your messages
+        List<String> toMultiplePhones = new ArrayList<String>();
+        toMultiplePhones.add("<to-phone-number1>");
+        toMultiplePhones.add("<to-phone-number2>");
+
+        SendSmsOptions options = new SendSmsOptions();
+        options.setTag("Tag");
+
+        // Send the message to a list of  phone Numbers and check the response for a messages ids
+        PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.send(
+            "<leased-phone-number>",
+            toMultiplePhones,
+            "your message",
+            options /* Optional */);
+
+        for (SendSmsResponseItem messageResponseItem
+            : responseMultiplePhones) {
+            System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
+        }
+    }
+
+
+    public void createCommunicationIdentityClientWithConnectionString() {
         // Create an HttpClient builder of your choice and customize it
         HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
 
@@ -69,26 +117,5 @@ public class ReadmeSamples {
             .connectionString(connectionString)
             .httpClient(httpClient)
             .buildClient();
-    }
-
-    /**
-     * Sample code for creating a sync Communication Identity Client using AAD authentication.
-     *
-     * @return the Communication Identity Client.
-     */
-    public SmsClient createCommunicationIdentityClientWithAAD() {
-        // You can find your endpoint and access key from your resource in the Azure Portal
-        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
-        SmsClient smsClient = new SmsClientBuilder()
-            .endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .httpClient(httpClient)
-            .buildClient();
-
-        return smsClient;
     }
 }
