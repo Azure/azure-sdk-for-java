@@ -12,18 +12,25 @@ import java.nio.channels.NonReadableChannelException;
 import java.nio.channels.NonWritableChannelException;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileAttribute;
+import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A byte channel that maintains a current position.
  * <p>
  * This type is primarily offered to support some jdk convenience methods such as
- * {@link Files#createFile(Path, FileAttribute[])} which requires opening a channel and closing it. A very limited set
- * of functionality is offered here. More specifically, only reads--no writes or seeks--are supported.
+ * {@link Files#createFile(Path, FileAttribute[])} which requires opening a channel and closing it. A channel may only
+ * be opened in read mode OR write mode. It may not be opened in read/write mode. Seeking is supported for reads, but
+ * not for writes. Modifications to existing files is not permitted--only creating new files or overwriting existing
+ * files.
  * <p>
- * {@link NioBlobInputStream} and {@link NioBlobOutputStream} are the preferred types for reading and writing blob data.
+ * This type is not threadsafe to prevent having to hold locks across network calls.
+ * <p>
+ * {@link NioBlobInputStream} and {@link NioBlobOutputStream} are the preferred types for reading and writing blob data
+ * and are used internally by this type.
  */
 public class AzureSeekableByteChannel implements SeekableByteChannel {
     private final ClientLogger logger = new ClientLogger(AzureSeekableByteChannel.class);
@@ -32,73 +39,67 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
     private final NioBlobOutputStream outputStream;
     private long position; // Needs to be threadsafe?
     private boolean closed = false;
-    private final ReentrantLock lock;
+    private final Path path;
 
-    AzureSeekableByteChannel(NioBlobInputStream inputStream) {
+    AzureSeekableByteChannel(NioBlobInputStream inputStream, Path path) {
         this.inputStream = inputStream;
         inputStream.mark(Integer.MAX_VALUE);
         this.outputStream = null;
         this.position = 0;
-        this.lock = new ReentrantLock();
+        this.path = path;
     }
 
-    AzureSeekableByteChannel(NioBlobOutputStream outputStream) {
+    AzureSeekableByteChannel(NioBlobOutputStream outputStream, Path path) {
         this.outputStream = outputStream;
         this.inputStream = null;
         this.position = 0;
-        this.lock = new ReentrantLock();
+        this.path = path;
     }
 
     @Override
     public int read(ByteBuffer dst) throws IOException {
+        AzurePath.ensureFileSystemOpen(this.path);
         validateOpen();
         validateReadMode();
 
         int count = 0;
 
-        lock.lock();
-        try {
-            int len = dst.remaining(); // In case another thread modifies dst
-            byte[] buf = new byte[len];
+        int len = dst.remaining(); // In case another thread modifies dst
+        byte[] buf = new byte[len];
 
-            while (count < len) {
-                int retCount = this.inputStream.read(buf, count, len - count);
-                if (retCount == -1) {
-                    break;
-                }
-                count += retCount;
+        while (count < len) {
+            int retCount = this.inputStream.read(buf, count, len - count);
+            if (retCount == -1) {
+                break;
             }
-            dst.put(buf, 0, count);
-            this.position += count;
-        } finally { // catch block
-            lock.unlock();
+            count += retCount;
         }
+        dst.put(buf, 0, count);
+        this.position += count;
+
         return count;
         // Would it be easier to just do the downloads directly?
     }
 
     @Override
     public int write(ByteBuffer src) throws IOException {
+        AzurePath.ensureFileSystemOpen(this.path);
         validateOpen();
         validateWriteMode();
 
         int length = src.remaining();
 
-        lock.lock();
-        try {
+        this.position += src.remaining();
+        byte[] buf = new byte[length];
+        src.get(buf);
+        this.outputStream.write(buf);
 
-            this.position += src.remaining();
-            byte[] buf = new byte[length];
-            src.get(buf);
-            this.outputStream.write(buf);
-        } finally { // Catch block
-            lock.unlock();
-        }
         return length;
     }
 
     @Override
     public long position() throws IOException {
+        AzurePath.ensureFileSystemOpen(this.path);
         validateOpen();
 
         return this.position;
@@ -106,26 +107,28 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
 
     @Override
     public AzureSeekableByteChannel position(long newPosition) throws IOException {
+        AzurePath.ensureFileSystemOpen(this.path);
         validateOpen();
         validateReadMode();
 
-        lock.lock();
-        try {
-            this.inputStream.reset();
-            this.inputStream.mark(Integer.MAX_VALUE);
-            this.inputStream.skip(newPosition);
-            this.position = newPosition;
-        } finally { // catch block
-            lock.unlock();
-        }
+        this.inputStream.reset();
+        this.inputStream.mark(Integer.MAX_VALUE);
+        this.inputStream.skip(newPosition);
+        this.position = newPosition;
+
         return this;
     }
 
     @Override
     public long size() throws IOException {
+        AzurePath.ensureFileSystemOpen(this.path);
         validateOpen();
 
-        return 0;
+        if (inputStream != null) {
+            return inputStream.getBlobInputStream().getProperties().getBlobSize();
+        } else {
+            return position;
+        }
     }
 
     @Override
@@ -140,6 +143,7 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
 
     @Override
     public void close() throws IOException {
+        AzurePath.ensureFileSystemOpen(this.path);
         if (this.inputStream != null) {
             this.inputStream.close();
         } else {

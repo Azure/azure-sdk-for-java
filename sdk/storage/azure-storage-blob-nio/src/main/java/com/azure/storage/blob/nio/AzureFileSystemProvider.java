@@ -48,6 +48,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -276,7 +277,19 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public SeekableByteChannel newByteChannel(Path path, Set<? extends OpenOption> set,
             FileAttribute<?>... fileAttributes) throws IOException {
-        throw LoggingUtility.logError(logger, new UnsupportedOperationException());
+        if (set.contains(StandardOpenOption.READ)) {
+            return new AzureSeekableByteChannel(
+                (NioBlobInputStream) this.newInputStream(path, set.toArray(new OpenOption[0])), path);
+        }
+        else {
+            return new AzureSeekableByteChannel(
+                (NioBlobOutputStream) this.newOutputStreamInternal(path, set, fileAttributes), path);
+        }
+
+        // Go through javadocs to see if I did anything wrong
+        // Read through code and other PRs
+        // Composite tests
+        // Tests for each method and fs and channel closed and data correctness (can reuse some from other branch
     }
 
     /**
@@ -356,14 +369,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public OutputStream newOutputStream(Path path, OpenOption... options) throws IOException {
+        return newOutputStreamInternal(path, new HashSet<>(Arrays.asList(options)));
+    }
+
+    OutputStream newOutputStreamInternal(Path path, Set<? extends OpenOption> optionsSet,
+        FileAttribute<?>... fileAttributes) throws IOException{
         // If options are empty, add Create, Write, TruncateExisting as defaults per nio docs.
-        if (options == null || options.length == 0) {
-            options = new OpenOption[] {
-                StandardOpenOption.CREATE,
+        if (optionsSet == null || optionsSet.size() == 0) {
+            optionsSet = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE,
                 StandardOpenOption.WRITE,
-                StandardOpenOption.TRUNCATE_EXISTING };
+                StandardOpenOption.TRUNCATE_EXISTING));
         }
-        List<OpenOption> optionsList = Arrays.asList(options);
 
         // Check for unsupported options.
         List<OpenOption> supportedOptions = Arrays.asList(
@@ -372,7 +388,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             StandardOpenOption.WRITE,
             // Though we don't actually truncate, the same result is achieved by overwriting the destination.
             StandardOpenOption.TRUNCATE_EXISTING);
-        for (OpenOption option : optionsList) {
+        for (OpenOption option : optionsSet) {
             if (!supportedOptions.contains(option)) {
                 throw LoggingUtility.logError(logger, new UnsupportedOperationException("Unsupported option: "
                     + option.toString()));
@@ -380,8 +396,8 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         // Write and truncate must be specified
-        if (!optionsList.contains(StandardOpenOption.WRITE)
-            || !optionsList.contains(StandardOpenOption.TRUNCATE_EXISTING)) {
+        if (!optionsSet.contains(StandardOpenOption.WRITE)
+            || !optionsSet.contains(StandardOpenOption.TRUNCATE_EXISTING)) {
             throw LoggingUtility.logError(logger,
                 new IllegalArgumentException("Write and TruncateExisting must be specified to open an OutputStream"));
         }
@@ -398,14 +414,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         // Writing to an empty location requires a create option.
         if (status.equals(DirectoryStatus.DOES_NOT_EXIST)
-            && !(optionsList.contains(StandardOpenOption.CREATE)
-            || optionsList.contains(StandardOpenOption.CREATE_NEW))) {
+            && !(optionsSet.contains(StandardOpenOption.CREATE)
+            || optionsSet.contains(StandardOpenOption.CREATE_NEW))) {
             throw LoggingUtility.logError(logger, new IOException("Writing to an empty location requires a create "
                 + "option. Path: " + path.toString()));
         }
 
         // Cannot write to an existing file if create new was specified.
-        if (status.equals(DirectoryStatus.NOT_A_DIRECTORY) && optionsList.contains(StandardOpenOption.CREATE_NEW)) {
+        if (status.equals(DirectoryStatus.NOT_A_DIRECTORY) && optionsSet.contains(StandardOpenOption.CREATE_NEW)) {
             throw LoggingUtility.logError(logger, new IOException("A file already exists at this location and "
                 + "CREATE_NEW was specified. Path: " + path.toString()));
         }
@@ -419,12 +435,14 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         // Add an extra etag check for create new
         BlobRequestConditions rq = null;
-        if (optionsList.contains(StandardOpenOption.CREATE_NEW)) {
+        if (optionsSet.contains(StandardOpenOption.CREATE_NEW)) {
             rq = new BlobRequestConditions().setIfNoneMatch("*");
         }
 
-        return new NioBlobOutputStream(resource.getBlobClient().getBlockBlobClient().getBlobOutputStream(pto, null,
-            null, null, rq), resource.getPath());
+        // For parsing properties and metadata
+        resource.setFileAttributes(Arrays.asList(fileAttributes)); // Todo: size and null check
+
+        return new NioBlobOutputStream(resource.getBlobOutputStream(pto, rq), resource.getPath());
     }
 
     /**
