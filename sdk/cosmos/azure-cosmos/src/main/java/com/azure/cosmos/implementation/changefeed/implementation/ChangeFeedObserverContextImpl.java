@@ -18,7 +18,6 @@ class ChangeFeedObserverContextImpl implements ChangeFeedObserverContext {
     private final String partitionKeyRangeId;
     private final FeedResponse<JsonNode> feedResponse;
     private final ChangeFeedState continuationState;
-    private String responseContinuation;
 
 
     public ChangeFeedObserverContextImpl(String leaseToken) {
