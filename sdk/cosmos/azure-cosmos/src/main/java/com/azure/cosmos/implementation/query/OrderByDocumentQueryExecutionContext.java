@@ -231,9 +231,14 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             List<PartitionKeyRange> partitionKeyRanges,
             List<SortOrder> sortOrders,
             Collection<String> orderByExpressions) {
+
+        ValueHolder<Map<String, OrderByContinuationToken>> valueHolder = new ValueHolder<>();
+        valueHolder.v = this.targetRangeToOrderByContinuationTokenMap;
         // Find the partition key range we left off on
         int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
-                orderByContinuationToken.getCompositeContinuationToken().getRange());
+                                                                          orderByContinuationToken.getCompositeContinuationToken().getRange(),
+                                                                          valueHolder,
+                                                                          orderByContinuationToken);
 
         // Get the filters.
         FormattedFilterInfo formattedFilterInfo = this.getFormattedFilters(orderByExpressions,

@@ -30,6 +30,7 @@ import com.microsoft.azure.spring.cloud.config.stores.KeyVaultClient;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -150,12 +151,15 @@ public class AppConfigurationPropertySource extends EnumerablePropertySource<Con
         settingSelector.setKeyFilter(context + "*");
         List<ConfigurationSetting> settings = clients.listSettings(settingSelector, storeName);
 
+        List<ConfigurationSetting> features = new ArrayList<ConfigurationSetting>();
         // Reading In Features
-        settingSelector.setKeyFilter(".appconfig*");
-        List<ConfigurationSetting> features = clients.listSettings(settingSelector, storeName);
+        if (configStore.isUseFeatureManagement()) {
+            settingSelector.setKeyFilter(".appconfig*");
+            features = clients.listSettings(settingSelector, storeName);
 
-        if (features == null) {
-            throw new IOException("Unable to load properties from App Configuration Store.");
+            if (features == null) {
+                throw new IOException("Unable to load properties from App Configuration Store.");
+            }
         }
 
         if (settings == null) {
