@@ -17,15 +17,12 @@ npm install -g autorest
 
 ### Generation
 
-There are two swaggers for Administration management APIs, `identity` and `phonenumber`.
+There are 1 swaggers for identity management APIs,
 
 ```ps
 cd <swagger-folder>
 autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=identity
-autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=phonenumber
 ```
-
-
 
 ### Tag: identity
 
@@ -37,15 +34,6 @@ add-context-parameter: true
 custom-types: CommunicationIdentityAccessToken,CommunicationIdentityTokenScope,CommunicationUserToken
 custom-types-subpackage: models
 models-subpackage: implementation.models
-```
-
-### Tag: phonenumber
-
-These settings apply only when `--tag=phonenumber` is specified on the command line.
-
-``` yaml $(tag) == 'phonenumber'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/257f060be8b60d8468584682aa2d71b1faa5f82c/specification/communication/data-plane/Microsoft.CommunicationServicesAdministration/preview/2020-07-20-preview1/communicationservicesadministration.json
-override-client-name: PhoneNumberAdminClient
 ```
 
 ### Rename CommunicationIdentityAccessToken to CommunicationUserToken
@@ -65,42 +53,6 @@ directive:
     where: $.definitions.CreateSearchResponse.properties.searchId
     transform: >
       $["x-ms-client-name"] = "reservationId";
-```
-### Rename searchId to reservationId in PhoneNumberSearch 
-
-``` yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberSearch.properties.searchId
-    transform: >
-      $["x-ms-client-name"] = "reservationId";
-```
-
-### Rename PhoneNumberSearch to PhoneNumberReservation
-
-``` yaml
-directive:
-    - rename-model:
-        from: PhoneNumberSearch
-        to: PhoneNumberReservation
-```
-
-### Rename CreateSearchOptions to CreateReservationOptions
-
-``` yaml
-directive:
-    - rename-model:
-        from: CreateSearchOptions
-        to: CreateReservationOptions
-```
-
-### Rename CreateSearchResponse to CreateReservationResponse
-
-``` yaml
-directive:
-    - rename-model:
-        from: CreateSearchResponse
-        to: CreateReservationResponse
 ```
 
 ### Code generation settings
