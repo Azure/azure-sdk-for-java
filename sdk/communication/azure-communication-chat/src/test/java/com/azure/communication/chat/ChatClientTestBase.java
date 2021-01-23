@@ -35,10 +35,10 @@ public class ChatClientTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
 
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("CHAT_SERVICE_ENDPOINT", "https://playback.chat.azurefd.net");
+        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://playback.chat.azurefd.net");
 
     protected static final String ACCESS_KEY = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICES_ACCESS_KEY", "pw==");
+        .get("COMMUNICATION_SERVICE_ACCESS_KEY", "pw==");
 
     protected ChatClientBuilder getChatClientBuilder(String token, HttpClient httpClient) {
         ChatClientBuilder builder = new ChatClientBuilder();

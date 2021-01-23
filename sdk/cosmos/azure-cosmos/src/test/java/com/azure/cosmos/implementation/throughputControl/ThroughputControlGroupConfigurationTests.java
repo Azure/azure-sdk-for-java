@@ -51,16 +51,14 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
         Class<?> exceptionType) {
 
         try {
-            ThroughputControlGroup group = new ThroughputControlGroup()
-                .groupName(groupName)
-                .targetContainer(container);
+            ThroughputControlGroup group = container.createThroughputControlGroup(groupName);
 
             if (targetThroughput != null) {
-                group.targetThroughput(targetThroughput);
+                group.setTargetThroughput(targetThroughput);
             }
 
             if (targetThroughputThreshold != null) {
-                group.targetThroughputThreshold(targetThroughputThreshold);
+                group.setTargetThroughputThreshold(targetThroughputThreshold);
             }
 
             List<ThroughputControlGroup> groups = new ArrayList<>();
@@ -76,15 +74,11 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
 
     @Test(groups = { "emulator" })
     public void validateDuplicateGroups() {
-        ThroughputControlGroup group1 = new ThroughputControlGroup()
-            .groupName("group")
-            .targetContainer(container)
-            .targetThroughput(10);
+        ThroughputControlGroup group1 = container.createThroughputControlGroup("group");
+        group1.setTargetThroughput(10);
 
-        ThroughputControlGroup group2 = new ThroughputControlGroup()
-            .groupName("group")
-            .targetContainer(container)
-            .targetThroughputThreshold(0.2);
+        ThroughputControlGroup group2 = container.createThroughputControlGroup("group");
+        group2.setTargetThroughputThreshold(0.2);
 
         List<ThroughputControlGroup> groups = new ArrayList<>();
         groups.add(group1);
@@ -96,18 +90,14 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
 
     @Test(groups = { "emulator" })
     public void validateMultipleDefaultGroups() {
-        ThroughputControlGroup group1 = new ThroughputControlGroup()
-            .groupName("group-1")
-            .targetContainer(container)
-            .targetThroughput(10)
-            .useByDefault();
+        ThroughputControlGroup group1 = container.createThroughputControlGroup("group-1");
+        group1.setTargetThroughput(10)
+            .setUseByDefault();
 
-        ThroughputControlGroup group2 = new ThroughputControlGroup()
-            .groupName("group-2")
-            .targetContainer(container)
-            .targetThroughput(10)
-            .targetThroughputThreshold(0.2)
-            .useByDefault();
+        ThroughputControlGroup group2 = container.createThroughputControlGroup("group-2")
+            .setTargetThroughput(10)
+            .setTargetThroughputThreshold(0.2)
+            .setUseByDefault();
 
         List<ThroughputControlGroup> groups = new ArrayList<>();
         groups.add(group1);

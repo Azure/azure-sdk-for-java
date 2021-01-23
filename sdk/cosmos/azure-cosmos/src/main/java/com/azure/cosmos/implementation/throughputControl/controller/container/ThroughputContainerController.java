@@ -176,6 +176,8 @@ public class ThroughputContainerController implements IThroughputContainerContro
     }
 
     private Mono<ThroughputResponse> resolveThroughputByResourceId(String resourceId) {
+        // TODO: figure out how this work for serveless account
+        // TODO: work item: https://github.com/Azure/azure-sdk-for-java/issues/18776
         checkArgument(StringUtils.isNotEmpty(resourceId), "ResourceId can not be null or empty");
         return this.client.queryOffers(resourceId, new CosmosQueryRequestOptions())
             .single()

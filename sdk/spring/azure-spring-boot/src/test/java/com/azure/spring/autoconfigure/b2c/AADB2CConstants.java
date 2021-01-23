@@ -34,6 +34,10 @@ public class AADB2CConstants {
 
     public static final String TENANT = String.format("%s.%s", PREFIX, "tenant");
 
+    public static final String TEST_ATTRIBUTE_NAME = String.format("%s.%s", PREFIX, "name");
+
+    public static final String USER_NAME_ATTRIBUTE_NAME = String.format("%s.%s", PREFIX, "user-name-attribute-name");
+
     public static final String CLIENT_ID = String.format("%s.%s", PREFIX, "client-id");
 
     public static final String CLIENT_SECRET = String.format("%s.%s", PREFIX, "client-secret");

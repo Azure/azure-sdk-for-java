@@ -47,6 +47,7 @@ import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -1314,5 +1315,18 @@ public class CosmosAsyncContainer {
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Mono<List<FeedRange>> getFeedRanges() {
         return this.getDatabase().getDocClientWrapper().getFeedRanges(getLink());
+    }
+
+    /**
+     * Create a throughput control group, bind this container with the group.
+     *
+     * @param groupName The throughput control group name.
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroup createThroughputControlGroup(String groupName) {
+        checkArgument(StringUtils.isNotEmpty(groupName), "Group name can not be null or empty");
+        return new ThroughputControlGroup(groupName)
+            .setTargetContainer(this);
     }
 }

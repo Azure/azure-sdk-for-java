@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
@@ -27,6 +28,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 /**
  * Provides synchronous methods for reading, deleting, and replacing existing Containers
@@ -693,5 +695,17 @@ public class CosmosContainer {
                 throw ex;
             }
         }
+    }
+
+    /**
+     * Create a throughput control group, bind the underlying async container with the group.
+     *
+     * @param groupName The throughput control group name.
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroup createThroughputControlGroup(String groupName) {
+        checkArgument(StringUtils.isNotEmpty(groupName), "Group name can not be null or empty");
+        return this.asyncContainer.createThroughputControlGroup(groupName);
     }
 }

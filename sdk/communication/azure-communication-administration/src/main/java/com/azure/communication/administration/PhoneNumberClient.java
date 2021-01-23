@@ -462,7 +462,7 @@ public final class PhoneNumberClient {
      * until it gets a result from the server
      * @return A {@link SyncPoller} object with the reservation result
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PhoneNumberReservation, PhoneNumberReservation> beginCreateReservation(
         CreateReservationOptions options, Duration pollInterval) {
         return phoneNumberAsyncClient.beginCreateReservation(options, pollInterval).getSyncPoller();
@@ -477,7 +477,7 @@ public final class PhoneNumberClient {
      * until it gets a result from the server
      * @return A {@link SyncPoller} object with the reservation result
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<Void, Void> beginPurchaseReservation(
         String reservationId, Duration pollInterval) {
         return phoneNumberAsyncClient.beginPurchaseReservation(reservationId, pollInterval).getSyncPoller();
@@ -492,7 +492,7 @@ public final class PhoneNumberClient {
      * until it gets a result from the server
      * @return A {@link SyncPoller} object with the reservation result
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PhoneNumberRelease, PhoneNumberRelease> beginReleasePhoneNumbers(
         List<PhoneNumberIdentifier> phoneNumbers, Duration pollInterval) {
         return phoneNumberAsyncClient.beginReleasePhoneNumbers(phoneNumbers, pollInterval).getSyncPoller();

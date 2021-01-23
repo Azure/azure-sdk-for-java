@@ -47,8 +47,8 @@ public final class SmsAsyncClient {
      * @param context the context of the request. Can also be null or Context.NONE.
      * @return response for a successful send Sms request.
      */
-    Mono<Response<SendSmsResponse>> sendMessageWithResponse(PhoneNumberIdentifier from, 
-        List<PhoneNumberIdentifier> to, String message, 
+    Mono<Response<SendSmsResponse>> sendMessageWithResponse(PhoneNumberIdentifier from,
+        List<PhoneNumberIdentifier> to, String message,
         SendSmsOptions smsOptions, Context context) {
         if (from == null) {
             return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
@@ -71,7 +71,7 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, 
+    public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from,
         List<PhoneNumberIdentifier> to, String message) {
         if (from == null) {
             return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
@@ -81,7 +81,7 @@ public final class SmsAsyncClient {
 
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(false);
-        
+
         return sendMessage(from, to, message, smsOptions);
     }
 
@@ -122,8 +122,8 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from, 
-        List<PhoneNumberIdentifier> to, String message, 
+    public Mono<SendSmsResponse> sendMessage(PhoneNumberIdentifier from,
+        List<PhoneNumberIdentifier> to, String message,
         SendSmsOptions smsOptions) {
         if (from == null) {
             return monoError(logger, new NullPointerException("Argument 'from' cannot be null."));
@@ -136,19 +136,19 @@ public final class SmsAsyncClient {
             return withContext(context -> this.smsServiceClient.getSms().sendAsync(sendMessageRequest, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }        
+        }
     }
 
-    private SendMessageRequest createSmsMessageRequest(PhoneNumberIdentifier from, 
-        List<PhoneNumberIdentifier> to, String message, 
+    private SendMessageRequest createSmsMessageRequest(PhoneNumberIdentifier from,
+        List<PhoneNumberIdentifier> to, String message,
         SendSmsOptions smsOptions) {
-        Stream<String> s = to.stream().map(n -> n.getValue());
+        Stream<String> s = to.stream().map(n -> n.getPhoneNumber());
         SendMessageRequest sendMessageRequest = new SendMessageRequest();
-        sendMessageRequest.setFrom(from.getValue())
+        sendMessageRequest.setFrom(from.getPhoneNumber())
             .setTo(s.collect(Collectors.toList()))
             .setMessage(message)
             .setSendSmsOptions(smsOptions);
-        
+
         return sendMessageRequest;
     }
 }

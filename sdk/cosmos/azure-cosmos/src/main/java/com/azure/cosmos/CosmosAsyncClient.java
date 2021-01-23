@@ -40,6 +40,7 @@ import java.util.Set;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
@@ -476,7 +477,7 @@ public final class CosmosAsyncClient implements Closeable {
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableThroughputControl(List<ThroughputControlGroup> groupList) {
-        checkArgument(groupList != null, "Throughput control group list cannot be null");
+        checkNotNull(groupList, "Throughput control group list cannot be null");
 
         // Validate no duplicate group definition.
         // Validate only at most 1 useByDefault group can be defined.

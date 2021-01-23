@@ -1051,6 +1051,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             return ((RequestOptions) options).getThroughputControlGroupName();
         } else {
             // TODO: add for query and changeFeed
+            // TODO: tracked by item https://github.com/Azure/azure-sdk-for-java/issues/18775
             return null;
         }
     }

@@ -35,20 +35,14 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void readItem() throws Exception {
-        ThroughputControlGroup group1 =
-            new ThroughputControlGroup()
-                .groupName("group-1")
-                .targetContainer(container)
-                .targetThroughput(5) // Pick a value relatively slow so for the second requests, we know it is going to be throttled
-                .localControlMode()
-                .useByDefault();
+        ThroughputControlGroup group1 = container.createThroughputControlGroup("group-1");
+        group1.setTargetThroughput(5) //Pick a value relatively slow so for the second requests, we know it is going to be throttled
+            .setLocalControlMode()
+            .setUseByDefault();
 
-        ThroughputControlGroup group2 =
-            new ThroughputControlGroup()
-                .groupName("group-2")
-                .targetContainer(container)
-                .targetThroughput(1)
-                .localControlMode();
+        ThroughputControlGroup group2 = container.createThroughputControlGroup("group-2");
+        group2.setTargetThroughputThreshold(0.9)
+            .setLocalControlMode();
 
         List<ThroughputControlGroup> groups = new ArrayList<>();
         groups.add(group1);

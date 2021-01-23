@@ -27,7 +27,8 @@ public class ThroughputControlGroup {
     private boolean useByDefault;
 
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup() {
+    public ThroughputControlGroup(String groupName) {
+        this.groupName = groupName;
         this.controlMode = DEFAULT_CONTROL_MODE;
         this.useByDefault = DEFAULT_USE_BY_DEFAULT;
     }
@@ -50,23 +51,8 @@ public class ThroughputControlGroup {
      * @return the {@link ThroughputControlGroup}.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup localControlMode() {
+    public ThroughputControlGroup setLocalControlMode() {
         this.controlMode = ThroughputControlMode.LOCAL;
-        return this;
-    }
-
-    /**
-     * Set the throughput control group name.
-     *
-     * @param groupName
-     *
-     * @return the {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup groupName(String groupName) {
-        checkArgument(StringUtils.isNotEmpty(groupName), "Group name can not be null or empty");
-        this.groupName = groupName;
-
         return this;
     }
 
@@ -98,7 +84,7 @@ public class ThroughputControlGroup {
      * @return the {@link ThroughputControlGroup}.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup targetContainer(CosmosAsyncContainer targetContainer) {
+    public ThroughputControlGroup setTargetContainer(CosmosAsyncContainer targetContainer) {
         checkArgument(targetContainer != null, "Target container cannot be null");
         this.targetContainer = targetContainer;
         return this;
@@ -106,6 +92,9 @@ public class ThroughputControlGroup {
 
     /**
      * Get throughput control group target throughput.
+     * Since we allow either TargetThroughput or TargetThroughputThreshold, this value can be null.
+     *
+     * By default, it is null.
      *
      * @return the target throughput.
      */
@@ -121,7 +110,7 @@ public class ThroughputControlGroup {
      * @return the {@link ThroughputControlGroup}.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup targetThroughput(int targetThroughput) {
+    public ThroughputControlGroup setTargetThroughput(int targetThroughput) {
         checkArgument(targetThroughput > 0, "Target throughput should be larger than 0");
         this.targetThroughput = targetThroughput;
         return this;
@@ -129,6 +118,9 @@ public class ThroughputControlGroup {
 
     /**
      * Get the throughput control group target throughput threshold.
+     * Since we allow either TargetThroughput or TargetThroughputThreshold, this value can be null.
+     *
+     * By default, this value is null.
      *
      * @return the target throughput threshold.
      */
@@ -145,7 +137,7 @@ public class ThroughputControlGroup {
      * @return the {@link ThroughputControlGroup}.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup targetThroughputThreshold(double targetThroughputThreshold) {
+    public ThroughputControlGroup setTargetThroughputThreshold(double targetThroughputThreshold) {
         checkArgument(
             targetThroughputThreshold > 0 && targetThroughputThreshold <= 1,
             "Target throughput threshold should between (0, 1]");
@@ -172,7 +164,7 @@ public class ThroughputControlGroup {
      * @return the {@link ThroughputControlGroup}.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup useByDefault() {
+    public ThroughputControlGroup setUseByDefault() {
         this.useByDefault = Boolean.TRUE;
         return this;
     }
@@ -186,11 +178,7 @@ public class ThroughputControlGroup {
     public String getId() {
         if (StringUtils.isEmpty(this.id)) {
             this.validate();
-            this.id = String.format(
-                "%s.%s.%s",
-                this.targetContainer.getDatabase().getId(),
-                this.targetContainer.getId(),
-                this.groupName);
+            this.id = this.targetContainer.getDatabase().getId() + "." + this.targetContainer.getId() + "." + this.groupName;
         }
 
         return this.id;
