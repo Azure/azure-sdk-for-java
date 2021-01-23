@@ -705,7 +705,6 @@ public class CosmosContainer {
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup createThroughputControlGroup(String groupName) {
-        checkArgument(StringUtils.isNotEmpty(groupName), "Group name can not be null or empty");
         return this.asyncContainer.createThroughputControlGroup(groupName);
     }
 }

@@ -10,6 +10,7 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.azure.cosmos.util.UtilBridgeInternal;
@@ -17,6 +18,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.io.Closeable;
+import java.util.List;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB service.
@@ -214,4 +216,14 @@ public final class CosmosClient implements Closeable {
         return UtilBridgeInternal.createCosmosPagedIterable(cosmosPagedFlux);
     }
 
+    /**
+     * Enable throughput control by providing the throughput control groups.
+     * Each cosmos client can only enable throughput control once.
+     *
+     * @param groupList The throughput control group configuration list.
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public void enableThroughputControl(List<ThroughputControlGroup> groupList) {
+        this.asyncClientWrapper.enableThroughputControl(groupList);
+    }
 }
