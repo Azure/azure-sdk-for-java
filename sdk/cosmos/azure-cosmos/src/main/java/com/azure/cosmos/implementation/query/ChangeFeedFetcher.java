@@ -148,8 +148,7 @@ class ChangeFeedFetcher<T extends Resource> extends Fetcher<T> {
                 return Mono.just(ShouldRetryResult.noRetry());
             }
 
-            if (this.state.getContinuation() == null)
-            {
+            if (this.state.getContinuation() == null) {
                 final FeedRangeInternal feedRange = this.state.getFeedRange();
                 final Mono<Range<String>> effectiveRangeMono = feedRange.getEffectiveRange(
                     this.client.getPartitionKeyRangeCache(),

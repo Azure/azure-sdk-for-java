@@ -22,13 +22,13 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
     Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosChangeFeedRequestOptions {
-    private static final Integer DEFAULT_MAX_ITEM_COUNT = 1000;
-    private static final Integer DEFAULT_MAX_PREFETCH_PAGE_COUNT = 1;
+    private static final int DEFAULT_MAX_ITEM_COUNT = 1000;
+    private static final int DEFAULT_MAX_PREFETCH_PAGE_COUNT = 1;
     private final ChangeFeedState continuationState;
     private final FeedRangeInternal feedRangeInternal;
     private final Map<String, Object> properties;
-    private Integer maxItemCount;
-    private Integer maxPrefetchPageCount;
+    private int maxItemCount;
+    private int maxPrefetchPageCount;
     private ChangeFeedMode mode;
     private ChangeFeedStartFromInternal startFromInternal;
     private boolean isSplitHandlingDisabled;
@@ -38,7 +38,6 @@ public final class CosmosChangeFeedRequestOptions {
         ChangeFeedStartFromInternal startFromInternal,
         ChangeFeedMode mode,
         ChangeFeedState continuationState) {
-
         super();
 
         if (feedRange == null) {
@@ -85,7 +84,7 @@ public final class CosmosChangeFeedRequestOptions {
      */
     @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Integer getMaxItemCount() {
+    public int getMaxItemCount() {
         return this.maxItemCount;
     }
 
@@ -98,8 +97,8 @@ public final class CosmosChangeFeedRequestOptions {
      */
     @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosChangeFeedRequestOptions setMaxItemCount(Integer maxItemCount) {
-        this.maxItemCount = maxItemCount != null ? maxItemCount : DEFAULT_MAX_ITEM_COUNT;
+    public CosmosChangeFeedRequestOptions setMaxItemCount(int maxItemCount) {
+        this.maxItemCount = maxItemCount;
         return this;
     }
 
@@ -117,7 +116,7 @@ public final class CosmosChangeFeedRequestOptions {
      */
     @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Integer getMaxPrefetchPageCount() {
+    public int getMaxPrefetchPageCount() {
         return this.maxPrefetchPageCount;
     }
 
@@ -137,15 +136,11 @@ public final class CosmosChangeFeedRequestOptions {
      */
     @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosChangeFeedRequestOptions setMaxPrefetchPageCount(Integer maxPrefetchPageCount) {
-        if  (maxPrefetchPageCount != null) {
-            checkArgument(
-                maxPrefetchPageCount > 0,
-                "Argument 'maxPrefetchCount' must be larger than 0.");
-            this.maxPrefetchPageCount = maxPrefetchPageCount;
-        } else {
-            this.maxPrefetchPageCount = DEFAULT_MAX_PREFETCH_PAGE_COUNT;
-        }
+    public CosmosChangeFeedRequestOptions setMaxPrefetchPageCount(int maxPrefetchPageCount) {
+        checkArgument(
+            maxPrefetchPageCount > 0,
+            "Argument 'maxPrefetchCount' must be larger than 0.");
+        this.maxPrefetchPageCount = maxPrefetchPageCount;
 
         return this;
     }

@@ -130,7 +130,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 return Flux.empty();
             })
             .doOnComplete(() -> {
-                if (this.options.getMaxItemCount().compareTo(this.settings.getMaxItemCount()) != 0) {
+                if (this.options.getMaxItemCount() != this.settings.getMaxItemCount()) {
                     this.options.setMaxItemCount(this.settings.getMaxItemCount());   // Reset after successful execution.
                 }
             })
@@ -165,9 +165,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         }
                         break;
                         case MAX_ITEM_COUNT_TOO_LARGE: {
-                            if (this.options.getMaxItemCount() == null) {
-                                this.options.setMaxItemCount(DefaultMaxItemCount);
-                            } else if (this.options.getMaxItemCount() <= 1) {
+                            if (this.options.getMaxItemCount() <= 1) {
                                 logger.error(
                                     "Cannot reduce maxItemCount further as it's already at {}",
                                     this.options.getMaxItemCount(),

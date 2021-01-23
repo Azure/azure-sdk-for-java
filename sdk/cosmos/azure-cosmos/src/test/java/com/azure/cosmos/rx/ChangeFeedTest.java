@@ -54,7 +54,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ChangeFeedTest extends TestSuiteBase {
 
     private static final int SETUP_TIMEOUT = 40000;
-    private static final int TIMEOUT = 30000000;
+    private static final int TIMEOUT = 30000;
     private static final String PartitionKeyFieldName = "mypk";
     private Database createdDatabase;
     private DocumentCollection createdCollection;
