@@ -17,73 +17,77 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SearchIndexingBufferedSenderOptionsTests {
     @Test
     public void autoFlushDefaults() {
-        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
+        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
         assertTrue(options.getAutoFlush());
     }
 
     @Test
     public void flushWindowDefaults() {
-        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertEquals(Duration.ofSeconds(60), options.getAutoFlushWindow());
+        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
+        assertEquals(Duration.ofSeconds(60), options.getAutoFlushInterval());
     }
 
     @Test
     public void invalidFlushWindowThrows() {
-        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertThrows(NullPointerException.class, () -> options.setAutoFlushWindow(null));
+        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
+        assertThrows(NullPointerException.class, () -> options.setAutoFlushInterval(null));
     }
 
     @Test
     public void initialBatchActionCountDefaults() {
-        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
+        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
         assertEquals(512, options.getInitialBatchActionCount());
     }
 
     @Test
     public void invalidBatchSizeThrows() {
-        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
+        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
         assertThrows(IllegalArgumentException.class, () -> options.setInitialBatchActionCount(0));
         assertThrows(IllegalArgumentException.class, () -> options.setInitialBatchActionCount(-1));
     }
 
     @Test
     public void maxRetriesDefaults() {
-        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertEquals(3, options.getMaxRetries());
+        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
+        assertEquals(3, options.getMaxRetriesPerAction());
     }
 
     @Test
     public void invalidMaxRetriesThrows() {
-        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertThrows(IllegalArgumentException.class, () -> options.setMaxRetries(0));
-        assertThrows(IllegalArgumentException.class, () -> options.setMaxRetries(-1));
+        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
+        assertThrows(IllegalArgumentException.class, () -> options.setMaxRetriesPerAction(0));
+        assertThrows(IllegalArgumentException.class, () -> options.setMaxRetriesPerAction(-1));
     }
 
     @Test
     public void retryDelayDefaults() {
-        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertEquals(Duration.ofMillis(800), options.getRetryDelay());
+        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
+        assertEquals(Duration.ofMillis(800), options.getThrottlingDelay());
     }
 
     @Test
     public void invalidRetryDelayThrows() {
-        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertThrows(NullPointerException.class, () -> options.setRetryDelay(null));
-        assertThrows(IllegalArgumentException.class, () -> options.setRetryDelay(Duration.ZERO));
-        assertThrows(IllegalArgumentException.class, () -> options.setRetryDelay(Duration.ofMillis(-1)));
+        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
+        assertThrows(NullPointerException.class, () -> options.setThrottlingDelay(null));
+        assertThrows(IllegalArgumentException.class, () -> options.setThrottlingDelay(Duration.ZERO));
+        assertThrows(IllegalArgumentException.class, () -> options.setThrottlingDelay(Duration.ofMillis(-1)));
     }
 
     @Test
     public void maxRetryDelayDefaults() {
-        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertEquals(Duration.ofMinutes(1), options.getMaxRetryDelay());
+        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
+        assertEquals(Duration.ofMinutes(1), options.getMaxThrottlingDelay());
     }
 
     @Test
     public void invalidMaxRetryDelayThrows() {
-        SearchIndexingBufferedSenderOptions<Integer> options = new SearchIndexingBufferedSenderOptions<>();
-        assertThrows(NullPointerException.class, () -> options.setMaxRetryDelay(null));
-        assertThrows(IllegalArgumentException.class, () -> options.setMaxRetryDelay(Duration.ZERO));
-        assertThrows(IllegalArgumentException.class, () -> options.setMaxRetryDelay(Duration.ofMillis(-1)));
+        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
+        assertThrows(NullPointerException.class, () -> options.setMaxThrottlingDelay(null));
+        assertThrows(IllegalArgumentException.class, () -> options.setMaxThrottlingDelay(Duration.ZERO));
+        assertThrows(IllegalArgumentException.class, () -> options.setMaxThrottlingDelay(Duration.ofMillis(-1)));
+    }
+
+    private SearchIndexingBufferedSenderOptions<Integer> getBaseOptions() {
+        return new SearchIndexingBufferedSenderOptions<>(String::valueOf);
     }
 }

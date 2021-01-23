@@ -57,6 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     private static final JacksonAdapter JACKSON_ADAPTER;
+    private static final Function<Map<String, Object>, String> HOTEL_ID_KEY_RETRIEVER;
     private String indexToDelete;
     private SearchClientBuilder clientBuilder;
 
@@ -65,6 +66,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         adapter.serializer().setAnnotationIntrospector(new IgnoreJacksonWriteOnlyAccess());
 
         JACKSON_ADAPTER = adapter;
+        HOTEL_ID_KEY_RETRIEVER = document -> String.valueOf(document.get("HotelId"));
     }
 
 
@@ -92,10 +94,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         setupIndex();
 
         SearchClient client = clientBuilder.buildClient();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
-            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setAutoFlush(false)
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getBufferedSender(
+            new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER).setAutoFlush(false));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
         batchingClient.flush();
@@ -116,11 +116,10 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         setupIndex();
 
         SearchClient client = clientBuilder.buildClient();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
-            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setAutoFlushWindow(Duration.ofMinutes(5))
-                .setInitialBatchActionCount(10)
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getBufferedSender(
+            new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
+                .setAutoFlushInterval(Duration.ofMinutes(5))
+                .setInitialBatchActionCount(10));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -138,11 +137,10 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         setupIndex();
 
         SearchClient client = clientBuilder.buildClient();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
-            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getBufferedSender(
+            new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
                 .setInitialBatchActionCount(10)
-                .setAutoFlushWindow(Duration.ofSeconds(3))
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+                .setAutoFlushInterval(Duration.ofSeconds(3)));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -160,9 +158,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         setupIndex();
 
         SearchClient client = clientBuilder.buildClient();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
-            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getBufferedSender(
+            new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
         batchingClient.close();
@@ -181,11 +178,10 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         setupIndex();
 
         SearchClient client = clientBuilder.buildClient();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
-            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setAutoFlushWindow(Duration.ofMinutes(5))
-                .setInitialBatchActionCount(1000)
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getBufferedSender(
+            new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
+                .setAutoFlushInterval(Duration.ofMinutes(5))
+                .setInitialBatchActionCount(1000));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -200,22 +196,21 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         setupIndex();
 
         AtomicInteger requestCount = new AtomicInteger();
-        SearchClient client = clientBuilder
-            .addPolicy((context, next) -> {
-                requestCount.incrementAndGet();
-                return next.process();
-            })
-            .buildClient();
-
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger failedCount = new AtomicInteger();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setAutoFlushWindow(Duration.ofSeconds(5))
+
+        SearchClientBuilder builder = clientBuilder.addPolicy((context, next) -> {
+            requestCount.incrementAndGet();
+            return next.process();
+        });
+
+        SearchClient client = builder.buildClient();
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getBufferedSender(
+            new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
+                .setAutoFlushInterval(Duration.ofSeconds(5))
                 .setInitialBatchActionCount(10)
-                .setOnActionSucceeded(action -> successCount.incrementAndGet())
-                .setOnActionError((action, error) -> failedCount.incrementAndGet())
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+                .setOnActionSucceeded(options -> successCount.incrementAndGet())
+                .setOnActionError(options -> failedCount.incrementAndGet()));
 
         List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
         for (int i = 0; i < 100; i++) {
@@ -229,13 +224,14 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 .collect(Collectors.toList()));
         }
 
+        batchingClient.close();
+
         sleepIfRunningAgainstService((long) (15000 * 1.5));
 
         assertEquals(1000, successCount.get());
         assertEquals(0, failedCount.get());
         assertTrue(requestCount.get() >= 100);
         assertEquals(1000, client.getDocumentCount());
-        batchingClient.close();
     }
 
     @Test
@@ -243,22 +239,21 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         setupIndex();
 
         AtomicInteger requestCount = new AtomicInteger();
-        SearchClient client = clientBuilder
-            .addPolicy((context, next) -> {
-                requestCount.incrementAndGet();
-                return next.process();
-            })
-            .buildClient();
-
         AtomicInteger successCount = new AtomicInteger();
         AtomicInteger failedCount = new AtomicInteger();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.
-            getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setAutoFlushWindow(Duration.ofSeconds(5))
+
+        SearchClientBuilder builder = clientBuilder.addPolicy((context, next) -> {
+            requestCount.incrementAndGet();
+            return next.process();
+        });
+
+        SearchClient client = builder.buildClient();
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = builder.buildBufferedSender(
+            new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
+                .setAutoFlushInterval(Duration.ofSeconds(5))
                 .setInitialBatchActionCount(10)
-                .setOnActionSucceeded(action -> successCount.incrementAndGet())
-                .setOnActionError((action, error) -> failedCount.incrementAndGet())
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+                .setOnActionSucceeded(options -> successCount.incrementAndGet())
+                .setOnActionError(options -> failedCount.incrementAndGet()));
 
         List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
         List<Map<String, Object>> documentBatch = new ArrayList<>();
@@ -294,9 +289,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 requestCount.incrementAndGet();
                 return next.process();
             })
-            .buildClient()
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER));
 
         batchingClient.flush();
 
@@ -312,10 +305,8 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void flushTimesOut() {
         SearchIndexingBufferedSender<Integer> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.<HttpResponse>empty().delayElement(Duration.ofSeconds(5)))
-            .buildClient()
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Integer>()
-                .setAutoFlush(false)
-                .setDocumentKeyRetriever(String::valueOf));
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<Integer>(String::valueOf)
+                .setAutoFlush(false));
 
         batchingClient.addUploadActions(Collections.singletonList(1));
 
@@ -335,14 +326,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 201, 400, 201, 404, 200, 200, 404, 400, 400, 201))))
-            .buildClient()
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
                 .setAutoFlush(false)
-                .setOnActionAdded(action -> addedCount.incrementAndGet())
-                .setOnActionSucceeded(action -> successCount.incrementAndGet())
-                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionSent(action -> sentCount.incrementAndGet())
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+                .setOnActionAdded(options -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(options -> successCount.incrementAndGet())
+                .setOnActionError(options -> errorCount.incrementAndGet())
+                .setOnActionSent(options -> sentCount.incrementAndGet()));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -373,14 +362,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 201, 409, 201, 422, 200, 200, 503, 409, 422, 201))))
-            .buildClient()
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
                 .setAutoFlush(false)
-                .setOnActionAdded(action -> addedCount.incrementAndGet())
-                .setOnActionSucceeded(action -> successCount.incrementAndGet())
-                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionSent(action -> sentCount.incrementAndGet())
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+                .setOnActionAdded(options -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(options -> successCount.incrementAndGet())
+                .setOnActionError(options -> errorCount.incrementAndGet())
+                .setOnActionSent(options -> sentCount.incrementAndGet()));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -422,14 +409,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                     return Mono.error(new IllegalStateException("Unexpected request."));
                 }
             })
-            .buildClient()
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
                 .setAutoFlush(false)
-                .setOnActionAdded(action -> addedCount.incrementAndGet())
-                .setOnActionSucceeded(action -> successCount.incrementAndGet())
-                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionSent(action -> sentCount.incrementAndGet())
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+                .setOnActionAdded(options -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(options -> successCount.incrementAndGet())
+                .setOnActionError(options -> errorCount.incrementAndGet())
+                .setOnActionSent(options -> sentCount.incrementAndGet()));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -460,15 +445,13 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 409))))
-            .buildClient()
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
                 .setAutoFlush(false)
-                .setMaxRetries(10)
-                .setOnActionAdded(action -> addedCount.incrementAndGet())
-                .setOnActionSucceeded(action -> successCount.incrementAndGet())
-                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionSent(action -> sentCount.incrementAndGet())
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+                .setMaxRetriesPerAction(10)
+                .setOnActionAdded(options -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(options -> successCount.incrementAndGet())
+                .setOnActionError(options -> errorCount.incrementAndGet())
+                .setOnActionSent(options -> sentCount.incrementAndGet()));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1));
 
@@ -508,14 +491,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 413)))
-            .buildClient()
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
                 .setAutoFlush(false)
-                .setOnActionAdded(action -> addedCount.incrementAndGet())
-                .setOnActionSucceeded(action -> successCount.incrementAndGet())
-                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionSent(action -> sentCount.incrementAndGet())
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+                .setOnActionAdded(options -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(options -> successCount.incrementAndGet())
+                .setOnActionError(options -> errorCount.incrementAndGet())
+                .setOnActionSent(options -> sentCount.incrementAndGet()));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2));
 
@@ -549,14 +530,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .httpClient(request -> (callCount.getAndIncrement() < 2)
                 ? Mono.just(new MockHttpResponse(request, 413))
                 : createMockBatchSplittingResponse(request, 1, 1))
-            .buildClient()
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
                 .setAutoFlush(false)
-                .setOnActionAdded(action -> addedCount.incrementAndGet())
-                .setOnActionSucceeded(action -> successCount.incrementAndGet())
-                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionSent(action -> sentCount.incrementAndGet())
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+                .setOnActionAdded(options -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(options -> successCount.incrementAndGet())
+                .setOnActionError(options -> errorCount.incrementAndGet())
+                .setOnActionSent(options -> sentCount.incrementAndGet()));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 2));
 
@@ -578,11 +557,9 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     @MethodSource("operationsThrowAfterClientIsClosedSupplier")
     public void operationsThrowAfterClientIsClosed(
         Consumer<SearchIndexingBufferedSender<Map<String, Object>>> operation) {
-        SearchClient client = getSearchClientBuilder("index").buildClient();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
-            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setAutoFlush(false)
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
+                .setAutoFlush(false));
 
         batchingClient.close();
 
@@ -621,11 +598,9 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
     @Test
     public void closingTwiceDoesNotThrow() {
-        SearchClient client = getSearchClientBuilder("index").buildClient();
-        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = client.getSearchIndexingBufferedSender(
-            new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setAutoFlush(false)
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
+                .setAutoFlush(false));
 
         batchingClient.close();
 
@@ -636,7 +611,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void concurrentFlushesOnlyAllowsOneProcessor() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
-        SearchAsyncClient client = getSearchClientBuilder("index")
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
@@ -648,14 +623,9 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 } else {
                     return Mono.error(new IllegalStateException("Unexpected request."));
                 }
-            }).buildAsyncClient();
-
-        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = client
-            .getSearchIndexingBufferedAsyncSender(
-                new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                    .setAutoFlush(false)
-                    .setInitialBatchActionCount(5)
-                    .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+            }).buildBufferedAsyncSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
+                .setAutoFlush(false)
+                .setInitialBatchActionCount(5));
 
         CountDownLatch countDownLatch = new CountDownLatch(2);
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
@@ -684,7 +654,7 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
     public void closeWillWaitForAnyCurrentFlushesToCompleteBeforeRunning() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
-        SearchAsyncClient client = getSearchClientBuilder("index")
+        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .httpClient(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
@@ -696,14 +666,9 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                 } else {
                     return Mono.error(new IllegalStateException("Unexpected request."));
                 }
-            }).buildAsyncClient();
-
-        SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient = client
-            .getSearchIndexingBufferedAsyncSender(
-                new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                    .setAutoFlush(false)
-                    .setInitialBatchActionCount(5)
-                    .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+            }).buildBufferedAsyncSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
+                .setAutoFlush(false)
+                .setInitialBatchActionCount(5));
 
         CountDownLatch countDownLatch = new CountDownLatch(2);
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
@@ -746,15 +711,12 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                     return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
                         createMockResponseData(0, 201, 200, 201, 200, 200, 200, 201, 201, 200, 201)));
                 }
-            })
-            .buildClient()
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
+            }).buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
                 .setAutoFlush(false)
-                .setOnActionAdded(action -> addedCount.incrementAndGet())
-                .setOnActionSucceeded(action -> successCount.incrementAndGet())
-                .setOnActionError((action, throwable) -> errorCount.incrementAndGet())
-                .setOnActionSent(action -> sentCount.incrementAndGet())
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+                .setOnActionAdded(options -> addedCount.incrementAndGet())
+                .setOnActionSucceeded(options -> successCount.incrementAndGet())
+                .setOnActionError(options -> errorCount.incrementAndGet())
+                .setOnActionSent(options -> sentCount.incrementAndGet()));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
@@ -778,19 +740,17 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
             .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 503)))
-            .buildClient()
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setAutoFlush(false)
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
+                .setAutoFlush(false));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
         assertDoesNotThrow((Executable) batchingClient::flush);
-        Duration retryDuration = batchingClient.client.publisher.currentRetryDelay;
+        Duration retryDuration = batchingClient.client.publisher.getCurrentRetryDelay();
         assertTrue(retryDuration.compareTo(Duration.ZERO) > 0);
 
         assertDoesNotThrow((Executable) batchingClient::flush);
-        assertTrue(batchingClient.client.publisher.currentRetryDelay.compareTo(retryDuration) > 0);
+        assertTrue(batchingClient.client.publisher.getCurrentRetryDelay().compareTo(retryDuration) > 0);
     }
 
     @Test
@@ -799,19 +759,17 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
             .retryPolicy(new RetryPolicy(new FixedDelay(0, Duration.ZERO)))
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
                 createMockResponseData(0, 503))))
-            .buildClient()
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setAutoFlush(false)
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
+                .setAutoFlush(false));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1));
 
         assertDoesNotThrow((Executable) batchingClient::flush);
-        Duration retryDuration = batchingClient.client.publisher.currentRetryDelay;
+        Duration retryDuration = batchingClient.client.publisher.getCurrentRetryDelay();
         assertTrue(retryDuration.compareTo(Duration.ZERO) > 0);
 
         assertDoesNotThrow((Executable) batchingClient::flush);
-        assertTrue(batchingClient.client.publisher.currentRetryDelay.compareTo(retryDuration) > 0);
+        assertTrue(batchingClient.client.publisher.getCurrentRetryDelay().compareTo(retryDuration) > 0);
     }
 
     @Test
@@ -827,20 +785,21 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
                     return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
                         createMockResponseData(0, 200)));
                 }
-            })
-            .buildClient()
-            .getSearchIndexingBufferedSender(new SearchIndexingBufferedSenderOptions<Map<String, Object>>()
-                .setAutoFlush(false)
-                .setDocumentKeyRetriever(document -> String.valueOf(document.get("HotelId"))));
+            }).buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
+                .setAutoFlush(false));
 
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON).subList(0, 1));
 
         assertDoesNotThrow((Executable) batchingClient::flush);
-        Duration retryDuration = batchingClient.client.publisher.currentRetryDelay;
+        Duration retryDuration = batchingClient.client.publisher.getCurrentRetryDelay();
         assertTrue(retryDuration.compareTo(Duration.ZERO) > 0);
 
         assertDoesNotThrow((Executable) batchingClient::flush);
-        assertEquals(Duration.ZERO, batchingClient.client.publisher.currentRetryDelay);
+        assertEquals(Duration.ZERO, batchingClient.client.publisher.getCurrentRetryDelay());
+    }
+
+    private <T> SearchIndexingBufferedSender<T> getBufferedSender(SearchIndexingBufferedSenderOptions<T> options) {
+        return clientBuilder.buildBufferedSender(options);
     }
 
     /*

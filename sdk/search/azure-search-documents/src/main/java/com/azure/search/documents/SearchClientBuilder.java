@@ -16,6 +16,9 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.search.documents.implementation.SearchIndexClientImpl;
+import com.azure.search.documents.implementation.SearchIndexClientImplBuilder;
 import com.azure.search.documents.implementation.util.Constants;
 import com.azure.search.documents.implementation.util.Utility;
 
@@ -24,6 +27,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.azure.search.documents.implementation.util.Utility.initializeSerializerAdapter;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of {@link SearchClient
@@ -48,8 +53,13 @@ import java.util.Objects;
  * @see SearchClient
  * @see SearchAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {SearchClient.class, SearchAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {
+    SearchClient.class, SearchAsyncClient.class,
+    SearchIndexingBufferedSender.class, SearchIndexingBufferedAsyncSender.class
+})
 public final class SearchClientBuilder {
+    private static final SerializerAdapter ADAPTER = initializeSerializerAdapter();
+
     private final ClientLogger logger = new ClientLogger(SearchClientBuilder.class);
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -83,7 +93,7 @@ public final class SearchClientBuilder {
      * builder settings are ignored.
      *
      * @return A SearchClient with the options set from the builder.
-     * @throws NullPointerException If {@code indexName} or {@code endpoint} are {@code null}.
+     * @throws NullPointerException If {@code indexName} or {@code endpoint} are null.
      */
     public SearchClient buildClient() {
         return new SearchClient(buildAsyncClient());
@@ -98,24 +108,77 @@ public final class SearchClientBuilder {
      * other builder settings are ignored.
      *
      * @return A SearchClient with the options set from the builder.
-     * @throws NullPointerException If {@code indexName} or {@code endpoint} are {@code null}.
+     * @throws NullPointerException If {@code indexName} or {@code endpoint} are null.
      */
     public SearchAsyncClient buildAsyncClient() {
-        Objects.requireNonNull(indexName, "'indexName' cannot be null.");
-        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        validateIndexNameAndEndpoint();
         SearchServiceVersion buildVersion = (serviceVersion == null)
             ? SearchServiceVersion.getLatest()
             : serviceVersion;
 
+        HttpPipeline pipeline = getHttpPipeline();
+        return new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer,
+            buildRestClient(pipeline));
+    }
+
+    /**
+     * Creates a {@link SearchIndexingBufferedSender} based on options set in the builder. Every time this is called a
+     * new instance of {@link SearchIndexingBufferedSender} is created.
+     * <p>
+     * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline}, {@link #endpoint(String)
+     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link SearchIndexingBufferedSender
+     * client}. All other builder settings are ignored.
+     *
+     * @param options Batching configurations for the client.
+     * @param <T> Document type for the client.
+     * @return A SearchIndexingBufferedSender with the options set from the builder.
+     * @throws NullPointerException If {@code indexName}, {@code endpoint}, or {@code options} are null.
+     */
+    public <T> SearchIndexingBufferedSender<T> buildBufferedSender(SearchIndexingBufferedSenderOptions<T> options) {
+        return new SearchIndexingBufferedSender<>(buildBufferedAsyncSender(options));
+    }
+
+    /**
+     * Creates a {@link SearchIndexingBufferedAsyncSender} based on options set in the builder. Every time this is
+     * called a new instance of {@link SearchIndexingBufferedAsyncSender} is created.
+     * <p>
+     * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline}, {@link #endpoint(String)
+     * endpoint}, and {@link #indexName(String) indexName} are used to create the {@link
+     * SearchIndexingBufferedAsyncSender client}. All other builder settings are ignored.
+     *
+     * @param options Batching configurations for the client.
+     * @param <T> Document type for the client.
+     * @return A SearchIndexingBufferedAsyncSender with the options set from the builder.
+     * @throws NullPointerException If {@code indexName}, {@code endpoint}, or {@code options} are null.
+     */
+    public <T> SearchIndexingBufferedAsyncSender<T> buildBufferedAsyncSender(
+        SearchIndexingBufferedSenderOptions<T> options) {
+        validateIndexNameAndEndpoint();
+        return new SearchIndexingBufferedAsyncSender<>(buildRestClient(getHttpPipeline()), jsonSerializer, options);
+    }
+
+    private void validateIndexNameAndEndpoint() {
+        Objects.requireNonNull(indexName, "'indexName' cannot be null.");
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+    }
+
+    private HttpPipeline getHttpPipeline() {
         if (httpPipeline != null) {
-            return new SearchAsyncClient(endpoint, indexName, buildVersion, httpPipeline, jsonSerializer);
+            return httpPipeline;
         }
 
         Objects.requireNonNull(credential, "'credential' cannot be null.");
-        HttpPipeline pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
+        return Utility.buildHttpPipeline(clientOptions, httpLogOptions, configuration, retryPolicy,
             credential, perCallPolicies, perRetryPolicies, httpClient);
+    }
 
-        return new SearchAsyncClient(endpoint, indexName, buildVersion, pipeline, jsonSerializer);
+    private SearchIndexClientImpl buildRestClient(HttpPipeline httpPipeline) {
+        return new SearchIndexClientImplBuilder()
+            .endpoint(endpoint)
+            .indexName(indexName)
+            .pipeline(httpPipeline)
+            .serializerAdapter(ADAPTER)
+            .buildClient();
     }
 
     /**
@@ -140,8 +203,8 @@ public final class SearchClientBuilder {
      *
      * @param credential The {@link AzureKeyCredential} used to authenticate HTTP requests.
      * @return The updated SearchClientBuilder object.
-     * @throws NullPointerException If {@code credential} is {@code null}.
-     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is {@code null} or empty.
+     * @throws NullPointerException If {@code credential} is null.
+     * @throws IllegalArgumentException If {@link AzureKeyCredential#getKey()} is null or empty.
      */
     public SearchClientBuilder credential(AzureKeyCredential credential) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
@@ -154,7 +217,7 @@ public final class SearchClientBuilder {
      *
      * @param indexName Name of the index.
      * @return The updated SearchClientBuilder object.
-     * @throws IllegalArgumentException If {@code indexName} is {@code null} or empty.
+     * @throws IllegalArgumentException If {@code indexName} is null or empty.
      */
     public SearchClientBuilder indexName(String indexName) {
         if (CoreUtils.isNullOrEmpty(indexName)) {
@@ -205,7 +268,7 @@ public final class SearchClientBuilder {
      *
      * @param policy The pipeline policies to added to the policy list.
      * @return The updated SearchClientBuilder object.
-     * @throws NullPointerException If {@code policy} is {@code null}.
+     * @throws NullPointerException If {@code policy} is null.
      */
     public SearchClientBuilder addPolicy(HttpPipelinePolicy policy) {
         Objects.requireNonNull(policy, "'policy' cannot be null.");

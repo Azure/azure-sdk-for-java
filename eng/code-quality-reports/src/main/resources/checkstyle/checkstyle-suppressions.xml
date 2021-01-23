@@ -565,4 +565,13 @@ the main ServiceBusClientBuilder. -->
   <!-- Suppress checks in azure-core-experimental -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.experimental.jsonpatch.(JsonPatchDocumentSerializer|JsonPatchOperationSerializer).java"/>
+
+  <!-- Suppress non-conforming service builder and service clients -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck"
+            files="com.azure.search.documents.SearchClientBuilder"
+            lines="137,154"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.search.documents.SearchIndexingBufferedAsyncSender"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck"
+            files="com.azure.search.documents.SearchIndexingBufferedSender"/>
 </suppressions>

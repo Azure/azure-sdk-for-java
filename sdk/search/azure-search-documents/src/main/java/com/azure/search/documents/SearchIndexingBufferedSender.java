@@ -3,6 +3,7 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
@@ -15,6 +16,7 @@ import java.util.Collection;
  * This class provides a buffered sender that contains operations for conveniently indexing documents to an Azure Search
  * index.
  */
+@ServiceClient(builder = SearchClientBuilder.class)
 public final class SearchIndexingBufferedSender<T> {
     final SearchIndexingBufferedAsyncSender<T> client;
 

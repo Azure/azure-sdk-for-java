@@ -3,8 +3,12 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.search.documents.implementation.SearchIndexClientImpl;
+import com.azure.search.documents.implementation.batching.SearchIndexingPublisher;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
 import reactor.core.publisher.Mono;
@@ -21,6 +25,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * This class provides a buffered sender that contains operations for conveniently indexing documents to an Azure Search
  * index.
  */
+@ServiceClient(builder = SearchClientBuilder.class, isAsync = true)
 public final class SearchIndexingBufferedAsyncSender<T> {
     private final ClientLogger logger = new ClientLogger(SearchIndexingBufferedAsyncSender.class);
 
@@ -34,12 +39,14 @@ public final class SearchIndexingBufferedAsyncSender<T> {
 
     private volatile boolean isClosed = false;
 
-    SearchIndexingBufferedAsyncSender(SearchAsyncClient client, SearchIndexingBufferedSenderOptions<T> options) {
-        this.publisher = new SearchIndexingPublisher<>(client, options);
+    SearchIndexingBufferedAsyncSender(SearchIndexClientImpl restClient, JsonSerializer serializer,
+        SearchIndexingBufferedSenderOptions<T> options) {
+        this.publisher = new SearchIndexingPublisher<>(restClient, serializer, options);
 
         this.autoFlush = options.getAutoFlush();
-        this.flushWindowMillis = Math.max(0, options.getAutoFlushWindow().toMillis());
+        this.flushWindowMillis = Math.max(0, options.getAutoFlushInterval().toMillis());
         this.autoFlushTimer = (this.autoFlush && this.flushWindowMillis > 0) ? new Timer() : null;
+
     }
 
     /**
