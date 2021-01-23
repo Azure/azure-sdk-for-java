@@ -6,7 +6,6 @@ package com.azure.communication.sms;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.communication.common.ConnectionString;
 import com.azure.communication.sms.models.SendSmsResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.HttpClient;
@@ -26,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SmsLiveTestBase extends TestBase {
 
     protected static final String DEFAULT_ACCESS_KEY = "VGhpcyBpcyBhIHRlc3Q="; // Base64 encoded "This is a test"
-    static final TestMode TEST_MODE = initializeTestMode();  
+    static final TestMode TEST_MODE = initializeTestMode();
     static final String PHONENUMBER = Configuration.getGlobalConfiguration()
         .get("SMS_SERVICE_PHONE_NUMBER", "+18005555555");
 
@@ -55,7 +54,7 @@ public class SmsLiveTestBase extends TestBase {
 
     protected SmsClientBuilder getSmsClientBuilderWithManagedIdentity(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
-        String livetestEndpoint = new ConnectionString(CONNECTION_STRING).getEndpoint();
+        String livetestEndpoint = new com.azure.communication.common.implementation.CommunicationConnectionString(CONNECTION_STRING).getEndpoint();
 
         builder.endpoint(livetestEndpoint)
                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
@@ -89,7 +88,7 @@ public class SmsLiveTestBase extends TestBase {
 
     protected void verifyResponse(Response<SendSmsResponse> response) {
         assertNotNull(response);
-        verifyResponse(response.getValue());      
+        verifyResponse(response.getValue());
     }
 
     protected void verifyResponse(SendSmsResponse response) {
@@ -114,7 +113,7 @@ public class SmsLiveTestBase extends TestBase {
             return TestMode.PLAYBACK;
         }
     }
-    
+
     protected SmsClientBuilder addLoggingPolicy(SmsClientBuilder builder, String testName) {
         return builder.addPolicy(new CommunicationLoggerPolicy(testName));
     }

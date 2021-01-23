@@ -5,7 +5,6 @@ package com.azure.communication.administration;
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImplBuilder;
 import com.azure.communication.common.CommunicationClientCredential;
-import com.azure.communication.common.ConnectionString;
 import com.azure.communication.common.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
@@ -137,7 +136,7 @@ public final class PhoneNumberClientBuilder {
      */
     public PhoneNumberClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-        ConnectionString connectionStringObject = new ConnectionString(connectionString);
+        com.azure.communication.common.implementation.CommunicationConnectionString connectionStringObject = new com.azure.communication.common.implementation.CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
         this
@@ -221,11 +220,11 @@ public final class PhoneNumberClientBuilder {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
         }
-        if (this.tokenCredential != null) { 
+        if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(
-                this.tokenCredential, "https://communication.azure.com//.default");          
+                this.tokenCredential, "https://communication.azure.com//.default");
         } else if (this.accessKeyCredential != null) {
-            return new HmacAuthenticationPolicy(this.accessKeyCredential);            
+            return new HmacAuthenticationPolicy(this.accessKeyCredential);
         } else {
             throw logger.logExceptionAsError(
                 new NullPointerException("Missing credential information while building a client."));
