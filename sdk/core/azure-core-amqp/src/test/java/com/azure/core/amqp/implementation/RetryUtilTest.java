@@ -25,6 +25,7 @@ import reactor.util.retry.RetryBackoffSpec;
 
 import java.time.Duration;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -42,7 +43,7 @@ public class RetryUtilTest {
 
         // Assert
         Assertions.assertNotNull(retryPolicy);
-        Assertions.assertEquals(FixedAmqpRetryPolicy.class, retryPolicy.getClass());
+        assertEquals(FixedAmqpRetryPolicy.class, retryPolicy.getClass());
     }
 
     @Test
@@ -54,7 +55,7 @@ public class RetryUtilTest {
 
         // Assert
         Assertions.assertNotNull(retryPolicy);
-        Assertions.assertEquals(ExponentialAmqpRetryPolicy.class, retryPolicy.getClass());
+        assertEquals(ExponentialAmqpRetryPolicy.class, retryPolicy.getClass());
     }
 
     /**
@@ -82,7 +83,7 @@ public class RetryUtilTest {
             .expectErrorSatisfies(error -> assertTrue(error.getCause() instanceof TimeoutException))
             .verify();
 
-        Assertions.assertEquals(options.getMaxRetries() + 1, resubscribe.get());
+        assertEquals(options.getMaxRetries() + 1, resubscribe.get());
     }
 
     /**
@@ -110,7 +111,64 @@ public class RetryUtilTest {
             .expectErrorSatisfies(error -> assertTrue(error.getCause() instanceof TimeoutException))
             .verify();
 
-        Assertions.assertEquals(options.getMaxRetries() + 1, resubscribe.get());
+        assertEquals(options.getMaxRetries() + 1, resubscribe.get());
+    }
+
+    @Test
+    void withRetriableError() {
+        // Arrange
+        final String timeoutMessage = "Operation timed out.";
+        final Duration timeout = Duration.ofSeconds(30);
+        final AmqpRetryOptions options = new AmqpRetryOptions()
+            .setMode(AmqpRetryMode.FIXED)
+            .setDelay(Duration.ofSeconds(1))
+            .setMaxRetries(1)
+            .setTryTimeout(timeout);
+        final AtomicBoolean wasSent = new AtomicBoolean();
+
+        final Flux<Integer> stream = Flux.concat(
+            Flux.just(0, 1, 2),
+            Flux.create(sink -> {
+                System.out.println("Sink");
+                if (wasSent.getAndSet(true)) {
+                    sink.next(10);
+                } else {
+                    sink.error(new AmqpException(true, "Test-exception", new AmqpErrorContext("test-ns")));
+                }
+            }),
+            Flux.just(3, 4));
+
+        // Act & Assert
+        StepVerifier.create(RetryUtil.withRetry(stream, options, timeoutMessage))
+            .assertNext(e -> {
+                assertEquals(0, e);
+            })
+            .assertNext(e -> {
+                assertEquals(1, e);
+            })
+            .assertNext(e -> {
+                assertEquals(2, e);
+            })
+            .assertNext(e -> {
+                assertEquals(0, e);
+            })
+            .assertNext(e -> {
+                assertEquals(1, e);
+            })
+            .assertNext(e -> {
+                assertEquals(2, e);
+            })
+            .assertNext(e -> {
+                assertEquals(10, e);
+            })
+            .assertNext(e -> {
+                assertEquals(3, e);
+            })
+            .assertNext(e -> {
+                assertEquals(4, e);
+            })
+            .expectComplete()
+            .verify();
     }
 
     static Stream<AmqpRetryOptions> createRetry() {
