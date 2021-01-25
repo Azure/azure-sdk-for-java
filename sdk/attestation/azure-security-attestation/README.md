@@ -77,7 +77,7 @@ the certificate issued by the server can be verified using the [oe_verify_attest
 ### Policy Management
 Each attestation service instance has a policy applied to it which defines additional criteria which the customer has defined.
 
-For more information on attestation policies, see [Attestation Policy](https://docs.microsoft.com/en-us/azure/attestation/author-sign-policy)
+For more information on attestation policies, see [Attestation Policy](https://docs.microsoft.com/azure/attestation/author-sign-policy)
 
 ### Policy Management certificate management.
 When an attestation instance is running in "Isolated" mode, the customer who created the instance will have provided
@@ -161,9 +161,9 @@ JsonWebKeySet certs = attestationBuilder.buildSigningCertificatesClient().get();
 
 ## Troubleshooting
 
-Troubleshooting information for the MAA service can be found [here](https://docs.microsoft.com/en-us/azure/attestation/troubleshoot-guide)
+Troubleshooting information for the MAA service can be found [here](https://docs.microsoft.com/azure/attestation/troubleshoot-guide)
 ## Next steps
-For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://docs.microsoft.com/en-us/azure/attestation/). 
+For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://docs.microsoft.com/azure/attestation/). 
 
 ## Contributing
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
