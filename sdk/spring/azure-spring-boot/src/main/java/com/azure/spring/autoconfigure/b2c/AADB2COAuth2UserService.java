@@ -8,7 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
@@ -25,13 +24,9 @@ import javax.servlet.http.HttpSession;
 public class AADB2COAuth2UserService implements OAuth2UserService<OidcUserRequest, OidcUser> {
 
     private final OidcUserService oidcUserService;
-    private final ClientRegistrationRepository clientRegistrationRepository;
     private static final String DEFAULT_OIDC_USER = "defaultOidcUser";
 
-    public AADB2COAuth2UserService(
-        ClientRegistrationRepository clientRegistrationRepository
-    ) {
-        this.clientRegistrationRepository = clientRegistrationRepository;
+    public AADB2COAuth2UserService() {
         this.oidcUserService = new OidcUserService();
     }
 

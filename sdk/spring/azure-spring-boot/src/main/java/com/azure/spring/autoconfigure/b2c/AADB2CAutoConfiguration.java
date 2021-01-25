@@ -91,9 +91,8 @@ public class AADB2CAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public OAuth2UserService<OidcUserRequest, OidcUser>
-        oAuth2UserService(ClientRegistrationRepository clientRegistrationRepository) {
-        return new AADB2COAuth2UserService(clientRegistrationRepository);
+    public OAuth2UserService<OidcUserRequest, OidcUser> oAuth2UserService() {
+        return new AADB2COAuth2UserService();
     }
 
     @Bean
@@ -177,7 +176,7 @@ public class AADB2CAutoConfiguration {
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     @EnableWebSecurity
     @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
-    public class DefaultAADB2CWebSecurityConfigurerAdapter extends AADB2CWebSecurityConfigurerAdapter {
+    public static class DefaultAADB2CWebSecurityConfigurerAdapter extends AADB2CWebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
