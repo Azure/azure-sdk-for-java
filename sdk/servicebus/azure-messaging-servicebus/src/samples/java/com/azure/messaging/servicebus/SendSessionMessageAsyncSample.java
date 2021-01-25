@@ -86,7 +86,7 @@ public class SendSessionMessageAsyncSample {
             () -> {
                 System.out.println("Batch send complete.");
                 sampleSuccessful.set(true);
-        });
+            });
 
         // subscribe() is not a blocking call. We wait here so the program does not end before the send is complete.
         countdownLatch.await(10, TimeUnit.SECONDS);
