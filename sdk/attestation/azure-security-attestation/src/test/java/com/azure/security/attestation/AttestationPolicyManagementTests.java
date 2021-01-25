@@ -18,17 +18,18 @@ import com.nimbusds.jose.Payload;
 import com.nimbusds.jwt.JWTClaimsSet;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.text.ParseException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Assumptions;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class AttestationPolicyManagementTests extends AttestationClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -59,7 +60,10 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
                     return verifyAttestationToken(httpClient, clientUri, response.getToken());
                 }))
             .assertNext(claims -> verifyGetPolicyCertificatesResponse(clientUri, claims))
-            .verifyComplete();
+            .expectComplete()
+            .verify();
+
+
     }
 
 
@@ -118,10 +122,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         ClientTypes clientType = classifyClient(clientUri);
 
-        // This test only works on isolated instances.
-        if (clientType != ClientTypes.ISOLATED) {
-            return;
-        }
+        assumeTrue(clientType == ClientTypes.ISOLATED, "This test only works on isolated instances.");
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         PolicyCertificatesClient client = attestationBuilder.buildPolicyCertificatesClient();
@@ -184,9 +185,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         ClientTypes clientType = classifyClient(clientUri);
         // This test only works on isolated instances.
-        if (clientType != ClientTypes.ISOLATED) {
-            return;
-        }
+        assumeTrue(clientType == ClientTypes.ISOLATED, "This test only works on isolated instances.");
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         PolicyCertificatesAsyncClient client = attestationBuilder.buildPolicyCertificatesAsyncClient();

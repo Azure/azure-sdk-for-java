@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public class AttestationPolicyTests extends AttestationClientTestBase {
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
@@ -80,9 +81,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
         ClientTypes clientType = classifyClient(clientUri);
         // We can't set attestation policy on the shared client, so just exit early.
-        if (clientType.equals(ClientTypes.SHARED)) {
-            return;
-        }
+        assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         PolicyClient client = attestationBuilder.buildPolicyClient();
@@ -130,9 +129,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri, AttestationType attestationType) {
         ClientTypes clientType = classifyClient(clientUri);
         // We can't set attestation policy on the shared client, so just exit early.
-        if (clientType.equals(ClientTypes.SHARED)) {
-            return;
-        }
+        assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         PolicyAsyncClient client = attestationBuilder.buildPolicyAsyncClient();
