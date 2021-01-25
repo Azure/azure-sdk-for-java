@@ -269,13 +269,14 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         batchingClient.addUploadActions(documentBatch);
 
+        batchingClient.close();
+
         sleepIfRunningAgainstService((long) (15000 * 1.5));
 
         assertEquals(1000, successCount.get());
         assertEquals(0, failedCount.get());
         assertTrue(requestCount.get() >= 100);
         assertEquals(1000, client.getDocumentCount());
-        batchingClient.close();
     }
 
     /**
@@ -428,6 +429,108 @@ public class SearchIndexingBufferedSenderTests extends SearchTestBase {
 
         /*
          * No documents failed, so we should expect zero documents are added back into the batch.
+         */
+        assertEquals(0, batchingClient.getActions().size());
+    }
+
+//    @Test
+//    public void resizeFactorDeterminesSubsequentRequestCount() {
+//        AtomicInteger callCount = new AtomicInteger();
+//        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
+//            .httpClient(request -> {
+//                int count = callCount.getAndIncrement();
+//                if (count == 0) {
+//                    return Mono.just(new MockHttpResponse(request, 413));
+//                }
+//            })
+//            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER)
+//                .);
+//
+//        batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
+//
+//        assertDoesNotThrow((Executable) batchingClient::flush);
+//
+//    }
+
+    /**
+     * Tests that flushing a batch doesn't include duplicate keys.
+     */
+    @Test
+    public void batchTakesAllNonDuplicateKeys() {
+        AtomicInteger callCount = new AtomicInteger();
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
+            .httpClient(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
+                        createMockResponseData(0, 200, 200, 200, 200, 200, 200, 200, 200, 200)));
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
+                        createMockResponseData(0, 200)));
+                }
+            })
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER));
+
+        List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
+        documents.get(9).put("HotelId", "1");
+
+        batchingClient.addUploadActions(documents);
+
+        assertDoesNotThrow((Executable) batchingClient::flush);
+
+        /*
+         * One document shouldn't have been sent as it contains a duplicate key from an earlier document.
+         */
+        assertEquals(1, batchingClient.getActions().size());
+
+        assertDoesNotThrow((Executable) batchingClient::flush);
+
+        /*
+         * No documents should remain as no duplicate keys exists.
+         */
+        assertEquals(0, batchingClient.getActions().size());
+    }
+
+    @Test
+    public void batchWithDuplicateKeysBeingRetriedTakesAllNonDuplicateKeys() {
+        AtomicInteger callCount = new AtomicInteger();
+        SearchIndexingBufferedSender<Map<String, Object>> batchingClient = getSearchClientBuilder("index")
+            .httpClient(request -> {
+                int count = callCount.getAndIncrement();
+                if (count == 0) {
+                    return Mono.just(new MockHttpResponse(request, 207, new HttpHeaders(),
+                        createMockResponseData(0, 503, 200, 200, 200, 200, 200, 200, 200, 200)));
+                } else {
+                    return Mono.just(new MockHttpResponse(request, 200, new HttpHeaders(),
+                        createMockResponseData(0, 200)));
+                }
+            })
+            .buildBufferedSender(new SearchIndexingBufferedSenderOptions<>(HOTEL_ID_KEY_RETRIEVER));
+
+        List<Map<String, Object>> documents = readJsonFileToList(HOTELS_DATA_JSON);
+        documents.get(9).put("HotelId", "1");
+
+        batchingClient.addUploadActions(documents);
+
+        assertDoesNotThrow((Executable) batchingClient::flush);
+
+        /*
+         * Two documents should be in the batch as one failed with a retryable status code and another wasn't sent as it
+         * used a duplicate key from the batch that was sent.
+         */
+        assertEquals(2, batchingClient.getActions().size());
+
+        assertDoesNotThrow((Executable) batchingClient::flush);
+
+        /*
+         * One document should remain in the batch as it had the same key as another document in the batch.
+         */
+        assertEquals(1, batchingClient.getActions().size());
+
+        assertDoesNotThrow((Executable) batchingClient::flush);
+
+        /*
+         * No documents should remain as no duplicate keys exists.
          */
         assertEquals(0, batchingClient.getActions().size());
     }

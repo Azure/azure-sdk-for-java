@@ -26,10 +26,11 @@ import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Deque;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -64,7 +65,7 @@ public final class SearchIndexingPublisher<T> {
     private final Function<T, String> documentKeyRetriever;
 
     private final Object actionsMutex = new Object();
-    private final Deque<TryTrackingIndexAction<T>> actions = new LinkedList<>();
+    private final LinkedList<TryTrackingIndexAction<T>> actions = new LinkedList<>();
 
     private final Semaphore processingSemaphore = new Semaphore(1);
 
@@ -133,20 +134,32 @@ public final class SearchIndexingPublisher<T> {
             return createAndProcessBatch(context)
                 .doFinally(ignored -> processingSemaphore.release());
         } else {
+            logger.verbose("Batch already in-flight and not waiting for completion. Performing no-op.");
             return Mono.empty();
         }
     }
 
     private Mono<Void> createAndProcessBatch(Context context) {
-        final List<TryTrackingIndexAction<T>> batchActions = new ArrayList<>(batchActionCount);
+        final List<TryTrackingIndexAction<T>> batchActions;
+        final Set<String> keysInBatch;
         synchronized (actionsMutex) {
-            int size = Math.min(batchActionCount, this.actions.size());
-            for (int i = 0; i < size; i++) {
-                TryTrackingIndexAction<T> action = actions.pop();
-                if (onActionSentConsumer != null) {
-                    onActionSentConsumer.accept(new OnActionSentOptions<>(action.getAction()));
+            int actionSize = this.actions.size();
+            int size = Math.min(batchActionCount, actionSize);
+            batchActions = new ArrayList<>(size);
+            keysInBatch = new HashSet<>(size * 2);
+
+            int offset = 0;
+            int actionsAdded = 0;
+            while (actionsAdded < size && offset < actionSize) {
+                TryTrackingIndexAction<T> potentialDocumentToAdd = actions.get(offset++ - actionsAdded);
+
+                if (keysInBatch.contains(potentialDocumentToAdd.getKey())) {
+                    continue;
                 }
-                batchActions.add(action);
+
+                keysInBatch.add(potentialDocumentToAdd.getKey());
+                batchActions.add(actions.remove(offset - 1 - actionsAdded));
+                actionsAdded += 1;
             }
         }
 
@@ -156,7 +169,13 @@ public final class SearchIndexingPublisher<T> {
         }
 
         List<com.azure.search.documents.implementation.models.IndexAction> convertedActions = batchActions.stream()
-            .map(action -> IndexActionConverter.map(action.getAction(), serializer))
+            .map(action -> {
+                if (onActionSentConsumer != null) {
+                    onActionSentConsumer.accept(new OnActionSentOptions<>(action.getAction()));
+                }
+
+                return IndexActionConverter.map(action.getAction(), serializer);
+            })
             .collect(Collectors.toList());
 
         return sendBatch(convertedActions, 0, context)
