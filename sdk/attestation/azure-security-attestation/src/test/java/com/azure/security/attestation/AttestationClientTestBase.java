@@ -39,14 +39,12 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class AttestationClientTestBase extends TestBase {
 
@@ -106,7 +104,7 @@ public class AttestationClientTestBase extends TestBase {
     }
 
     Mono<JWTClaimsSet> verifyAttestationToken(HttpClient httpClient, String clientUri, String attestationToken) {
-        SignedJWT token = null;
+        SignedJWT token;
         try {
             token = SignedJWT.parse(attestationToken);
         } catch (ParseException e) {
@@ -127,11 +125,11 @@ public class AttestationClientTestBase extends TestBase {
                 }
 
 
-                JWTClaimsSet claims = null;
+                JWTClaimsSet claims;
                 try {
                     claims = finalToken.getJWTClaimsSet();
                 } catch (ParseException e) {
-                    logger.logExceptionAsError(new RuntimeException(e.toString()));
+                    throw logger.logExceptionAsError(new RuntimeException(e.toString()));
                 }
                 assertNotNull(claims);
                 return Mono.just(claims);
@@ -142,19 +140,17 @@ public class AttestationClientTestBase extends TestBase {
      * Create a JWS Signer from the specified PKCS8 encoded signing key.
      * @param signingKeyBase64 Base64 encoded PKCS8 encoded RSA Private key.
      * @return JWSSigner created over the specified signing key.
-     * @throws NoSuchAlgorithmException - should never  throws this.
-     * @throws InvalidKeySpecException - Can throw this if the key is invalid.
      */
     JWSSigner getJwsSigner(String signingKeyBase64) {
         byte[] signingKey = Base64.getDecoder().decode(signingKeyBase64);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(signingKey);
-        KeyFactory keyFactory = null;
+        KeyFactory keyFactory;
         try {
             keyFactory = KeyFactory.getInstance("RSA");
         } catch (NoSuchAlgorithmException e) {
             throw logger.logExceptionAsError(new RuntimeException(e.toString()));
         }
-        PrivateKey privateKey = null;
+        PrivateKey privateKey;
         try {
             privateKey = keyFactory.generatePrivate(keySpec);
         } catch (InvalidKeySpecException e) {
@@ -176,7 +172,7 @@ public class AttestationClientTestBase extends TestBase {
         AttestationClientBuilder builder = getBuilder(client, clientUri);
         return builder.buildSigningCertificatesAsyncClient().get()
             .map(keySet -> {
-                CertificateFactory cf = null;
+                CertificateFactory cf;
                 try {
                     cf = CertificateFactory.getInstance("X.509");
                 } catch (CertificateException e) {
@@ -187,9 +183,8 @@ public class AttestationClientTestBase extends TestBase {
 
                 for (JsonWebKey key : keySet.getKeys()) {
                     if (keyId.equals(key.getKid())) {
-                        Certificate cert = null;
+                        Certificate cert;
                         try {
-                            assert cf != null;
                             cert = cf.generateCertificate(base64ToStream(key.getX5C().get(0)));
                         } catch (CertificateException e) {
                             throw logger.logExceptionAsError(new RuntimeException(e.toString()));
@@ -268,8 +263,7 @@ public class AttestationClientTestBase extends TestBase {
         return certificate;
     }
 
-    private static String getLocationShortName()
-    {
+    private static String getLocationShortName() {
         String shortName = Configuration.getGlobalConfiguration().get("locationShortName");
         if (shortName == null) {
             shortName = "wus";
@@ -277,8 +271,7 @@ public class AttestationClientTestBase extends TestBase {
         return shortName;
     }
 
-    private static String getIsolatedUrl()
-    {
+    private static String getIsolatedUrl() {
         String url = Configuration.getGlobalConfiguration().get("ATTESTATION_ISOLATED_URL");
         if (url == null) {
             url = "https://attestation_isolated_url";
@@ -286,8 +279,7 @@ public class AttestationClientTestBase extends TestBase {
         return url;
     }
 
-    private static String getAadUrl()
-    {
+    private static String getAadUrl() {
         String url = Configuration.getGlobalConfiguration().get("ATTESTATION_AAD_URL");
         if (url == null) {
             url = "https://attestation_aad_url";
@@ -300,21 +292,17 @@ public class AttestationClientTestBase extends TestBase {
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
 
         final String regionShortName = getLocationShortName();
-        return getHttpClients().flatMap(httpClient -> {
-            return Stream.of(
-                Arguments.of(httpClient, "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net"),
-                Arguments.of(httpClient, getIsolatedUrl()),
-                Arguments.of(httpClient, getAadUrl()));
-        });
+        return getHttpClients().flatMap(httpClient -> Stream.of(
+            Arguments.of(httpClient, "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net"),
+            Arguments.of(httpClient, getIsolatedUrl()),
+            Arguments.of(httpClient, getAadUrl())));
     }
 
     static Stream<Arguments> getPolicyClients() {
-        return getAttestationClients().flatMap(clientParams -> {
-            return Stream.of(
-                Arguments.of(clientParams.get()[0], clientParams.get()[1], AttestationType.OPEN_ENCLAVE),
-                Arguments.of(clientParams.get()[0], clientParams.get()[1], AttestationType.TPM),
-                Arguments.of(clientParams.get()[0], clientParams.get()[1], AttestationType.SGX_ENCLAVE));
-        });
+        return getAttestationClients().flatMap(clientParams -> Stream.of(
+            Arguments.of(clientParams.get()[0], clientParams.get()[1], AttestationType.OPEN_ENCLAVE),
+            Arguments.of(clientParams.get()[0], clientParams.get()[1], AttestationType.TPM),
+            Arguments.of(clientParams.get()[0], clientParams.get()[1], AttestationType.SGX_ENCLAVE)));
     }
 
 }

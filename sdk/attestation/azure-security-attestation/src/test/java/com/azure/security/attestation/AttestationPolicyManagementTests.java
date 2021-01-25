@@ -24,7 +24,6 @@ import reactor.test.StepVerifier;
 
 import java.util.Collections;
 
-import org.junit.jupiter.api.Assumptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -42,8 +41,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         PolicyCertificatesClient client = attestationBuilder.buildPolicyCertificatesClient();
 
         PolicyCertificatesResponse response = client.get();
-        JWTClaimsSet claims = null;
-        claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
+        JWTClaimsSet claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
 
         assertNotNull(claims);
         verifyGetPolicyCertificatesResponse(clientUri, claims);
@@ -56,9 +54,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         PolicyCertificatesAsyncClient client = attestationBuilder.buildPolicyCertificatesAsyncClient();
 
         StepVerifier.create(client.get()
-                .flatMap(response -> {
-                    return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                }))
+                .flatMap(response -> verifyAttestationToken(httpClient, clientUri, response.getToken())))
             .assertNext(claims -> verifyGetPolicyCertificatesResponse(clientUri, claims))
             .expectComplete()
             .verify();
@@ -114,7 +110,6 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
      *
      * @param httpClient HTTP Client used for operations.
      * @param clientUri Base URI for attestation instance.
-     * @throws JOSEException Should never be thrown.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
@@ -132,7 +127,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         String newPolicyCertificateBase64 = getPolicySigningCertificate0();
 
-        JWSSigner existingSigner = null;
+        JWSSigner existingSigner;
         existingSigner = getJwsSigner(signingKeyBase64);
 
         JsonWebKey keyToAdd = new JsonWebKey("RS256");
@@ -142,7 +137,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         certBody.setPolicyCertificate(keyToAdd);
         ObjectMapper mapper = new ObjectMapper();
 
-        String serializedKey = null;
+        String serializedKey;
         try {
             serializedKey = mapper.writeValueAsString(certBody);
         } catch (JsonProcessingException e) {
@@ -165,7 +160,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         }
 
         PolicyCertificatesModifyResponse response = client.add(securedObject.serialize());
-        JWTClaimsSet responseClaims = null;
+        JWTClaimsSet responseClaims;
         responseClaims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
         assertNotNull(responseClaims);
         assertTrue(responseClaims.getClaims().containsKey("x-ms-policycertificates-result"));
@@ -195,7 +190,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         String newPolicyCertificateBase64 = getPolicySigningCertificate0();
 
-        JWSSigner existingSigner = null;
+        JWSSigner existingSigner;
         existingSigner = getJwsSigner(signingKeyBase64);
 
         JsonWebKey keyToAdd = new JsonWebKey("RS256");
@@ -205,7 +200,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         certBody.setPolicyCertificate(keyToAdd);
         ObjectMapper mapper = new ObjectMapper();
 
-        String serializedKey = null;
+        String serializedKey;
         try {
             serializedKey = mapper.writeValueAsString(certBody);
         } catch (JsonProcessingException e) {
@@ -228,16 +223,12 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         }
 
         StepVerifier.create(client.add(securedObject.serialize())
-            .flatMap(response -> {
-                return verifyAttestationToken(httpClient, clientUri, response.getToken());
-            })
+            .flatMap(response -> verifyAttestationToken(httpClient, clientUri, response.getToken()))
             .doOnNext(responseClaims -> {
                 assertTrue(responseClaims.getClaims().containsKey("x-ms-policycertificates-result"));
                 assertEquals("IsPresent", responseClaims.getClaims().get("x-ms-policycertificates-result").toString());
             }).flatMap(policyResponse -> client.remove(securedObject.serialize())
-                .flatMap(response -> {
-                    return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                }))
+                .flatMap(response -> verifyAttestationToken(httpClient, clientUri, response.getToken())))
                 .doOnNext(responseClaims -> {
                     assertTrue(responseClaims.getClaims().containsKey("x-ms-policycertificates-result"));
                     assertEquals("IsAbsent", responseClaims.getClaims().get("x-ms-policycertificates-result").toString());

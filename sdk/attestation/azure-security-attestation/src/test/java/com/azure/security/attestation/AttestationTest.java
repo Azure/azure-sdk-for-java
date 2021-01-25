@@ -14,7 +14,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import java.text.ParseException;
 import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -160,9 +159,7 @@ public class AttestationTest extends AttestationClientTestBase {
         request.setRuntimeData(runtimeData);
 
         StepVerifier.create(client.attestSgxEnclave(request)
-                .flatMap(response -> {
-                    return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                }))
+                .flatMap(response -> verifyAttestationToken(httpClient, clientUri, response.getToken())))
             .assertNext(claims -> {
                 assertTrue(claims.getClaims().containsKey("iss"));
 

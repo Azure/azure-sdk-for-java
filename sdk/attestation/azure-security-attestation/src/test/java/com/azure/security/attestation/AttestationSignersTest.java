@@ -55,12 +55,11 @@ public class AttestationSignersTest extends AttestationClientTestBase {
      * We also verify that self signed certificates are signed with the known trusted roots.
      * @param clientUri Base URI for client, used to verify the contents of the certificates.
      * @param certs certificate response to verify.
-     * @throws CertificateException thrown on invalid certificate returned.
      */
     private void verifySigningCertificatesResponse(String clientUri, JsonWebKeySet certs) {
         Assertions.assertTrue(certs.getKeys().size() > 1);
 
-        CertificateFactory cf = null;
+        CertificateFactory cf;
         try {
             cf = CertificateFactory.getInstance("X.509");
         } catch (CertificateException e) {
@@ -95,8 +94,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
                         }
                     }
                 } catch (CertificateException e) {
-                    logger.logExceptionAsError(new RuntimeException(e.toString()));
-                    throw new RuntimeException(e);
+                    throw logger.logExceptionAsError(new RuntimeException(e.toString()));
                 }
             });
         });

@@ -21,8 +21,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -73,7 +71,6 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
      * @param httpClient HTTP Client used for operations.
      * @param clientUri Base URI for attestation instance.
      * @param attestationType AttestationType on which to set policy.
-     * @throws JOSEException Should never be thrown.
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
@@ -143,13 +140,11 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
         for (JOSEObject policyObject : policySetObjects) {
             StepVerifier.create(client.set(attestationType, policyObject.serialize())
-                .flatMap(response -> {
-                    return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                }).doOnNext(responseClaims -> {
+                .flatMap(response -> verifyAttestationToken(httpClient, clientUri, response.getToken())).doOnNext(responseClaims -> {
                     assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
                     assertEquals("Updated", responseClaims.getClaims().get("x-ms-policy-result").toString());
                 }).flatMap(responseClaims -> {
-                    String resetToken = null;
+                    String resetToken;
                     switch (clientType) {
                         case AAD:
                             resetToken = new PlainPolicyResetToken().serialize();
@@ -161,9 +156,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                             throw new RuntimeException("Cannot ever hit this - unknown client type: " + clientType.toString());
                     }
                     return client.reset(attestationType, resetToken)
-                            .flatMap(response -> {
-                                return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                            });
+                            .flatMap(response -> verifyAttestationToken(httpClient, clientUri, response.getToken()));
                 })
                 .doOnNext(responseClaims -> {
                     assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
@@ -192,7 +185,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
                     String policyDocument = claims.getClaims().get("x-ms-policy").toString();
 
-                    JOSEObject policyJose = null;
+                    JOSEObject policyJose;
                     try {
                         policyJose = JOSEObject.parse(policyDocument);
                     } catch (ParseException e) {
@@ -223,7 +216,6 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
      * Retrieve the policy set objects for the specified client URI.
      * @param clientUri - client URI
      * @return An array of JOSEObjects which should be used to set attestation policy on the client.
-     * @throws JOSEException Thrown if we can't sign the JSON.
      */
     private ArrayList<JOSEObject> getPolicySetObjects(String clientUri, String signingCertificateBase64, JWSSigner signer) {
         ClientTypes clientType = classifyClient(clientUri);
