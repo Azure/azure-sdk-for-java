@@ -10,10 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/**
- * The object returned in the QueueMessageList array when calling Peek Messages
- * on a Queue.
- */
+/** The object returned in the QueueMessageList array when calling Peek Messages on a Queue. */
 @JacksonXmlRootElement(localName = "QueueMessage")
 @Fluent
 public final class PeekedMessageItem {
@@ -68,8 +65,7 @@ public final class PeekedMessageItem {
     }
 
     /**
-     * Get the insertionTime property: The time the Message was inserted into
-     * the Queue.
+     * Get the insertionTime property: The time the Message was inserted into the Queue.
      *
      * @return the insertionTime value.
      */
@@ -81,8 +77,7 @@ public final class PeekedMessageItem {
     }
 
     /**
-     * Set the insertionTime property: The time the Message was inserted into
-     * the Queue.
+     * Set the insertionTime property: The time the Message was inserted into the Queue.
      *
      * @param insertionTime the insertionTime value to set.
      * @return the PeekedMessageItem object itself.
@@ -97,8 +92,7 @@ public final class PeekedMessageItem {
     }
 
     /**
-     * Get the expirationTime property: The time that the Message will expire
-     * and be automatically deleted.
+     * Get the expirationTime property: The time that the Message will expire and be automatically deleted.
      *
      * @return the expirationTime value.
      */
@@ -110,8 +104,7 @@ public final class PeekedMessageItem {
     }
 
     /**
-     * Set the expirationTime property: The time that the Message will expire
-     * and be automatically deleted.
+     * Set the expirationTime property: The time that the Message will expire and be automatically deleted.
      *
      * @param expirationTime the expirationTime value to set.
      * @return the PeekedMessageItem object itself.
@@ -126,8 +119,7 @@ public final class PeekedMessageItem {
     }
 
     /**
-     * Get the dequeueCount property: The number of times the message has been
-     * dequeued.
+     * Get the dequeueCount property: The number of times the message has been dequeued.
      *
      * @return the dequeueCount value.
      */
@@ -136,8 +128,7 @@ public final class PeekedMessageItem {
     }
 
     /**
-     * Set the dequeueCount property: The number of times the message has been
-     * dequeued.
+     * Set the dequeueCount property: The number of times the message has been dequeued.
      *
      * @param dequeueCount the dequeueCount value to set.
      * @return the PeekedMessageItem object itself.
