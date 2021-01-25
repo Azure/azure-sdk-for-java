@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyRangeImpl;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -41,7 +42,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private final ProcessorSettings settings;
     private final PartitionCheckpointer checkpointer;
     private final ChangeFeedObserver observer;
-    private CosmosChangeFeedRequestOptions options;
+    private volatile CosmosChangeFeedRequestOptions options;
     private final ChangeFeedContextClient documentClient;
     private volatile RuntimeException resultException;
 
@@ -227,6 +228,18 @@ class PartitionProcessorImpl implements PartitionProcessor {
             }).then();
     }
 
+    private FeedRangePartitionKeyRangeImpl getPkRangeFeedRangeFromStartState() {
+        final FeedRangeInternal feedRange = this.settings.getStartState().getFeedRange();
+        checkNotNull(feedRange, "FeedRange must not be null here.");
+
+        // TODO fabianm - move observer to FeedRange and remove this constraint for merge support
+        checkArgument(
+            feedRange instanceof FeedRangePartitionKeyRangeImpl,
+            "FeedRange must be a PkRangeId FeedRange when using Lease V1 contract.");
+
+        return (FeedRangePartitionKeyRangeImpl)feedRange;
+    }
+
     @Override
     public RuntimeException getResultException() {
         return this.resultException;
@@ -237,8 +250,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
         ChangeFeedState continuationState) {
 
         ChangeFeedObserverContext context = new ChangeFeedObserverContextImpl(
-            // TODO fabianm - move observer to FeedRange for merge support
-            ((FeedRangePartitionKeyRangeImpl)this.settings.getStartState().getFeedRange()).getPartitionKeyRangeId(),
+            this.getPkRangeFeedRangeFromStartState().getPartitionKeyRangeId(),
             response,
             continuationState,
             this.checkpointer);

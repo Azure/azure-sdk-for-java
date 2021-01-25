@@ -11,6 +11,11 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * ChangeFeedStartFrom settings for starting a change feed query with just a simple
+ * Server-continuation for a single range - like when continuing processing
+ * for a lease document in the change feed processor.
+ */
 class ChangeFeedStartFromETagAndFeedRangeImpl extends ChangeFeedStartFromInternal {
     private final String eTag;
     private final FeedRangeInternal feedRange;

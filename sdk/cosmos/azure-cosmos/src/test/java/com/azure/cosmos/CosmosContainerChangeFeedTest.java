@@ -363,7 +363,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             IllegalStateException.class,
             () -> CosmosChangeFeedRequestOptions
                 .createForProcessingFromBeginning(FeedRange.forFullRange())
-                .withFullFidelity());
+                .fullFidelity());
     }
 
 
@@ -516,7 +516,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .createForProcessingFromPointInTime(
                     Instant.now().minus(10, ChronoUnit.SECONDS),
                     FeedRange.forFullRange())
-                .withFullFidelity());
+                .fullFidelity());
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)

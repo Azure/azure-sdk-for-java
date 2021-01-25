@@ -195,7 +195,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 .createForProcessingFromNow(feedRange);
 
         if (enableFullFidelityChangeFeedMode) {
-            changeFeedOption = changeFeedOption.withFullFidelity();
+            changeFeedOption = changeFeedOption.fullFidelity();
         }
 
         List<FeedResponse<Document>> changeFeedResultsList = client

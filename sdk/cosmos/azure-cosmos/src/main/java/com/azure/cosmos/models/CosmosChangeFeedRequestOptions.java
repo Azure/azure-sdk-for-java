@@ -22,7 +22,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
     Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosChangeFeedRequestOptions {
-    private static final int DEFAULT_MAX_ITEM_COUNT = 1000;
+    private static final int DEFAULT_MAX_ITEM_COUNT = 100;
     private static final int DEFAULT_MAX_PREFETCH_PAGE_COUNT = 1;
     private final ChangeFeedState continuationState;
     private final FeedRangeInternal feedRangeInternal;
@@ -370,7 +370,7 @@ public final class CosmosChangeFeedRequestOptions {
      */
     @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosChangeFeedRequestOptions withFullFidelity() {
+    public CosmosChangeFeedRequestOptions fullFidelity() {
 
         if (!this.startFromInternal.supportsFullFidelityRetention()) {
             throw new IllegalStateException(
