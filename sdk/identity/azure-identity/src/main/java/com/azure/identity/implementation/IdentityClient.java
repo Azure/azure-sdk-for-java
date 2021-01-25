@@ -35,6 +35,7 @@ import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.InteractiveRequestParameters;
+import com.microsoft.aad.msal4j.Prompt;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
@@ -688,11 +689,16 @@ public class IdentityClient {
         } catch (URISyntaxException e) {
             return Mono.error(logger.logExceptionAsError(new RuntimeException(e)));
         }
-        InteractiveRequestParameters parameters = InteractiveRequestParameters.builder(redirectUri)
+        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder = InteractiveRequestParameters.builder(redirectUri)
                                                      .scopes(new HashSet<>(request.getScopes()))
-                                                     .build();
+                                                     .prompt(Prompt.ADMING_CONSENT);
+
+        if (request.getClaims() != null) {
+            builder.claimsChallenge(request.getClaims());
+        }
+
         Mono<IAuthenticationResult> acquireToken = publicClientApplicationAccessor.getValue()
-                               .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(parameters)));
+                               .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(builder.build())));
 
         return acquireToken.onErrorMap(t -> new ClientAuthenticationException(
             "Failed to acquire token with Interactive Browser Authentication.", null, t)).map(MsalToken::new);

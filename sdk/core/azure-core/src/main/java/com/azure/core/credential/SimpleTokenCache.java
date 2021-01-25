@@ -45,6 +45,14 @@ public class SimpleTokenCache {
      * @return a Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken() {
+        return getToken(this.tokenSupplier);
+    }
+
+    /**
+     * Asynchronously get a token from either the cache or replenish the cache with a new token.
+     * @return a Publisher that emits an AccessToken
+     */
+    public Mono<AccessToken> getToken(Supplier<Mono<AccessToken>> tokenSupplier) {
         return Mono.defer(() -> {
             try {
                 if (wip.compareAndSet(null, MonoProcessor.create())) {
@@ -64,7 +72,7 @@ public class SimpleTokenCache {
                         } else {
                             // wait for timeout, then refresh
                             tokenRefresh = Mono.defer(tokenSupplier)
-                                .delaySubscription(Duration.between(now, nextTokenRefresh));
+                                               .delaySubscription(Duration.between(now, nextTokenRefresh));
                         }
                         // cache doesn't exist or expired, no fallback
                         fallback = Mono.empty();
@@ -81,28 +89,28 @@ public class SimpleTokenCache {
                         fallback = Mono.just(cache);
                     }
                     return tokenRefresh
-                        .materialize()
-                        .flatMap(signal -> {
-                            AccessToken accessToken = signal.get();
-                            Throwable error = signal.getThrowable();
-                            if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                                logger.info(refreshLog(cache, now, "Acquired a new access token"));
-                                cache = accessToken;
-                                monoProcessor.onNext(accessToken);
-                                monoProcessor.onComplete();
-                                nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
-                                return Mono.just(accessToken);
-                            } else if (signal.isOnError() && error != null) { // ERROR
-                                logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
-                                nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
-                                return fallback.switchIfEmpty(Mono.error(error));
-                            } else { // NO REFRESH
-                                monoProcessor.onComplete();
-                                return fallback;
-                            }
-                        })
-                        .doOnError(monoProcessor::onError)
-                        .doOnTerminate(() -> wip.set(null));
+                               .materialize()
+                               .flatMap(signal -> {
+                                   AccessToken accessToken = signal.get();
+                                   Throwable error = signal.getThrowable();
+                                   if (signal.isOnNext() && accessToken != null) { // SUCCESS
+                                       logger.info(refreshLog(cache, now, "Acquired a new access token"));
+                                       cache = accessToken;
+                                       monoProcessor.onNext(accessToken);
+                                       monoProcessor.onComplete();
+                                       nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
+                                       return Mono.just(accessToken);
+                                   } else if (signal.isOnError() && error != null) { // ERROR
+                                       logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
+                                       nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
+                                       return fallback.switchIfEmpty(Mono.error(error));
+                                   } else { // NO REFRESH
+                                       monoProcessor.onComplete();
+                                       return fallback;
+                                   }
+                               })
+                               .doOnError(monoProcessor::onError)
+                               .doOnTerminate(() -> wip.set(null));
                 } else if (cache != null && !cache.isExpired()) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cache);
