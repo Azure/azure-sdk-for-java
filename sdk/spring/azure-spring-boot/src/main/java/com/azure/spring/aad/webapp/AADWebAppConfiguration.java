@@ -236,14 +236,18 @@ public class AADWebAppConfiguration {
 
 
     public static ExchangeFilterFunction conditionalAccessExceptionFilterFunction() {
-        return ExchangeFilterFunction.ofResponseProcessor(clientResponse ->
-            clientResponse.bodyToMono(String.class)
-                          .flatMap(httpBody -> {
-                              if (ConditionalAccessException.isConditionAccessException(httpBody)) {
-                                  return Mono.error(ConditionalAccessException.fromHttpBody(httpBody));
-                              }
-                              return Mono.just(clientResponse);
-                          })
+        return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
+                if (clientResponse.statusCode().is4xxClientError()) {
+                    return clientResponse.bodyToMono(String.class)
+                                         .flatMap(httpBody -> {
+                                             if (ConditionalAccessException.isConditionAccessException(httpBody)) {
+                                                 return Mono.error(ConditionalAccessException.fromHttpBody(httpBody));
+                                             }
+                                             return Mono.just(clientResponse);
+                                         });
+                }
+                return Mono.just(clientResponse);
+            }
         );
     }
 }
