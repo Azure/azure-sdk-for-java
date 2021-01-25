@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.implementation.util;
 
 import com.azure.core.http.HttpPipelineCallContext;
@@ -33,16 +36,9 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
         if (matcher.matches()) {
             String[] ua = userAgent.split(" ");
             for (int i = 0; i < ua.length; i++) {
+                builder.append(ua[i]).append(" ");
                 if (i == 0) {
-                    builder.append(ua[i]);
-                    builder.append(" azsdk-java-");
-                    builder.append(clientName);
-                    builder.append("/");
-                    builder.append(clientVersion);
-                    builder.append(" ");
-                } else {
-                    builder.append(ua[i]);
-                    builder.append(" ");
+                    builder.append("azsdk-java-").append(clientName).append("/").append(clientVersion).append(" ");
                 }
             }
         }
