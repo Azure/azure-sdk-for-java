@@ -3,7 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.{ArrayNode, NullNode, ObjectNode}
+import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, DecimalNode, DoubleNode, FloatNode, IntNode, NullNode, ObjectNode, TextNode}
 
 
 // scalastyle:off underscore.import
@@ -19,7 +19,6 @@ private object CosmosTableSchemaInferer
         if (inferredItems.isEmpty){
             throw new Exception("Cannot infer schema from an empty source.")
         }
-
 
         // Create a unique map of all distinct properties from documents
         // If 2 documents contain the same property name but different type, the last scanned one would define the final
@@ -45,23 +44,39 @@ private object CosmosTableSchemaInferer
                 .toSeq)
     }
 
+    // scalastyle:off
     private def inferDataTypeFromJsonNode(jsonNode: JsonNode) : DataType = {
         jsonNode match {
-            case _: NullNode =>
-                NullType
+            case _: NullNode => NullType
+            case _: BinaryNode => BinaryType
+            case _: BooleanNode => BooleanType
+            case _: TextNode => StringType
+            case _: DoubleNode => DoubleType
+            case decimalNode: DecimalNode if decimalNode.isBigDecimal =>
+                val asBigDecimal = decimalNode.decimalValue()
+                DecimalType(asBigDecimal.precision, asBigDecimal.scale)
+            case decimalNode: DecimalNode if decimalNode.isFloat => FloatType
+            case decimalNode: DecimalNode if decimalNode.isDouble => DoubleType
+            case decimalNode: DecimalNode if decimalNode.isInt => IntegerType
+            case _: FloatNode => FloatType
+            case _: DoubleNode => DoubleType
+            case _: IntNode => IntegerType
             case objectNode: ObjectNode => inferDataTypeFromObjectNode(objectNode) match {
                 case Some(mappedList) =>
                     val nestedFields = mappedList.map(f => f._2)
                     StructType(nestedFields)
-                case None =>
-                    NullType
+                case None => NullType
                 }
             case arrayNode: ArrayNode => inferDataTypeFromArrayNode(arrayNode) match {
                 case Some(valueType) => ArrayType(valueType)
                 case None => NullType
                 }
+            case _ =>
+                this.logError(s"Unsupported document node conversion [${jsonNode.getNodeType}]")
+                StringType // Defaulting to a string representation for values that we cannot convert
         }
     }
+    // scalastyle:on
 
     private def inferDataTypeFromArrayNode(node: ArrayNode) : Option[DataType] = {
         Option(node.get(0)).map(firstElement => inferDataTypeFromJsonNode(firstElement))
