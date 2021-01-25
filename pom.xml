@@ -571,6 +571,7 @@
         <module>sdk/metricsadvisor</module>
         <module>sdk/monitor</module>
         <module>sdk/mysql</module>
+        <module>sdk/policyinsights</module>
         <module>sdk/postgresql</module>
         <module>sdk/recoveryservices</module>
         <module>sdk/relay</module>
