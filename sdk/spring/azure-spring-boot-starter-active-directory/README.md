@@ -23,7 +23,7 @@ To use this starter in a web application, please add following packages:
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.2.0-beta.1</version>
+    <version>3.1.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -39,7 +39,7 @@ To use this starter in a resource server without OBO function, please add follow
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.2.0-beta.1</version>
+    <version>3.1.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -55,7 +55,7 @@ To use this starter in a resource server with OBO function, please add following
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.0.0-beta.1</version>
+    <version>3.1.0</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>

@@ -1856,9 +1856,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
             return requestObs.flatMap(req -> {
-                if (retryPolicyInstance != null) {
-                    retryPolicyInstance.onBeforeSendRequest(request);
-                }
                 return this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
             });
 

@@ -17,7 +17,7 @@ The Spring Cloud Storage Queue starter helps developers to finish the auto-confi
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-cloud-starter-storage-queue</artifactId>
-    <version>2.2.0-beta.1</version>
+    <version>2.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -101,6 +101,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     private AppConfigurationPropertySourceLocator locator;
     private AppConfigurationProviderProperties appProperties;
     private KeyVaultCredentialProvider tokenCredentialProvider = null;
+    private String[] profiles = new String[]{PROFILE_NAME_1, PROFILE_NAME_2};
 
     @Before
     public void setup() {
@@ -108,7 +109,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         when(environment.getActiveProfiles()).thenReturn(new String[]{PROFILE_NAME_1, PROFILE_NAME_2});
 
         when(properties.getName()).thenReturn(APPLICATION_NAME);
-        when(properties.getProfileSeparator()).thenReturn("_");
         when(properties.getStores()).thenReturn(configStoresMock);
         when(properties.isEnabled()).thenReturn(true);
         when(configStoresMock.iterator()).thenReturn(configStoreIterator);
@@ -155,7 +155,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void compositeSourceIsCreated() {
         String[] labels = new String[1];
         labels[0] = "\0";
-        when(configStoreMock.getLabels()).thenReturn(labels);
+        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
         when(properties.getDefaultContext()).thenReturn("application");
 
         locator = new AppConfigurationPropertySourceLocator(properties, appProperties, clientStoreMock,
@@ -169,14 +169,10 @@ public class AppConfigurationPropertySourceLocatorTest {
         // [/foo_prod/, /foo_dev/, /foo/, /application_prod/, /application_dev/,
         // /application/]
         String[] expectedSourceNames = new String[]{
-            "/foo_prod/store1/\0",
-            "/foo_dev/store1/\0",
             "/foo/store1/\0",
-            "/application_prod/store1/\0",
-            "/application_dev/store1/\0",
             "/application/store1/\0"
         };
-        assertThat(sources.size()).isEqualTo(6);
+        assertThat(sources.size()).isEqualTo(2);
         assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
     }
 
@@ -184,7 +180,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void revisionsCheck() {
         String[] labels = new String[1];
         labels[0] = "\0";
-        when(configStoreMock.getLabels()).thenReturn(labels);
+        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
         when(properties.getDefaultContext()).thenReturn("application");
         when(clientStoreMock.getRevison(Mockito.any(), Mockito.anyString())).thenReturn(item1)
             .thenReturn(featureItem);
@@ -200,14 +196,10 @@ public class AppConfigurationPropertySourceLocatorTest {
         // [/foo_prod/, /foo_dev/, /foo/, /application_prod/, /application_dev/,
         // /application/]
         String[] expectedSourceNames = new String[]{
-            "/foo_prod/store1/\0",
-            "/foo_dev/store1/\0",
             "/foo/store1/\0",
-            "/application_prod/store1/\0",
-            "/application_dev/store1/\0",
             "/application/store1/\0"
         };
-        assertThat(sources.size()).isEqualTo(6);
+        assertThat(sources.size()).isEqualTo(2);
         assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
     }
 
@@ -215,7 +207,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void compositeSourceIsCreatedForPrefixedConfig() {
         String[] labels = new String[1];
         labels[0] = "\0";
-        when(configStoreMock.getLabels()).thenReturn(labels);
+        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
         when(configStoreMock.getPrefix()).thenReturn(PREFIX);
         when(properties.getDefaultContext()).thenReturn("application");
         locator = new AppConfigurationPropertySourceLocator(
@@ -236,14 +228,10 @@ public class AppConfigurationPropertySourceLocatorTest {
         // [/config/foo_prod/, /config/foo_dev/, /config/foo/, /config/application_prod/,
         // /config/application_dev/, /config/application/]
         String[] expectedSourceNames = new String[]{
-            "/config/foo_prod/store1/\0",
-            "/config/foo_dev/store1/\0",
             "/config/foo/store1/\0",
-            "/config/application_prod/store1/\0",
-            "/config/application_dev/store1/\0",
             "/config/application/store1/\0"
         };
-        assertThat(sources.size()).isEqualTo(6);
+        assertThat(sources.size()).isEqualTo(2);
         assertThat(sources.stream().map(s -> s.getName()).toArray()).containsExactly((Object[]) expectedSourceNames);
     }
 
@@ -251,7 +239,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void nullApplicationNameCreateDefaultContextOnly() {
         String[] labels = new String[1];
         labels[0] = "\0";
-        when(configStoreMock.getLabels()).thenReturn(labels);
+        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
         when(environment.getActiveProfiles()).thenReturn(new String[]{});
         when(environment.getProperty("spring.application.name")).thenReturn(null);
         when(properties.getDefaultContext()).thenReturn("application");
@@ -275,7 +263,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void emptyApplicationNameCreateDefaultContextOnly() {
         String[] labels = new String[1];
         labels[0] = "\0";
-        when(configStoreMock.getLabels()).thenReturn(labels);
+        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
         when(environment.getActiveProfiles()).thenReturn(new String[]{});
         when(environment.getProperty("spring.application.name")).thenReturn("");
         when(properties.getName()).thenReturn("");
@@ -349,7 +337,7 @@ public class AppConfigurationPropertySourceLocatorTest {
     public void multiplePropertySourcesExistForMultiStores() {
         String[] labels = new String[1];
         labels[0] = "\0";
-        when(configStoreMock.getLabels()).thenReturn(labels);
+        when(configStoreMock.getLabels(Mockito.any())).thenReturn(labels);
         when(environment.getActiveProfiles()).thenReturn(new String[]{});
         when(configStoreMock.getEndpoint()).thenReturn(TEST_STORE_NAME);
 
@@ -375,7 +363,6 @@ public class AppConfigurationPropertySourceLocatorTest {
         List<ConfigStore> configStores = new ArrayList<ConfigStore>();
         configStores.add(configStore);
         AppConfigurationProperties properties = new AppConfigurationProperties();
-        properties.setProfileSeparator("_");
         properties.setName("TestStoreName");
         properties.setStores(configStores);
 
@@ -385,7 +372,7 @@ public class AppConfigurationPropertySourceLocatorTest {
         String[] array = {};
         when(env.getActiveProfiles()).thenReturn(array);
         String[] labels = {""};
-        when(configStore.getLabels()).thenReturn(labels);
+        when(configStore.getLabels(Mockito.any())).thenReturn(labels);
         when(clientStoreMock.listSettings(Mockito.any(), Mockito.any())).thenThrow(new NullPointerException(""));
         when(appPropertiesMock.getPrekillTime()).thenReturn(-60);
         when(appPropertiesMock.getStartDate()).thenReturn(new Date());

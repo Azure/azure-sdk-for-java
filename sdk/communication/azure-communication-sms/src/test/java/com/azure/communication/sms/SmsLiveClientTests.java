@@ -52,6 +52,13 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsRequestWithManagedIdentity(HttpClient httpClient) throws NoSuchAlgorithmException {
+        SendSmsResponse response = getTestSmsClientWithManagedIdentity(httpClient, "sendSmsRequestSync").sendMessage(from, to, body, smsOptions);
+        verifyResponse(response);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsMessageWithResponse(HttpClient httpClient) throws NoSuchAlgorithmException {
         Response<SendSmsResponse> response = getTestSmsClientWithConnectionString(httpClient, "sendSmsMessageWithResponseSync")
             .sendMessageWithResponse(from, to, body, smsOptions, Context.NONE);
@@ -128,4 +135,9 @@ public class SmsLiveClientTests extends SmsLiveTestBase {
 
         assertTrue(http400ExceptionThrown);
     }
+
+    private SmsClient getTestSmsClientWithManagedIdentity(HttpClient httpClient, String testName) {
+        SmsClientBuilder builder = getSmsClientBuilderWithManagedIdentity(httpClient);
+        return addLoggingPolicy(builder, testName).buildClient();
+    }  
 }

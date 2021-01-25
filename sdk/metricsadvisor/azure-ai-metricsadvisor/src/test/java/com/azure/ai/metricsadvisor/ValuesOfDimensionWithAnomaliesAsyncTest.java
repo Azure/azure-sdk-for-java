@@ -32,7 +32,6 @@ public final class ValuesOfDimensionWithAnomaliesAsyncTest extends ValuesOfDimen
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    @Override
     public void listValuesOfDimensionWithAnomalies(HttpClient httpClient,
                                                    MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAsyncClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildAsyncClient();
