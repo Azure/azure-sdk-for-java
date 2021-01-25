@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -11,8 +12,10 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -26,16 +29,21 @@ import com.azure.cosmos.models.PermissionMode;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.models.TriggerOperation;
 import com.azure.cosmos.models.TriggerType;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
+import org.jetbrains.annotations.NotNull;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -315,6 +323,129 @@ public class QueryValidationTests extends TestSuiteBase {
         // Top query should not be cached
         assertThat(contextClient.getQueryPlanCache().containsKey(sqlQuerySpec.getQueryText())).isFalse();
 
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 10)
+    public void splitQueryContinuationToken() throws Exception {
+        String containerId = "splittestcontainer_" + UUID.randomUUID();
+        int itemCount = 20;
+
+        //Create container
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(containerId, "/mypk");
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties).block();
+        CosmosAsyncContainer container = createdDatabase.getContainer(containerId);
+        AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(this.client);
+
+        //Insert some documents
+        List<TestObject> testObjects = insertDocuments(itemCount, Arrays.asList("CA", "US"), container);
+
+        List<String> sortedObjects = testObjects.stream()
+                                         .sorted(Comparator.comparing(TestObject::getProp))
+                                         .map(TestObject::getId)
+                                         .collect(Collectors.toList());
+
+        String query = "Select * from c";
+        String orderByQuery = "select * from c order by c.prop";
+
+        List<PartitionKeyRange> partitionKeyRanges = getPartitionKeyRanges(containerId, asyncDocumentClient);
+        String requestContinuation = null;
+        String orderByRequestContinuation = null;
+        int preferredPageSize = 15;
+        ArrayList<TestObject> resultList = new ArrayList<>();
+        ArrayList<TestObject> orderByResultList = new ArrayList<>();
+
+        // Query
+        FeedResponse<TestObject> jsonNodeFeedResponse = container
+                                                            .queryItems(query, new CosmosQueryRequestOptions(), TestObject.class)
+                                                            .byPage(preferredPageSize).blockFirst();
+        assert jsonNodeFeedResponse != null;
+        resultList.addAll(jsonNodeFeedResponse.getResults());
+        requestContinuation = jsonNodeFeedResponse.getContinuationToken();
+
+        // Orderby query
+        FeedResponse<TestObject> orderByFeedResponse = container
+                                                           .queryItems(orderByQuery, new CosmosQueryRequestOptions(),
+                                                                       TestObject.class)
+                                                           .byPage(preferredPageSize).blockFirst();
+        assert orderByFeedResponse != null;
+        orderByResultList.addAll(orderByFeedResponse.getResults());
+        orderByRequestContinuation = orderByFeedResponse.getContinuationToken();
+
+        // Scale up the throughput for a split
+        logger.info("Scaling up throughput for split");
+        ThroughputProperties throughputProperties = ThroughputProperties.createManualThroughput(16000);
+        ThroughputResponse throughputResponse = container.replaceThroughput(throughputProperties).block();
+        logger.info("Throughput replace request submitted for {} ",
+                    throughputResponse.getProperties().getManualThroughput());
+        throughputResponse = container.readThroughput().block();
+
+
+        // Wait for the throughput update to complete so that we get the partition split
+        while (true) {
+            assert throughputResponse != null;
+            if (!throughputResponse.isReplacePending()) {
+                break;
+            }
+            logger.info("Waiting for split to complete");
+            Thread.sleep(10 * 1000);
+            throughputResponse = container.readThroughput().block();
+        }
+
+        logger.info("Resuming query from the continuation");
+        // Read number of partitions. Should be greater than one
+        List<PartitionKeyRange> partitionKeyRangesAfterSplit = getPartitionKeyRanges(containerId, asyncDocumentClient);
+        assertThat(partitionKeyRangesAfterSplit.size()).isGreaterThan(partitionKeyRanges.size())
+            .as("Partition ranges should increase after split");
+        logger.info("After split num partitions = {}", partitionKeyRangesAfterSplit.size());
+
+        // Reading item to refresh cache
+        container.readItem(testObjects.get(0).getId(), new PartitionKey(testObjects.get(0).getMypk()),
+                           JsonNode.class).block();
+
+        // Resume the query with continuation token saved above and make sure you get all the documents
+        Flux<FeedResponse<TestObject>> feedResponseFlux = container
+                                                              .queryItems(query, new CosmosQueryRequestOptions(),
+                                                                          TestObject.class)
+                                                              .byPage(requestContinuation, preferredPageSize);
+
+        for (FeedResponse<TestObject> nodeFeedResponse : feedResponseFlux.toIterable()) {
+            resultList.addAll(nodeFeedResponse.getResults());
+        }
+
+        // Resume the orderby query with continuation token saved above and make sure you get all the documents
+        Flux<FeedResponse<TestObject>> orderfeedResponseFlux = container
+                                                                   .queryItems(orderByQuery, new CosmosQueryRequestOptions(),
+                                                                               TestObject.class)
+                                                                   .byPage(orderByRequestContinuation, preferredPageSize);
+
+        for (FeedResponse<TestObject> nodeFeedResponse : orderfeedResponseFlux.toIterable()) {
+            orderByResultList.addAll(nodeFeedResponse.getResults());
+        }
+
+        List<String> sourceIds = testObjects.stream().map(obj -> obj.getId()).collect(Collectors.toList());
+        List<String> resultIds = resultList.stream().map(obj -> obj.getId()).collect(Collectors.toList());
+        List<String> orderResultIds = orderByResultList.stream().map(obj -> obj.getId()).collect(Collectors.toList());
+
+        assertThat(resultIds).containsExactlyInAnyOrderElementsOf(sourceIds)
+            .as("Resuming query from continuation token after split validated");
+
+        assertThat(orderResultIds).containsExactlyElementsOf(sortedObjects)
+            .as("Resuming orderby query from continuation token after split validated");
+
+        container.delete().block();
+    }
+
+    @NotNull
+    private List<PartitionKeyRange> getPartitionKeyRanges(
+        String containerId, AsyncDocumentClient asyncDocumentClient) {
+        List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();
+        List<FeedResponse<PartitionKeyRange>> partitionFeedResponseList = asyncDocumentClient
+                                                                              .readPartitionKeyRanges("/dbs/" + createdDatabase.getId()
+                                                                                                          + "/colls/" + containerId,
+                                                                                                      new CosmosQueryRequestOptions())
+                                                                              .collectList().block();
+        partitionFeedResponseList.forEach(f -> partitionKeyRanges.addAll(f.getResults()));
+        return partitionKeyRanges;
     }
 
     private <T> List<T> queryAndGetResults(SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> type) {

@@ -1,19 +1,20 @@
 package com.azure.test.aad.selenium;
 
+import com.azure.test.aad.common.SeleniumITHelper;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_1;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
-
-import com.azure.test.aad.common.SeleniumITHelper;
-import java.util.HashMap;
-import java.util.Map;
-import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class AADSeleniumITHelper extends SeleniumITHelper {
 
@@ -31,9 +32,13 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
     }
 
     public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
+        this(appClass, properties, AAD_USER_NAME_1, AAD_USER_PASSWORD_1);
+    }
+
+    public AADSeleniumITHelper(Class<?> appClass, Map<String, String> properties, String username, String password) {
         super(appClass, properties);
-        username = AAD_USER_NAME_1;
-        password = AAD_USER_PASSWORD_1;
+        this.username = username;
+        this.password = password;
     }
 
     public void logIn() {

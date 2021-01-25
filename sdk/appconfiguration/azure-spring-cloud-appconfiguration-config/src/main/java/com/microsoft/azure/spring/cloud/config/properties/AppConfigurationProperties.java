@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.cloud.config.properties;
 
-import com.microsoft.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.context.annotation.Import;
@@ -17,9 +17,11 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
+import com.microsoft.azure.spring.cloud.config.resource.AppConfigManagedIdentityProperties;
+
 @Validated
 @ConfigurationProperties(prefix = AppConfigurationProperties.CONFIG_PREFIX)
-@Import({AppConfigurationProviderProperties.class})
+@Import({ AppConfigurationProviderProperties.class })
 public class AppConfigurationProperties {
 
     public static final String CONFIG_PREFIX = "spring.cloud.azure.appconfiguration";
@@ -40,11 +42,6 @@ public class AppConfigurationProperties {
 
     @NestedConfigurationProperty
     private AppConfigManagedIdentityProperties managedIdentity;
-
-    // Profile separator for the key name, e.g., /foo-app_dev/db.connection.key
-    @NotEmpty
-    @Pattern(regexp = "^[a-zA-Z0-9_@]+$")
-    private String profileSeparator = "_";
 
     private boolean pushRefresh = true;
 
@@ -89,14 +86,6 @@ public class AppConfigurationProperties {
         this.managedIdentity = managedIdentity;
     }
 
-    public String getProfileSeparator() {
-        return profileSeparator;
-    }
-
-    public void setProfileSeparator(String profileSeparator) {
-        this.profileSeparator = profileSeparator;
-    }
-
     /**
      * @return the pushRefresh
      */
@@ -118,8 +107,7 @@ public class AppConfigurationProperties {
         this.stores.forEach(store -> {
             Assert.isTrue(
                 StringUtils.hasText(store.getEndpoint()) || StringUtils.hasText(store.getConnectionString()),
-                "Either configuration store name or connection string should be configured."
-            );
+                "Either configuration store name or connection string should be configured.");
             store.validateAndInit();
         });
 

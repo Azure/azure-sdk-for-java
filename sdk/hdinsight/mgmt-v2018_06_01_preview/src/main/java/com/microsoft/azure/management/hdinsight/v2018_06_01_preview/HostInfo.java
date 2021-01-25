@@ -18,6 +18,16 @@ import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementati
  */
 public interface HostInfo extends HasInner<HostInfoInner>, HasManager<HDInsightManager> {
     /**
+     * @return the effectiveDiskEncryptionKeyUrl value.
+     */
+    String effectiveDiskEncryptionKeyUrl();
+
+    /**
+     * @return the fqdn value.
+     */
+    String fqdn();
+
+    /**
      * @return the name value.
      */
     String name();

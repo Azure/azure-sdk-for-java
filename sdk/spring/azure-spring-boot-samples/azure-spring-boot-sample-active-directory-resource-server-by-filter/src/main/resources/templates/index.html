@@ -1,9 +1,18 @@
 ﻿<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Todo List: a SPA sample demonstrating Azure AD and MSAL JS</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        window.aad_clientId = [[${aad_clientId}]];
+        window.aad_tenantId = [[${aad_tenantId}]];
+        window.aad_redirectUri = [[${aad_redirectUri}]];
+        /*]]>*/
+    </script>
 
 </head>
 <body ng-app="todoApp" ng-controller="homeCtrl" role="document">
