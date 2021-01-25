@@ -616,8 +616,8 @@
   <!-- Checkstyle suppressions for auto generated Administration Client Implementation -->
   <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.administration.implementation.CommunicationIdentityImpl.java"/>
   <!-- TODO: Fix with https://github.com/Azure/azure-sdk-for-java/issues#6716 Method name should follow a common vocabulary. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.administration.CommunicationIdentityClient.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.administration.CommunicationIdentityAsyncClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.identity.CommunicationIdentityClient.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.identity.CommunicationIdentityAsyncClient.java"/>
 
   <!-- Checkstyle suppressions for the auto generated Phone Number Administration Implementation -->
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.communication.administration.implementation.PhoneNumberAdministrationsImpl.java"/>
