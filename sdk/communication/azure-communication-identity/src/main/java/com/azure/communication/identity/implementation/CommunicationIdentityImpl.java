@@ -29,7 +29,7 @@ import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CommunicationIdentities. */
-public final class CommunicationIdentitiesImpl {
+public final class CommunicationIdentityImpl {
     /** The proxy service used to perform REST calls. */
     private final CommunicationIdentitiesService service;
 
@@ -37,11 +37,11 @@ public final class CommunicationIdentitiesImpl {
     private final CommunicationIdentityClientImpl client;
 
     /**
-     * Initializes an instance of CommunicationIdentitiesImpl.
+     * Initializes an instance of CommunicationIdentityImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    CommunicationIdentitiesImpl(CommunicationIdentityClientImpl client) {
+    CommunicationIdentityImpl(CommunicationIdentityClientImpl client) {
         this.service =
                 RestProxy.create(
                         CommunicationIdentitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());

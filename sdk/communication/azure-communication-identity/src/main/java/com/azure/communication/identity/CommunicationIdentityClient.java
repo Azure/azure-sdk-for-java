@@ -6,7 +6,7 @@ package com.azure.communication.identity;
 import java.util.List;
 
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
-import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
+import com.azure.communication.identity.implementation.CommunicationIdentityImpl;
 import com.azure.communication.identity.models.CommunicationIdentityTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
 import com.azure.communication.identity.models.CommunicationUserToken;
@@ -24,7 +24,7 @@ import com.azure.core.util.logging.ClientLogger;
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = false)
 public final class CommunicationIdentityClient {
 
-    private final CommunicationIdentitiesImpl client;
+    private final CommunicationIdentityImpl client;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClient.class);
 
     CommunicationIdentityClient(CommunicationIdentityClientImpl communicationIdentityClient) {

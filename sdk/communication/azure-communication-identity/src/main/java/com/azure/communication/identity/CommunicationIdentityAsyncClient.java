@@ -4,7 +4,7 @@
 package com.azure.communication.identity;
 
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
-import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
+import com.azure.communication.identity.implementation.CommunicationIdentityImpl;
 import com.azure.communication.identity.models.CommunicationIdentityTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
 import com.azure.communication.identity.models.CommunicationUserToken;
@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = CommunicationIdentityClientBuilder.class, isAsync = true)
 public final class CommunicationIdentityAsyncClient {
 
-    private final CommunicationIdentitiesImpl client;
+    private final CommunicationIdentityImpl client;
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityAsyncClient.class);
 
     CommunicationIdentityAsyncClient(CommunicationIdentityClientImpl communicationIdentityServiceClient) {

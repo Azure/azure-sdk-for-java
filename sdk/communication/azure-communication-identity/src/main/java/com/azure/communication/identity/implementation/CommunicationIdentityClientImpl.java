@@ -63,14 +63,14 @@ public final class CommunicationIdentityClientImpl {
     }
 
     /** The CommunicationIdentitiesImpl object to access its operations. */
-    private final CommunicationIdentitiesImpl communicationIdentities;
+    private final CommunicationIdentityImpl communicationIdentities;
 
     /**
      * Gets the CommunicationIdentitiesImpl object to access its operations.
      *
      * @return the CommunicationIdentitiesImpl object.
      */
-    public CommunicationIdentitiesImpl getCommunicationIdentities() {
+    public CommunicationIdentityImpl getCommunicationIdentities() {
         return this.communicationIdentities;
     }
 
@@ -110,6 +110,6 @@ public final class CommunicationIdentityClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.apiVersion = "2021-03-07";
-        this.communicationIdentities = new CommunicationIdentitiesImpl(this);
+        this.communicationIdentities = new CommunicationIdentityImpl(this);
     }
 }
