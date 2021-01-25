@@ -4,7 +4,6 @@
 package com.azure.storage.blob.batch;
 
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -34,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 import static com.azure.core.util.FluxUtil.monoError;
