@@ -4,7 +4,7 @@
 package com.azure.communication.administration;
 
 import com.azure.communication.common.CommunicationClientCredential;
-import com.azure.communication.common.HmacAuthenticationPolicy;
+import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;

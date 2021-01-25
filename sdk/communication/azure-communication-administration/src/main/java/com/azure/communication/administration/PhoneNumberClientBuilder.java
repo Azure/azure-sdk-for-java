@@ -5,7 +5,7 @@ package com.azure.communication.administration;
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImplBuilder;
 import com.azure.communication.common.CommunicationClientCredential;
-import com.azure.communication.common.HmacAuthenticationPolicy;
+import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;

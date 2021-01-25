@@ -14,10 +14,4 @@ public class CommunicationClientCredentialTests {
         });
     }
 
-    @Test
-    public void constructionWithNonbase64Test() {
-        assertThrows(IllegalArgumentException.class, () -> {
-            new CommunicationClientCredential("I have got the key");
-        });
-    }
 }

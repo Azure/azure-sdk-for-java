@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.common;
+package com.azure.communication.common.implementation;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -108,16 +108,16 @@ public class HmacAuthenticationPolicyTests {
         return "";
     }
 
-    private CommunicationClientCredential credential;
+    private com.azure.communication.common.CommunicationClientCredential credential;
 
     @BeforeEach
     public void setup() throws InvalidKeyException, NoSuchAlgorithmException {
-        credential = new CommunicationClientCredential(key);
+        credential = new com.azure.communication.common.CommunicationClientCredential(key);
     }
 
     @Test
     public void getRequestTest() throws MalformedURLException {
-        final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
+        final com.azure.communication.common.implementation.HmacAuthenticationPolicy clientPolicy = new com.azure.communication.common.implementation.HmacAuthenticationPolicy(credential);
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
                 .httpClient(new NoOpHttpClient())
@@ -131,7 +131,7 @@ public class HmacAuthenticationPolicyTests {
 
     @Test
     public void postRequestTest() throws MalformedURLException {
-        final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
+        final com.azure.communication.common.implementation.HmacAuthenticationPolicy clientPolicy = new com.azure.communication.common.implementation.HmacAuthenticationPolicy(credential);
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
                 .httpClient(new NoOpHttpClient())
@@ -146,7 +146,7 @@ public class HmacAuthenticationPolicyTests {
 
     @Test
     public void postRequestWithPortTest() throws MalformedURLException {
-        final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
+        final com.azure.communication.common.implementation.HmacAuthenticationPolicy clientPolicy = new com.azure.communication.common.implementation.HmacAuthenticationPolicy(credential);
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
                 .httpClient(new NoOpHttpClient())
@@ -161,7 +161,7 @@ public class HmacAuthenticationPolicyTests {
 
     @Test
     public void crossLanguageAsciiHashMatchTest() throws MalformedURLException {
-        final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
+        final com.azure.communication.common.implementation.HmacAuthenticationPolicy clientPolicy = new com.azure.communication.common.implementation.HmacAuthenticationPolicy(credential);
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
                 .httpClient(new NoOpHttpClient())
@@ -176,7 +176,7 @@ public class HmacAuthenticationPolicyTests {
 
     @Test
     public void crossLanguageUnicodeHashMatchTest() throws MalformedURLException {
-        final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
+        final com.azure.communication.common.implementation.HmacAuthenticationPolicy clientPolicy = new com.azure.communication.common.implementation.HmacAuthenticationPolicy(credential);
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
                 .httpClient(new NoOpHttpClient())
@@ -191,7 +191,7 @@ public class HmacAuthenticationPolicyTests {
 
     @Test
     public void patchRequestTest() throws MalformedURLException {
-        final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
+        final com.azure.communication.common.implementation.HmacAuthenticationPolicy clientPolicy = new com.azure.communication.common.implementation.HmacAuthenticationPolicy(credential);
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
                 .httpClient(new NoOpHttpClient())
@@ -206,7 +206,7 @@ public class HmacAuthenticationPolicyTests {
 
     @Test
     public void putRequestTest() throws MalformedURLException {
-        final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
+        final com.azure.communication.common.implementation.HmacAuthenticationPolicy clientPolicy = new com.azure.communication.common.implementation.HmacAuthenticationPolicy(credential);
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
                 .httpClient(new NoOpHttpClient())
@@ -221,7 +221,7 @@ public class HmacAuthenticationPolicyTests {
 
     @Test
     public void deleteRequestTest() throws MalformedURLException {
-        final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
+        final com.azure.communication.common.implementation.HmacAuthenticationPolicy clientPolicy = new com.azure.communication.common.implementation.HmacAuthenticationPolicy(credential);
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
                 .httpClient(new NoOpHttpClient())
@@ -235,7 +235,7 @@ public class HmacAuthenticationPolicyTests {
 
     @Test
     public void httpRequestTest() throws MalformedURLException {
-        final HmacAuthenticationPolicy clientPolicy = new HmacAuthenticationPolicy(credential);
+        final com.azure.communication.common.implementation.HmacAuthenticationPolicy clientPolicy = new com.azure.communication.common.implementation.HmacAuthenticationPolicy(credential);
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
                 .httpClient(new NoOpHttpClient())
@@ -244,7 +244,7 @@ public class HmacAuthenticationPolicyTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         StepVerifier.create(pipeline.send(request))
-            .expectError(RuntimeException.class);       
+            .expectError(RuntimeException.class);
     }
-    
+
 }
