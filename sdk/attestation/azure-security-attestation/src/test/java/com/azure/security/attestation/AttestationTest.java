@@ -113,7 +113,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    void testAttestSgxEnclave(HttpClient httpClient, String clientUri) throws Exception {
+    void testAttestSgxEnclave(HttpClient httpClient, String clientUri) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
@@ -161,12 +161,7 @@ public class AttestationTest extends AttestationClientTestBase {
 
         StepVerifier.create(client.attestSgxEnclave(request)
                 .flatMap(response -> {
-                    try {
-                        return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                    } catch (ParseException e) {
-                        logger.logExceptionAsError(new RuntimeException(e.toString()));
-                    }
-                    return null;
+                    return verifyAttestationToken(httpClient, clientUri, response.getToken());
                 }))
             .assertNext(claims -> {
                 assertTrue(claims.getClaims().containsKey("iss"));

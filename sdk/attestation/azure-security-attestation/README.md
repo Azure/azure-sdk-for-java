@@ -8,10 +8,6 @@ Azure Attestation enables cutting-edge security paradigms such as Azure Confiden
 
 Azure Attestation receives evidence from compute entities, turns them into a set of claims, validates them against configurable policies, and produces cryptographic proofs for claims-based applications (for example, relying parties and auditing authorities).
 
-Use the client library for attestation to perform the following operations:
-- Attesting SGX or TPM protected enclaves hosted on Azure machines
-- Modifying the attestation policies used in performing attestations.
-
 > NOTE: This is a preliminary SDK for the Microsoft Azure Attestation service. It provides all the essential functionality to access the Azure Attestation service, but requires a significant amount of infrastructure to work correctly.
 
 
@@ -50,9 +46,45 @@ The simplest way of providing a bearer token is to use the  `DefaultAzureCredent
 The Microsoft Azure Attestation service runs in two separate modes: "Isolated" and "AAD". When the service is running in "Isolated" mode, the customer needs to 
 provide additional information beyond their authentication credentials to verify that they are authorized to modify the state of an attestation instance.
 
-There are four major components in the preview  
+There are four major components in the preview SDK: 
+- [SGX and TPM enclave attestation.](#attestation)
+- [MAA Attestation Token signing certificate discovery and validation.](#attestation-token-signing-certificate-discovery-and-validation)  
+- [Attestation Policy management.](#policy-management)
+- [Attestation policy management certificate management](#policy-management-certificate-management) (yes, policy management management).
 
-The *Key concepts* section should describe the functionality of the main classes. Point out the most important and useful classes in the package (with links to their reference pages) and explain how those classes work together. Feel free to use bulleted lists, tables, code blocks, or even diagrams for clarity.
+Each attestation instance operates in one of two separate modes of operation:
+* AAD mode.
+* Isolated mode
+
+In "AAD" mode, access to the service is controlled solely by Azure Role Based Access Control.  In "Isolated" mode, 
+the client is expected to provide additional evidence to prove that the client is authorized
+to modify the service.
+
+Finally, each region in which the Microsoft Azure Attestation service is available supports a "shared" instance, which
+can be used to attest SGX enclaves which only need verification against the azure baseline (there are no policies applied to the shared instance). TPM attestation is not available in the shared instance.
+While the shared instance requires AAD authentication, it does not have any RBAC policies - any customer with a valid AAD bearer token can attest using the shared instance. 
+
+
+### Attestation
+SGX or TPM attestation is the process of validating evidence collected from 
+a trusted execution environment to ensure that it meets both the Azure baseline for that environment and customer defined policies applied to that environment.
+
+### Attestation token signing certificate discovery and validation
+Most responses from the MAA service are expressed in the form of a JSON Web Token. This token will be signed by a signing certificate
+issued by the MAA service for the specified instance. If the MAA service instance is running in a region where the service runs in an SGX enclave, then
+the certificate issued by the server can be verified using the [oe_verify_attestation_certificate() API](https://openenclave.github.io/openenclave/api/enclave_8h_a3b75c5638360adca181a0d945b45ad86.html). 
+
+### Policy Management
+Each attestation service instance has a policy applied to it which defines additional criteria which the customer has defined.
+
+For more information on attestation policies, see [Attestation Policy](https://docs.microsoft.com/en-us/azure/attestation/author-sign-policy)
+
+### Policy Management certificate management.
+When an attestation instance is running in "Isolated" mode, the customer who created the instance will have provided
+a policy management certificate at the time the instance is created. All policy modification operations require that the customer sign
+the policy data with one of the existing policy management certificates. The Policy Management Certificate Management APIs enable 
+clients to "roll" the policy management certificates.
+
 
 ## Examples
 
@@ -129,30 +161,17 @@ JsonWebKeySet certs = attestationBuilder.buildSigningCertificatesClient().get();
 
 ## Troubleshooting
 
-Describe common errors and exceptions, how to "unpack" them if necessary, and include guidance for graceful handling and recovery.
-
-Provide information to help developers avoid throttling or other service-enforced errors they might encounter. For example, provide guidance and examples for using retry or connection policies in the API.
-
-If the package or a related package supports it, include tips for logging or enabling instrumentation to help them debug their code.
-
+Troubleshooting information for the MAA service can be found [here](https://docs.microsoft.com/en-us/azure/attestation/troubleshoot-guide)
 ## Next steps
+For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://docs.microsoft.com/en-us/azure/attestation/). 
 
 ## Contributing
+This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
-This project welcomes contributions and suggestions.  Most contributions require
-you to agree to a Contributor License Agreement (CLA) declaring that you have
-the right to, and actually do, grant us the rights to use your contribution. For
-details, visit https://cla.microsoft.com.
+When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct].
-For more information see the [Code of Conduct FAQ][coc_faq]
-or contact opencode@microsoft.com with any
-additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_code_of_conduct]. For more information see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
 
-
-* Provide a link to additional code examples, ideally to those sitting alongside the README in the package's `/samples` directory.
-* If appropriate, point users to other packages that might be useful.
-* If you think there's a good chance that developers might stumble across your package in error (because they're searching for specific functionality and mistakenly think the package provides that functionality), point them to the packages they might be looking for.
 
 <!-- LINKS -->
 [style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization

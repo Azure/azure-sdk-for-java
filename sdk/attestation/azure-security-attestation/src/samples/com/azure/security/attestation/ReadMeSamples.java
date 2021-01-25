@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ReadMeSamples extends AttestationClientTestBase {
 
 
-    void testAttestSgxEnclave(HttpClient httpClient, String clientUri) throws Exception {
+    void testAttestSgxEnclave(HttpClient httpClient, String clientUri) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
@@ -41,7 +41,8 @@ public class ReadMeSamples extends AttestationClientTestBase {
         request.setRuntimeData(runtimeData);
         AttestationResponse response = client.attestSgxEnclave(request);
 
-        JWTClaimsSet claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
+        JWTClaimsSet claims = null;
+        claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
 
         assertNotNull(claims);
         assertTrue(claims.getClaims().containsKey("iss"));
@@ -53,7 +54,7 @@ public class ReadMeSamples extends AttestationClientTestBase {
 
     }
 
-    void attestationPolicyGet(HttpClient httpClient, String clientUri) throws ParseException {
+    void attestationPolicyGet(HttpClient httpClient, String clientUri) {
         PolicyClient client = getBuilder(httpClient, clientUri).buildPolicyClient();
 
         PolicyResponse policyResponse = client.get(AttestationType.SGX_ENCLAVE);
@@ -67,7 +68,7 @@ public class ReadMeSamples extends AttestationClientTestBase {
                     try {
                         policyJose = JOSEObject.parse(policyDocument);
                     } catch (ParseException e) {
-                        logger.logExceptionAsError(new RuntimeException(e.toString()));
+                        throw logger.logExceptionAsError(new RuntimeException(e.toString()));
                     }
                     assert policyJose != null;
                     Map<String, Object> jsonObject = policyJose.getPayload().toJSONObject();

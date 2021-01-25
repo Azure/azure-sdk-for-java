@@ -22,7 +22,7 @@ public class SecuredPolicyResetToken {
         this.signingCertificate = new Base64(signingCertificateBase64);
     }
 
-    String serialize() throws JOSEException {
+    String serialize() {
         List<Base64> certs = new ArrayList<>();
         certs.add(signingCertificate);
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256)
@@ -30,7 +30,12 @@ public class SecuredPolicyResetToken {
             .build();
 
         String signedBody = header.toBase64URL() + ".";
-        Base64URL signedToken = signer.sign(header, signedBody.getBytes(StandardCharsets.UTF_8));
+        Base64URL signedToken = null;
+        try {
+            signedToken = signer.sign(header, signedBody.getBytes(StandardCharsets.UTF_8));
+        } catch (JOSEException e) {
+            throw new RuntimeException(e.toString());
+        }
         return signedBody + "." + signedToken.toString();
     }
 }

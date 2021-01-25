@@ -44,7 +44,9 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class AttestationClientTestBase extends TestBase {
 
@@ -103,9 +105,15 @@ public class AttestationClientTestBase extends TestBase {
             .build();
     }
 
-    Mono<JWTClaimsSet> verifyAttestationToken(HttpClient httpClient, String clientUri, String attestationToken) throws ParseException {
-        SignedJWT token = SignedJWT.parse(attestationToken);
+    Mono<JWTClaimsSet> verifyAttestationToken(HttpClient httpClient, String clientUri, String attestationToken) {
+        SignedJWT token = null;
+        try {
+            token = SignedJWT.parse(attestationToken);
+        } catch (ParseException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+        }
 
+        SignedJWT finalToken = token;
         return getSigningCertificateByKeyId(token, httpClient, clientUri)
             .flatMap(cert -> {
                 PublicKey key = cert.getPublicKey();
@@ -113,15 +121,15 @@ public class AttestationClientTestBase extends TestBase {
 
                 RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
                 try {
-                    assertTrue(token.verify(verifier));
+                    assertTrue(finalToken.verify(verifier));
                 } catch (JOSEException e) {
-                    logger.logExceptionAsError(new RuntimeException(e.toString()));
+                    throw logger.logExceptionAsError(new RuntimeException(e.toString()));
                 }
 
 
                 JWTClaimsSet claims = null;
                 try {
-                    claims = token.getJWTClaimsSet();
+                    claims = finalToken.getJWTClaimsSet();
                 } catch (ParseException e) {
                     logger.logExceptionAsError(new RuntimeException(e.toString()));
                 }
@@ -137,11 +145,21 @@ public class AttestationClientTestBase extends TestBase {
      * @throws NoSuchAlgorithmException - should never  throws this.
      * @throws InvalidKeySpecException - Can throw this if the key is invalid.
      */
-    JWSSigner getJwsSigner(String signingKeyBase64) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    JWSSigner getJwsSigner(String signingKeyBase64) {
         byte[] signingKey = Base64.getDecoder().decode(signingKeyBase64);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(signingKey);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+        KeyFactory keyFactory = null;
+        try {
+            keyFactory = KeyFactory.getInstance("RSA");
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+        }
+        PrivateKey privateKey = null;
+        try {
+            privateKey = keyFactory.generatePrivate(keySpec);
+        } catch (InvalidKeySpecException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+        }
         return new RSASSASigner(privateKey);
     }
 
@@ -162,7 +180,7 @@ public class AttestationClientTestBase extends TestBase {
                 try {
                     cf = CertificateFactory.getInstance("X.509");
                 } catch (CertificateException e) {
-                    logger.logExceptionAsError(new RuntimeException(e.toString()));
+                    throw logger.logExceptionAsError(new RuntimeException(e.toString()));
                 }
 
                 String keyId = token.getHeader().getKeyID();
@@ -174,7 +192,7 @@ public class AttestationClientTestBase extends TestBase {
                             assert cf != null;
                             cert = cf.generateCertificate(base64ToStream(key.getX5C().get(0)));
                         } catch (CertificateException e) {
-                            logger.logExceptionAsError(new RuntimeException(e.toString()));
+                            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
                         }
 
                         assertTrue(cert instanceof X509Certificate);
@@ -183,7 +201,6 @@ public class AttestationClientTestBase extends TestBase {
 
                     }
                 }
-                fail();
                 throw new RuntimeException(String.format("Key %s not found in JSON Web Key Set", keyId));
             });
     }
@@ -282,25 +299,22 @@ public class AttestationClientTestBase extends TestBase {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
 
-        List<Arguments> argumentsList = new ArrayList<>();
-
-        String regionShortName = getLocationShortName();
-        getHttpClients().forEach(httpClient -> Stream.of(
-            "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net",
-            getIsolatedUrl(),
-            getAadUrl())
-            .forEach(clientUri -> argumentsList.add(Arguments.of(httpClient, clientUri))));
-        return argumentsList.stream();
+        final String regionShortName = getLocationShortName();
+        return getHttpClients().flatMap(httpClient -> {
+            return Stream.of(
+                Arguments.of(httpClient, "https://shared" + regionShortName + "." + regionShortName + ".test.attest.azure.net"),
+                Arguments.of(httpClient, getIsolatedUrl()),
+                Arguments.of(httpClient, getAadUrl()));
+        });
     }
 
     static Stream<Arguments> getPolicyClients() {
-        List<Arguments> argumentsList = new ArrayList<>();
-        getAttestationClients().forEach(clientParams -> Arrays.asList(
-            AttestationType.OPEN_ENCLAVE,
-            AttestationType.TPM,
-            AttestationType.SGX_ENCLAVE)
-            .forEach(attestationType -> argumentsList.add(Arguments.of(clientParams.get()[0], clientParams.get()[1], attestationType))));
-        return argumentsList.stream();
+        return getAttestationClients().flatMap(clientParams -> {
+            return Stream.of(
+                Arguments.of(clientParams.get()[0], clientParams.get()[1], AttestationType.OPEN_ENCLAVE),
+                Arguments.of(clientParams.get()[0], clientParams.get()[1], AttestationType.TPM),
+                Arguments.of(clientParams.get()[0], clientParams.get()[1], AttestationType.SGX_ENCLAVE));
+        });
     }
 
 }

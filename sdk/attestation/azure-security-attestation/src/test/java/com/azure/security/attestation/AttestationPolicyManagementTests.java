@@ -35,14 +35,14 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    void testGetPolicyManagementCertificates(HttpClient httpClient, String clientUri)
-        throws ParseException {
+    void testGetPolicyManagementCertificates(HttpClient httpClient, String clientUri) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
         PolicyCertificatesClient client = attestationBuilder.buildPolicyCertificatesClient();
 
         PolicyCertificatesResponse response = client.get();
-        JWTClaimsSet claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
+        JWTClaimsSet claims = null;
+        claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
 
         assertNotNull(claims);
         verifyGetPolicyCertificatesResponse(clientUri, claims);
@@ -56,12 +56,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         StepVerifier.create(client.get()
                 .flatMap(response -> {
-                    try {
-                        return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                    } catch (ParseException e) {
-                        logger.logExceptionAsError(new RuntimeException(e.toString()));
-                    }
-                    return null;
+                    return verifyAttestationToken(httpClient, clientUri, response.getToken());
                 }))
             .assertNext(claims -> verifyGetPolicyCertificatesResponse(clientUri, claims))
             .verifyComplete();
@@ -73,7 +68,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
      * @param clientUri URI for client - used to determine the expected response.
      * @param claims Claims inside policy certificate token to be verified.
      */
-    private void verifyGetPolicyCertificatesResponse(String clientUri, @NotNull JWTClaimsSet claims) {
+    private void verifyGetPolicyCertificatesResponse(String clientUri, JWTClaimsSet claims) {
         assertTrue(claims.getClaims().containsKey("x-ms-policy-certificates"));
         Object policyCertificates = claims.getClaims().get("x-ms-policy-certificates");
         assertTrue(policyCertificates instanceof JSONObject);
@@ -119,8 +114,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    void testAddAttestationPolicyManagementCertificate(HttpClient httpClient, String clientUri)
-        throws JOSEException, InvalidKeySpecException, NoSuchAlgorithmException, ParseException, JsonProcessingException {
+    void testAddAttestationPolicyManagementCertificate(HttpClient httpClient, String clientUri) {
 
         ClientTypes clientType = classifyClient(clientUri);
 
@@ -136,9 +130,9 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         String signingKeyBase64 = getIsolatedSigningKey();
 
         String newPolicyCertificateBase64 = getPolicySigningCertificate0();
-//        String newPolicySigner = Configuration.getGlobalConfiguration().get("policySigningKey0");
 
-        JWSSigner existingSigner = getJwsSigner(signingKeyBase64);
+        JWSSigner existingSigner = null;
+        existingSigner = getJwsSigner(signingKeyBase64);
 
         JsonWebKey keyToAdd = new JsonWebKey("RS256");
         keyToAdd.setX5C(Collections.singletonList(newPolicyCertificateBase64));
@@ -147,7 +141,12 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         certBody.setPolicyCertificate(keyToAdd);
         ObjectMapper mapper = new ObjectMapper();
 
-        String serializedKey = mapper.writeValueAsString(certBody);
+        String serializedKey = null;
+        try {
+            serializedKey = mapper.writeValueAsString(certBody);
+        } catch (JsonProcessingException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+        }
 
         Payload setPolicyPayload = new Payload(serializedKey);
 
@@ -158,10 +157,15 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
             .build();
 
         securedObject = new JWSObject(header, setPolicyPayload);
-        securedObject.sign(existingSigner);
+        try {
+            securedObject.sign(existingSigner);
+        } catch (JOSEException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+        }
 
         PolicyCertificatesModifyResponse response = client.add(securedObject.serialize());
-        JWTClaimsSet responseClaims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
+        JWTClaimsSet responseClaims = null;
+        responseClaims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
         assertNotNull(responseClaims);
         assertTrue(responseClaims.getClaims().containsKey("x-ms-policycertificates-result"));
         assertEquals("IsPresent", responseClaims.getClaims().get("x-ms-policycertificates-result").toString());
@@ -176,7 +180,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri) throws JOSEException, InvalidKeySpecException, NoSuchAlgorithmException, JsonProcessingException {
+    void testSetAttestationPolicyAsync(HttpClient httpClient, String clientUri) {
 
         ClientTypes clientType = classifyClient(clientUri);
         // This test only works on isolated instances.
@@ -191,9 +195,9 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         String signingKeyBase64 = getIsolatedSigningKey();
 
         String newPolicyCertificateBase64 = getPolicySigningCertificate0();
-//        String newPolicySigner = Configuration.getGlobalConfiguration().get("policySigningKey0");
 
-        JWSSigner existingSigner = getJwsSigner(signingKeyBase64);
+        JWSSigner existingSigner = null;
+        existingSigner = getJwsSigner(signingKeyBase64);
 
         JsonWebKey keyToAdd = new JsonWebKey("RS256");
         keyToAdd.setX5C(Collections.singletonList(newPolicyCertificateBase64));
@@ -202,7 +206,12 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         certBody.setPolicyCertificate(keyToAdd);
         ObjectMapper mapper = new ObjectMapper();
 
-        String serializedKey = mapper.writeValueAsString(certBody);
+        String serializedKey = null;
+        try {
+            serializedKey = mapper.writeValueAsString(certBody);
+        } catch (JsonProcessingException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+        }
 
         Payload setPolicyPayload = new Payload(serializedKey);
 
@@ -213,28 +222,22 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
             .build();
 
         securedObject = new JWSObject(header, setPolicyPayload);
-        securedObject.sign(existingSigner);
+        try {
+            securedObject.sign(existingSigner);
+        } catch (JOSEException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+        }
 
         StepVerifier.create(client.add(securedObject.serialize())
             .flatMap(response -> {
-                try {
-                    return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                } catch (ParseException e) {
-                    logger.logExceptionAsError(new RuntimeException(e.toString()));
-                }
-                return null;
+                return verifyAttestationToken(httpClient, clientUri, response.getToken());
             })
             .doOnNext(responseClaims -> {
                 assertTrue(responseClaims.getClaims().containsKey("x-ms-policycertificates-result"));
                 assertEquals("IsPresent", responseClaims.getClaims().get("x-ms-policycertificates-result").toString());
             }).flatMap(policyResponse -> client.remove(securedObject.serialize())
                 .flatMap(response -> {
-                    try {
-                        return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                    } catch (ParseException e) {
-                        logger.logExceptionAsError(new RuntimeException(e.toString()));
-                    }
-                    return null;
+                    return verifyAttestationToken(httpClient, clientUri, response.getToken());
                 }))
                 .doOnNext(responseClaims -> {
                     assertTrue(responseClaims.getClaims().containsKey("x-ms-policycertificates-result"));

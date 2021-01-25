@@ -26,7 +26,7 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
-    void testGetSigningCertificates(HttpClient client, String clientUri) throws Exception {
+    void testGetSigningCertificates(HttpClient client, String clientUri) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
@@ -57,17 +57,23 @@ public class AttestationSignersTest extends AttestationClientTestBase {
      * @param certs certificate response to verify.
      * @throws CertificateException thrown on invalid certificate returned.
      */
-    private void verifySigningCertificatesResponse(String clientUri, JsonWebKeySet certs) throws CertificateException {
+    private void verifySigningCertificatesResponse(String clientUri, JsonWebKeySet certs) {
         Assertions.assertTrue(certs.getKeys().size() > 1);
 
-        CertificateFactory cf = CertificateFactory.getInstance("X.509");
+        CertificateFactory cf = null;
+        try {
+            cf = CertificateFactory.getInstance("X.509");
+        } catch (CertificateException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+        }
+        CertificateFactory finalCf = cf;
         certs.getKeys().forEach(key -> {
             assertNotNull(key.getKid());
             assertNotNull(key.getX5C());
             Assertions.assertNotEquals(0, key.getX5C().size());
             key.getX5C().forEach(base64cert -> {
                 try {
-                    Certificate cert = cf.generateCertificate(base64ToStream(base64cert));
+                    Certificate cert = finalCf.generateCertificate(base64ToStream(base64cert));
 
                     Assertions.assertTrue(cert instanceof X509Certificate);
 

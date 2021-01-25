@@ -40,8 +40,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
-    void testGetAttestationPolicy(HttpClient client, String clientUri, AttestationType attestationType)
-        throws ParseException {
+    void testGetAttestationPolicy(HttpClient client, String clientUri, AttestationType attestationType) {
 
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
@@ -77,8 +76,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
-    void testSetAttestationPolicy(HttpClient httpClient, String clientUri, AttestationType attestationType)
-        throws JOSEException, InvalidKeySpecException, NoSuchAlgorithmException, ParseException {
+    void testSetAttestationPolicy(HttpClient httpClient, String clientUri, AttestationType attestationType) {
 
         ClientTypes clientType = classifyClient(clientUri);
         // We can't set attestation policy on the shared client, so just exit early.
@@ -149,12 +147,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         for (JOSEObject policyObject : policySetObjects) {
             StepVerifier.create(client.set(attestationType, policyObject.serialize())
                 .flatMap(response -> {
-                    try {
-                        return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                    } catch (ParseException e) {
-                        logger.logExceptionAsError(new RuntimeException(e.toString()));
-                    }
-                    return null;
+                    return verifyAttestationToken(httpClient, clientUri, response.getToken());
                 }).doOnNext(responseClaims -> {
                     assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
                     assertEquals("Updated", responseClaims.getClaims().get("x-ms-policy-result").toString());
@@ -165,23 +158,14 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                             resetToken = new PlainPolicyResetToken().serialize();
                             break;
                         case ISOLATED:
-                            try {
-                                resetToken = new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize();
-                            } catch (JOSEException e) {
-                                logger.logExceptionAsError(new RuntimeException(e.toString()));
-                            }
+                            resetToken = new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize();
                             break;
                         default:
                             throw new RuntimeException("Cannot ever hit this - unknown client type: " + clientType.toString());
                     }
                     return client.reset(attestationType, resetToken)
                             .flatMap(response -> {
-                                try {
-                                    return verifyAttestationToken(httpClient, clientUri, response.getToken());
-                                } catch (ParseException e) {
-                                    logger.logExceptionAsError(new RuntimeException(e.toString()));
-                                }
-                                return null;
+                                return verifyAttestationToken(httpClient, clientUri, response.getToken());
                             });
                 })
                 .doOnNext(responseClaims -> {
@@ -201,7 +185,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
      * @param attestationType attestation type - policy results vary by attestation type.
      * @param policyResponse response from the getPolicy API.
      */
-    private void verifyBasicGetAttestationPolicyResponse(HttpClient client, String clientUri, AttestationType attestationType, PolicyResponse policyResponse) throws ParseException {
+    private void verifyBasicGetAttestationPolicyResponse(HttpClient client, String clientUri, AttestationType attestationType, PolicyResponse policyResponse) {
         assertNotNull(policyResponse);
         assertNotNull(policyResponse.getToken());
 
@@ -215,7 +199,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                     try {
                         policyJose = JOSEObject.parse(policyDocument);
                     } catch (ParseException e) {
-                        logger.logExceptionAsError(new RuntimeException(e.toString()));
+                        throw logger.logExceptionAsError(new RuntimeException(e.toString()));
                     }
                     assertNotNull(policyJose);
                     Map<String, Object> jsonObject = policyJose.getPayload().toJSONObject();
@@ -244,7 +228,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
      * @return An array of JOSEObjects which should be used to set attestation policy on the client.
      * @throws JOSEException Thrown if we can't sign the JSON.
      */
-    private ArrayList<JOSEObject> getPolicySetObjects(String clientUri, String signingCertificateBase64, JWSSigner signer) throws JOSEException {
+    private ArrayList<JOSEObject> getPolicySetObjects(String clientUri, String signingCertificateBase64, JWSSigner signer) {
         ClientTypes clientType = classifyClient(clientUri);
         ArrayList<JOSEObject> policySetObjects = new ArrayList<>();
 
@@ -266,7 +250,11 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             .build();
 
         securedObject = new JWSObject(header, setPolicyPayload);
-        securedObject.sign(signer);
+        try {
+            securedObject.sign(signer);
+        } catch (JOSEException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+        }
 
         switch (clientType) {
             case AAD:
