@@ -275,13 +275,12 @@ A system topic in Event Grid represents events published by an [Event Source](ht
 An example is when a blob is created, a system event with event type "Microsoft.Storage.BlobCreated" is sent to the configured System Topic. 
 The system event class for this event type is `StorageBlobCreatedEventData` defined in package `com.azure.messaging.eventgrid.systemevents`.
 EventGrid current has system events for:
-
-    - [Azure App Configuration](https://docs.microsoft.com/en-us/azure/event-grid/event-schema-app-configuration)
-    - [Azure App Service](https://docs.microsoft.com/en-us/azure/event-grid/event-schema-app-service)
-    - [Azure Blob Storage](https://docs.microsoft.com/en-us/azure/event-grid/event-schema-blob-storage)
-    - ...
-    - Refer to [Azure services that support system topics](https://docs.microsoft.com/en-us/azure/event-grid/system-topics#azure-services-that-support-system-topics) for many other services.
-    - Refer to package `com.azure.messaging.eventgrid.systemevents` for the related system event classes
+- [Azure App Configuration](https://docs.microsoft.com/en-us/azure/event-grid/event-schema-app-configuration)
+- [Azure App Service](https://docs.microsoft.com/en-us/azure/event-grid/event-schema-app-service)
+- [Azure Blob Storage](https://docs.microsoft.com/en-us/azure/event-grid/event-schema-blob-storage)
+- ...
+- Refer to [Azure services that support system topics](https://docs.microsoft.com/en-us/azure/event-grid/system-topics#azure-services-that-support-system-topics) for many other services.
+- Refer to package `com.azure.messaging.eventgrid.systemevents` for the related system event classes
 
 You can't send a System Event to a System Topic by using this SDK.
 
