@@ -1,6 +1,7 @@
 package com.azure.test.aad.selenium;
 
 import com.azure.test.aad.common.SeleniumITHelper;
+import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -9,7 +10,10 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
@@ -59,8 +63,14 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         String cssSelector = "div[data-test-id='" + username + "']";
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(cssSelector))).click();
         String id = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("div[tabindex='0']")))
-            .getAttribute("data-test-id");
+                        .getAttribute("data-test-id");
         Assert.assertEquals(username, id);
+    }
+
+    public String[] getClientIds() {
+        String[] clientIdArray = { AAD_MULTI_TENANT_CLIENT_ID, AAD_SINGLE_TENANT_CLIENT_ID,
+            AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE, AAD_B2C_CLIENT_ID };
+        return clientIdArray;
     }
 
 }
