@@ -967,8 +967,7 @@ public final class QueueAsyncClient {
      */
     private Response<QueueProperties> getQueuePropertiesResponse(QueuesGetPropertiesResponse response) {
         QueuesGetPropertiesHeaders propertiesHeaders = response.getDeserializedHeaders();
-        // TODO: (gapra) Add metadata when generator adds support for it.
-        QueueProperties properties = new QueueProperties(null,
+        QueueProperties properties = new QueueProperties(propertiesHeaders.getXMsMeta(),
             propertiesHeaders.getXMsApproximateMessagesCount());
         return new SimpleResponse<>(response, properties);
     }

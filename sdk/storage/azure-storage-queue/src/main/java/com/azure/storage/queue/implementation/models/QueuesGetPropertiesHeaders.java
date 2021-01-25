@@ -9,6 +9,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** The QueuesGetPropertiesHeaders model. */
 @JacksonXmlRootElement(localName = "null")
@@ -27,10 +28,10 @@ public final class QueuesGetPropertiesHeaders {
     private Integer xMsApproximateMessagesCount;
 
     /*
-     * The x-ms-meta property.
+     * The x-ms-meta- property.
      */
-    @JsonProperty(value = "x-ms-meta")
-    private String xMsMeta;
+    @JsonProperty(value = "x-ms-meta-")
+    private Map<String, String> xMsMeta;
 
     /*
      * The x-ms-request-id property.
@@ -85,21 +86,21 @@ public final class QueuesGetPropertiesHeaders {
     }
 
     /**
-     * Get the xMsMeta property: The x-ms-meta property.
+     * Get the xMsMeta property: The x-ms-meta- property.
      *
      * @return the xMsMeta value.
      */
-    public String getXMsMeta() {
+    public Map<String, String> getXMsMeta() {
         return this.xMsMeta;
     }
 
     /**
-     * Set the xMsMeta property: The x-ms-meta property.
+     * Set the xMsMeta property: The x-ms-meta- property.
      *
      * @param xMsMeta the xMsMeta value to set.
      * @return the QueuesGetPropertiesHeaders object itself.
      */
-    public QueuesGetPropertiesHeaders setXMsMeta(String xMsMeta) {
+    public QueuesGetPropertiesHeaders setXMsMeta(Map<String, String> xMsMeta) {
         this.xMsMeta = xMsMeta;
         return this;
     }
