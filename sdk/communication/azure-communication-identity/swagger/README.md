@@ -17,8 +17,6 @@ npm install -g autorest
 
 ### Generation
 
-There are 1 swaggers for identity management APIs,
-
 ```ps
 cd <swagger-folder>
 autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=identity

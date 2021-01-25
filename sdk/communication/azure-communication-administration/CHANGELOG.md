@@ -1,7 +1,11 @@
 # Release History
 
 ## 1.0.0-beta.4 (Unreleased)
+### Added
 - Added support for Azure Active Directory Authentication for both clients.
+
+### Breaking Changes
+- CommunicationIdentityClient is moved to a new package, `Azure.Communication.Identity`.
 
 ## 1.0.0-beta.3 (2020-11-16)
 ### Added

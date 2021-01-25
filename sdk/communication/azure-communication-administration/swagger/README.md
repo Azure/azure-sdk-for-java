@@ -17,7 +17,7 @@ npm install -g autorest
 
 ### Generation
 
-There are one swaggers for Administration management APIs: `phonenumber`.
+There is one swaggers for Administration management APIs: `phonenumber`.
 
 ```ps
 cd <swagger-folder>
@@ -31,13 +31,6 @@ These settings apply only when `--tag=phonenumber` is specified on the command l
 ``` yaml $(tag) == 'phonenumber'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/257f060be8b60d8468584682aa2d71b1faa5f82c/specification/communication/data-plane/Microsoft.CommunicationServicesAdministration/preview/2020-07-20-preview1/communicationservicesadministration.json
 override-client-name: PhoneNumberAdminClient
-```
-
-``` yaml
-directive:
-    - rename-model:
-        from: CommunicationIdentityAccessToken
-        to: CommunicationUserToken
 ```
 
 ### Rename searchId to reservationId in CreateSearchResponse
