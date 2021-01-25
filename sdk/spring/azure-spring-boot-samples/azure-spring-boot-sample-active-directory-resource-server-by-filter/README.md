@@ -112,7 +112,7 @@ azure:
 
 2. Put Application ID and client-secret in `client-id` and `client-secret` respectively e.g.
 ```properties
-tenantId: xxxxxx-your-client-id-xxxxxx
+tenant-id: xxxxxx-your-client-id-xxxxxx
 client-id: xxxxxx-your-client-secret-xxxxxx
 ```
 
