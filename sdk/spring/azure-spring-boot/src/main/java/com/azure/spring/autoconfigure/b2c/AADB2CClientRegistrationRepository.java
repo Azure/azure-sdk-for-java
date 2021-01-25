@@ -3,9 +3,6 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
@@ -23,20 +20,12 @@ import java.util.stream.Stream;
  */
 public class AADB2CClientRegistrationRepository implements ClientRegistrationRepository, Iterable<ClientRegistration> {
 
-    @Autowired
-    AADB2CProperties aadb2CProperties;
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CClientRegistrationRepository.class);
-
     private final InMemoryClientRegistrationRepository clientRegistrations;
     private final List<ClientRegistration> signUpOrSignInRegistrations;
 
 
     AADB2CClientRegistrationRepository(List<ClientRegistration> signUpOrSignInRegistrations,
                                        List<ClientRegistration> otherRegistrations) {
-
-        LOGGER.info("aadb2CProperties.getClientId()=" + aadb2CProperties.getClientId());
-        LOGGER.info("aadb2CProperties.getTenant()=" + aadb2CProperties.getTenant());
-        LOGGER.info("aadb2CProperties.toString()=" + aadb2CProperties.toString());
 
         this.signUpOrSignInRegistrations = signUpOrSignInRegistrations;
         List<ClientRegistration> allRegistrations = Stream.of(signUpOrSignInRegistrations, otherRegistrations)
