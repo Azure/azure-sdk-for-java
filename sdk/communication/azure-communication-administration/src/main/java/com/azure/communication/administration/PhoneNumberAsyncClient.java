@@ -220,7 +220,7 @@ public final class PhoneNumberAsyncClient {
             Map<String, NumberUpdateCapabilities> capabilitiesMap = new HashMap<>();
             for (Map.Entry<PhoneNumberIdentifier, NumberUpdateCapabilities> entry
                 : phoneNumberCapabilitiesUpdate.entrySet()) {
-                capabilitiesMap.put(entry.getKey().getValue(), entry.getValue());
+                capabilitiesMap.put(entry.getKey().getPhoneNumber(), entry.getValue());
             }
             UpdateNumberCapabilitiesRequest updateNumberCapabilitiesRequest = new UpdateNumberCapabilitiesRequest();
             updateNumberCapabilitiesRequest.setPhoneNumberCapabilitiesUpdate(capabilitiesMap);
@@ -289,7 +289,7 @@ public final class PhoneNumberAsyncClient {
         try {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
             NumberConfigurationPhoneNumber configurationPhoneNumber = new NumberConfigurationPhoneNumber();
-            configurationPhoneNumber.setPhoneNumber(phoneNumber.getValue());
+            configurationPhoneNumber.setPhoneNumber(phoneNumber.getPhoneNumber());
 
             if (context == null) {
                 return phoneNumberAdministrations.getNumberConfigurationWithResponseAsync(
@@ -335,7 +335,7 @@ public final class PhoneNumberAsyncClient {
             Objects.requireNonNull(pstnConfiguration, "'pstnConfiguration' cannot be null.");
 
             NumberConfiguration numberConfiguration = new NumberConfiguration();
-            numberConfiguration.setPhoneNumber(phoneNumber.getValue()).setPstnConfiguration(pstnConfiguration);
+            numberConfiguration.setPhoneNumber(phoneNumber.getPhoneNumber()).setPstnConfiguration(pstnConfiguration);
 
             if (context == null) {
                 return phoneNumberAdministrations.configureNumberWithResponseAsync(numberConfiguration);
@@ -373,7 +373,7 @@ public final class PhoneNumberAsyncClient {
         try {
             Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
             NumberConfigurationPhoneNumber configurationPhoneNumber = new NumberConfigurationPhoneNumber();
-            configurationPhoneNumber.setPhoneNumber(phoneNumber.getValue());
+            configurationPhoneNumber.setPhoneNumber(phoneNumber.getPhoneNumber());
 
             if (context == null) {
                 return phoneNumberAdministrations.unconfigureNumberWithResponseAsync(configurationPhoneNumber);
@@ -559,7 +559,7 @@ public final class PhoneNumberAsyncClient {
 
         List<String> phoneNumberStrings = phoneNumbers
             .stream()
-            .map(PhoneNumberIdentifier::getValue)
+            .map(PhoneNumberIdentifier::getPhoneNumber)
             .collect(Collectors.toList());
         ReleaseRequest releaseRequest = new ReleaseRequest();
         releaseRequest.setPhoneNumbers(phoneNumberStrings);

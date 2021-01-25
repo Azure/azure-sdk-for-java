@@ -931,7 +931,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "OutputStream options create"() {
         // Create works both on creating new and opening existing. We test these scenarios above.
-        // Here we assert that we cannot create without this option
+        // Here we assert that we cannot create without this option (i.e. you are only allowed to overwrite, not create)
         setup:
         def fs = createFS(config)
 
@@ -982,12 +982,25 @@ class AzureFileSystemProviderTest extends APISpec {
         then:
         thrown(IllegalArgumentException)
 
-        when: "Missing TRUNCATE_EXISTING"
+        when: "Missing TRUNCATE_EXISTING and CREATE_NEW"
         fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE)
 
         then:
         thrown(IllegalArgumentException)
 
+        when: "Missing only TRUNCATE_EXISTING"
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+            StandardOpenOption.CREATE_NEW)
+
+        then:
+        notThrown(IllegalArgumentException)
+
+        when: "Missing only CREATE_NEW"
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)
+
+        then:
+        notThrown(IllegalArgumentException)
     }
 
     @Unroll
