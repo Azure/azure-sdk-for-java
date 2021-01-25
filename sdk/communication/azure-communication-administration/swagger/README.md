@@ -17,26 +17,11 @@ npm install -g autorest
 
 ### Generation
 
-There are two swaggers for Administration management APIs, `identity` and `phonenumber`.
+There are one swaggers for Administration management APIs: `phonenumber`.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=identity
 autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=phonenumber
-```
-
-
-
-### Tag: identity
-
-These settings apply only when `--tag=identity` is specified on the command line.
-
-``` yaml $(tag) == 'identity'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/14bfbf5d0ff8f0dc1358e6e60362e99d0a649ba7/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/stable/2021-03-07/CommunicationIdentity.json
-add-context-parameter: true
-custom-types: CommunicationIdentityAccessToken,CommunicationIdentityTokenScope,CommunicationUserToken
-custom-types-subpackage: models
-models-subpackage: implementation.models
 ```
 
 ### Tag: phonenumber
@@ -47,8 +32,6 @@ These settings apply only when `--tag=phonenumber` is specified on the command l
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/257f060be8b60d8468584682aa2d71b1faa5f82c/specification/communication/data-plane/Microsoft.CommunicationServicesAdministration/preview/2020-07-20-preview1/communicationservicesadministration.json
 override-client-name: PhoneNumberAdminClient
 ```
-
-### Rename CommunicationIdentityAccessToken to CommunicationUserToken
 
 ``` yaml
 directive:
