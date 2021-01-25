@@ -5,12 +5,15 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
+
+import java.util.Map;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
@@ -19,6 +22,11 @@ import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
  */
 @ServiceClientBuilder(serviceClients = {BlobChangefeedClient.class, BlobChangefeedAsyncClient.class})
 public final class BlobChangefeedClientBuilder {
+
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-blob-changefeed.properties");
+    private static final String SDK_NAME = "name";
+    private static final String SDK_VERSION = "version";
 
     static final String CHANGEFEED_CONTAINER_NAME = "$blobchangefeed";
 
