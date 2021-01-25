@@ -188,7 +188,7 @@ Note: figure out what schema (cloud event, event grid event, or custom event) th
 // Make sure that the event grid topic or domain you're sending to accepts EventGridEvent schema.
 List<EventGridEvent> events = new ArrayList<>();
 User user = new User("John", "James");
-events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", user, "1"));
+events.add(new EventGridEvent("exampleSubject", "Com.Example.ExampleEventType", user, "v1"));
 egClient.sendEventGridEvents(events);
 ```
 
@@ -270,38 +270,23 @@ byte[] dataInBytes = eventData.toBytes();
 
 #### Deserialize system event data from `CloudEvent` or `EventGridEvent`
 An event that is sent to a [System Topic](https://docs.microsoft.com/en-us/azure/event-grid/system-topics) is called a
-System Topic Event, or System Event.
-A system topic in Event Grid represents events published by Azure services such as Azure Storage, Azure Event Hubs, App Configuration and so on.
-An example is when a KeyValue in an App Configuration resource is created/modified or deleted, a system event is sent to the configured System Topic. 
+System Topic Event, or System Event. 
+A system topic in Event Grid represents events published by an [Event Source](https://docs.microsoft.com/en-us/azure/event-grid/overview#event-sources) like Azure services such as Azure Storage, Azure Event Hubs, App Configuration and so on.
+An example is when a blob is created, a system event with event type "Microsoft.Storage.BlobCreated" is sent to the configured System Topic. 
+The system event class for this event type is `StorageBlobCreatedEventData` defined in package `com.azure.messaging.eventgrid.systemevents`.
+Refer to [Azure Blob Storage as an Event Grid source](https://docs.microsoft.com/en-us/azure/event-grid/event-schema-blob-storage) for all the blob storage event types.
+
 You can't send a System Event to a System Topic by using this SDK.
 
 Receiving and consuming system events is the same as other events. For convenience, we have pre-defined a set of classes
 that represent the data part of the system events. These classes are under package `com.azure.messaging.eventgrid.systemevents`.
 You can use this SDK's convenience APIs to deal with System Events and their data:
-- tell whether an event is a System Event;
-- look up the System Event data class that a System Event can be deserialized to;
-- deserialize the System Event data to a specific class type;
+- deserialize the System Event data to a specific class type for an event type;
 ```java
-    String eventGridEventJsonData = "Your event grid event Json data";
-    List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(eventGridEventJsonData);
-    CloudEvent event = events.get(0);
-
-    // Tell if an event is a System Event
-    boolean isSystemEvent = event.isSystemEvent();
-
-    // Look up the System Event data class 
-    Class<?> eventDataClazz = SystemEventMappings.getSystemEventMappings().get(event.getType());
-
-    // Deserialize the event data to an instance of a specific System Event data class type
-    BinaryData data = event.getData();
-    if (data != null) {
-        StorageBlobCreatedEventData blobCreatedData = data.toObject(TypeReference.createInstance(StorageBlobCreatedEventData.class));
-        System.out.println(blobCreatedData.getUrl());
-    }
-
-    // A more convenient way to deserialize the System Event data
     Object systemEventData = event.asSystemEventData();
     if (systemEventData != null) {
+        // https://docs.microsoft.com/en-us/azure/event-grid/event-schema-blob-storage has the possible event types for blob sotrage.
+        // Each system event's type is mapped to a class under package com.azure.messaging.eventgrid.systemevents.
         if (systemEventData instanceof StorageBlobCreatedEventData) {
             StorageBlobCreatedEventData blobCreatedData = (StorageBlobCreatedEventData) systemEventData;
             // do something ...
@@ -312,7 +297,21 @@ You can use this SDK's convenience APIs to deal with System Events and their dat
             StorageBlobRenamedEventData blobRenamedData = (StorageBlobRenamedEventData) systemEventData;
             // do something ...
         }
-        
+    }
+```
+- tell whether an event is a System Event;
+```java
+    boolean isSystemEvent = event.isSystemEvent();
+```
+- look up the System Event data class that a System Event can be deserialized to;
+```java
+    Class<?> eventDataClazz = SystemEventMappings.getSystemEventMappings().get(event.getEventType());
+
+    // Deserialize the event data to an instance of a specific System Event data class type
+    BinaryData data = event.getData();
+    if (data != null) {
+        StorageBlobCreatedEventData blobCreatedData = data.toObject(TypeReference.createInstance(StorageBlobCreatedEventData.class));
+        System.out.println(blobCreatedData.getUrl());
     }
 ```
 
