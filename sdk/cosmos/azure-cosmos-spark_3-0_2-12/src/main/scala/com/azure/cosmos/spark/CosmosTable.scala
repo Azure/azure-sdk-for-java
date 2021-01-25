@@ -32,7 +32,7 @@ import scala.collection.JavaConverters._
  */
 class CosmosTable(val transforms: Array[Transform],
                   val userConfig: util.Map[String, String],
-                  val userProvidedSchema: Option[StructType] = Option.empty)
+                  val userProvidedSchema: Option[StructType] = None)
   extends Table
     with SupportsWrite
     with SupportsRead
@@ -70,15 +70,8 @@ class CosmosTable(val transforms: Array[Transform],
   // database and table name from catalog, or the location of files for this table.
   override def name(): String = "com.azure.cosmos.spark.write"
 
-  /**
-    * Returns the schema of this table. If the table is not readable and doesn't have a schema, an
-    * empty schema can be returned here.
-    */
   override def schema(): StructType = {
-    // TODO: moderakh add support for schema inference
-    // for now schema is hard coded to make TestE2EMain to work
-    val hardCodedSchema = StructType(Seq(StructField("number", IntegerType), StructField("word", StringType)))
-    userProvidedSchema.getOrElse(hardCodedSchema)
+    userProvidedSchema.getOrElse(CosmosTableSchemaInferer.inferSchema())
   }
 
   override def capabilities(): util.Set[TableCapability] = Set(
