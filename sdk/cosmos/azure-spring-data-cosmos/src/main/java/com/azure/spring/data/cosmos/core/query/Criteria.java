@@ -117,6 +117,8 @@ public final class Criteria {
         final Criteria criteria = new Criteria(type);
         
         criteria.subject = subject;
+        criteria.subjectValues = new ArrayList();
+        criteria.ignoreCase = Part.IgnoreCaseType.NEVER;
    
         return criteria;
     }
