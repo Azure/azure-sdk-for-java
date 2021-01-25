@@ -21,6 +21,7 @@ Maven dependency for the Azure Attestation  library. Add it to your project's PO
 
 [//]: # ({x-version-update-start;com.azure:azure-security-attestation;current})
 ```xml
+<!-- Install the Azure Attestation SDK -->
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-attestation</artifactId>
@@ -55,12 +56,6 @@ The *Key concepts* section should describe the functionality of the main classes
 
 ## Examples
 
-Include code snippets and short descriptions for each task you listed in the [Introduction](#azure-attestation-client-library-for-java) (the bulleted list). Briefly explain each operation, but include enough clarity to explain complex or otherwise tricky operations.
-
-If possible, use the same example snippets that your in-code documentation uses. For example, use the snippets in your `examples.py` that Sphinx ingests via its [literalinclude](https://www.sphinx-doc.org/en/1.5/markup/code.html?highlight=code%20examples#includes) directive. The `examples.py` file containing the snippets should reside alongside your package's code, and should be tested in an automated fashion.
-
-Each example in the *Examples* section starts with an H3 that describes the example. At the top of this section, just under the *Examples* H2, add a bulleted list linking to each example H3. Each example should deep-link to the types and/or members used in the example.
-
 * [Attest an SGX enclave](#attest-sgx-enclave)
 * [Get attestation policy](#get-attestation-policy)
 * [Retrieve token validation certificates](#retrieve-token-certificates)
@@ -68,25 +63,34 @@ Each example in the *Examples* section starts with an H3 that describes the exam
 ### Attest SGX Enclave
 
 Use the `attestSgxEnclave` method to attest an SGX enclave.
-
+<!-- embedme src\samples\com\azure\security\attestation\ReadmeSamples.java#L36-L44 -->
 ```java
-    AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest();
-    request.setQuote(decodedSgxQuote);
-    RuntimeData runtimeData = new RuntimeData();
-    runtimeData.setDataType(DataType.BINARY);
-    runtimeData.setData(decodedRuntimeData);
-    request.setRuntimeData(runtimeData);
-    AttestationResponse response = client.attestSgxEnclave(request);
+AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest();
+request.setQuote(decodedSgxQuote);
+RuntimeData runtimeData = new RuntimeData();
+runtimeData.setDataType(DataType.BINARY);
+runtimeData.setData(decodedRuntimeData);
+request.setRuntimeData(runtimeData);
+AttestationResponse response = client.attestSgxEnclave(request);
+
+JWTClaimsSet claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
 ```
 
 ### Get attestation policy
 
-The `get_thing` method retrieves a Thing from the service. The `id` parameter is the unique ID of the Thing, not its "name" property.
+The `attestationPolicyClient.get` method retrieves the attestation policy from the service.
+Attestation Policies are instanced on a per-attestation type basis, the `AttestationType` parameter defines the type to retrieve. 
+The response to an attestation policy get is a JSON Web Token signed by the attestation service.
+The token contains an `x-ms-policy` claim, which in turn contains the secured (or unsecured) attestation policy document which was 
+set by the customer. 
 
+The attestation policy document is a JSON Web Signature object, with a single field named `AttestationPolicy`, whose value is the actual policy document encoded in Base64Url.
+
+<!-- embedme src\samples\com\azure\security\attestation\ReadmeSamples.java#L59-L84 -->
 ```java
-PolicyResponse response = attestationPolicyClient.get(AttestationType.SGX_ENCLAVE);
-verifyAttestationToken(client, clientUri, policyResponse.getToken())
-    .subscribe(claims -> {
+cyResponse policyResponse = client.get(AttestationType.SGX_ENCLAVE);
+fyAttestationToken(httpClient, clientUri, policyResponse.getToken())
+.subscribe(claims -> {
     if (claims != null) {
 
         String policyDocument = claims.getClaims().get("x-ms-policy").toString();
@@ -97,6 +101,7 @@ verifyAttestationToken(client, clientUri, policyResponse.getToken())
         } catch (ParseException e) {
             logger.logExceptionAsError(new RuntimeException(e.toString()));
         }
+        assert policyJose != null;
         Map<String, Object> jsonObject = policyJose.getPayload().toJSONObject();
         if (jsonObject != null) {
             assertTrue(jsonObject.containsKey("AttestationPolicy"));
@@ -106,18 +111,20 @@ verifyAttestationToken(client, clientUri, policyResponse.getToken())
             String attestationPolicy;
             attestationPolicy = new String(attestationPolicyUtf8, StandardCharsets.UTF_8);
             // Inspect the retrieved policy.
-        } else {
-            assertEquals("Tpm", attestationType.toString());
         }
     }
+});
 ```
 
 ### Retrieve Token Certificates
 
 Use `SigningCertificatesClient.get` to retrieve the certificates which can be used to validate the token returned from the attestation service.
 
+<!-- embedme src\samples\com\azure\security\attestation\ReadmeSamples.java#L89-L91 -->
 ```java
-    JsonWebKeySet certs = signingCertificatesClient.get();
+AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+
+JsonWebKeySet certs = attestationBuilder.buildSigningCertificatesClient().get();
 ```
 
 ## Troubleshooting
