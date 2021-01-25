@@ -12,6 +12,8 @@ import com.azure.communication.chat.models.*;
 import com.azure.communication.common.CommunicationTokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -26,6 +28,7 @@ import java.util.Locale;
 import com.nimbusds.jwt.PlainJWT;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
+import reactor.core.publisher.Mono;
 
 /**
  * Abstract base class for all Chat tests
@@ -167,6 +170,18 @@ public class ChatClientTestBase extends TestBase {
     }
 
     protected ChatClientBuilder addLoggingPolicyForIdentityClientBuilder(ChatClientBuilder builder, String testName) {
-        return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+        return builder.addPolicy((context, next) -> logHeaders(testName, next));
+    }
+
+    private Mono<HttpResponse> logHeaders(String testName, HttpPipelineNextPolicy next) {
+        return next.process()
+            .flatMap(httpResponse -> {
+                final HttpResponse bufferedResponse = httpResponse.buffer();
+
+                // Should sanitize printed reponse url
+                System.out.println("MS-CV header for " + testName + " request "
+                    + bufferedResponse.getRequest().getUrl() + ": " + bufferedResponse.getHeaderValue("MS-CV"));
+                return Mono.just(bufferedResponse);
+            });
     }
 }
