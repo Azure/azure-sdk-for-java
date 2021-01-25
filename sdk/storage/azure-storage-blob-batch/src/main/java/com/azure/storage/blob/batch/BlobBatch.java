@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.batch;
 
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -353,10 +354,11 @@ public final class BlobBatch {
         context.getHttpRequest().getHeaders().remove(X_MS_VERSION);
 
         // Remove any null headers (this is done in Netty and OkHttp normally).
-        Map<String, String> headers = context.getHttpRequest().getHeaders().toMap();
-        headers.entrySet().removeIf(header -> header.getValue() == null);
-
-        context.getHttpRequest().setHeaders(new HttpHeaders(headers));
+        for (HttpHeader hdr : context.getHttpRequest().getHeaders()) {
+            if (hdr.getValue() == null) {
+                context.getHttpRequest().getHeaders().remove(hdr.getName());
+            }
+        }
 
         return next.process();
     }

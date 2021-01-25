@@ -178,9 +178,11 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
-     * Gets an unmodifiable {@link Map} representation of the HttpHeaders collection.
+     * Returns a copy of the http headers as an unmodifiable {@link Map} representation of the state of the
+     * headers at the time of the toMap call. This map will not change as the underlying http headers change, and nor
+     * will modifying the key or values contained in the map have any effect on the state of the http headers.
      *
-     * @return the headers as map in an unmodifiable form.
+     * @return the headers in a copied and unmodifiable form.
      */
     public Map<String, String> toMap() {
         final Map<String, String> result = new HashMap<>();
