@@ -24,6 +24,7 @@ import java.util.concurrent.CompletableFuture;
 public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptions> {
     private final ClientLogger logger = new ClientLogger(ReceiveAndLockMessageTest.class);
     private final ServiceBusStressOptions options;
+    private final String messageContent;
 
     /**
      * Creates test object
@@ -32,11 +33,11 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     public ReceiveAndLockMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEKLOCK);
         this.options = options;
+        this.messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
     }
 
     private Mono<Void> sendMessage() {
         int total =  options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
-        String messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
 
         List<Message> messages = new ArrayList<>();
         for (int i = 0; i < total; ++i) {

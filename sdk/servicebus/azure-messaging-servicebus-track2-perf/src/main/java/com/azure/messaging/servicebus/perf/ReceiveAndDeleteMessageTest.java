@@ -20,6 +20,7 @@ import java.util.UUID;
 public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOptions> {
     private final ClientLogger logger = new ClientLogger(ReceiveAndDeleteMessageTest.class);
     private final ServiceBusStressOptions options;
+    private final String messageContent;
 
     /**
      * Creates test object
@@ -28,6 +29,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     public ReceiveAndDeleteMessageTest(ServiceBusStressOptions options) {
         super(options, ServiceBusReceiveMode.RECEIVE_AND_DELETE);
         this.options = options;
+        this.messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
     }
 
     @Override
@@ -35,7 +37,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
         return Mono.defer(() -> {
             int total =  options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
-            String messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
+
             List<ServiceBusMessage> messages = new ArrayList<>();
             for (int i = 0; i < total; ++i) {
                 ServiceBusMessage message = new ServiceBusMessage(messageContent);

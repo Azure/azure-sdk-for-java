@@ -21,6 +21,7 @@ import java.util.UUID;
 public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptions> {
     private final ClientLogger logger = new ClientLogger(ReceiveAndLockMessageTest.class);
     private final ServiceBusStressOptions options;
+    private final String messageContent;
 
     /**
      * Creates test object
@@ -29,6 +30,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     public ReceiveAndLockMessageTest(ServiceBusStressOptions options) {
         super(options, ServiceBusReceiveMode.PEEK_LOCK);
         this.options = options;
+        this.messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
     }
 
     @Override
@@ -36,7 +38,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
         return Mono.defer(() -> {
             int total = options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
-            String messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
+
             List<ServiceBusMessage> messages = new ArrayList<>();
             for (int i = 0; i < total; ++i) {
                 ServiceBusMessage message =  new ServiceBusMessage(messageContent);

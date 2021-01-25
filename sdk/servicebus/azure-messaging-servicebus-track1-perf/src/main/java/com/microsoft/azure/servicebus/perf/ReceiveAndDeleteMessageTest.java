@@ -23,6 +23,7 @@ import java.util.concurrent.CompletableFuture;
 public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOptions> {
     private final ClientLogger logger = new ClientLogger(ReceiveAndDeleteMessageTest.class);
     private final ServiceBusStressOptions options;
+    private final String messageContent;
 
     /**
      * Creates test object
@@ -31,6 +32,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     public ReceiveAndDeleteMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.RECEIVEANDDELETE);
         this.options = options;
+        this.messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
     }
 
     @Override
@@ -41,7 +43,6 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
 
     private Mono<Void> sendMessage() {
         int total =  options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
-        String messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
 
         List<Message> messages = new ArrayList<>();
         for (int i = 0; i < total; ++i) {
