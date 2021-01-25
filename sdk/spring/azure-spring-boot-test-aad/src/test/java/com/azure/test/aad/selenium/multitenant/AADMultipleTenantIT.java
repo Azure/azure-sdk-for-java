@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.awt.font.FontRenderContext;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,15 +38,11 @@ public class AADMultipleTenantIT {
         Map<String, String> properties = new HashMap<>();
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
-        String multiTenantClientId = AAD_MULTI_TENANT_CLIENT_ID;
-        String singleTenantClientId = AAD_SINGLE_TENANT_CLIENT_ID;
-        String singleTenantClientIdWithRole = AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
-        String b2cClientId = AAD_B2C_CLIENT_ID;
-
-        LOGGER.info(multiTenantClientId);
-        LOGGER.info(singleTenantClientId);
-        LOGGER.info(singleTenantClientIdWithRole);
-        LOGGER.info(b2cClientId);
+        String[] clientIdArray = {AAD_MULTI_TENANT_CLIENT_ID, AAD_B2C_CLIENT_ID, AAD_SINGLE_TENANT_CLIENT_ID,
+            AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE};
+        for (String clientID : clientIdArray) {
+            LOGGER.info(clientID);
+        }
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties,
             AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
         aadSeleniumITHelper.logIn();
