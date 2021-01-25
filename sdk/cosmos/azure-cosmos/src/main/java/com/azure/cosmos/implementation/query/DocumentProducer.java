@@ -136,10 +136,15 @@ class DocumentProducer<T extends Resource> {
                 } catch (Exception e) {
                     return Mono.error(e);
                 }
-                retryPolicy.onBeforeSendRequest(request);
             }
+
+            DocumentClientRetryPolicy finalRetryPolicy = retryPolicy;
             return ObservableHelper.inlineIfPossibleAsObs(
                     () -> {
+                        if(finalRetryPolicy != null) {
+                            finalRetryPolicy.onBeforeSendRequest(request);
+                        }
+
                         ++retries;
                         return executeRequestFunc.apply(request);
                     }, retryPolicy);

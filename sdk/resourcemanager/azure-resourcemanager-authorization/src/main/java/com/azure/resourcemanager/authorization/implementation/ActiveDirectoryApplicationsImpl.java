@@ -14,6 +14,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 /** The implementation of Applications and its parent interfaces. */
 public class ActiveDirectoryApplicationsImpl
     extends CreatableResourcesImpl<
@@ -67,7 +69,15 @@ public class ActiveDirectoryApplicationsImpl
         final String trimmed = name.replaceFirst("^'+", "").replaceAll("'+$", "");
         return listByFilterAsync(String.format("displayName eq '%s'", trimmed))
             .singleOrEmpty()
-            .switchIfEmpty(listByFilterAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty());
+            .switchIfEmpty(Mono.defer(() -> {
+                try {
+                    UUID.fromString(trimmed);
+                } catch (IllegalArgumentException e) {
+                    // abort if name does not look like an application ID
+                    return Mono.empty();
+                }
+                return listByFilterAsync(String.format("appId eq '%s'", trimmed)).singleOrEmpty();
+            }));
     }
 
     @Override

@@ -9,7 +9,6 @@ import static com.microsoft.azure.spring.cloud.config.TestConstants.DEFAULT_CONT
 import static com.microsoft.azure.spring.cloud.config.TestConstants.FAIL_FAST_PROP;
 import static com.microsoft.azure.spring.cloud.config.TestConstants.LABEL_PROP;
 import static com.microsoft.azure.spring.cloud.config.TestConstants.PREFIX_PROP;
-import static com.microsoft.azure.spring.cloud.config.TestConstants.SEPARATOR_PROP;
 import static com.microsoft.azure.spring.cloud.config.TestConstants.STORE_ENDPOINT_PROP;
 import static com.microsoft.azure.spring.cloud.config.TestConstants.TEST_CONN_STRING;
 import static com.microsoft.azure.spring.cloud.config.TestUtils.propPair;
@@ -18,10 +17,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
 import java.io.InputStream;
 import java.util.Arrays;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.ProtocolVersion;
 import org.apache.http.RequestLine;
@@ -40,13 +38,15 @@ import org.springframework.boot.test.context.assertj.AssertableApplicationContex
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.azure.spring.cloud.config.properties.AppConfigurationProperties;
+
 public class AppConfigurationPropertiesTest {
 
     private static final String NO_ENDPOINT_CONN_STRING = "Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
     private static final String NO_ID_CONN_STRING = "Endpoint=https://fake.test.config.io;Secret=ZmFrZS1jb25uLXNlY3JldA==";
     private static final String NO_SECRET_CONN_STRING = "Endpoint=https://fake.test.config.io;Id=fake-conn-id;";
     private static final String[] ILLEGAL_PREFIXES = {"/ config", "config"};
-    private static final String[] ILLEGAL_PROFILE_SEPARATOR = {"/", "\\", "."};
     private static final String ILLEGAL_LABELS = "*,my-label";
     @InjectMocks
     private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -136,18 +136,6 @@ public class AppConfigurationPropertiesTest {
                     propPair(PREFIX_PROP, prefix)
                 )
                 .run(context -> assertInvalidField(context, "prefix"));
-        });
-    }
-
-    @Test
-    public void profileSeparatorShouldFollowPattern() {
-        Arrays.asList(ILLEGAL_PROFILE_SEPARATOR).stream().forEach(separator -> {
-            this.contextRunner
-                .withPropertyValues(
-                    propPair(CONN_STRING_PROP, TEST_CONN_STRING),
-                    propPair(SEPARATOR_PROP, separator)
-                )
-                .run(context -> assertInvalidField(context, "profileSeparator"));
         });
     }
 

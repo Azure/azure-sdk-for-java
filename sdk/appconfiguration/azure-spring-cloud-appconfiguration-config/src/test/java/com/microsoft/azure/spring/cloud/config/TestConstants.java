@@ -20,7 +20,6 @@ public final class TestConstants {
     public static final String DEFAULT_CONTEXT_PROP = "spring.cloud.azure.appconfiguration.default-context";
     public static final String CONFIG_ENABLED_PROP = "spring.cloud.azure.appconfiguration.enabled";
     public static final String CACHE_EXPIRATION_PROP = "spring.cloud.azure.appconfiguration.cache-expiration";
-    public static final String SEPARATOR_PROP = "spring.cloud.azure.appconfiguration.profile-separator";
     public static final String FAIL_FAST_PROP = "spring.cloud.azure.appconfiguration.failFast";
     public static final String KEY_VAULT_STORE_1_CONNECTION =
         "spring.cloud.azure.appconfiguration.key_vault_stores[0].connection_url";
