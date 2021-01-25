@@ -22,7 +22,7 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
     public SendMessageTest(ServiceBusStressOptions options) {
         super(options, ServiceBusReceiveMode.PEEK_LOCK);
         String messageId = UUID.randomUUID().toString();
-        message = new ServiceBusMessage(CONTENTS);
+        message = new ServiceBusMessage(MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend()));
         message.setMessageId(messageId);
     }
 

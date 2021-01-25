@@ -27,7 +27,7 @@ public class SendMessageTest extends ServiceTest<ServiceBusStressOptions> {
     public SendMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.PEEKLOCK);
         String messageId = UUID.randomUUID().toString();
-        message = new Message(CONTENTS);
+        message = new Message(MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend()));
         message.setMessageId(messageId);
     }
 

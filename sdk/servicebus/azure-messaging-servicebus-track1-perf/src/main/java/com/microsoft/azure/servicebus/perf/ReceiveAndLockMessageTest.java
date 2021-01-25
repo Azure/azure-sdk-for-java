@@ -36,9 +36,11 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
 
     private Mono<Void> sendMessage() {
         int total =  options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
+        String messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
+
         List<Message> messages = new ArrayList<>();
         for (int i = 0; i < total; ++i) {
-            Message message = new Message(CONTENTS);
+            Message message = new Message(messageContent);
             message.setMessageId(UUID.randomUUID().toString());
             messages.add(message);
         }

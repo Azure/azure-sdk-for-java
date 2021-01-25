@@ -23,9 +23,10 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
      */
     public SendMessagesTest(ServiceBusStressOptions options) {
         super(options, ServiceBusReceiveMode.PEEK_LOCK);
+        String messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
         messages = new ArrayList<>();
         for (int i = 0; i < options.getMessagesToSend(); ++i) {
-            ServiceBusMessage message =  new ServiceBusMessage(CONTENTS);
+            ServiceBusMessage message =  new ServiceBusMessage(messageContent);
             message.setMessageId(UUID.randomUUID().toString());
             messages.add(message);
         }
@@ -41,4 +42,5 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
     public Mono<Void> runAsync() {
         return senderAsync.sendMessages(messages);
     }
+
 }

@@ -35,9 +35,10 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
         // Since test does warm up and test many times, we are sending many messages, so we will have them available.
         return Mono.defer(() -> {
             int total =  options.getMessagesToSend() * TOTAL_MESSAGE_MULTIPLIER;
+            String messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
             List<ServiceBusMessage> messages = new ArrayList<>();
             for (int i = 0; i < total; ++i) {
-                ServiceBusMessage message = new ServiceBusMessage(CONTENTS);
+                ServiceBusMessage message = new ServiceBusMessage(messageContent);
                 message.setMessageId(UUID.randomUUID().toString());
                 messages.add(message);
             }
