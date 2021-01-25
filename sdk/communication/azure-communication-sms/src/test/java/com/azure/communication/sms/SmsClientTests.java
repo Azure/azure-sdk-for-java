@@ -54,33 +54,27 @@ public class SmsClientTests extends SmsTestBase {
         policies[0] = new HmacAuthenticationPolicy(credential);
         policies[1] = new UserAgentPolicy();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies)
-            .httpClient(httpClient)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies).httpClient(httpClient).build();
 
         builder.endpoint(PROTOCOL + ENDPOINT);
         builder.pipeline(pipeline);
-        builder.buildClient()
-            .sendMessage(from, to, body, smsOptions);
+        builder.buildClient().sendMessage(from, to, body, smsOptions);
     }
 
     @Test
     public void sendSmsRequest() {
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessage(from, to, body, smsOptions);
+        getTestSmsClient(from, to, body, smsOptions, null).sendMessage(from, to, body, smsOptions);
     }
 
     @Test
     public void sendSmsMessageWithResponse() {
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessageWithResponse(from, to, body, smsOptions, Context.NONE);
+        getTestSmsClient(from, to, body, smsOptions, null).sendMessageWithResponse(from, to, body, smsOptions,
+                Context.NONE);
     }
 
     @Test
     public void sendSmsMessageWithResponseNullContext() {
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessageWithResponse(from, to, body, smsOptions, null);
+        getTestSmsClient(from, to, body, smsOptions, null).sendMessageWithResponse(from, to, body, smsOptions, null);
     }
 
     @Test
@@ -93,40 +87,35 @@ public class SmsClientTests extends SmsTestBase {
             }
         };
 
-        getTestSmsClient(from, to, body, smsOptions, policy)
-            .sendMessage(from, to, body, smsOptions);
+        getTestSmsClient(from, to, body, smsOptions, policy).sendMessage(from, to, body, smsOptions);
     }
 
     @Test
     public void sendSmsRequestNoDeliverReport() {
         smsOptions.setEnableDeliveryReport(false);
 
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessage(from, to, body);
+        getTestSmsClient(from, to, body, smsOptions, null).sendMessage(from, to, body);
     }
 
     @Test
     public void sendSmsRequestSingleNumberNoDeliverReport() {
         smsOptions.setEnableDeliveryReport(false);
 
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessage(from, to.get(0), body);
+        getTestSmsClient(from, to, body, smsOptions, null).sendMessage(from, to.get(0), body);
     }
 
     @Test
     public void sendSmsRequestNoDeliverReportExplicit() {
         smsOptions.setEnableDeliveryReport(false);
 
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessage(from, to, body, smsOptions);
+        getTestSmsClient(from, to, body, smsOptions, null).sendMessage(from, to, body, smsOptions);
     }
 
     @Test
     public void sendSmsRequestComplicated() {
         body = "今日は"; // "Hello" - Japanese
 
-        getTestSmsClient(from, to, body, smsOptions, null)
-            .sendMessage(from, to, body, smsOptions);
+        getTestSmsClient(from, to, body, smsOptions, null).sendMessage(from, to, body, smsOptions);
     }
 
     @Test
@@ -134,8 +123,7 @@ public class SmsClientTests extends SmsTestBase {
         boolean threwException = false;
 
         try {
-            getTestSmsClient(null, to, body, smsOptions, null)
-                .sendMessage(null, to, body, smsOptions);
+            getTestSmsClient(null, to, body, smsOptions, null).sendMessage(null, to, body, smsOptions);
         } catch (NullPointerException e) {
             threwException = true;
         }
@@ -149,8 +137,7 @@ public class SmsClientTests extends SmsTestBase {
         PhoneNumberIdentifier toNull = null;
 
         try {
-            getTestSmsClient(from, to, body, smsOptions, null)
-                .sendMessage(from, toNull, body);
+            getTestSmsClient(from, to, body, smsOptions, null).sendMessage(from, toNull, body);
         } catch (NullPointerException e) {
             threwException = true;
         }
@@ -158,10 +145,9 @@ public class SmsClientTests extends SmsTestBase {
         assertTrue(threwException);
     }
 
-    private SmsClient getTestSmsClient(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body, SendSmsOptions smsOptions,
-            HttpPipelinePolicy policy) {
+    private SmsClient getTestSmsClient(PhoneNumberIdentifier from, List<PhoneNumberIdentifier> to, String body,
+            SendSmsOptions smsOptions, HttpPipelinePolicy policy) {
 
-        return getTestSmsClientBuilder(from, to, body, smsOptions, policy)
-            .buildClient();
+        return getTestSmsClientBuilder(from, to, body, smsOptions, policy).buildClient();
     }
 }
