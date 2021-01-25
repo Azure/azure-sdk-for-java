@@ -59,11 +59,10 @@ public class AADB2CAutoConfigurationTest {
 
     @Test
     public void testOAuth2AuthorizedClientRepositoryBean() {
-        this.contextRunner
-            .run(c -> {
-                final OAuth2AuthorizedClientRepository authorizedClientRepository = c.getBean(OAuth2AuthorizedClientRepository.class);
+        this.contextRunner.run(c -> {
+            final OAuth2AuthorizedClientRepository authorizedClientRepository = c.getBean(OAuth2AuthorizedClientRepository.class);
 
-                assertThat(authorizedClientRepository).isNotNull();
+            assertThat(authorizedClientRepository).isNotNull();
         });
     }
 

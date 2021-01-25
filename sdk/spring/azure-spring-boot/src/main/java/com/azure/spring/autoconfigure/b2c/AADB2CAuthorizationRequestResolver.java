@@ -130,8 +130,8 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     /**
      * Ensure oauth redirect request from other client.
-     * @param registrationId
-     * @return
+     * @param registrationId client registration id
+     * @return true or false
      */
     private boolean isOtherAuthorizationClient(@NonNull String registrationId) {
         if (signUpOrSignIn.equalsIgnoreCase(registrationId)) {

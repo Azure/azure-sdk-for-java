@@ -99,6 +99,9 @@ public class AADB2CProperties {
         this.authorizationClients = authorizationClients;
     }
 
+    /**
+     * Corresponding to B2C-specific user flow definition.
+     */
     @Validated
     public static class UserFlows {
 
