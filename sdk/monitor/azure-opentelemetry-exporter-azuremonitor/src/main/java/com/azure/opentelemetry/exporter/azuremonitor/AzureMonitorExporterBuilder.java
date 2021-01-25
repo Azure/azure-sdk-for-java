@@ -244,8 +244,8 @@ public final class AzureMonitorExporterBuilder {
      */
     public AzureMonitorExporter buildExporter() {
         if (connectionString == null && instrumentationKey == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'connectionString' or 'instrumentationKey' " +
-                "must be set."));
+            throw logger.logExceptionAsError(new NullPointerException("'connectionString' or 'instrumentationKey' "
+                + "must be set."));
         }
         return new AzureMonitorExporter(buildClient(), instrumentationKey, endpoint);
     }
