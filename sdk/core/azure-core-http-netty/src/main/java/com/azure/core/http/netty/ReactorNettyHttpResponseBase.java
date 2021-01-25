@@ -143,6 +143,51 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
             if (abstractMap == null) {
                 abstractMap = new AbstractMap<String, String>() {
                     @Override
+                    public int size() {
+                        return nettyHeaders.size();
+                    }
+
+                    @Override
+                    public boolean isEmpty() {
+                        return nettyHeaders.isEmpty();
+                    }
+
+                    @Override
+                    public boolean containsKey(Object key) {
+                        return nettyHeaders.contains((String)key);
+                    }
+
+                    @Override
+                    public boolean containsValue(Object value) {
+                        return false;
+                    }
+
+                    @Override
+                    public String get(final Object key) {
+                        return nettyHeaders.get((String)key);
+                    }
+
+                    @Override
+                    public String put(String key, String value) {
+                        throw new UnsupportedOperationException("HttpHeaders are unmodifiable");
+                    }
+
+                    @Override
+                    public String remove(Object key) {
+                        throw new UnsupportedOperationException("HttpHeaders are unmodifiable");
+                    }
+
+                    @Override
+                    public void putAll(Map<? extends String, ? extends String> m) {
+                        throw new UnsupportedOperationException("HttpHeaders are unmodifiable");
+                    }
+
+                    @Override
+                    public void clear() {
+                        throw new UnsupportedOperationException("HttpHeaders are unmodifiable");
+                    }
+
+                    @Override
                     public Set<Entry<String, String>> entrySet() {
                         return new AbstractSet<Entry<String, String>>() {
                             @Override
