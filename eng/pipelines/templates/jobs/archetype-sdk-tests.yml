@@ -4,54 +4,9 @@ parameters:
   AdditionalModules: []
   EnvVars: {}
   MaxParallel: 0
-  Matrix:
-    Linux - Java 8 (AzureCloud):
-      Pool: azsdk-pool-mms-ubuntu-1804-general
-      OSVmImage: MMSUbuntu18.04
-      JavaTestVersion: '1.8'
-      DisplayName: 'Linux - Java 8'
-      AZURE_TEST_HTTP_CLIENTS: netty
-    macOS - Java 8 (AzureCloud):
-      Pool: Azure Pipelines
-      OSVmImage: 'macOS-10.15'
-      JavaTestVersion: '1.8'
-      DisplayName: 'macOS - Java 8'
-      AZURE_TEST_HTTP_CLIENTS: okhttp
-    Windows - Java 8 (AzureCloud):
-      Pool: azsdk-pool-mms-win-2019-general
-      OSVmImage: MMS2019
-      JavaTestVersion: '1.8'
-      DisplayName: 'Windows - Java 8'
-      AZURE_TEST_HTTP_CLIENTS: netty
-    Linux - Java 11 (AzureCloud):
-      Pool: azsdk-pool-mms-ubuntu-1804-general
-      OSVmImage: MMSUbuntu18.04
-      JavaTestVersion: '1.11'
-      DisplayName: 'Linux - Java 11'
-      AZURE_TEST_HTTP_CLIENTS: okhttp
-    macOS - Java 11 (AzureCloud):
-      Pool: Azure Pipelines
-      OSVmImage: 'macOS-10.15'
-      JavaTestVersion: '1.11'
-      DisplayName: 'macOS - Java 11'
-      AZURE_TEST_HTTP_CLIENTS: netty
-    Windows - Java 11 (AzureCloud):
-      Pool: azsdk-pool-mms-win-2019-general
-      OSVmImage: MMS2019
-      JavaTestVersion: '1.11'
-      DisplayName: 'Windows - Java 11'
-      AZURE_TEST_HTTP_CLIENTS: okhttp
-    Linux From Source - Java 11:
-      Pool: azsdk-pool-mms-ubuntu-1804-general
-      OSVmImage: MMSUbuntu18.04
-      JavaTestVersion: '1.11'
-      DisplayName: 'From Source: Linux on Java 1.11'
-      AZURE_TEST_HTTP_CLIENTS: netty
-      TestFromSource: true
-  PreRunSteps: []
-  PostRunSteps: []
+  PreSteps: []
+  PostSteps: []
   TestName: LiveTest
-  TestCanary: false
   TimeoutInMinutes: 60
   TestStepMavenInputs:
     options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
@@ -62,63 +17,59 @@ parameters:
     publishJUnitResults: false
     goals: 'verify'
   TestResultsFiles: ''
-  SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-  ResourceGroupLocationCanary: "centraluseuap"
+  CloudConfig: {}
   ArmTemplateParameters: '@{}'
   Location: ''
+  Matrix: ''
+  DependsOn: ''
+  UsePlatformContainer: false
+  DisableAzureResourceCreation: false
 
 jobs:
   - job: ${{ parameters.TestName }}
-    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+    dependsOn: ${{ parameters.DependsOn }}
+    condition: ne(${{ parameters.Matrix }}, '{}')
+    strategy:
+      maxParallel: ${{ parameters.MaxParallel }}
+      matrix: $[ ${{ parameters.Matrix }} ]
 
     variables:
       - template: ../variables/globals.yml
-      # Default $(SubscriptionConfiguration) if the matrix does not specify a $(SubscriptionConfiguration)
-      - name: SubscriptionConfiguration
-        value: ${{ parameters.SubscriptionConfiguration }}
+      # ServiceDirectory references must get passed down by the caller as variable references
+      - name: ServiceDirectory
+        value: ${{ parameters.ServiceDirectory }}
       - name: ArmTemplateParameters
-        value: ${{ parameters.ArmTemplateParameters }}
-      - name: Location
-        value: ${{ parameters.Location }}
+        value: '@{}'
 
-    strategy:
-      matrix:
-        ${{ insert }}: ${{ parameters.Matrix }}
-        ${{ if eq(parameters.TestCanary, 'true') }}:
-          Linux - Java 11 (AzureCloudCanary):
-            Pool: azsdk-pool-mms-ubuntu-1804-general
-            OSVmImage: MMSUbuntu18.04
-            JavaTestVersion: '1.11'
-            DisplayName: 'Linux - Java 11'
-            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-            Location: ${{ parameters.ResourceGroupLocationCanary }}
-            AZURE_TEST_HTTP_CLIENTS: netty
-      maxParallel: ${{ parameters.MaxParallel }}
+    timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
     pool:
       name: $(Pool)
       vmImage: $(OSVmImage)
 
+    ${{ if eq(parameters.UsePlatformContainer, 'true') }}:
+      # Add a default so the job doesn't fail when the matrix is empty
+      container: $[ variables['Container'] ]
+
     steps:
 #      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
-
-      - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/deploy-test-resources.yml
           parameters:
+            ${{ if or(parameters.Location, parameters.CloudConfig.Location) }}:
+              Location: ${{ coalesce(parameters.Location, parameters.CloudConfig.Location) }}
             ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-            SubscriptionConfiguration: $(SubscriptionConfiguration)
+            SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
             ArmTemplateParameters: $(ArmTemplateParameters)
-            Location: $(Location)
 
-      - ${{ parameters.PreRunSteps }}
+      - ${{ parameters.PreSteps }}
 
       - template: ../steps/generate-project-list.yml
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
-      
+
       - task: UsePythonVersion@0
         displayName: 'Use Python 3.6'
         inputs:
@@ -172,13 +123,13 @@ jobs:
           # we want to run this when TestFromSource isn't true
           condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
 
-      - ${{ parameters.PostRunSteps }}
+      - ${{ parameters.PostSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - template: /eng/common/TestResources/remove-test-resources.yml
           parameters:
             ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-            SubscriptionConfiguration: $(SubscriptionConfiguration)
+            SubscriptionConfiguration: ${{ parameters.CloudConfig.SubscriptionConfiguration }}
 
       - template: ../steps/upload-repository-on-failure.yml
 

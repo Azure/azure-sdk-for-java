@@ -130,7 +130,7 @@ stages:
           mavenAuthenticateFeed: true
           jdkVersionOption: $(JavaTestVersion)
 
-        PreRunSteps:
+        PreSteps:
         - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
           parameters:
             StartParameters: '/noexplorer /noui /enablepreview /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong'
@@ -153,7 +153,7 @@ stages:
         # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
         - template: ../steps/install-reporting-tools.yml
 
-        PostRunSteps:
+        PostSteps:
           - script: |
               python --version
               python -m pip install setuptools termcolor in_place
