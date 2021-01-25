@@ -5,6 +5,7 @@
 package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -30,7 +31,7 @@ public final class QueuesGetPropertiesHeaders {
     /*
      * The x-ms-meta- property.
      */
-    @JsonProperty(value = "x-ms-meta-")
+    @HeaderCollection(value = "x-ms-meta-")
     private Map<String, String> xMsMeta;
 
     /*
