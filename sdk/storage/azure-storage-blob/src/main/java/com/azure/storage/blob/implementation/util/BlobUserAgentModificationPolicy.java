@@ -19,7 +19,7 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
     private final String clientVersion;
 
     private static final String USER_AGENT = "User-Agent";
-    private static final String REGEX = "(.)*azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]*(.)*";
+    private static final String REGEX = "azsdk-java-azure-storage-blob/\\d+\\.\\d+\\.\\d+[-beta\\.\\d+]*(.)*";
     private static final Pattern PATTERN = Pattern.compile(REGEX);
 
     public BlobUserAgentModificationPolicy(String clientName, String clientVersion) {
@@ -41,6 +41,8 @@ public class BlobUserAgentModificationPolicy implements HttpPipelinePolicy {
                     builder.append("azsdk-java-").append(clientName).append("/").append(clientVersion).append(" ");
                 }
             }
+        } else {
+            builder.append(userAgent);
         }
         context.getHttpRequest().getHeaders().put("User-Agent", builder.toString());
         return next.process();
