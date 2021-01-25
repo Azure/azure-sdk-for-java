@@ -87,57 +87,53 @@ As a first step you'll need to:
 ---
 ### Step 3:  Configure the sample to use your Azure AD tenant
 
-In the steps below, "ClientID" is the same as "Application ID" or "AppId".
+In the steps below, "client-id" is the same as "Application ID" or "AppId".
 
-Open application.properties in your project to configure:
+Open application.yml in your project to configure:
 
-1. If your azure account follows format xxx@xxx.partner.onmschina.cn, configure property `azure.activedirectory.environment=cn` to use [Azure China](https://docs.microsoft.com/azure/china/china-welcome), the default value is `global`.
+```yml
+azure:
+  activedirectory:
+    tenant-id: <your-tenant-id>
+    client-id: <your-client-id>
+    client-secret: <your-client-secret>
+    # Optional, default value is http://localhost:8080/
+    redirect-uri-template: <your-redirect-uri>
+    # groups that you created in your Azure AD tenant
+    user-group:
+      allowed-groups: group1,group2
+    # Optional, the default value is 
+    # environment: global  
+```
+
+
+
+1. If your azure account follows format xxx@xxx.partner.onmschina.cn, configure property `environment: cn` to use [Azure China][azure-china], the default value is `global`.
 
 2. Put Application ID and client-secret in `client-id` and `client-secret` respectively e.g.
 ```properties
-azure.activedirectory.client-id=xxxxxx-your-client-id-xxxxxx
-azure.activedirectory.client-secret=xxxxxx-your-client-secret-xxxxxx
+tenant-id: xxxxxx-your-client-id-xxxxxx
+client-id: xxxxxx-your-client-secret-xxxxxx
 ```
 
 3. List all the AAD groups `ActiveDirectoryGroups` that you want to have a Spring Security role object mapping to it. The role objects can then be used to manage access to resources that is behind Spring Security. e.g.
 ```properties
 # groups that you created in your Azure AD tenant
-azure.activedirectory.user-group.allowed-groups=group1,group2
+allowed-groups: group1,group2
 ```
 
 4. (Optional) If you want to configure oauth2 redirect uri, please configure by :
 ```properties
-spring.security.oauth2.client.registration.azure.redirect-uri=xxxxxx-your-redirect-uri-xxxxxx
+redirectUriTemplate: xxxxxx-your-redirect-uri-xxxxxx
 ```
 
- ---
+---
  ### Step 4: Change Role_group1 to your group
 1. You can use `@PreAuthorize` annotation or `UserPrincipal` to manage access to web API based on user's group membership. You will need to change `ROLE_group1` to groups you want to allow to access the API in `TodoListController.java` or you will get "Access is denied".
    
----   
-### Step 5: Angular JS
-In `app.js`, make following changes. The client leverages Azure AD library for JS to handle AAD authentication in single page application. The following snippet of code configures msal provider for your registered app. ClientID is your application ID and \<tenant\> is a identifier within the directory itself (e.g. a domain associated to the tenant, such as contoso.onmicrosoft.com, or the GUID representing the TenantID property of the directory). 
-```js
-window.applicationConfig = {
-    clientID: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
-};
+---
 
-msalProvider.init(
-    {
-        auth: {
-            clientId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-            authority: "https://login.microsoftonline.com/<tenant>",
-            redirectUri: "http://localhost:8080/",
-        },
-        cache: {
-            cacheLocation: "sessionStorage", // This configures where your cache will be stored
-            storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
-        }
-    }
-);
-```
-
-### Step 6: Give it a run
+### Step 5: Give it a run
 
 * Run with Maven 
  ```
@@ -153,4 +149,6 @@ msalProvider.init(
 ## Contributing
 
 <!-- LINKS -->
+
 [ready-to-run-checklist]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/spring/azure-spring-boot-samples/README.md#ready-to-run-checklist
+[azure-china]: https://docs.microsoft.com/azure/china/china-welcome
