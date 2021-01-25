@@ -71,6 +71,21 @@ public class PhoneNumberAsyncClientIntegrationTest extends PhoneNumberIntegratio
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createAsyncPhoneNumberClientWithManagedIdentity(HttpClient httpClient) {
+        PhoneNumberAsyncClient phoneNumberAsyncClient = getClientBuilderUsingManagedIdentity(httpClient).buildAsyncClient();
+        assertNotNull(phoneNumberAsyncClient);
+
+        // Smoke test using phoneNumberAsyncClient to list all phone numbers
+        PagedFlux<AcquiredPhoneNumber> pagedFlux = phoneNumberAsyncClient.listAllPhoneNumbers(LOCALE);
+        StepVerifier.create(pagedFlux.next())
+            .assertNext(item -> {
+                assertNotNull(item.getPhoneNumber());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void listAllPhoneNumbers(HttpClient httpClient) {
         PagedFlux<AcquiredPhoneNumber> pagedFlux = this.getClientWithConnectionString(httpClient, "listAllPhoneNumbers").listAllPhoneNumbers(LOCALE);
 
