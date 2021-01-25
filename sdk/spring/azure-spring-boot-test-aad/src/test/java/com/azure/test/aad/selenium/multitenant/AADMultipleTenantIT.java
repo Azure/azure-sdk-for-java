@@ -20,8 +20,11 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_2;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_PASSWORD_2;
 
@@ -34,6 +37,15 @@ public class AADMultipleTenantIT {
         Map<String, String> properties = new HashMap<>();
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
+        String multiTenantClientId = AAD_MULTI_TENANT_CLIENT_ID;
+        String singleTenantClientId = AAD_SINGLE_TENANT_CLIENT_ID;
+        String singleTenantClientIdWithRole = AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
+        String b2cClientId = AAD_B2C_CLIENT_ID;
+
+        LOGGER.info(multiTenantClientId);
+        LOGGER.info(singleTenantClientId);
+        LOGGER.info(singleTenantClientIdWithRole);
+        LOGGER.info(b2cClientId);
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties,
             AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
         aadSeleniumITHelper.logIn();
