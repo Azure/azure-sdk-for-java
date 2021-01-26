@@ -5,12 +5,11 @@ package com.azure.opentelemetry.exporter.azuremonitor;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.trace.TracerSdkProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
-import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.Tracer;
 
 /**
  * Sample to demonstrate using {@link AzureMonitorExporter} to export telemetry events when setting a configuration
@@ -38,9 +37,12 @@ public class AppConfigurationAzureMonitorExporterSample {
             .connectionString("{connection-string}")
             .buildExporter();
 
-        TracerSdkProvider tracerSdkProvider = OpenTelemetrySdk.getTracerProvider();
-        tracerSdkProvider.addSpanProcessor(SimpleSpanProcessor.newBuilder(exporter).build());
-        return tracerSdkProvider.get("Sample");
+        OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().build();
+        openTelemetry
+            .getTracerManagement()
+            .addSpanProcessor(SimpleSpanProcessor.builder(exporter).build());
+
+        return openTelemetry.getTracer("Sample");
     }
 
     /**
@@ -53,7 +55,7 @@ public class AppConfigurationAzureMonitorExporterSample {
             .buildClient();
 
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
-        final Scope scope = TRACER.withSpan(span);
+        final Scope scope = span.makeCurrent();
         try {
             // Thread bound (sync) calls will automatically pick up the parent span and you don't need to pass it explicitly.
             client.setConfigurationSetting("hello", "text", "World");

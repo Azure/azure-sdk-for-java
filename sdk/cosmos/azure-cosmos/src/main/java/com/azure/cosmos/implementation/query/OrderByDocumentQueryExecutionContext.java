@@ -231,9 +231,14 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             List<PartitionKeyRange> partitionKeyRanges,
             List<SortOrder> sortOrders,
             Collection<String> orderByExpressions) {
+
+        ValueHolder<Map<String, OrderByContinuationToken>> valueHolder = new ValueHolder<>();
+        valueHolder.v = this.targetRangeToOrderByContinuationTokenMap;
         // Find the partition key range we left off on
         int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
-                orderByContinuationToken.getCompositeContinuationToken().getRange());
+                                                                          orderByContinuationToken.getCompositeContinuationToken().getRange(),
+                                                                          valueHolder,
+                                                                          orderByContinuationToken);
 
         // Get the filters.
         FormattedFilterInfo formattedFilterInfo = this.getFormattedFilters(orderByExpressions,
@@ -416,7 +421,9 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             return BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page));
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                false,
+                false);
         }
 
         @Override
@@ -496,11 +503,18 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                     return BridgeInternal.createFeedResponseWithQueryMetrics(unwrappedResults,
                         feedOfOrderByRowResults.getResponseHeaders(),
                         BridgeInternal.queryMetricsFromFeedResponse(feedOfOrderByRowResults),
-                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults));
+                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults),
+                        false,
+                        false);
                 }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
                         return Flux.just(BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
-                                headerResponse(tracker.getAndResetCharge()), queryMetricMap, null));
+                                headerResponse(
+                                    tracker.getAndResetCharge()),
+                            queryMetricMap,
+                            null,
+                            false,
+                            false));
                     }));
         }
     }

@@ -66,6 +66,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.retry.Retry;
 
 import java.io.File;
 import java.io.IOException;
@@ -703,8 +704,8 @@ public class ShareFileAsyncClient {
                     .writeFile(fbb, channel, chunk.getStart() - (range == null ? 0 : range.getStart()))
                     .subscribeOn(Schedulers.elastic())
                     .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                    .retry(3, throwable -> throwable instanceof IOException
-                        || throwable instanceof TimeoutException)))
+                    .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
+                        || throwable instanceof TimeoutException))))
             .then(Mono.just(response));
     }
 
@@ -1535,8 +1536,8 @@ public class ShareFileAsyncClient {
                         chunk.getEnd() - chunk.getStart() + 1), chunk.getEnd() - chunk.getStart() + 1,
                         chunk.getStart(), requestConditions)
                         .timeout(Duration.ofSeconds(DOWNLOAD_UPLOAD_CHUNK_TIMEOUT))
-                        .retry(3,
-                            throwable -> throwable instanceof IOException || throwable instanceof TimeoutException))
+                        .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
+                            || throwable instanceof TimeoutException)))
                     .then(), this::channelCleanUp);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

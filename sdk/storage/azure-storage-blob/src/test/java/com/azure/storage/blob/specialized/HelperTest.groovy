@@ -147,6 +147,48 @@ class HelperTest extends APISpec {
             .verifyComplete()
     }
 
+    /*
+    This test covers the switch from using available() to using read() to check that a stream is done when converting
+    from a stream to a flux. We previously used to assert that, when we had read length bytes from the stream that
+    available() == 0, but available only returns an estimate and is not reliable. Now we assert that read() == -1
+     */
+    def "Utility convertStreamToBuffer available"() {
+        setup:
+        def data = getRandomByteArray(10)
+
+        when:
+        def flux = Utility.convertStreamToByteBuffer(new testBAIS(data), 10, 10, true)
+
+        then: "When the stream is the right length but available always returns > 0, do not throw"
+        StepVerifier.create(flux)
+            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data)) == 0 }
+            .verifyComplete()
+        // subscribe multiple times and ensure data is same each time
+        StepVerifier.create(flux)
+            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data)) == 0 }
+            .verifyComplete()
+
+        when: "When the stream is actually longer than the length, throw"
+        flux = Utility.convertStreamToByteBuffer(new testBAIS(data), 9, 10, true)
+
+        then:
+        StepVerifier.create(flux)
+            .assertNext(){buffer -> assert buffer.compareTo(ByteBuffer.wrap(data, 0, 9)) == 0}
+            .verifyError(IllegalStateException.class)
+    }
+
+    class testBAIS extends ByteArrayInputStream {
+
+        testBAIS(byte[] data) {
+            super(data)
+        }
+
+        @Override
+        public synchronized int available() {
+            return 10
+        }
+    }
+
     def "PageList custom deserializer"() {
         setup:
         def responseXml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>  \n" +

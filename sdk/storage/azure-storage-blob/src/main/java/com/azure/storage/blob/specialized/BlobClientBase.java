@@ -15,6 +15,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
 import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -261,17 +262,43 @@ public class BlobClientBase {
      */
     public BlobInputStream openInputStream(BlobInputStreamOptions options) {
         options = options == null ? new BlobInputStreamOptions() : options;
+        ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
+            ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
 
-        BlobProperties properties = getProperties();
+        BlobProperties properties = getPropertiesWithResponse(options.getRequestConditions(), null, null).getValue();
+        String eTag = properties.getETag();
+        String versionId = properties.getVersionId();
 
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
 
         BlobRequestConditions requestConditions = options.getRequestConditions() == null
             ? new BlobRequestConditions() : options.getRequestConditions();
-        // Target the user specified version by default. If not provided, target the latest version.
-        if (requestConditions.getIfMatch() == null) {
-            requestConditions.setIfMatch(properties.getETag());
+        BlobAsyncClientBase client = this.client;
+
+        switch (consistentReadControl) {
+            case NONE:
+                break;
+            case ETAG:
+                // Target the user specified eTag by default. If not provided, target the latest eTag.
+                if (requestConditions.getIfMatch() == null) {
+                    requestConditions.setIfMatch(eTag);
+                }
+                break;
+            case VERSION_ID:
+                if (versionId == null) {
+                    throw logger.logExceptionAsError(
+                        new UnsupportedOperationException("Versioning is not supported on this account."));
+                } else {
+                    // Target the user specified version by default. If not provided, target the latest version.
+                    if (this.client.getVersionId() == null) {
+                        client = this.client.getVersionClient(versionId);
+                    }
+                }
+                break;
+            default:
+                throw logger.logExceptionAsError(new IllegalArgumentException("Concurrency control type not "
+                    + "supported."));
         }
 
         return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,

@@ -81,7 +81,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>msal4j</artifactId>
-      <version>1.8.0</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
+      <version>1.8.1</version> <!-- {x-version-update;com.microsoft.azure:msal4j;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -105,7 +105,7 @@
 <!--      <plugin>-->
 <!--        <groupId>org.apache.maven.plugins</groupId>-->
 <!--        <artifactId>maven-checkstyle-plugin</artifactId>-->
-<!--        <version>3.1.0</version>--> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+<!--        <version>3.1.1</version>--> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
 <!--        <configuration>-->
 <!--          <failsOnError>true</failsOnError>-->
 <!--          <failOnViolation>true</failOnViolation>-->

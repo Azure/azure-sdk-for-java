@@ -16,10 +16,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.tracing.opentelemetry.implementation.AmqpPropagationFormatUtil;
 import com.azure.core.util.Context;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.opentelemetry.OpenTelemetry;
-import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.SpanContext;
-import io.opentelemetry.trace.Tracer;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanContext;
+import io.opentelemetry.api.trace.Tracer;
+import io.opentelemetry.context.Scope;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -59,16 +60,16 @@ public class OpenTelemetryHttpPolicyTests {
     public void openTelemetryHttpPolicyTest() {
         // Arrange
         // Get the global singleton Tracer object.
-        Tracer tracer = OpenTelemetry.getTracerProvider().get("TracerSdkTest");
+        Tracer tracer = OpenTelemetrySdk.builder().build().getTracer("TracerSdkTest");
         // Start user parent span.
         Span parentSpan = tracer.spanBuilder(PARENT_SPAN_KEY).startSpan();
-        tracer.withSpan(parentSpan);
+        Scope scope = parentSpan.makeCurrent();
         // Add parent span to tracingContext
         Context tracingContext = new Context(PARENT_SPAN_KEY, parentSpan);
 
         Span expectedSpan = tracer
             .spanBuilder("/anything")
-            .setParent(parentSpan)
+            .setParent(io.opentelemetry.context.Context.current().with(parentSpan))
             .setSpanKind(Span.Kind.CLIENT)
             .startSpan();
 
@@ -81,7 +82,8 @@ public class OpenTelemetryHttpPolicyTests {
         assertNotNull(diagnosticId);
         Context updatedContext = AmqpPropagationFormatUtil.extractContext(diagnosticId, Context.NONE);
         SpanContext returnedSpanContext = (SpanContext) updatedContext.getData(SPAN_CONTEXT_KEY).get();
-        verifySpanContextAttributes(expectedSpan.getContext(), returnedSpanContext);
+        verifySpanContextAttributes(expectedSpan.getSpanContext(), returnedSpanContext);
+        scope.close();
     }
 
     private static HttpPipeline createHttpPipeline() {
@@ -97,8 +99,8 @@ public class OpenTelemetryHttpPolicyTests {
     }
 
     private static void verifySpanContextAttributes(SpanContext expectedSpanContext, SpanContext actualSpanContext) {
-        assertEquals(expectedSpanContext.getTraceId(), actualSpanContext.getTraceId());
-        assertNotEquals(expectedSpanContext.getSpanId(), actualSpanContext.getSpanId());
+        assertEquals(expectedSpanContext.getTraceIdAsHexString(), actualSpanContext.getTraceIdAsHexString());
+        assertNotEquals(expectedSpanContext.getSpanIdAsHexString(), actualSpanContext.getSpanIdAsHexString());
         assertEquals(expectedSpanContext.getTraceFlags(), actualSpanContext.getTraceFlags());
         assertEquals(expectedSpanContext.getTraceState(), actualSpanContext.getTraceState());
         assertEquals(expectedSpanContext.isValid(), actualSpanContext.isValid());

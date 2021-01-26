@@ -3,6 +3,20 @@
 ## 1.1.0-beta.1 (Unreleased)
 
 
+## 1.0.2 (2021-01-21)
+
+### Dependency Updates
+
+- Added diagnostic contexts to async APIs including service namespace.
+- Upgraded `azure-core` dependency from `1.11.0` to `1.12.0` 
+  - [azure-core changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/CHANGELOG.md#1120-2021-01-11)
+- Upgraded `azure-identity` dependency from `1.2.1` to `1.2.2` 
+  - [azure-identity changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/identity/azure-identity/CHANGELOG.md#122-2021-01-12)
+- Upgraded `azure-core-http-netty` dependency from `1.7.0` to `1.7.1`
+  - [azure-core-http-netty changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-netty/CHANGELOG.md#171-2021-01-11)
+- Upgraded `azure-core-http-okhttp` dependency to `1.4.0` to `1.4.1`
+  - [azure-core-http-okhttp changelog](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core-http-okhttp/CHANGELOG.md#141-2021-01-11)
+
 ## 1.0.1 (2020-11-05)
 
 ### Fixes and improvements

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.administration;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
@@ -9,11 +10,18 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.azure.communication.common.ConnectionString;
+import com.azure.core.credential.AccessToken;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import reactor.core.publisher.Mono;
 
 public class PhoneNumberIntegrationTestBase extends TestBase {
     private static final String ENV_ACCESS_KEY =
@@ -89,6 +97,25 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
         return builder;
     }
 
+    protected PhoneNumberClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
+        PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
+        builder
+            .endpoint(new ConnectionString(CONNECTION_STRING).getEndpoint())
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+        
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new FakeCredentials());
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
+        if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        return builder;
+    }
+
     private String redact(String content, Matcher matcher, String replacement) {
         while (matcher.find()) {
             String captureGroup = matcher.group(1);
@@ -102,5 +129,11 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
 
     protected PhoneNumberClientBuilder addLoggingPolicy(PhoneNumberClientBuilder builder, String testName) {
         return builder.addPolicy(new CommunicationLoggerPolicy(testName));
+    }
+    static class FakeCredentials implements TokenCredential {
+        @Override
+        public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
+            return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
+        }
     }
 }

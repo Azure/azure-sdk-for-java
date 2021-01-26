@@ -6,4 +6,10 @@ package com.azure.communication.common;
  * Common communication identifier for Communication Services
  */
 public abstract class CommunicationIdentifier {
+    /**
+     * Get string representation of the identifier
+     * @return string representation of the identifier
+     */
+    public abstract String getId();
+
 }
