@@ -7,11 +7,8 @@ import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.identity.AzureCliCredentialBuilder;
-import com.azure.identity.DefaultAzureCredential;
 import com.azure.quantum.jobs.models.JobDetails;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import jdk.nashorn.internal.parser.Token;
 import com.azure.core.management.AzureEnvironment;
 
 import java.util.ArrayList;
@@ -32,15 +29,11 @@ public class QuantumJobClient {
             .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
             .build();
 
-//        TokenCredential tokenCredential = new AzureCliCredentialBuilder()
-//            .build();
-
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, "https://quantum.microsoft.com"));
 
         HttpPipeline httpPipeline =
             new HttpPipelineBuilder()
-                //.httpClient(httpClient) //potentially add this for playback?
                 .policies(policies.toArray(new HttpPipelinePolicy[0]))
                 .build();
 
