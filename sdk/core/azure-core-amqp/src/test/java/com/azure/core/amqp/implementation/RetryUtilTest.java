@@ -115,8 +115,9 @@ public class RetryUtilTest {
     }
 
     @Test
-    void withRetriableError() {
+    void withTransientError() {
         // Arrange
+        final Throwable transientError = new AmqpException(true, "Test-exception", new AmqpErrorContext("test-ns"));
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofSeconds(30);
         final AmqpRetryOptions options = new AmqpRetryOptions()
@@ -127,47 +128,49 @@ public class RetryUtilTest {
         final AtomicBoolean wasSent = new AtomicBoolean();
 
         final Flux<Integer> stream = Flux.concat(
-            Flux.just(0, 1, 2),
+            Flux.just(0, 1),
             Flux.create(sink -> {
-                System.out.println("Sink");
                 if (wasSent.getAndSet(true)) {
                     sink.next(10);
+                    sink.complete();
                 } else {
-                    sink.error(new AmqpException(true, "Test-exception", new AmqpErrorContext("test-ns")));
+                    sink.error(transientError);
                 }
             }),
             Flux.just(3, 4));
 
         // Act & Assert
         StepVerifier.create(RetryUtil.withRetry(stream, options, timeoutMessage))
-            .assertNext(e -> {
-                assertEquals(0, e);
-            })
-            .assertNext(e -> {
-                assertEquals(1, e);
-            })
-            .assertNext(e -> {
-                assertEquals(2, e);
-            })
-            .assertNext(e -> {
-                assertEquals(0, e);
-            })
-            .assertNext(e -> {
-                assertEquals(1, e);
-            })
-            .assertNext(e -> {
-                assertEquals(2, e);
-            })
-            .assertNext(e -> {
-                assertEquals(10, e);
-            })
-            .assertNext(e -> {
-                assertEquals(3, e);
-            })
-            .assertNext(e -> {
-                assertEquals(4, e);
-            })
+            .expectNext(0, 1)
+            // AmqpException occurs and then we have the retry.
+            .expectNext(0, 1)
+            .expectNext(10)
+            .expectNext(3, 4)
             .expectComplete()
+            .verify();
+    }
+
+    @Test
+    void withNonTransientError() {
+        // Arrange
+        final AmqpException nonTransientError = new AmqpException(false, "Test-exception", new AmqpErrorContext("test-ns"));
+        final String timeoutMessage = "Operation timed out.";
+        final Duration timeout = Duration.ofSeconds(30);
+        final AmqpRetryOptions options = new AmqpRetryOptions()
+            .setMode(AmqpRetryMode.FIXED)
+            .setDelay(Duration.ofSeconds(1))
+            .setMaxRetries(1)
+            .setTryTimeout(timeout);
+
+        final Flux<Integer> stream = Flux.concat(
+            Flux.just(0, 1, 2),
+            Flux.error(nonTransientError),
+            Flux.just(3, 4));
+
+        // Act & Assert
+        StepVerifier.create(RetryUtil.withRetry(stream, options, timeoutMessage))
+            .expectNext(0, 1, 2)
+            .expectErrorMatches(error -> error == nonTransientError)
             .verify();
     }
 
