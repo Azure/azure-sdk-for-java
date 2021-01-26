@@ -1,0 +1,56 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0//feedback/metric/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "93a99b14-85c5-4b0c-9b62-c70b347abf24",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "No such host is known (notreal.azure.com)"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0//feedback/metric/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "93a99b14-85c5-4b0c-9b62-c70b347abf24",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "notreal.azure.com"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0//feedback/metric/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "93a99b14-85c5-4b0c-9b62-c70b347abf24",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "notreal.azure.com"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0//feedback/metric/query",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.3 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "93a99b14-85c5-4b0c-9b62-c70b347abf24",
+      "Content-Type" : "application/json"
+    },
+    "Response" : null,
+    "Exception" : {
+      "ClassName" : "java.net.UnknownHostException",
+      "ErrorMessage" : "notreal.azure.com"
+    }
+  } ],
+  "variables" : [ ]
+}

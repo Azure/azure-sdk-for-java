@@ -9,12 +9,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-sdk</artifactId>
-    <version>0.6.0</version>
+    <version>0.14.1</version>
 </dependency>
 <dependency>
     <groupId>io.opentelemetry</groupId>
     <artifactId>opentelemetry-exporters-logging</artifactId>
-    <version>0.6.0</version>
+    <version>0.14.1</version>
 </dependency>
 ```
 
@@ -23,17 +23,17 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.8</version>
+    <version>1.2.2</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.1.5</version>
+    <version>4.2.4</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-tracing-opentelemetry</artifactId>
-    <version>1.0.0-beta.5</version>
+    <version>1.0.0-beta.7</version>
 </dependency>
 ```
 
@@ -43,13 +43,12 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
-import io.opentelemetry.exporters.logging.LoggingSpanExporter;
-import io.opentelemetry.sdk.trace.TracerSdkProvider;
+import io.opentelemetry.exporter.logging.LoggingSpanExporter;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
-import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.Tracer;
 import reactor.util.context.Context;
 
 import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
@@ -62,9 +61,9 @@ public class Sample {
   private static final Tracer TRACER = configureOpenTelemetryAndLoggingExporter();
   private static final String VAULT_URL = "<YOUR_VAULT_URL>";
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) {
       Span userSpan = TRACER.spanBuilder("user-parent-span").startSpan();
-      final Scope scope = TRACER.withSpan(userSpan);
+      final Scope scope = userSpan.makeCurrent();
       doClientWork();
       userSpan.end();
       scope.close();
@@ -72,13 +71,14 @@ public class Sample {
 
   private static Tracer configureOpenTelemetryAndLoggingExporter() {
       LoggingSpanExporter exporter = new LoggingSpanExporter();
-      TracerSdkProvider tracerSdkProvider = OpenTelemetrySdk.getTracerProvider();
-      tracerSdkProvider.addSpanProcessor(SimpleSpanProcessor.newBuilder(exporter).build());
-      // Acquire a tracer
-      return tracerSdkProvider.get("Sample");
+      OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().build();
+      openTelemetry
+          .getTracerManagement()
+          .addSpanProcessor(SimpleSpanProcessor.builder(exporter).build());
+      return openTelemetry.getTracer("Sample");
   }
 
-  public static void doClientWork() throws InterruptedException {
+  public static void doClientWork() {
       SecretAsyncClient client = new SecretClientBuilder()
               .vaultUrl(VAULT_URL)
               .credential(new DefaultAzureCredentialBuilder().build())
@@ -91,11 +91,11 @@ public class Sample {
               .subscribe(secretResponse -> System.out.printf("Secret with name: %s%n", secretResponse.getName()));
       client.listPropertiesOfSecrets()
               .subscriberContext(traceContext)
-              .subscribe(secretBase -> client.getSecret(secretBase.getName())
+              .doOnNext(secretBase -> client.getSecret(secretBase.getName())
                       .subscriberContext(traceContext)
-                      .subscribe(secret -> System.out.printf("Secret with name: %s%n", secret.getName())));
-
-      Thread.sleep(10000);
+                      .doOnNext(secret -> System.out.printf("Secret with name: %s%n", secret.getName())))
+                      .blockLast();
+          
   }
 }
 ```

@@ -11,6 +11,7 @@ package com.microsoft.azure.management.hdinsight.v2018_06_01_preview.implementat
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.Operation;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.OperationDisplay;
+import com.microsoft.azure.management.hdinsight.v2018_06_01_preview.OperationProperties;
 
 class OperationImpl extends WrapperImpl<OperationInner> implements Operation {
     private final HDInsightManager manager;
@@ -32,6 +33,11 @@ class OperationImpl extends WrapperImpl<OperationInner> implements Operation {
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public OperationProperties properties() {
+        return this.inner().properties();
     }
 
 }

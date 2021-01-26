@@ -183,7 +183,8 @@ class AnalyzeHealthcareAsyncClient {
             healthcareJobState.getCreatedDateTime(),
             healthcareJobState.getLastUpdateDateTime(),
             toJobState(healthcareJobState.getStatus()),
-            healthcareJobState.getDisplayName(),
+            // TODO: remove it in healthcare update PR
+            "",
             healthcareJobState.getExpirationDateTime());
         HealthcareTaskResultPropertiesHelper.setResult(healthcareTaskResult, recognizeHealthcareEntitiesResults);
         if (errors != null) {
