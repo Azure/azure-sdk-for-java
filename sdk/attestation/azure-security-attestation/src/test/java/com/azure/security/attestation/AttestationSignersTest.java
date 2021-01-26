@@ -44,8 +44,8 @@ public class AttestationSignersTest extends AttestationClientTestBase {
 
         StepVerifier.create(attestationBuilder.buildSigningCertificatesAsyncClient().get())
             .assertNext(certs -> Assertions.assertDoesNotThrow(() -> verifySigningCertificatesResponse(clientUri, certs)))
-            .verifyComplete();
-
+            .expectComplete()
+            .verify();
     }
 
     /**

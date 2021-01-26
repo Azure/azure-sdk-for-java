@@ -168,8 +168,8 @@ public class AttestationTest extends AttestationClientTestBase {
                     Assertions.assertEquals(clientUri, claims.getClaims().get("iss"));
                 }
             })
-            .verifyComplete();
-
+            .expectComplete()
+            .verify();
     }
 }
 

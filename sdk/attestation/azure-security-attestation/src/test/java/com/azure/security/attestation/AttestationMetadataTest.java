@@ -38,7 +38,8 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
 
         StepVerifier.create(attestationBuilder.buildMetadataConfigurationAsyncClient().get())
             .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse))
-            .verifyComplete();
+            .expectComplete()
+            .verify();
     }
 
     /**

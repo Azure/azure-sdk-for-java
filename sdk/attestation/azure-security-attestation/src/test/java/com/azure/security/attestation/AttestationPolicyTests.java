@@ -54,7 +54,9 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         AttestationClientBuilder attestationBuilder = getBuilder(client, clientUri);
 
         StepVerifier.create(attestationBuilder.buildPolicyAsyncClient().get(attestationType))
-            .assertNext(response -> assertDoesNotThrow(() -> verifyBasicGetAttestationPolicyResponse(client, clientUri, attestationType, response))).verifyComplete();
+            .assertNext(response -> assertDoesNotThrow(() -> verifyBasicGetAttestationPolicyResponse(client, clientUri, attestationType, response)))
+            .expectComplete()
+            .verify();
     }
 
     /**
@@ -163,7 +165,8 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                     assertEquals("Removed", responseClaims.getClaims().get("x-ms-policy-result").toString());
                 }))
                 .assertNext(claimSet -> { })
-                .verifyComplete();
+                .expectComplete()
+                .verify();
         }
     }
 

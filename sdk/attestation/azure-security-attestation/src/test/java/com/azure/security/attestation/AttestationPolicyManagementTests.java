@@ -234,7 +234,9 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
                     assertEquals("IsAbsent", responseClaims.getClaims().get("x-ms-policycertificates-result").toString());
                 }))
             .assertNext(claimsSet -> { })
-            .verifyComplete();
+            .expectComplete()
+            .verify();
+
     }
 
 }
