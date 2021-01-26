@@ -143,6 +143,12 @@ public class AADB2CAutoConfiguration {
             Assert.hasText(userFlow, "User flow should contains text.");
 
             String clientId = "&&&" + new String(properties.getClientId().getBytes()) + "&&&";
+            char[] chars = clientId.toCharArray();
+            for (char aChar : chars) {
+                LOGGER.error("aChar = " + aChar);
+            }
+
+            LOGGER.error("b2cclientid=" + "4ede2a7c-9914-4a6f-86b4-86c56882bf2b");
             String clientId_replaceWithaa = clientId.replace("*", "aa");
             LOGGER.error("b2cClientRegistration, clientId = " + clientId);
             LOGGER.error("b2cClientRegistration, clientId_replaceWithaa = " + clientId_replaceWithaa);
