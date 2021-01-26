@@ -10,20 +10,20 @@
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
-      "X-Processing-Time" : "204ms",
-      "MS-CV" : "IysSwoistEGI6PLHkH/kLw.0",
+      "X-Processing-Time" : "208ms",
+      "MS-CV" : "4tuk4ipgnEakstoLvT9APA.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "02F4QYAAAAABwW9QJcg79QKxkTOr/k2SoWVZSMzBFREdFMDMxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0qYUQYAAAAACsg7qkZYc1S4cTTNV8EAW0WVZSMzBFREdFMDQxNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "201",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_00000007-dfd4-2098-63a7-1d3a0d000c38\"}}",
-      "Date" : "Tue, 26 Jan 2021 18:26:32 GMT",
-      "x-ms-client-request-id" : "87bcc603-7d70-4abf-9653-be4d850ff348",
+      "Body" : "{\"identity\":{\"id\":\"REDACTED\"}}",
+      "Date" : "Tue, 26 Jan 2021 21:12:09 GMT",
+      "x-ms-client-request-id" : "4e3cd90d-9eec-4ae7-9871-fe31e9496b1c",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/identities/8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_00000007-dfd4-2098-63a7-1d3a0d000c38/:issueAccessToken?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.com/identities/REDACTED/:issueAccessToken?api-version=2021-03-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -32,33 +32,33 @@
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
-      "X-Processing-Time" : "34ms",
-      "MS-CV" : "3jG8zjmAMkqMELbE+CuRQw.0",
+      "X-Processing-Time" : "281ms",
+      "MS-CV" : "nZ+YORE7d02aMg5eGbhOXA.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "02F4QYAAAAAAYu87Kt8m+RKvUqNOf1F24WVZSMzBFREdFMDQxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0qoUQYAAAAACd9drSP6ynQZEqQWffReuKWVZSMzBFREdFMDQwNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "200",
-      "Body" : "{\"token\":\"eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMiIsIng1dCI6IjNNSnZRYzhrWVNLd1hqbEIySmx6NTRQVzNBYyIsInR5cCI6IkpXVCJ9.eyJza3lwZWlkIjoiYWNzOmFjODBkOTZhLTg1ZGUtNDhiMS05OTVkLWEzYTNmYTM2MjdjOF8wMDAwMDAwNy1kZmQ0LTIwOTgtNjNhNy0xZDNhMGQwMDBjMzgiLCJzY3AiOjE3OTIsImNzaSI6IjE2MTE2ODU1OTIiLCJpYXQiOjE2MTE2ODU1OTIsImV4cCI6MTYxMTc3MTk5MiwiYWNzU2NvcGUiOiJjaGF0IiwicmVzb3VyY2VJZCI6ImFjODBkOTZhLTg1ZGUtNDhiMS05OTVkLWEzYTNmYTM2MjdjOCJ9.tG-VPOD-494c7tv2MWTakXP9mYFGycpqXT2_nYQu0DBXOHzpY-0xu2ICnCzwexljSOHbJUOp5PmW5zAbZhOz-5NDGkY9Sz8jXeCPzD0woAqXvUS2FZmM_QojcoUOoZL5HJvPah0CjBxslDfAhHJxu_x31UfN0gU3E-mL1d77MNOZnu2VN4kBvSOzcqpEBRAD6dPtyXGqYD38R1XjX9whvgz02Vx5H9rDy0aFgDDQsxBcz23CYg6a_eJLoaz3sAmtRV8MFA-0zPk_DyO3Jt-PkAxL8Fq33K3KiXYZSjRblVwWkR43auxYd0sjgGV8ocs__JCtyLeYBlXYQWqmaUHbBw\",\"expiresOn\":\"2021-01-27T18:26:31.4825468+00:00\"}",
-      "Date" : "Tue, 26 Jan 2021 18:26:32 GMT",
-      "x-ms-client-request-id" : "a242122a-be6b-408b-a43c-870e63d11072",
+      "Body" : "{\"token\":\"REDACTED\",\"expiresOn\":\"2021-01-27T21:12:09.333536+00:00\"}",
+      "Date" : "Tue, 26 Jan 2021 21:12:09 GMT",
+      "x-ms-client-request-id" : "e150c878-a8a3-4559-a92a-1f2a53628ddb",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/identities/8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_00000007-dfd4-2098-63a7-1d3a0d000c38/:revokeAccessTokens?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.com/identities/REDACTED/:revokeAccessTokens?api-version=2021-03-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
-      "X-Processing-Time" : "387ms",
-      "MS-CV" : "d9iD7d+xFEuBA53akw6Pjg.0",
+      "X-Processing-Time" : "1106ms",
+      "MS-CV" : "bxsGMJ73OUemntqfhp3irw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "02F4QYAAAAABSg1GxlraFQ4Ca8S/ju7SaWVZSMzBFREdFMDMxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0qoUQYAAAAABE9w85STnJQZgFytgnvBeZWVZSMzBFREdFMDQxNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "204",
-      "Date" : "Tue, 26 Jan 2021 18:26:32 GMT",
-      "x-ms-client-request-id" : "06840266-6a85-4a33-999d-54c72249a8ae"
+      "Date" : "Tue, 26 Jan 2021 21:12:10 GMT",
+      "x-ms-client-request-id" : "e18b0893-35f2-4c13-833f-922b6dde5941"
     },
     "Exception" : null
   } ],

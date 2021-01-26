@@ -274,27 +274,6 @@ public class ReadmeSamples {
     }
 
     /**
-     * Sample code for creating a sync Communication Identity Client using AAD authentication.
-     *
-     * @return the Communication Identity Client.
-     */
-    public CommunicationIdentityClient createCommunicationIdentityClientWithAAD() {
-        // You can find your endpoint and access key from your resource in the Azure Portal
-        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
-
-        // Create an HttpClient builder of your choice and customize it
-        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
-
-        CommunicationIdentityClient communicationIdentityClient = new CommunicationIdentityClientBuilder()
-            .endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .httpClient(httpClient)
-            .buildClient();
-
-        return communicationIdentityClient;
-    }
-
-    /**
      * Sample code for creating a sync Phone Number Client using AAD authentication.
      *
      * @return the Phone Number Client.

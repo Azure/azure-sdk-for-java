@@ -4,6 +4,7 @@
 package com.azure.communication.identity;
 
 import java.util.List;
+import java.util.Objects;
 
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityImpl;
@@ -72,6 +73,7 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationUserIdentifierWithTokenResult createUserWithToken(
         List<CommunicationIdentityTokenScope> scopes) {
+        Objects.requireNonNull(scopes);
         CommunicationIdentityAccessTokenResult result = client.create(
             new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes));
         CommunicationUserIdentifier user = 
@@ -90,10 +92,12 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserIdentifierWithTokenResult> createUserWithTokenWithResponse(
         List<CommunicationIdentityTokenScope> scopes, Context context) {
+        Objects.requireNonNull(scopes);
+        
         Response<CommunicationIdentityAccessTokenResult> response = 
             client.createWithResponse(new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes), context);
+
         String id = response.getValue().getIdentity().getId();
-    
         return new SimpleResponse<CommunicationUserIdentifierWithTokenResult>(
             response,
             new CommunicationUserIdentifierWithTokenResult(
@@ -106,9 +110,11 @@ public final class CommunicationIdentityClient {
      * data.
      *
      * @param communicationUser The user to be deleted.
+     * @return the response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void deleteUser(CommunicationUserIdentifier communicationUser) {
+        Objects.requireNonNull(communicationUser);
         return client.deleteAsync(communicationUser.getId()).block();
     }
 
@@ -122,6 +128,7 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteUserWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
+        Objects.requireNonNull(communicationUser);
         return client.deleteWithResponse(communicationUser.getId(), context);
     }
 
@@ -129,9 +136,11 @@ public final class CommunicationIdentityClient {
      * Revokes all the tokens created for an identifier.
      * 
      * @param communicationUser The user to be revoked token.
+     * @return the response
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void revokeTokens(CommunicationUserIdentifier communicationUser) {
+        Objects.requireNonNull(communicationUser);
         return client.revokeAccessTokensAsync(communicationUser.getId()).block();
     }
 
@@ -145,6 +154,7 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
+        Objects.requireNonNull(communicationUser);
         return client.revokeAccessTokensWithResponse(communicationUser.getId(), context);
     }
 
@@ -158,6 +168,8 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationUserToken issueToken(CommunicationUserIdentifier communicationUser,
         List<CommunicationIdentityTokenScope> scopes) {
+        Objects.requireNonNull(communicationUser);
+        Objects.requireNonNull(scopes);
         return client.issueAccessToken(
             communicationUser.getId(),
             new CommunicationIdentityAccessTokenRequest().setScopes(scopes));
@@ -174,8 +186,10 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserToken> issueTokenWithResponse(CommunicationUserIdentifier communicationUser,
-            List<CommunicationIdentityTokenScope> scopes, Context context) {
-          return client.issueAccessTokenWithResponse(
+        List<CommunicationIdentityTokenScope> scopes, Context context) {
+        Objects.requireNonNull(communicationUser);
+        Objects.requireNonNull(scopes);
+        return client.issueAccessTokenWithResponse(
             communicationUser.getId(),
             new CommunicationIdentityAccessTokenRequest().setScopes(scopes),
             context);

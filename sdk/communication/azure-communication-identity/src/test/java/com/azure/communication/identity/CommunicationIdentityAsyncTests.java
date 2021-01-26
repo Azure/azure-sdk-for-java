@@ -7,10 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationIdentityTokenScope;
+import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
 import com.azure.communication.identity.models.CommunicationUserToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -101,6 +103,72 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createUserWithToken(HttpClient httpClient) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        asyncClient = setupAsyncClient(builder, "createUserWithToken");
+        List<CommunicationIdentityTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+
+        // Action & Assert
+        Mono<CommunicationUserIdentifierWithTokenResult> createUserWithToken = asyncClient.createUserWithToken(scopes);
+        StepVerifier.create(createUserWithToken)
+            .assertNext(result -> {
+                assertNotNull(result.getUserToken());
+                assertNotNull(result.getUser());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createUserWithTokenWithResponse(HttpClient httpClient) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        asyncClient = setupAsyncClient(builder, "createUserWithTokenWithResponse");
+        List<CommunicationIdentityTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+
+        // Action & Assert
+        Mono<Response<CommunicationUserIdentifierWithTokenResult>> createUserWithToken = 
+            asyncClient.createUserWithTokenWithResponse(scopes);
+        StepVerifier.create(createUserWithToken)
+            .assertNext(result -> {
+                assertEquals(201, result.getStatusCode());
+                assertNotNull(result.getValue().getUserToken());
+                assertNotNull(result.getValue().getUser());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createUserWithTokenNullScopes(HttpClient httpClient) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        asyncClient = setupAsyncClient(builder, "createUserWithTokenNullScopes");
+
+        // Action & Assert
+        StepVerifier.create(
+            asyncClient.createUserWithToken(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createUserWithTokenWithResponseNullScopes(HttpClient httpClient) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        asyncClient = setupAsyncClient(builder, "createUserWithTokenWithResponseNullScopes");
+
+        // Action & Assert
+        StepVerifier.create(
+            asyncClient.createUserWithTokenWithResponse(null))
+            .verifyError(NullPointerException.class);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUser(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
@@ -172,8 +240,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             asyncClient.createUser()
                 .flatMap((CommunicationUserIdentifier communicationUser) -> {
                     List<CommunicationIdentityTokenScope> scopes = 
-                        new ArrayList<CommunicationIdentityTokenScope>();
-                    scopes.add(CommunicationIdentityTokenScope.CHAT);
+                        new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
                     return asyncClient.issueToken(communicationUser, scopes)
                         .flatMap((CommunicationUserToken communicationUserToken) -> {
                             return asyncClient.revokeTokens(communicationUser);
@@ -194,8 +261,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             asyncClient.createUser()
                 .flatMap((CommunicationUserIdentifier communicationUser) -> {
                     List<CommunicationIdentityTokenScope> scopes = 
-                        new ArrayList<CommunicationIdentityTokenScope>();
-                    scopes.add(CommunicationIdentityTokenScope.CHAT);
+                        new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
                     return asyncClient.issueToken(communicationUser, scopes)
                         .flatMap((CommunicationUserToken communicationUserToken) -> {
                             return asyncClient.revokeTokensWithResponse(communicationUser);
@@ -246,8 +312,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
                     List<CommunicationIdentityTokenScope> scopes = 
-                        new ArrayList<CommunicationIdentityTokenScope>();
-                    scopes.add(CommunicationIdentityTokenScope.CHAT);
+                        new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
                     return asyncClient.issueToken(communicationUser, scopes);
                 }))
             .assertNext(issuedToken -> {
@@ -271,8 +336,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
                     List<CommunicationIdentityTokenScope> scopes = 
-                        new ArrayList<CommunicationIdentityTokenScope>();
-                    scopes.add(CommunicationIdentityTokenScope.CHAT);
+                        new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
                     return asyncClient.issueTokenWithResponse(communicationUser, scopes);
                 }))
             .assertNext(issuedToken -> {
@@ -292,8 +356,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
         asyncClient = setupAsyncClient(builder, "issueTokenWithNullUser");
         List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<CommunicationIdentityTokenScope>();
-        scopes.add(CommunicationIdentityTokenScope.CHAT);
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
 
         // Action & Assert
         StepVerifier.create(
@@ -320,8 +383,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
         asyncClient = setupAsyncClient(builder, "issueTokenWithResponseWithNullUser");
         List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<CommunicationIdentityTokenScope>();
-        scopes.add(CommunicationIdentityTokenScope.CHAT);
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
 
         // Action & Assert
         StepVerifier.create(
@@ -411,8 +473,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
                     List<CommunicationIdentityTokenScope> scopes = 
-                        new ArrayList<CommunicationIdentityTokenScope>();
-                    scopes.add(CommunicationIdentityTokenScope.CHAT);
+                        new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
                     return asyncClient.issueToken(communicationUser, scopes)
                         .flatMap(communicationUserToken -> {
                             return asyncClient.revokeTokens(communicationUser);
@@ -433,8 +494,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
                     List<CommunicationIdentityTokenScope> scopes = 
-                        new ArrayList<CommunicationIdentityTokenScope>();
-                    scopes.add(CommunicationIdentityTokenScope.CHAT);
+                        new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
                     return asyncClient.issueToken(communicationUser, scopes)
                         .flatMap(communicationUserToken -> {
                             return asyncClient.revokeTokensWithResponse(communicationUser);
@@ -458,8 +518,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
                     List<CommunicationIdentityTokenScope> scopes = 
-                        new ArrayList<CommunicationIdentityTokenScope>();
-                    scopes.add(CommunicationIdentityTokenScope.CHAT);
+                        new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
                     return asyncClient.issueToken(communicationUser, scopes);
                 }))
             .assertNext(issuedToken -> {
@@ -483,8 +542,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             asyncClient.createUser()
                 .flatMap(communicationUser -> {
                     List<CommunicationIdentityTokenScope> scopes = 
-                        new ArrayList<CommunicationIdentityTokenScope>();
-                    scopes.add(CommunicationIdentityTokenScope.CHAT);
+                        new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
                     return asyncClient.issueTokenWithResponse(communicationUser, scopes);
                 }))
             .assertNext(issuedToken -> {
@@ -500,9 +558,3 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         return addLoggingPolicy(builder, testName).buildAsyncClient();
     }
 }
-
-
-// TODO: 
-// - Run tests in playback and make sure things passing
-// - Write new tests for new createUserWithToken functions
-// - Record new files for the new tests

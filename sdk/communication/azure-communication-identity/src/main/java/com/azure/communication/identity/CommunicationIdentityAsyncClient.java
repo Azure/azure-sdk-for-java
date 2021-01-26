@@ -96,6 +96,7 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<CommunicationUserIdentifierWithTokenResult> 
         createUserWithToken(List<CommunicationIdentityTokenScope> scopes) {
         try {
+            Objects.requireNonNull(scopes);
             return client.createAsync(new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes))
                 .flatMap(
                     (CommunicationIdentityAccessTokenResult result) -> {
@@ -122,6 +123,7 @@ public final class CommunicationIdentityAsyncClient {
     public Mono<Response<CommunicationUserIdentifierWithTokenResult>> 
         createUserWithTokenWithResponse(List<CommunicationIdentityTokenScope> scopes) {
         try {
+            Objects.requireNonNull(scopes);
             return client.createWithResponseAsync(
                 new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes))
                 .flatMap(

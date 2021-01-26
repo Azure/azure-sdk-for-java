@@ -10,33 +10,33 @@
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
-      "X-Processing-Time" : "21ms",
-      "MS-CV" : "NKEIqO2Ln0+YvHDK+Itceg.0",
+      "X-Processing-Time" : "209ms",
+      "MS-CV" : "8fycEhTsJEOdWMhJHa24KQ.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0314QYAAAAACX0x5xHJZbSoWtdMdB613YWVZSMzBFREdFMDQxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0tIUQYAAAAABFICIyOURLSYihrsOFvr4HWVZSMzBFREdFMDQxNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "201",
-      "Body" : "{\"identity\":{\"id\":\"8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_00000007-dfd4-3e6c-4332-3b3a0d0086af\"}}",
-      "Date" : "Tue, 26 Jan 2021 18:26:39 GMT",
-      "x-ms-client-request-id" : "546c33b8-fbc9-4349-865d-649fbcc6f56c",
+      "Body" : "{\"identity\":{\"id\":\"REDACTED\"}}",
+      "Date" : "Tue, 26 Jan 2021 21:12:19 GMT",
+      "x-ms-client-request-id" : "ed89c14d-bf03-4e02-b39e-9be3ecbafbf9",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.communication.azure.com/identities/8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_00000007-dfd4-3e6c-4332-3b3a0d0086af?api-version=2021-03-07",
+    "Uri" : "https://REDACTED.communication.azure.com/identities/REDACTED?api-version=2021-03-07",
     "Headers" : {
       "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Windows 10; 10.0)"
     },
     "Response" : {
       "Strict-Transport-Security" : "max-age=2592000",
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
-      "X-Processing-Time" : "575ms",
-      "MS-CV" : "MkW5jmPdG0Cu3av41VycbQ.0",
+      "X-Processing-Time" : "343ms",
+      "MS-CV" : "hnuHt/OwrkW/Cm0ArJX9aw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0314QYAAAAADg9JyqoWDGR5kUIk+pXTPxWVZSMzBFREdFMDMxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "X-Azure-Ref" : "0tIUQYAAAAADrjp34DmCBRrcSDdHFf7LJWVZSMzBFREdFMDQwNwA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "StatusCode" : "204",
-      "Date" : "Tue, 26 Jan 2021 18:26:40 GMT",
-      "x-ms-client-request-id" : "368130a7-5d4a-4013-9c6e-559bc4b01526"
+      "Date" : "Tue, 26 Jan 2021 21:12:20 GMT",
+      "x-ms-client-request-id" : "f5cd749d-e583-472d-8620-de8c33c3e484"
     },
     "Exception" : null
   } ],

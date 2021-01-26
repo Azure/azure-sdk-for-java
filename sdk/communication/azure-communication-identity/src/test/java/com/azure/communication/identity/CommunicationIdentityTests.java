@@ -7,10 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.models.CommunicationIdentityTokenScope;
+import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
 import com.azure.communication.identity.models.CommunicationUserToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
@@ -85,6 +87,42 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createUserWithToken(HttpClient httpClient) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        client = setupClient(builder, "createUserWithTokenSync");
+        List<CommunicationIdentityTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+
+        // Action & Assert
+        CommunicationUserIdentifierWithTokenResult result = client.createUserWithToken(scopes);
+        assertNotNull(result.getUser().getId());
+        assertNotNull(result.getUserToken());
+        assertFalse(result.getUser().getId().isEmpty());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void createUserWithTokenWithResponse(HttpClient httpClient) {
+        // Arrange
+        CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
+        client = setupClient(builder, "createUserWithTokenWithResponseSync");
+        List<CommunicationIdentityTokenScope> scopes = 
+            new ArrayList<CommunicationIdentityTokenScope>();
+        scopes.add(CommunicationIdentityTokenScope.CHAT);
+
+        // Action & Assert
+        Response<CommunicationUserIdentifierWithTokenResult> response = 
+            client.createUserWithTokenWithResponse(scopes, Context.NONE);
+        CommunicationUserIdentifierWithTokenResult result = response.getValue();
+        assertEquals(201, response.getStatusCode());
+        assertNotNull(result.getUser().getId());
+        assertNotNull(result.getUserToken());
+        assertFalse(result.getUser().getId().isEmpty());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void deleteUser(HttpClient httpClient) {
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
@@ -118,11 +156,10 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
         List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<CommunicationIdentityTokenScope>();
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        client.issueToken(communicationUser, scopes);
 
         // Action & Assert
-        scopes.add(CommunicationIdentityTokenScope.CHAT);
-        client.issueToken(communicationUser, scopes);
         client.revokeTokens(communicationUser);
     }
 
@@ -134,13 +171,12 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "revokeTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<CommunicationIdentityTokenScope>();
-        scopes.add(CommunicationIdentityTokenScope.CHAT);
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        client.issueToken(communicationUser, scopes);
 
         // Action & Assert
-        client.issueToken(communicationUser, scopes);
         Response<Void> response = client.revokeTokensWithResponse(communicationUser, Context.NONE);
-        assertEquals(204, response.getStatusCode(), "Expect status code to be 204");    
+        assertEquals(204, response.getStatusCode(), "Expect status code to be 204");
     }
 
     @ParameterizedTest
@@ -151,8 +187,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "issueTokenSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<CommunicationIdentityTokenScope>();
-        scopes.add(CommunicationIdentityTokenScope.CHAT);
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
 
         // Action & Assert
         CommunicationUserToken issuedToken = client.issueToken(communicationUser, scopes);
@@ -170,9 +205,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "issueTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<CommunicationIdentityTokenScope>();
-        scopes.add(CommunicationIdentityTokenScope.CHAT);
-
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
 
         // Action & Assert
         Response<CommunicationUserToken> issuedTokenResponse = client.issueTokenWithResponse(communicationUser, scopes, Context.NONE);
@@ -233,9 +266,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
         List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<CommunicationIdentityTokenScope>();
-        scopes.add(CommunicationIdentityTokenScope.CHAT);
-
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
 
         // Action & Assert
         CommunicationUserToken token = client.issueToken(communicationUser, scopes);
@@ -250,8 +281,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "revokeTokenWithResponseUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<CommunicationIdentityTokenScope>();
-        scopes.add(CommunicationIdentityTokenScope.CHAT);
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
         client.issueToken(communicationUser, scopes);
 
         // Action & Assert
@@ -267,8 +297,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "issueTokenUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<CommunicationIdentityTokenScope>();
-        scopes.add(CommunicationIdentityTokenScope.CHAT);
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
 
         // Action & Assert
         CommunicationUserToken issuedToken = client.issueToken(communicationUser, scopes);
@@ -286,8 +315,7 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "issueTokenWithResponseUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<CommunicationIdentityTokenScope>();
-        scopes.add(CommunicationIdentityTokenScope.CHAT);
+            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
 
         // Action & Assert
         Response<CommunicationUserToken> issuedTokenResponse = client.issueTokenWithResponse(communicationUser, scopes, Context.NONE);
