@@ -15,16 +15,16 @@ public final class ClientEncryptionKey extends Resource {
     private EncryptionKeyWrapMetadata encryptionKeyWrapMetadata;
 
     /**
-     * Initialize a user object.
+     * Initialize a ClientEncryptionKey object.
      */
     public ClientEncryptionKey() {
         super();
     }
 
     /**
-     * Initialize a user object from json string.
+     * Initialize a ClientEncryptionKey object from json string.
      *
-     * @param jsonString the json string that represents the database user.
+     * @param jsonString the json string that represents the database clientEncryptionKey.
      */
     public ClientEncryptionKey(String jsonString) {
         super(jsonString);
@@ -75,5 +75,20 @@ public final class ClientEncryptionKey extends Resource {
         this.encryptionKeyWrapMetadata = encryptionKeyWrapMetadata;
         BridgeInternal.setProperty(this, Constants.Properties.KEY_WRAP_METADATA,
             this.encryptionKeyWrapMetadata);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !ClientEncryptionKey.class.isAssignableFrom(obj.getClass())) {
+            return false;
+        }
+
+        ClientEncryptionKey typedObj = (ClientEncryptionKey) obj;
+        return typedObj.getResourceId().equals(this.getResourceId());
+    }
+
+    @Override
+    public int hashCode() {
+        return this.getResourceId().hashCode();
     }
 }
