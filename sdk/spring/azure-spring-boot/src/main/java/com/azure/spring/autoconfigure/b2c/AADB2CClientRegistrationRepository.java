@@ -26,7 +26,6 @@ public class AADB2CClientRegistrationRepository implements ClientRegistrationRep
 
     AADB2CClientRegistrationRepository(List<ClientRegistration> signUpOrSignInRegistrations,
                                        List<ClientRegistration> otherRegistrations) {
-
         this.signUpOrSignInRegistrations = signUpOrSignInRegistrations;
         List<ClientRegistration> allRegistrations = Stream.of(signUpOrSignInRegistrations, otherRegistrations)
                                                           .flatMap(Collection::stream)

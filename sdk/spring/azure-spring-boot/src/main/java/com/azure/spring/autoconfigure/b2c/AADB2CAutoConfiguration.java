@@ -3,8 +3,6 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import com.azure.spring.telemetry.TelemetrySender;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -57,7 +55,6 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 )
 @EnableConfigurationProperties(AADB2CProperties.class)
 public class AADB2CAutoConfiguration {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CAutoConfiguration.class);
 
     private final ClientRegistrationRepository repository;
 
@@ -141,20 +138,6 @@ public class AADB2CAutoConfiguration {
 
         private ClientRegistration b2cClientRegistration(String userFlow) {
             Assert.hasText(userFlow, "User flow should contains text.");
-
-            String clientId = "&&&" + new String(properties.getClientId().getBytes()) + "&&&";
-            char[] chars = clientId.toCharArray();
-            for (char aChar : chars) {
-                LOGGER.error("aChar = " + aChar);
-            }
-
-            LOGGER.error("b2cclientid=" + "4ede2a7c-9914-4a6f-86b4-86c56882bf2b");
-            String clientId_replaceWithaa = clientId.replace("*", "aa");
-            LOGGER.error("b2cClientRegistration, clientId = " + clientId);
-            LOGGER.error("b2cClientRegistration, clientId_replaceWithaa = " + clientId_replaceWithaa);
-
-            LOGGER.error("b2cClientRegistration, properties.getTenant() = " + properties.getTenant());
-            LOGGER.error("b2cClientRegistration, properties.getClientSecret() = " + properties.getClientSecret());
 
             return ClientRegistration.withRegistrationId(userFlow) // Use flow as registration Id.
                 .clientId(properties.getClientId())

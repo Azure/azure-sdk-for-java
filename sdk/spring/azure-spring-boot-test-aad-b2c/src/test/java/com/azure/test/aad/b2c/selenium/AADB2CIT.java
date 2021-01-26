@@ -3,13 +3,15 @@
 
 package com.azure.test.aad.b2c.selenium;
 
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
+import static com.azure.test.aad.b2c.selenium.AADB2CSeleniumITHelper.createDefaultProperteis;
+
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -21,16 +23,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_ID;
-import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_SECRET;
-import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
-import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_REPLY_URL;
-import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
-import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_TENANT;
-import static com.azure.test.aad.b2c.selenium.AADB2CSeleniumITHelper.createDefaultProperteis;
-
 public class AADB2CIT {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CIT.class);
 
     private final String JOB_TITLE_A_WORKER = "a worker";
     private final String JOB_TITLE_WORKER = "worker";
@@ -38,20 +31,6 @@ public class AADB2CIT {
 
     @Before
     public void initAndSignIn() {
-        String aad_b2c_tenant = AAD_B2C_TENANT;
-        String aad_b2c_client_id =     AAD_B2C_CLIENT_ID;
-        String aad_b2c_client_secret  = AAD_B2C_CLIENT_SECRET;
-        String aad_b2c_reply_url = AAD_B2C_REPLY_URL;
-        String aad_b2c_profile_edit = AAD_B2C_PROFILE_EDIT;
-        String aad_b2c_sign_up_or_sign_in = AAD_B2C_SIGN_UP_OR_SIGN_IN;
-
-        LOGGER.error("aad_b2c_tenant = " + aad_b2c_tenant);
-        LOGGER.error("aad_b2c_client_id = " + aad_b2c_client_id);
-        LOGGER.error("aad_b2c_client_secret = " + aad_b2c_client_secret);
-        LOGGER.error("aad_b2c_reply_url = " + aad_b2c_reply_url);
-        LOGGER.error("aad_b2c_profile_edit = " + aad_b2c_profile_edit);
-        LOGGER.error("aad_b2c_sign_up_or_sign_in = " + aad_b2c_sign_up_or_sign_in);
-
         aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, createDefaultProperteis());
         aadB2CSeleniumITHelper.logIn();
     }
