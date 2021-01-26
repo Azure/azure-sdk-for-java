@@ -6,10 +6,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>com.azure.spring</groupId>
-    <artifactId>azure-spring-boot-test-parent</artifactId>
-    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-parent;current} -->
-    <relativePath>../azure-spring-boot-test-parent</relativePath>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.3.7.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
+    <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
   <artifactId>azure-spring-boot-test-core</artifactId>
