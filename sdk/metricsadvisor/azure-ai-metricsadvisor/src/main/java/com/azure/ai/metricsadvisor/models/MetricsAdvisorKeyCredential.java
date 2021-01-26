@@ -8,7 +8,7 @@ package com.azure.ai.metricsadvisor.models;
  */
 public final class MetricsAdvisorKeyCredential {
     private final String subscriptionKey;
-    private final String apiKey;
+    private volatile String apiKey;
 
     /**
      * Creates a MetricsAdvisorKeyCredential credential that authorizes request with the given keys.
@@ -37,5 +37,16 @@ public final class MetricsAdvisorKeyCredential {
      */
     public String getApiKey() {
         return this.apiKey;
+    }
+
+    /**
+     * Rotates the api key associated to this credential.
+     *
+     * @param apiKey The new api key to associated with this credential.
+     * @return The updated {@code MetricsAdvisorKeyCredential} object.
+     */
+    public MetricsAdvisorKeyCredential updateApiKey(String apiKey) {
+        this.apiKey = apiKey;
+        return this;
     }
 }
