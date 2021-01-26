@@ -7,9 +7,12 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -22,6 +25,7 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.CloudEventTracingPipelinePolicy;
 
@@ -58,6 +62,8 @@ public final class EventGridPublisherClientBuilder {
     private final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
     private ClientOptions clientOptions;
+
+    private ObjectSerializer eventDataSerializer;
 
     private Configuration configuration;
 
@@ -109,7 +115,8 @@ public final class EventGridPublisherClientBuilder {
             serviceVersion;
 
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient(httpPipeline, hostname, buildServiceVersion);
+            return new EventGridPublisherAsyncClient(httpPipeline, hostname, buildServiceVersion, clientOptions,
+                eventDataSerializer);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -119,7 +126,10 @@ public final class EventGridPublisherClientBuilder {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
 
-        httpPipelinePolicies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
+        String applicationId =
+            clientOptions == null ? httpLogOptions.getApplicationId() : clientOptions.getApplicationId();
+
+        httpPipelinePolicies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
             buildConfiguration));
         httpPipelinePolicies.add(new RequestIdPolicy());
 
@@ -140,6 +150,13 @@ public final class EventGridPublisherClientBuilder {
 
         httpPipelinePolicies.addAll(policies);
 
+        if (clientOptions != null) {
+            List<HttpHeader> httpHeaderList = new ArrayList<>();
+            clientOptions.getHeaders().forEach(header ->
+                httpHeaderList.add(new HttpHeader(header.getName(), header.getValue())));
+            policies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaderList)));
+        }
+
         HttpPolicyProviders.addAfterRetryPolicies(httpPipelinePolicies);
 
         if (TracerProxy.isTracingEnabled()) {
@@ -153,7 +170,8 @@ public final class EventGridPublisherClientBuilder {
             .build();
 
 
-        return new EventGridPublisherAsyncClient(buildPipeline, hostname, buildServiceVersion);
+        return new EventGridPublisherAsyncClient(buildPipeline, hostname, buildServiceVersion, clientOptions,
+            eventDataSerializer);
     }
 
     /**
@@ -270,6 +288,16 @@ public final class EventGridPublisherClientBuilder {
      */
     public EventGridPublisherClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         this.httpLogOptions = httpLogOptions;
+        return this;
+    }
+
+    /**
+     * Set the serializer that will serialize the data part of the events when the events are sent to the service.
+     * @param eventDataSerializer The data serializer.
+     * @return the builder itself.
+     */
+    public EventGridPublisherClientBuilder eventDataSerializer(ObjectSerializer eventDataSerializer) {
+        this.eventDataSerializer = eventDataSerializer;
         return this;
     }
 

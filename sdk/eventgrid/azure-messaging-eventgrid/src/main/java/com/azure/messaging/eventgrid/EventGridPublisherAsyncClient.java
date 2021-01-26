@@ -8,14 +8,18 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.Constants;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImpl;
 import com.azure.messaging.eventgrid.implementation.EventGridPublisherClientImplBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.io.ByteArrayOutputStream;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -39,8 +43,13 @@ public final class EventGridPublisherAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(EventGridPublisherAsyncClient.class);
 
+    private final ObjectSerializer eventDataSerializer;
 
-    EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, EventGridServiceVersion serviceVersion) {
+    private final ClientOptions clientOptions;
+
+
+    EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, EventGridServiceVersion serviceVersion,
+        ClientOptions clientOptions, ObjectSerializer eventDataSerializer) {
         this.impl = new EventGridPublisherClientImplBuilder()
             .pipeline(pipeline)
             .buildClient();
@@ -50,6 +59,8 @@ public final class EventGridPublisherAsyncClient {
         this.serviceVersion = serviceVersion;
 
         this.hostname = hostname;
+        this.clientOptions = clientOptions;
+        this.eventDataSerializer = eventDataSerializer;
     }
 
     /**
@@ -77,7 +88,16 @@ public final class EventGridPublisherAsyncClient {
     Mono<Void> sendEvents(Iterable<EventGridEvent> events, Context context) {
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
-            .map(EventGridEvent::toImpl)
+            .map(event -> {
+                com.azure.messaging.eventgrid.implementation.models.EventGridEvent internalEvent = event.toImpl();
+                if (this.eventDataSerializer != null && internalEvent.getData() != null) {
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    eventDataSerializer.serialize(bos, event.getData());
+                    byte[] data = bos.toByteArray();
+                    internalEvent.setData(data);
+                }
+                return internalEvent;
+            })
             .collectList()
             .flatMap(list -> this.impl.publishEventsAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
@@ -101,7 +121,15 @@ public final class EventGridPublisherAsyncClient {
         final Context finalContext = context != null ? context : Context.NONE;
         this.addCloudEventTracePlaceHolder(events);
         return Flux.fromIterable(events)
-            .map(CloudEvent::toImpl)
+            .map(event -> {
+                com.azure.messaging.eventgrid.implementation.models.CloudEvent internalEvent = event.toImpl();
+                if (this.eventDataSerializer != null && internalEvent.getData() != null) {
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    eventDataSerializer.serialize(bos, event.getData());
+                    internalEvent.setData(bos.toByteArray());
+                }
+                return internalEvent;
+            })
             .collectList()
             .flatMap(list -> this.impl.publishCloudEventEventsAsync(this.hostname, list,
                 finalContext.addData(AZ_TRACING_NAMESPACE_KEY, Constants.EVENT_GRID_TRACING_NAMESPACE_VALUE)));
