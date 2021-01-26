@@ -110,7 +110,7 @@ com.azure.spring:azure-spring-cloud-feature-management;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-cloud-starter-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-identity-spring;1.1.0;1.2.0-beta.1
 com.azure.spring:azure-spring-boot-starter-active-directory-b2c;3.0.0;3.1.0
-com.azure.spring:azure-spring-boot-starter-active-directory;3.0.0;3.1.0
+com.azure.spring:azure-spring-boot-starter-active-directory;3.1.0;3.2.0-beta.1
 com.azure.spring:azure-spring-boot-starter-cosmos;3.0.0;3.1.0
 com.azure.spring:azure-spring-boot-starter-keyvault-certificates;3.0.0-beta.2;3.0.0-beta.3
 com.azure.spring:azure-spring-boot-starter-keyvault-secrets;3.0.0;3.1.0
