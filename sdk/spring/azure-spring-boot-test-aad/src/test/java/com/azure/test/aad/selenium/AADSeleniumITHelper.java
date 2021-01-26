@@ -1,7 +1,6 @@
 package com.azure.test.aad.selenium;
 
 import com.azure.test.aad.common.SeleniumITHelper;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -24,7 +23,8 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
 
     private String username;
     private String password;
-
+    private String[] clientIdArray = { AAD_MULTI_TENANT_CLIENT_ID, AAD_SINGLE_TENANT_CLIENT_ID,
+        AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE, AAD_B2C_CLIENT_ID };
     public static Map<String, String> createDefaultProperties() {
         Map<String, String> defaultProperties = new HashMap<>();
         defaultProperties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
@@ -67,9 +67,7 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         Assert.assertEquals(username, id);
     }
 
-    public String[] getClientIds() {
-        String[] clientIdArray = { AAD_MULTI_TENANT_CLIENT_ID, AAD_SINGLE_TENANT_CLIENT_ID,
-            AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE, AAD_B2C_CLIENT_ID };
+    public String[] getClientIdArray() {
         return clientIdArray;
     }
 

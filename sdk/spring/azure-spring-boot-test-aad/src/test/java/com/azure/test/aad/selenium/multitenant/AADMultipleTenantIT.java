@@ -13,6 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.web.context.SaveContextOnUpdateOrErrorResponseWrapper;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +21,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_2;
@@ -35,13 +37,14 @@ public class AADMultipleTenantIT {
         properties.put("azure.activedirectory.client-id", AAD_MULTI_TENANT_CLIENT_ID);
         properties.put("azure.activedirectory.client-secret", AAD_MULTI_TENANT_CLIENT_SECRET);
 
-        String[] clientIdStringArray = aadSeleniumITHelper.getClientIds();
-        for (String clientId : clientIdStringArray) {
-            LOGGER.info(clientId);
-        }
-        
+
         aadSeleniumITHelper = new AADSeleniumITHelper(DumbApp.class, properties,
             AAD_USER_NAME_2, AAD_USER_PASSWORD_2);
+        String[] clientIdStringArray = aadSeleniumITHelper.getClientIdArray();
+        for (String clientId : clientIdStringArray) {
+            LOGGER.info(clientId);
+            System.out.println(clientId);
+        }
         aadSeleniumITHelper.logIn();
 
         String httpResponse = aadSeleniumITHelper.httpGet("api/home");
