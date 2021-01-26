@@ -7,6 +7,8 @@ import com.azure.core.util.logging.ClientLogger;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -34,8 +36,8 @@ public final class EventGridSasGenerator {
 
     /**
      * Generate a shared access signature to provide time-limited authentication for requests to the Event Grid
-     * service.
-     * @param endpoint       the endpoint of the Event Grid topic or domain.
+     * service with the latest Event Grid service API defined in {@link EventGridServiceVersion#getLatest()}.
+     * @param endpoint the endpoint of the Event Grid topic or domain.
      * @param expirationTime the time in which the signature should expire, no longer providing authentication.
      * @param keyCredential  the access key obtained from the Event Grid topic or domain.
      *
@@ -43,12 +45,28 @@ public final class EventGridSasGenerator {
      * {@link AzureSasCredential}.
      */
     public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
+        return generateSas(endpoint, EventGridServiceVersion.getLatest(), keyCredential, expirationTime);
+    }
+
+    /**
+     * Generate a shared access signature to provide time-limited authentication for requests to the Event Grid
+     * service.
+     * @param endpoint the endpoint of the Event Grid topic or domain.
+     * @param apiVersion the EventGrid service api version defined in {@link EventGridServiceVersion}
+     * @param expirationTime the time in which the signature should expire, no longer providing authentication.
+     * @param keyCredential  the access key obtained from the Event Grid topic or domain.
+     *
+     * @return the shared access signature string which can be used to construct an instance of
+     * {@link AzureSasCredential}.
+     */
+    public static String generateSas(String endpoint, EventGridServiceVersion apiVersion, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
         try {
             String resKey = "r";
             String expKey = "e";
             String signKey = "s";
 
             Charset charset = StandardCharsets.UTF_8;
+            endpoint = endpoint + "?api-version=" + apiVersion.getVersion();
             String encodedResource = URLEncoder.encode(endpoint, charset.name());
             String encodedExpiration = URLEncoder.encode(expirationTime.atZoneSameInstant(ZoneOffset.UTC).format(
                 DateTimeFormatter.ofPattern("M/d/yyyy h:m:s a")),
