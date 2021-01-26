@@ -12,7 +12,6 @@ import java.util.Map;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_MULTI_TENANT_CLIENT_ID;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID;
-import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE;
 import static com.azure.spring.test.EnvironmentVariable.AAD_SINGLE_TENANT_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_TENANT_ID_1;
 import static com.azure.spring.test.EnvironmentVariable.AAD_USER_NAME_1;
@@ -23,8 +22,8 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
 
     private String username;
     private String password;
-    private String[] clientIdArray = { AAD_MULTI_TENANT_CLIENT_ID, AAD_SINGLE_TENANT_CLIENT_ID,
-        AAD_SINGLE_TENANT_CLIENT_ID_WITH_ROLE, AAD_B2C_CLIENT_ID };
+    private String multiClientIdArray = AAD_MULTI_TENANT_CLIENT_ID;
+    private String b2cClientIdArray = AAD_B2C_CLIENT_ID;
     public static Map<String, String> createDefaultProperties() {
         Map<String, String> defaultProperties = new HashMap<>();
         defaultProperties.put("azure.activedirectory.tenant-id", AAD_TENANT_ID_1);
@@ -67,8 +66,11 @@ public class AADSeleniumITHelper extends SeleniumITHelper {
         Assert.assertEquals(username, id);
     }
 
-    public String[] getClientIdArray() {
-        return clientIdArray;
+    public String getMultiClientIdArray() {
+        return multiClientIdArray;
     }
 
+    public String getB2cClientIdArray() {
+        return b2cClientIdArray;
+    }
 }

@@ -103,7 +103,7 @@ jobs:
               AAD_TENANT_ID_2: $(java-spring-aad-tenant-id-2)
               AAD_USER_NAME_2: $(java-spring-aad-user-name-2)
               AAD_USER_PASSWORD_2: $(java-spring-aad-user-password-2)
-              AAD_MULTI_TENANT_CLIENT_ID: $(java-spring-aad-multi-tenant-client-id)
+              AAD_MULTI_TENANT_CLIENT_ID: "e471ee4a-5475-41cc-8db7-3c9a0445fac5"
               AAD_MULTI_TENANT_CLIENT_SECRET: $(java-spring-aad-multi-tenant-client-secret)
               AAD_SINGLE_TENANT_CLIENT_ID: $(java-spring-aad-single-tenant-id)
               AAD_SINGLE_TENANT_CLIENT_SECRET: $(java-spring-aad-single-tenant-secret)
