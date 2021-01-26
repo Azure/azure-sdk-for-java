@@ -13,8 +13,7 @@ import java.util.Map;
 
 /** Job details. */
 @Fluent
-public final class JobDetails  {
-
+public final class JobDetails {
     /*
      * The job id.
      */
