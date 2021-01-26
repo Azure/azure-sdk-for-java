@@ -11,7 +11,6 @@ package com.microsoft.azure.management.loganalytics.v2020_03_01_preview.implemen
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.loganalytics.v2020_03_01_preview.Gateways;
-import rx.Completable;
 
 class GatewaysImpl extends WrapperImpl<GatewaysInner> implements Gateways {
     private final LogAnalyticsManager manager;
@@ -25,8 +24,4 @@ class GatewaysImpl extends WrapperImpl<GatewaysInner> implements Gateways {
         return this.manager;
     }
 
-    @Override
-    public Completable deleteAsync(String resourceGroupName, String workspaceName, String gatewayId) {
-        return this.inner().deleteAsync(resourceGroupName, workspaceName, gatewayId).toCompletable();
-    }
 }
