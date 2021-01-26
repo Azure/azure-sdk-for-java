@@ -1,0 +1,44 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/identities?api-version=2021-03-07",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
+      "X-Processing-Time" : "206ms",
+      "MS-CV" : "gR4oFdzhXUG44AQiDNUjOg.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "02V4QYAAAAADyv7u0dyQwTpJ1fK8zyuu1WVZSMzBFREdFMDMxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "201",
+      "Body" : "{\"identity\":{\"id\":\"8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_00000007-dfd4-25c2-63a7-1d3a0d000c39\"}}",
+      "Date" : "Tue, 26 Jan 2021 18:26:33 GMT",
+      "x-ms-client-request-id" : "035a58c2-18ef-47b1-b7cb-23925a72ece7",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.communication.azure.com/identities/8:acs:ac80d96a-85de-48b1-995d-a3a3fa3627c8_00000007-dfd4-25c2-63a7-1d3a0d000c39?api-version=2021-03-07",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-UnknownName/UnknownVersion (11.0.8; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
+      "X-Processing-Time" : "474ms",
+      "MS-CV" : "933udaEK2kavfKOzlULLCQ.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "02V4QYAAAAABSxASGYkHfR6X6umFBNwqLWVZSMzBFREdFMDQxMAA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "StatusCode" : "204",
+      "Date" : "Tue, 26 Jan 2021 18:26:33 GMT",
+      "x-ms-client-request-id" : "8d5a71b5-cf1b-4d1f-98cf-8367e5429809"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

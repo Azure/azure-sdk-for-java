@@ -7,6 +7,9 @@ import java.util.List;
 
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityImpl;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
 import com.azure.communication.identity.models.CommunicationIdentityTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
 import com.azure.communication.identity.models.CommunicationUserToken;
@@ -15,6 +18,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 
@@ -38,7 +42,8 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationUserIdentifier createUser() {
-        return null;
+        CommunicationIdentityAccessTokenResult result = client.create(new CommunicationIdentityCreateRequest());
+        return new CommunicationUserIdentifier(result.getIdentity().getId());
     }
 
     /**
@@ -49,7 +54,13 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserIdentifier> createUserWithResponse(Context context) {
-        return null;
+        Response<CommunicationIdentityAccessTokenResult> response = 
+            client.createWithResponse(new CommunicationIdentityCreateRequest(), context);
+        String id = response.getValue().getIdentity().getId();
+        
+        return new SimpleResponse<CommunicationUserIdentifier>(
+            response,
+            new CommunicationUserIdentifier(id));
     }
 
     /**
@@ -60,8 +71,13 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationUserIdentifierWithTokenResult createUserWithToken(
-            List<CommunicationIdentityTokenScope> scopes) {
-        return null;
+        List<CommunicationIdentityTokenScope> scopes) {
+        CommunicationIdentityAccessTokenResult result = client.create(
+            new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes));
+        CommunicationUserIdentifier user = 
+            new CommunicationUserIdentifier(result.getIdentity().getId());
+        
+        return new CommunicationUserIdentifierWithTokenResult(user, result.getAccessToken());
     }
 
     /**
@@ -73,8 +89,16 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserIdentifierWithTokenResult> createUserWithTokenWithResponse(
-            List<CommunicationIdentityTokenScope> scopes, Context context) {
-        return null;
+        List<CommunicationIdentityTokenScope> scopes, Context context) {
+        Response<CommunicationIdentityAccessTokenResult> response = 
+            client.createWithResponse(new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes), context);
+        String id = response.getValue().getIdentity().getId();
+    
+        return new SimpleResponse<CommunicationUserIdentifierWithTokenResult>(
+            response,
+            new CommunicationUserIdentifierWithTokenResult(
+                new CommunicationUserIdentifier(id),
+                response.getValue().getAccessToken()));
     }
 
     /**
@@ -84,8 +108,8 @@ public final class CommunicationIdentityClient {
      * @param communicationUser The user to be deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteUser(CommunicationUserIdentifier communicationUser) {
-        return;
+    public Void deleteUser(CommunicationUserIdentifier communicationUser) {
+        return client.deleteAsync(communicationUser.getId()).block();
     }
 
     /**
@@ -98,7 +122,7 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteUserWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
-        return null;
+        return client.deleteWithResponse(communicationUser.getId(), context);
     }
 
     /**
@@ -107,8 +131,8 @@ public final class CommunicationIdentityClient {
      * @param communicationUser The user to be revoked token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void revokeTokens(CommunicationUserIdentifier communicationUser) {
-        return;
+    public Void revokeTokens(CommunicationUserIdentifier communicationUser) {
+        return client.revokeAccessTokensAsync(communicationUser.getId()).block();
     }
 
     /**
@@ -121,7 +145,7 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
-        return null;
+        return client.revokeAccessTokensWithResponse(communicationUser.getId(), context);
     }
 
     /**
@@ -133,8 +157,10 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationUserToken issueToken(CommunicationUserIdentifier communicationUser,
-            List<CommunicationIdentityTokenScope> scopes) {
-        return null;
+        List<CommunicationIdentityTokenScope> scopes) {
+        return client.issueAccessToken(
+            communicationUser.getId(),
+            new CommunicationIdentityAccessTokenRequest().setScopes(scopes));
     }
 
     /**
@@ -149,6 +175,9 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserToken> issueTokenWithResponse(CommunicationUserIdentifier communicationUser,
             List<CommunicationIdentityTokenScope> scopes, Context context) {
-        return null;
+          return client.issueAccessTokenWithResponse(
+            communicationUser.getId(),
+            new CommunicationIdentityAccessTokenRequest().setScopes(scopes),
+            context);
     }
 }
