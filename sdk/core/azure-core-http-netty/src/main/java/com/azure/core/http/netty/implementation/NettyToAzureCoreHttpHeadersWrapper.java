@@ -39,32 +39,43 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
     @Override
     public HttpHeaders set(String name, String value) {
-//        if (name == null) {
-//            return this;
-//        }
-//
-//        if (value == null) {
-//            remove(name);
-//        } else {
-//            nettyHeaders.set(name, value);
-//        }
-//        return this;
-        throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
+        if (name == null) {
+            return this;
+        }
+
+        if (value == null) {
+            remove(name);
+        } else {
+            nettyHeaders.set(name, value);
+        }
+        return this;
     }
 
     @Override
     public HttpHeaders set(String name, List<String> values) {
-//        if (name == null) {
-//            return this;
-//        }
-//
-//        if (values == null) {
-//            remove(name);
-//        } else {
-//            nettyHeaders.set(name, values);
-//        }
-//        return this;
-        throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
+        if (name == null) {
+            return this;
+        }
+
+        if (values == null) {
+            remove(name);
+        } else {
+            nettyHeaders.set(name, values);
+        }
+        return this;
+    }
+
+    HttpHeaders add(String name, String value) {
+        if (name == null) {
+            return this;
+        }
+
+        if (value == null) {
+            remove(name);
+        } else {
+            nettyHeaders.add(name, value);
+        }
+        return this;
     }
 
     @Override
@@ -75,17 +86,16 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
             // We call 'getAll' instead, but unfortunately there is a representation mismatch:
             // Netty HttpHeaders uses List<String>, whereas azure-core HttpHeaders joins it all into a
             // comma-separated String.
-            return new HttpHeader(name, nettyHeaders.getAll(name));
+            return new NettyHttpHeader(this, name, nettyHeaders.getAll(name));
         }
         return null;
     }
 
     @Override
     public HttpHeader remove(String name) {
-//        HttpHeader header = get(name);
-//        nettyHeaders.remove(name);
-//        return header;
-        throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
+        HttpHeader header = get(name);
+        nettyHeaders.remove(name);
+        return header;
     }
 
     @Override
@@ -183,30 +193,26 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     @Override
     public Stream<HttpHeader> stream() {
         return StreamSupport.stream(nettyHeaders.spliterator(), false)
-                   .map(e -> new HttpHeader(e.getKey(), e.getValue()));
+                   .map(e -> new NettyHttpHeader(this, e.getKey(), e.getValue()));
     }
 
-//    static class NettyHttpHeader extends HttpHeader {
-//        private final NettyToAzureCoreHttpHeadersWrapper allHeaders;
-//
-//        NettyHttpHeader(NettyToAzureCoreHttpHeadersWrapper allHeaders, String name, String value) {
-//            super(name, value);
-//            this.allHeaders = allHeaders;
-//        }
-//
-//        NettyHttpHeader(NettyToAzureCoreHttpHeadersWrapper allHeaders, Map.Entry<String, String> entry) {
-//            this(allHeaders, entry.getKey(), entry.getValue());
-//        }
-//
-//        NettyHttpHeader(NettyToAzureCoreHttpHeadersWrapper allHeaders, String name, List<String> values) {
-//            super(name, values);
-//            this.allHeaders = allHeaders;
-//        }
-//
-//        @Override
-//        public void addValue(String value) {
-//            super.addValue(value);
-//            allHeaders.add(getName(), value);
-//        }
-//    }
+    static class NettyHttpHeader extends HttpHeader {
+        private final NettyToAzureCoreHttpHeadersWrapper allHeaders;
+
+        NettyHttpHeader(NettyToAzureCoreHttpHeadersWrapper allHeaders, String name, String value) {
+            super(name, value);
+            this.allHeaders = allHeaders;
+        }
+
+        NettyHttpHeader(NettyToAzureCoreHttpHeadersWrapper allHeaders, String name, List<String> values) {
+            super(name, values);
+            this.allHeaders = allHeaders;
+        }
+
+        @Override
+        public void addValue(String value) {
+            super.addValue(value);
+            allHeaders.add(getName(), value);
+        }
+    }
 }
