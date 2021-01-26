@@ -21,6 +21,7 @@ import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Hooks;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
@@ -37,6 +38,7 @@ public class QuorumReaderTest {
     private final Configs configs;
 
     public QuorumReaderTest() {
+        Hooks.onOperatorDebug();
         configs = new Configs();
     }
 
