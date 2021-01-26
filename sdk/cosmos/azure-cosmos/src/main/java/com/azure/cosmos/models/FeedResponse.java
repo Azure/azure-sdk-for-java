@@ -12,6 +12,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.QueryMetricsConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.query.QueryInfo;
 
@@ -36,7 +37,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     final boolean nochanges;
     private final ConcurrentMap<String, QueryMetrics> queryMetricsMap;
     private final static String defaultPartition = "0";
-    private CosmosDiagnostics cosmosDiagnostics;
+    private final CosmosDiagnostics cosmosDiagnostics;
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
 
@@ -44,6 +45,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this(results, headers, false, false, new ConcurrentHashMap<>());
     }
 
+    // TODO: probably have to add two booleans
     FeedResponse(List<T> results, RxDocumentServiceResponse response) {
         this(results, response.getResponseHeaders(), false, false, new ConcurrentHashMap<>());
         this.cosmosDiagnostics =response.getCosmosDiagnostics();
@@ -52,8 +54,14 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         }
     }
 
-    FeedResponse(List<T> results, Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-        this(results, headers, false, false, queryMetricsMap);
+    FeedResponse(
+        List<T> results,
+        Map<String, String> headers,
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+        boolean useEtagAsContinuation,
+        boolean isNoChanges) {
+
+        this(results, headers, useEtagAsContinuation, isNoChanges, queryMetricsMap);
     }
 
     FeedResponse(List<T> results, Map<String, String> header, boolean nochanges) {
@@ -63,12 +71,11 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     // TODO: need to more sure the query metrics can round trip just from the headers.
     // We can then remove it as a parameter.
     private FeedResponse(
-                List<T> results,
-                Map<String, String> header,
-                boolean useEtagAsContinuation,
-                boolean nochanges,
-                ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
-
+        List<T> results,
+        Map<String, String> header,
+        boolean useEtagAsContinuation,
+        boolean nochanges,
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         this.results = results;
         this.header = header;
         this.usageHeaders = new HashMap<>();
@@ -295,6 +302,27 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
                                 ? HttpConstants.HttpHeaders.E_TAG
                                 : HttpConstants.HttpHeaders.CONTINUATION;
         return getValueOrNull(header, headerName);
+    }
+
+    /**
+     * Sets the continuation token to be used for continuing the enumeration.
+     *
+     * @param continuationToken updates the continuation token header of the response
+     */
+    void setContinuationToken(String continuationToken) {
+        String headerName = useEtagAsContinuation
+            ? HttpConstants.HttpHeaders.E_TAG
+            : HttpConstants.HttpHeaders.CONTINUATION;
+
+        if (!Strings.isNullOrWhiteSpace(continuationToken)) {
+            this.header.put(headerName, continuationToken);
+        } else {
+            this.header.remove(headerName);
+        }
+    }
+
+    boolean getNoChanges() {
+        return this.nochanges;
     }
 
     /**

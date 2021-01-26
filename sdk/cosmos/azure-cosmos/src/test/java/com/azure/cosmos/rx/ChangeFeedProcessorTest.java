@@ -508,7 +508,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsAfterSplit() throws InterruptedException {
-        CosmosAsyncContainer createdFeedCollectionForSplit = createLeaseCollection(FEED_COLLECTION_THROUGHPUT_FOR_SPLIT);
+        CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT_FOR_SPLIT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
 
         try {
@@ -567,7 +567,7 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             AsyncDocumentClient contextClient = getContextClient(createdDatabase);
             Flux.just(1).subscribeOn(Schedulers.elastic())
                 .flatMap(value -> {
-                    log.warn("Reading current hroughput change.");
+                    log.warn("Reading current throughput change.");
                     return contextClient.readPartitionKeyRanges(partitionKeyRangesPath, null);
                 })
                 .map(partitionKeyRangeFeedResponse -> {
@@ -600,6 +600,9 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
             waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT * 2);
 
             changeFeedProcessor.stop().subscribeOn(Schedulers.elastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+            int leaseCount = changeFeedProcessor.getCurrentState() .map(List::size).block();
+            assertThat(leaseCount > 1).as("Found %d leases", leaseCount).isTrue();
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();

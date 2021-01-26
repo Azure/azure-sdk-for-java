@@ -3,6 +3,9 @@
 
 package com.azure.storage.queue
 
+import com.azure.core.credential.AzureSasCredential
+import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.test.TestMode
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
@@ -351,5 +354,96 @@ class QueueSASTests extends APISpec {
 
         then:
         notThrown(Exception)
+    }
+
+    def "can use sas to authenticate"() {
+        setup:
+        def service = new AccountSasService()
+            .setQueueAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+        def expiryTime = getUTCNow().plusDays(1)
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+        def sas = primaryQueueServiceClient.generateAccountSas(sasValues)
+        HttpPipelinePolicy recordPolicy = { context, next -> return next.process() }
+        if (testMode == TestMode.RECORD) {
+            recordPolicy = interceptorManager.getRecordPolicy()
+        }
+
+        queueClient.create()
+
+        when:
+        new QueueClientBuilder()
+            .endpoint(queueClient.getQueueUrl())
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new QueueClientBuilder()
+            .endpoint(queueClient.getQueueUrl())
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new QueueClientBuilder()
+            .endpoint(queueClient.getQueueUrl() + "?" + sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new QueueServiceClientBuilder()
+            .endpoint(queueClient.getQueueUrl())
+            .sasToken(sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new QueueServiceClientBuilder()
+            .endpoint(queueClient.getQueueUrl())
+            .credential(new AzureSasCredential(sas))
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
+
+        when:
+        new QueueServiceClientBuilder()
+            .endpoint(queueClient.getQueueUrl() + "?" + sas)
+            .addPolicy(recordPolicy)
+            .httpClient(getHttpClient())
+            .buildClient()
+            .getProperties()
+
+        then:
+        noExceptionThrown()
     }
 }

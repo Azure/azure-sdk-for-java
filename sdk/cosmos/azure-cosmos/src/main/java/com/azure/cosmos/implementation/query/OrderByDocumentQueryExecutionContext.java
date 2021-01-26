@@ -235,9 +235,14 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             List<PartitionKeyRange> partitionKeyRanges,
             List<SortOrder> sortOrders,
             Collection<String> orderByExpressions) {
+
+        ValueHolder<Map<String, OrderByContinuationToken>> valueHolder = new ValueHolder<>();
+        valueHolder.v = this.targetRangeToOrderByContinuationTokenMap;
         // Find the partition key range we left off on
         int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
-                orderByContinuationToken.getCompositeContinuationToken().getRange());
+                                                                          orderByContinuationToken.getCompositeContinuationToken().getRange(),
+                                                                          valueHolder,
+                                                                          orderByContinuationToken);
 
         // Get the filters.
         FormattedFilterInfo formattedFilterInfo = this.getFormattedFilters(orderByExpressions,
@@ -424,7 +429,10 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
             return BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page), page.getCosmosDiagnostics());
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                false,
+                false,
+                page.getCosmosDiagnostics());
         }
 
         @Override
@@ -501,23 +509,24 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                             unwrappedResults.add(orderByRowResult.getPayload());
                         }
 
-                    FeedResponse<T> feedResponse =
-                        BridgeInternal.createFeedResponseWithQueryMetrics(unwrappedResults,
-                                                              feedOfOrderByRowResults.getResponseHeaders(),
-                                                              BridgeInternal.queryMetricsFromFeedResponse(feedOfOrderByRowResults),
-                                                              ModelBridgeInternal.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults),
-                                                                                  feedOfOrderByRowResults.getCosmosDiagnostics());
+                    FeedResponse<T> feedResponse = BridgeInternal.createFeedResponseWithQueryMetrics(unwrappedResults,
+                        feedOfOrderByRowResults.getResponseHeaders(),
+                        BridgeInternal.queryMetricsFromFeedResponse(feedOfOrderByRowResults),
+                        ModelBridgeInternal.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults),
+                        false,
+                        false);
                     BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(),
                                                                   clientSideRequestStatisticsList);
                     return feedResponse;
-
                 }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
-                    FeedResponse<T> frp = BridgeInternal
-                                              .createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
-                                                headerResponse(tracker.getAndResetCharge()), queryMetricMap, null,
-                                                                                  null);
-                    ;
+                    FeedResponse<T> frp =  Flux.just(BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
+                                headerResponse(
+                                    tracker.getAndResetCharge()),
+                            queryMetricMap,
+                            null,
+                            false,
+                            false));
                     BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(),
                                                                   clientSideRequestStatisticsList);
                     return Flux.just(frp);

@@ -790,6 +790,11 @@
     <Bug pattern="BC_UNCONFIRMED_CAST, DM_EXIT, RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
 
+  <Match>
+    <Package name="com.azure.sdk.template.perf"/>
+    <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT"/>
+  </Match>
+
   <!-- StringUtils.strip can return NULL so the NULL check is required -->
   <Match>
     <Class name="com.azure.cosmos.implementation.PathsHelper"/>

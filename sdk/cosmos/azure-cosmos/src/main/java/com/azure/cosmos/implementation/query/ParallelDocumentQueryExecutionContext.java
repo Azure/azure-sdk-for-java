@@ -43,7 +43,8 @@ import java.util.stream.Collectors;
  */
 public class ParallelDocumentQueryExecutionContext<T extends Resource>
         extends ParallelDocumentQueryExecutionContextBase<T> {
-    private CosmosQueryRequestOptions cosmosQueryRequestOptions;
+    private final CosmosQueryRequestOptions cosmosQueryRequestOptions;
+    private final Map<PartitionKeyRange, String> partitionKeyRangeToContinuationTokenMap;
 
     private ParallelDocumentQueryExecutionContext(
             DiagnosticsClientContext diagnosticsClientContext,
@@ -62,6 +63,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
         super(diagnosticsClientContext, client, partitionKeyRanges, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink,
                 rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
+        partitionKeyRangeToContinuationTokenMap = new HashMap<>();
     }
 
     public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
@@ -134,7 +136,6 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             int initialPageSize,
             String continuationToken) {
         // Generate the corresponding continuation token map.
-        Map<PartitionKeyRange, String> partitionKeyRangeToContinuationTokenMap = new HashMap<PartitionKeyRange, String>();
         if (continuationToken == null) {
             // If the user does not give a continuation token,
             // then just start the query from the first partition.
@@ -153,7 +154,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             // then we know that partitions 0, 1, 2 are fully drained.
 
             // Check to see if composite continuation token is a valid JSON.
-            ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<CompositeContinuationToken>();
+            ValueHolder<CompositeContinuationToken> outCompositeContinuationToken = new ValueHolder<>();
             if (!CompositeContinuationToken.tryParse(continuationToken,
                     outCompositeContinuationToken)) {
                 String message = String.format("INVALID JSON in continuation token %s for Parallel~Context",
@@ -164,20 +165,17 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
 
             CompositeContinuationToken compositeContinuationToken = outCompositeContinuationToken.v;
 
-            // Get the right hand side of the query ranges:
+            // Get the right hand side of the query ranges and set continuation token for relevant ranges in the
+            // partitionKeyRangeToContinuationTokenMap
             List<PartitionKeyRange> filteredPartitionKeyRanges = this.getPartitionKeyRangesForContinuation(
                     compositeContinuationToken,
                     targetRanges);
 
-            // The first partition is the one we left off on and have a backend continuation
-            // token for.
-            partitionKeyRangeToContinuationTokenMap.put(filteredPartitionKeyRanges.get(0),
-                    compositeContinuationToken.getToken());
-
             // The remaining partitions we have yet to touch / have null continuation tokens
             for (int i = 1; i < filteredPartitionKeyRanges.size(); i++) {
-                partitionKeyRangeToContinuationTokenMap.put(filteredPartitionKeyRanges.get(i),
-                        null);
+                if (!partitionKeyRangeToContinuationTokenMap.containsKey(filteredPartitionKeyRanges.get(i))) {
+                    partitionKeyRangeToContinuationTokenMap.put(filteredPartitionKeyRanges.get(i), null);
+                }
             }
         }
 
@@ -188,14 +186,21 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
     }
 
     private List<PartitionKeyRange> getPartitionKeyRangesForContinuation(
-            CompositeContinuationToken compositeContinuationToken,
-            List<PartitionKeyRange> partitionKeyRanges) {
-        // Find the partition key range we left off on
+        CompositeContinuationToken compositeContinuationToken,
+        List<PartitionKeyRange> partitionKeyRanges) {
+        Map<String, String> partitionRangeIdToTokenMap = new HashMap<>();
+        ValueHolder<Map<String, String>> outPartitionRangeIdToTokenMap = new ValueHolder<>(partitionRangeIdToTokenMap);
+        // Find the partition key range we left off on and fill the range to continuation token map
         int startIndex = this.findTargetRangeAndExtractContinuationTokens(partitionKeyRanges,
-                compositeContinuationToken.getRange());
-
+                                                                          compositeContinuationToken.getRange(),
+                                                                          outPartitionRangeIdToTokenMap,
+                                                                          compositeContinuationToken.getToken());
         List<PartitionKeyRange> rightHandSideRanges = new ArrayList<PartitionKeyRange>();
         for (int i = startIndex; i < partitionKeyRanges.size(); i++) {
+            PartitionKeyRange range = partitionKeyRanges.get(i);
+            if (partitionRangeIdToTokenMap.containsKey(range.getId())) {
+                this.partitionKeyRangeToContinuationTokenMap.put(range, compositeContinuationToken.getToken());
+            }
             rightHandSideRanges.add(partitionKeyRanges.get(i));
         }
 
@@ -233,7 +238,10 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page), page.getCosmosDiagnostics());
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                false,
+                false,
+                page.getCosmosDiagnostics());
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
         }
@@ -248,7 +256,10 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             FeedResponse<T> newPage = BridgeInternal.createFeedResponseWithQueryMetrics(page.getResults(),
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(page),
-                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page), page.getCosmosDiagnostics()
+                ModelBridgeInternal.getQueryPlanDiagnosticsContext(page),
+                false,
+                false,
+                page.getCosmosDiagnostics()
             );
             documentProducerFeedResponse.pageResult = newPage;
             return documentProducerFeedResponse;
@@ -344,7 +355,12 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource>
             }).switchIfEmpty(Flux.defer(() -> {
                 // create an empty page if there is no result
                 return Flux.just(BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
-                        headerResponse(tracker.getAndResetCharge()), emptyPageQueryMetricsMap, null, cosmosDiagnostics));
+                    headerResponse(tracker.getAndResetCharge()),
+                    emptyPageQueryMetricsMap,
+                    null,
+                    false,
+                    false,
+                    cosmosDiagnostics));
             }));
         }
     }

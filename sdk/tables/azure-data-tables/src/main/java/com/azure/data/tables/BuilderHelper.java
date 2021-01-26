@@ -3,6 +3,7 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -10,6 +11,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -23,8 +25,6 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.tables.implementation.NullHttpClient;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
-import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
@@ -32,6 +32,9 @@ import com.azure.storage.common.policy.ScrubEtagPolicy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 final class BuilderHelper {
     private static final Map<String, String> PROPERTIES =
@@ -39,11 +42,16 @@ final class BuilderHelper {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    static HttpPipeline buildPipeline(TablesSharedKeyCredential tablesSharedKeyCredential,
-                                      TokenCredential tokenCredential, SasTokenCredential sasTokenCredential,
-                                      String endpoint, RequestRetryOptions retryOptions, HttpLogOptions logOptions,
-                                      HttpClient httpClient, List<HttpPipelinePolicy> additionalPolicies,
-                                      Configuration configuration, ClientLogger logger) {
+    static HttpPipeline buildPipeline(
+        TablesSharedKeyCredential tablesSharedKeyCredential,
+        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken,
+        String endpoint, RequestRetryOptions retryOptions, HttpLogOptions logOptions,
+        HttpClient httpClient, List<HttpPipelinePolicy> additionalPolicies,
+        Configuration configuration, ClientLogger logger) {
+
+        validateSingleCredentialIsPresent(
+            tablesSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
+
         //1
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(getUserAgentPolicy(configuration));
@@ -69,8 +77,10 @@ final class BuilderHelper {
                     "HTTPS is required when using a %s credential.", tokenCredential.getClass().getName())));
             }
             credentialPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, getBearerTokenScope(endpointParts));
-        } else if (sasTokenCredential != null) {
-            credentialPolicy = new SasTokenCredentialPolicy(sasTokenCredential);
+        } else if (azureSasCredential != null) {
+            credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
+        } else if (sasToken != null) {
+            credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else {
             credentialPolicy = null;
         }
@@ -109,6 +119,21 @@ final class BuilderHelper {
             .policies(policies)
             .httpClient(new NullHttpClient())
             .build();
+    }
+
+    private static void validateSingleCredentialIsPresent(
+        TablesSharedKeyCredential storageSharedKeyCredential,
+        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken, ClientLogger logger) {
+        List<Object> usedCredentials = Stream.of(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken)
+            .filter(Objects::nonNull).collect(Collectors.toList());
+        if (usedCredentials.size() > 1) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Only one credential should be used. Credentials present: "
+                    + usedCredentials.stream().map(c -> c instanceof String ? "sasToken" : c.getClass().getName())
+                    .collect(Collectors.joining(","))
+            ));
+        }
     }
 
     /*

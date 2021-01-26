@@ -107,7 +107,9 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
                 headers,
                 BridgeInternal.queryMetricsFromFeedResponse(tFeedResponse),
                 ModelBridgeInternal.getQueryPlanDiagnosticsContext(tFeedResponse),
-                                                                     tFeedResponse.getCosmosDiagnostics());
+                false,
+                false,
+                tFeedResponse.getCosmosDiagnostics());
         });
 
     }

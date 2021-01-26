@@ -155,11 +155,17 @@ public final class BridgeInternal {
         Map<String, String> headers,
         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
         QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext,
+        boolean useEtagAsContinuation,
+        boolean isNoChangesResponse,
         CosmosDiagnostics cosmosDiagnostics) {
-        FeedResponse<T> feedResponseWithQueryMetrics = ModelBridgeInternal
-                                                           .createFeedResponseWithQueryMetrics(results, headers,
-                                                                                               queryMetricsMap,
-                                                                                               diagnosticsContext);
+
+        FeedResponse<T> feedResponseWithQueryMetrics = ModelBridgeInternal.createFeedResponseWithQueryMetrics(
+            results,
+            headers,
+            queryMetricsMap,
+            diagnosticsContext,
+            useEtagAsContinuation,
+            isNoChangesResponse);
 
         ClientSideRequestStatistics requestStatistics;
         if (cosmosDiagnostics != null) {
