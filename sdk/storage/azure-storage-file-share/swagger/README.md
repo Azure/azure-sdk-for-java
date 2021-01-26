@@ -20,13 +20,16 @@ java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
 enable-xml: true
+generate-client-as-impl: true
 generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
+context-client-method-parameter: true
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash
+custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel
+customization-jar-path: target/azure-storage-file-share-customization-1.0.0-beta.1.jar
+customization-class: com.azure.storage.file.share.customization.ShareStorageCustomization
 ```
 
 ### Query Parameters
@@ -644,21 +647,6 @@ directive:
     $["x-ms-parameter-location"] = "method";
 ```
 
-### Add the CustomFileAndDirectoryListingDeserializer attribute
-``` yaml
-directive:
-- from: FilesAndDirectoriesListSegment.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "import com.fasterxml.jackson.annotation.JsonProperty;",
-        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
-      replace(
-        "public final class FilesAndDirectoriesListSegment {",
-        "@JsonDeserialize(using = CustomFileAndDirectoryListingDeserializer.class)\npublic final class FilesAndDirectoriesListSegment {");
-```
-
 ### ShareErrorCode
 ``` yaml
 directive:
@@ -788,58 +776,7 @@ directive:
     $.FileContentType["x-ms-client-name"] = "contentType";
 ```
 
-### Change StorageErrorException to StorageException
-``` yaml
-directive:
-- from: ServicesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.share.implementation.models.StorageErrorException",
-        "com.azure.storage.file.share.models.ShareStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(ShareStorageException.class)"
-      );
-- from: SharesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.share.implementation.models.StorageErrorException",
-        "com.azure.storage.file.share.models.ShareStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(ShareStorageException.class)"
-      );
-- from: DirectorysImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.share.implementation.models.StorageErrorException",
-        "com.azure.storage.file.share.models.ShareStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(ShareStorageException.class)"
-      );
-- from: FilesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.file.share.implementation.models.StorageErrorException",
-        "com.azure.storage.file.share.models.ShareStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(ShareStorageException.class)"
-      );
-```
+
 ## Rename FileDownloadHeaders to ShareFileDownloadHeaders
 ``` yaml
 directive: 
@@ -857,19 +794,22 @@ directive:
     delete $["x-ms-parameter-grouping"];
 ```
 
-### Add the ShareFileRangeListDeserializer attribute
+### ListQueuesSegment x-ms-pageable itemName
 ``` yaml
 directive:
-- from: ShareFileRangeList.java
-  where: $
+- from: swagger-document
+  where: $["x-ms-paths"]["/?comp=list"].get
   transform: >
-    return $.
-      replace(
-        "import com.fasterxml.jackson.annotation.JsonProperty;",
-        "import com.fasterxml.jackson.annotation.JsonProperty;\nimport com.fasterxml.jackson.databind.annotation.JsonDeserialize;").
-      replace(
-        "public final class ShareFileRangeList {",
-        "@JsonDeserialize(using = ShareFileRangeListDeserializer.class)\npublic final class ShareFileRangeList {");
+    $["x-ms-pageable"].itemName = "ShareItems";
+```
+
+### Delete Directory_ListFilesAndDirectoriesSegment x-ms-pageable as autorest does not currently support multiple return types for pageable
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}/{directoryPath}?restype=directory&comp=list"].get
+  transform: >
+    delete $["x-ms-pageable"];
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fswagger%2FREADME.png)
