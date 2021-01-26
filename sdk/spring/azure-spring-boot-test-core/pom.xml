@@ -12,6 +12,7 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
+  <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-boot-test-core</artifactId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-core;current} -->
 
