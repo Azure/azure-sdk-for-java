@@ -78,6 +78,11 @@
     </dependency>
   </dependencies>
 
+  <properties>
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
+  </properties>
+
   <build>
     <plugins>
       <plugin>
@@ -85,7 +90,6 @@
         <artifactId>jacoco-maven-plugin</artifactId>
         <version>0.8.5</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
         <configuration>
-          <skip>true</skip>
         </configuration>
       </plugin>
     </plugins>
