@@ -78,6 +78,10 @@ jobs:
               echo $(java-spring-aad-user-password-1)
             displayName: 'Export on-demand user name'
 
+          - powershell: |
+              $env:AAD_USER_NAME_ON_DEMAND
+            displayName: 'Export on-demand user name again'
+
         PostRunSteps:
           - script: |
               python --version
