@@ -4,6 +4,8 @@
 
 
 ## 1.0.0-beta.3 (2021-01-20)
+ - Fix NPE: https://github.com/Azure/azure-sdk-for-java/issues/17953
+ - Support properties named in hyphens style. https://github.com/Azure/azure-sdk-for-java/pull/18340
 
 
 ## 1.0.0-beta.2 (2020-11-17)
