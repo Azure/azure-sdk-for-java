@@ -186,12 +186,13 @@ public class AttestationClientTestBase extends TestBase {
                 }
 
                 final String keyId = token.getHeader().getKeyID();
-
+                boolean foundKey = false;
                 for (JsonWebKey key : keySet.getKeys()) {
                     if (keyId.equals(key.getKid())) {
                         final Certificate cert;
                         try {
                             cert = cf.generateCertificate(base64ToStream(key.getX5C().get(0)));
+                            foundKey = true;
                         } catch (CertificateException e) {
                             sink.error(logger.logThrowableAsError(e));
                             return;
@@ -201,9 +202,10 @@ public class AttestationClientTestBase extends TestBase {
                         sink.next((X509Certificate) cert);
                     }
                 }
-
-                sink.error(logger.logThrowableAsError(new RuntimeException(String.format(
-                    "Key %s not found in JSON Web Key Set", keyId))));
+                if (!foundKey) {
+                    sink.error(logger.logThrowableAsError(new RuntimeException(String.format(
+                        "Key %s not found in JSON Web Key Set", keyId))));
+                }
             });
     }
 
