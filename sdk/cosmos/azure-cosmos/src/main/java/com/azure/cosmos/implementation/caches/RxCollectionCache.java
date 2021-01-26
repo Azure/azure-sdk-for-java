@@ -136,7 +136,7 @@ public abstract class RxCollectionCache {
         return Mono.just(new Utils.ValueHolder<>(null));
     }
 
-    private Mono<Utils.ValueHolder<DocumentCollection>> resolveByRidAsync(
+    public Mono<Utils.ValueHolder<DocumentCollection>> resolveByRidAsync(
             MetadataDiagnosticsContext metaDataDiagnosticsContext,
             String resourceId,
             Map<String, Object> properties) {

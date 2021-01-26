@@ -387,4 +387,25 @@ public class ReadmeSamples {
 
         return communicationIdentityClient;
     }
+
+    /**
+     * Sample code for creating a sync Phone Number Client using AAD authentication.
+     *
+     * @return the Phone Number Client.
+     */
+    public PhoneNumberClient createPhoneNumberClientWithAAD() {
+        // You can find your endpoint and access key from your resource in the Azure Portal
+        String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
+
+        // Create an HttpClient builder of your choice and customize it
+        HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
+
+        PhoneNumberClient phoneNumberClient = new PhoneNumberClientBuilder()
+            .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .httpClient(httpClient)
+            .buildClient();
+
+        return phoneNumberClient;
+    }
 }

@@ -10,6 +10,7 @@ import com.azure.core.util.CoreUtils;
 public class PhoneNumberIdentifier extends CommunicationIdentifier {
 
     private final String phoneNumber;
+    private String id;
 
     /**
      * Creates a PhoneNumberIdentifier object
@@ -30,5 +31,46 @@ public class PhoneNumberIdentifier extends CommunicationIdentifier {
      */
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Set the string representation of this identifier
+     * @param id the string representation of this identifier
+     * @return the PhoneNumberIdentifier object itself
+     */
+    public PhoneNumberIdentifier setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+
+        if (!(that instanceof PhoneNumberIdentifier)) {
+            return false;
+        }
+
+        PhoneNumberIdentifier phoneId = (PhoneNumberIdentifier) that;
+        if (!phoneNumber.equals(phoneId.phoneNumber)) {
+            return false;
+        }
+
+        return id == null
+            || phoneId.id == null
+            || id.equals(phoneId.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return phoneNumber.hashCode();
     }
 }
