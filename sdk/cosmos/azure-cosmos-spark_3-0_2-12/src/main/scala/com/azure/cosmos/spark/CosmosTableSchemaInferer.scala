@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.CosmosAsyncClient
+import com.azure.cosmos.models.CosmosQueryRequestOptions
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, DecimalNode, DoubleNode, FloatNode, IntNode, NullNode, ObjectNode, TextNode}
 
@@ -17,7 +19,7 @@ private object CosmosTableSchemaInferer
 
     def inferSchema(inferredItems : Seq[ObjectNode]): StructType = {
         if (inferredItems.isEmpty){
-            throw new Exception("Cannot infer schema from an empty source.")
+            throw new Exception("Cannot infer schema from an empty source, there must be at least one document.")
         }
 
         // Create a unique map of all distinct properties from documents
@@ -32,8 +34,21 @@ private object CosmosTableSchemaInferer
         StructType(uniqueStructFields.valuesIterator.toSeq)
     }
 
-    def inferSchema(): StructType = {
-        null
+    def inferSchema(client: CosmosAsyncClient,
+                    userConfig: Map[String, String]): StructType = {
+        val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
+        val cosmosReadConfig = CosmosReadConfig.parseCosmosContainerConfig(userConfig)
+        val sourceContainer = client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
+
+        val queryOptions = new CosmosQueryRequestOptions()
+        queryOptions.setMaxBufferedItemCount(cosmosReadConfig.inferSchemaSamplingSize)
+        val queryText = s"select TOP ${cosmosReadConfig.inferSchemaSamplingSize} * from c"
+
+        val queryObservable =
+            sourceContainer.queryItems(queryText, queryOptions, classOf[ObjectNode])
+
+        val feedResponseList = queryObservable.byPage().collectList().block()
+        inferSchema(feedResponseList.asScala.flatten(feedResponse => feedResponse.getResults.asScala))
     }
 
     private def inferDataTypeFromObjectNode(node: ObjectNode) : Option[Seq[(String, StructField)]] = {
