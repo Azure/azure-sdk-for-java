@@ -14,15 +14,12 @@ import java.util.List;
 final class IndexBatchResponse {
     private final int statusCode;
     private final List<IndexingResult> results;
-    private final int offset;
     private final int count;
     private final boolean isError;
 
-    IndexBatchResponse(int statusCode, List<IndexingResult> results, int offset, int count,
-        boolean isError) {
+    IndexBatchResponse(int statusCode, List<IndexingResult> results, int count, boolean isError) {
         this.statusCode = statusCode;
         this.results = results;
-        this.offset = offset;
         this.count = count;
         this.isError = isError;
     }
@@ -33,10 +30,6 @@ final class IndexBatchResponse {
 
     public List<IndexingResult> getResults() {
         return results;
-    }
-
-    public int getOffset() {
-        return offset;
     }
 
     public int getCount() {

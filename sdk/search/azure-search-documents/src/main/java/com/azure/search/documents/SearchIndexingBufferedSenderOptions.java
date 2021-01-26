@@ -25,6 +25,13 @@ import java.util.function.Function;
 public final class SearchIndexingBufferedSenderOptions<T> {
     private static final boolean DEFAULT_AUTO_FLUSH = true;
     private static final int DEFAULT_INITIAL_BATCH_ACTION_COUNT = 512;
+    private static final Function<Integer, Integer> DEFAULT_SCALE_DOWN_FUNCTION = oldBatchCount -> {
+        if (oldBatchCount == 1) {
+            return 1;
+        } else {
+            return Math.max(1, oldBatchCount / 2);
+        }
+    };
     private static final Duration DEFAULT_FLUSH_INTERVAL = Duration.ofSeconds(60);
     private static final int DEFAULT_MAX_RETRIES_PER_ACTION = 3;
     private static final Duration DEFAULT_THROTTLING_DELAY = Duration.ofMillis(800);
@@ -37,6 +44,7 @@ public final class SearchIndexingBufferedSenderOptions<T> {
     private boolean autoFlush = DEFAULT_AUTO_FLUSH;
     private Duration autoFlushInterval = DEFAULT_FLUSH_INTERVAL;
     private int initialBatchActionCount = DEFAULT_INITIAL_BATCH_ACTION_COUNT;
+    private Function<Integer, Integer> scaleDownFunction = DEFAULT_SCALE_DOWN_FUNCTION;
     private int maxRetriesPerAction = DEFAULT_MAX_RETRIES_PER_ACTION;
     private Duration throttlingDelay = DEFAULT_THROTTLING_DELAY;
     private Duration maxThrottlingDelay = DEFAULT_MAX_THROTTLING_DELAY;
@@ -144,6 +152,34 @@ public final class SearchIndexingBufferedSenderOptions<T> {
      */
     public int getInitialBatchActionCount() {
         return initialBatchActionCount;
+    }
+
+    /**
+     * Sets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
+     * by the service.
+     * <p>
+     * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
+     *
+     * @param scaleDownFunction The batch size scale down function.
+     * @return The updated SearchIndexingBufferedSenderOptions object.
+     * @throws NullPointerException If {@code scaleDownFunction} is null.
+     */
+    public SearchIndexingBufferedSenderOptions<T> setPayloadTooLargeScaleDown(
+        Function<Integer, Integer> scaleDownFunction) {
+        this.scaleDownFunction = Objects.requireNonNull(scaleDownFunction, "'scaleDownFunction' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Gets the function that handles scaling down the batch size when a 413 (Payload too large) response is returned
+     * by the service.
+     * <p>
+     * By default the batch size will halve when a 413 is returned with a minimum allowed value of one.
+     *
+     * @return The batch size scale down function.
+     */
+    public Function<Integer, Integer> getPayloadTooLargeScaleDown() {
+        return scaleDownFunction;
     }
 
     /**

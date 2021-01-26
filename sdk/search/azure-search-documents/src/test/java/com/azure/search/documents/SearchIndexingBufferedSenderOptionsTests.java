@@ -87,6 +87,12 @@ public class SearchIndexingBufferedSenderOptionsTests {
         assertThrows(IllegalArgumentException.class, () -> options.setMaxThrottlingDelay(Duration.ofMillis(-1)));
     }
 
+    @Test
+    public void invalidPayloadTooLargeScaleDownThrows() {
+        SearchIndexingBufferedSenderOptions<Integer> options = getBaseOptions();
+        assertThrows(NullPointerException.class, () -> options.setPayloadTooLargeScaleDown(null));
+    }
+
     private SearchIndexingBufferedSenderOptions<Integer> getBaseOptions() {
         return new SearchIndexingBufferedSenderOptions<>(String::valueOf);
     }

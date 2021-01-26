@@ -4,6 +4,7 @@
 package com.azure.search.documents.implementation.batching;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -14,12 +15,12 @@ import com.azure.search.documents.implementation.converters.IndexActionConverter
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexBatchException;
+import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
 import com.azure.search.documents.options.OnActionAddedOptions;
 import com.azure.search.documents.options.OnActionErrorOptions;
 import com.azure.search.documents.options.OnActionSentOptions;
 import com.azure.search.documents.options.OnActionSucceededOptions;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.HttpURLConnection;
@@ -52,7 +53,7 @@ public final class SearchIndexingPublisher<T> {
     private final JsonSerializer serializer;
 
     private final boolean autoFlush;
-    private final int batchActionCount;
+    private int batchActionCount;
     private final int maxRetries;
     private final Duration retryDelay;
     private final Duration maxRetryDelay;
@@ -63,6 +64,7 @@ public final class SearchIndexingPublisher<T> {
     private final Consumer<OnActionErrorOptions<T>> onActionErrorConsumer;
 
     private final Function<T, String> documentKeyRetriever;
+    private final Function<Integer, Integer> scaleDownFunction;
 
     private final Object actionsMutex = new Object();
     private final LinkedList<TryTrackingIndexAction<T>> actions = new LinkedList<>();
@@ -93,6 +95,8 @@ public final class SearchIndexingPublisher<T> {
         this.onActionSentConsumer = options.getOnActionSent();
         this.onActionSucceededConsumer = options.getOnActionSucceeded();
         this.onActionErrorConsumer = options.getOnActionError();
+
+        this.scaleDownFunction = options.getPayloadTooLargeScaleDown();
     }
 
     public synchronized Collection<IndexAction<?>> getActions() {
@@ -107,7 +111,8 @@ public final class SearchIndexingPublisher<T> {
         return currentRetryDelay;
     }
 
-    public synchronized Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context, Runnable rescheduleFlush) {
+    public synchronized Mono<Void> addActions(Collection<IndexAction<T>> actions, Context context,
+        Runnable rescheduleFlush) {
         actions.stream()
             .map(action -> new TryTrackingIndexAction<>(action, documentKeyRetriever.apply(action.getDocument())))
             .forEach(action -> {
@@ -119,6 +124,7 @@ public final class SearchIndexingPublisher<T> {
 
         if (autoFlush && batchAvailableForProcessing()) {
             rescheduleFlush.run();
+            logger.verbose("Adding documents triggered batch size limit, sending documents for indexing.");
             return flush(context, false);
         }
 
@@ -146,6 +152,11 @@ public final class SearchIndexingPublisher<T> {
             int actionSize = this.actions.size();
             int size = Math.min(batchActionCount, actionSize);
             batchActions = new ArrayList<>(size);
+
+            /*
+             * Make the set size larger than the expected batch size to prevent a resizing scenario. Don't use a load
+             * factor of 1 as that would potentially cause collisions.
+             */
             keysInBatch = new HashSet<>(size * 2);
 
             int offset = 0;
@@ -178,7 +189,7 @@ public final class SearchIndexingPublisher<T> {
             })
             .collect(Collectors.toList());
 
-        return sendBatch(convertedActions, 0, context)
+        return sendBatch(convertedActions, batchActions, context)
             .map(response -> {
                 handleResponse(batchActions, response);
 
@@ -192,16 +203,20 @@ public final class SearchIndexingPublisher<T> {
      * This may result in more than one service call in the case where the index batch is too large and we attempt to
      * split it.
      */
-    private Flux<IndexBatchResponse> sendBatch(
-        List<com.azure.search.documents.implementation.models.IndexAction> actions, int actionsOffset,
+    private Mono<IndexBatchResponse> sendBatch(
+        List<com.azure.search.documents.implementation.models.IndexAction> actions,
+        List<TryTrackingIndexAction<T>> batchActions,
         Context context) {
-        return Utility.indexDocumentsWithResponse(restClient, actions, true, context, logger)
-            .delaySubscription(currentRetryDelay)
-            .flatMapMany(response -> Flux.just(
-                new IndexBatchResponse(response.getStatusCode(), response.getValue().getResults(), actionsOffset,
-                    actions.size(), false)))
-            .onErrorResume(IndexBatchException.class, exception -> Flux
-                .just(new IndexBatchResponse(207, exception.getIndexingResults(), actionsOffset, actions.size(), true)))
+        Mono<Response<IndexDocumentsResult>> batchCall = Utility.indexDocumentsWithResponse(restClient, actions, true,
+            context, logger);
+
+        if (!currentRetryDelay.isZero() && !currentRetryDelay.isNegative()) {
+            batchCall = batchCall.delaySubscription(currentRetryDelay);
+        }
+        return batchCall.map(response -> new IndexBatchResponse(response.getStatusCode(),
+            response.getValue().getResults(), actions.size(), false))
+            .onErrorResume(IndexBatchException.class, exception -> Mono.just(
+                new IndexBatchResponse(207, exception.getIndexingResults(), actions.size(), true)))
             .onErrorResume(HttpResponseException.class, exception -> {
                 /*
                  * If we received an error response where the payload was too large split it into two smaller payloads
@@ -210,19 +225,26 @@ public final class SearchIndexingPublisher<T> {
                  */
                 int statusCode = exception.getResponse().getStatusCode();
                 if (statusCode == HttpURLConnection.HTTP_ENTITY_TOO_LARGE) {
+                    logger.verbose("Scaling down batch size due to 413 (Payload too large) response.");
+                    int previousBatchSize = batchActionCount;
+                    this.batchActionCount = Math.max(1, scaleDownFunction.apply(previousBatchSize));
+                    logger.verbose("Scaled down from {} to {}.", previousBatchSize, batchActionCount);
+
                     int actionCount = actions.size();
                     if (actionCount == 1) {
-                        return Flux.just(new IndexBatchResponse(statusCode, null, actionsOffset, actionCount, true));
+                        return Mono.just(new IndexBatchResponse(statusCode, null, actionCount, true));
                     }
 
-                    int splitOffset = Math.round(actionCount / 2.0f);
-                    return Flux.concat(
-                        sendBatch(actions.subList(0, splitOffset), 0, context),
-                        sendBatch(actions.subList(splitOffset, actionCount), splitOffset, context)
-                    );
+                    int splitOffset = Math.min(actions.size(), batchActionCount);
+                    List<TryTrackingIndexAction<T>> batchActionsToRemove = batchActions.subList(splitOffset,
+                        batchActions.size());
+                    reinsertFailedActions(batchActionsToRemove);
+                    batchActionsToRemove.clear();
+
+                    return sendBatch(actions.subList(0, splitOffset), batchActions, context);
                 }
 
-                return Flux.just(new IndexBatchResponse(statusCode, null, actionsOffset, actions.size(), true));
+                return Mono.just(new IndexBatchResponse(statusCode, null, actions.size(), true));
             });
     }
 
@@ -231,7 +253,7 @@ public final class SearchIndexingPublisher<T> {
          * Batch has been split until it had one document in it and it returned a 413 response.
          */
         if (batchResponse.getStatusCode() == HttpURLConnection.HTTP_ENTITY_TOO_LARGE && batchResponse.getCount() == 1) {
-            IndexAction<T> action = actions.get(batchResponse.getOffset()).getAction();
+            IndexAction<T> action = actions.get(0).getAction();
             if (onActionErrorConsumer != null) {
                 onActionErrorConsumer.accept(new OnActionErrorOptions<>(action)
                     .setThrowable(createDocumentTooLargeException()));
@@ -245,8 +267,7 @@ public final class SearchIndexingPublisher<T> {
             /*
              * Null results indicates that the entire request failed. Retry all documents.
              */
-            int offset = batchResponse.getOffset();
-            actionsToRetry.addAll(actions.subList(offset, offset + batchResponse.getCount()));
+            actionsToRetry.addAll(actions);
         } else {
             /*
              * We got back a result set, correlate responses to their request document and add retryable actions back
@@ -254,7 +275,7 @@ public final class SearchIndexingPublisher<T> {
              */
             for (IndexingResult result : batchResponse.getResults()) {
                 String key = result.getKey();
-                TryTrackingIndexAction<T> action = actions.stream().skip(batchResponse.getOffset())
+                TryTrackingIndexAction<T> action = actions.stream()
                     .filter(a -> key.equals(a.getKey()))
                     .findFirst()
                     .orElse(null);
@@ -297,11 +318,15 @@ public final class SearchIndexingPublisher<T> {
         }
 
         if (!CoreUtils.isNullOrEmpty(actionsToRetry)) {
-            synchronized (actionsMutex) {
-                // Push all actions that need to be retried back into the queue.
-                for (int i = actionsToRetry.size() - 1; i >= 0; i--) {
-                    this.actions.push(actionsToRetry.get(i));
-                }
+            reinsertFailedActions(actionsToRetry);
+        }
+    }
+
+    private void reinsertFailedActions(List<TryTrackingIndexAction<T>> actionsToRetry) {
+        synchronized (actionsMutex) {
+            // Push all actions that need to be retried back into the queue.
+            for (int i = actionsToRetry.size() - 1; i >= 0; i--) {
+                this.actions.push(actionsToRetry.get(i));
             }
         }
     }
