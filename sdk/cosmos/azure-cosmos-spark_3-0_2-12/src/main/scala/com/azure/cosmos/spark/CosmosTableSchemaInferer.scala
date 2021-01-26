@@ -53,7 +53,9 @@ private object CosmosTableSchemaInferer
 
     private def inferDataTypeFromObjectNode(node: ObjectNode) : Option[Seq[(String, StructField)]] = {
         Option(node).map(n =>
-            n.fields().asScala.map(field =>
+            n.fields().asScala
+                .filter(field => propertyFilter.isUserProperty(field.getKey))
+                .map(field =>
                     field.getKey ->
                     StructField(field.getKey, inferDataTypeFromJsonNode(field.getValue)))
                 .toSeq)
@@ -76,14 +78,14 @@ private object CosmosTableSchemaInferer
             case _: FloatNode => FloatType
             case _: DoubleNode => DoubleType
             case _: IntNode => IntegerType
+            case arrayNode: ArrayNode => inferDataTypeFromArrayNode(arrayNode) match {
+                case Some(valueType) => ArrayType(valueType)
+                case None => NullType
+            }
             case objectNode: ObjectNode => inferDataTypeFromObjectNode(objectNode) match {
                 case Some(mappedList) =>
                     val nestedFields = mappedList.map(f => f._2)
                     StructType(nestedFields)
-                case None => NullType
-                }
-            case arrayNode: ArrayNode => inferDataTypeFromArrayNode(arrayNode) match {
-                case Some(valueType) => ArrayType(valueType)
                 case None => NullType
                 }
             case _ =>
@@ -95,5 +97,10 @@ private object CosmosTableSchemaInferer
 
     private def inferDataTypeFromArrayNode(node: ArrayNode) : Option[DataType] = {
         Option(node.get(0)).map(firstElement => inferDataTypeFromJsonNode(firstElement))
+    }
+
+    private object propertyFilter {
+        private val systemProperties = List("_etag", "_rid", "_ts", "_self", "_attachments")
+        def isUserProperty(propertyName: String): Boolean = !systemProperties.contains(propertyName)
     }
 }
