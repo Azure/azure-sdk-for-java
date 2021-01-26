@@ -26,7 +26,7 @@ public class AnomalyIncidentRootCauseTest extends IncidentRootCauseTestBase {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(60));
     }
 
     @AfterAll

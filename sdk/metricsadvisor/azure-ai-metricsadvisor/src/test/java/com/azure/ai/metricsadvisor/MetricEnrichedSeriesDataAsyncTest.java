@@ -24,7 +24,7 @@ public class MetricEnrichedSeriesDataAsyncTest extends MetricEnrichedSeriesDataT
     @BeforeAll
     static void beforeAll() {
         TestBase.setupClass();
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(60));
     }
 
     @AfterAll

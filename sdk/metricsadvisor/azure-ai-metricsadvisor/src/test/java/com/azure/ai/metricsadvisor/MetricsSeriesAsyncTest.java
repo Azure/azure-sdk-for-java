@@ -34,7 +34,7 @@ public class MetricsSeriesAsyncTest extends MetricsSeriesTestBase {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(60));
     }
 
     @AfterAll
