@@ -63,7 +63,7 @@ public class Header {
     public Header(String name, List<String> values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
-        this.values = values;
+        this.values = new LinkedList<>(values);
     }
 
     /**
