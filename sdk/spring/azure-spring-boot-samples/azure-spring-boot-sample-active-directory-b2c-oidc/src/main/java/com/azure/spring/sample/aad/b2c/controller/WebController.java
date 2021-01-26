@@ -29,24 +29,10 @@ public class WebController {
         model.addAttribute("aadb2c_passwordreset", aadb2CProperties.getUserFlows().getPasswordReset());
     }
 
-    @GetMapping(value = "/")
+    @GetMapping(value = { "/", "/home", "/greeting" })
     public String index(Model model, OAuth2AuthenticationToken token) {
         initializeModel(model, token);
-
         return "home";
     }
 
-    @GetMapping(value = "/greeting")
-    public String greeting(Model model, OAuth2AuthenticationToken token) {
-        initializeModel(model, token);
-
-        return "greeting";
-    }
-
-    @GetMapping(value = "/home")
-    public String home(Model model, OAuth2AuthenticationToken token) {
-        initializeModel(model, token);
-
-        return "home";
-    }
 }
