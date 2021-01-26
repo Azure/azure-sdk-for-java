@@ -104,35 +104,38 @@ public class AttestationClientTestBase extends TestBase {
     }
 
     Mono<JWTClaimsSet> verifyAttestationToken(HttpClient httpClient, String clientUri, String attestationToken) {
-        SignedJWT token;
+        final SignedJWT token;
         try {
             token = SignedJWT.parse(attestationToken);
         } catch (ParseException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+            return Mono.error(logger.logThrowableAsError(e));
         }
 
         SignedJWT finalToken = token;
         return getSigningCertificateByKeyId(token, httpClient, clientUri)
-            .flatMap(cert -> {
-                PublicKey key = cert.getPublicKey();
-                RSAPublicKey rsaKey = (RSAPublicKey) key;
+            .handle((cert, sink) -> {
+                final PublicKey key = cert.getPublicKey();
+                final RSAPublicKey rsaKey = (RSAPublicKey) key;
 
-                RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
+                final RSASSAVerifier verifier = new RSASSAVerifier(rsaKey);
                 try {
                     assertTrue(finalToken.verify(verifier));
                 } catch (JOSEException e) {
-                    throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+                    sink.error(logger.logThrowableAsError(e));
+                    return;
                 }
 
 
-                JWTClaimsSet claims;
+                final JWTClaimsSet claims;
                 try {
                     claims = finalToken.getJWTClaimsSet();
                 } catch (ParseException e) {
-                    throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+                    sink.error(logger.logThrowableAsError(e));
+                    return;
                 }
+
                 assertNotNull(claims);
-                return Mono.just(claims);
+                sink.next(claims);
             });
     }
 
@@ -148,14 +151,16 @@ public class AttestationClientTestBase extends TestBase {
         try {
             keyFactory = KeyFactory.getInstance("RSA");
         } catch (NoSuchAlgorithmException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+            throw logger.logThrowableAsError(new RuntimeException(e));
         }
+
         PrivateKey privateKey;
         try {
             privateKey = keyFactory.generatePrivate(keySpec);
         } catch (InvalidKeySpecException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
+
         return new RSASSASigner(privateKey);
     }
 
@@ -171,32 +176,34 @@ public class AttestationClientTestBase extends TestBase {
     Mono<X509Certificate> getSigningCertificateByKeyId(SignedJWT token, HttpClient client, String clientUri) {
         AttestationClientBuilder builder = getBuilder(client, clientUri);
         return builder.buildSigningCertificatesAsyncClient().get()
-            .map(keySet -> {
-                CertificateFactory cf;
+            .handle((keySet, sink) -> {
+                final CertificateFactory cf;
                 try {
                     cf = CertificateFactory.getInstance("X.509");
                 } catch (CertificateException e) {
-                    throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+                    sink.error(logger.logThrowableAsError(e));
+                    return;
                 }
 
-                String keyId = token.getHeader().getKeyID();
+                final String keyId = token.getHeader().getKeyID();
 
                 for (JsonWebKey key : keySet.getKeys()) {
                     if (keyId.equals(key.getKid())) {
-                        Certificate cert;
+                        final Certificate cert;
                         try {
                             cert = cf.generateCertificate(base64ToStream(key.getX5C().get(0)));
                         } catch (CertificateException e) {
-                            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
+                            sink.error(logger.logThrowableAsError(e));
+                            return;
                         }
 
                         assertTrue(cert instanceof X509Certificate);
-
-                        return (X509Certificate) cert;
-
+                        sink.next((X509Certificate) cert);
                     }
                 }
-                throw new RuntimeException(String.format("Key %s not found in JSON Web Key Set", keyId));
+
+                sink.error(logger.logThrowableAsError(new RuntimeException(String.format(
+                    "Key %s not found in JSON Web Key Set", keyId))));
             });
     }
 
