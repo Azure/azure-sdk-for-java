@@ -7,6 +7,8 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.models.ClientEncryptionIncludedPath;
+import com.azure.cosmos.models.ClientEncryptionPolicy;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -24,6 +26,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,6 +64,35 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponse(containerProperties, containerResponse);
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void createContainer_withEncryption() {
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+
+        ClientEncryptionIncludedPath path1 = new ClientEncryptionIncludedPath();
+        path1.path =  "/path1";
+        path1.encryptionAlgorithm = "AEAD_AES_256_CBC_HMAC_SHA256";
+        path1.encryptionType = "Randomized";
+        path1.clientEncryptionKeyId = "key1";
+
+        ClientEncryptionIncludedPath path2 = new ClientEncryptionIncludedPath();
+        path2.path =  "/path2";
+        path2.encryptionAlgorithm = "AEAD_AES_256_CBC_HMAC_SHA256";
+        path2.encryptionType = "Deterministic";
+        path2.clientEncryptionKeyId = "key2";
+
+        List<ClientEncryptionIncludedPath> paths = new ArrayList<>();
+        paths.add(path1);
+        paths.add(path2);
+
+        ClientEncryptionPolicy clientEncryptionPolicy = new ClientEncryptionPolicy(paths);
+        containerProperties.setClientEncryptionPolicy(clientEncryptionPolicy);
+
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
+        validateContainerResponseWithEncryption(containerProperties, containerResponse, clientEncryptionPolicy);
     }
 
     @DataProvider
@@ -304,5 +336,24 @@ public class CosmosContainerTest extends TestSuiteBase {
             .as("check Resource Id")
             .isEqualTo(containerProperties.getId());
 
+    }
+
+    private void validateContainerResponseWithEncryption(CosmosContainerProperties containerProperties,
+                                                         CosmosContainerResponse createResponse,
+                                                         ClientEncryptionPolicy clientEncryptionPolicy) {
+        validateContainerResponse(containerProperties, createResponse);
+        assertThat(createResponse.getProperties().getClientEncryptionPolicy()).isNotNull();
+        assertThat(createResponse.getProperties().getClientEncryptionPolicy().getIncludedPaths().size()).isEqualTo(clientEncryptionPolicy.getIncludedPaths().size());
+        for (ClientEncryptionIncludedPath clientEncryptionIncludedPath :
+            createResponse.getProperties().getClientEncryptionPolicy().getIncludedPaths()) {
+            for (ClientEncryptionIncludedPath includedPath : clientEncryptionPolicy.getIncludedPaths()) {
+                if (clientEncryptionIncludedPath.path.equals(includedPath.path)) {
+                    assertThat(clientEncryptionIncludedPath.clientEncryptionKeyId).isEqualTo(includedPath.clientEncryptionKeyId);
+                    assertThat(clientEncryptionIncludedPath.encryptionAlgorithm).isEqualTo(includedPath.encryptionAlgorithm);
+                    assertThat(clientEncryptionIncludedPath.encryptionType).isEqualTo(includedPath.encryptionType);
+                    break;
+                }
+            }
+        }
     }
 }

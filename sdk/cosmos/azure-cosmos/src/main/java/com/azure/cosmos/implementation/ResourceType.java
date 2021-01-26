@@ -58,7 +58,9 @@ public enum ResourceType {
     Address("Address", -5),
     Key("Key", -2),
     Media("Media", -3),
-    ServiceFabricService("ServiceFabricService", -4);
+    ServiceFabricService("ServiceFabricService", -4),
+
+    ClientEncryptionKey("ClientEncryptionKey", 141);
 
     private final int value;
     private final String stringValue;
@@ -98,7 +100,8 @@ public enum ResourceType {
                 this == ResourceType.Permission ||
                 this == ResourceType.Topology ||
                 this == ResourceType.PartitionKeyRange ||
-                this == ResourceType.DocumentCollection;
+                this == ResourceType.DocumentCollection ||
+                this == ResourceType.ClientEncryptionKey;
     }
 
     /// <summary>

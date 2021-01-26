@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.ConsistencyPolicy;
 import com.azure.cosmos.implementation.CosmosResourceType;
@@ -44,7 +45,6 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import reactor.core.publisher.Mono;
 
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
@@ -53,7 +53,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 
@@ -138,6 +137,11 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosClientEncryptionKeyResponse createCosmosClientEncryptionKeyResponse(ResourceResponse<ClientEncryptionKey> response) {
+        return new CosmosClientEncryptionKeyResponse(response);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosConflictProperties> getCosmosConflictPropertiesFromV2Results(List<Conflict> results) {
         return CosmosConflictProperties.getFromV2Results(results);
     }
@@ -195,6 +199,16 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<CosmosUserProperties> getCosmosUserPropertiesFromV2Results(List<User> results) {
         return CosmosUserProperties.getFromV2Results(results);
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static ClientEncryptionKey getClientEncryptionPolicys(CosmosClientEncryptionKeyProperties cosmosClientEncryptionKeyProperties) {
+        return cosmosClientEncryptionKeyProperties.getClientEncryptionKey();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static List<CosmosClientEncryptionKeyProperties> getClientEncryptionPolicys(List<ClientEncryptionKey> results) {
+        return CosmosClientEncryptionKeyProperties.getClientEncryptionKeys(results);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -651,6 +665,8 @@ public final class ModelBridgeInternal {
             return ((CosmosUserDefinedFunctionProperties) t).getResource();
         } else if (t instanceof CosmosUserProperties) {
             return ((CosmosUserProperties) t).getResource();
+        } else if (t instanceof CosmosClientEncryptionKeyProperties) {
+            return ((CosmosClientEncryptionKeyProperties) t).getResource();
         } else {
             throw new IllegalArgumentException("getResource method does not exists in class " + t.getClass());
         }
