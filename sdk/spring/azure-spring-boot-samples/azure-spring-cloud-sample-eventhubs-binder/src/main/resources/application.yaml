@@ -10,10 +10,10 @@ spring:
     stream:
       bindings:
         consume-in-0:
-          destination: event-hub
-          group: $Default
+          destination: [eventhub-name]
+          group: [consumer-group]
         supply-out-0:
-          destination: event-hub
+          destination: [the-same-eventhub-name-as-above]
 
       eventhub:
         bindings:
