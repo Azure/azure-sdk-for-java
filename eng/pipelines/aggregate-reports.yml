@@ -115,7 +115,7 @@ jobs:
       parameters:
         Directory: ""
         CheckLinkGuidance: $true
-        RunOnFailure: $true
+        Condition: succeededOrFailed()
     - publish: $(Build.ArtifactStagingDirectory)
       condition: succeededOrFailed()
       displayName: 'Publish Report Artifacts'
