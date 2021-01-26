@@ -122,7 +122,13 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
         if (this.groupingTable != null) {
             HashMap<String, String> headers = new HashMap<>();
             headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
-            FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(groupByResults, headers, queryMetrics, null);
+            FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(
+                groupByResults,
+                headers,
+                queryMetrics,
+                null,
+                false,
+                false);
             return (FeedResponse<T>) frp;
         }
 
