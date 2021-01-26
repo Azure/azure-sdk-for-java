@@ -71,11 +71,11 @@ jobs:
           AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret)
 
         PreRunSteps:
-          - pwsh: |
-              $Env:AAD_USER_NAME_ON-DEMAND = "user-$(System.JobId)@aadittest1.onmicrosoft.com"
-              $Env:AAD_USER_NAME_ON-DEMAND
+          - powershell: |
               echo $(System.JobId)
-              $Env:AAD_USER_PASSWORD_1
+              $env:AAD_USER_NAME_ON_DEMAND = "user-$(System.JobId)@aadittest1.onmicrosoft.com"
+              $env:AAD_USER_NAME_ON_DEMAND
+              $env:AAD_USER_PASSWORD_1
             displayName: 'Export on-demand user name'
 
         PostRunSteps:
