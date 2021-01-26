@@ -154,17 +154,26 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
 
                     @Override
                     public boolean containsKey(Object key) {
-                        return nettyHeaders.contains((String)key);
+                        return nettyHeaders.contains((String) key);
                     }
 
                     @Override
                     public boolean containsValue(Object value) {
-                        return false;
+                        throw new UnsupportedOperationException();
                     }
 
                     @Override
                     public String get(final Object key) {
-                        return nettyHeaders.get((String)key);
+                        // Calling nettyHeaders.get(key) returns only the first value in the headers for the given key.
+                        // If there are multiple values, the user not get the result they expect.
+                        // For now, this is resolved by joining the headers back into a String here, with the obvious
+                        // performance implication, and therefore it is recommended that users steer away from calling
+                        // httpHeaders.toMap().get(key), and instead be directed towards httpHeaders.get(key), where
+                        // caching is available.
+                        if (nettyHeaders.contains((String) key)) {
+                            return String.join(",", nettyHeaders.getAll((String) key));
+                        }
+                        return null;
                     }
 
                     @Override

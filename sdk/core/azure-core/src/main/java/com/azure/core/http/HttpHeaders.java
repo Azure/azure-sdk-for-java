@@ -182,6 +182,11 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * headers at the time of the toMap call. This map will not change as the underlying http headers change, and nor
      * will modifying the key or values contained in the map have any effect on the state of the http headers.
      *
+     * <p>Note that there may be performance implications of using Map APIs on the returned Map. It is highly
+     * recommended that users prefer to use alternate APIs present on the HttpHeaders class, over using APIs present
+     * on the returned Map class. For example, use the {@link #get(String)} API, rather than
+     * {@code httpHeaders.toMap().get(name)}.</p>
+     *
      * @return the headers in a copied and unmodifiable form.
      */
     public Map<String, String> toMap() {
