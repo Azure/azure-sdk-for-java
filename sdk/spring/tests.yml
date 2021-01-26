@@ -75,7 +75,7 @@ jobs:
               echo $(System.JobId)
               $env:AAD_USER_NAME_ON_DEMAND = "user-$(System.JobId)@aadittest1.onmicrosoft.com"
               $env:AAD_USER_NAME_ON_DEMAND
-              $env:AAD_USER_PASSWORD_1
+              echo $(java-spring-aad-user-password-1)
             displayName: 'Export on-demand user name'
 
         PostRunSteps:
