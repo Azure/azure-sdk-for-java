@@ -3,6 +3,6 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
-abstract class FeedRangeContinuationVisitor {
-    public abstract void visit(FeedRangeCompositeContinuationImpl feedRangeCompositeContinuation);
+public final class FeedRangeContinuationVersions {
+    public final static int V1 = 1;
 }
