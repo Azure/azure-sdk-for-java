@@ -1,7 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.util.AbstractMap;
 import java.util.AbstractSet;
@@ -15,6 +19,8 @@ import java.util.stream.StreamSupport;
 // This class wraps a Netty HttpHeaders instance and provides an azure-core HttpHeaders view onto it.
 // This avoids the need to copy the Netty HttpHeaders into an azure-core HttpHeaders instance.
 public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
+    private static final ClientLogger LOGGER = new ClientLogger(NettyToAzureCoreHttpHeadersWrapper.class);
+
     // The Netty HttpHeaders we are wrapping
     private final io.netty.handler.codec.http.HttpHeaders nettyHeaders;
 
@@ -43,7 +49,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 //            nettyHeaders.set(name, value);
 //        }
 //        return this;
-        throw new UnsupportedOperationException();
+        throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
     }
 
     @Override
@@ -58,7 +64,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 //            nettyHeaders.set(name, values);
 //        }
 //        return this;
-        throw new UnsupportedOperationException();
+        throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
     }
 
     @Override
@@ -79,7 +85,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 //        HttpHeader header = get(name);
 //        nettyHeaders.remove(name);
 //        return header;
-        throw new UnsupportedOperationException();
+        throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
     }
 
     @Override
@@ -113,7 +119,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
                 @Override
                 public boolean containsValue(Object value) {
-                    throw new UnsupportedOperationException();
+                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
                 }
 
                 @Override
@@ -132,22 +138,22 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
                 @Override
                 public String put(String key, String value) {
-                    throw new UnsupportedOperationException("HttpHeaders are unmodifiable");
+                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
                 }
 
                 @Override
                 public String remove(Object key) {
-                    throw new UnsupportedOperationException("HttpHeaders are unmodifiable");
+                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
                 }
 
                 @Override
                 public void putAll(Map<? extends String, ? extends String> m) {
-                    throw new UnsupportedOperationException("HttpHeaders are unmodifiable");
+                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
                 }
 
                 @Override
                 public void clear() {
-                    throw new UnsupportedOperationException("HttpHeaders are unmodifiable");
+                    throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
                 }
 
                 @Override
@@ -201,7 +207,7 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
         public void addValue(String value) {
 //            super.addValue(value);
 //            allHeaders.add(getName(), value);
-            throw new UnsupportedOperationException();
+            throw LOGGER.logExceptionAsWarning(new UnsupportedOperationException());
         }
     }
 }
