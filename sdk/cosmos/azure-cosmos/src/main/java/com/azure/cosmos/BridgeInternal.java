@@ -147,11 +147,21 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
-                                                                         Map<String, String> headers,
-                                                                         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
-                                                                         QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext) {
-        return ModelBridgeInternal.createFeedResponseWithQueryMetrics(results, headers, queryMetricsMap, diagnosticsContext);
+    public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(
+        List<T> results,
+        Map<String, String> headers,
+        ConcurrentMap<String, QueryMetrics> queryMetricsMap,
+        QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext,
+        boolean useEtagAsContinuation,
+        boolean isNoChangesResponse) {
+
+        return ModelBridgeInternal.createFeedResponseWithQueryMetrics(
+            results,
+            headers,
+            queryMetricsMap,
+            diagnosticsContext,
+            useEtagAsContinuation,
+            isNoChangesResponse);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
