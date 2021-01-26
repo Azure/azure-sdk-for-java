@@ -33,7 +33,7 @@ parameters:
 
 
 steps:
-  - template: /eng/common/TestResources/setup-az-modules.yml
+#  - template: /eng/common/TestResources/setup-az-modules.yml
 
   - pwsh: |
       eng/common/TestResources/Import-AzModules.ps1
