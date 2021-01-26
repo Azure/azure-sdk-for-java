@@ -26,7 +26,7 @@ class LinkedStorageAccountsResourceImpl extends CreatableUpdatableImpl<LinkedSto
         super(name, new LinkedStorageAccountsResourceInner());
         this.manager = manager;
         // Set resource name
-        this.dataSourceType = name;
+        this.dataSourceType = DataSourceType.fromString(name);
         //
     }
 
@@ -34,7 +34,7 @@ class LinkedStorageAccountsResourceImpl extends CreatableUpdatableImpl<LinkedSto
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.dataSourceType = inner.name();
+        this.dataSourceType = DataSourceType.fromString(inner.name());
         // set resource ancestor and positional variables
         this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourcegroups");
         this.workspaceName = IdParsingUtils.getValueFromIdByName(inner.id(), "workspaces");
