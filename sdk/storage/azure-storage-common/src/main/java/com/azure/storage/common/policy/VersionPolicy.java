@@ -11,9 +11,16 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import reactor.core.publisher.Mono;
 
 // TODO: Remove this policy when Java generator adds support for it.
+/**
+ * Version
+ */
 public class VersionPolicy implements HttpPipelinePolicy {
     private final String version;
 
+    /**
+     *
+     * @param version The version to use
+     */
     public VersionPolicy(String version) {
         this.version = version;
     }
