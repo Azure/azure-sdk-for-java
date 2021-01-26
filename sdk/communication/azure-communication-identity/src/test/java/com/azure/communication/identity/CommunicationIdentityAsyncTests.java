@@ -94,7 +94,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .assertNext(item -> {
                 assertNotNull(item.getValue().getId());
                 assertFalse(item.getValue().getId().isEmpty());
-                assertEquals(201, item.getStatusCode(), "Expect status code to be 200");
+                assertEquals(201, item.getStatusCode(), "Expect status code to be 201");
             })
             .verifyComplete();
     }
@@ -342,7 +342,7 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
             .assertNext(item -> {
                 assertNotNull(item.getValue().getId());
                 assertFalse(item.getValue().getId().isEmpty());
-                assertEquals(201, item.getStatusCode(), "Expect status code to be 200");
+                assertEquals(201, item.getStatusCode(), "Expect status code to be 201");
             })
             .verifyComplete();
     }

@@ -11,4 +11,6 @@ module com.azure.communication.identity {
 
     opens com.azure.communication.identity.models
         to com.fasterxml.jackson.databind;
+    opens com.azure.communication.identity.implementation.models
+        to com.fasterxml.jackson.databind;
 }
