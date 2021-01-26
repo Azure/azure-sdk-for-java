@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
@@ -45,11 +44,8 @@ public final class EventGridPublisherAsyncClient {
 
     private final ObjectSerializer eventDataSerializer;
 
-    private final ClientOptions clientOptions;
-
-
     EventGridPublisherAsyncClient(HttpPipeline pipeline, String hostname, EventGridServiceVersion serviceVersion,
-        ClientOptions clientOptions, ObjectSerializer eventDataSerializer) {
+        ObjectSerializer eventDataSerializer) {
         this.impl = new EventGridPublisherClientImplBuilder()
             .pipeline(pipeline)
             .buildClient();
@@ -59,7 +55,6 @@ public final class EventGridPublisherAsyncClient {
         this.serviceVersion = serviceVersion;
 
         this.hostname = hostname;
-        this.clientOptions = clientOptions;
         this.eventDataSerializer = eventDataSerializer;
     }
 
@@ -78,14 +73,14 @@ public final class EventGridPublisherAsyncClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> sendEvents(Iterable<EventGridEvent> events) {
+    public Mono<Void> sendEventGridEvents(Iterable<EventGridEvent> events) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         }
-        return withContext(context -> sendEvents(events, context));
+        return withContext(context -> sendEventGridEvents(events, context));
     }
 
-    Mono<Void> sendEvents(Iterable<EventGridEvent> events, Context context) {
+    Mono<Void> sendEventGridEvents(Iterable<EventGridEvent> events, Context context) {
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
             .map(event -> {
@@ -164,14 +159,14 @@ public final class EventGridPublisherAsyncClient {
      * @return the response from the EventGrid service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> sendEventsWithResponse(Iterable<EventGridEvent> events) {
+    public Mono<Response<Void>> sendEventGridEventsWithResponse(Iterable<EventGridEvent> events) {
         if (events == null) {
             return monoError(logger, new NullPointerException("'events' cannot be null."));
         }
-        return withContext(context -> sendEventsWithResponse(events, context));
+        return withContext(context -> sendEventGridEventsWithResponse(events, context));
     }
 
-    Mono<Response<Void>> sendEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
+    Mono<Response<Void>> sendEventGridEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
         final Context finalContext = context != null ? context : Context.NONE;
         return Flux.fromIterable(events)
             .map(EventGridEvent::toImpl)

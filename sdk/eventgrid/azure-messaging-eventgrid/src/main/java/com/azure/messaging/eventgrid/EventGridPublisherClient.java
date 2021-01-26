@@ -38,7 +38,7 @@ public final class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendEventGridEvents(Iterable<EventGridEvent> events) {
-        asyncClient.sendEvents(events, Context.NONE).block();
+        asyncClient.sendEventGridEvents(events, Context.NONE).block();
     }
 
     /**
@@ -68,7 +68,7 @@ public final class EventGridPublisherClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendEventGridEventsWithResponse(Iterable<EventGridEvent> events, Context context) {
-        return asyncClient.sendEventsWithResponse(events, context).block();
+        return asyncClient.sendEventGridEventsWithResponse(events, context).block();
     }
 
     /**

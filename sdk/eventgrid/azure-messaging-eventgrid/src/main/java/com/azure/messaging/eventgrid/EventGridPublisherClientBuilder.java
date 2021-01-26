@@ -115,8 +115,7 @@ public final class EventGridPublisherClientBuilder {
             serviceVersion;
 
         if (httpPipeline != null) {
-            return new EventGridPublisherAsyncClient(httpPipeline, hostname, buildServiceVersion, clientOptions,
-                eventDataSerializer);
+            return new EventGridPublisherAsyncClient(httpPipeline, hostname, buildServiceVersion, eventDataSerializer);
         }
 
         Configuration buildConfiguration = (configuration == null)
@@ -170,8 +169,7 @@ public final class EventGridPublisherClientBuilder {
             .build();
 
 
-        return new EventGridPublisherAsyncClient(buildPipeline, hostname, buildServiceVersion, clientOptions,
-            eventDataSerializer);
+        return new EventGridPublisherAsyncClient(buildPipeline, hostname, buildServiceVersion, eventDataSerializer);
     }
 
     /**
