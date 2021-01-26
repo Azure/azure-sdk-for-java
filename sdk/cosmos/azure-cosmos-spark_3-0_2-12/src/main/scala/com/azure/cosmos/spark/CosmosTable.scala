@@ -39,7 +39,8 @@ class CosmosTable(val transforms: Array[Transform],
     with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap))
+  val effectiveUserConfig = CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap)
+  val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
   val client = new CosmosClientBuilder().endpoint(clientConfig.endpoint)
     .key(clientConfig.key)
     .buildAsyncClient()
@@ -49,7 +50,7 @@ class CosmosTable(val transforms: Array[Transform],
 
   // This can be used only when databaseName and ContainerName are specified.
   def initializeAndBroadcastCosmosClientStateForContainer() : Broadcast[CosmosClientMetadataCachesSnapshot] = {
-    val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig.asScala.toMap)
+    val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
     try {
       client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container).readItem(
         UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
@@ -71,7 +72,7 @@ class CosmosTable(val transforms: Array[Transform],
   override def name(): String = "com.azure.cosmos.spark.write"
 
   override def schema(): StructType = {
-    userProvidedSchema.getOrElse(CosmosTableSchemaInferer.inferSchema())
+    userProvidedSchema.getOrElse(CosmosTableSchemaInferer.inferSchema(client, effectiveUserConfig))
   }
 
   override def capabilities(): util.Set[TableCapability] = Set(
