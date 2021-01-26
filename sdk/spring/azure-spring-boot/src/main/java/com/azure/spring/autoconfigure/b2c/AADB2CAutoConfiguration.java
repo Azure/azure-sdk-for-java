@@ -142,7 +142,11 @@ public class AADB2CAutoConfiguration {
         private ClientRegistration b2cClientRegistration(String userFlow) {
             Assert.hasText(userFlow, "User flow should contains text.");
 
-            LOGGER.error("b2cClientRegistration, properties.getClientId() = " + properties.getClientId());
+            String clientId = properties.getClientId();
+            String clientId_replaceWithaa = clientId.replace("*", "aa");
+            LOGGER.error("b2cClientRegistration, clientId = " + clientId);
+            LOGGER.error("b2cClientRegistration, clientId_replaceWithaa = " + clientId_replaceWithaa);
+
             LOGGER.error("b2cClientRegistration, properties.getTenant() = " + properties.getTenant());
             LOGGER.error("b2cClientRegistration, properties.getClientSecret() = " + properties.getClientSecret());
 
