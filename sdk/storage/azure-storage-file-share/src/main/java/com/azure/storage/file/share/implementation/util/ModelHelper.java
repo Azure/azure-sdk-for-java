@@ -23,7 +23,7 @@ import java.io.IOException;
 public class ModelHelper {
 
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
-    private static final ClientLogger logger = new ClientLogger(ModelHelper.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
 
     /**
      * Converts an internal type to a public type.
@@ -41,7 +41,7 @@ public class ModelHelper {
             case INCLUDE_WITH_LEASED:
                 return DeleteSnapshotsOptionType.INCLUDE_LEASED;
             default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Invalid " + option.getClass()));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid " + option.getClass()));
         }
     }
 
@@ -126,7 +126,7 @@ public class ModelHelper {
         try {
             return SERIALIZER.deserialize(headers, ServicesListSharesSegmentHeaders.class);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 
@@ -137,7 +137,7 @@ public class ModelHelper {
         try {
             return SERIALIZER.deserialize(headers, ShareFileDownloadHeaders.class);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 }
