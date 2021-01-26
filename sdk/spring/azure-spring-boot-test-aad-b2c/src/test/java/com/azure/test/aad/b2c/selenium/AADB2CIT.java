@@ -22,8 +22,13 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_ID;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_CLIENT_SECRET;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_PROFILE_EDIT;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_REPLY_URL;
 import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_SIGN_UP_OR_SIGN_IN;
+import static com.azure.spring.test.EnvironmentVariable.AAD_B2C_TENANT;
 import static com.azure.test.aad.b2c.selenium.AADB2CSeleniumITHelper.createDefaultProperteis;
 
 public class AADB2CIT {
@@ -38,9 +43,20 @@ public class AADB2CIT {
 
     @Before
     public void initAndSignIn() {
-        LOGGER.info("aadb2CProperties.getClientId()=" + aadb2CProperties.getClientId());
-        LOGGER.info("aadb2CProperties.getTenant()=" + aadb2CProperties.getTenant());
-        LOGGER.info("aadb2CProperties.toString()=" + aadb2CProperties.toString());
+        String aad_b2c_tenant = AAD_B2C_TENANT;
+        String aad_b2c_client_id =     AAD_B2C_CLIENT_ID;
+        String aad_b2c_client_secret  = AAD_B2C_CLIENT_SECRET;
+        String aad_b2c_reply_url = AAD_B2C_REPLY_URL;
+        String aad_b2c_profile_edit = AAD_B2C_PROFILE_EDIT;
+        String aad_b2c_sign_up_or_sign_in = AAD_B2C_SIGN_UP_OR_SIGN_IN;
+
+        LOGGER.error("aad_b2c_tenant = " + aad_b2c_tenant);
+        LOGGER.error("aad_b2c_client_id = " + aad_b2c_client_id);
+        LOGGER.error("aad_b2c_client_secret = " + aad_b2c_client_secret);
+        LOGGER.error("aad_b2c_reply_url = " + aad_b2c_reply_url);
+        LOGGER.error("aad_b2c_profile_edit = " + aad_b2c_profile_edit);
+        LOGGER.error("aad_b2c_sign_up_or_sign_in = " + aad_b2c_sign_up_or_sign_in);
+
         aadB2CSeleniumITHelper = new AADB2CSeleniumITHelper(DumbApp.class, createDefaultProperteis());
         aadB2CSeleniumITHelper.logIn();
     }
