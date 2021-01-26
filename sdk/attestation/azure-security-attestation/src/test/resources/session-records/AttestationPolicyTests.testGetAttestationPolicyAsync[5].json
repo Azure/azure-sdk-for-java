@@ -5,13 +5,13 @@
     "Headers" : { },
     "Response" : {
       "Server" : "Kestrel",
-      "x-ms-maa-service-version" : "1.10.01469.0002",
+      "x-ms-maa-service-version" : "1.10.01476.0001",
       "retry-after" : "0",
       "Content-Length" : "601",
       "StatusCode" : "200",
-      "x-ms-request-id" : "00-5ab8d7448cb3f3cb941ca00350ec7a53-0000000000000000-00",
-      "Body" : "{\"token\":\"eyJhbGciOiAiUlMyNTYiLCAiamt1IjogImh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmlzby53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsICJraWQiOiAiMTVOMk1Ib2o5aUFka0YvYzVuUkUzSjJIQjhKRzZWdWUzVXp2dTNLL1Nlcz0iLCAidHlwIjogIkpXVCJ9.eyJleHAiOiAxNjExMTc3MzUxLCAiaWF0IjogMTYxMTE3Mzc1MSwgImlzcyI6ICJodHRwczovL2phbGFycnlvYXR0ZXN0YXRpb25pc28ud3VzLmF0dGVzdC5henVyZS5uZXQiLCAibmJmIjogMTYxMTE3Mzc1MSwgIngtbXMtcG9saWN5IjogImV5SmhiR2NpT2lKdWIyNWxJbjAuLiJ9.OO5jQTo9-dzAo6Ih2CbJ4Ii5OTEhhksVI8ZAGI4qmlUpibV3-Ibypi8n3BoUEf94AQaPhe2MnRkFzB_pG-Q0ue1HTtM7cjbZ69hNxtMITJ2koncvjf-Z117cq88SWjXaJ0E1obV4F3KbjjCDz_9sBZjYDFzN3_trxui3ozHURTg\"}",
-      "Date" : "Wed, 20 Jan 2021 20:15:51 GMT",
+      "x-ms-request-id" : "00-5785442049b0a6efa56c016837e04664-0000000000000000-00",
+      "Body" : "{\"token\":\"eyJhbGciOiAiUlMyNTYiLCAiamt1IjogImh0dHBzOi8vamFsYXJyeW9hdHRlc3RhdGlvbmlzby53dXMuYXR0ZXN0LmF6dXJlLm5ldC9jZXJ0cyIsICJraWQiOiAiMTVOMk1Ib2o5aUFka0YvYzVuUkUzSjJIQjhKRzZWdWUzVXp2dTNLL1Nlcz0iLCAidHlwIjogIkpXVCJ9.eyJleHAiOiAxNjExNjg2NTY3LCAiaWF0IjogMTYxMTY4Mjk2NywgImlzcyI6ICJodHRwczovL2phbGFycnlvYXR0ZXN0YXRpb25pc28ud3VzLmF0dGVzdC5henVyZS5uZXQiLCAibmJmIjogMTYxMTY4Mjk2NywgIngtbXMtcG9saWN5IjogImV5SmhiR2NpT2lKdWIyNWxJbjAuLiJ9.YPk0pRoytBEfONyqr7tjPcpTYYe9Jtj6_TBQzksbsoIlcL80eFA1J6WalbTOEU3pa6uI-y3aAg_urnDeC9FJuiRGgw1_ai4DsWcy0G951X_xK6iI91nm_DV3_uqifmxG63dARKjINtDX60e7pkrQaQ7NGZicNbHQGXt_BPBfZtY\"}",
+      "Date" : "Tue, 26 Jan 2021 17:42:47 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

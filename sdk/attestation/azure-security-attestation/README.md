@@ -105,7 +105,7 @@ runtimeData.setData(decodedRuntimeData);
 request.setRuntimeData(runtimeData);
 AttestationResponse response = client.attestSgxEnclave(request);
 
-JWTClaimsSet claims = verifyAttestationToken(httpClient, clientUri, response.getToken()).block();
+JWTClaimsSet claims = null;
 ```
 
 ### Get attestation policy
@@ -120,40 +120,41 @@ The attestation policy document is a JSON Web Signature object, with a single fi
 
 <!-- embedme src\samples\com\azure\security\attestation\ReadmeSamples.java#L59-L84 -->
 ```java
-cyResponse policyResponse = client.get(AttestationType.SGX_ENCLAVE);
-fyAttestationToken(httpClient, clientUri, policyResponse.getToken())
-.subscribe(claims -> {
-    if (claims != null) {
 
-        String policyDocument = claims.getClaims().get("x-ms-policy").toString();
+sponse policyResponse = client.get(AttestationType.SGX_ENCLAVE);
+testationToken(httpClient, clientUri, policyResponse.getToken())
+scribe(claims -> {
+if (claims != null) {
 
-        JOSEObject policyJose = null;
-        try {
-            policyJose = JOSEObject.parse(policyDocument);
-        } catch (ParseException e) {
-            logger.logExceptionAsError(new RuntimeException(e.toString()));
-        }
-        assert policyJose != null;
-        Map<String, Object> jsonObject = policyJose.getPayload().toJSONObject();
-        if (jsonObject != null) {
-            assertTrue(jsonObject.containsKey("AttestationPolicy"));
-            String base64urlPolicy = jsonObject.get("AttestationPolicy").toString();
+    String policyDocument = claims.getClaims().get("x-ms-policy").toString();
 
-            byte[] attestationPolicyUtf8 = Base64.getUrlDecoder().decode(base64urlPolicy);
-            String attestationPolicy;
-            attestationPolicy = new String(attestationPolicyUtf8, StandardCharsets.UTF_8);
-            // Inspect the retrieved policy.
-        }
+    JOSEObject policyJose = null;
+    try {
+        policyJose = JOSEObject.parse(policyDocument);
+    } catch (ParseException e) {
+        throw logger.logExceptionAsError(new RuntimeException(e.toString()));
     }
-});
+    assert policyJose != null;
+    Map<String, Object> jsonObject = policyJose.getPayload().toJSONObject();
+    if (jsonObject != null) {
+        assertTrue(jsonObject.containsKey("AttestationPolicy"));
+        String base64urlPolicy = jsonObject.get("AttestationPolicy").toString();
+
+        byte[] attestationPolicyUtf8 = Base64.getUrlDecoder().decode(base64urlPolicy);
+        String attestationPolicy;
+        attestationPolicy = new String(attestationPolicyUtf8, StandardCharsets.UTF_8);
+        // Inspect the retrieved policy.
+    }
+}
 ```
 
 ### Retrieve Token Certificates
 
 Use `SigningCertificatesClient.get` to retrieve the certificates which can be used to validate the token returned from the attestation service.
 
-<!-- embedme src\samples\com\azure\security\attestation\ReadmeSamples.java#L89-L91 -->
+<!-- embedme src\samples\com\azure\security\attestation\ReadmeSamples.java#L89-L92 -->
 ```java
+
 AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
 
 JsonWebKeySet certs = attestationBuilder.buildSigningCertificatesClient().get();
