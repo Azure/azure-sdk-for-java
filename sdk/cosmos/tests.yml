@@ -5,316 +5,88 @@ variables:
   - name: AdditionalArgs
     value: ''
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      TestName: Cosmos_CI
-      ServiceDirectory: cosmos
-      Artifacts:
-        - name: azure-cosmos
-          groupId: com.azure
-          safeName: azurecosmos
-      AdditionalModules:
-        - name: azure-cosmos-benchmark
-          groupId: com.azure
-      TimeoutInMinutes: 120
-      MaxParallel: 8
-      Matrix:
-        # 59m 59s, expect passed
-        Session_Http_E2E:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
-          DisplayName: Https ReadMyWrites Integration Tests
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
-          DESIRED_CONSISTENCY: 'Session'
-          ACCOUNT_CONSISTENCY: 'Session'
-        # 59m 59s, expect passed
-        Session_Tcp_E2E:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
-          DisplayName: TCP ReadMyWrites Integration Tests
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
-          DESIRED_CONSISTENCY: 'Session'
-          ACCOUNT_CONSISTENCY: 'Session'
-        # 36m 46s, expect passed
-        Session_Single_Region_Tcp_NonEmulator:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
-          DisplayName: Session Single Region TCP NonEmulator
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pnon-emulator'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-        # 1h 25m 12s, expect passed
-        Session_Single_Region_Tcp_Fast:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
-          DisplayName: Session Single Region Fast
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pfast'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-        # 41m 14s, expect passed
-        Session_Single_Region_Tcp_Direct:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
-          DisplayName: Session Single Region Direct
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pdirect'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-        # 42m 42s, expect passed
-        Session_Single_Region_Tcp_Long:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
-          DisplayName: Session Single Region Long
-          Pool: azsdk-pool-mms-win-2019-general
-          OSVmImage: MMS2019
-          ProfileFlag: '-e -Plong'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-          # 1h 30m 32s, expect passed
-        Strong_Session_Single_Region_Tcp_Fast:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
-          DisplayName: Strong Session Single Region TCP Fast
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pfast'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-          ACCOUNT_CONSISTENCY: 'Strong'
-        # 1h 30m 32s, expect passed
-        Bounded_Staleness_Single_Region_Tcp_Fast:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
-          DisplayName: Bounded Staleness Single Region TCP Fast
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pfast'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["BoundedStaleness"]'
-          ACCOUNT_CONSISTENCY: 'Strong'
-        # 1h 30m 32s, expect passed
-        Consistent_Prefix_Single_Region_Tcp_Fast:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
-          DisplayName: Consistent Prefix Single Region TCP Fast
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pfast'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["ConsistentPrefix"]'
-          ACCOUNT_CONSISTENCY: 'Strong'
-        # 59m 58s, expect passed
-        Strong_Single_Region_Https_E2E:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
-          DisplayName: Strong Single Region Https ReadMyWrites
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Https"'
-          DESIRED_CONSISTENCY: 'Strong'
-          ACCOUNT_CONSISTENCY: 'Strong'
-        # 59m 58s, expect passed
-        Strong_Single_Region_Tcp_E2E:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
-          DisplayName: Strong Single Region TCP ReadMyWrites
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
-          DESIRED_CONSISTENCY: 'Strong'
-          ACCOUNT_CONSISTENCY: 'Strong'
-        # 59m 58s, expect passed
-        Bounded_Staleness_Single_Region_Tcp_E2E:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
-          DisplayName: Bounded Staleness Single Region TCP ReadMyWrites
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dazure.cosmos.directModeProtocol=Tcp"'
-          DESIRED_CONSISTENCY: 'BoundedStaleness'
-          ACCOUNT_CONSISTENCY: 'Strong'
-        # 43m 53s, expect passed
-        Strong_Session_Single_Region_Tcp_Direct:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
-          DisplayName: Strong Session Single Region TCP Direct
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pdirect'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-          ACCOUNT_CONSISTENCY: 'Strong'
-        # 40m 59s, expect passed
-        Strong_Session_Single_Region_Tcp_NonEmulator:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Strong' }"
-          DisplayName: Strong Session Single Region TCP NonEmulator
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pnon-emulator'
-          PROTOCOLS: '["Tcp"]'
-          DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-          ACCOUNT_CONSISTENCY: 'Strong'
-        # 15m 34s, previously failing
-        Session_Multimaster_Multi_Region_Tcp_MultiMaster:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
-          DisplayName: Multimaster Multi Region Multi-Master
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pmulti-master'
-          PROTOCOLS: '["Tcp"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          PREFERRED_LOCATIONS: '["East US 2"]'
-        # 1h 30m 43s, expect passed
-        Session_Multimaster_Multi_Region_Tcp_Fast:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
-          DisplayName: Multimaster Multi Region Fast
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pfast'
-          PROTOCOLS: '["Tcp"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          PREFERRED_LOCATIONS: '["East US 2"]'
-        # 30m 10s, expect passed
-        Session_Multimaster_Multi_Region_Tcp_Direct:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
-          DisplayName: Multimaster Multi Region Direct
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pdirect'
-          PROTOCOLS: '["Tcp"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          PREFERRED_LOCATIONS: '["East US 2"]'
-        # 35m 0s, expect passed
-        Session_Multimaster_Multi_Region_Tcp_NonEmulator:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
-          DisplayName: Multimaster Multi Region NonEmulator
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pnon-emulator'
-          PROTOCOLS: '["Tcp"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          PREFERRED_LOCATIONS: '["East US 2"]'
-        # 15m 21s, previously failing
-        Session_Multimaster_Single_Region_Tcp_MultiMaster:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
-          DisplayName: MultiMaster Single Region Multi-Master
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pmulti-master'
-          PROTOCOLS: '["Tcp"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          PREFERRED_LOCATIONS: null
-        # 1h 30m 34s, expect passed
-        Session_Multimaster_Single_Region_Tcp_Fast:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
-          DisplayName: Multimaster Single Region Fast
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pfast'
-          PROTOCOLS: '["Tcp"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          PREFERRED_LOCATIONS: null
-        # 45m 05s, expect passed
-        Session_Multimaster_Single_Region_Tcp_Direct:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
-          DisplayName: Multimaster Single Region Direct
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pdirect'
-          PROTOCOLS: '["Tcp"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          PREFERRED_LOCATIONS: null
-        # 25m 10s, expect passed
-        Session_Multimaster_Single_Region_Tcp_NonEmulator:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $true; defaultConsistencyLevel = 'Session' }"
-          DisplayName: Multimaster Single Region NonEmulator
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pnon-emulator'
-          PROTOCOLS: '["Tcp"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          PREFERRED_LOCATIONS: null
-        # 15m 10s, expect passed
-        Session_Single_Master_Multi_Region_Tcp_MultiRegion:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session'; enableMultipleRegions = $true}"
-          DisplayName: Single Master Multi Region Multi-Region
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          ProfileFlag: '-Pmulti-region'
-          PROTOCOLS: '["Tcp"]'
-          ACCOUNT_CONSISTENCY: 'Session'
-          DESIRED_CONSISTENCIES: '["Session"]'
-          PREFERRED_LOCATIONS: null
+stages:
+  - stage: Cosmos_Live_Test
+    jobs:
+      - template: /eng/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+        parameters:
+          CloudConfig:
+            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+            Cloud: Public
+          MatrixConfigs:
+            - Name: Cosmos_live_test
+              Path: sdk/cosmos/platform-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          AdditionalParameters:
+            TestName: Cosmos_CI
+            ServiceDirectory: cosmos
+            Artifacts:
+              - name: azure-cosmos
+                groupId: com.azure
+                safeName: azurecosmos
+            AdditionalModules:
+              - name: azure-cosmos-benchmark
+                groupId: com.azure
+            TimeoutInMinutes: 120
+            MaxParallel: 8
+            PreSteps:
+              - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+            TestStepMavenInputs:
+              goals: verify
+              options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
+            TestResultsFiles: '**/junitreports/TEST-*.xml'
 
-      PreRunSteps:
-        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-
-      TestStepMavenInputs:
-        goals: verify
-        options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-
-      TestResultsFiles: '**/junitreports/TEST-*.xml'
-
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      TestName: Integration_Test_Spring_Data_Cosmosdb
-      ServiceDirectory: cosmos
-      Artifacts:
-        - name: azure-spring-data-cosmos-test
-          groupId: com.azure
-          safeName: azurespringdatacosmostest
-      TimeoutInMinutes: 90
-      Matrix:
-        Session_Integration:
-          ArmTemplateParameters: "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }"
-          DisplayName: Session Integration
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu1804
-          ProfileFlag: '-P integration-test-azure'
-
-      EnvVars:
-        AZURE_TEST_MODE: LIVE
-      PreRunSteps:
-        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-      PostRunSteps:
-        - script: |
-            python --version
-            python -m pip install setuptools termcolor in_place
-            python sdk/spring/scripts/replace_util.py --module cosmos --log debug --color false
-          displayName: 'Run replace_util.py'
-        - task: Maven@3
-          displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
-          inputs:
-            mavenPomFile: pom.xml
-            goals: 'install'
-            options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
-            mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-            javaHomeOption: 'JDKVersion'
-            jdkVersionOption: $(JavaBuildVersion)
-            jdkArchitectureOption: 'x64'
-            publishJUnitResults: false
-        - task: Maven@3
-          displayName: 'Run tests again: $(DisplayName)'
-          inputs:
-            mavenPomFile: pom.xml
-            goals: clean verify
-            options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
-          env:
-            AZURE_TEST_MODE: LIVE
-      TestStepMavenInputs:
-        goals: clean verify
-        options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
+  - stage: Cosmos_Live_Test_Integration
+    dependsOn: []
+    jobs:
+      - template: /eng/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+        parameters:
+          CloudConfig:
+            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+            Cloud: Public
+          MatrixConfigs:
+            - Name: Cosmos_live_test_integration
+              Path: sdk/cosmos/integration-matrix.json
+              Selection: all
+              GenerateVMJobs: true
+          AdditionalParameters:
+            TestName: Integration_Test_Spring_Data_Cosmosdb
+            ServiceDirectory: cosmos
+            Artifacts:
+              - name: azure-spring-data-cosmos-test
+                groupId: com.azure
+                safeName: azurespringdatacosmostest
+            TimeoutInMinutes: 90
+            EnvVars:
+              AZURE_TEST_MODE: LIVE
+            PreSteps:
+              - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+            PostSteps:
+              - script: |
+                  python --version
+                  python -m pip install setuptools termcolor in_place
+                  python sdk/spring/scripts/replace_util.py --module cosmos --log debug --color false
+                displayName: 'Run replace_util.py'
+              - task: Maven@3
+                displayName: 'Build and Install again, JDK Version: $(JavaBuildVersion)'
+                inputs:
+                  mavenPomFile: pom.xml
+                  goals: 'install'
+                  options: '$(DefaultOptions) -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -pl $(ProjectList) -am'
+                  mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+                  javaHomeOption: 'JDKVersion'
+                  jdkVersionOption: $(JavaBuildVersion)
+                  jdkArchitectureOption: 'x64'
+                  publishJUnitResults: false
+              - task: Maven@3
+                displayName: 'Run tests again: $(DisplayName)'
+                inputs:
+                  mavenPomFile: pom.xml
+                  goals: clean verify
+                  options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
+                env:
+                  AZURE_TEST_MODE: LIVE
+            TestStepMavenInputs:
+              goals: clean verify
+              options: '$(ProfileFlag) -Dgpg.skip -Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -pl $(ProjectList)'
