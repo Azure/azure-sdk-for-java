@@ -5,7 +5,8 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.models.CosmosQueryRequestOptions
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, DecimalNode, DoubleNode, FloatNode, IntNode, NullNode, ObjectNode, TextNode}
+import com.fasterxml.jackson.databind.node.{ArrayNode, BinaryNode, BooleanNode, DecimalNode, DoubleNode,
+    FloatNode, IntNode, LongNode, NullNode, ObjectNode, TextNode}
 
 
 // scalastyle:off underscore.import
@@ -19,7 +20,8 @@ private object CosmosTableSchemaInferer
 
     def inferSchema(inferredItems : Seq[ObjectNode]): StructType = {
         if (inferredItems.isEmpty){
-            throw new Exception("Cannot infer schema from an empty source, there must be at least one document.")
+            // No documents to infer from
+            StructType(Seq())
         }
 
         // Create a unique map of all distinct properties from documents
@@ -57,7 +59,7 @@ private object CosmosTableSchemaInferer
                 .filter(field => propertyFilter.isUserProperty(field.getKey))
                 .map(field =>
                     field.getKey ->
-                    StructField(field.getKey, inferDataTypeFromJsonNode(field.getValue)))
+                    StructField(field.getKey, inferDataTypeFromJsonNode(field.getValue), true))
                 .toSeq)
     }
 
@@ -68,17 +70,18 @@ private object CosmosTableSchemaInferer
             case _: BinaryNode => BinaryType
             case _: BooleanNode => BooleanType
             case _: TextNode => StringType
-            case _: DoubleNode => DoubleType
-            case decimalNode: DecimalNode if decimalNode.isBigDecimal =>
-                val asBigDecimal = decimalNode.decimalValue()
-                DecimalType(asBigDecimal.precision, asBigDecimal.scale)
-            case decimalNode: DecimalNode if decimalNode.isFloat => FloatType
-            case decimalNode: DecimalNode if decimalNode.isDouble => DoubleType
-            case decimalNode: DecimalNode if decimalNode.isInt => IntegerType
             case _: FloatNode => FloatType
             case _: DoubleNode => DoubleType
+            case _: LongNode => LongType
             case _: IntNode => IntegerType
-            case arrayNode: ArrayNode => inferDataTypeFromArrayNode(arrayNode) match {
+            case decimalNode: DecimalNode if decimalNode.isBigDecimal =>
+                val asBigDecimal = decimalNode.decimalValue()
+                val precision = Integer.min(asBigDecimal.precision, DecimalType.MAX_PRECISION)
+                val scale = Integer.min(asBigDecimal.scale, DecimalType.MAX_SCALE)
+                DecimalType(precision, scale)
+            case decimalNode: DecimalNode if decimalNode.isFloat => FloatType
+            case decimalNode: DecimalNode if decimalNode.isDouble => DoubleType
+            case decimalNode: DecimalNode if decimalNode.isInt => IntegerType case arrayNode: ArrayNode => inferDataTypeFromArrayNode(arrayNode) match {
                 case Some(valueType) => ArrayType(valueType)
                 case None => NullType
             }
