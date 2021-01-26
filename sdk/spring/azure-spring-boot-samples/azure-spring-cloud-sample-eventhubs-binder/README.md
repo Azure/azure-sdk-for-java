@@ -3,9 +3,10 @@
 ## Key concepts
 
 This code sample demonstrates how to use the Spring Cloud Stream Binder
-for Azure Event Hub. The sample app exposes a RESTful API to receive string
-message. Then message is sent through Azure Event Hub to a `sink` which
-simply logs the message.
+for Azure Event Hub. The sample app has two operating modes, such as "manual" and "non-manual". 
+One way is to expose a RESTful API to receive string message , another way is to automatically provide String messages.
+These Messages are added to the EventHub Stream. The sample application consumes the Messages from the stream.
+
 
 ## Getting started
 
@@ -21,6 +22,10 @@ completed before the run.
 
 We have several ways to config the Spring Cloud Stream Binder for Azure
 Event Hub. You can choose anyone of them.
+
+>[!Important]
+>
+>  When you apply the `manual` model , must deploy Active profile like `manual` in your IDE.
 
 
 #### Method 1: Connection string based usage
@@ -46,10 +51,10 @@ Event Hub. You can choose anyone of them.
             checkpoint-container: [checkpoint-container]
         stream:
           bindings:
-            input:
+            consume-in-0:
               destination: [eventhub-name]
               group: [consumer-group]
-            output:
+            supply-out-0:
               destination: [the-same-eventhub-name-as-above]
     ```
 
@@ -79,10 +84,10 @@ Event Hub. You can choose anyone of them.
             checkpoint-container: [checkpoint-container]
         stream:
           bindings:
-            input:
+            consume-in-0:
               destination: [eventhub-name]
               group: [consumer-group]
-            output:
+            supply-out-0:
               destination: [the-same-eventhub-name-as-above]
     ```
         
@@ -127,10 +132,10 @@ Please follow [create managed identity][create-managed-identity] to set up manag
             checkpoint-container: [checkpoint-container]
         stream:
           bindings:
-            input:
+            consume-in-0:
               destination: [eventhub-name]
               group: [consumer-group]
-            output:
+            supply-out-0:
               destination: [the-same-eventhub-name-as-above]
     ```
     > We should specify `spring.profiles.active=mi` to run the Spring Boot application. 
