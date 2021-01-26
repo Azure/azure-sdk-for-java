@@ -35,9 +35,6 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
-      # ServiceDirectory references must get passed down by the caller as variable references
-      - name: ServiceDirectory
-        value: ${{ parameters.ServiceDirectory }}
       - name: ArmTemplateParameters
         value: '@{}'
 
@@ -109,20 +106,6 @@ jobs:
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
         env: ${{ parameters.EnvVars }}
 
-      - task: Maven@3
-        displayName: 'Generate aggregate code coverage report'
-        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.ServiceDirectory }}', 'communication'))
-        inputs:
-          mavenPomFile: sdk/${{ parameters.ServiceDirectory }}/pom.xml
-          options: -Pcoverage
-          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
-          javaHomeOption: 'JDKVersion'
-          jdkVersionOption: $(JavaTestVersion)
-          jdkArchitectureOption: 'x64'
-          goals: jacoco:report-aggregate
-          # we want to run this when TestFromSource isn't true
-          condition: and(succeeded(), ne(variables['TestFromSource'],'true'))
-
       - ${{ parameters.PostSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
@@ -140,13 +123,3 @@ jobs:
           testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(DisplayName)'
           ${{ if ne(parameters.TestResultsFiles, '') }}:
             testResultsFiles: ${{ parameters.TestResultsFiles }}
-
-      # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
-      # Code coverage reporting is setup only for Track 2 modules.
-      - task: PublishCodeCoverageResults@1
-        condition: and(eq(variables['OsName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'), eq('${{ parameters.ServiceDirectory }}', 'communication'))
-        inputs:
-          codeCoverageTool: JaCoCo
-          summaryFileLocation: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/jacoco.xml
-          reportDirectory: sdk/${{ parameters.ServiceDirectory }}/target/site/jacoco-aggregate/
-          failIfCoverageEmpty: false
