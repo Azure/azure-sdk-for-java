@@ -3,6 +3,8 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import com.azure.spring.telemetry.TelemetrySender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -55,6 +57,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
 )
 @EnableConfigurationProperties(AADB2CProperties.class)
 public class AADB2CAutoConfiguration {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CAutoConfiguration.class);
 
     private final ClientRegistrationRepository repository;
 
@@ -138,6 +141,10 @@ public class AADB2CAutoConfiguration {
 
         private ClientRegistration b2cClientRegistration(String userFlow) {
             Assert.hasText(userFlow, "User flow should contains text.");
+
+            LOGGER.error("b2cClientRegistration, properties.getClientId() = " + properties.getClientId());
+            LOGGER.error("b2cClientRegistration, properties.getTenant() = " + properties.getTenant());
+            LOGGER.error("b2cClientRegistration, properties.getClientSecret() = " + properties.getClientSecret());
 
             return ClientRegistration.withRegistrationId(userFlow) // Use flow as registration Id.
                 .clientId(properties.getClientId())

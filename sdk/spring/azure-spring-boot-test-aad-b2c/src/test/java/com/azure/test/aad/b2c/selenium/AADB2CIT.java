@@ -4,14 +4,12 @@
 package com.azure.test.aad.b2c.selenium;
 
 import com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer;
-import com.azure.spring.autoconfigure.b2c.AADB2CProperties;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,9 +31,6 @@ import static com.azure.test.aad.b2c.selenium.AADB2CSeleniumITHelper.createDefau
 
 public class AADB2CIT {
     private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CIT.class);
-
-    @Autowired
-    AADB2CProperties aadb2CProperties;
 
     private final String JOB_TITLE_A_WORKER = "a worker";
     private final String JOB_TITLE_WORKER = "worker";
