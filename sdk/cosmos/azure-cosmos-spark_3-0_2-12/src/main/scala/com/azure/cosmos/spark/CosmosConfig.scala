@@ -111,7 +111,7 @@ object CosmosReadConfig {
         val samplingSize = CosmosConfigEntry.parse(cfg, inferSchemaSamplingSize)
         val enabled = CosmosConfigEntry.parse(cfg, inferSchemaEnabled)
 
-        CosmosReadConfig(samplingSize.getOrElse(DefaultSampleSize), enabled.getOrElse(true))
+        CosmosReadConfig(samplingSize.getOrElse(DefaultSampleSize), enabled.getOrElse(false))
     }
 }
 
