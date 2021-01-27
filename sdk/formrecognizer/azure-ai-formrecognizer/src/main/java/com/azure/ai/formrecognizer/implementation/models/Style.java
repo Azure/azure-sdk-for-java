@@ -4,7 +4,7 @@
 
 package com.azure.ai.formrecognizer.implementation.models;
 
-import com.azure.ai.formrecognizer.models.TextStyle;
+import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -15,7 +15,7 @@ public final class Style {
      * The text line style name, including handwriting and other.
      */
     @JsonProperty(value = "name", required = true)
-    private TextStyle name;
+    private TextStyleName name;
 
     /*
      * The confidence of text line style.
@@ -28,7 +28,7 @@ public final class Style {
      *
      * @return the name value.
      */
-    public TextStyle getName() {
+    public TextStyleName getName() {
         return this.name;
     }
 
@@ -38,7 +38,7 @@ public final class Style {
      * @param name the name value to set.
      * @return the Style object itself.
      */
-    public Style setName(TextStyle name) {
+    public Style setName(TextStyleName name) {
         this.name = name;
         return this;
     }
