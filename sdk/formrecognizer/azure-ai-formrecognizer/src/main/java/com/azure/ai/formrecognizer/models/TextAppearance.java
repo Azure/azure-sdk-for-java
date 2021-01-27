@@ -3,30 +3,30 @@
 
 package com.azure.ai.formrecognizer.models;
 
-import com.azure.ai.formrecognizer.implementation.AppearanceHelper;
+import com.azure.ai.formrecognizer.implementation.TextAppearanceHelper;
 
-/** An object representing the appearance of the text line. */
-public final class Appearance {
+/** The TextAppearance model representing the appearance of the text line. */
+public final class TextAppearance {
     /*
      * An object representing the style of the text line.
      */
-    private Style style;
+    private TextStyle style;
 
     static {
-        AppearanceHelper.setAccessor(new AppearanceHelper.AppearanceAccessor() {
+        TextAppearanceHelper.setAccessor(new TextAppearanceHelper.TextAppearanceAccessor() {
             @Override
-            public void setStyle(Appearance appearance, Style style) {
-                appearance.setStyle(style);
+            public void setStyle(TextAppearance textAppearance, TextStyle textStyle) {
+                textAppearance.setStyle(textStyle);
             }
         });
     }
 
     /**
-     * Get the style property: An object representing the style of the text line.
+     * Get the style of the text line.
      *
      * @return the style value.
      */
-    public Style getStyle() {
+    public TextStyle getStyle() {
         return this.style;
     }
 
@@ -36,7 +36,7 @@ public final class Appearance {
      * @param style the style value to set.
      * @return the Appearance object itself.
      */
-    private Appearance setStyle(Style style) {
+    private TextAppearance setStyle(TextStyle style) {
         this.style = style;
         return this;
     }

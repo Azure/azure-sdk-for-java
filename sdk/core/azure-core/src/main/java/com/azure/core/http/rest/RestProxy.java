@@ -247,7 +247,7 @@ public final class RestProxy implements InvocationHandler {
         final Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args);
         if (bodyContentObject == null) {
-            request.getHeaders().put("Content-Length", "0");
+            request.getHeaders().set("Content-Length", "0");
         } else {
             // We read the content type from the @BodyParam annotation
             String contentType = methodParser.getBodyContentType();
@@ -265,7 +265,7 @@ public final class RestProxy implements InvocationHandler {
 //                        + "type correctly specified in its service interface"));
             }
 
-            request.getHeaders().put("Content-Type", contentType);
+            request.getHeaders().set("Content-Type", contentType);
 
             // TODO(jogiles) this feels hacky
             boolean isJson = false;
