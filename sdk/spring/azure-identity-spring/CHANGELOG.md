@@ -4,7 +4,6 @@
 
 
 ## 1.1.0 (2021-01-20)
- - Increase azure-identity's version to 1.2.2.
 
 
 ## 1.0.0 (2020-12-30)
