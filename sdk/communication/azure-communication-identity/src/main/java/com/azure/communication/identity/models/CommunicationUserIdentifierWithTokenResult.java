@@ -3,12 +3,13 @@
 package com.azure.communication.identity.models;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.core.credential.AccessToken;
 
 /** The CommunicationUserIdentifierWithAccessTokenResult model. */
 public final class CommunicationUserIdentifierWithTokenResult {
 
     private final CommunicationUserIdentifier communicationUser;
-    private final CommunicationUserToken userToken;
+    private final AccessToken userToken;
 
     /**
      * Creates a CommunicationUserIdentifierWithTokenResult object
@@ -18,7 +19,7 @@ public final class CommunicationUserIdentifierWithTokenResult {
      * @throws IllegalArgumentException thrown if id parameter fail the validation.
      */
     public CommunicationUserIdentifierWithTokenResult(CommunicationUserIdentifier communicationUser,
-            CommunicationUserToken userToken) {
+        AccessToken userToken) {
         this.communicationUser = communicationUser;
         this.userToken = userToken;
     }
@@ -37,7 +38,7 @@ public final class CommunicationUserIdentifierWithTokenResult {
      *
      * @return the userToken value.
      */
-    public CommunicationUserToken getUserToken() {
+    public AccessToken getUserToken() {
         return this.userToken;
     }
 }

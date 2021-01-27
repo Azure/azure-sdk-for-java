@@ -4,7 +4,7 @@
 
 package com.azure.communication.identity.implementation.models;
 
-import com.azure.communication.identity.models.CommunicationIdentityTokenScope;
+import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,14 +16,14 @@ public final class CommunicationIdentityAccessTokenRequest {
      * List of scopes attached to the token.
      */
     @JsonProperty(value = "scopes", required = true)
-    private List<CommunicationIdentityTokenScope> scopes;
+    private List<CommunicationTokenScope> scopes;
 
     /**
      * Get the scopes property: List of scopes attached to the token.
      *
      * @return the scopes value.
      */
-    public List<CommunicationIdentityTokenScope> getScopes() {
+    public List<CommunicationTokenScope> getScopes() {
         return this.scopes;
     }
 
@@ -33,7 +33,7 @@ public final class CommunicationIdentityAccessTokenRequest {
      * @param scopes the scopes value to set.
      * @return the CommunicationIdentityAccessTokenRequest object itself.
      */
-    public CommunicationIdentityAccessTokenRequest setScopes(List<CommunicationIdentityTokenScope> scopes) {
+    public CommunicationIdentityAccessTokenRequest setScopes(List<CommunicationTokenScope> scopes) {
         this.scopes = scopes;
         return this;
     }

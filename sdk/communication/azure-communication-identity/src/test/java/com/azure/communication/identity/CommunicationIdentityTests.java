@@ -11,9 +11,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.identity.models.CommunicationIdentityTokenScope;
+import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
-import com.azure.communication.identity.models.CommunicationUserToken;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -91,8 +91,8 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
         client = setupClient(builder, "createUserWithTokenSync");
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
         // Action & Assert
         CommunicationUserIdentifierWithTokenResult result = client.createUserWithToken(scopes);
@@ -107,9 +107,8 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         // Arrange
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
         client = setupClient(builder, "createUserWithTokenWithResponseSync");
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<CommunicationIdentityTokenScope>();
-        scopes.add(CommunicationIdentityTokenScope.CHAT);
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
         // Action & Assert
         Response<CommunicationUserIdentifierWithTokenResult> response = 
@@ -155,8 +154,8 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "revokeTokenSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
         client.issueToken(communicationUser, scopes);
 
         // Action & Assert
@@ -170,8 +169,8 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
         client = setupClient(builder, "revokeTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
         client.issueToken(communicationUser, scopes);
 
         // Action & Assert
@@ -186,15 +185,15 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
         client = setupClient(builder, "issueTokenSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
         // Action & Assert
-        CommunicationUserToken issuedToken = client.issueToken(communicationUser, scopes);
+        AccessToken issuedToken = client.issueToken(communicationUser, scopes);
         assertNotNull(issuedToken.getToken());
         assertFalse(issuedToken.getToken().isEmpty());
-        assertNotNull(issuedToken.getExpiresOn());
-        assertFalse(issuedToken.getExpiresOn().toString().isEmpty());
+        assertNotNull(issuedToken.getExpiresAt());
+        assertFalse(issuedToken.getExpiresAt().toString().isEmpty());
     }
 
     @ParameterizedTest
@@ -204,17 +203,17 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClient(httpClient);
         client = setupClient(builder, "issueTokenWithResponseSync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
         // Action & Assert
-        Response<CommunicationUserToken> issuedTokenResponse = client.issueTokenWithResponse(communicationUser, scopes, Context.NONE);
-        CommunicationUserToken issuedToken = issuedTokenResponse.getValue();
+        Response<AccessToken> issuedTokenResponse = client.issueTokenWithResponse(communicationUser, scopes, Context.NONE);
+        AccessToken issuedToken = issuedTokenResponse.getValue();
         assertEquals(200, issuedTokenResponse.getStatusCode(),  "Expect status code to be 200");
         assertNotNull(issuedToken.getToken());
         assertFalse(issuedToken.getToken().isEmpty());
-        assertNotNull(issuedToken.getExpiresOn());
-        assertFalse(issuedToken.getExpiresOn().toString().isEmpty());
+        assertNotNull(issuedToken.getExpiresAt());
+        assertFalse(issuedToken.getExpiresAt().toString().isEmpty());
     }
 
     @ParameterizedTest
@@ -265,11 +264,11 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         client = setupClient(builder, "revokeTokenUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
         assertNotNull(communicationUser.getId());
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+        client.issueToken(communicationUser, scopes);
 
         // Action & Assert
-        CommunicationUserToken token = client.issueToken(communicationUser, scopes);
         client.revokeTokens(communicationUser);
     }
 
@@ -280,8 +279,8 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "revokeTokenWithResponseUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
         client.issueToken(communicationUser, scopes);
 
         // Action & Assert
@@ -296,15 +295,15 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "issueTokenUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
         // Action & Assert
-        CommunicationUserToken issuedToken = client.issueToken(communicationUser, scopes);
+        AccessToken issuedToken = client.issueToken(communicationUser, scopes);
         assertNotNull(issuedToken.getToken());
         assertFalse(issuedToken.getToken().isEmpty());
-        assertNotNull(issuedToken.getExpiresOn());
-        assertFalse(issuedToken.getExpiresOn().toString().isEmpty());
+        assertNotNull(issuedToken.getExpiresAt());
+        assertFalse(issuedToken.getExpiresAt().toString().isEmpty());
     }
 
     @ParameterizedTest
@@ -314,17 +313,17 @@ public class CommunicationIdentityTests extends CommunicationIdentityClientTestB
         CommunicationIdentityClientBuilder builder = getCommunicationIdentityClientBuilderUsingManagedIdentity(httpClient);
         client = setupClient(builder, "issueTokenWithResponseUsingManagedIdentitySync");
         CommunicationUserIdentifier communicationUser = client.createUser();
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
         // Action & Assert
-        Response<CommunicationUserToken> issuedTokenResponse = client.issueTokenWithResponse(communicationUser, scopes, Context.NONE);
-        CommunicationUserToken issuedToken = issuedTokenResponse.getValue();
-        assertEquals(200, issuedTokenResponse.getStatusCode(),  "Expect status code to be 200");
+        Response<AccessToken> response = client.issueTokenWithResponse(communicationUser, scopes, Context.NONE);
+        AccessToken issuedToken = response.getValue();
+        assertEquals(200, response.getStatusCode(),  "Expect status code to be 200");
         assertNotNull(issuedToken.getToken());
         assertFalse(issuedToken.getToken().isEmpty());
-        assertNotNull(issuedToken.getExpiresOn());
-        assertFalse(issuedToken.getExpiresOn().toString().isEmpty());
+        assertNotNull(issuedToken.getExpiresAt());
+        assertFalse(issuedToken.getExpiresAt().toString().isEmpty());
     }
 
     private CommunicationIdentityClient setupClient(CommunicationIdentityClientBuilder builder, String testName) {

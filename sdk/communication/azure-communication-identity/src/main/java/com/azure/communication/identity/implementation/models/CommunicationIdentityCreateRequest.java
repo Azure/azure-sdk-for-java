@@ -4,7 +4,7 @@
 
 package com.azure.communication.identity.implementation.models;
 
-import com.azure.communication.identity.models.CommunicationIdentityTokenScope;
+import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,14 +16,14 @@ public final class CommunicationIdentityCreateRequest {
      * Also create access token for the created identity.
      */
     @JsonProperty(value = "createTokenWithScopes")
-    private List<CommunicationIdentityTokenScope> createTokenWithScopes;
+    private List<CommunicationTokenScope> createTokenWithScopes;
 
     /**
      * Get the createTokenWithScopes property: Also create access token for the created identity.
      *
      * @return the createTokenWithScopes value.
      */
-    public List<CommunicationIdentityTokenScope> getCreateTokenWithScopes() {
+    public List<CommunicationTokenScope> getCreateTokenWithScopes() {
         return this.createTokenWithScopes;
     }
 
@@ -34,7 +34,7 @@ public final class CommunicationIdentityCreateRequest {
      * @return the CommunicationIdentityCreateRequest object itself.
      */
     public CommunicationIdentityCreateRequest setCreateTokenWithScopes(
-            List<CommunicationIdentityTokenScope> createTokenWithScopes) {
+            List<CommunicationTokenScope> createTokenWithScopes) {
         this.createTokenWithScopes = createTokenWithScopes;
         return this;
     }

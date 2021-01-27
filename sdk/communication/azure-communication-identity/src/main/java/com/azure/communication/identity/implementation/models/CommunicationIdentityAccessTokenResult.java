@@ -4,11 +4,10 @@
 
 package com.azure.communication.identity.implementation.models;
 
-import com.azure.communication.identity.models.CommunicationUserToken;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A communication identity with access token. */
+/** The CommunicationIdentityAccessTokenResult model. */
 @Fluent
 public final class CommunicationIdentityAccessTokenResult {
     /*
@@ -21,7 +20,7 @@ public final class CommunicationIdentityAccessTokenResult {
      * An access token.
      */
     @JsonProperty(value = "accessToken")
-    private CommunicationUserToken accessToken;
+    private CommunicationIdentityAccessToken accessToken;
 
     /**
      * Get the identity property: A communication identity.
@@ -48,7 +47,7 @@ public final class CommunicationIdentityAccessTokenResult {
      *
      * @return the accessToken value.
      */
-    public CommunicationUserToken getAccessToken() {
+    public CommunicationIdentityAccessToken getAccessToken() {
         return this.accessToken;
     }
 
@@ -58,7 +57,7 @@ public final class CommunicationIdentityAccessTokenResult {
      * @param accessToken the accessToken value to set.
      * @return the CommunicationIdentityAccessTokenResult object itself.
      */
-    public CommunicationIdentityAccessTokenResult setAccessToken(CommunicationUserToken accessToken) {
+    public CommunicationIdentityAccessTokenResult setAccessToken(CommunicationIdentityAccessToken accessToken) {
         this.accessToken = accessToken;
         return this;
     }

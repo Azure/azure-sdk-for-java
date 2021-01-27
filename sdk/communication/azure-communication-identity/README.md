@@ -22,7 +22,7 @@ The identity package is used for managing users and tokens for Azure Communicati
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-communication-identity</artifactId>
-  <version>1.0.0-beta.3</version>
+  <version>1.0.0-beta.4</version>
 </dependency>
 ```
 
@@ -98,8 +98,8 @@ Alternatively, use the `createUserWithToken` function to create a new user and i
 For this option, a list of communication tokens scopes must be defined. 
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L101-L107 -->
 ```java
-List<CommunicationIdentityTokenScope> scopes = 
-    new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+List<CommunicationTokenScope> scopes = 
+    new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
 CommunicationUserIdentifierWithTokenResult result = communicationIdentityClient.createUserWithToken(scopes);
 System.out.println("User id: " + result.getUser().getId());
@@ -115,12 +115,12 @@ also takes in a list of `CommunicationIdentityTokenScope`. Scope options include
 
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L120-L125 -->
 ```java
-List<CommunicationIdentityTokenScope> scopes = 
-    new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+List<CommunicationTokenScope> scopes = 
+    new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
-CommunicationUserToken userToken = communicationIdentityClient.issueToken(user, scopes);
+AccessToken userToken = communicationIdentityClient.issueToken(user, scopes);
 System.out.println("User token value: " + userToken.getToken());
-System.out.println("Expires On: " + userToken.getExpiresOn());
+System.out.println("Expires at: " + userToken.getExpiresAt());
 ```
 
 ### Revoking all tokens for an existing user

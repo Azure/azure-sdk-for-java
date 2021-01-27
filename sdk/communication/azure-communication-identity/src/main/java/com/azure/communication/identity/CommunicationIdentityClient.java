@@ -8,16 +8,17 @@ import java.util.Objects;
 
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityImpl;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
-import com.azure.communication.identity.models.CommunicationIdentityTokenScope;
+import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
-import com.azure.communication.identity.models.CommunicationUserToken;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -33,7 +34,7 @@ public final class CommunicationIdentityClient {
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClient.class);
 
     CommunicationIdentityClient(CommunicationIdentityClientImpl communicationIdentityClient) {
-        client = communicationIdentityClient.getCommunicationIdentities();
+        client = communicationIdentityClient.getCommunicationIdentity();
     }
 
     /**
@@ -57,12 +58,15 @@ public final class CommunicationIdentityClient {
     public Response<CommunicationUserIdentifier> createUserWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         Response<CommunicationIdentityAccessTokenResult> response = 
-            client.createWithResponse(new CommunicationIdentityCreateRequest(), context);
-        String id = response.getValue().getIdentity().getId();
+            client.createWithResponseAsync(new CommunicationIdentityCreateRequest(), context).block();
         
-        return new SimpleResponse<CommunicationUserIdentifier>(
-            response,
-            new CommunicationUserIdentifier(id));
+        if (response != null && response.getValue() != null) {
+            String id = response.getValue().getIdentity().getId();
+            return new SimpleResponse<CommunicationUserIdentifier>(
+                response,
+                new CommunicationUserIdentifier(id));
+        }
+        return null;
     }
 
     /**
@@ -73,14 +77,14 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationUserIdentifierWithTokenResult createUserWithToken(
-        List<CommunicationIdentityTokenScope> scopes) {
+        List<CommunicationTokenScope> scopes) {
         Objects.requireNonNull(scopes);
         CommunicationIdentityAccessTokenResult result = client.create(
             new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes));
         CommunicationUserIdentifier user = 
             new CommunicationUserIdentifier(result.getIdentity().getId());
-        
-        return new CommunicationUserIdentifierWithTokenResult(user, result.getAccessToken());
+        AccessToken token = new AccessToken(result.getAccessToken().getToken(), result.getAccessToken().getExpiresOn());
+        return new CommunicationUserIdentifierWithTokenResult(user, token);
     }
 
     /**
@@ -92,19 +96,24 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserIdentifierWithTokenResult> createUserWithTokenWithResponse(
-        List<CommunicationIdentityTokenScope> scopes, Context context) {
+        List<CommunicationTokenScope> scopes, Context context) {
         Objects.requireNonNull(scopes);
         context = context == null ? Context.NONE : context;
 
         Response<CommunicationIdentityAccessTokenResult> response = 
-            client.createWithResponse(new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes), context);
+            client.createWithResponseAsync(
+                new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes), context).block();
 
-        String id = response.getValue().getIdentity().getId();
-        return new SimpleResponse<CommunicationUserIdentifierWithTokenResult>(
-            response,
-            new CommunicationUserIdentifierWithTokenResult(
-                new CommunicationUserIdentifier(id),
-                response.getValue().getAccessToken()));
+        if (response != null && response.getValue() != null) {
+            CommunicationUserIdentifier user = new CommunicationUserIdentifier(response.getValue().getIdentity().getId());
+            AccessToken token = new AccessToken(
+                response.getValue().getAccessToken().getToken(),
+                response.getValue().getAccessToken().getExpiresOn());
+            return new SimpleResponse<CommunicationUserIdentifierWithTokenResult>(
+                response,
+                new CommunicationUserIdentifierWithTokenResult(user, token));
+        }
+        return null;
     }
 
     /**
@@ -132,7 +141,7 @@ public final class CommunicationIdentityClient {
     public Response<Void> deleteUserWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         Objects.requireNonNull(communicationUser);
         context = context == null ? Context.NONE : context;
-        return client.deleteWithResponse(communicationUser.getId(), context);
+        return client.deleteWithResponseAsync(communicationUser.getId(), context).block();
     }
 
     /**
@@ -159,7 +168,7 @@ public final class CommunicationIdentityClient {
     public Response<Void> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         Objects.requireNonNull(communicationUser);
         context = context == null ? Context.NONE : context;
-        return client.revokeAccessTokensWithResponse(communicationUser.getId(), context);
+        return client.revokeAccessTokensWithResponseAsync(communicationUser.getId(), context).block();
     }
 
     /**
@@ -170,13 +179,14 @@ public final class CommunicationIdentityClient {
      * @return the issued token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationUserToken issueToken(CommunicationUserIdentifier communicationUser,
-        List<CommunicationIdentityTokenScope> scopes) {
+    public AccessToken issueToken(CommunicationUserIdentifier communicationUser,
+        List<CommunicationTokenScope> scopes) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
-        return client.issueAccessToken(
+        CommunicationIdentityAccessToken rawToken = client.issueAccessToken(
             communicationUser.getId(),
             new CommunicationIdentityAccessTokenRequest().setScopes(scopes));
+        return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
     }
 
     /**
@@ -189,14 +199,21 @@ public final class CommunicationIdentityClient {
      * @return the created CommunicationUserToken.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationUserToken> issueTokenWithResponse(CommunicationUserIdentifier communicationUser,
-        List<CommunicationIdentityTokenScope> scopes, Context context) {
+    public Response<AccessToken> issueTokenWithResponse(CommunicationUserIdentifier communicationUser,
+        List<CommunicationTokenScope> scopes, Context context) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
         context = context == null ? Context.NONE : context;
-        return client.issueAccessTokenWithResponse(
+        Response<CommunicationIdentityAccessToken> response = client.issueAccessTokenWithResponseAsync(
             communicationUser.getId(),
             new CommunicationIdentityAccessTokenRequest().setScopes(scopes),
-            context);
+            context)
+            .block();
+        if (response != null && response.getValue() != null) {
+            return new SimpleResponse<AccessToken>(
+                response,
+                new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
+        }
+        return null;
     }
 }

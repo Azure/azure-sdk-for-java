@@ -43,7 +43,6 @@ public class CommunicationIdentityClientTestBase extends TestBase {
         .add("id")
         .add("token");
 
-    
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
         Pattern.CASE_INSENSITIVE);

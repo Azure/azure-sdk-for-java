@@ -119,7 +119,7 @@ public final class PhoneNumberClientBuilder {
      * Sets the {@link TokenCredential} used to authenticate HTTP requests.
      *
      * @param tokenCredential {@link TokenCredential} used to authenticate HTTP requests.
-     * @return The updated {@link CommunicationIdentityClientBuilder} object.
+     * @return The updated {@link PhoneNumberClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
     public PhoneNumberClientBuilder credential(TokenCredential tokenCredential) {

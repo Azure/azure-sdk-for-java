@@ -4,6 +4,9 @@
 ### Added
 - Added CommunicationIdentityClient and CommunicationIdentityClientAsync (originally was part of the azure-communication-aministration package).
 - Added support for Azure Active Directory Authentication.
+- Added ability to create a user and issue token for it at the same time.
 
 ### Breaking
-- CommunicationIdentityTokenScope.Pstn is removed.
+- `pstn` token scope is removed.
+- `revokeTokens` now revoke all the currently issued tokens instead of revoking tokens issued prior to a given time.
+- `issueToken` returns an instance of `core.credential.AccessToken` instead of `CommunicationUserToken`.

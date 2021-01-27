@@ -7,9 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.identity.models.CommunicationIdentityTokenScope;
+import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierWithTokenResult;
-import com.azure.communication.identity.models.CommunicationUserToken;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -98,8 +98,8 @@ public class ReadmeSamples {
     public CommunicationUserIdentifierWithTokenResult createNewUserWithToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         // Define a list of communication token scopes
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
         CommunicationUserIdentifierWithTokenResult result = communicationIdentityClient.createUserWithToken(scopes);
         System.out.println("User id: " + result.getUser().getId());
@@ -113,16 +113,16 @@ public class ReadmeSamples {
      *
      * @return the issued user token
      */
-    public CommunicationUserToken issueUserToken() {
+    public AccessToken issueUserToken() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
          // Define a list of communication token scopes
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
 
-        CommunicationUserToken userToken = communicationIdentityClient.issueToken(user, scopes);
+        AccessToken userToken = communicationIdentityClient.issueToken(user, scopes);
         System.out.println("User token value: " + userToken.getToken());
-        System.out.println("Expires On: " + userToken.getExpiresOn());
+        System.out.println("Expires at: " + userToken.getExpiresAt());
         return userToken;
     }
 
@@ -133,8 +133,8 @@ public class ReadmeSamples {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         CommunicationUserIdentifier user = createNewUser();
         // Define a list of communication token scopes
-        List<CommunicationIdentityTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationIdentityTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = 
+            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
         communicationIdentityClient.issueToken(user, scopes);
         // revoke tokens issued for the specified user
         communicationIdentityClient.revokeTokens(user);

@@ -27,20 +27,20 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=identity
 These settings apply only when `--tag=identity` is specified on the command line.
 
 ``` yaml $(tag) == 'identity'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/14bfbf5d0ff8f0dc1358e6e60362e99d0a649ba7/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/stable/2021-03-07/CommunicationIdentity.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5b19c6e69cd2bb9dbe4e5c1237b2c5a175d90ca5/specification/communication/data-plane/Microsoft.CommunicationServicesIdentity/stable/2021-03-07/CommunicationIdentity.json
 add-context-parameter: true
-custom-types: CommunicationIdentityAccessToken,CommunicationIdentityTokenScope,CommunicationUserToken
+custom-types: CommunicationIdentityTokenScope, CommunicationTokenScope
 custom-types-subpackage: models
 models-subpackage: implementation.models
 ```
 
-### Rename CommunicationIdentityAccessToken to CommunicationUserToken
-
-``` yaml
+### Rename CommunicationIdentityTokenScope to CommunicationTokenScope
+```yaml
 directive:
-    - rename-model:
-        from: CommunicationIdentityAccessToken
-        to: CommunicationUserToken
+  - from: swagger-document
+    where: $.definitions.CommunicationIdentityTokenScope
+    transform: >
+      $["x-ms-enum"].name = "CommunicationTokenScope";
 ```
 
 ### Code generation settings

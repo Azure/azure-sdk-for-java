@@ -5,14 +5,13 @@
 package com.azure.communication.identity.implementation;
 
 import com.azure.communication.identity.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenRequest;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessTokenResult;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityCreateRequest;
-import com.azure.communication.identity.models.CommunicationUserToken;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
-import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -28,10 +27,10 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CommunicationIdentities. */
+/** An instance of this class provides access to all the operations defined in CommunicationIdentity. */
 public final class CommunicationIdentityImpl {
     /** The proxy service used to perform REST calls. */
-    private final CommunicationIdentitiesService service;
+    private final CommunicationIdentityService service;
 
     /** The service client containing this operation class. */
     private final CommunicationIdentityClientImpl client;
@@ -42,19 +41,17 @@ public final class CommunicationIdentityImpl {
      * @param client the instance of the service client containing this operation class.
      */
     CommunicationIdentityImpl(CommunicationIdentityClientImpl client) {
-        this.service =
-                RestProxy.create(
-                        CommunicationIdentitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(CommunicationIdentityService.class, client.getHttpPipeline());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for CommunicationIdentityClientCommunicationIdentities to be used by the
+     * The interface defining all the services for CommunicationIdentityClientCommunicationIdentity to be used by the
      * proxy service to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "CommunicationIdentit")
-    private interface CommunicationIdentitiesService {
+    @ServiceInterface(name = "CommunicationIdentity")
+    private interface CommunicationIdentityService {
         @Post("/identities")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
@@ -62,7 +59,6 @@ public final class CommunicationIdentityImpl {
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CommunicationIdentityCreateRequest body,
-                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/identities/{id}")
@@ -72,7 +68,6 @@ public final class CommunicationIdentityImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/identities/{id}/:revokeAccessTokens")
@@ -82,18 +77,16 @@ public final class CommunicationIdentityImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/identities/{id}/:issueAccessToken")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<CommunicationUserToken>> issueAccessToken(
+        Mono<Response<CommunicationIdentityAccessToken>> issueAccessToken(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") CommunicationIdentityAccessTokenRequest body,
-                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
@@ -109,10 +102,8 @@ public final class CommunicationIdentityImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessTokenResult>> createWithResponseAsync(
             CommunicationIdentityCreateRequest body) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                    service.create(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context));
+                context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), body, context));
     }
 
     /**
@@ -128,8 +119,7 @@ public final class CommunicationIdentityImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CommunicationIdentityAccessTokenResult>> createWithResponseAsync(
             CommunicationIdentityCreateRequest body, Context context) {
-        final String accept = "application/json";
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), body, accept, context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), body, context);
     }
 
     /**
@@ -145,13 +135,13 @@ public final class CommunicationIdentityImpl {
     public Mono<CommunicationIdentityAccessTokenResult> createAsync(CommunicationIdentityCreateRequest body) {
         return createWithResponseAsync(body)
                 .flatMap(
-                    (Response<CommunicationIdentityAccessTokenResult> res) -> {
-                        if (res.getValue() != null) {
-                            return Mono.just(res.getValue());
-                        } else {
-                            return Mono.empty();
-                        }
-                    });
+                        (Response<CommunicationIdentityAccessTokenResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -169,13 +159,13 @@ public final class CommunicationIdentityImpl {
             CommunicationIdentityCreateRequest body, Context context) {
         return createWithResponseAsync(body, context)
                 .flatMap(
-                    (Response<CommunicationIdentityAccessTokenResult> res) -> {
-                        if (res.getValue() != null) {
-                            return Mono.just(res.getValue());
-                        } else {
-                            return Mono.empty();
-                        }
-                    });
+                        (Response<CommunicationIdentityAccessTokenResult> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -203,9 +193,8 @@ public final class CommunicationIdentityImpl {
      * @return a communication identity with access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationIdentityAccessTokenResult> createWithResponse(
-            CommunicationIdentityCreateRequest body, Context context) {
-        return createWithResponseAsync(body, context).block();
+    public CommunicationIdentityAccessTokenResult create(CommunicationIdentityCreateRequest body, Context context) {
+        return createAsync(body, context).block();
     }
 
     /**
@@ -219,9 +208,8 @@ public final class CommunicationIdentityImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-            context -> service.delete(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                context -> service.delete(this.client.getEndpoint(), id, this.client.getApiVersion(), context));
     }
 
     /**
@@ -236,8 +224,7 @@ public final class CommunicationIdentityImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.delete(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
+        return service.delete(this.client.getEndpoint(), id, this.client.getApiVersion(), context);
     }
 
     /**
@@ -290,11 +277,10 @@ public final class CommunicationIdentityImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String id, Context context) {
-        return deleteWithResponseAsync(id, context).block();
+    public void delete(String id, Context context) {
+        deleteAsync(id, context).block();
     }
 
     /**
@@ -308,11 +294,10 @@ public final class CommunicationIdentityImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokeAccessTokensWithResponseAsync(String id) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                    service.revokeAccessTokens(
-                            this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
+                context ->
+                        service.revokeAccessTokens(
+                                this.client.getEndpoint(), id, this.client.getApiVersion(), context));
     }
 
     /**
@@ -327,8 +312,7 @@ public final class CommunicationIdentityImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> revokeAccessTokensWithResponseAsync(String id, Context context) {
-        final String accept = "application/json";
-        return service.revokeAccessTokens(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
+        return service.revokeAccessTokens(this.client.getEndpoint(), id, this.client.getApiVersion(), context);
     }
 
     /**
@@ -381,11 +365,10 @@ public final class CommunicationIdentityImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> revokeAccessTokensWithResponse(String id, Context context) {
-        return revokeAccessTokensWithResponseAsync(id, context).block();
+    public void revokeAccessTokens(String id, Context context) {
+        revokeAccessTokensAsync(id, context).block();
     }
 
     /**
@@ -399,13 +382,12 @@ public final class CommunicationIdentityImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationUserToken>> issueAccessTokenWithResponseAsync(
+    public Mono<Response<CommunicationIdentityAccessToken>> issueAccessTokenWithResponseAsync(
             String id, CommunicationIdentityAccessTokenRequest body) {
-        final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                    service.issueAccessToken(
-                            this.client.getEndpoint(), id, this.client.getApiVersion(), body, accept, context));
+                context ->
+                        service.issueAccessToken(
+                                this.client.getEndpoint(), id, this.client.getApiVersion(), body, context));
     }
 
     /**
@@ -420,11 +402,9 @@ public final class CommunicationIdentityImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CommunicationUserToken>> issueAccessTokenWithResponseAsync(
+    public Mono<Response<CommunicationIdentityAccessToken>> issueAccessTokenWithResponseAsync(
             String id, CommunicationIdentityAccessTokenRequest body, Context context) {
-        final String accept = "application/json";
-        return service.issueAccessToken(
-                this.client.getEndpoint(), id, this.client.getApiVersion(), body, accept, context);
+        return service.issueAccessToken(this.client.getEndpoint(), id, this.client.getApiVersion(), body, context);
     }
 
     /**
@@ -438,16 +418,17 @@ public final class CommunicationIdentityImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationUserToken> issueAccessTokenAsync(String id, CommunicationIdentityAccessTokenRequest body) {
+    public Mono<CommunicationIdentityAccessToken> issueAccessTokenAsync(
+            String id, CommunicationIdentityAccessTokenRequest body) {
         return issueAccessTokenWithResponseAsync(id, body)
                 .flatMap(
-                    (Response<CommunicationUserToken> res) -> {
-                        if (res.getValue() != null) {
-                            return Mono.just(res.getValue());
-                        } else {
-                            return Mono.empty();
-                        }
-                    });
+                        (Response<CommunicationIdentityAccessToken> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -462,17 +443,17 @@ public final class CommunicationIdentityImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CommunicationUserToken> issueAccessTokenAsync(
+    public Mono<CommunicationIdentityAccessToken> issueAccessTokenAsync(
             String id, CommunicationIdentityAccessTokenRequest body, Context context) {
         return issueAccessTokenWithResponseAsync(id, body, context)
                 .flatMap(
-                    (Response<CommunicationUserToken> res) -> {
-                        if (res.getValue() != null) {
-                            return Mono.just(res.getValue());
-                        } else {
-                            return Mono.empty();
-                        }
-                    });
+                        (Response<CommunicationIdentityAccessToken> res) -> {
+                            if (res.getValue() != null) {
+                                return Mono.just(res.getValue());
+                            } else {
+                                return Mono.empty();
+                            }
+                        });
     }
 
     /**
@@ -486,7 +467,7 @@ public final class CommunicationIdentityImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationUserToken issueAccessToken(String id, CommunicationIdentityAccessTokenRequest body) {
+    public CommunicationIdentityAccessToken issueAccessToken(String id, CommunicationIdentityAccessTokenRequest body) {
         return issueAccessTokenAsync(id, body).block();
     }
 
@@ -502,8 +483,8 @@ public final class CommunicationIdentityImpl {
      * @return an access token.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationUserToken> issueAccessTokenWithResponse(
+    public CommunicationIdentityAccessToken issueAccessToken(
             String id, CommunicationIdentityAccessTokenRequest body, Context context) {
-        return issueAccessTokenWithResponseAsync(id, body, context).block();
+        return issueAccessTokenAsync(id, body, context).block();
     }
 }

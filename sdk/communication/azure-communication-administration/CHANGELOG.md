@@ -5,10 +5,11 @@
 - Added support for Azure Active Directory Authentication.
 
 ### Breaking Changes
-- CommunicationIdentityClient and CommunicationIdentityAsyncClient is moved to a new package, `Azure.Communication.Identity`.
+- CommunicationIdentityClient and CommunicationIdentityAsyncClient is moved to a new package, `azure-communication-identity`.
 
 ## 1.0.0-beta.3 (2020-11-16)
 ### Added
+- Support directly passing connection string to the CommunicationIdentityClientBuilder.
 - Added support for sync and async long-running operations
     - beginCreateReservation
     - beginPurchaseReservation
@@ -43,7 +44,7 @@ accessKey(String accessKey) within CommunicationIdentityClientBuilder.
 Added phone number administration. For more information, please see the [README][read_me] and [documentation][documentation].
 
 ## 1.0.0-beta.1 (2020-09-22)
-This is the initial release of Azure Communication Administration. For more information, please see the [README][read_me] and [documentation][documentation].
+This is the initial release of Azure Communication Administration, which manages users and tokens for Azure Communication Services. For more information, please see the [README][read_me] and [documentation][documentation].
 
 This is a Public Preview version, so breaking changes are possible in subsequent releases as we improve the product. To provide feedback, please submit an issue in our [Azure SDK for Java GitHub repo](https://github.com/Azure/azure-sdk-for-java/issues).
 

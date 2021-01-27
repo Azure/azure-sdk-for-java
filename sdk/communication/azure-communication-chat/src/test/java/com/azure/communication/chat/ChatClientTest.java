@@ -10,11 +10,11 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import com.azure.communication.identity.CommunicationIdentityClient;
-import com.azure.communication.identity.models.CommunicationUserToken;
-import com.azure.communication.identity.models.CommunicationIdentityTokenScope;
+import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
@@ -53,8 +53,8 @@ public class ChatClientTest extends ChatClientTestBase {
         firstThreadMember = communicationClient.createUser();
         secondThreadMember = communicationClient.createUser();
 
-        List<CommunicationIdentityTokenScope> scopes = new ArrayList<CommunicationIdentityTokenScope>(Arrays.asList(CommunicationIdentityTokenScope.fromString("chat")));
-        CommunicationUserToken response = communicationClient.issueToken(firstThreadMember, scopes);
+        List<CommunicationTokenScope> scopes = new ArrayList<CommunicationTokenScope>(Arrays.asList(CommunicationTokenScope.fromString("chat")));
+        AccessToken response = communicationClient.issueToken(firstThreadMember, scopes);
 
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
         client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildClient();
