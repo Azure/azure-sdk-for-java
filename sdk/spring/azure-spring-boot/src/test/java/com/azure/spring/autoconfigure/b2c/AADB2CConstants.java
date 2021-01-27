@@ -5,6 +5,8 @@ package com.azure.spring.autoconfigure.b2c;
 
 import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.PREFIX;
 import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_PROFILE_EDIT;
+import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_SIGN_IN;
+import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_SIGN_UP;
 import static com.azure.spring.autoconfigure.b2c.AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN;
 
 public class AADB2CConstants {
@@ -35,6 +37,10 @@ public class AADB2CConstants {
 
     public static final String TEST_SIGN_UP_OR_IN_NAME = "fake-sign-in-or-up";
 
+    public static final Object TEST_SIGN_IN_NAME = "fake-sign-in";
+
+    public static final Object TEST_SIGN_UP_NAME = "fake-sign-up";
+
     public static final String TEST_PROFILE_EDIT_NAME = "profile_edit";
 
     public static final String TEST_LOGOUT_SUCCESS_URL = "https://fake-logout-success-url";
@@ -59,6 +65,10 @@ public class AADB2CConstants {
     public static final String LOGOUT_SUCCESS_URL = String.format("%s.%s", PREFIX, "logout-success-url");
 
     public static final String SIGN_UP_OR_SIGN_IN = String.format("%s.%s", PREFIX, USER_FLOW_SIGN_UP_OR_SIGN_IN);
+
+    public static final String SIGN_UP = String.format("%s.%s", PREFIX, USER_FLOW_SIGN_UP);
+
+    public static final String SIGN_IN = String.format("%s.%s", PREFIX, USER_FLOW_SIGN_IN);
 
     public static final String PROFILE_EDIT = String.format("%s.%s", PREFIX, USER_FLOW_PROFILE_EDIT);
 
