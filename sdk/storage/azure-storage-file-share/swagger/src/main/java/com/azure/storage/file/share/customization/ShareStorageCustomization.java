@@ -76,5 +76,14 @@ public class ShareStorageCustomization extends Customization {
         PackageCustomization models = customization.getPackage("com.azure.storage.file.share.models");
         models.getClass("ShareFileRangeList").addAnnotation("@JsonDeserialize(using = ShareFileRangeListDeserializer.class)");
 
+        // Replace JacksonXmlRootElement annotations that are causing a semantic breaking change.
+        ClassCustomization shareFileHttpHeaders = models.getClass("ShareFileHttpHeaders");
+        shareFileHttpHeaders.removeAnnotation("@JacksonXmlRootElement(localName = \"ShareFileHttpHeaders\")");
+        shareFileHttpHeaders.addAnnotation("@JacksonXmlRootElement(localName = \"share-file-http-headers\")");
+
+        ClassCustomization sourceModifiedAccessConditions = models.getClass("SourceModifiedAccessConditions");
+        sourceModifiedAccessConditions.removeAnnotation("@JacksonXmlRootElement(localName = \"SourceModifiedAccessConditions\")");
+        sourceModifiedAccessConditions.addAnnotation("@JacksonXmlRootElement(localName = \"source-modified-access-conditions\")");
+
     }
 }

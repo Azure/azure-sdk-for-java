@@ -49,7 +49,7 @@ public final class DirectoriesGetPropertiesHeaders {
     /*
      * The x-ms-meta- property.
      */
-    @HeaderCollection(value = "x-ms-meta-")
+    @HeaderCollection("x-ms-meta-")
     private Map<String, String> xMsMeta;
 
     /*

@@ -5,6 +5,7 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.CopyStatusType;
@@ -137,7 +138,7 @@ public final class FilesDownloadHeaders {
     /*
      * The x-ms-meta- property.
      */
-    @JsonProperty(value = "x-ms-meta-")
+    @HeaderCollection("x-ms-meta-")
     private Map<String, String> xMsMeta;
 
     /*
