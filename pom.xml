@@ -102,6 +102,9 @@
 
         <!-- Text Analytics -->
         <module>sdk/textanalytics/azure-ai-textanalytics</module>
+
+        <!-- Quantum Jobs -->
+        <module>sdk/quantum/azure-quantum-jobs</module>
       </modules>
 
       <distributionManagement>
