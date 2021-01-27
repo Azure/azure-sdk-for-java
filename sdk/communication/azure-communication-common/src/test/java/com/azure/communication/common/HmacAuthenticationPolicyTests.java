@@ -20,6 +20,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 
@@ -48,7 +49,7 @@ public class HmacAuthenticationPolicyTests {
         HttpRequest request = context.getHttpRequest();
         String dateHeaderValue = request.getHeaders().getValue("date");
         LocalDateTime headerDate = LocalDateTime.parse(dateHeaderValue, DateTimeFormatter.RFC_1123_DATE_TIME);
-        LocalDateTime current = LocalDateTime.now();
+        LocalDateTime current = LocalDateTime.now(ZoneOffset.UTC);
         assertTrue(Duration.between(headerDate, current).toMillis() < 5 * 1000,
                 "Date header no more than five seconds apart from now");
 
