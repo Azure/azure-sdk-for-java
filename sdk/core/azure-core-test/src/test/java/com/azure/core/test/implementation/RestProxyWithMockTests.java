@@ -339,7 +339,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
     private static final HttpClient HEADER_COLLECTION_HTTP_CLIENT = new NoOpHttpClient() {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
-            final HttpHeaders headers = new HttpHeaders().set("name", "Phillip")
+            final HttpHeaders headers = new HttpHeaders()
+                .set("name", "Phillip")
                 .set("header-collection-prefix-one", "1")
                 .set("header-collection-prefix-two", "2")
                 .set("header-collection-prefix-three", "3");

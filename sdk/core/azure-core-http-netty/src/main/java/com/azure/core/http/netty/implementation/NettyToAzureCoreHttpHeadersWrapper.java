@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.AbstractMap;
 import java.util.AbstractSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -18,14 +19,18 @@ import java.util.stream.StreamSupport;
 
 // This class wraps a Netty HttpHeaders instance and provides an azure-core HttpHeaders view onto it.
 // This avoids the need to copy the Netty HttpHeaders into an azure-core HttpHeaders instance.
+// Whilst it is not necessary to support mutability (as these headers are the result of a Netty response), we do so in
+// any case, given the additional implementation cost is minimal.
 public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
+    // This wrapper is frequently created, so we are OK with creating a single shared logger instance here,
+    // to lessen the cost of this type.
     private static final ClientLogger LOGGER = new ClientLogger(NettyToAzureCoreHttpHeadersWrapper.class);
 
     // The Netty HttpHeaders we are wrapping
     private final io.netty.handler.codec.http.HttpHeaders nettyHeaders;
 
-    // this is an AbstractMap that we create to virtualize a view onto the Netty HttpHeaders type.
-    // We lazily instantiate it when toMap is called, and then use that for all future calls.
+    // this is an AbstractMap that we create to virtualize a view onto the Netty HttpHeaders type, for use in the
+    // toMap API. We lazily instantiate it when toMap is called, and then reuse that for all future calls.
     private Map<String, String> abstractMap;
 
     public NettyToAzureCoreHttpHeadersWrapper(io.netty.handler.codec.http.HttpHeaders nettyHeaders) {
@@ -44,6 +49,8 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
         }
 
         if (value == null) {
+            // our general contract in HttpHeaders is that a null value will result in any key with this name
+            // being removed.
             remove(name);
         } else {
             nettyHeaders.set(name, value);
@@ -58,6 +65,8 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
         }
 
         if (values == null) {
+            // our general contract in HttpHeaders is that a null value will result in any key with this name
+            // being removed.
             remove(name);
         } else {
             nettyHeaders.set(name, values);
@@ -65,12 +74,17 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
         return this;
     }
 
+    // PACKAGE-PRIVATE
+    // This is only used internally by the NettyHttpHeader class to append a value to an existing value, and to support
+    // this actually occurring in the underlying Netty HttpHeaders instance.
     HttpHeaders add(String name, String value) {
         if (name == null) {
             return this;
         }
 
         if (value == null) {
+            // our general contract in HttpHeaders is that a null value will result in any key with this name
+            // being removed.
             remove(name);
         } else {
             nettyHeaders.add(name, value);
@@ -112,6 +126,8 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     public Map<String, String> toMap() {
         if (abstractMap == null) {
             abstractMap = new AbstractMap<String, String>() {
+                private final Map<String, String> innerJoinMap = new HashMap<>();
+
                 @Override
                 public int size() {
                     return nettyHeaders.size();
@@ -140,10 +156,13 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
                     // performance implication, and therefore it is recommended that users steer away from calling
                     // httpHeaders.toMap().get(key), and instead be directed towards httpHeaders.get(key), as this
                     // avoids the need for unnecessary string.join operations.
-                    if (nettyHeaders.contains((String) key)) {
-                        return String.join(",", nettyHeaders.getAll((String) key));
-                    }
-                    return null;
+
+                    // To alleviate some concerns with performance, we internally cache the joined string in the
+                    // innerJoinMap, so multiple requests to this get method will not incur the cost of string
+                    // concatenation.
+                    return innerJoinMap.computeIfAbsent((String) key, _key -> {
+                        return String.join(",", nettyHeaders.getAll(_key));
+                    });
                 }
 
                 @Override

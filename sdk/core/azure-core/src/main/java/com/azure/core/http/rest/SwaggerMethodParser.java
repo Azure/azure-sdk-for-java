@@ -150,7 +150,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                         final String headerValue = header.substring(colonIndex + 1).trim();
                         if (!headerValue.isEmpty()) {
                             if (headerValue.contains(",")) {
-                                // there are multiple values for this header, so we split them out
+                                // there are multiple values for this header, so we split them out.
                                 this.headers.set(headerName, Arrays.asList(headerValue.split(",")));
                             } else {
                                 this.headers.set(headerName, headerValue);

@@ -302,7 +302,8 @@ public class NettyFluxTests {
 
     private List<PagedResponse<Integer>> getPagedResponses(int noOfPages)
         throws MalformedURLException {
-        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
+        HttpHeaders httpHeaders = new HttpHeaders()
+            .set("header1", "value1")
             .set("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
         String deserializedHeaders = "header1,value1,header2,value2";

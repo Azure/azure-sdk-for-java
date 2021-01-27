@@ -14,6 +14,10 @@ import reactor.netty.http.client.HttpClientResponse;
  */
 abstract class ReactorNettyHttpResponseBase extends HttpResponse {
     private final HttpClientResponse reactorNettyResponse;
+
+    // We use a wrapper for the Netty-returned headers, so we are not forced to pay up-front the cost of converting
+    // from Netty HttpHeaders to azure-core HttpHeaders. Instead, by wrapping it, there is no cost to pay as we map
+    // the Netty HttpHeaders API into the azure-core HttpHeaders API.
     private NettyToAzureCoreHttpHeadersWrapper headers;
 
     ReactorNettyHttpResponseBase(HttpClientResponse reactorNettyResponse, HttpRequest httpRequest) {
