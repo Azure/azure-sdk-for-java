@@ -14,6 +14,7 @@ class AzureSeekableByteChannelTest extends APISpec {
     int sourceFileSize
     File sourceFile
     BlobClient bc
+    BlobClient writeBc
     AzureSeekableByteChannel readByteChannel
     AzureSeekableByteChannel writeByteChannel
     FileInputStream fileStream
@@ -25,19 +26,36 @@ class AzureSeekableByteChannelTest extends APISpec {
 
         cc.create()
         bc = cc.getBlobClient(generateBlobName())
+        writeBc = cc.getBlobClient(generateBlobName())
         bc.uploadFromFile(sourceFile.getPath())
         fs = createFS(initializeConfigMap())
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()))
 
         readByteChannel = new AzureSeekableByteChannel(new NioBlobInputStream(bc.openInputStream(), path), path)
+        // For writing, we don't want a blob to exist there yet
         writeByteChannel = new AzureSeekableByteChannel(
-            new NioBlobOutputStream(bc.getBlockBlobClient().getBlobOutputStream(true), path), path)
+            new NioBlobOutputStream(writeBc.getBlockBlobClient().getBlobOutputStream(true), path), path)
         fileStream = new FileInputStream(sourceFile)
     }
 
     def "Read"() {
-        // Generate buffers of random sizes and do reads until the end. Then compare arrays
-        // look at input stream tests
+        setup:
+        def fileContent = new byte[sourceFileSize]
+        fileStream.read(fileContent)
+        def os = new ByteArrayOutputStream()
+        int count = 0
+        def rand = new Random()
+
+        when:
+        while (count < sourceFileSize) {
+            def buffer = ByteBuffer.allocate(rand.nextInt(1024 * 1024))
+            int readAmount = readByteChannel.read(buffer)
+            os.write(buffer.array(), 0, readAmount) // limit the write in case we allocated more than we needed
+            count += readAmount
+        }
+
+        then:
+        os.toByteArray() == fileContent
     }
 
     def "Read fs close"() {
@@ -50,7 +68,22 @@ class AzureSeekableByteChannelTest extends APISpec {
     }
 
     def "Write"() {
-        // look at output stream tests
+        setup:
+        def fileContent = new byte[sourceFileSize]
+        int count = 0
+        def rand = new Random()
+
+        when:
+        while (count < sourceFileSize) {
+            int writeAmount = Math.min(rand.nextInt(1024 * 1024), sourceFileSize - count)
+            def buffer = new byte[writeAmount]
+            fileStream.read(buffer)
+            writeByteChannel.write(ByteBuffer.wrap(buffer))
+            count += writeAmount
+        }
+
+        then:
+        compareInputStreams(writeBc.openInputStream(), new FileInputStream(sourceFile), 0)
     }
 
     def "Write fs close"() {
@@ -70,9 +103,9 @@ class AzureSeekableByteChannelTest extends APISpec {
         expect:
         readByteChannel.position() == 0
 
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             readByteChannel.read(dest)
-            assert readByteChannel.position() == (i+1) * bufferSize
+            assert readByteChannel.position() == (i + 1) * bufferSize
             dest.flip()
         }
     }
@@ -85,9 +118,9 @@ class AzureSeekableByteChannelTest extends APISpec {
         expect:
         writeByteChannel.position() == 0
 
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             writeByteChannel.write(src)
-            assert writeByteChannel.position() == (i+1) * bufferSize
+            assert writeByteChannel.position() == (i + 1) * bufferSize
             assert writeByteChannel.size() == writeByteChannel.position()
             src.flip()
         }
@@ -111,8 +144,69 @@ class AzureSeekableByteChannelTest extends APISpec {
     }
 
     def "Seek"() {
-        // Check that position is updated and also that reading the data from various points works
+        setup:
+        def streamContent = ByteBuffer.allocate(readCount0)
+
+        when:
+        readByteChannel.read(streamContent)
+        def is = new ByteArrayInputStream(streamContent.array())
+
+        then:
+        compareInputStreams(fileStream, is, readCount0)
+
+        when:
+        readByteChannel.position(seekPos1)
+
+        then:
+        readByteChannel.position() == seekPos1
+
+        when:
+        fileStream = new FileInputStream(sourceFile)
+        fileStream.skip(seekPos1)
+        streamContent = ByteBuffer.allocate(readCount1)
+        readByteChannel.read(streamContent)
+        is = new ByteArrayInputStream(streamContent.array())
+
+        then:
+        compareInputStreams(fileStream, is, readCount1)
+
+        when:
+        readByteChannel.position(seekPos2)
+
+        then:
+        readByteChannel.position() == seekPos2
+
+        when:
+        fileStream = new FileInputStream(sourceFile)
+        fileStream.skip(seekPos2)
+        streamContent = ByteBuffer.allocate(readCount2)
+        readByteChannel.read(streamContent)
+        is = new ByteArrayInputStream(streamContent.array())
+
+        then:
+        compareInputStreams(fileStream, is, readCount2)
+
+        where:
+        readCount0      | seekPos1        | readCount1               | seekPos2                  | readCount2
+        1024            | 1024            | (5 * 1024 * 1024) - 1024 | 5 * 1024 * 1024           | 5 * 1024 * 1024 // Only ever seek in place. Read whole blob
+        1024            | 5 * 1024 * 1024 | 1024                     | 2048                      | 1024 // Seek forward then seek backward
+        5 * 1024 * 1024 | 1024            | 1024                     | (10 * 1024 * 1024) - 1024 | 1024  // Seek backward then seek forward
     }
+
+    def "Seek out of bounds"() {
+        when:
+        readByteChannel.position(-1)
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when:
+        readByteChannel.position(sourceFileSize + 1)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
 
     def "Seek fs close"() {
         when:

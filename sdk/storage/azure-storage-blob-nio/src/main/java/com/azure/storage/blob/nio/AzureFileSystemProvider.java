@@ -47,10 +47,12 @@ import java.nio.file.spi.FileSystemProvider;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -261,11 +263,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * set of functionality is offered here. More specifically, only reads--no writes or seeks--are supported.
      * <p>
      * Use {@link #newInputStream(Path, OpenOption...)} or {@link #newOutputStream(Path, OpenOption...)}
-     * instead.
+     * instead. Please see the documentation on these methods for information on how to use this type. This type can
+     * only be opened in read OR write mode. Read/write mode is not supported.
      *
-     * @param path the Path
-     * @param set open options
-     * @param fileAttributes attributes
+     * @param path the path of the file to open
+     * @param set options specifying how the file should be opened
+     * @param fileAttributes an optional list of file attributes to set atomically when creating the directory
      * @return a new seekable byte channel
      * @throws UnsupportedOperationException Operation is not supported.
      * @throws IllegalArgumentException if the set contains an invalid combination of options
@@ -277,19 +280,21 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public SeekableByteChannel newByteChannel(Path path, Set<? extends OpenOption> set,
             FileAttribute<?>... fileAttributes) throws IOException {
-        if (set.contains(StandardOpenOption.READ)) {
+        if (Objects.isNull(set)) {
+            set = Collections.emptySet();
+        }
+
+        if (set.contains(StandardOpenOption.WRITE)) {
             return new AzureSeekableByteChannel(
-                (NioBlobInputStream) this.newInputStream(path, set.toArray(new OpenOption[0])), path);
+                (NioBlobOutputStream) this.newOutputStreamInternal(path, set, fileAttributes), path);
         }
         else {
             return new AzureSeekableByteChannel(
-                (NioBlobOutputStream) this.newOutputStreamInternal(path, set, fileAttributes), path);
+                (NioBlobInputStream) this.newInputStream(path, set.toArray(new OpenOption[0])), path);
         }
 
         // Go through javadocs to see if I did anything wrong
         // Read through code and other PRs
-        // Composite tests
-        // Tests for each method and fs and channel closed and data correctness (can reuse some from other branch
     }
 
     /**

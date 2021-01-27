@@ -32,6 +32,7 @@ import java.nio.file.FileSystem
 import java.nio.file.FileSystemAlreadyExistsException
 import java.nio.file.FileSystemNotFoundException
 import java.nio.file.FileSystems
+import java.nio.file.Files
 import java.nio.file.NoSuchFileException
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -824,6 +825,15 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(ClosedFileSystemException)
     }
 
+    def "InputStream default"() {
+        setup:
+        def fs = createFS(config)
+        sourceClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        expect:
+        compareInputStreams(fs.provider().newInputStream(sourcePath), defaultInputStream.get(), 0)
+    }
+
     @Unroll
     def "InputStream options fail"() {
         setup:
@@ -1070,6 +1080,323 @@ class AzureFileSystemProviderTest extends APISpec {
         when:
         fs.close()
         fs.provider().newOutputStream(path)
+
+        then:
+        thrown(ClosedFileSystemException)
+    }
+
+    def "ByteChannel default"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        Files.createFile(path)
+
+        when:
+        def channel = fs.provider().newByteChannel(path, null)
+        channel.read(ByteBuffer.allocate(1))
+
+        then:
+        // This indicates the channel is open in read mode, which is the default
+        notThrown(Exception)
+    }
+
+    @Unroll
+    def "ByteChannel options fail"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        // Options are validated before path is validated.
+        fs.provider().newByteChannel(fs.getPath("foo"), new HashSet<>(Arrays.asList(option)))
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        option                               | _
+        StandardOpenOption.APPEND            | _
+        StandardOpenOption.DELETE_ON_CLOSE   | _
+        StandardOpenOption.DSYNC             | _
+        StandardOpenOption.SPARSE            | _
+        StandardOpenOption.SYNC              | _
+    }
+
+    def "ByteChannel read non file fail root"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().newByteChannel(fs.getPath(getDefaultDir(fs)), null)
+
+        then:
+        thrown(IllegalArgumentException)
+    }
+
+    def "ByteChannel read file fail dir"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        putDirectoryBlob(bc)
+
+        when:
+        fs.provider().newByteChannel(fs.getPath(bc.getBlobName()), null)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ByteChannel non file fail no file"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().newByteChannel(fs.getPath("foo"), null)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ByteChannel fs closed"() {
+        setup:
+        def fs = createFS(config)
+
+        def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), generateBlobName()))
+        def blobClient = path.toBlobClient().getBlockBlobClient()
+
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        fs.close()
+        fs.provider().newByteChannel(path, null)
+
+        then:
+        thrown(ClosedFileSystemException)
+    }
+
+    // Todo: Output stream file attributes
+
+    def "ByteChannel options create"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        // There are no default options for write as read is the default for channel. We must specify all required.
+        def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
+            StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)))
+
+        when:
+        // Create should allow us to create a new file.
+        nioChannel.write(defaultData.duplicate())
+        nioChannel.close()
+
+        then:
+        compareInputStreams(bc.openInputStream(), defaultInputStream.get(), defaultDataSize)
+
+        when:
+        // Explicitly exclude a create option.
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ByteChannel options create new"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        def data = defaultData.duplicate()
+
+        when:
+        // Succeed in creating a new file
+        def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)))
+        nioChannel.write(data)
+        nioChannel.close()
+
+        then:
+        compareInputStreams(bc.openInputStream(), defaultInputStream.get(), defaultDataSize)
+
+        when:
+        // Fail in overwriting an existing file
+        fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)))
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ByteChannel file attributes"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        def data = defaultData.duplicate()
+
+        FileAttribute<?>[] attributes = [new TestFileAttribute<String>("fizz", "buzz"),
+                                         new TestFileAttribute<String>("foo", "bar"),
+                                         new TestFileAttribute<String>("Content-Type", "myType"),
+                                         new TestFileAttribute<String>("Content-Disposition", "myDisposition"),
+                                         new TestFileAttribute<String>("Content-Language", "myLanguage"),
+                                         new TestFileAttribute<String>("Content-Encoding", "myEncoding"),
+                                         new TestFileAttribute<String>("Cache-Control", "myControl"),
+                                         new TestFileAttribute<byte[]>("Content-MD5", contentMd5)]
+
+        when:
+        // Succeed in creating a new file
+        def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)), attributes)
+        nioChannel.write(data)
+        nioChannel.close()
+        def props = bc.getProperties()
+
+        then:
+        compareInputStreams(bc.openInputStream(), defaultInputStream.get(), defaultDataSize)
+        props.getMetadata()["fizz"] == "buzz"
+        props.getMetadata()["foo"] == "bar"
+        !props.getMetadata().containsKey("Content-Type")
+        !props.getMetadata().containsKey("Content-Disposition")
+        !props.getMetadata().containsKey("Content-Language")
+        !props.getMetadata().containsKey("Content-Encoding")
+        !props.getMetadata().containsKey("Content-MD5")
+        !props.getMetadata().containsKey("Cache-Control")
+        props.getContentType() == "myType"
+        props.getContentDisposition() == "myDisposition"
+        props.getContentLanguage() == "myLanguage"
+        props.getContentEncoding() == "myEncoding"
+        props.getContentMd5() == contentMd5
+        props.getCacheControl() == "myControl"
+    }
+
+    def "ByteChannel options missing required"() {
+        setup:
+        def fs = createFS(config)
+
+        when: "Missing WRITE"
+        fs.provider().newByteChannel(fs.getPath(generateBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.TRUNCATE_EXISTING)))
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when: "Missing TRUNCATE_EXISTING and CREATE_NEW"
+        fs.provider().newByteChannel(fs.getPath(generateBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE)))
+        // Ensure create alone is insufficient
+
+        then:
+        thrown(IllegalArgumentException)
+
+        when: "Missing only TRUNCATE_EXISTING"
+        fs.provider().newByteChannel(fs.getPath(generateBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
+            StandardOpenOption.CREATE_NEW)))
+
+        then:
+        notThrown(IllegalArgumentException)
+
+        when: "Missing only CREATE_NEW"
+        fs.provider().newByteChannel(fs.getPath(generateBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)))
+
+        then:
+        notThrown(IllegalArgumentException)
+    }
+
+    @Unroll
+    def "ByteChannel options invalid"() {
+        setup:
+        def fs = createFS(config)
+
+        when:
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), option,
+            StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)
+
+        then:
+        thrown(UnsupportedOperationException)
+
+        where:
+        option                             | _
+        StandardOpenOption.APPEND          | _
+        StandardOpenOption.DELETE_ON_CLOSE | _
+        StandardOpenOption.DSYNC           | _
+        StandardOpenOption.READ            | _
+        StandardOpenOption.SPARSE          | _
+        StandardOpenOption.SYNC            | _
+    }
+
+    @Unroll
+    @Requires({ liveMode() })
+    // Because we upload in blocks
+    def "ByteChannel file system config"() {
+        setup:
+        def blockSize = 50L
+        def putBlobThreshold = 100L
+        config[AzureFileSystem.AZURE_STORAGE_UPLOAD_BLOCK_SIZE] = blockSize
+        config[AzureFileSystem.AZURE_STORAGE_PUT_BLOB_THRESHOLD] = putBlobThreshold
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE,
+                StandardOpenOption.TRUNCATE_EXISTING)))
+
+        def data = getRandomData(dataSize)
+
+        when:
+        nioChannel.write(data)
+        nioChannel.close()
+
+        then:
+        bc.listBlocks().getCommittedBlocks().size() == blockCount
+
+        where:
+        dataSize || blockCount
+        60       || 0
+        150      || 3
+    }
+
+    def "ByteChannel open directory fail"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        putDirectoryBlob(bc)
+
+        when:
+        fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.WRITE, StandardOpenOption.CREATE_NEW)))
+
+        then:
+        thrown(IOException)
+    }
+
+    def "ByteChannel closed fs"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.close()
+        fs.provider().newByteChannel(path, null)
 
         then:
         thrown(ClosedFileSystemException)
