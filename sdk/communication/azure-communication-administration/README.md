@@ -31,7 +31,7 @@ Acquired phone numbers can come with many capabilities, depending on the country
 
 ### Initializing Phone Number Client
 The PhoneNumberClientBuilder is enabled to use Azure Active Directory Authentication
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L283-L292 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L285-L294 -->
 ```java
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
 
@@ -46,7 +46,7 @@ PhoneNumberClient phoneNumberClient = new PhoneNumberClientBuilder()
 ```
 
 Using the endpoint and access key from the communication resource to authenticate is also posible.
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L34-L45 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L36-L47 -->
 ```java
 // You can find your endpoint and access token from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
@@ -81,7 +81,7 @@ Phone numbers can be assigned to a callback URL via the configure number API. As
 
 ### Get Countries
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L57-L66 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L59-L68 -->
 ```java
 PhoneNumberClient phoneNumberClient = createPhoneNumberClient();
 
@@ -99,7 +99,7 @@ for (PhoneNumberCountry phoneNumberCountry
 
 Phone plan groups come in two types, Geographic and Toll-Free.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L101-L108 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L103-L110 -->
 ```java
 PagedIterable<PhonePlanGroup> phonePlanGroups = phoneNumberClient
     .listPhonePlanGroups(countryCode, locale, true);
@@ -115,7 +115,7 @@ for (PhonePlanGroup phonePlanGroup
 
 Unlike Toll-Free phone plans, area codes for Geographic Phone Plans are empty. Area codes are found in the Area Codes API.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L124-L133 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L126-L135 -->
 ```java
 PagedIterable<PhonePlan> phonePlans = phoneNumberClient
     .listPhonePlans(countryCode, phonePlanGroupId, locale);
@@ -133,7 +133,7 @@ for (PhonePlan phonePlan
 
 For Geographic phone plans, you can query the available geographic locations. The locations options are structured like the geographic hierarchy of a country. For example, the US has states and within each state are cities.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L150-L166 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L152-L168 -->
 ```java
 LocationOptions locationOptions = phoneNumberClient
     .getPhonePlanLocationOptions(countryCode, phonePlanGroupId, phonePlanId, locale)
@@ -158,7 +158,7 @@ for (LocationOptionsDetails locationOptionsDetails
 
 Fetching area codes for geographic phone plans will require the the location options queries set. You must include the chain of geographic locations traversing down the location options object returned by the GetLocationOptions API.
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L192-L198 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L194-L200 -->
 ```java
 AreaCodes areaCodes = phoneNumberClient
     .getAllAreaCodes("selection", countryCode, phonePlanId, locationOptions);
@@ -171,7 +171,7 @@ for (String areaCode
 
 ### Configure Phone Number
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L212-L212 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L214-L214 -->
 ```java
 phoneNumberClient.configureNumber(phoneNumber, pstnConfiguration);
 ```
@@ -182,7 +182,7 @@ The Phone Number Client supports a variety of long running operations that allow
 
 ### Create Search
 
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L219-L243 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L221-L245 -->
 ```java
 String phonePlanId = "PHONE_PLAN_ID";
 
@@ -212,7 +212,7 @@ for (String phoneNumber: result.getPhoneNumbers()) {
 ```
 
 ### Purchase Search
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L250-L256 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L252-L258 -->
 ```java
 Duration duration = Duration.ofSeconds(1);
 String phoneNumberReservationId = "RESERVATION_ID_TO_PURCHASE";
@@ -224,7 +224,7 @@ res.waitForCompletion();
 ```
 
 ### Release Phone Numbers
-<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L263-L273 -->
+<!-- embedme ./src/samples/java/com/azure/communication/administration/ReadmeSamples.java#L265-L275 -->
 ```java
 Duration duration = Duration.ofSeconds(1);
 PhoneNumberIdentifier phoneNumber = new PhoneNumberIdentifier("PHONE_NUMBER_TO_RELEASE");
