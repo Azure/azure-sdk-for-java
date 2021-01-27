@@ -8,11 +8,12 @@ import com.azure.cosmos.implementation.throughputControl.ThroughputControlMode;
 import com.azure.cosmos.util.Beta;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Group configuration which will be used in Throughput control.
  */
-@Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+@Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class ThroughputControlGroup {
 
     private final static boolean DEFAULT_USE_BY_DEFAULT = false;
@@ -26,9 +27,13 @@ public class ThroughputControlGroup {
     private Double targetThroughputThreshold;
     private boolean useByDefault;
 
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup(String groupName) {
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroup(String groupName, CosmosAsyncContainer targetContainer) {
+        checkArgument(StringUtils.isNotEmpty(groupName), "Group name can not be null or empty");
+        checkNotNull(targetContainer, "Target container can not be null");
+
         this.groupName = groupName;
+        this.targetContainer = targetContainer;
         this.controlMode = DEFAULT_CONTROL_MODE;
         this.useByDefault = DEFAULT_USE_BY_DEFAULT;
     }
@@ -40,7 +45,7 @@ public class ThroughputControlGroup {
      *
      * @return the {@link ThroughputControlMode}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlMode getControlMode() {
         return this.controlMode;
     }
@@ -50,7 +55,7 @@ public class ThroughputControlGroup {
      *
      * @return the {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup setLocalControlMode() {
         this.controlMode = ThroughputControlMode.LOCAL;
         return this;
@@ -61,7 +66,7 @@ public class ThroughputControlGroup {
      *
      * @return the group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getGroupName() {
         return this.groupName;
     }
@@ -71,23 +76,9 @@ public class ThroughputControlGroup {
      *
      * @return the {@link CosmosAsyncContainer}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosAsyncContainer getTargetContainer() {
         return this.targetContainer;
-    }
-
-    /**
-     * Set the throughput control group target container.
-     *
-     * @param targetContainer the target container for the throughput control group.
-     *
-     * @return the {@link ThroughputControlGroup}.
-     */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup setTargetContainer(CosmosAsyncContainer targetContainer) {
-        checkArgument(targetContainer != null, "Target container cannot be null");
-        this.targetContainer = targetContainer;
-        return this;
     }
 
     /**
@@ -98,7 +89,7 @@ public class ThroughputControlGroup {
      *
      * @return the target throughput.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getTargetThroughput() {
         return this.targetThroughput;
     }
@@ -109,7 +100,7 @@ public class ThroughputControlGroup {
      * @param targetThroughput the target throughput for the throughput control group.
      * @return the {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup setTargetThroughput(int targetThroughput) {
         checkArgument(targetThroughput > 0, "Target throughput should be larger than 0");
         this.targetThroughput = targetThroughput;
@@ -124,7 +115,7 @@ public class ThroughputControlGroup {
      *
      * @return the target throughput threshold.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Double getTargetThroughputThreshold() {
         return this.targetThroughputThreshold;
     }
@@ -136,7 +127,7 @@ public class ThroughputControlGroup {
      *
      * @return the {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup setTargetThroughputThreshold(double targetThroughputThreshold) {
         checkArgument(
             targetThroughputThreshold > 0 && targetThroughputThreshold <= 1,
@@ -153,7 +144,7 @@ public class ThroughputControlGroup {
      *
      * @return {@code true} this throughput control group will be used by default unless being override. {@code false} otherwise.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isUseByDefault() {
         return this.useByDefault;
     }
@@ -163,7 +154,7 @@ public class ThroughputControlGroup {
      *
      * @return the {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup setUseByDefault() {
         this.useByDefault = Boolean.TRUE;
         return this;
@@ -174,7 +165,7 @@ public class ThroughputControlGroup {
      *
      * @return the throughput control group id.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getId() {
         if (StringUtils.isEmpty(this.id)) {
             this.validate();

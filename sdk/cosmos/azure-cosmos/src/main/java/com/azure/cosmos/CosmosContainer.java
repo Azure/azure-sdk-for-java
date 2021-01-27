@@ -730,7 +730,7 @@ public class CosmosContainer {
      * @param groupName The throughput control group name.
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup createThroughputControlGroup(String groupName) {
         return this.asyncContainer.createThroughputControlGroup(groupName);
     }
