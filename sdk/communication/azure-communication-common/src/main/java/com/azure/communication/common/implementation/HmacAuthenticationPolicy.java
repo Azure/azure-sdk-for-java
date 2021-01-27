@@ -118,8 +118,9 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
             .map(messageDigest -> addAuthenticationHeaders(url, httpMethod, messageDigest));
     }
 
-    private Map<String, String> addAuthenticationHeaders(final URL url, final String httpMethod,
-                                                                   final MessageDigest messageDigest) {
+    private Map<String, String> addAuthenticationHeaders(final URL url,
+                                                         final String httpMethod,
+                                                         final MessageDigest messageDigest) {
         final Map<String, String> headers = new HashMap<>();
 
         final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
