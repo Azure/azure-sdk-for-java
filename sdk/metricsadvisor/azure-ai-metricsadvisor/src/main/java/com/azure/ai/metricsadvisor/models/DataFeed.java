@@ -15,7 +15,6 @@ import java.util.Map;
 @Fluent
 public final class DataFeed {
     private String id;
-    // TODO (savaity) Consider updating the name?
     private Map<String, String> metricIds;
     private OffsetDateTime createdTime;
     private DataFeedStatus dataFeedStatus;
