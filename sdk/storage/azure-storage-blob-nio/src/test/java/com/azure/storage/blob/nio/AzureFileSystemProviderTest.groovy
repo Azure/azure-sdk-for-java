@@ -1160,7 +1160,7 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(IOException)
     }
 
-    def "ByteChannel non file fail no file"() {
+    def "ByteChannel read non file fail no file"() {
         setup:
         def fs = createFS(config)
 
@@ -1293,7 +1293,7 @@ class AzureFileSystemProviderTest extends APISpec {
         props.getCacheControl() == "myControl"
     }
 
-    def "ByteChannel options missing required"() {
+    def "ByteChannel write options missing required"() {
         setup:
         def fs = createFS(config)
 

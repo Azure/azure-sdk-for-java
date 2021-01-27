@@ -259,8 +259,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * Opens or creates a file, returning a seekable byte channel to access the file.
      * <p>
      * This method is primarily offered to support some jdk convenience methods such as
-     * {@link Files#createFile(Path, FileAttribute[])} which requires opening a channel and closing it. A very limited
-     * set of functionality is offered here. More specifically, only reads--no writes or seeks--are supported.
+     * {@link Files#createFile(Path, FileAttribute[])} which requires opening a channel and closing it. A channel may
+     * only be opened in read mode OR write mode. It may not be opened in read/write mode. Seeking is supported for
+     * reads, but not for writes. Modifications to existing files is not permitted--only creating new files or
+     * overwriting existing files.
+     * <p>
+     * This type is not threadsafe to prevent having to hold locks across network calls.
      * <p>
      * Use {@link #newInputStream(Path, OpenOption...)} or {@link #newOutputStream(Path, OpenOption...)}
      * instead. Please see the documentation on these methods for information on how to use this type. This type can
@@ -292,9 +296,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             return new AzureSeekableByteChannel(
                 (NioBlobInputStream) this.newInputStream(path, set.toArray(new OpenOption[0])), path);
         }
-
-        // Go through javadocs to see if I did anything wrong
-        // Read through code and other PRs
     }
 
     /**

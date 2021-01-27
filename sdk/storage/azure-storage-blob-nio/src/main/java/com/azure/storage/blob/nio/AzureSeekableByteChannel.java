@@ -69,7 +69,7 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
 
         int count = 0;
 
-        int len = dst.remaining(); // In case another thread modifies dst
+        int len = dst.remaining();
         byte[] buf = new byte[len];
 
         while (count < len) {
@@ -123,7 +123,8 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
         /*
         The javadoc says seeking past the end for reading is legal and that it should indicate the end of the file on
         the next read. StorageInputStream doesn't allow this, but we can get around that by just playing with the
-        position variable.
+        position variable and skipping the actual read. We'll check in read if we've seeked past the end and short
+        circuit there as well.
 
         Because we are in read mode this will always give us the size from properties.
          */

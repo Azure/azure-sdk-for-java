@@ -82,10 +82,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         writeByteChannel.write(ByteBuffer.wrap(fileContent))
         then:
         while (count < sourceFileSize) {
-            int writeAmount = rand.nextInt(1024 * 1024)
-            if (sourceFileSize - count < writeAmount) {
-                writeAmount = sourceFileSize - count
-            }
+            int writeAmount = Math.min(rand.nextInt(1024 * 1024), sourceFileSize - count)
             def buffer = new byte[writeAmount]
             fileStream.read(buffer)
             writeByteChannel.write(ByteBuffer.wrap(buffer))
@@ -219,7 +216,6 @@ class AzureSeekableByteChannelTest extends APISpec {
         then:
         readByteChannel.read(ByteBuffer.allocate(1)) == -1 // Seeking past the end and then reading should indicate EOF
     }
-
 
     def "Seek fs close"() {
         when:

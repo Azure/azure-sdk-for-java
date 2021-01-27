@@ -2805,6 +2805,4 @@ class BlobAPITest extends APISpec {
          notThrown(BlobStorageException)
          response.getHeaders().getValue("x-ms-version") == "2017-11-09"
      }
-
-
 }
