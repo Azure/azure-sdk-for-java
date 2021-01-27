@@ -18,6 +18,9 @@ public final class FormLine extends FormElement {
      */
     private final List<FormWord> words;
 
+    /*
+     * Line text appearance properties.
+     */
     private TextAppearance appearance;
 
     static {

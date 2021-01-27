@@ -8,26 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StyleName. */
+/** Defines values for TextStyleName. */
 public final class TextStyleName extends ExpandableStringEnum<TextStyleName> {
-    /** Static value other for StyleName. */
+    /** Static value other for TextStyleName. */
     public static final TextStyleName OTHER = fromString("other");
 
-    /** Static value handwriting for StyleName. */
+    /** Static value handwriting for TextStyleName. */
     public static final TextStyleName HANDWRITING = fromString("handwriting");
 
     /**
-     * Creates or finds a StyleName from its string representation.
+     * Creates or finds a TextStyleName from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding StyleName.
+     * @return the corresponding TextStyleName.
      */
     @JsonCreator
     public static TextStyleName fromString(String name) {
         return fromString(name, TextStyleName.class);
     }
 
-    /** @return known StyleName values. */
+    /** @return known TextStyleName values. */
     public static Collection<TextStyleName> values() {
         return values(TextStyleName.class);
     }

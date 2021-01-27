@@ -66,12 +66,15 @@ public class RecognizeContent {
                 System.out.println();
             }
 
-            formPage.getLines().forEach(formLine ->
-                System.out
-                    .printf("Line %s consists of %d words and has a text style %s with a confidence score of %.2f.%n",
+            formPage.getLines().forEach(formLine -> {
+                if (formLine.getAppearance() != null) {
+                    System.out.printf(
+                        "Line %s consists of %d words and has a text style %s with a confidence score of %.2f.%n",
                         formLine.getText(), formLine.getWords().size(),
                         formLine.getAppearance().getStyle().getName(),
-                        formLine.getAppearance().getStyle().getConfidence()));
+                        formLine.getAppearance().getStyle().getConfidence());
+                }
+            });
         }
     }
 }

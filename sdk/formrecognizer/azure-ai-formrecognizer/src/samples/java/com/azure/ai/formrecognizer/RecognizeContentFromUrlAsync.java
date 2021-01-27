@@ -26,8 +26,8 @@ public class RecognizeContentFromUrlAsync {
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
-            .credential(new AzureKeyCredential("e3a3ba31dac945b0b26347352c403284"))
-            .endpoint("https://shafangfr.cognitiveservices.azure.com/")
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         PollerFlux<FormRecognizerOperationResult, List<FormPage>> recognizeContentPoller =
@@ -67,14 +67,17 @@ public class RecognizeContentFromUrlAsync {
                     System.out.println();
                 }
 
-                formPage.getLines().forEach(formLine ->
-                    System.out
-                        .printf(
+                formPage.getLines().forEach(formLine -> {
+                    if (formLine.getAppearance() != null) {
+                        System.out.printf(
                             "Line %s consists of %d words and has a text style %s with a confidence score of %.2f.%n",
                             formLine.getText(), formLine.getWords().size(),
                             formLine.getAppearance().getStyle().getName(),
-                            formLine.getAppearance().getStyle().getConfidence()));
+                            formLine.getAppearance().getStyle().getConfidence());
+                    }
+                });
             }
+
         });
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
