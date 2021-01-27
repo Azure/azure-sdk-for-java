@@ -88,7 +88,7 @@ public final class PollingState {
             lroResponseBody);
         switch (pollingState.lroResponseStatusCode) {
             case 200:
-                return pollingState.initializeDataFor200StatusCode(lroResponseBody);
+                return pollingState.initializeDataFor200StatusCode(lroResponseHeaders, lroResponseBody);
             case 201:
                 return pollingState.initializeDataFor201StatusCode(lroResponseHeaders, lroResponseBody);
             case 202:
@@ -415,12 +415,20 @@ public final class PollingState {
      * @param lroResponseBody the LRO response body
      * @return updated PollingState
      */
-    private PollingState initializeDataFor200StatusCode(String lroResponseBody) {
+    private PollingState initializeDataFor200StatusCode(HttpHeaders lroResponseHeaders,
+                                                        String lroResponseBody) {
         assertStatusCode(200);
         if (this.isPutOrPatchLro()) {
             String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody, this.serializerAdapter);
-            if (value != null && !ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
-                return this.setData(new ProvisioningStateData(this.lroOperationUri, value));
+            if (!ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
+                final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER);
+                if (azAsyncOpUrl == null) {
+                    return this.setData(new ProvisioningStateData(this.lroOperationUri, value));
+                } else {
+                    return this.setData(new AzureAsyncOperationData(this.lroRequestMethod,
+                        this.lroOperationUri,
+                        azAsyncOpUrl, null));
+                }
             } else {
                 return this.setData(new SynchronouslySucceededLroData(lroResponseBody));
             }
