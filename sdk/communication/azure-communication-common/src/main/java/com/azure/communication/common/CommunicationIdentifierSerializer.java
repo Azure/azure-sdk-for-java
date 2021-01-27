@@ -37,6 +37,7 @@ class CommunicationIdentifierSerializer {
         if (kind == CommunicationIdentifierKind.MICROSOFT_TEAMS_USER) {
             Objects.requireNonNull(identifier.getMicrosoftTeamsUserId());
             Objects.requireNonNull(identifier.getCloudEnvironmentModel());
+            Objects.requireNonNull(identifier.getId());
             return new MicrosoftTeamsUserIdentifier(identifier.getMicrosoftTeamsUserId(), identifier.isAnonymous())
                 .setId(identifier.getId())
                 .setCloudEnvironment(CommunicationCloudEnvironment.fromModel(identifier.getCloudEnvironmentModel()));
