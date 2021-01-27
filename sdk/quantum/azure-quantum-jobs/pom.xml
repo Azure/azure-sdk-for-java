@@ -1,3 +1,5 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -13,30 +15,25 @@
   <groupId>com.azure.quantum.jobs</groupId>
   <artifactId>azure-quantum-jobs</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>9</source>
-          <target>9</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
-  <properties>
-    <maven.compiler.source>8</maven.compiler.source>
-    <maven.compiler.target>8</maven.compiler.target>
-  </properties>
+  <name>Microsoft Azure client library for Azure Quantum service</name>
+  <description>This package contains the Microsoft Azure Quantum SDK.</description>
+  <url>https://github.com/Azure/azure-sdk-for-java</url>
+
+  <distributionManagement>
+    <site>
+      <id>azure-java-build-docs</id>
+      <url>${site.url}/site/${project.artifactId}</url>
+    </site>
+  </distributionManagement>
+
+ <scm>
+    <url>scm:git:https://github.com/Azure/azure-sdk-for-java</url>
+    <connection>scm:git:git@github.com:Azure/azure-sdk-for-java.git</connection>
+    <tag>HEAD</tag>
+  </scm>
 
   <dependencies>
-    <dependency>
-      <groupId>com.azure.quantum.jobs</groupId>
-      <artifactId>azure-quantum-jobs</artifactId>
-      <version>1.0-SNAPSHOT</version>
-    </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
@@ -62,6 +59,8 @@
       <artifactId>jakarta.activation-api</artifactId>
       <version>1.2.2</version>
     </dependency>
+
+    <!-- Test Dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
