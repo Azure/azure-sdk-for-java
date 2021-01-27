@@ -115,51 +115,6 @@ This starter provides a convenient way to quickly access resource servers.
 2. In Controller, `@RegisteredOAuth2AuthorizedClient` can be used to  get `OAuth2AuthorizedClient`. 
    `OAuth2AuthorizedClient` contains accessToken to access related client resource.
    
-#### On-demand authorization
-By default, the starter will launch the Oauth2 Authorization Code flow for a logging in user. During the authorization flow, `azure-spring-boot-starter-active-directory` adds all the configured scopes except **on-demand** ones into authorization code requests to ask for user's authorization consent. The authorization flow of `on-demand` resources will be launched at the first time the user wants to access them.
-
-#### Standalone web application
-Only as a Web application, no further access to other resources protected by Azure AD.
-![Standalone Web Application](resource/aad-based-standalone-web-application.png)
-
-* Access restricted resources of web application, login with credentials using default scopes of `openid, profile, offline_access, https://graph.microsoft.com/User.Read`.
-* Return secured data.
-
-#### Web application visit other resource servers
-Web application visits resource servers which are protected by Azure AD.
-![Web Application Access Resources](resource/add-based-web-application-access-resources.png)
-
-* Login with credentials, the scope includes default scopes and all configured scopes. 
-* Auto-acquire the access token of other clients based on the root refresh token.
-* Use each client's access token to request restricted resource.
-* Return secured data.
-
-### Resource Server
-Based on Azure AD as a Resource Server, it uses `BearerTokenAuthenticationFilter` authorize request. The current resource server also can access other resources, there's a similar method to the web application usage to obtain access to the client access token, the difference is the access token obtained based on the `MSAL On-Behalf-Of` process.
-
-#### Standalone resource server
-Only as a Resource Server, no further access to other resources protected by Azure AD.
-![Standalone resource server usage](resource/add-based-standalone-resource-server.png)
-
-* Access restricted resources of Resource Server.
-* Validate access token.
-* Return secured data.
-
-#### Resource server access other resources
-Resource server accesses other resource servers which are protected by Azure AD.
-![Resource Server Access Other Resources](resource/add-based-resource-server-access-other-resources.png)
-
-* Access restricted resources related to Graph and Custom resources through resource server.
-* Auto On-Behalf-Of to request an access token for other clients.
-* Use each client's access token to request restricted resource.
-* Return secured data.
-
-## Examples
-Refer to different samples for different authentication ways. 
-
-### [Web APP] Authenticate in web app
-Please refer to [azure-spring-boot-sample-active-directory-webapp] for authenticate in web apps.
-
 ####  Configure application.yml:
 ```yaml
 azure:
@@ -171,7 +126,7 @@ azure:
       allowed-groups: group1, group2
     post-logout-redirect-uri: http://localhost:8080 # optional
 ```
-
+   
 #### If you want to create your own configuration class:
 <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L18-L26 -->
 ```java
@@ -185,9 +140,40 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
     }
 }
 ```
+   
+#### Support the use of `@RegisteredOAuth2AuthorizedClient` to get `OAuth2AuthorizedClient`:
+```java
+ @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
+ @GetMapping("call-graph")
+ public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
+     return callMicrosoftGraphMeEndpoint(graph);
+ }
+ 
+ @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
+ @GetMapping("call-custom")
+ public String callCustom(@RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
+     return callCustomEndpoint(custom);
+ }
+```
+   
+#### On-demand authorization
+By default, the starter will launch the Oauth2 Authorization Code flow for a logging in user. During the authorization flow, `azure-spring-boot-starter-active-directory` adds all the configured scopes except **on-demand** ones into authorization code requests to ask for user's authorization consent. The authorization flow of `on-demand` resources will be launched at the first time the user wants to access them.
+To configure the authorization of certain resource as on-demand, developers need to add following property in `application.yml`:
+```yaml
+azure:
+  activedirectory:
+    authorization-clients:
+      {registration-id}:
+        on-demand: true
+        scopes: {scope1}, {scope2}
+```
 
-### [Web APP] Configure scopes of multiple resources
-By default, `azure-spring-boot-starter-active-directory` configures scopes of `openid`, `profile` and `https://graph.microsoft.com/user.read` to implement OpenID Connect protocol and access of membership information of logging in users.
+#### Standalone web application
+Only as a Web application, no further access to other resources protected by Azure AD.
+![Standalone Web Application](resource/aad-based-standalone-web-application.png)
+
+* Access restricted resources of web application, login with credentials using default scopes of `openid, profile, offline_access, https://graph.microsoft.com/User.Read`.
+* Return secured data.
 
 To customize scope configurations of multiple resources, developers need to configure the registration id and scopes in the `application.yml` as needed. Here the {registration-id} is defined by developers themselves to generate correspondding `OAuth2AuthorizedClient` to acquire access tokens, and scope names should follow the specification of `resource-uri/permission`.
 ```yaml
@@ -200,19 +186,17 @@ azure:
         scopes: {scope1}, {scope2}
 ``` 
 
-### [Web APP] Configure on-demand resource authorization
-To configure the authorization of certain resource as on-demand, developers need to add following property in `application.yml`:
-```yaml
-azure:
-  activedirectory:
-    authorization-clients:
-      {registration-id}:
-        on-demand: true
-        scopes: {scope1}, {scope2}
-```
+#### Web application visit other resource servers
+Web application visits resource servers which are protected by Azure AD.
+![Web Application Access Resources](resource/add-based-web-application-access-resources.png)
 
-### [Web API] Protect the resource APIs in resource server
-Please refer to [azure-spring-boot-sample-active-directory-resource-server] for access resource APIs.
+* Login with credentials, the scope includes default scopes and all configured scopes. 
+* Auto-acquire the access token of other clients based on the root refresh token.
+* Use each client's access token to request restricted resource.
+* Return secured data.
+
+### Resource Server
+Based on Azure AD as a Resource Server, it uses `BearerTokenAuthenticationFilter` authorize request. The current resource server also can access other resources, there's a similar method to the web application usage to obtain access to the client access token, the difference is the access token obtained based on the `MSAL On-Behalf-Of` process.
 
 #### Using `AADOAuth2ResourceServerSecurityConfig` to extends `WebSecurityConfigurerAdapter`:
 ```java
@@ -229,9 +213,6 @@ public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurer
     }
 }
 ```
-
-### [Web API] OAuth 2.0 On-Behalf-Of flow
-Please refer [azure-spring-boot-sample-active-directory-resource-server-obo] to for access On-Behalf-Of flow.
 
 #### Configure application.yml:
 ```yaml
@@ -250,22 +231,24 @@ azure:
                - <Web-API-B-app-id-url>/File.Read
 ```
 
-#### Support the use of `@RegisteredOAuth2AuthorizedClient` to get `OAuth2AuthorizedClient`:
-```java
- @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
- @GetMapping("call-graph")
- public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
-     return callMicrosoftGraphMeEndpoint(graph);
- }
- 
- @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
- @GetMapping("call-custom")
- public String callCustom(@RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
-     return callCustomEndpoint(custom);
- }
-```
+#### Standalone resource server
+Only as a Resource Server, no further access to other resources protected by Azure AD.
+![Standalone resource server usage](resource/add-based-standalone-resource-server.png)
 
-### [Web API] (Deprecated) Authenticate in web API by a filter
+* Access restricted resources of Resource Server.
+* Validate access token.
+* Return secured data.
+
+#### Resource server access other resources
+Resource server accesses other resource servers which are protected by Azure AD.
+![Resource Server Access Other Resources](resource/add-based-resource-server-access-other-resources.png)
+
+* Access restricted resources related to Graph and Custom resources through resource server.
+* Auto On-Behalf-Of to request an access token for other clients.
+* Use each client's access token to request restricted resource.
+* Return secured data.
+
+### (Deprecated) Authenticate in web API by a filter
 Please refer to [azure-spring-boot-sample-active-directory-resource-server-by-filter] for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
 
 #### Configure application.yml:
@@ -292,7 +275,7 @@ public class AADAuthenticationFilterConfigSample extends WebSecurityConfigurerAd
 * Role-based Authorization with annotation `@PreAuthorize("hasRole('GROUP_NAME')")`
 * Role-based Authorization with method `isMemberOf()`
 
-### [Web API] (Deprecated) Authenticate stateless web API by a filter, using AAD app roles
+### (Deprecated) Authenticate stateless web API by a filter, using AAD app roles
 This scenario fits best for stateless Spring backends exposing an API to SPAs ([OAuth 2.0 implicit grant flow]) or service-to-service access using the [client credentials grant flow].
 The stateless processing can be activated with the `azure.activedirectory.session-stateless` property. The authorization is using the [AAD App Roles feature], so instead of using the `groups` claim the token has a `roles` claim which contains roles [configured in your manifest]. 
 
@@ -346,7 +329,7 @@ public class AADAppRoleStatelessAuthenticationFilterConfigSample extends WebSecu
 
 The roles you want to use within your application have to be [set up in the manifest of your application registration].
 
-### [Web APP & Web API] Use Azure China instead of Azure Global
+### Use Azure China instead of Azure Global
 If you use [Azure China] instead of **Azure Global**, you need to configure your `application.yml`:
 ```yaml
 azure:
@@ -354,6 +337,22 @@ azure:
     base-uri: https://login.partner.microsoftonline.cn
     graph-membership-uri: https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf
 ```
+
+
+## Examples
+Refer to different samples for different authentication ways. 
+
+### [Web APP] Authenticate in web app
+Please refer to [azure-spring-boot-sample-active-directory-webapp] for authenticate in web apps.
+
+### [Web API] Protect the resource APIs in resource server
+Please refer to [azure-spring-boot-sample-active-directory-resource-server] for access resource APIs.
+
+### [Web API] OAuth 2.0 On-Behalf-Of flow
+Please refer to [azure-spring-boot-sample-active-directory-resource-server-obo] for access On-Behalf-Of flow.
+
+### [Web API] (Deprecated) Authenticate in web API by a filter
+Please refer to [azure-spring-boot-sample-active-directory-resource-server-by-filter] for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
 
 ## Troubleshooting
 ### Enable client logging
