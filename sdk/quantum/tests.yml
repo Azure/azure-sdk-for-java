@@ -1,0 +1,10 @@
+trigger: none
+
+jobs:
+  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: quantum
+      Artifacts:
+        - name: azure-quantum-jobs
+          groupId: com.azure.quantum.jobs
+          safeName: azurequantumjobs
