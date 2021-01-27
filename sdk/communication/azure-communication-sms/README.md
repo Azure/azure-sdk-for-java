@@ -35,7 +35,7 @@ via the accessKey() function. Endpoint and httpClient must also be set via the e
 functions respectively.
 
 To send an sms message to a single recipient
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L25-L41 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L27-L43 -->
 ```java
 // Your can find your endpoint and access key from your resource in the Azure Portal
 String endpoint = "https://<RESOURCE_NAME>.communication.azure.com";
@@ -57,7 +57,7 @@ SmsClient smsClient = smsClientBuilder.buildClient();
 ```
 
 Alternatively, you can provide the entire connection string using the connectionString() function instead of providing the endpoint and access key. 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L110-L119 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L49-L58 -->
 ```java
 // Create an HttpClient builder of your choice and customize it
 HttpClient httpClient = new NettyAsyncHttpClientBuilder().build();
@@ -79,16 +79,19 @@ Use the `sendMessage` function to send a new message to a list of phone numbers.
 Once you send the message, you'll receive a response where you can access several
 properties such as the message id with the `response.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L50-L63 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L62-L78 -->
 ```java
 //Send an sms to only one phone number
 String to = "<to-phone-number>";
 
-// SendSmsOptions is an optional field.
-//sms
+// to enable a delivery report to the Azure Event Grid
+SendSmsOptions options = new SendSmsOptions();
+options.setEnableDeliveryReport(true);
+//addionaly you can ad a tag you wish to identify the messages for this tag.
+options.setTag("Tag");/* Optional */
 
 // Send the message to a list of  phone Numbers and check the response for a messages ids
-SendSmsResponseItem response = smsClient.send(
+SendSmsResult response = smsClient.send(
     "<leased-phone-number>",
     to,
     "your message",
@@ -102,45 +105,27 @@ Use the `sendMessage` function to send a new message to a list of phone numbers.
 Once you send the message, you'll receive a response where you can access several
 properties such as the message id with the `response.getMessageId()` function.
 
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L68-L83 -->
+<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L83-L104 -->
 ```java
 //Send an sms to multiple phone numbers
 List<String> toMultiplePhones = new ArrayList<String>();
 toMultiplePhones.add("<to-phone-number1>");
 toMultiplePhones.add("<to-phone-number2>");
 
-// Send the message to a list of  phone Numbers and check the response for a messages ids
-PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.send(
-    "<leased-phone-number>",
-    toMultiplePhones,
-    "your message",
-    options /* Optional */);
-
-for (SendSmsResponseItem messageResponseItem
-    : responseMultiplePhones) {
-    System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
-}
-```
-### Adding a tag for the sent messages.
-Yo can use the tag property in the `SendSmsOptions` object to indentify the messages by a certain tag.
-<!-- embedme src/samples/java/com/azure/communication/sms/samples/quickstart/ReadmeSamples.java#L87-L105 -->
-```java
-//Add a tag to your messages
-List<String> toMultiplePhones = new ArrayList<String>();
-toMultiplePhones.add("<to-phone-number1>");
-toMultiplePhones.add("<to-phone-number2>");
-
+// to enable a delivery report to the Azure Event Grid
 SendSmsOptions options = new SendSmsOptions();
-options.setTag("Tag");
+options.setEnableDeliveryReport(true);
+//addionaly you can ad a tag you wish to identify the messages for this tag.
+options.setTag("Tag");/* Optional */
 
 // Send the message to a list of  phone Numbers and check the response for a messages ids
-PagedIterable<SendSmsResponseItem> responseMultiplePhones = smsClient.send(
+PagedIterable<SendSmsResult> responseMultiplePhones = smsClient.send(
     "<leased-phone-number>",
     toMultiplePhones,
     "your message",
     options /* Optional */);
 
-for (SendSmsResponseItem messageResponseItem
+for (SendSmsResult messageResponseItem
     : responseMultiplePhones) {
     System.out.println("MessageId sent to " + messageResponseItem.getTo() + ": " + messageResponseItem.getMessageId());
 }

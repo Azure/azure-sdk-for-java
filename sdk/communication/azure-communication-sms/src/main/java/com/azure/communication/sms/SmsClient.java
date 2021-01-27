@@ -3,9 +3,10 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumber;
+
 import com.azure.communication.sms.models.SendSmsOptions;
-import com.azure.communication.sms.models.SendSmsResponseItem;
+import com.azure.communication.sms.models.SendSmsResult;
+import com.azure.communication.sms.models.SendSmsResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -40,7 +41,7 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendSmsResponseItem send(String from, String to, String message) {
+    public SendSmsResult send(String from, String to, String message) {
         return null;
     }
 
@@ -55,7 +56,7 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SendSmsResponseItem send(String from, String to, String message,
+    public SendSmsResult send(String from, String to, String message,
                                     SendSmsOptions smsOptions) {
         return null;
     }
@@ -69,7 +70,7 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<SendSmsResponseItem> send(String from, List<String> to, String message) {
+    public PagedIterable<SendSmsResult> send(String from, List<String> to, String message) {
 
 
         return null;
@@ -86,7 +87,7 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<SendSmsResponseItem> send(String from, List<String> to, String message,
+    public PagedIterable<SendSmsResult> send(String from, List<String> to, String message,
                                                    SendSmsOptions smsOptions) {
 
 
@@ -105,7 +106,7 @@ public final class SmsClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<SendSmsResponseItem> sendWithContext(String from, List<String> to, String message,
+    public PagedIterable<SendSmsResult> sendWithContext(String from, List<String> to, String message,
                                                               SendSmsOptions smsOptions, Context context) {
 
 

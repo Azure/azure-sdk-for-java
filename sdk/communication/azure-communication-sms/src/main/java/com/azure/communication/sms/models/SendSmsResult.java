@@ -6,60 +6,112 @@ package com.azure.communication.sms.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** The SendSmsResult model. */
 @Fluent
 public final class SendSmsResult {
     /*
-     * The value property.
+     * The recipients's phone number in E.164 format.
      */
-    @JsonProperty(value = "value", required = true)
-    private List<SendSmsResponseItem> value;
+    @JsonProperty(value = "to", required = true)
+    private String to;
 
     /*
-     * The nextLink property.
+     * The identifier of the outgoing SMS message. Only present if message
+     * processed.
      */
-    @JsonProperty(value = "nextLink")
-    private String nextLink;
+    @JsonProperty(value = "messageId")
+    private String messageId;
+
+    /*
+     * HTTP Status code.
+     */
+    @JsonProperty(value = "httpStatusCode", required = true)
+    private int httpStatusCode;
+
+    /*
+     * Optional error message in case of 4xx or 5xx errors.
+     */
+    @JsonProperty(value = "errorMessage")
+    private String errorMessage;
 
     /**
-     * Get the value property: The value property.
+     * Get the to property: The recipients's phone number in E.164 format.
      *
-     * @return the value value.
+     * @return the to value.
      */
-    public List<SendSmsResponseItem> getValue() {
-        return this.value;
+    public String getTo() {
+        return this.to;
     }
 
     /**
-     * Set the value property: The value property.
+     * Set the to property: The recipients's phone number in E.164 format.
      *
-     * @param value the value value to set.
+     * @param to the to value to set.
      * @return the SendSmsResult object itself.
      */
-    public SendSmsResult setValue(List<SendSmsResponseItem> value) {
-        this.value = value;
+    public SendSmsResult setTo(String to) {
+        this.to = to;
         return this;
     }
 
     /**
-     * Get the nextLink property: The nextLink property.
+     * Get the messageId property: The identifier of the outgoing SMS message. Only present if message processed.
      *
-     * @return the nextLink value.
+     * @return the messageId value.
      */
-    public String getNextLink() {
-        return this.nextLink;
+    public String getMessageId() {
+        return this.messageId;
     }
 
     /**
-     * Set the nextLink property: The nextLink property.
+     * Set the messageId property: The identifier of the outgoing SMS message. Only present if message processed.
      *
-     * @param nextLink the nextLink value to set.
+     * @param messageId the messageId value to set.
      * @return the SendSmsResult object itself.
      */
-    public SendSmsResult setNextLink(String nextLink) {
-        this.nextLink = nextLink;
+    public SendSmsResult setMessageId(String messageId) {
+        this.messageId = messageId;
+        return this;
+    }
+
+    /**
+     * Get the httpStatusCode property: HTTP Status code.
+     *
+     * @return the httpStatusCode value.
+     */
+    public int getHttpStatusCode() {
+        return this.httpStatusCode;
+    }
+
+    /**
+     * Set the httpStatusCode property: HTTP Status code.
+     *
+     * @param httpStatusCode the httpStatusCode value to set.
+     * @return the SendSmsResult object itself.
+     */
+    public SendSmsResult setHttpStatusCode(int httpStatusCode) {
+        this.httpStatusCode = httpStatusCode;
+        return this;
+    }
+
+    /**
+     * Get the errorMessage property: Optional error message in case of 4xx or 5xx errors.
+     *
+     * @return the errorMessage value.
+     */
+    public String getErrorMessage() {
+        return this.errorMessage;
+    }
+
+    /**
+     * Set the errorMessage property: Optional error message in case of 4xx or 5xx errors.
+     *
+     * @param errorMessage the errorMessage value to set.
+     * @return the SendSmsResult object itself.
+     */
+    public SendSmsResult setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
         return this;
     }
 }

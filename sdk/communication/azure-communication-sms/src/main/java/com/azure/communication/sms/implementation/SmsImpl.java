@@ -5,7 +5,7 @@
 package com.azure.communication.sms.implementation;
 
 import com.azure.communication.sms.models.SendMessageRequest;
-import com.azure.communication.sms.models.SendSmsResponseItem;
+import com.azure.communication.sms.models.SendSmsResult;
 import com.azure.communication.sms.models.SmsSendNextResponse;
 import com.azure.communication.sms.models.SmsSendResponse;
 import com.azure.core.annotation.BodyParam;
@@ -92,7 +92,7 @@ public final class SmsImpl {
      * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SendSmsResponseItem>> sendSinglePageAsync(
+    public Mono<PagedResponse<SendSmsResult>> sendSinglePageAsync(
             SendMessageRequest sendMessageRequest, String repeatabilityRequestId, String repeatabilityFirstSent) {
         return FluxUtil.withContext(
                         context ->
@@ -133,7 +133,7 @@ public final class SmsImpl {
      * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SendSmsResponseItem>> sendSinglePageAsync(
+    public Mono<PagedResponse<SendSmsResult>> sendSinglePageAsync(
             SendMessageRequest sendMessageRequest,
             String repeatabilityRequestId,
             String repeatabilityFirstSent,
@@ -174,7 +174,7 @@ public final class SmsImpl {
      * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SendSmsResponseItem> sendAsync(
+    public PagedFlux<SendSmsResult> sendAsync(
             SendMessageRequest sendMessageRequest, String repeatabilityRequestId, String repeatabilityFirstSent) {
         return new PagedFlux<>(
                 () -> sendSinglePageAsync(sendMessageRequest, repeatabilityRequestId, repeatabilityFirstSent),
@@ -200,7 +200,7 @@ public final class SmsImpl {
      * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SendSmsResponseItem> sendAsync(
+    public PagedFlux<SendSmsResult> sendAsync(
             SendMessageRequest sendMessageRequest,
             String repeatabilityRequestId,
             String repeatabilityFirstSent,
@@ -228,7 +228,7 @@ public final class SmsImpl {
      * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SendSmsResponseItem> send(
+    public PagedIterable<SendSmsResult> send(
             SendMessageRequest sendMessageRequest, String repeatabilityRequestId, String repeatabilityFirstSent) {
         return new PagedIterable<>(sendAsync(sendMessageRequest, repeatabilityRequestId, repeatabilityFirstSent));
     }
@@ -252,7 +252,7 @@ public final class SmsImpl {
      * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SendSmsResponseItem> send(
+    public PagedIterable<SendSmsResult> send(
             SendMessageRequest sendMessageRequest,
             String repeatabilityRequestId,
             String repeatabilityFirstSent,
@@ -271,7 +271,7 @@ public final class SmsImpl {
      * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SendSmsResponseItem>> sendNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<SendSmsResult>> sendNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.sendNext(nextLink, context))
                 .map(
                         res ->
@@ -295,7 +295,7 @@ public final class SmsImpl {
      * @return response for a successful or multi status send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SendSmsResponseItem>> sendNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<SendSmsResult>> sendNextSinglePageAsync(String nextLink, Context context) {
         return service.sendNext(nextLink, context)
                 .map(
                         res ->

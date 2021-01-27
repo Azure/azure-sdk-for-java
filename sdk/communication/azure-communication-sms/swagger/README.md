@@ -49,6 +49,6 @@ context-client-method-parameter: true
 ``` yaml
 directive:
     - rename-model:
-        from: SendSmsResponse
+        from: SendSmsResponseItem
         to: SendSmsResult
 ```

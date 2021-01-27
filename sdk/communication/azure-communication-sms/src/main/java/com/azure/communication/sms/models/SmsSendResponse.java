@@ -9,7 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the send operation. */
-public final class SmsSendResponse extends ResponseBase<SmsSendHeaders, SendSmsResult> {
+public final class SmsSendResponse extends ResponseBase<SmsSendHeaders, SendSmsResponse> {
     /**
      * Creates an instance of SmsSendResponse.
      *
@@ -20,13 +20,17 @@ public final class SmsSendResponse extends ResponseBase<SmsSendHeaders, SendSmsR
      * @param headers the deserialized headers of the HTTP response.
      */
     public SmsSendResponse(
-            HttpRequest request, int statusCode, HttpHeaders rawHeaders, SendSmsResult value, SmsSendHeaders headers) {
+            HttpRequest request,
+            int statusCode,
+            HttpHeaders rawHeaders,
+            SendSmsResponse value,
+            SmsSendHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /** @return the deserialized response body. */
     @Override
-    public SendSmsResult getValue() {
+    public SendSmsResponse getValue() {
         return super.getValue();
     }
 }

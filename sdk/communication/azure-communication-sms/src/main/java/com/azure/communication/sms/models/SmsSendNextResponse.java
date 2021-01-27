@@ -9,7 +9,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the sendNext operation. */
-public final class SmsSendNextResponse extends ResponseBase<SmsSendNextHeaders, SendSmsResult> {
+public final class SmsSendNextResponse extends ResponseBase<SmsSendNextHeaders, SendSmsResponse> {
     /**
      * Creates an instance of SmsSendNextResponse.
      *
@@ -23,14 +23,14 @@ public final class SmsSendNextResponse extends ResponseBase<SmsSendNextHeaders, 
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
-            SendSmsResult value,
+            SendSmsResponse value,
             SmsSendNextHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /** @return the deserialized response body. */
     @Override
-    public SendSmsResult getValue() {
+    public SendSmsResponse getValue() {
         return super.getValue();
     }
 }

@@ -3,12 +3,11 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.PhoneNumber;
+
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.models.SendMessageRequest;
 import com.azure.communication.sms.models.SendSmsOptions;
 import com.azure.communication.sms.models.SendSmsResult;
-import com.azure.communication.sms.models.SendSmsResponseItem;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -47,7 +46,7 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponseItem> send(String from, String to, String message) {
+    public Mono<SendSmsResult> send(String from, String to, String message) {
         return null;
     }
 
@@ -62,7 +61,7 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SendSmsResponseItem> send(String from, String to, String message,
+    public Mono<SendSmsResult> send(String from, String to, String message,
                                           SendSmsOptions smsOptions) {
         return null;
     }
@@ -76,7 +75,7 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SendSmsResponseItem> send(String from, List<String> to, String message) {
+    public PagedFlux<SendSmsResult> send(String from, List<String> to, String message) {
 
 
         return null;
@@ -93,7 +92,7 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SendSmsResponseItem> send(String from, List<String> to, String message,
+    public PagedFlux<SendSmsResult> send(String from, List<String> to, String message,
                                                SendSmsOptions smsOptions) {
 
 
@@ -112,19 +111,19 @@ public final class SmsAsyncClient {
      * @return response for a successful send Sms request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedFlux<SendSmsResponseItem> sendWithContext(PhoneNumber from, List<String> to, String message,
+    public PagedFlux<SendSmsResult> sendWithContext(String from, List<String> to, String message,
                                                           SendSmsOptions smsOptions, Context context) {
 
 
         return null;
     }
 
-    private SendMessageRequest createSmsMessageRequest(String from, List<PhoneNumber> to, String message,
+    private SendMessageRequest createSmsMessageRequest(String from, List<String> to, String message,
                                                        SendSmsOptions smsOptions) {
-        Stream<String> s = to.stream().map(n -> n.getValue());
+
         SendMessageRequest sendMessageRequest = new SendMessageRequest();
         sendMessageRequest.setFrom(from)
-            .setTo(s.collect(Collectors.toList()))
+            .setTo(to)
             .setMessage(message)
             .setSendSmsOptions(smsOptions);
 
