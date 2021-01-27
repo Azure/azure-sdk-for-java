@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.common.implementation;
 
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -14,7 +15,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import com.azure.communication.common.CommunicationClientCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -49,7 +50,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
     static final DateTimeFormatter HMAC_DATETIMEFORMATTER_PATTERN =
         DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", java.util.Locale.US);
 
-    private final CommunicationClientCredential credential;
+    private final AzureKeyCredential credential;
 
     private Mac sha256HMAC;
     private final ClientLogger logger = new ClientLogger(HmacAuthenticationPolicy.class);
@@ -58,14 +59,14 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
      * Created with a non-null client credential
      * @param clientCredential client credential with valid access key
      */
-    public HmacAuthenticationPolicy(CommunicationClientCredential clientCredential) {
+    public HmacAuthenticationPolicy(AzureKeyCredential clientCredential) {
         Objects.requireNonNull(clientCredential, "'clientCredential' cannot be a null value.");
         credential = clientCredential;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String accessKey = credential.getAccessKay();
+        String accessKey = credential.getKey();
         byte[] key = Base64.getDecoder().decode(accessKey);
         Mac sha256HMAC;
         try {
@@ -82,7 +83,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
 
         if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
             return Mono.error(
-                new RuntimeException("CommunicationClientCredential requires a URL using the HTTPS protocol scheme"));
+                new RuntimeException("AzureKeyCredential requires a URL using the HTTPS protocol scheme"));
         }
 
         try {
@@ -101,7 +102,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         }
     }
 
-    Mono<Map<String, String>> appendAuthorizationHeaders(java.net.URL url, String httpMethod, Flux<ByteBuffer> contents) {
+    Mono<Map<String, String>> appendAuthorizationHeaders(URL url, String httpMethod, Flux<ByteBuffer> contents) {
         return contents.collect(() -> {
             try {
                 return MessageDigest.getInstance("SHA-256");
@@ -112,7 +113,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
             .map(messageDigest -> addAuthenticationHeaders(url, httpMethod, messageDigest));
     }
 
-    private Map<String, String> addAuthenticationHeaders(final java.net.URL url, final String httpMethod,
+    private Map<String, String> addAuthenticationHeaders(final URL url, final String httpMethod,
                                                                    final MessageDigest messageDigest) {
         final Map<String, String> headers = new java.util.HashMap<>();
 
@@ -126,7 +127,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         return headers;
     }
 
-    private void addSignatureHeader(final java.net.URL url, final String httpMethod, final Map<String, String> httpHeaders) {
+    private void addSignatureHeader(final URL url, final String httpMethod, final Map<String, String> httpHeaders) {
         final String signedHeaderNames = String.join(";", SIGNED_HEADERS);
         final String signedHeaderValues = Arrays.stream(SIGNED_HEADERS)
             .map(httpHeaders::get)

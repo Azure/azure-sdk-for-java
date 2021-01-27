@@ -3,12 +3,12 @@
 
 package com.azure.communication.sms;
 
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -39,7 +39,7 @@ public final class SmsClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(SmsClientBuilder.class);
     private String endpoint;
-    private CommunicationClientCredential accessKeyCredential;
+    private AzureKeyCredential accessKeyCredential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpPipeline pipeline;
@@ -74,12 +74,12 @@ public final class SmsClientBuilder {
     /**
      * Set accessKeyCredential to use
      *
-     * @param accessKey access key for initalizing CommunicationClientCredential
+     * @param accessKey access key for initalizing AzureKeyCredential
      * @return SmsClientBuilder
      */
     public SmsClientBuilder accessKey(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.accessKeyCredential = new CommunicationClientCredential(accessKey);
+        this.accessKeyCredential = new AzureKeyCredential(accessKey);
         return this;
     }
 
@@ -98,7 +98,7 @@ public final class SmsClientBuilder {
      /**
      * Set endpoint and credential to use
      *
-     * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
+     * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
      * @return SmsClientBuilder
      */
     public SmsClientBuilder connectionString(String connectionString) {

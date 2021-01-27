@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.communication.common.implementation;
 
+import com.azure.core.credential.AzureKeyCredential;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -108,11 +109,11 @@ public class HmacAuthenticationPolicyTests {
         return "";
     }
 
-    private com.azure.communication.common.CommunicationClientCredential credential;
+    private AzureKeyCredential credential;
 
     @BeforeEach
     public void setup() throws InvalidKeyException, NoSuchAlgorithmException {
-        credential = new com.azure.communication.common.CommunicationClientCredential(key);
+        credential = new AzureKeyCredential(key);
     }
 
     @Test

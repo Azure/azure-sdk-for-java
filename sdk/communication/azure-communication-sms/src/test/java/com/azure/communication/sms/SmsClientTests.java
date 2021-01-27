@@ -3,9 +3,9 @@
 package com.azure.communication.sms;
 
 import com.azure.communication.common.PhoneNumberIdentifier;
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.sms.models.SendSmsOptions;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -49,7 +49,7 @@ public class SmsClientTests extends SmsTestBase {
 
         HttpClient httpClient = getHttpClient(from, to, body, smsOptions);
         SmsClientBuilder builder = new SmsClientBuilder();
-        CommunicationClientCredential credential = new CommunicationClientCredential(ACCESSKEY);
+        AzureKeyCredential credential = new AzureKeyCredential(ACCESSKEY);
         HttpPipelinePolicy[] policies = new HttpPipelinePolicy[2];
         policies[0] = new HmacAuthenticationPolicy(credential);
         policies[1] = new UserAgentPolicy();

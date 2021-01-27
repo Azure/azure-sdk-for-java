@@ -3,12 +3,12 @@
 
 package com.azure.communication.administration;
 
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -40,7 +40,7 @@ public final class CommunicationIdentityClientBuilder {
 
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientBuilder.class);
     private String endpoint;
-    private CommunicationClientCredential accessKeyCredential;
+    private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
@@ -92,7 +92,7 @@ public final class CommunicationIdentityClientBuilder {
      */
     public CommunicationIdentityClientBuilder accessKey(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.accessKeyCredential = new CommunicationClientCredential(accessKey);
+        this.azureKeyCredential = new AzureKeyCredential(accessKey);
         return this;
     }
 
@@ -215,15 +215,15 @@ public final class CommunicationIdentityClientBuilder {
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
-        if (this.tokenCredential != null && this.accessKeyCredential != null) {
+        if (this.tokenCredential != null && this.azureKeyCredential != null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
         }
         if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(
                 this.tokenCredential, "https://communication.azure.com//.default");
-        } else if (this.accessKeyCredential != null) {
-            return new HmacAuthenticationPolicy(this.accessKeyCredential);
+        } else if (this.azureKeyCredential != null) {
+            return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
