@@ -280,6 +280,20 @@ class CosmosRowConverterSpec extends UnitSpec {
         row.getString(1) shouldEqual colVal2
     }
 
+    "missing attribute in ObjectNode" should "translate to Row" in {
+
+        val colName1 = "testCol1"
+        val colName2 = "testCol2"
+        val colVal1 = "strVal"
+
+        val schema = StructType(Seq(StructField(colName1, NullType), StructField(colName2, StringType)))
+        val objectNode: ObjectNode = objectMapper.createObjectNode()
+        objectNode.put(colName1, colVal1)
+
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        row.isNullAt(1) shouldBe true
+    }
+
     "array in ObjectNode" should "translate to Row" in {
         val colName1 = "testCol1"
         val colVal1 : Array[String] = Array("element1", "element2")
