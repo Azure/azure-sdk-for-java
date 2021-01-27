@@ -37,7 +37,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     final boolean nochanges;
     private final ConcurrentMap<String, QueryMetrics> queryMetricsMap;
     private final static String defaultPartition = "0";
-    private final CosmosDiagnostics cosmosDiagnostics;
+    private CosmosDiagnostics cosmosDiagnostics;
     private QueryInfo queryInfo;
     private QueryInfo.QueryPlanDiagnosticsContext queryPlanDiagnosticsContext;
 

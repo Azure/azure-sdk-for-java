@@ -514,19 +514,20 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource>
                         BridgeInternal.queryMetricsFromFeedResponse(feedOfOrderByRowResults),
                         ModelBridgeInternal.getQueryPlanDiagnosticsContext(feedOfOrderByRowResults),
                         false,
-                        false);
+                        false, feedOfOrderByRowResults.getCosmosDiagnostics());
                     BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(),
                                                                   clientSideRequestStatisticsList);
                     return feedResponse;
                 }).switchIfEmpty(Flux.defer(() -> {
                         // create an empty page if there is no result
-                    FeedResponse<T> frp =  Flux.just(BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
+                    FeedResponse<T> frp =  BridgeInternal.createFeedResponseWithQueryMetrics(Utils.immutableListOf(),
                                 headerResponse(
                                     tracker.getAndResetCharge()),
                             queryMetricMap,
                             null,
                             false,
-                            false));
+                            false,
+                            null);
                     BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(),
                                                                   clientSideRequestStatisticsList);
                     return Flux.just(frp);
