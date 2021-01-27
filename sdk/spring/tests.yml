@@ -79,10 +79,6 @@ jobs:
               $env:AAD_USER_NAME_ON_DEMAND_FAKE
               $env:AAD_USER_NAME_ON_DEMAND_FAKE_TEST
 
-              $testEnv = $env:AAD_USER_NAME_ON_DEMAND.split("@")[0]
-              echo $testEnv
-              $testEnvFake = $env:AAD_USER_NAME_ON_DEMAND_FAKE.split("@")[0]
-              echo $testEnvFake
             displayName: 'Export on-demand user name'
 
         PostRunSteps:
