@@ -90,6 +90,7 @@ org.postgresql:postgresql;42.2.18
 org.slf4j:slf4j-api;1.7.30
 org.slf4j:slf4j-nop;1.7.30
 org.slf4j:slf4j-simple;1.7.30
+jakarta.activation:jakarta.activation-api;1.2.2
 
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-dependencies;2.3.5.RELEASE
