@@ -1,111 +1,30 @@
 trigger: none
 
-jobs:
-  - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
-    parameters:
-      ServiceDirectory: tables
-      Timeout: 60
-      MaxParallel: 14
-      EnvVars:
-        AZURE_TEST_MODE: LIVE
-      Artifacts:
-        - name: azure-data-tables
-          groupId: com.azure
-          safeName: azuretables
-      Matrix:
-        Linux - Java 8 Storage (AzureCloud):
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          JavaTestVersion: '1.8'
-          DisplayName: 'Linux - Java 8 - Storage'
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          AZURE_TEST_HTTP_CLIENTS: netty
-          ArmTemplateParameters: '@{endpointType="storage"}'
-        macOS - Java 8 Storage (AzureCloud):
-          Pool: Azure Pipelines
-          OSVmImage: 'macOS-10.15'
-          JavaTestVersion: '1.8'
-          DisplayName: 'macOS - Java 8 - Storage'
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          AZURE_TEST_HTTP_CLIENTS: okhttp
-          ArmTemplateParameters: '@{endpointType="storage"}'
-        Windows - Java 8 Storage (AzureCloud):
-          Pool: azsdk-pool-mms-win-2019-general
-          OSVmImage: MMS2019
-          JavaTestVersion: '1.8'
-          DisplayName: 'Windows - Java 8 - Storage'
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          AZURE_TEST_HTTP_CLIENTS: netty
-          ArmTemplateParameters: '@{endpointType="storage"}'
-        Linux - Java 11 Storage (AzureCloud):
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          JavaTestVersion: '1.11'
-          DisplayName: 'Linux - Java 11 - Storage'
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          AZURE_TEST_HTTP_CLIENTS: okhttp
-          ArmTemplateParameters: '@{endpointType="storage"}'
-        macOS - Java 11 Storage (AzureCloud):
-          Pool: Azure Pipelines
-          OSVmImage: 'macOS-10.15'
-          JavaTestVersion: '1.11'
-          DisplayName: 'macOS - Java 11 - Storage'
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          AZURE_TEST_HTTP_CLIENTS: netty
-          ArmTemplateParameters: '@{endpointType="storage"}'
-        Windows - Java 11 Storage (AzureCloud):
-          Pool: azsdk-pool-mms-win-2019-general
-          OSVmImage: MMS2019
-          JavaTestVersion: '1.11'
-          DisplayName: 'Windows - Java 11 - Storage'
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          AZURE_TEST_HTTP_CLIENTS: okhttp
-          ArmTemplateParameters: '@{endpointType="storage"}'
-        Linux - Java 8 CosmosDB (AzureCloud):
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          JavaTestVersion: '1.8'
-          DisplayName: 'Linux - Java 8 - CosmosDB'
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          AZURE_TEST_HTTP_CLIENTS: netty
-          ArmTemplateParameters: '@{endpointType="cosmos"}'
-        macOS - Java 8 CosmosDB (AzureCloud):
-          Pool: Azure Pipelines
-          OSVmImage: 'macOS-10.15'
-          JavaTestVersion: '1.8'
-          DisplayName: 'macOS - Java 8 - CosmosDB'
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          AZURE_TEST_HTTP_CLIENTS: okhttp
-          ArmTemplateParameters: '@{endpointType="cosmos"}'
-        Windows - Java 8 CosmosDB (AzureCloud):
-          Pool: azsdk-pool-mms-win-2019-general
-          OSVmImage: MMS2019
-          JavaTestVersion: '1.8'
-          DisplayName: 'Windows - Java 8 - CosmosDB'
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          AZURE_TEST_HTTP_CLIENTS: netty
-          ArmTemplateParameters: '@{endpointType="cosmos"}'
-        Linux - Java 11 CosmosDB (AzureCloud):
-          Pool: azsdk-pool-mms-ubuntu-1804-general
-          OSVmImage: MMSUbuntu18.04
-          JavaTestVersion: '1.11'
-          DisplayName: 'Linux - Java 11 - CosmosDB'
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          AZURE_TEST_HTTP_CLIENTS: okhttp
-          ArmTemplateParameters: '@{endpointType="cosmos"}'
-        macOS - Java 11 CosmosDB (AzureCloud):
-          Pool: Azure Pipelines
-          OSVmImage: 'macOS-10.15'
-          JavaTestVersion: '1.11'
-          DisplayName: 'macOS - Java 11 - CosmosDB'
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          AZURE_TEST_HTTP_CLIENTS: netty
-          ArmTemplateParameters: '@{endpointType="cosmos"}'
-        Windows - Java 11 CosmosDB (AzureCloud):
-          Pool: azsdk-pool-mms-win-2019-general
-          OSVmImage: MMS2019
-          JavaTestVersion: '1.11'
-          DisplayName: 'Windows - Java 11 - CosmosDB'
-          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-          AZURE_TEST_HTTP_CLIENTS: okhttp
-          ArmTemplateParameters: '@{endpointType="cosmos"}'
+stages:
+  - stage: Tables_Live_Test
+    jobs:
+      - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+        parameters:
+          CloudConfig:
+            SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+            Cloud: Public
+          MatrixConfigs:
+            MatrixConfigs:
+              - Name: Tables_live_test_18
+                Path: sdk/tables/platform-matrix.1.8.json
+                Selection: sparse
+                GenerateVMJobs: true
+              - Name: Tables_live_test_111
+                Path: sdk/tables/platform-matrix.1.11.json
+                Selection: sparse
+                GenerateVMJobs: true
+          AdditionalParameters:
+            Artifacts:
+              - name: azure-data-tables
+                groupId: com.azure
+                safeName: azuretables
+            ServiceDirectory: tables
+            Timeout: 60
+            MaxParallel: 14
+            EnvVars:
+              AZURE_TEST_MODE: LIVE
