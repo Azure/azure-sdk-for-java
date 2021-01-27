@@ -7,6 +7,7 @@ package com.azure.communication.common;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+
 import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -83,13 +84,28 @@ public class CommunicationIdentifierSerializerTests {
     }
 
     @Test
-    public void deserializeFutureType() {
+    public void deserializeFutureTypeShouldThrow() {
         final String futureType = "NewKind";
-        CommunicationIdentifier unknownIdentifier = CommunicationIdentifierSerializer.deserialize(
-            new CommunicationIdentifierModel().setKind(CommunicationIdentifierKind.fromString(futureType))
-                .setId(someId));
-        assertEquals(UnknownIdentifier.class, unknownIdentifier.getClass());
-        assertEquals(someId, ((UnknownIdentifier) unknownIdentifier).getId());
+        assertThrows(IllegalArgumentException.class,
+            () -> {
+                CommunicationIdentifierSerializer.deserialize(
+                    new CommunicationIdentifierModel().setKind(CommunicationIdentifierKind.fromString(futureType))
+                        .setId(someId));
+            });
+    }
+
+    @Test
+    public void serializeFutureTypeShouldThrow() {
+        assertThrows(IllegalArgumentException.class,
+            () -> {
+                CommunicationIdentifierSerializer.serialize(
+                    new CommunicationIdentifier() {
+                        @Override
+                        public String getId() {
+                            return someId;
+                        }
+                    });
+            });
     }
 
     @Test

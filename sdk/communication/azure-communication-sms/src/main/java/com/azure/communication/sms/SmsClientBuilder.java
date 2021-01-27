@@ -4,6 +4,7 @@
 package com.azure.communication.sms;
 
 import com.azure.communication.common.CommunicationClientCredential;
+import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImpl;
 import com.azure.communication.sms.implementation.AzureCommunicationSMSServiceImplBuilder;
@@ -102,7 +103,7 @@ public final class SmsClientBuilder {
      */
     public SmsClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-        com.azure.communication.common.implementation.CommunicationConnectionString connectionStringObject = new com.azure.communication.common.implementation.CommunicationConnectionString(connectionString);
+        CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
         this

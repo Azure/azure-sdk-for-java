@@ -6,7 +6,15 @@ package com.azure.communication.common;
 import java.util.Objects;
 
 class CommunicationIdentifierSerializer {
-    public static CommunicationIdentifier deserialize(CommunicationIdentifierModel identifier) {
+    /**
+     * Deserialize CommunicationIdentifierModel into CommunicationIdentifier
+     * @param identifier CommunicationIdentifierModel to be deserialized
+     * @return deserialized CommunicationIdentifier
+     * @throws IllegalArgumentException when identifier has unknown CommunicationIdentifierKind
+     */
+    public static CommunicationIdentifier deserialize(CommunicationIdentifierModel identifier)
+        throws IllegalArgumentException {
+
         String id = identifier.getId();
         CommunicationIdentifierKind kind = identifier.getKind();
 
@@ -34,11 +42,23 @@ class CommunicationIdentifierSerializer {
                 .setCloudEnvironment(CommunicationCloudEnvironment.fromModel(identifier.getCloudEnvironmentModel()));
         }
 
-        Objects.requireNonNull(id);
-        return new UnknownIdentifier(id);
+        if (kind == CommunicationIdentifierKind.UNKNOWN) {
+            Objects.requireNonNull(id);
+            return new UnknownIdentifier(id);
+        }
+
+        throw new IllegalArgumentException(String.format("Unknown identifier kind '%s'", kind));
     }
 
-    public static CommunicationIdentifierModel serialize(CommunicationIdentifier identifier) {
+    /**
+     * Serialize CommunicationIdentifier into CommunicationIdentifierModel
+     * @param identifier CommunicationIdentifier object to be serialized
+     * @return CommunicationIdentifierModel
+     * @throws IllegalArgumentException when identifier is an unknown class derived from
+     *          CommunicationIdentifier
+     */
+    public static CommunicationIdentifierModel serialize(CommunicationIdentifier identifier)
+        throws IllegalArgumentException {
         if (identifier instanceof CommunicationUserIdentifier) {
             return new CommunicationIdentifierModel()
                 .setKind(CommunicationIdentifierKind.COMMUNICATION_USER)
@@ -68,8 +88,12 @@ class CommunicationIdentifierSerializer {
                 .setCloudEnvironmentModel(new CommunicationCloudEnvironmentModel(teamsUserIdentifier.getCloudEnvironment().toString()));
         }
 
-        return new CommunicationIdentifierModel()
-            .setKind(CommunicationIdentifierKind.UNKNOWN)
-            .setId(((UnknownIdentifier) identifier).getId());
+        if (identifier instanceof UnknownIdentifier) {
+            return new CommunicationIdentifierModel()
+                .setKind(CommunicationIdentifierKind.UNKNOWN)
+                .setId(((UnknownIdentifier) identifier).getId());
+        }
+
+        throw new IllegalArgumentException(String.format("Unknown identifier class '%s'", identifier.getClass().getName()));
     }
 }
