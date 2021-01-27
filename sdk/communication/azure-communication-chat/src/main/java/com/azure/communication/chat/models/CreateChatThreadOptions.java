@@ -6,6 +6,7 @@ package com.azure.communication.chat.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.UUID;
 
 /** The CreateChatThreadOptions model. */
 @Fluent
@@ -87,5 +88,12 @@ public final class CreateChatThreadOptions {
     public CreateChatThreadOptions setRepeatabilityRequestId(String repeatabilityRequestId) {
         this.repeatabilityRequestId = repeatabilityRequestId;
         return this;
+    }
+
+    /**
+     * Creates a new instance of CreateChatThreadOptions
+     */
+    public CreateChatThreadOptions() {
+        this.repeatabilityRequestId = UUID.randomUUID().toString();
     }
 }
