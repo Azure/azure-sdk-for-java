@@ -55,6 +55,7 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserIdentifier> createUserWithResponse(Context context) {
+        context = context == null ? Context.NONE : context;
         Response<CommunicationIdentityAccessTokenResult> response = 
             client.createWithResponse(new CommunicationIdentityCreateRequest(), context);
         String id = response.getValue().getIdentity().getId();
@@ -93,7 +94,8 @@ public final class CommunicationIdentityClient {
     public Response<CommunicationUserIdentifierWithTokenResult> createUserWithTokenWithResponse(
         List<CommunicationIdentityTokenScope> scopes, Context context) {
         Objects.requireNonNull(scopes);
-        
+        context = context == null ? Context.NONE : context;
+
         Response<CommunicationIdentityAccessTokenResult> response = 
             client.createWithResponse(new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes), context);
 
@@ -129,6 +131,7 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteUserWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         Objects.requireNonNull(communicationUser);
+        context = context == null ? Context.NONE : context;
         return client.deleteWithResponse(communicationUser.getId(), context);
     }
 
@@ -155,6 +158,7 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         Objects.requireNonNull(communicationUser);
+        context = context == null ? Context.NONE : context;
         return client.revokeAccessTokensWithResponse(communicationUser.getId(), context);
     }
 
@@ -189,6 +193,7 @@ public final class CommunicationIdentityClient {
         List<CommunicationIdentityTokenScope> scopes, Context context) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
+        context = context == null ? Context.NONE : context;
         return client.issueAccessTokenWithResponse(
             communicationUser.getId(),
             new CommunicationIdentityAccessTokenRequest().setScopes(scopes),

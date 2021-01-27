@@ -36,8 +36,9 @@ import java.util.Objects;
 public final class CommunicationIdentityClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static final String COMMUNICATION_ADMINISTRATION_PROPERTIES =
-        "azure-communication-administration.properties";
+
+    private static final String COMMUNICATION_IDENTITY_PROPERTIES = 
+        "azure-communication-identity.properties";
 
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientBuilder.class);
     private String endpoint;
@@ -46,8 +47,8 @@ public final class CommunicationIdentityClientBuilder {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
-    private Configuration configuration;
-    private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_ADMINISTRATION_PROPERTIES);
+    private Configuration configuration;    
+    private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_IDENTITY_PROPERTIES);    
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
 
     /**

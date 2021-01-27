@@ -72,7 +72,7 @@ public final class CommunicationIdentityAsyncClient {
             return client.createWithResponseAsync(new CommunicationIdentityCreateRequest())
                 .flatMap(
                     (Response<CommunicationIdentityAccessTokenResult> response) -> {
-                        if (response.getValue() != null) {
+                        if (response.getValue() != null && response.getValue().getIdentity() != null) {
                             String id = response.getValue().getIdentity().getId();
                             return Mono.just(
                                 new SimpleResponse<CommunicationUserIdentifier>(
@@ -100,7 +100,7 @@ public final class CommunicationIdentityAsyncClient {
             return client.createAsync(new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes))
                 .flatMap(
                     (CommunicationIdentityAccessTokenResult result) -> {
-                        if (result.getIdentity() != null) {
+                        if (result.getIdentity() != null && result.getAccessToken() != null) {
                             CommunicationUserIdentifier user = 
                                 new CommunicationUserIdentifier(result.getIdentity().getId());
                             return Mono.just(
@@ -128,7 +128,8 @@ public final class CommunicationIdentityAsyncClient {
                 new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes))
                 .flatMap(
                     (Response<CommunicationIdentityAccessTokenResult> response) -> {
-                        if (response.getValue() != null) {
+                        if (response.getValue() != null && response.getValue().getIdentity() != null
+                            && response.getValue().getAccessToken() != null) {
                             String id = response.getValue().getIdentity().getId();
                             CommunicationUserIdentifier user = new CommunicationUserIdentifier(id);
                             return Mono.just(new SimpleResponse<CommunicationUserIdentifierWithTokenResult>(response, 

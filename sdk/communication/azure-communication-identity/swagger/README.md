@@ -1,9 +1,9 @@
-# Azure Communication Administration library for Java
+# Azure Communication Identity library for Java
 
 > see https://aka.ms/autorest
 ## Getting Started
 
-To build the SDK for Communication Administration library, simply Install AutoRest and in this folder, run:
+To build the SDK for Communication Identity library, simply Install AutoRest and in this folder, run:
 
 ### Setup
 ```ps
@@ -41,16 +41,6 @@ directive:
     - rename-model:
         from: CommunicationIdentityAccessToken
         to: CommunicationUserToken
-```
-
-### Rename searchId to reservationId in CreateSearchResponse
-
-``` yaml
-directive:
-  - from: swagger-document
-    where: $.definitions.CreateSearchResponse.properties.searchId
-    transform: >
-      $["x-ms-client-name"] = "reservationId";
 ```
 
 ### Code generation settings

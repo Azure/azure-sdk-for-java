@@ -16,9 +16,6 @@ npm install -g autorest
 ```
 
 ### Generation
-
-There is one swaggers for Administration management APIs: `phonenumber`.
-
 ```ps
 cd <swagger-folder>
 autorest README.md --java --v4 --use=@autorest/java@4.0.1 --tag=phonenumber

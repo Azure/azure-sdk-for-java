@@ -1,6 +1,6 @@
 # Azure Communication Administration client library for Java
 
-The administration package is used for providing capabilities for Phone Number Administration.
+The administration package provides capabilities for Phone Number Administration.
 
 Acquired phone numbers can come with many capabilities, depending on the country, number type and phone plan. Examples of capabilities are SMS inbound and outbound usage, PSTN inbound and outbound usage. Phone numbers can also be assigned to a bot via a webhook URL.
 
