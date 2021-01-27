@@ -71,14 +71,14 @@ jobs:
           AAD_B2C_CLIENT_SECRET: $(java-spring-aad-b2c-client-secret)
           AAD_USER_NAME_ON_DEMAND: "user$(System.JobId)@aadittest1.onmicrosoft.com"
           AAD_USER_PASSWORD_ON_DEMAND: $(java-spring-aad-user-password-1)
-          AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-clinet-id)
+          AAD_SERVICE_PRICIPAL_CLIENT_ID: $(java-spring-aad-service-principal-client-id)
           AAD_SERVICE_PRICIPAL_CLIENT_SECRET: $(java-spring-aad-service-principal-client-secret)
 
         PreRunSteps:
           - powershell: |
               $onDemandUsername = "user$(System.JobId)@aadittest1.onmicrosoft.com"
               echo $username
-              az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-clinet-id) -p $(java-spring-aad-service-principal-client-secret)
+              az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
               az ad user create --user-principal-name $onDemandUsername --display-name "user$(System.JobId)" --password $(java-spring-aad-user-password-1) --force-change-password-next-login false
             displayName: 'Create On-demand test user'
 
@@ -133,6 +133,6 @@ jobs:
           - powershell: |
               $onDemandUsername = "user$(System.JobId)@aadittest1.onmicrosoft.com"
               echo $username
-              az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-clinet-id) -p $(java-spring-aad-service-principal-client-secret)
+              az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
               az ad user delete --id $onDemandUsername
             displayName: 'Delete On-demand test user'
