@@ -33,11 +33,18 @@ private object CosmosTableSchemaInferer
         }
 
         // Create a unique map of all distinct properties from documents
-        // If 2 documents contain the same property name but different type, the last scanned one would define the final
-        // type
         val uniqueStructFields = inferredItems.foldLeft(Map.empty[String, StructField])({
             case (map, item) => inferDataTypeFromObjectNode(item) match {
-                case Some(mappedList) => map ++ mappedList
+                case Some(mappedList) =>
+                    map ++ mappedList.map(mappedItem => {
+                        if (map.contains(mappedItem._1) && map(mappedItem._1).dataType != mappedItem._2){
+                            // If 2 documents contain the same property name but different type, we default to String
+                            (mappedItem._1, StructField(mappedItem._1, StringType))
+                        }
+                        else{
+                            mappedItem
+                        }
+                    })
             }
         })
 

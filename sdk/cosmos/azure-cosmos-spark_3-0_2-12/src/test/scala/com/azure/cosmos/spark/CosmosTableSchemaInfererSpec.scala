@@ -124,6 +124,18 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
         schema.fields(1).dataType shouldBe StringType
     }
 
+    "duplicate properties" should "map to StringType" in {
+        val objectNode: ObjectNode = objectMapper.createObjectNode()
+        objectNode.put("id", 20)
+        val objectNode2: ObjectNode = objectMapper.createObjectNode()
+        objectNode2.put("id", true)
+        val docs = List[ObjectNode](objectNode, objectNode2)
+
+        val schema = CosmosTableSchemaInferer.inferSchema(docs)
+        schema.fields should have size 1
+        schema.fields(0).dataType shouldBe StringType
+    }
+
     "unsupported properties" should "map to StringType" in {
         val objectNode: ObjectNode = objectMapper.createObjectNode()
         val initValue = 5
