@@ -102,7 +102,7 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
      * Get the status of Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance
+     * @param providerName Name of the attestation provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -116,7 +116,7 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
      * Get the status of Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance
+     * @param providerName Name of the attestation provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -129,7 +129,7 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
      * Get the status of Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance
+     * @param providerName Name of the attestation provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AttestationProviderInner object
      */
@@ -146,7 +146,7 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
      * Get the status of Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance
+     * @param providerName Name of the attestation provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AttestationProviderInner object
      */
@@ -185,10 +185,10 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
     }
 
     /**
-     * Creates a new Attestation Provider instance.
+     * Creates a new Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance.
+     * @param providerName Name of the attestation provider.
      * @param creationParams Client supplied parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -200,10 +200,10 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
     }
 
     /**
-     * Creates a new Attestation Provider instance.
+     * Creates a new Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance.
+     * @param providerName Name of the attestation provider.
      * @param creationParams Client supplied parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -214,10 +214,10 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
     }
 
     /**
-     * Creates a new Attestation Provider instance.
+     * Creates a new Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance.
+     * @param providerName Name of the attestation provider.
      * @param creationParams Client supplied parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AttestationProviderInner object
@@ -232,10 +232,10 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
     }
 
     /**
-     * Creates a new Attestation Provider instance.
+     * Creates a new Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance.
+     * @param providerName Name of the attestation provider.
      * @param creationParams Client supplied parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AttestationProviderInner object
@@ -283,7 +283,7 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
      * Updates the Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance.
+     * @param providerName Name of the attestation provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -297,7 +297,7 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
      * Updates the Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance.
+     * @param providerName Name of the attestation provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -310,7 +310,7 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
      * Updates the Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance.
+     * @param providerName Name of the attestation provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AttestationProviderInner object
      */
@@ -327,7 +327,7 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
      * Updates the Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance.
+     * @param providerName Name of the attestation provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AttestationProviderInner object
      */
@@ -365,8 +365,8 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
      * Updates the Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance.
-     * @param tags The tags that will be assigned to the attestation service instance.
+     * @param providerName Name of the attestation provider.
+     * @param tags The tags that will be assigned to the attestation provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -380,8 +380,8 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
      * Updates the Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance.
-     * @param tags The tags that will be assigned to the attestation service instance.
+     * @param providerName Name of the attestation provider.
+     * @param tags The tags that will be assigned to the attestation provider.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -394,8 +394,8 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
      * Updates the Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance.
-     * @param tags The tags that will be assigned to the attestation service instance.
+     * @param providerName Name of the attestation provider.
+     * @param tags The tags that will be assigned to the attestation provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AttestationProviderInner object
      */
@@ -412,8 +412,8 @@ public class AttestationProvidersInner implements InnerSupportsGet<AttestationPr
      * Updates the Attestation Provider.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param providerName Name of the attestation service instance.
-     * @param tags The tags that will be assigned to the attestation service instance.
+     * @param providerName Name of the attestation provider.
+     * @param tags The tags that will be assigned to the attestation provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AttestationProviderInner object
      */
