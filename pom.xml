@@ -288,6 +288,10 @@
                     <title>Azure Text Analytics</title>
                     <packages>com.azure.ai.textanalytics*</packages>
                   </group>
+                  <group>
+                    <title>Azure Quantum Jobs</title>
+                    <packages>com.azure.quantum.jobs*</packages>
+                  </group>
                 </groups>
                 <links>
                   <link>https://docs.oracle.com/javase/8/docs/api/</link>
@@ -588,6 +592,7 @@
         <module>sdk/tables</module>
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
+        <module>sdk/quantum</module>
       </modules>
     </profile>
   </profiles>
