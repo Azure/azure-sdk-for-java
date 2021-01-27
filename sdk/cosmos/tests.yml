@@ -19,7 +19,6 @@ stages:
               Selection: all
               GenerateVMJobs: true
           AdditionalParameters:
-            TestName: Cosmos_CI
             ServiceDirectory: cosmos
             Artifacts:
               - name: azure-cosmos
@@ -51,7 +50,6 @@ stages:
               Selection: all
               GenerateVMJobs: true
           AdditionalParameters:
-            TestName: Integration_Test_Spring_Data_Cosmosdb
             ServiceDirectory: cosmos
             Artifacts:
               - name: azure-spring-data-cosmos-test

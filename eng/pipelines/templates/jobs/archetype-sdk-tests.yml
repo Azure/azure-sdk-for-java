@@ -6,7 +6,6 @@ parameters:
   MaxParallel: 0
   PreSteps: []
   PostSteps: []
-  TestName: LiveTest
   TimeoutInMinutes: 60
   TestStepMavenInputs:
     options: '$(DefaultOptions) -Dmaven.javadoc.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -DtrimStackTrace=false -pl $(ProjectList)'
@@ -26,7 +25,7 @@ parameters:
   DisableAzureResourceCreation: false
 
 jobs:
-  - job: ${{ parameters.TestName }}
+  - job:
     dependsOn: ${{ parameters.DependsOn }}
     condition: ne(${{ parameters.Matrix }}, '{}')
     strategy:

@@ -86,7 +86,6 @@ stages:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
           Cloud: Public
         AdditionalParameters:
-          TestName: Emulator
           DisableAzureResourceCreation: true
           ServiceDirectory: cosmos
           Artifacts: ${{ parameters.Artifacts }}

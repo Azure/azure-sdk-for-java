@@ -9,15 +9,14 @@ stages:
             SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
             Cloud: Public
           MatrixConfigs:
-            MatrixConfigs:
-              - Name: Tables_live_test_18
-                Path: sdk/tables/platform-matrix.1.8.json
-                Selection: sparse
-                GenerateVMJobs: true
-              - Name: Tables_live_test_111
-                Path: sdk/tables/platform-matrix.1.11.json
-                Selection: sparse
-                GenerateVMJobs: true
+            - Name: Tables_live_test_18
+              Path: sdk/tables/platform-matrix.1.8.json
+              Selection: sparse
+              GenerateVMJobs: true
+            - Name: Tables_live_test_111
+              Path: sdk/tables/platform-matrix.1.11.json
+              Selection: sparse
+              GenerateVMJobs: true
           AdditionalParameters:
             Artifacts:
               - name: azure-data-tables
