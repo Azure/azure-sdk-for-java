@@ -1359,7 +1359,7 @@
   <!-- TextAnalyticsException fields re serializable -->
   <Match>
     <Class name="com.azure.ai.textanalytics.models.TextAnalyticsException" />
-    <Field name="errorInformationList" />
+    <Field name="errors" />
     <Bug pattern="SE_BAD_FIELD" />
   </Match>
 

@@ -8,7 +8,7 @@ and includes six main functions:
 - Named Entity Recognition
 - Personally Identifiable Information Entity Recognition 
 - Linked Entity Recognition
-- Healthcare Recognition <sup>beta</sup>
+- Analyze Healthcare Entity <sup>beta</sup>
 - Analyze Operation <sup>beta</sup>
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
@@ -88,7 +88,7 @@ az cognitiveservices account keys list --resource-group <your-resource-group-nam
 ```
 
 Use the key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L62-L65 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L65-L68 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
@@ -97,7 +97,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 
 The Azure Text Analytics client library provides a way to **rotate the existing key**.
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L93-L99 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L96-L102 -->
 ```java
 AzureKeyCredential credential = new AzureKeyCredential("{key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -135,7 +135,7 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Text Analytics, please
 refer to [the associated documentation][aad_authorization].
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L82-L86 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L85-L89 -->
 ```java
 TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -196,14 +196,14 @@ The following sections provide several code snippets covering some of the most c
 Text analytics support both synchronous and asynchronous client creation by using
 `TextAnalyticsClientBuilder`,
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L62-L65 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L65-L68 -->
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L72-L75 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L75-L78 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
@@ -215,7 +215,7 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 Run a Text Analytics predictive model to identify the positive, negative, neutral or mixed sentiment contained in the 
 provided document or batch of documents.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L122-L126 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L125-L129 -->
 ```java
 String document = "The hotel was dark and unclean. I like microsoft.";
 DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(document);
@@ -234,7 +234,7 @@ Please refer to the service documentation for a conceptual discussion of [sentim
 ### Detect language
 Run a Text Analytics predictive model to determine the language that the provided document or batch of documents are written in.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L133-L136 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L136-L139 -->
 ```java
 String document = "Bonjour tout le monde";
 DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(document);
@@ -247,7 +247,7 @@ Please refer to the service documentation for a conceptual discussion of [langua
 ### Extract key phrases
 Run a model to identify a collection of significant phrases found in the provided document or batch of documents.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L167-L169 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L170-L172 -->
 ```java
 String document = "My cat might need to see a veterinarian.";
 System.out.println("Extracted phrases:");
@@ -261,7 +261,7 @@ Run a predictive model to identify a collection of named entities in the provide
 categorize those entities into categories such as person, location, or organization.  For more information on available
 categories, see [Text Analytics Named Entity Categories][named_entities_categories].
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L143-L146 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L146-L149 -->
 ```java
 String document = "Satya Nadella is the CEO of Microsoft";
 textAnalyticsClient.recognizeEntities(document).forEach(entity ->
@@ -277,7 +277,7 @@ document. It recognizes and categorizes PII entities in its input text, such as
 Social Security Numbers, bank account information, credit card numbers, and more. This endpoint is only supported for
 API versions v3.1-preview.1 and above.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L176-L182 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L179-L185 -->
 ```java
 String document = "My SSN is 859-98-0987";
 PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities(document);
@@ -295,7 +295,7 @@ Please refer to the service documentation for [supported PII entity types][pii_e
 Run a predictive model to identify a collection of entities found in the provided document or batch of documents, 
 and include information linking the entities to their corresponding entries in a well-known knowledge base.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L153-L160 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L156-L163 -->
 
 ```java
 String document = "Old Faithful is a geyser at Yellowstone Park.";
@@ -315,67 +315,60 @@ Text Analytics for health is a containerized service that extracts and labels re
 unstructured texts such as doctor's notes, discharge summaries, clinical documents, and electronic health records.
 Currently, Azure Active Directory (AAD) is not supported in the Healthcare recognition feature. In order to use this 
 functionality, request to access public preview is required. For more information see [How to: Use Text Analytics for health][healthcare].
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L189-L232 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L192-L236 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(new TextDocumentInput("0",
     "RECORD #333582770390100 | MH | 85986313 | | 054351 | 2/14/2001 12:00:00 AM | "
         + "CORONARY ARTERY DISEASE | Signed | DIS | Admission Date: 5/22/2001 "
         + "Report Status: Signed Discharge Date: 4/24/2001 ADMISSION DIAGNOSIS: "
         + "CORONARY ARTERY DISEASE. HISTORY OF PRESENT ILLNESS: "
-        + "The patient is a 54-year-old gentleman with a history of progressive angina over the past several months. "
-        + "The patient had a cardiac catheterization in July of this year revealing total occlusion of the RCA and "
-        + "50% left main disease , with a strong family history of coronary artery disease with a brother dying at "
-        + "the age of 52 from a myocardial infarction and another brother who is status post coronary artery bypass grafting. "
-        + "The patient had a stress echocardiogram done on July , 2001 , which showed no wall motion abnormalities ,"
-        + "but this was a difficult study due to body habitus. The patient went for six minutes with minimal ST depressions "
-        + "in the anterior lateral leads , thought due to fatigue and wrist pain , his anginal equivalent. Due to the patient's "
-        + "increased symptoms and family history and history left main disease with total occasional of his RCA was referred "
-        + "for revascularization with open heart surgery."
+        + "The patient is a 54-year-old gentleman with a history of progressive angina over the past"
+        + " several months. The patient had a cardiac catheterization in July of this year revealing total"
+        + " occlusion of the RCA and 50% left main disease , with a strong family history of coronary"
+        + " artery disease with a brother dying at the age of 52 from a myocardial infarction and another"
+        + " brother who is status post coronary artery bypass grafting. The patient had a stress"
+        + " echocardiogram done on July , 2001 , which showed no wall motion abnormalities,"
+        + " but this was a difficult study due to body habitus. The patient went for six minutes with"
+        + " minimal ST depressions in the anterior lateral leads , thought due to fatigue and wrist pain,"
+        + " his anginal equivalent. Due to the patient's increased symptoms and family history and"
+        + " history left main disease with total occasional of his RCA was referred"
+        + " for revascularization with open heart surgery."
 ));
-RecognizeHealthcareEntityOptions options = new RecognizeHealthcareEntityOptions().setIncludeStatistics(true);
-SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> syncPoller =
-    textAnalyticsClient.beginAnalyzeHealthcare(documents, options, Context.NONE);
+AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
+SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+    syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
 syncPoller.waitForCompletion();
-syncPoller.getFinalResult().forEach(healthcareTaskResult ->
-    healthcareTaskResult.getResult().forEach(healthcareEntitiesResult -> {
+syncPoller.getFinalResult().forEach(healthcareTaskResult -> healthcareTaskResult.forEach(
+    healthcareEntitiesResult -> {
         System.out.println("Document entities: ");
-        HealthcareEntityCollection healthcareEntities = healthcareEntitiesResult.getEntities();
         AtomicInteger ct = new AtomicInteger();
-        healthcareEntities.forEach(healthcareEntity -> {
-            System.out.printf("i = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
-                ct.getAndIncrement(),
-                healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getSubcategory(),
+        healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
+            System.out.printf("i = %d, Text: %s, category: %s, confidence score: %f.%n",
+                ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
                 healthcareEntity.getConfidenceScore());
-            List<HealthcareEntityLink> links = healthcareEntity.getDataSourceEntityLinks();
-            if (links != null) {
-                links.forEach(healthcareEntityLink ->
-                    System.out.printf("\tHealthcare data source ID: %s, data source: %s.%n",
-                        healthcareEntityLink.getDataSourceId(), healthcareEntityLink.getDataSource()));
+            IterableStream<EntityDataSource> healthcareEntityDataSources =
+                healthcareEntity.getDataSources();
+            if (healthcareEntityDataSources != null) {
+                healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
+                    "\t\tHealthcare data source ID: %s, data source: %s.%n",
+                    healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
+            }
+            Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
+                healthcareEntity.getRelatedEntities();
+            if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
+                relatedHealthcareEntities.forEach((relatedHealthcareEntity, entityRelationType) -> System.out.printf(
+                    "\t\tRelated entity: %s, relation type: %s.%n",
+                    relatedHealthcareEntity.getText(), entityRelationType));
             }
         });
-        healthcareEntities.getEntityRelations().forEach(
-            healthcareEntityRelation ->
-                System.out.printf("Is bidirectional: %s, target: %s, source: %s, relation type: %s.%n",
-                    healthcareEntityRelation.isBidirectional(),
-                    healthcareEntityRelation.getTargetLink(),
-                    healthcareEntityRelation.getSourceLink(),
-                    healthcareEntityRelation.getRelationType()));
     }));
 ```
-To cancel a long-running healthcare task,
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L239-L243 -->
-```java
-SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
-    = textAnalyticsClient.beginCancelHealthcareTask("{healthcare_task_id}",
-    new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
-PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
-System.out.printf("Task status: %s.%n", poll.getStatus());
-```
+
 ### Analyze multiple tasks
 The `Analyze` functionality allows to choose which of the supported Text Analytics features to execute in the same 
 set of documents. Currently, the supported features are: `entity recognition`, `key phrase extraction`, and 
 `Personally Identifiable Information (PII) recognition`. 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L250-L290 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L243-L283 -->
 ```java
 List<TextDocumentInput> documents = Arrays.asList(
     new TextDocumentInput("0",
@@ -427,7 +420,7 @@ Text Analytics clients raise exceptions. For example, if you try to detect the l
 document IDs, `400` error is return that indicating bad request. In the following code snippet, the error is handled 
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L106-L115 -->
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L109-L118 -->
 ```java
 List<DetectLanguageInput> documents = Arrays.asList(
     new DetectLanguageInput("1", "This is written in English.", "us"),

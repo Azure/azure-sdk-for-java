@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.AnalyzeTasksResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.TextAnalyticsErrorInformationPropertiesHelper;
-import com.azure.ai.textanalytics.implementation.TextAnalyticsExceptionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsOperationResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeBatchInput;
@@ -26,8 +24,6 @@ import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRec
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksKeyPhraseExtractionTasksItem;
 import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
 import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
-import com.azure.ai.textanalytics.models.TextAnalyticsErrorInformation;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -60,7 +56,6 @@ import static com.azure.ai.textanalytics.implementation.Utility.parseModelId;
 import static com.azure.ai.textanalytics.implementation.Utility.parseNextLink;
 import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractKeyPhrasesResultCollection;
-import static com.azure.ai.textanalytics.implementation.Utility.toJobState;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeEntitiesResultCollectionResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizePiiEntitiesResultCollection;
@@ -333,7 +328,10 @@ class AnalyzeTasksAsyncClient {
             analyzeJobState.getJobId(),
             analyzeJobState.getCreatedDateTime(),
             analyzeJobState.getLastUpdateDateTime(),
-            toJobState(analyzeJobState.getStatus()),
+            // TODO: will be fixed in Analyze Batch Actions PR,
+            // issue: https://github.com/Azure/azure-sdk-for-java/issues/18723
+            null,
+//            toJobState(analyzeJobState.getStatus()),
             analyzeJobState.getDisplayName(),
             analyzeJobState.getExpirationDateTime());
         AnalyzeTasksResultPropertiesHelper.setErrors(analyzeTasksResult,
@@ -371,17 +369,19 @@ class AnalyzeTasksAsyncClient {
             case FAILED:
                 final TextAnalyticsException exception = new TextAnalyticsException("Analyze operation failed",
                     null, null);
-                TextAnalyticsExceptionPropertiesHelper.setErrorInformationList(exception,
-                    analyzeJobStateResponse.getValue().getErrors().stream()
-                        .map(error -> {
-                            final TextAnalyticsErrorInformation textAnalyticsErrorInformation =
-                                new TextAnalyticsErrorInformation();
-                            TextAnalyticsErrorInformationPropertiesHelper.setErrorCode(textAnalyticsErrorInformation,
-                                TextAnalyticsErrorCode.fromString(error.getCode().toString()));
-                            TextAnalyticsErrorInformationPropertiesHelper.setMessage(textAnalyticsErrorInformation,
-                                error.getMessage());
-                            return textAnalyticsErrorInformation;
-                        }).collect(Collectors.toList()));
+                // TODO: will be fixed in Analyze Batch Actions PR
+                // issue: https://github.com/Azure/azure-sdk-for-java/issues/18723
+//                TextAnalyticsExceptionPropertiesHelper.setErrorInformationList(exception,
+//                    analyzeJobStateResponse.getValue().getErrors().stream()
+//                        .map(error -> {
+//                            final TextAnalyticsErrorInformation textAnalyticsErrorInformation =
+//                                new TextAnalyticsErrorInformation();
+//                            TextAnalyticsErrorInformationPropertiesHelper.setErrorCode(textAnalyticsErrorInformation,
+//                                TextAnalyticsErrorCode.fromString(error.getCode().toString()));
+//                            TextAnalyticsErrorInformationPropertiesHelper.setMessage(textAnalyticsErrorInformation,
+//                                error.getMessage());
+//                            return textAnalyticsErrorInformation;
+//                        }).collect(Collectors.toList()));
                 throw logger.logExceptionAsError(exception);
             default:
                 status = LongRunningOperationStatus.fromString(

@@ -3,6 +3,8 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
+import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AnalyzeTasksOptions;
 import com.azure.ai.textanalytics.models.AnalyzeTasksResult;
@@ -13,26 +15,25 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntitiesTask;
-import com.azure.ai.textanalytics.models.HealthcareEntityCollection;
-import com.azure.ai.textanalytics.models.HealthcareEntityLink;
-import com.azure.ai.textanalytics.models.HealthcareTaskResult;
+import com.azure.ai.textanalytics.models.HealthcareEntity;
+import com.azure.ai.textanalytics.models.EntityDataSource;
+import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
 import com.azure.ai.textanalytics.models.KeyPhrasesTask;
 import com.azure.ai.textanalytics.models.OpinionSentiment;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
 import com.azure.ai.textanalytics.models.PiiEntityDomainType;
-import com.azure.ai.textanalytics.models.RecognizeHealthcareEntityOptions;
 import com.azure.ai.textanalytics.models.RecognizePiiEntityOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsOperationResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
-import com.azure.ai.textanalytics.util.RecognizeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
@@ -41,13 +42,14 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -824,10 +826,10 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
 
     // Healthcare
     /**
-     * Code snippet for {@link TextAnalyticsClient#beginAnalyzeHealthcare(Iterable, RecognizeHealthcareEntityOptions, Context)}
+     * Code snippet for {@link TextAnalyticsClient#beginAnalyzeHealthcareEntities(Iterable, AnalyzeHealthcareEntitiesOptions, Context)}
      */
     public void analyzeHealthcareMaxOverload() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcare#Iterable-RecognizeHealthcareEntityOptions-Context
+        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions-Context
         List<TextDocumentInput> documents = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             documents.add(new TextDocumentInput(Integer.toString(i),
@@ -836,78 +838,60 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         }
 
         // Request options: show statistics and model version
-        RecognizeHealthcareEntityOptions options = new RecognizeHealthcareEntityOptions()
+        AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
             .setIncludeStatistics(true);
 
-        SyncPoller<TextAnalyticsOperationResult, PagedIterable<HealthcareTaskResult>> syncPoller =
-            textAnalyticsClient.beginAnalyzeHealthcare(documents, options, Context.NONE);
+        SyncPoller<AnalyzeHealthcareEntitiesOperationDetail, PagedIterable<AnalyzeHealthcareEntitiesResultCollection>>
+            syncPoller = textAnalyticsClient.beginAnalyzeHealthcareEntities(documents, options, Context.NONE);
 
         syncPoller.waitForCompletion();
-        PagedIterable<HealthcareTaskResult> healthcareResultIterable = syncPoller.getFinalResult();
+        PagedIterable<AnalyzeHealthcareEntitiesResultCollection> healthcareResultIterable = syncPoller.getFinalResult();
+
+        // Task operation statistics
+        final AnalyzeHealthcareEntitiesOperationDetail operationResult = syncPoller.poll().getValue();
+        System.out.printf("Job created time: %s, expiration time: %s.%n",
+            operationResult.getCreatedAt(), operationResult.getExpiresAt());
 
         healthcareResultIterable.forEach(healthcareTaskResult -> {
-            System.out.printf("Job display name: %s, job ID: %s.%n", healthcareTaskResult.getDisplayName(),
-                healthcareTaskResult.getJobId());
-            RecognizeHealthcareEntitiesResultCollection healthcareEntitiesResultCollection =
-                healthcareTaskResult.getResult();
-
             // Model version
             System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
-                healthcareEntitiesResultCollection.getModelVersion());
+                healthcareTaskResult.getModelVersion());
 
+            TextDocumentBatchStatistics healthcareTaskStatistics = healthcareTaskResult.getStatistics();
             // Batch statistics
-            TextDocumentBatchStatistics batchStatistics = healthcareEntitiesResultCollection.getStatistics();
             System.out.printf("Documents statistics: document count = %s, erroneous document count = %s,"
                     + " transaction count = %s, valid document count = %s.%n",
-                batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(),
-                batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
+                healthcareTaskStatistics.getDocumentCount(), healthcareTaskStatistics.getInvalidDocumentCount(),
+                healthcareTaskStatistics.getTransactionCount(), healthcareTaskStatistics.getValidDocumentCount());
 
-            healthcareEntitiesResultCollection.forEach(healthcareEntitiesResult -> {
+            healthcareTaskResult.forEach(healthcareEntitiesResult -> {
                 System.out.println("document id = " + healthcareEntitiesResult.getId());
                 System.out.println("Document entities: ");
-                HealthcareEntityCollection healthcareEntities = healthcareEntitiesResult.getEntities();
                 AtomicInteger ct = new AtomicInteger();
-                healthcareEntities.forEach(healthcareEntity -> {
-                    System.out.printf("\ti = %d, Text: %s, category: %s, subcategory: %s, confidence score: %f.%n",
-                        ct.getAndIncrement(),
-                        healthcareEntity.getText(), healthcareEntity.getCategory(), healthcareEntity.getSubcategory(),
+                healthcareEntitiesResult.getEntities().forEach(healthcareEntity -> {
+                    System.out.printf("\ti = %d, Text: %s, category: %s, confidence score: %f.%n",
+                        ct.getAndIncrement(), healthcareEntity.getText(), healthcareEntity.getCategory(),
                         healthcareEntity.getConfidenceScore());
 
-                    List<HealthcareEntityLink> links = healthcareEntity.getDataSourceEntityLinks();
-                    if (links != null) {
-                        links.forEach(healthcareEntityLink -> {
-                            System.out.printf("\t\tHealthcare data source ID: %s, data source: %s.%n",
-                                healthcareEntityLink.getDataSourceId(),
-                                healthcareEntityLink.getDataSource());
-                        });
+                    IterableStream<EntityDataSource> healthcareEntityDataSources =
+                        healthcareEntity.getDataSources();
+                    if (healthcareEntityDataSources != null) {
+                        healthcareEntityDataSources.forEach(healthcareEntityLink -> System.out.printf(
+                            "\t\tHealthcare data source ID: %s, data source: %s.%n",
+                            healthcareEntityLink.getEntityId(), healthcareEntityLink.getName()));
+                    }
+                    Map<HealthcareEntity, HealthcareEntityRelationType> relatedHealthcareEntities =
+                        healthcareEntity.getRelatedEntities();
+                    if (!CoreUtils.isNullOrEmpty(relatedHealthcareEntities)) {
+                        relatedHealthcareEntities.forEach(
+                            (relatedHealthcareEntity, entityRelationType) -> System.out.printf(
+                                "\t\tRelated entity: %s, relation type: %s.%n",
+                                relatedHealthcareEntity.getText(), entityRelationType));
                     }
                 });
-
-                healthcareEntities.getEntityRelations().forEach(
-                    healthcareEntityRelation ->
-                        System.out.printf("Is bidirectional: %s, target: %s, source: %s, relation type: %s.%n",
-                            healthcareEntityRelation.isBidirectional(),
-                            healthcareEntityRelation.getTargetLink(),
-                            healthcareEntityRelation.getSourceLink(),
-                            healthcareEntityRelation.getRelationType()));
             });
         });
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcare#Iterable-RecognizeHealthcareEntityOptions-Context
-    }
-
-    // Healthcare - Cancellation
-    /**
-     * Code snippet for {@link TextAnalyticsClient#beginCancelHealthcareTask(String, RecognizeHealthcareEntityOptions, Context)}
-     */
-    public void cancelAnalyzeHealthcareMaxOverload() {
-        // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelHealthcareTask#String-RecognizeHealthcareEntityOptions-Context
-        final SyncPoller<TextAnalyticsOperationResult, Void> textAnalyticsOperationResultVoidSyncPoller
-            = textAnalyticsClient.beginCancelHealthcareTask("{job_id_to_cancel}",
-            new RecognizeHealthcareEntityOptions().setPollInterval(Duration.ofSeconds(10)), Context.NONE);
-
-        final PollResponse<TextAnalyticsOperationResult> poll = textAnalyticsOperationResultVoidSyncPoller.poll();
-        System.out.printf("Task status: %s.%n", poll.getStatus());
-        // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginCancelHealthcareTask#String-RecognizeHealthcareEntityOptions-Context
+        // END: com.azure.ai.textanalytics.TextAnalyticsClient.beginAnalyzeHealthcareEntities#Iterable-AnalyzeHealthcareEntitiesOptions-Context
     }
 
     // Analyze Tasks
