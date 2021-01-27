@@ -43,17 +43,25 @@ private object CosmosRowConverter
     }
 
     def fromRowToObjectNode(row: Row): ObjectNode = {
-        val objectNode: ObjectNode = objectMapper.createObjectNode()
-        row.schema.fields.zipWithIndex.foreach({
-            case (field, i) =>
-                field.dataType match {
-                    case _: NullType  => objectNode.putNull(field.name)
-                    case _ if row.isNullAt(i) => objectNode.putNull(field.name)
-                    case _ => objectNode.set(field.name, convertSparkDataTypeToJsonNode(field.dataType, row.get(i)))
-                }
-        })
 
-        objectNode
+        if (row.schema.contains(StructField(CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME, StringType))){
+            // Special case when the reader read the rawJson
+            val rawJson = row.getAs[String](CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME)
+            objectMapper.readTree(rawJson).asInstanceOf[ObjectNode]
+        }
+        else {
+            val objectNode: ObjectNode = objectMapper.createObjectNode()
+            row.schema.fields.zipWithIndex.foreach({
+                case (field, i) =>
+                    field.dataType match {
+                        case _: NullType => objectNode.putNull(field.name)
+                        case _ if row.isNullAt(i) => objectNode.putNull(field.name)
+                        case _ => objectNode.set(field.name, convertSparkDataTypeToJsonNode(field.dataType, row.get(i)))
+                    }
+            })
+
+            objectNode
+        }
     }
 
     def fromInternalRowToObjectNode(row: InternalRow, schema: StructType): ObjectNode = {

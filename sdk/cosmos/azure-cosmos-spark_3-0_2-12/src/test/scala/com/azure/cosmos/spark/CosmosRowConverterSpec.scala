@@ -194,6 +194,24 @@ class CosmosRowConverterSpec extends UnitSpec {
         nestedNode.get(structCol1Name).asText() shouldEqual structCol1Val
     }
 
+    "rawJson in spark row" should "translate to ObjectNode" in {
+        val colName1 = "testCol1"
+        val colName2 = "testCol2"
+        val colVal1 = 8
+        val colVal2 = "strVal"
+        val sourceObjectNode: ObjectNode = objectMapper.createObjectNode()
+        sourceObjectNode.put(colName1, colVal1)
+        sourceObjectNode.put(colName2, colVal2)
+
+        val row = new GenericRowWithSchema(
+            Array(sourceObjectNode.toString),
+            StructType(Seq(StructField(CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME, StringType))))
+
+        val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+        objectNode.get(colName1).asInt shouldEqual colVal1
+        objectNode.get(colName2).asText shouldEqual colVal2
+    }
+
     "basic ObjectNode" should "translate to Row" in {
         val colName1 = "testCol1"
         val colName2 = "testCol2"
