@@ -4,6 +4,7 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
 import com.azure.cosmos.{ConsistencyLevel, CosmosClientBuilder}
+import org.apache.htrace.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import org.apache.spark.sql.SparkSession
 
 /** sample test for query */
@@ -37,6 +38,20 @@ object SampleReadE2EMain {
 
     val df = spark.read.format("cosmos.items").options(cfg).load()
     df.where("number = 1").show()
+
+      // With raw json as inference
+      val cfgForRaw = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+          "spark.cosmos.accountKey" -> cosmosMasterKey,
+          "spark.cosmos.database" -> cosmosDatabase,
+          "spark.cosmos.container" -> cosmosContainer,
+          "spark.cosmos.read.inferSchemaEnabled" -> "false"
+      )
+
+      val dfForRaw = spark.read.format("cosmos.items").options(cfgForRaw).load()
+      dfForRaw.schema
+      val rawJson = dfForRaw.first.getAs[String](CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME)
+      val mapper = new ObjectMapper();
+      mapper.readTree(rawJson);
 
     spark.close()
   }
