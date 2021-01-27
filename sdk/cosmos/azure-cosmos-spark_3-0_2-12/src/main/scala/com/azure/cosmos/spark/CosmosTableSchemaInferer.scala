@@ -17,7 +17,7 @@ import scala.collection.JavaConverters._
 // Infers a schema by reading sample data from a source container.
 private object CosmosTableSchemaInferer
     extends CosmosLoggingTrait {
-
+    case decimalNode: DecimalNode if decimalNode.isInt => IntegerType
     val RAW_JSON_BODY_ATTRIBUTE_NAME = "_rawBody"
     private val TIMESTAMP_ATTRIBUTE_NAME = "_ts"
     private val ID_ATTRIBUTE_NAME = "id"
@@ -93,7 +93,8 @@ private object CosmosTableSchemaInferer
                 DecimalType(precision, scale)
             case decimalNode: DecimalNode if decimalNode.isFloat => FloatType
             case decimalNode: DecimalNode if decimalNode.isDouble => DoubleType
-            case decimalNode: DecimalNode if decimalNode.isInt => IntegerType case arrayNode: ArrayNode => inferDataTypeFromArrayNode(arrayNode) match {
+            case decimalNode: DecimalNode if decimalNode.isInt => IntegerType
+            case arrayNode: ArrayNode => inferDataTypeFromArrayNode(arrayNode) match {
                 case Some(valueType) => ArrayType(valueType)
                 case None => NullType
             }
