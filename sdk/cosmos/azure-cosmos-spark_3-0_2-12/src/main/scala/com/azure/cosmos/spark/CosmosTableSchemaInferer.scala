@@ -37,7 +37,7 @@ private object CosmosTableSchemaInferer
             case (map, item) => inferDataTypeFromObjectNode(item) match {
                 case Some(mappedList) =>
                     map ++ mappedList.map(mappedItem => {
-                        if (map.contains(mappedItem._1) && map(mappedItem._1).dataType != mappedItem._2){
+                        if (map.contains(mappedItem._1) && map(mappedItem._1).dataType != mappedItem._2.dataType){
                             // If 2 documents contain the same property name but different type, we default to String
                             (mappedItem._1, StructField(mappedItem._1, StringType))
                         }
