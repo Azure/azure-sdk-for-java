@@ -125,10 +125,12 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
     }
 
     "duplicate properties" should "map to StringType" in {
+        val idVal1 = 20
+        val idVal2 = true
         val objectNode: ObjectNode = objectMapper.createObjectNode()
-        objectNode.put("id", 20)
+        objectNode.put("id", idVal1)
         val objectNode2: ObjectNode = objectMapper.createObjectNode()
-        objectNode2.put("id", true)
+        objectNode2.put("id", idVal2)
         val docs = List[ObjectNode](objectNode, objectNode2)
 
         val schema = CosmosTableSchemaInferer.inferSchema(docs)
@@ -137,10 +139,12 @@ class CosmosTableSchemaInfererSpec extends UnitSpec {
     }
 
     it should "map to original type" in {
+        val idVal1 = 20
+        val idVal2 = 30
         val objectNode: ObjectNode = objectMapper.createObjectNode()
-        objectNode.put("id", 20)
+        objectNode.put("id", idVal1)
         val objectNode2: ObjectNode = objectMapper.createObjectNode()
-        objectNode2.put("id", 30)
+        objectNode2.put("id", idVal2)
         val docs = List[ObjectNode](objectNode, objectNode2)
 
         val schema = CosmosTableSchemaInferer.inferSchema(docs)
