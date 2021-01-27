@@ -143,17 +143,17 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
    
 #### Support the use of `@RegisteredOAuth2AuthorizedClient` to get `OAuth2AuthorizedClient`:
 ```java
- @PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
- @GetMapping("call-graph")
- public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
-     return callMicrosoftGraphMeEndpoint(graph);
- }
- 
- @PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
- @GetMapping("call-custom")
- public String callCustom(@RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
-     return callCustomEndpoint(custom);
- }
+@GetMapping("/graph")
+@ResponseBody
+public String graph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient oAuth2AuthorizedClient) {
+    return toJsonString(oAuth2AuthorizedClient);
+}
+
+@GetMapping("/office")
+@ResponseBody
+public String office(@RegisteredOAuth2AuthorizedClient("office") OAuth2AuthorizedClient oAuth2AuthorizedClient) {
+    return toJsonString(oAuth2AuthorizedClient);
+}
 ```
    
 #### On-demand authorization
@@ -338,7 +338,6 @@ azure:
     graph-membership-uri: https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf
 ```
 
-
 ## Examples
 Refer to different samples for different authentication ways. 
 
@@ -370,14 +369,6 @@ logging.level.org.hibernate=ERROR
 ```
 
 For more information about setting logging in spring, please refer to the [official doc].
-
-## Next steps
-The following section provides sample projects illustrating how to use the starter in different cases.
-### More sample code
-- [Azure Active Directory for Web apps][azure-spring-boot-sample-active-directory-webapp]
-- [Azure Active Directory for Web APIs][azure-spring-boot-sample-active-directory-resource-server]
-- [Azure Active Directory for On-Behalf-Of flow][azure-spring-boot-sample-active-directory-resource-server-obo]
-- [Azure Active Directory for Resource Server by Filter(Deprecated)][azure-spring-boot-sample-active-directory-resource-server-by-filter]
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
