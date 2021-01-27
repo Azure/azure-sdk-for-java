@@ -80,6 +80,9 @@
 # PRLabel: %Storage
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @kasobol-msft
 
+# PRLabel: %Tables
+/sdk/tables/                                        @bsiegel @conniey
+
 # PRLabel: %EngSys
 /sdk/template/                                      @Azure/azure-sdk-eng
 
