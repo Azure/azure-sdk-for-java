@@ -100,7 +100,7 @@ jobs:
           publishJUnitResults: false
 
       - task: Maven@3
-        displayName: 'Run tests: $(DisplayName)'
+        displayName: 'Run tests: $(Agent.JobName)'
         inputs:
           mavenPomFile: pom.xml
           ${{ insert }}: ${{ parameters.TestStepMavenInputs }}
@@ -120,6 +120,6 @@ jobs:
         condition: always()
         inputs:
           mergeTestResults: true
-          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(DisplayName)'
+          testRunTitle: 'Live tests for ${{ parameters.ServiceDirectory }} $(Agent.JobName)'
           ${{ if ne(parameters.TestResultsFiles, '') }}:
             testResultsFiles: ${{ parameters.TestResultsFiles }}
