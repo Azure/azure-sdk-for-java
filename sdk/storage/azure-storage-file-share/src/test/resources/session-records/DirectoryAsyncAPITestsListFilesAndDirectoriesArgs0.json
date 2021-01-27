@@ -254,7 +254,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestslistfilesanddirectoriesargs096583fb/directoryasyncapitestslistfilesanddirectoriesargs09146510?prefix=directoryasyncapitestslistfilesanddirectoriesargs&restype=directory&comp=list",
+    "Uri" : "https://gaprastg71.file.core.windows.net/directoryasyncapitestslistfilesanddirectoriesargs096583fb/directoryasyncapitestslistfilesanddirectoriesargs09146510?restype=directory&comp=list&prefix=directoryasyncapitestslistfilesanddirectoriesargs",
     "Headers" : {
       "x-ms-version" : "2019-07-07",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.0.0 (11.0.4; Windows 10 10.0)",
