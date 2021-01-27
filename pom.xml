@@ -558,6 +558,7 @@
         <module>sdk/cosmos</module>
         <module>sdk/costmanagement</module>
         <module>sdk/digitaltwins</module>
+        <module>sdk/dns</module>
         <module>sdk/eventgrid</module>
         <module>sdk/eventhubs</module>
         <module>sdk/formrecognizer</module>
