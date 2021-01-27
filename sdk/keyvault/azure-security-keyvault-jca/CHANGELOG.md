@@ -4,12 +4,19 @@
 
 
 ## 1.0.0-beta.3 (2021-01-20)
- - Fix NPE: https://github.com/Azure/azure-sdk-for-java/issues/17953
- - Support properties named in hyphens style. https://github.com/Azure/azure-sdk-for-java/pull/18340
+
+### Key Bug Fixes
+ - Fix NullPointerException in KeyVaultKeyManagerFactory.
+
+### New Features
+ - Support properties named in hyphens style, like "azure.keyvault.tenant-id".
 
 
 ## 1.0.0-beta.2 (2020-11-17)
+
+### New Features
 - Add support for PEM based certificates.
+
 
 ## 1.0.0-beta.1 (2020-10-21)
  - First release.
