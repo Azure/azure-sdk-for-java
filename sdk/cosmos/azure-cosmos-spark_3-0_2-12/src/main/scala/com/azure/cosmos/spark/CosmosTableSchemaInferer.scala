@@ -104,7 +104,7 @@ private object CosmosTableSchemaInferer
                 case None => NullType
                 }
             case _ =>
-                this.logError(s"Unsupported document node conversion [${jsonNode.getNodeType}]")
+                this.logWarning(s"Unsupported document node conversion [${jsonNode.getNodeType}]")
                 StringType // Defaulting to a string representation for values that we cannot convert
         }
     }
