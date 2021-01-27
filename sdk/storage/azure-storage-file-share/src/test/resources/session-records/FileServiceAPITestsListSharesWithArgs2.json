@@ -126,7 +126,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.file.core.windows.net?prefix=fileserviceapitestslistshareswithargs245778e35ea409&include=metadata%2Csnapshots&comp=list",
+    "Uri" : "https://REDACTED.file.core.windows.net?comp=list&prefix=fileserviceapitestslistshareswithargs245778e35ea409&include=metadata%2Csnapshots",
     "Headers" : {
       "x-ms-version" : "2020-02-10",
       "User-Agent" : "azsdk-java-azure-storage-file-share/12.7.0-beta.2 (11.0.7; Windows 10; 10.0)",
