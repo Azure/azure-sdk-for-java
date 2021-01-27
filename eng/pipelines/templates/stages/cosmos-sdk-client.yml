@@ -75,100 +75,73 @@ stages:
         PreTestSteps:
           - template: ../steps/install-reporting-tools.yml
 
-    - template: ../jobs/archetype-sdk-tests.yml
+    - template: ../jobs/archetype-sdk-tests-generate.yml
       parameters:
-        TestName: Emulator
-        DisableAzureResourceCreation: true
-        ServiceDirectory: cosmos
-        Artifacts: ${{ parameters.Artifacts }}
-        AdditionalModules: ${{ parameters.AdditionalModules }}
-        ACCOUNT_HOST: 'https://localhost:8081/'
-        ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-        SECONDARY_ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-        # Increased timeout to 90 because of cosmos emulator taking 25-30 mins to download emulator
-        # Issue filed to improve download speed: https://github.com/Azure/azure-sdk-for-java/issues/12970
-        TimeoutInMinutes: 90
-        Matrix:
-          Tcp_Integration_Tests_Java8:
-            Pool: azsdk-pool-mms-win-2019-general
-            OSVmImage: MMS2019
-            JavaTestVersion: '1.8'
-            ProfileFlag: '-Pemulator'
-            DisplayName: 'Emulator only Integration Tests'
-            PROTOCOLS: '["Tcp"]'
-            DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-            AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
-          Https_Integration_Tests_Java8:
-            Pool: azsdk-pool-mms-win-2019-general
-            OSVmImage: MMS2019
-            JavaTestVersion: '1.8'
-            ProfileFlag: '-Pemulator'
-            DisplayName: 'Emulator only Integration Tests'
-            PROTOCOLS: '["Https"]'
-            DESIRED_CONSISTENCIES: '["Strong", "Session"]'
-            AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
-          Spring_Integration_Tests_Java8:
-            Pool: azsdk-pool-mms-win-2019-general
-            OSVmImage: MMS2019
-            JavaTestVersion: '1.8'
-            ProfileFlag: '-P integration-test-emulator'
-            DisplayName: 'Spring Emulator only Integration Tests'
-            AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/ -DACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DSECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DNEW_ACCOUNT_HOST=https://localhost:8081/ -DNEW_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw== -DNEW_SECONDARY_ACCOUNT_KEY=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="'
-          Encryption_Integration_Tests_Java8:
-            Pool: azsdk-pool-mms-win-2019-general
-            OSVmImage: MMS2019
-            JavaTestVersion: '1.8'
-            ProfileFlag: '-Pencryption-integration'
-            DisplayName: 'Encryption Emulator only Integration Tests'
-            PROTOCOLS: '["Tcp"]'
-            DESIRED_CONSISTENCIES: '["Session"]'
-            AdditionalArgs: '-DargLine="-DACCOUNT_HOST=https://localhost:8081/"'
+        MatrixConfigs:
+          - Name: Cosmos_emulator_integration
+            Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
+            Selection: all
+            GenerateVMJobs: true
+        CloudConfig:
+          SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+          Cloud: Public
+        AdditionalParameters:
+          TestName: Emulator
+          DisableAzureResourceCreation: true
+          ServiceDirectory: cosmos
+          Artifacts: ${{ parameters.Artifacts }}
+          AdditionalModules: ${{ parameters.AdditionalModules }}
+          ACCOUNT_HOST: 'https://localhost:8081/'
+          ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+          SECONDARY_ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+          # Increased timeout to 90 because of cosmos emulator taking 25-30 mins to download emulator
+          # Issue filed to improve download speed: https://github.com/Azure/azure-sdk-for-java/issues/12970
+          TimeoutInMinutes: 90
+          TestStepMavenInputs:
+            goals: clean verify
+            options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
+            mavenAuthenticateFeed: true
+            jdkVersionOption: $(JavaTestVersion)
 
-        TestStepMavenInputs:
-          goals: clean verify
-          options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl $(ProjectList)'
-          mavenAuthenticateFeed: true
-          jdkVersionOption: $(JavaTestVersion)
+          PreSteps:
+          - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
+            parameters:
+              StartParameters: '/noexplorer /noui /enablepreview /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong'
+          - powershell: |
+              $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
+              $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
+              $cert = Get-ChildItem cert:\LocalMachine\My | Where-Object { $_.FriendlyName -eq "DocumentDbEmulatorCertificate" }
+              Export-PfxCertificate -Cert $cert -FilePath ".\CosmosDbEmulatorCert.pfx" -Password $password | Out-Null
+              $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
+              $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
+              $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
+            displayName: 'Export Cosmos DB Emulator Certificate'
+          - powershell: |
+              cd $env:java_home\jre\lib\security
+              cp $env:temp\CosmosDbEmulatorCert.cer .
+              keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit
+            displayName: 'Create Java TrustStore'
 
-        PreSteps:
-        - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
-          parameters:
-            StartParameters: '/noexplorer /noui /enablepreview /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong'
-        - powershell: |
-            $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
-            $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
-            $cert = Get-ChildItem cert:\LocalMachine\My | Where-Object { $_.FriendlyName -eq "DocumentDbEmulatorCertificate" }
-            Export-PfxCertificate -Cert $cert -FilePath ".\CosmosDbEmulatorCert.pfx" -Password $password | Out-Null
-            $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2
-            $cert.Import(".\CosmosDbEmulatorCert.pfx", $Key, "DefaultKeySet")
-            $cert | Export-Certificate -FilePath "$env:temp\CosmosDbEmulatorCert.cer" -Type CERT
-          displayName: 'Export Cosmos DB Emulator Certificate'
-        - powershell: |
-            cd $env:java_home\jre\lib\security
-            cp $env:temp\CosmosDbEmulatorCert.cer .
-            keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias CosmosDbEmulatorCert -file CosmosDbEmulatorCert.cer -storepass changeit
-          displayName: 'Create Java TrustStore'
+          # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
+          # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
+          - template: ../steps/install-reporting-tools.yml
 
-        # We `install` separately from running `site:site site:stage` so that the `install` brings in the non-shipping-modules,
-        # but we don't include them in the Maven site commands (so that we don't generate reports for the non-shipping modules).
-        - template: ../steps/install-reporting-tools.yml
-
-        PostSteps:
-          - script: |
-              python --version
-              python -m pip install setuptools termcolor in_place
-              python sdk/spring/scripts/replace_util.py --module cosmos --log debug --color false
-            condition: and(succeededOrFailed(), eq(variables['DisplayName'], 'Spring Emulator only Integration Tests'))
-            displayName: 'Run replace_util.py'
-          - task: Maven@3
-            condition: and(succeededOrFailed(), eq(variables['DisplayName'], 'Spring Emulator only Integration Tests'))
-            displayName: 'Run tests again: $(DisplayName)'
-            inputs:
-              mavenPomFile: pom.xml
-              goals: clean verify
-              options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl com.azure:azure-spring-data-cosmos-test'
-              mavenAuthenticateFeed: true
-              jdkVersionOption: $(JavaTestVersion)
+          PostSteps:
+            - script: |
+                python --version
+                python -m pip install setuptools termcolor in_place
+                python sdk/spring/scripts/replace_util.py --module cosmos --log debug --color false
+              condition: and(succeededOrFailed(), eq(variables['DisplayName'], 'Spring Emulator only Integration Tests'))
+              displayName: 'Run replace_util.py'
+            - task: Maven@3
+              condition: and(succeededOrFailed(), eq(variables['DisplayName'], 'Spring Emulator only Integration Tests'))
+              displayName: 'Run tests again: $(DisplayName)'
+              inputs:
+                mavenPomFile: pom.xml
+                goals: clean verify
+                options: '$(ProfileFlag) -Dgpg.skip $(AdditionalArgs) -pl com.azure:azure-spring-data-cosmos-test'
+                mavenAuthenticateFeed: true
+                jdkVersionOption: $(JavaTestVersion)
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
