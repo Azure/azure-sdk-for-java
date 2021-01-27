@@ -109,11 +109,8 @@ This starter provides following properties to be customized:
 | **azure.activedirectory**.user-group.allowed-groups              | Expected user groups that an authority will be granted to if found in the response from the MemeberOf Graph API Call. |
 
 ### Web application
-Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the groups or roles claim in the access token.
+Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the groups in the access token.
 This starter provides a convenient way to quickly access resource servers.
-1. Resource servers should be registered as `ClientRegistration`.
-2. In Controller, `@RegisteredOAuth2AuthorizedClient` can be used to  get `OAuth2AuthorizedClient`. 
-   `OAuth2AuthorizedClient` contains accessToken to access related client resource.
    
 ####  Configure application.yml:
 ```yaml
@@ -126,7 +123,7 @@ azure:
       allowed-groups: group1, group2
     post-logout-redirect-uri: http://localhost:8080 # optional
 ```
-   
+
 #### If you want to create your own configuration class:
 <!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/aad/AADOAuth2LoginConfigSample.java#L18-L26 -->
 ```java
@@ -139,33 +136,6 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
         super.configure(http);
     }
 }
-```
-   
-#### Support the use of `@RegisteredOAuth2AuthorizedClient` to get `OAuth2AuthorizedClient`:
-```java
-@GetMapping("/graph")
-@ResponseBody
-public String graph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient oAuth2AuthorizedClient) {
-    return toJsonString(oAuth2AuthorizedClient);
-}
-
-@GetMapping("/office")
-@ResponseBody
-public String office(@RegisteredOAuth2AuthorizedClient("office") OAuth2AuthorizedClient oAuth2AuthorizedClient) {
-    return toJsonString(oAuth2AuthorizedClient);
-}
-```
-   
-#### On-demand authorization
-By default, the starter will launch the Oauth2 Authorization Code flow for a logging in user. During the authorization flow, `azure-spring-boot-starter-active-directory` adds all the configured scopes except **on-demand** ones into authorization code requests to ask for user's authorization consent. The authorization flow of `on-demand` resources will be launched at the first time the user wants to access them.
-To configure the authorization of certain resource as on-demand, developers need to add following property in `application.yml`:
-```yaml
-azure:
-  activedirectory:
-    authorization-clients:
-      {registration-id}:
-        on-demand: true
-        scopes: {scope1}, {scope2}
 ```
 
 #### Standalone web application
@@ -194,6 +164,38 @@ Web application visits resource servers which are protected by Azure AD.
 * Auto-acquire the access token of other clients based on the root refresh token.
 * Use each client's access token to request restricted resource.
 * Return secured data.
+
+1. Resource servers should be registered as `ClientRegistration`.
+2. In Controller, `@RegisteredOAuth2AuthorizedClient` can be used to  get `OAuth2AuthorizedClient`. 
+   `OAuth2AuthorizedClient` contains accessToken to access related client resource.
+
+Support the use of `@RegisteredOAuth2AuthorizedClient` to get `OAuth2AuthorizedClient`:
+```java
+@PreAuthorize("hasAuthority('SCOPE_Obo.Graph.Read')")
+@GetMapping("call-graph")
+public String callGraph(@RegisteredOAuth2AuthorizedClient("graph") OAuth2AuthorizedClient graph) {
+    return callMicrosoftGraphMeEndpoint(graph);
+}
+
+@PreAuthorize("hasAuthority('SCOPE_Obo.File.Read')")
+@GetMapping("call-custom")
+public String callCustom(
+    @RegisteredOAuth2AuthorizedClient("custom") OAuth2AuthorizedClient custom) {
+    return callCustomLocalFileEndpoint(custom);
+}
+```
+
+#### On-demand authorization
+By default, the starter will launch the Oauth2 Authorization Code flow for a logging in user. During the authorization flow, `azure-spring-boot-starter-active-directory` adds all the configured scopes except **on-demand** ones into authorization code requests to ask for user's authorization consent. The authorization flow of `on-demand` resources will be launched at the first time the user wants to access them.
+To configure the authorization of certain resource as on-demand, developers need to add following property in `application.yml`:
+```yaml
+azure:
+  activedirectory:
+    authorization-clients:
+      {registration-id}:
+        on-demand: true
+        scopes: {scope1}, {scope2}
+```
 
 ### Resource Server
 Based on Azure AD as a Resource Server, it uses `BearerTokenAuthenticationFilter` authorize request. The current resource server also can access other resources, there's a similar method to the web application usage to obtain access to the client access token, the difference is the access token obtained based on the `MSAL On-Behalf-Of` process.
