@@ -73,7 +73,7 @@ public final class CommunicationIdentityAsyncClient {
             return client.createWithResponseAsync(new CommunicationIdentityCreateRequest())
                 .flatMap(
                     (Response<CommunicationIdentityAccessTokenResult> response) -> {
-                        if (response.getValue() != null && response.getValue().getIdentity() != null) {
+                        if (response != null && response.getValue() != null && response.getValue().getIdentity() != null) {
                             String id = response.getValue().getIdentity().getId();
                             return Mono.just(
                                 new SimpleResponse<CommunicationUserIdentifier>(
@@ -101,7 +101,7 @@ public final class CommunicationIdentityAsyncClient {
             return client.createAsync(new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes))
                 .flatMap(
                     (CommunicationIdentityAccessTokenResult result) -> {
-                        if (result.getIdentity() != null && result.getAccessToken() != null) {
+                        if (result != null && result.getIdentity() != null && result.getAccessToken() != null) {
                             CommunicationUserIdentifier user = 
                                 new CommunicationUserIdentifier(result.getIdentity().getId());
                             AccessToken token = 
@@ -131,8 +131,8 @@ public final class CommunicationIdentityAsyncClient {
                 new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes))
                 .flatMap(
                     (Response<CommunicationIdentityAccessTokenResult> response) -> {
-                        if (response.getValue() != null && response.getValue().getIdentity() != null
-                            && response.getValue().getAccessToken() != null) {
+                        if (response != null && response.getValue() != null
+                            && response.getValue().getIdentity() != null && response.getValue().getAccessToken() != null) {
                             String id = response.getValue().getIdentity().getId();
                             CommunicationUserIdentifier user = new CommunicationUserIdentifier(id);
                             CommunicationIdentityAccessToken rawToken = response.getValue().getAccessToken();
@@ -252,7 +252,7 @@ public final class CommunicationIdentityAsyncClient {
             return client.issueAccessTokenWithResponseAsync(communicationUser.getId(),
                 new CommunicationIdentityAccessTokenRequest().setScopes(scopes))
                 .flatMap((Response<CommunicationIdentityAccessToken> response) -> {
-                    if (response.getValue() != null) {
+                    if (response != null && response.getValue() != null) {
                         AccessToken token = new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn());
                         return Mono.just(new SimpleResponse<AccessToken>(response, token));
                     }
