@@ -3,6 +3,7 @@
 
 package com.azure.communication.sms;
 
+import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -54,7 +55,7 @@ public class SmsLiveTestBase extends TestBase {
 
     protected SmsClientBuilder getSmsClientBuilderWithManagedIdentity(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
-        String livetestEndpoint = new com.azure.communication.common.implementation.CommunicationConnectionString(CONNECTION_STRING).getEndpoint();
+        String livetestEndpoint = new CommunicationConnectionString(CONNECTION_STRING).getEndpoint();
 
         builder.endpoint(livetestEndpoint)
                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);

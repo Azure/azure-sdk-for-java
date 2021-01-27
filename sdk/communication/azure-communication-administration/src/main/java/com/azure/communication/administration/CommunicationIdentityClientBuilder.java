@@ -3,6 +3,7 @@
 
 package com.azure.communication.administration;
 
+import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImplBuilder;
@@ -104,7 +105,7 @@ public final class CommunicationIdentityClientBuilder {
      */
     public CommunicationIdentityClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-        com.azure.communication.common.implementation.CommunicationConnectionString connectionStringObject = new com.azure.communication.common.implementation.CommunicationConnectionString(connectionString);
+        CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
         this

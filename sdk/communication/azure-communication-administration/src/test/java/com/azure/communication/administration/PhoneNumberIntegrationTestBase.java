@@ -10,6 +10,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
@@ -99,7 +100,7 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
     protected PhoneNumberClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
         PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
         builder
-            .endpoint(new com.azure.communication.common.implementation.CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
+            .endpoint(new CommunicationConnectionString(CONNECTION_STRING).getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.PLAYBACK) {

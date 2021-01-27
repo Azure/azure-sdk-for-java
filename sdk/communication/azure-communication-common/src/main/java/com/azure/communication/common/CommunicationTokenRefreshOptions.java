@@ -8,7 +8,7 @@ package com.azure.communication.common;
 public class CommunicationTokenRefreshOptions {
     private final TokenRefresher tokenRefresher;
     private final boolean refreshProactively;
-    private final String initialToken;
+    private final String token;
 
     /**
      * Creates a CommunicationTokenRefreshOptions object
@@ -22,23 +22,23 @@ public class CommunicationTokenRefreshOptions {
     public CommunicationTokenRefreshOptions(TokenRefresher tokenRefresher, boolean refreshProactively) {
         this.tokenRefresher = tokenRefresher;
         this.refreshProactively = refreshProactively;
-        this.initialToken = null;
+        this.token = null;
     }
 
      /**
      * Creates a CommunicationTokenRefreshOptions object
      *
-     * @param tokenRefresher the initialToken refresher to provide capacity to fetch fresh initialToken
+     * @param tokenRefresher the token refresher to provide capacity to fetch fresh token
      * @param refreshProactively when set to true, turn on proactive fetching to call
-     *                           tokenRefresher before initialToken expiry by minutes set
+     *                           tokenRefresher before token expiry by minutes set
      *                           with setCallbackOffsetMinutes or default value of
      *                           two minutes
-     * @param initialToken the optional serialized JWT initialToken
+     * @param token the optional serialized JWT token
      */
-    public CommunicationTokenRefreshOptions(TokenRefresher tokenRefresher, boolean refreshProactively, String initialToken) {
+    public CommunicationTokenRefreshOptions(TokenRefresher tokenRefresher, boolean refreshProactively, String token) {
         this.tokenRefresher = tokenRefresher;
         this.refreshProactively = refreshProactively;
-        this.initialToken = initialToken;
+        this.token = token;
     }
 
     /**
@@ -58,7 +58,7 @@ public class CommunicationTokenRefreshOptions {
     /**
      * @return the serialized JWT token
      */
-    public String getInitialToken() {
-        return initialToken;
+    public String getToken() {
+        return token;
     }
 }

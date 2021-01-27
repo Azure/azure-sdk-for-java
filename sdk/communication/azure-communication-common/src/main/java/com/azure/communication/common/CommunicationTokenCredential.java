@@ -35,13 +35,13 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     private boolean isClosed = false;
 
     /**
-     * Create with serialized JWT initialToken
+     * Create with serialized JWT token
      *
-     * @param initialToken serialized JWT initialToken
+     * @param token serialized JWT token
      */
-    public CommunicationTokenCredential(String initialToken) {
-        Objects.requireNonNull(initialToken, "'initialToken' cannot be null.");
-        setToken(initialToken);
+    public CommunicationTokenCredential(String token) {
+        Objects.requireNonNull(token, "'token' cannot be null.");
+        setToken(token);
     }
 
     /**
@@ -57,8 +57,8 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         TokenRefresher tokenRefresher = tokenRefreshOptions.getTokenRefresher();
         Objects.requireNonNull(tokenRefresher, "'tokenRefresher' cannot be null.");
         refresher = tokenRefresher;
-        if (tokenRefreshOptions.getInitialToken() != null) {
-            setToken(tokenRefreshOptions.getInitialToken());
+        if (tokenRefreshOptions.getToken() != null) {
+            setToken(tokenRefreshOptions.getToken());
             if (tokenRefreshOptions.getRefreshProactively()) {
                 OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
                 fetchingTask = new FetchingTask(this, nextFetchTime);

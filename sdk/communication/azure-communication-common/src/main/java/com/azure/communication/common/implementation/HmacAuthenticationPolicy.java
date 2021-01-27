@@ -5,12 +5,16 @@ package com.azure.communication.common.implementation;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -22,6 +26,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -48,7 +53,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
     // for the day and month strings may be different. (e.g. Canada day strings
     // have a '.' at the end)
     static final DateTimeFormatter HMAC_DATETIMEFORMATTER_PATTERN =
-        DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", java.util.Locale.US);
+        DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
 
     private final AzureKeyCredential credential;
 
@@ -72,7 +77,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         try {
             sha256HMAC = Mac.getInstance("HmacSHA256");
             sha256HMAC.init(new SecretKeySpec(key, "HmacSHA256"));
-        } catch (NoSuchAlgorithmException | java.security.InvalidKeyException e) {
+        } catch (NoSuchAlgorithmException | InvalidKeyException e) {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
         this.sha256HMAC = sha256HMAC;
@@ -107,7 +112,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
             try {
                 return MessageDigest.getInstance("SHA-256");
             } catch (NoSuchAlgorithmException e) {
-                throw logger.logExceptionAsError(reactor.core.Exceptions.propagate(e));
+                throw logger.logExceptionAsError(Exceptions.propagate(e));
             }
         }, MessageDigest::update)
             .map(messageDigest -> addAuthenticationHeaders(url, httpMethod, messageDigest));
@@ -115,11 +120,11 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
 
     private Map<String, String> addAuthenticationHeaders(final URL url, final String httpMethod,
                                                                    final MessageDigest messageDigest) {
-        final Map<String, String> headers = new java.util.HashMap<>();
+        final Map<String, String> headers = new HashMap<>();
 
         final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
         headers.put(CONTENT_HASH_HEADER, contentHash);
-        String utcNow = OffsetDateTime.now(java.time.ZoneOffset.UTC)
+        String utcNow = OffsetDateTime.now(ZoneOffset.UTC)
             .format(HMAC_DATETIMEFORMATTER_PATTERN);
         headers.put(DATE_HEADER, utcNow);
         headers.put(HOST_HEADER, url.getHost());
@@ -141,7 +146,7 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
         // String-To-Sign=HTTP_METHOD + '\n' + path_and_query + '\n' + signed_headers_values
         // Signed headers: "host;x-ms-date;x-ms-content-sha256"
         // The line separator has to be \n. Using %n with String.format will result in a 401 from the service.
-        String stringToSign = httpMethod.toUpperCase(java.util.Locale.US) + "\n" + pathAndQuery + "\n" + signedHeaderValues;
+        String stringToSign = httpMethod.toUpperCase(Locale.US) + "\n" + pathAndQuery + "\n" + signedHeaderValues;
         final String signature =
             Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
         httpHeaders.put(AUTHORIZATIONHEADERNAME, String.format(HMACSHA256FORMAT, signedHeaderNames, signature));
