@@ -87,17 +87,6 @@ public class CommunicationIdentifierSerializerTests {
     }
 
     @Test
-    public void deserializeFutureTypeShouldThrow() {
-        final String futureType = "NewKind";
-        assertThrows(IllegalArgumentException.class,
-            () -> {
-                CommunicationIdentifierSerializer.deserialize(
-                    new CommunicationIdentifierModel().setKind(CommunicationIdentifierKind.fromString(futureType))
-                        .setId(someId));
-            });
-    }
-
-    @Test
     public void serializeFutureTypeShouldThrow() {
         assertThrows(IllegalArgumentException.class,
             () -> {

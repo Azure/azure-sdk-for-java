@@ -43,12 +43,8 @@ class CommunicationIdentifierSerializer {
                 .setCloudEnvironment(CommunicationCloudEnvironment.fromModel(identifier.getCloudEnvironmentModel()));
         }
 
-        if (kind == CommunicationIdentifierKind.UNKNOWN) {
-            Objects.requireNonNull(id);
-            return new UnknownIdentifier(id);
-        }
-
-        throw new IllegalArgumentException(String.format("Unknown identifier kind '%s'", kind));
+        Objects.requireNonNull(id);
+        return new UnknownIdentifier(id);
     }
 
     /**
