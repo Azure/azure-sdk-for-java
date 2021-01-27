@@ -78,7 +78,6 @@ class CosmosTable(val transforms: Array[Transform],
   override def capabilities(): util.Set[TableCapability] = Set(
     // ACCEPT_ANY_SCHEMA is needed because of this bug https://github.com/apache/spark/pull/30273
     // It was fixed in Spark 3.1.0 but Databricks currently only supports 3.0.1
-    // When Databricks supports 3.1.X, we could remove it and move to a newer Spark version
     TableCapability.ACCEPT_ANY_SCHEMA,
     TableCapability.BATCH_WRITE,
     TableCapability.BATCH_READ).asJava
