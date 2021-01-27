@@ -1188,8 +1188,6 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(ClosedFileSystemException)
     }
 
-    // Todo: Output stream file attributes
-
     def "ByteChannel options create"() {
         setup:
         def fs = createFS(config)
@@ -1258,6 +1256,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
         def data = defaultData.duplicate()
 
+        def contentMd5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
         FileAttribute<?>[] attributes = [new TestFileAttribute<String>("fizz", "buzz"),
                                          new TestFileAttribute<String>("foo", "bar"),
                                          new TestFileAttribute<String>("Content-Type", "myType"),
@@ -1304,7 +1303,7 @@ class AzureFileSystemProviderTest extends APISpec {
                 StandardOpenOption.TRUNCATE_EXISTING)))
 
         then:
-        thrown(IllegalArgumentException)
+        thrown(UnsupportedOperationException)
 
         when: "Missing TRUNCATE_EXISTING and CREATE_NEW"
         fs.provider().newByteChannel(fs.getPath(generateBlobName()),

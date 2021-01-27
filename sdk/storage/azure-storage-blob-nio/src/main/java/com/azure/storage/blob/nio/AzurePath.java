@@ -775,7 +775,7 @@ public final class AzurePath implements Path {
         return root.substring(0, root.length() - 1); // Remove the ROOT_DIR_SUFFIX
     }
 
-    static void ensureFileSystemOpen(Path p) throws IOException {
+    static void ensureFileSystemOpen(Path p) {
         if (!p.getFileSystem().isOpen()) {
             throw LoggingUtility.logError(((AzurePath) p).logger,
                 new ClosedFileSystemException());

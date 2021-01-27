@@ -10,6 +10,7 @@ import com.azure.storage.blob.models.BlobListDetails;
 import com.azure.storage.blob.models.ListBlobsOptions;
 
 import java.io.IOException;
+import java.nio.file.ClosedFileSystemException;
 import java.nio.file.DirectoryIteratorException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Path;
@@ -100,11 +101,8 @@ public final class AzureDirectoryStream implements DirectoryStream<Path> {
 
         @Override
         public boolean hasNext() {
-            try {
-                AzurePath.ensureFileSystemOpen(path);
-            } catch (IOException e) {
-                throw LoggingUtility.logError(logger, new DirectoryIteratorException(e));
-            }
+            AzurePath.ensureFileSystemOpen(path);
+
             // Closing the parent stream halts iteration.
             if (parentStream.closed) {
                 return false;

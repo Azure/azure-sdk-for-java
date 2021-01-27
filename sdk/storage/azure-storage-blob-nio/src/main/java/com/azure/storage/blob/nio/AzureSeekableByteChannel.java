@@ -62,6 +62,11 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
         validateOpen();
         validateReadMode();
 
+        // See comments in position()
+        if (this.position > this.size()) {
+            return -1;
+        }
+
         int count = 0;
 
         int len = dst.remaining(); // In case another thread modifies dst
@@ -111,6 +116,21 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
         validateOpen();
         validateReadMode();
 
+        if (newPosition < 0) {
+            throw LoggingUtility.logError(logger, new IllegalArgumentException("Seek position cannot be negative"));
+        }
+
+        /*
+        The javadoc says seeking past the end for reading is legal and that it should indicate the end of the file on
+        the next read. StorageInputStream doesn't allow this, but we can get around that by just playing with the
+        position variable.
+
+        Because we are in read mode this will always give us the size from properties.
+         */
+        if (newPosition > this.size()) {
+            this.position = newPosition;
+            return this;
+        }
         this.inputStream.reset();
         this.inputStream.mark(Integer.MAX_VALUE);
         this.inputStream.skip(newPosition);
@@ -138,6 +158,7 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
 
     @Override
     public boolean isOpen() {
+        AzurePath.ensureFileSystemOpen(this.path);
         return !this.closed;
     }
 

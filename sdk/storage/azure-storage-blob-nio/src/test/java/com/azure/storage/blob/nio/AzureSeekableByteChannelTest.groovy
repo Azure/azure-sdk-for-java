@@ -4,9 +4,12 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.storage.blob.BlobClient
+import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.nio.channels.ClosedChannelException
+import java.nio.channels.NonReadableChannelException
+import java.nio.channels.NonWritableChannelException
 import java.nio.file.ClosedFileSystemException
 
 class AzureSeekableByteChannelTest extends APISpec {
@@ -21,7 +24,7 @@ class AzureSeekableByteChannelTest extends APISpec {
     AzureFileSystem fs
 
     def setup() {
-        sourceFileSize = 10 * 1024 * 1024
+        sourceFileSize = 1 * 1024 * 1024
         sourceFile = getRandomFile(sourceFileSize)
 
         cc.create()
@@ -30,11 +33,12 @@ class AzureSeekableByteChannelTest extends APISpec {
         bc.uploadFromFile(sourceFile.getPath())
         fs = createFS(initializeConfigMap())
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()))
+        def writePath = ((AzurePath) fs.getPath(writeBc.getContainerName() + ":", writeBc.getBlobName()))
 
         readByteChannel = new AzureSeekableByteChannel(new NioBlobInputStream(bc.openInputStream(), path), path)
         // For writing, we don't want a blob to exist there yet
         writeByteChannel = new AzureSeekableByteChannel(
-            new NioBlobOutputStream(writeBc.getBlockBlobClient().getBlobOutputStream(true), path), path)
+            new NioBlobOutputStream(writeBc.getBlockBlobClient().getBlobOutputStream(true), writePath), writePath)
         fileStream = new FileInputStream(sourceFile)
     }
 
@@ -70,20 +74,28 @@ class AzureSeekableByteChannelTest extends APISpec {
     def "Write"() {
         setup:
         def fileContent = new byte[sourceFileSize]
+        fileStream.read(fileContent)
         int count = 0
         def rand = new Random()
 
         when:
+        writeByteChannel.write(ByteBuffer.wrap(fileContent))
+        then:
         while (count < sourceFileSize) {
-            int writeAmount = Math.min(rand.nextInt(1024 * 1024), sourceFileSize - count)
+            int writeAmount = rand.nextInt(1024 * 1024)
+            if (sourceFileSize - count < writeAmount) {
+                writeAmount = sourceFileSize - count
+            }
             def buffer = new byte[writeAmount]
             fileStream.read(buffer)
             writeByteChannel.write(ByteBuffer.wrap(buffer))
             count += writeAmount
         }
 
+        writeByteChannel.close()
+
         then:
-        compareInputStreams(writeBc.openInputStream(), new FileInputStream(sourceFile), 0)
+        compareInputStreams(writeBc.openInputStream(), new ByteArrayInputStream(fileContent), sourceFileSize)
     }
 
     def "Write fs close"() {
@@ -143,6 +155,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         thrown(ClosedFileSystemException)
     }
 
+    @Unroll
     def "Seek"() {
         setup:
         def streamContent = ByteBuffer.allocate(readCount0)
@@ -204,7 +217,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         readByteChannel.position(sourceFileSize + 1)
 
         then:
-        thrown(IllegalArgumentException)
+        readByteChannel.read(ByteBuffer.allocate(1)) == -1 // Seeking past the end and then reading should indicate EOF
     }
 
 
@@ -219,7 +232,7 @@ class AzureSeekableByteChannelTest extends APISpec {
 
     def "Size read"() {
         expect:
-        readByteChannel.size() == 10 * 1024 * 1024
+        readByteChannel.size() == sourceFileSize
 
         when:
         bc.upload(defaultInputStream.get(), defaultDataSize, true)
@@ -248,6 +261,7 @@ class AzureSeekableByteChannelTest extends APISpec {
     def "Close"() {
         setup:
         readByteChannel.close()
+        writeByteChannel.close()
 
         when:
         readByteChannel.read(ByteBuffer.allocate(1))
@@ -335,19 +349,19 @@ class AzureSeekableByteChannelTest extends APISpec {
         readByteChannel.write(ByteBuffer.allocate(1))
 
         then:
-        thrown(UnsupportedOperationException)
+        thrown(NonWritableChannelException)
 
         when:
         writeByteChannel.read(ByteBuffer.allocate(1))
 
         then:
-        thrown(UnsupportedOperationException)
+        thrown(NonReadableChannelException)
 
         when:
         writeByteChannel.position(5)
 
         then:
-        thrown(UnsupportedOperationException)
+        thrown(NonReadableChannelException)
 
         when:
         readByteChannel.truncate(0)
@@ -361,9 +375,4 @@ class AzureSeekableByteChannelTest extends APISpec {
         then:
         thrown(UnsupportedOperationException)
     }
-
-    // Test in file system provider: Invalid options
-    // Read
-    // write
-    // seek
 }

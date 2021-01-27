@@ -76,7 +76,7 @@ class NioBlobOutputStreamTest extends APISpec {
 
     def "Write array"() {
         setup:
-        def dataSize = 100
+        def dataSize = 1 * 1024 * 1024//100
         def data = getRandomByteArray(dataSize)
 
         when:
