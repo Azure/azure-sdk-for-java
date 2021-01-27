@@ -8,9 +8,11 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
 import com.azure.core.util.Context;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import com.github.tomakehurst.wiremock.http.Fault;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -27,31 +29,34 @@ import reactor.test.StepVerifierOptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
-import static java.time.Duration.ofMillis;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
 
-public class ReactorNettyClientTests {
+public class NettyAsyncHttpClientTests {
     private static final String SHORT_BODY_PATH = "/short";
     private static final String LONG_BODY_PATH = "/long";
+    private static final String ERROR_BODY_PATH = "/error";
+    private static final String SHORT_POST_BODY_PATH = "/shortPost";
+    private static final String HTTP_HEADERS_PATH = "/httpHeaders";
+    private static final String IO_EXCEPTION_PATH = "/ioException";
 
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();
@@ -63,17 +68,19 @@ public class ReactorNettyClientTests {
     @BeforeAll
     public static void beforeClass() {
         server = new WireMockServer(WireMockConfiguration.options()
-            .extensions(new ReactorNettyClientResponseTransformer())
+            .extensions(new NettyAsyncHttpClientResponseTransformer())
             .dynamicPort()
             .disableRequestJournal()
             .gzipDisabled(true));
 
         server.stubFor(get(SHORT_BODY_PATH).willReturn(aResponse().withBody(SHORT_BODY)));
         server.stubFor(get(LONG_BODY_PATH).willReturn(aResponse().withBody(LONG_BODY)));
-        server.stubFor(get("/error").willReturn(aResponse().withBody("error").withStatus(500)));
-        server.stubFor(post("/shortPost").willReturn(aResponse().withBody(SHORT_BODY)));
-        server.stubFor(post("/httpHeaders").willReturn(aResponse()
-            .withTransformers(ReactorNettyClientResponseTransformer.NAME)));
+        server.stubFor(get(ERROR_BODY_PATH).willReturn(aResponse().withBody("error").withStatus(500)));
+        server.stubFor(post(SHORT_POST_BODY_PATH).willReturn(aResponse().withBody(SHORT_BODY)));
+        server.stubFor(post(HTTP_HEADERS_PATH).willReturn(aResponse()
+            .withTransformers(NettyAsyncHttpClientResponseTransformer.NAME)));
+        server.stubFor(get(IO_EXCEPTION_PATH).willReturn(aResponse().withStatus(200).but()
+            .withFault(Fault.MALFORMED_RESPONSE_CHUNK)));
         server.start();
         // ResourceLeakDetector.setLevel(Level.PARANOID);
     }
@@ -121,12 +128,12 @@ public class ReactorNettyClientTests {
             // of throwing an error
             // Reactor netty 0.9.7.RELEASE again changed the behavior to return an error on second subscription.
             .verifyError(IllegalStateException.class);
-            // .verifyComplete();
+        // .verifyComplete();
     }
 
     @Test
     public void testDispose() throws InterruptedException {
-        ReactorNettyHttpResponse response = getResponse(LONG_BODY_PATH);
+        NettyAsyncHttpResponse response = getResponse(LONG_BODY_PATH);
         response.getBody().subscribe().dispose();
         // Wait for scheduled connection disposal action to execute on netty event-loop
         Thread.sleep(5000);
@@ -135,7 +142,7 @@ public class ReactorNettyClientTests {
 
     @Test
     public void testCancel() {
-        ReactorNettyHttpResponse response = getResponse(LONG_BODY_PATH);
+        NettyAsyncHttpResponse response = getResponse(LONG_BODY_PATH);
         //
         StepVerifierOptions stepVerifierOptions = StepVerifierOptions.create();
         stepVerifierOptions.initialRequest(0);
@@ -151,15 +158,15 @@ public class ReactorNettyClientTests {
 
     @Test
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
-        HttpResponse response = getResponse("/error");
+        HttpResponse response = getResponse(ERROR_BODY_PATH);
         StepVerifier.create(response.getBodyAsString())
-            .expectNext("error") // TODO: .awaitDone(20, TimeUnit.SECONDS) [See previous todo]
-            .verifyComplete();
+            .expectNext("error")
+            .expectComplete()
+            .verify(Duration.ofSeconds(20));
         Assertions.assertEquals(500, response.getStatusCode());
     }
 
     @Test
-    @Disabled("Not working accurately at present")
     public void testFlowableBackpressure() {
         HttpResponse response = getResponse(LONG_BODY_PATH);
         //
@@ -172,15 +179,15 @@ public class ReactorNettyClientTests {
             .expectNextCount(1)
             .thenRequest(3)
             .expectNextCount(3)
-            .thenRequest(Long.MAX_VALUE)// TODO: Check with smaldini, what is the verifier operator to ignore all next emissions
-            .expectNextCount(1507)
+            .thenRequest(Integer.MAX_VALUE)
+            .thenConsumeWhile(Objects::nonNull)
             .verifyComplete();
     }
 
     @Test
     public void testRequestBodyIsErrorShouldPropagateToResponse() {
-        HttpClient client = HttpClient.createDefault();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, SHORT_POST_BODY_PATH))
             .setHeader("Content-Length", "123")
             .setBody(Flux.error(new RuntimeException("boo")));
 
@@ -191,123 +198,76 @@ public class ReactorNettyClientTests {
 
     @Test
     public void testRequestBodyEndsInErrorShouldPropagateToResponse() {
-        HttpClient client = HttpClient.createDefault();
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
+
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, SHORT_POST_BODY_PATH))
             .setHeader("Content-Length", String.valueOf(contentChunk.length() * (repetitions + 1)))
             .setBody(Flux.just(contentChunk)
                 .repeat(repetitions)
                 .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
                 .concatWith(Flux.error(new RuntimeException("boo"))));
+
         StepVerifier.create(client.send(request))
-            // .awaitDone(10, TimeUnit.SECONDS)
             .expectErrorMessage("boo")
-            .verify();
+            .verify(Duration.ofSeconds(10));
     }
 
     @Test
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
-        assertTimeout(ofMillis(5000), () -> {
-            CountDownLatch latch = new CountDownLatch(1);
-            try (ServerSocket ss = new ServerSocket(0)) {
-                Mono.fromCallable(() -> {
-                    latch.countDown();
-                    Socket socket = ss.accept();
-                    // give the client time to get request across
-                    Thread.sleep(500);
-                    // respond but don't send the complete response
-                    byte[] bytes = new byte[1024];
-                    int n = socket.getInputStream().read(bytes);
-                    System.out.println(new String(bytes, 0, n, StandardCharsets.UTF_8));
-                    String response = "HTTP/1.1 200 OK\r\n" //
-                        + "Content-Type: text/plain\r\n" //
-                        + "Content-Length: 10\r\n" //
-                        + "\r\n" //
-                        + "zi";
-                    OutputStream out = socket.getOutputStream();
-                    out.write(response.getBytes());
-                    out.flush();
-                    // kill the socket with HTTP response body incomplete
-                    socket.close();
-                    return 1;
-                }).subscribeOn(Schedulers.elastic()).subscribe();
-                //
-                latch.await();
-                HttpClient client = new NettyAsyncHttpClientBuilder().build();
-                HttpRequest request = new HttpRequest(HttpMethod.GET,
-                    new URL("http://localhost:" + ss.getLocalPort() + "/ioException"));
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, IO_EXCEPTION_PATH));
 
-                HttpResponse response = client.send(request).block();
-
-                assertNotNull(response);
+        StepVerifier.create(client.send(request)
+            .flatMap(response -> {
                 assertEquals(200, response.getStatusCode());
-
-                System.out.println("reading body");
-
-                StepVerifier.create(response.getBodyAsByteArray())
-                    .verifyError(IOException.class);
-            }
-        });
+                return response.getBodyAsByteArray();
+            }))
+            .expectError(IOException.class)
+            .verify();
     }
 
-    @Disabled("This flakey test fails often on MacOS. https://github.com/Azure/azure-sdk-for-java/issues/4357.")
     @Test
     public void testConcurrentRequests() {
-//        long t = System.currentTimeMillis();
-//        int numRequests = 100; // 100 = 1GB of data read
-//        long timeoutSeconds = 60;
-//        ReactorNettyClient client = new ReactorNettyClient();
-//        byte[] expectedDigest = digest(LONG_BODY);
-//
-//        Mono<Long> numBytesMono = Flux.range(1, numRequests)
-//                .parallel(10)
-//                .runOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-//                .flatMap(n -> Mono.fromCallable(() -> getResponse(client, "/long")).flatMapMany(response -> {
-//                    MessageDigest md = md5Digest();
-//                    return response.body()
-//                            .doOnNext(bb -> {
-//                                bb.retain();
-//                                if (bb.hasArray()) {
-//                                    // Heap buffer
-//                                    md.update(bb.array());
-//                                } else {
-//                                    // Direct buffer
-//                                    int len = bb.readableBytes();
-//                                    byte[] array = new byte[len];
-//                                    bb.getBytes(bb.readerIndex(), array);
-//                                    md.update(array);
-//                                }
-//                            })
-//                            .map(bb -> new NumberedByteBuf(n, bb))
-////                          .doOnComplete(() -> System.out.println("completed " + n))
-//                            .doOnComplete(() -> Assertions.assertArrayEquals("wrong digest!", expectedDigest,
-//                                    md.digest()));
-//                }))
-//                .sequential()
-//                // enable the doOnNext call to see request numbers and thread names
-//                // .doOnNext(g -> System.out.println(g.n + " " +
-//                // Thread.currentThread().getName()))
-//                .map(nbb -> {
-//                    long bytesCount = (long) nbb.bb.readableBytes();
-//                    ReferenceCountUtil.release(nbb.bb);
-//                    return bytesCount;
-//                })
-//                .reduce((x, y) -> x + y)
-//                .subscribeOn(reactor.core.scheduler.Schedulers.newElastic("io", 30))
-//                .publishOn(reactor.core.scheduler.Schedulers.newElastic("io", 30));
-//
-//        StepVerifier.create(numBytesMono)
-////              .awaitDone(timeoutSeconds, TimeUnit.SECONDS)
-//                .expectNext((long) (numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length))
-//                .verifyComplete();
-////
-////        long numBytes = numBytesMono.block();
-////        t = System.currentTimeMillis() - t;
-////        System.out.println("totalBytesRead=" + numBytes / 1024 / 1024 + "MB in " + t / 1000.0 + "s");
-////        assertEquals(numRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length, numBytes);
+        HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
 
-        Assertions.fail("Method needs to be reimplemented");
+        int numberOfRequests = 100; // 100 = 1GB of data
+        byte[] expectedDigest = digest();
+
+        Mono<Long> numberOfBytesMono;
+        numberOfBytesMono = Flux.range(1, numberOfRequests)
+            .parallel(25)
+            .runOn(Schedulers.newBoundedElastic(50, 100, "io"))
+            .flatMap(ignored -> httpClient.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH)))
+                .flatMapMany(response -> {
+                    MessageDigest md = md5Digest();
+                    return response.getBody()
+                        .doOnNext(buffer -> md.update(buffer.duplicate()))
+                        .doOnComplete(() -> assertArrayEquals(expectedDigest, md.digest()));
+                }))
+            .sequential()
+            .map(ByteBuffer::remaining)
+            .reduce(0L, Long::sum);
+
+        StepVerifier.create(numberOfBytesMono)
+            .expectNext((long) numberOfRequests * LONG_BODY.getBytes(StandardCharsets.UTF_8).length)
+            .expectComplete()
+            .verify(Duration.ofSeconds(60));
+    }
+
+    private static MessageDigest md5Digest() {
+        try {
+            return MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static byte[] digest() {
+        MessageDigest md = md5Digest();
+        md.update(NettyAsyncHttpClientTests.LONG_BODY.getBytes(StandardCharsets.UTF_8));
+        return md.digest();
     }
 
     /**
@@ -349,7 +309,7 @@ public class ReactorNettyClientTests {
      */
     @Test
     public void deepCopyBufferConfiguredByContext() {
-        HttpClient client = new ReactorNettyClientProvider().createInstance();
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
 
         HttpResponse response = client.send(new HttpRequest(HttpMethod.GET, url(server, LONG_BODY_PATH))).block();
         assertNotNull(response);
@@ -363,10 +323,10 @@ public class ReactorNettyClientTests {
     @ParameterizedTest
     @MethodSource("requestHeaderSupplier")
     public void requestHeader(String headerValue, String expectedValue) {
-        HttpClient client = new ReactorNettyClientProvider().createInstance();
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
 
         HttpHeaders headers = new HttpHeaders().put(TEST_HEADER, headerValue);
-        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/httpHeaders"), headers, Flux.empty());
+        HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, HTTP_HEADERS_PATH), headers, Flux.empty());
 
         StepVerifier.create(client.send(request))
             .assertNext(response -> assertEquals(expectedValue, response.getHeaderValue(TEST_HEADER)))
@@ -375,20 +335,20 @@ public class ReactorNettyClientTests {
 
     private static Stream<Arguments> requestHeaderSupplier() {
         return Stream.of(
-            Arguments.of(null, ReactorNettyClientResponseTransformer.NULL_REPLACEMENT),
+            Arguments.of(null, NettyAsyncHttpClientResponseTransformer.NULL_REPLACEMENT),
             Arguments.of("", ""),
             Arguments.of("aValue", "aValue")
         );
     }
 
-    private static ReactorNettyHttpResponse getResponse(String path) {
-        NettyAsyncHttpClient client = new NettyAsyncHttpClient();
+    private static NettyAsyncHttpResponse getResponse(String path) {
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
         return getResponse(client, path);
     }
 
-    private static ReactorNettyHttpResponse getResponse(HttpClient client, String path) {
+    private static NettyAsyncHttpResponse getResponse(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        return (ReactorNettyHttpResponse) client.send(request).block();
+        return (NettyAsyncHttpResponse) client.send(request).block();
     }
 
     private static URL url(WireMockServer server, String path) {
@@ -409,14 +369,11 @@ public class ReactorNettyClientTests {
     }
 
     private void checkBodyReceived(String expectedBody, String path) {
-        StepVerifier.create(doRequest(new NettyAsyncHttpClient(), path).getBodyAsByteArray())
+        HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
+        StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, url(server, path)))
+            .flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(bytes -> assertEquals(expectedBody, new String(bytes, StandardCharsets.UTF_8)))
             .verifyComplete();
-    }
-
-    private ReactorNettyHttpResponse doRequest(NettyAsyncHttpClient client, String path) {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-        return (ReactorNettyHttpResponse) client.send(request).block();
     }
 
     private static final class DelayWriteStream {

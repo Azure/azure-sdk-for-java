@@ -4,18 +4,21 @@
 package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
-import com.azure.core.test.RestProxyTestsWireMockServer;
-import com.azure.core.test.implementation.RestProxyTests;
+import com.azure.core.test.HttpClientTestsWireMockServer;
+import com.azure.core.test.http.HttpClientTests;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
-public class RestProxyWithNettyTests extends RestProxyTests {
+/**
+ * Reactor Netty {@link HttpClientTests}.
+ */
+public class NettyAsyncHttpClientHttpClientTests extends HttpClientTests {
     private static WireMockServer server;
 
     @BeforeAll
     public static void getWireMockServer() {
-        server = RestProxyTestsWireMockServer.getRestProxyTestsServer();
+        server = HttpClientTestsWireMockServer.getHttpClientTestsServer();
         server.start();
     }
 

@@ -14,7 +14,7 @@ import com.github.tomakehurst.wiremock.http.Response;
 /**
  * Mock response transformer used to test {@link NettyAsyncHttpClient}.
  */
-public final class ReactorNettyClientResponseTransformer extends ResponseTransformer {
+public final class NettyAsyncHttpClientResponseTransformer extends ResponseTransformer {
     public static final String NAME = "reactor-netty-client-response-transformer";
     public static final String NULL_REPLACEMENT = "null";
 
@@ -40,13 +40,13 @@ public final class ReactorNettyClientResponseTransformer extends ResponseTransfo
     }
 
     private static Response httpHeadersResponseHandler(Request request, Response response) {
-        String responseTestHeaderValue = request.containsHeader(ReactorNettyClientTests.TEST_HEADER)
-            ? request.getHeaders().getHeader(ReactorNettyClientTests.TEST_HEADER).firstValue()
+        String responseTestHeaderValue = request.containsHeader(NettyAsyncHttpClientTests.TEST_HEADER)
+            ? request.getHeaders().getHeader(NettyAsyncHttpClientTests.TEST_HEADER).firstValue()
             : NULL_REPLACEMENT;
 
         return new Response.Builder()
             .status(response.getStatus())
-            .headers(new HttpHeaders(new HttpHeader(ReactorNettyClientTests.TEST_HEADER, responseTestHeaderValue)))
+            .headers(new HttpHeaders(new HttpHeader(NettyAsyncHttpClientTests.TEST_HEADER, responseTestHeaderValue)))
             .build();
     }
 }

@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.netty;
+package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -11,10 +11,10 @@ import reactor.netty.http.client.HttpClientResponse;
 /**
  * Base response class for Reactor Netty with implementations for response metadata.
  */
-abstract class ReactorNettyHttpResponseBase extends HttpResponse {
+public abstract class NettyAsyncHttpResponseBase extends HttpResponse {
     private final HttpClientResponse reactorNettyResponse;
 
-    ReactorNettyHttpResponseBase(HttpClientResponse reactorNettyResponse, HttpRequest httpRequest) {
+    NettyAsyncHttpResponseBase(HttpClientResponse reactorNettyResponse, HttpRequest httpRequest) {
         super(httpRequest);
         this.reactorNettyResponse = reactorNettyResponse;
     }

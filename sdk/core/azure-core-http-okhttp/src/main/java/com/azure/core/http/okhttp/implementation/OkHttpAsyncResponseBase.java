@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.okhttp;
+package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -16,11 +16,11 @@ import java.nio.charset.Charset;
 /**
  * Base response class for OkHttp with implementations for response metadata.
  */
-abstract class OkHttpResponseBase extends HttpResponse {
+abstract class OkHttpAsyncResponseBase extends HttpResponse {
     private final int statusCode;
     private final HttpHeaders headers;
 
-    OkHttpResponseBase(Response response, HttpRequest request) {
+    OkHttpAsyncResponseBase(Response response, HttpRequest request) {
         super(request);
         this.statusCode = response.code();
         this.headers = fromOkHttpHeaders(response.headers());

@@ -10,7 +10,7 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
-public class OkHttpHttpClientTests extends HttpClientTests {
+public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
     private static WireMockServer server;
 
     @BeforeAll

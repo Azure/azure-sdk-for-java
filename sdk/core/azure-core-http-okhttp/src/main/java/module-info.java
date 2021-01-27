@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.core.http.okhttp.OkHttpClientProvider;
+import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 
 module com.azure.core.http.okhttp {
     requires transitive com.azure.core;
@@ -12,7 +12,7 @@ module com.azure.core.http.okhttp {
     exports com.azure.core.http.okhttp;
 
     provides com.azure.core.http.HttpClientProvider
-        with OkHttpClientProvider;
+        with OkHttpAsyncClientProvider;
 
     uses com.azure.core.http.HttpClientProvider;
 }

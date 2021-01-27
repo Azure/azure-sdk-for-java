@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.core.http.netty.ReactorNettyClientProvider;
+import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 
 module com.azure.http.netty {
     requires transitive com.azure.core;
@@ -18,7 +18,7 @@ module com.azure.http.netty {
     exports com.azure.core.http.netty;
 
     provides com.azure.core.http.HttpClientProvider
-        with ReactorNettyClientProvider;
+        with NettyAsyncHttpClientProvider;
 
     uses com.azure.core.http.HttpClientProvider;
 }

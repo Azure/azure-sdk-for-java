@@ -37,7 +37,7 @@ import java.util.concurrent.CountDownLatch;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class OkHttpClientTests {
+public class OkHttpAsyncClientTests {
 
     private static final String SHORT_BODY = "hi there";
     private static final String LONG_BODY = createLongBody();

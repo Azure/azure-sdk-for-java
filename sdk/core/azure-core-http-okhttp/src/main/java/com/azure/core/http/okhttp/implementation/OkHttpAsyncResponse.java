@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.okhttp;
+package com.azure.core.http.okhttp.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,15 +18,15 @@ import java.nio.ByteBuffer;
 /**
  * Default HTTP response for OkHttp.
  */
-final class OkHttpResponse extends OkHttpResponseBase {
+public final class OkHttpAsyncResponse extends OkHttpAsyncResponseBase {
     // using 4K as default buffer size: https://stackoverflow.com/a/237495/1473510
     private static final int BYTE_BUFFER_CHUNK_SIZE = 4096;
 
-    private final ClientLogger logger = new ClientLogger(OkHttpResponse.class);
+    private final ClientLogger logger = new ClientLogger(OkHttpAsyncResponse.class);
 
     private final ResponseBody responseBody;
 
-    OkHttpResponse(Response response, HttpRequest request) {
+    public OkHttpAsyncResponse(Response response, HttpRequest request) {
         super(response, request);
         // innerResponse.body() getter will not return null for server returned responses.
         // It can be null:
@@ -43,7 +43,7 @@ final class OkHttpResponse extends OkHttpResponseBase {
         }
         // Use Flux.using to close the stream after complete emission
         return Flux.using(this.responseBody::byteStream,
-            OkHttpResponse::toFluxByteBuffer,
+            OkHttpAsyncResponse::toFluxByteBuffer,
             bodyStream -> {
                 // OkHttp: The stream from ResponseBody::byteStream() has to be explicitly closed.
                 // https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response-body/#the-response-body-must-be-closed

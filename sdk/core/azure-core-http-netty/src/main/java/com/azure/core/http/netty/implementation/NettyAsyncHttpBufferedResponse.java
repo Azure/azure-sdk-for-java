@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.http.netty;
+package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
@@ -15,10 +15,10 @@ import java.nio.charset.Charset;
 /**
  * A Reactor Netty response where the response body has been buffered into memory.
  */
-final class BufferedReactorNettyHttpResponse extends ReactorNettyHttpResponseBase {
+public final class NettyAsyncHttpBufferedResponse extends NettyAsyncHttpResponseBase {
     private final byte[] body;
 
-    BufferedReactorNettyHttpResponse(HttpClientResponse httpClientResponse, HttpRequest httpRequest, byte[] body) {
+    public NettyAsyncHttpBufferedResponse(HttpClientResponse httpClientResponse, HttpRequest httpRequest, byte[] body) {
         super(httpClientResponse, httpRequest);
         this.body = body;
     }
