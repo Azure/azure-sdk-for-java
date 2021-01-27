@@ -4,7 +4,7 @@
 
 This code sample demonstrates how to use the Spring Cloud Stream Binder
 for Azure Event Hub. The sample app has two operating modes, such as "manual" and "non-manual". 
-One way is to expose a RESTful API to receive string message , another way is to automatically provide String messages.
+One way is to expose a Restful API to receive string message , another way is to automatically provide String messages.
 These Messages are added to the EventHub Stream. The sample application consumes the Messages from the stream.
 
 
@@ -25,7 +25,7 @@ Event Hub. You can choose anyone of them.
 
 >[!Important]
 >
->  When you apply the `manual` model , must deploy Active profile like `manual` in your IDE.
+>  When using the Restful API to send messages, the **Active profiles** must be configured as `manual` .
 
 
 #### Method 1: Connection string based usage
