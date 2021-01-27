@@ -178,6 +178,9 @@ public class ReflectionUtils {
         return get(RxStoreModel.class, rxDocumentClient, "storeModel");
     }
 
+    public static GlobalEndpointManager getGlobalEndpointManager(RxDocumentClientImpl rxDocumentClient){
+        return get(GlobalEndpointManager.class, rxDocumentClient, "globalEndpointManager");
+    }
 
     public static void setGatewayProxy(RxDocumentClientImpl client, RxStoreModel storeModel) {
         set(client, storeModel, "gatewayProxy");
@@ -187,4 +190,27 @@ public class ReflectionUtils {
         set(client, storeModel, "storeModel");
     }
 
+    public static ReplicatedResourceClient getReplicatedResourceClient(StoreClient storeClient) {
+        return get(ReplicatedResourceClient.class, storeClient, "replicatedResourceClient");
+    }
+
+    public static ConsistencyReader getConsistencyReader(ReplicatedResourceClient replicatedResourceClient) {
+        return get(ConsistencyReader.class, replicatedResourceClient, "consistencyReader");
+    }
+
+    public static ConsistencyWriter getConsistencyWriter(ReplicatedResourceClient replicatedResourceClient) {
+        return get(ConsistencyWriter.class, replicatedResourceClient, "consistencyWriter");
+    }
+
+    public static StoreReader getStoreReader(ConsistencyReader consistencyReader) {
+        return get(StoreReader.class, consistencyReader, "storeReader");
+    }
+
+    public static void setTransportClient(StoreReader storeReader, TransportClient transportClient) {
+        set(storeReader, transportClient, "transportClient");
+    }
+
+    public static void setTransportClient(ConsistencyWriter consistencyWriter, TransportClient transportClient) {
+        set(consistencyWriter, transportClient, "transportClient");
+    }
 }

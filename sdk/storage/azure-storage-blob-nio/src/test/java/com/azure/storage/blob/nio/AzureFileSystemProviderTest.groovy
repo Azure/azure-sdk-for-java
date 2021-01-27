@@ -3,15 +3,28 @@
 
 package com.azure.storage.blob.nio
 
+import com.azure.core.http.HttpHeaders
+import com.azure.core.http.HttpMethod
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpRequest
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.AccessTier
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlockBlobClient
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 import spock.lang.Requires
 import spock.lang.Unroll
 
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
+import java.nio.file.AccessDeniedException
+import java.nio.file.AccessMode
 import java.nio.file.DirectoryNotEmptyException
 import java.nio.file.FileAlreadyExistsException
 import java.nio.file.FileSystem
@@ -918,7 +931,7 @@ class AzureFileSystemProviderTest extends APISpec {
 
     def "OutputStream options create"() {
         // Create works both on creating new and opening existing. We test these scenarios above.
-        // Here we assert that we cannot create without this option
+        // Here we assert that we cannot create without this option (i.e. you are only allowed to overwrite, not create)
         setup:
         def fs = createFS(config)
 
@@ -969,12 +982,25 @@ class AzureFileSystemProviderTest extends APISpec {
         then:
         thrown(IllegalArgumentException)
 
-        when: "Missing TRUNCATE_EXISTING"
+        when: "Missing TRUNCATE_EXISTING and CREATE_NEW"
         fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE)
 
         then:
         thrown(IllegalArgumentException)
 
+        when: "Missing only TRUNCATE_EXISTING"
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+            StandardOpenOption.CREATE_NEW)
+
+        then:
+        notThrown(IllegalArgumentException)
+
+        when: "Missing only CREATE_NEW"
+        fs.provider().newOutputStream(fs.getPath(generateBlobName()), StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)
+
+        then:
+        notThrown(IllegalArgumentException)
     }
 
     @Unroll
@@ -1053,6 +1079,152 @@ class AzureFileSystemProviderTest extends APISpec {
         when:
         fs.close()
         fs.provider().newOutputStream(path)
+
+        then:
+        thrown(IOException)
+    }
+
+    def "CheckAccess"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        when:
+        fs.provider().checkAccess(path)
+
+        then:
+        notThrown(Exception)
+    }
+
+    def "CheckAccess root"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(getDefaultDir(fs))
+
+        when:
+        fs.provider().checkAccess(path)
+
+        then:
+        notThrown(Exception)
+    }
+
+    @Unroll
+    def "CheckAccess AccessDenied"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        when:
+        fs.provider().checkAccess(path, mode)
+
+        then:
+        thrown(AccessDeniedException)
+
+        where:
+        mode               | _
+        AccessMode.READ    | _
+        AccessMode.WRITE   | _
+        AccessMode.EXECUTE | _
+    }
+
+    def "CheckAccess IOException"() {
+        setup:
+        config = initializeConfigMap(new CheckAccessIoExceptionPolicy())
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        when:
+        fs.provider().checkAccess(path)
+
+        then:
+        def e = thrown(IOException)
+        !(e instanceof NoSuchFileException)
+    }
+
+    class CheckAccessIoExceptionPolicy implements HttpPipelinePolicy {
+        @Override
+        Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            HttpRequest request = httpPipelineCallContext.getHttpRequest()
+            // GetProperties call to blob
+            if (request.getUrl().getPath().split("/").size() == 3 && request.getHttpMethod() == (HttpMethod.HEAD)) {
+                return Mono.just(new checkAccessIoExceptionResponse(request))
+            } else {
+                return httpPipelineNextPolicy.process()
+            }
+        }
+    }
+
+    class checkAccessIoExceptionResponse extends HttpResponse {
+        protected checkAccessIoExceptionResponse(HttpRequest request) {
+            super(request)
+        }
+
+        @Override
+        int getStatusCode() {
+            return 403
+        }
+
+        @Override
+        String getHeaderValue(String s) {
+            return request.getHeaders().getValue(s)
+        }
+
+        @Override
+        HttpHeaders getHeaders() {
+            HttpHeaders headers = new HttpHeaders();
+            headers.put("x-ms-error-code", BlobErrorCode.AUTHORIZATION_FAILURE.toString())
+            return headers
+        }
+
+        @Override
+        Flux<ByteBuffer> getBody() {
+            return Flux.just(ByteBuffer.allocate(0))
+        }
+
+        @Override
+        Mono<byte[]> getBodyAsByteArray() {
+            return Mono.just(new byte[0])
+        }
+
+        @Override
+        Mono<String> getBodyAsString() {
+            return Mono.just("")
+        }
+
+        @Override
+        Mono<String> getBodyAsString(Charset charset) {
+            return Mono.just("")
+        }
+    }
+
+    def "CheckAccess no file"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+
+        when:
+        fs.provider().checkAccess(path)
+
+        then:
+        thrown(NoSuchFileException)
+    }
+
+    def "CheckAccess fs closed"() {
+        setup:
+        def fs = createFS(config)
+        def path = fs.getPath(generateBlobName())
+        def os = fs.provider().newOutputStream(path)
+        os.close()
+
+        when:
+        fs.close()
+        fs.provider().checkAccess(path)
 
         then:
         thrown(IOException)

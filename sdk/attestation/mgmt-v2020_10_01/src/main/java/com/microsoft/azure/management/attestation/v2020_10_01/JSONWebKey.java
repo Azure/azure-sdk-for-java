@@ -22,7 +22,7 @@ public class JSONWebKey {
      * established by [JWA] or be a value that contains a Collision-
      * Resistant Name.
      */
-    @JsonProperty(value = "alg", required = true)
+    @JsonProperty(value = "alg")
     private String alg;
 
     /**
@@ -72,7 +72,7 @@ public class JSONWebKey {
      * equivalent alternatives by the application using them.)  The "kid"
      * value is a case-sensitive string.
      */
-    @JsonProperty(value = "kid", required = true)
+    @JsonProperty(value = "kid")
     private String kid;
 
     /**
@@ -115,7 +115,7 @@ public class JSONWebKey {
      * a public key is used for encrypting data or verifying the signature
      * on data. Values are commonly "sig" (signature) or "enc" (encryption).
      */
-    @JsonProperty(value = "use", required = true)
+    @JsonProperty(value = "use")
     private String use;
 
     /**

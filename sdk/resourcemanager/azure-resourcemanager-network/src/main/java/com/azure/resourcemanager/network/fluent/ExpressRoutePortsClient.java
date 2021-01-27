@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortInner;
+import com.azure.resourcemanager.network.fluent.models.GenerateExpressRoutePortsLoaResultInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -421,4 +422,65 @@ public interface ExpressRoutePortsClient
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRoutePortInner> list(Context context);
+
+    /**
+     * Generate a letter of authorization for the requested ExpressRoutePort resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRoutePortName The name of ExpressRoutePort.
+     * @param customerName The customer name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GenerateExpressRoutePortsLOA API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<GenerateExpressRoutePortsLoaResultInner>> generateLoaWithResponseAsync(
+        String resourceGroupName, String expressRoutePortName, String customerName);
+
+    /**
+     * Generate a letter of authorization for the requested ExpressRoutePort resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRoutePortName The name of ExpressRoutePort.
+     * @param customerName The customer name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GenerateExpressRoutePortsLOA API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<GenerateExpressRoutePortsLoaResultInner> generateLoaAsync(
+        String resourceGroupName, String expressRoutePortName, String customerName);
+
+    /**
+     * Generate a letter of authorization for the requested ExpressRoutePort resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRoutePortName The name of ExpressRoutePort.
+     * @param customerName The customer name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GenerateExpressRoutePortsLOA API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GenerateExpressRoutePortsLoaResultInner generateLoa(
+        String resourceGroupName, String expressRoutePortName, String customerName);
+
+    /**
+     * Generate a letter of authorization for the requested ExpressRoutePort resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param expressRoutePortName The name of ExpressRoutePort.
+     * @param customerName The customer name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for GenerateExpressRoutePortsLOA API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GenerateExpressRoutePortsLoaResultInner> generateLoaWithResponse(
+        String resourceGroupName, String expressRoutePortName, String customerName, Context context);
 }

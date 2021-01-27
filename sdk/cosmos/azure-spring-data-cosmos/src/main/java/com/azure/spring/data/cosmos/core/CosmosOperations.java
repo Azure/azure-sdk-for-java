@@ -34,6 +34,23 @@ public interface CosmosOperations {
     CosmosContainerProperties createContainerIfNotExists(CosmosEntityInformation<?, ?> information);
 
     /**
+     * Get properties for specified container
+     *
+     * @param containerName String
+     * @return CosmosContainerProperties
+     */
+    CosmosContainerProperties getContainerProperties(String containerName);
+
+    /**
+     * Replace container properties for the specified container
+     *
+     * @param containerName String
+     * @param properties CosmosContainerProperties
+     * @return CosmosContainerProperties
+     */
+    CosmosContainerProperties replaceContainerProperties(String containerName, CosmosContainerProperties properties);
+
+    /**
      * Find the DocumentQuery, find all the items specified by domain type.
      *
      * @param domainType the domain type

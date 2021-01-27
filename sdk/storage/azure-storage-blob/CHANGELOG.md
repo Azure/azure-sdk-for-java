@@ -1,8 +1,17 @@
 # Release History
 
-## 12.10.0-beta.1 (Unreleased)
+## 12.11.0-beta.1 (Unreleased)
+- Added support to lock on version id by specifying a consistent read control when opening a BlobInputStream.
+- Removed a deep copy in the general upload path to reduce memory consumption and increase perf
+- Added a deep copy immediately after calling BlobOutputStream.write to prevent overwriting data in the case of reusing a single buffer to write to an output stream
+
+## 12.10.0 (2021-01-14)
+- GA release
+
+## 12.10.0-beta.1 (2020-12-07)
 - Exposed ClientOptions on all client builders, allowing users to set a custom application id and custom headers.
 - Added ability to get container client from blob clients and service client from container clients
+- Added a MetadataValidationPolicy to check for leading and trailing whitespace in metadata that would cause Auth failures.
 - Fixed a bug where the error message would not be displayed the exception message of a HEAD request.
 - Added support for the 2020-04-08 service version. 
 - Added support to upload block blob from URL.

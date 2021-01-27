@@ -48,6 +48,7 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -409,6 +410,56 @@ class ServiceBusSessionManagerTest {
         assertNotNull(actualLinksCreated);
         assertEquals(expectedLinksCreated, actualLinksCreated.size());
         assertFalse(actualLinksCreated.get(0).equalsIgnoreCase(actualLinksCreated.get(1)));
+    }
+
+    /**
+     * Validate that session-id specific session receiver is removed after {@link AmqpRetryOptions#getTryTimeout()} is passed.
+     */
+    @Test
+    void singleUnnamedSessionCleanupAfterTimeout() {
+        // Arrange
+        ReceiverOptions receiverOptions = new ReceiverOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, null,
+            2);
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+            tracerProvider, messageSerializer, receiverOptions);
+
+        final String sessionId = "session-1";
+        final String lockToken = "a-lock-token";
+        final String linkName = "my-link-name";
+        final OffsetDateTime sessionLockedUntil = OffsetDateTime.now().plus(Duration.ofSeconds(30));
+
+        final Message message = mock(Message.class);
+        final ServiceBusReceivedMessage receivedMessage = mock(ServiceBusReceivedMessage.class);
+
+        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
+        when(receivedMessage.getSessionId()).thenReturn(sessionId);
+        when(receivedMessage.getLockToken()).thenReturn(lockToken);
+
+        when(amqpReceiveLink.getLinkName()).thenReturn(linkName);
+        when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
+        when(amqpReceiveLink.getSessionLockedUntil())
+            .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
+        when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ServiceBusReceiveMode.class), isNull(),
+            any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
+
+        // Act & Assert
+        StepVerifier.create(sessionManager.receive())
+            .then(() -> {
+                messageSink.next(message);
+            })
+            .assertNext(context -> {
+                assertMessageEquals(sessionId, receivedMessage, context);
+            })
+            .then(() -> {
+                try {
+                    assertNotNull(sessionManager.getLinkName(sessionId));
+                    TimeUnit.SECONDS.sleep(TIMEOUT.getSeconds());
+                    assertNull(sessionManager.getLinkName(sessionId));
+                } catch (InterruptedException e) { }
+
+            })
+            .thenCancel()
+            .verify(TIMEOUT);
     }
 
     private static void assertMessageEquals(String sessionId, ServiceBusReceivedMessage expected,

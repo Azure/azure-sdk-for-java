@@ -14,6 +14,7 @@ import com.azure.resourcemanager.compute.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Specifies information about the availability set that the virtual machine should be assigned to. Virtual machines
@@ -185,6 +186,20 @@ public class AvailabilitySetInner extends Resource {
      */
     public List<InstanceViewStatus> statuses() {
         return this.statuses;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AvailabilitySetInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AvailabilitySetInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

@@ -18,11 +18,6 @@ import com.microsoft.azure.management.iotcentral.v2018_09_01.implementation.AppT
  */
 public interface AppTemplate extends HasInner<AppTemplateInner>, HasManager<IoTCentralManager> {
     /**
-     * @return the appTemplateName value.
-     */
-    String appTemplateName();
-
-    /**
      * @return the description value.
      */
     String description();
@@ -36,6 +31,11 @@ public interface AppTemplate extends HasInner<AppTemplateInner>, HasManager<IoTC
      * @return the manifestVersion value.
      */
     String manifestVersion();
+
+    /**
+     * @return the name value.
+     */
+    String name();
 
     /**
      * @return the order value.

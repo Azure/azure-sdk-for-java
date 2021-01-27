@@ -34,8 +34,6 @@ We need to ensure that this [environment checklist][ready-to-run-checklist] is c
 
 ### Run with Maven
 ```
-# Under sdk/spring project root directory
-mvn clean install -DskipTests
 cd azure-spring-boot-samples/azure-spring-boot-sample-cosmos
 mvn spring-boot:run
 ```

@@ -35,7 +35,8 @@ import java.util.function.Consumer;
  */
 public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicClientFactory>
     implements ServiceBusTopicOperation {
-    private static final Logger LOG = LoggerFactory.getLogger(ServiceBusTopicTemplate.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTopicTemplate.class);
 
     private static final String MSG_FAIL_CHECKPOINT = "Consumer group '%s' of topic '%s' failed to checkpoint %s";
 
@@ -101,7 +102,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
                 subscriptionClient.registerMessageHandler(msgHandler, buildHandlerOptions(), executors);
             }
         } catch (ServiceBusException | InterruptedException e) {
-            LOG.error("Failed to register topic message handler", e);
+            LOGGER.error("Failed to register topic message handler", e);
             throw new ServiceBusRuntimeException("Failed to register topic message handler", e);
         }
     }
@@ -153,7 +154,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
         @Override
         @SuppressWarnings({ "rawtypes", "unchecked" })
         public CompletableFuture<Void> OnCloseSessionAsync(IMessageSession session) {
-            LOG.info("Closed session '" + session.getSessionId() + "' for subscription: " + session.getEntityPath());
+            LOGGER.info("Closed session '" + session.getSessionId() + "' for subscription: " + session.getEntityPath());
             return CompletableFuture.completedFuture(null);
         }
     }

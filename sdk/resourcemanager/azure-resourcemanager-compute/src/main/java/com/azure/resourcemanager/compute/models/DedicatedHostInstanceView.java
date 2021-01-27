@@ -12,7 +12,7 @@ import java.util.List;
 
 /** The instance view of a dedicated host. */
 @Fluent
-public final class DedicatedHostInstanceView {
+public class DedicatedHostInstanceView {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostInstanceView.class);
 
     /*

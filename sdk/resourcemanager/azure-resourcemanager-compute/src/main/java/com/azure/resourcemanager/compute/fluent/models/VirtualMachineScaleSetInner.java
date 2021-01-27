@@ -20,6 +20,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Describes a Virtual Machine Scale Set. */
 @JsonFlatten
@@ -132,6 +133,13 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     @JsonProperty(value = "properties.proximityPlacementGroup")
     private SubResource proximityPlacementGroup;
+
+    /*
+     * Specifies information about the dedicated host group that the virtual
+     * machine scale set resides in. <br><br>Minimum api-version: 2020-06-01.
+     */
+    @JsonProperty(value = "properties.hostGroup")
+    private SubResource hostGroup;
 
     /*
      * Specifies additional capabilities enabled or disabled on the Virtual
@@ -452,6 +460,28 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
+     * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine scale
+     * set resides in. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     *
+     * @return the hostGroup value.
+     */
+    public SubResource hostGroup() {
+        return this.hostGroup;
+    }
+
+    /**
+     * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine scale
+     * set resides in. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     *
+     * @param hostGroup the hostGroup value to set.
+     * @return the VirtualMachineScaleSetInner object itself.
+     */
+    public VirtualMachineScaleSetInner withHostGroup(SubResource hostGroup) {
+        this.hostGroup = hostGroup;
+        return this;
+    }
+
+    /**
      * Get the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the Virtual
      * Machines in the Virtual Machine Scale Set. For instance: whether the Virtual Machines have the capability to
      * support attaching managed data disks with UltraSSD_LRS storage account type.
@@ -494,6 +524,20 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     public VirtualMachineScaleSetInner withScaleInPolicy(ScaleInPolicy scaleInPolicy) {
         this.scaleInPolicy = scaleInPolicy;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualMachineScaleSetInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
         return this;
     }
 
