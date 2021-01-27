@@ -55,6 +55,7 @@ public @interface Beta {
         V4_9_0,
         /** v4.11.0 */
         V4_11_0,
+        WHATEVER_NEW_VERSION,
         /** v4.12.0 */
         V4_12_0,
     }

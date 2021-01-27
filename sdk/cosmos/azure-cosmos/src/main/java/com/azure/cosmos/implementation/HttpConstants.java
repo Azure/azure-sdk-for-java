@@ -38,7 +38,7 @@ public class HttpConstants {
         public static final String USER_AGENT = "User-Agent";
         public static final String IF_MODIFIED_SINCE = "If-Modified-Since";
         public static final String IF_MATCH = "If-Match";
-        public static final String IF_NONE_MATCH = "If-NONE-Match";
+        public static final String IF_NONE_MATCH = "If-None-Match";
         public static final String CONTENT_LENGTH = "Content-Length";
         public static final String ACCEPT_ENCODING = "Accept-Encoding";
         public static final String KEEP_ALIVE = "Keep-Alive";
@@ -258,6 +258,7 @@ public class HttpConstants {
 
     public static class A_IMHeaderValues {
         public static final String INCREMENTAL_FEED = "Incremental Feed";
+        public static final String FullFidelityFeed = "Full-Fidelity Feed";
     }
 
     public static class Versions {

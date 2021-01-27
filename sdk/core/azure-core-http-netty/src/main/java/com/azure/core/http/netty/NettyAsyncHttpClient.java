@@ -92,10 +92,15 @@ class NettyAsyncHttpClient implements HttpClient {
     private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(
         final HttpRequest restRequest) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
-            for (HttpHeader header : restRequest.getHeaders()) {
-                if (header.getValue() != null) {
-                    reactorNettyRequest.header(header.getName(), header.getValue());
-                }
+            for (HttpHeader hdr : restRequest.getHeaders()) {
+                // Reactor-Netty allows for headers with multiple values, but it treats them as separate headers,
+                // therefore, we must call rb.addHeader for each value, using the same key for all of them.
+                // We would ideally replace this for-loop with code akin to the code in ReactorNettyHttpResponseBase,
+                // whereby we would wrap the azure-core HttpHeaders in a Netty HttpHeaders wrapper, but as of today it
+                // is not possible in reactor-netty to do this without copying occurring within that library. This
+                // issue has been reported to the reactor-netty team at
+                // https://github.com/reactor/reactor-netty/issues/1479
+                hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
             }
             if (restRequest.getBody() != null) {
                 Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
