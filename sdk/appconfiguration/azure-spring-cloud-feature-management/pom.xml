@@ -12,7 +12,7 @@
   <groupId>com.azure.spring</groupId>
   <artifactId>azure-spring-cloud-feature-management</artifactId>
   <version>1.2.8-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-feature-management;current} -->
-  <name>Spring Cloud Feature Management</name>
+  <name>Azure Spring Cloud Feature Management</name>
   <description>Adds Feature Management into Spring</description>
 
   <dependencies>
@@ -39,7 +39,7 @@
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
-      <version>0.9.13.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+      <version>0.9.15.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -84,7 +84,7 @@
               <includes>
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.11.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.11.3]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty:[0.9.13.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty:[0.9.15.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.3.5.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework:spring-context:[5.2.10.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>

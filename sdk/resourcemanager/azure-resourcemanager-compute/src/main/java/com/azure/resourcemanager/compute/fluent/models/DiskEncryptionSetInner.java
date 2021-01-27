@@ -8,11 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.EncryptionSetIdentity;
 import com.azure.resourcemanager.compute.models.KeyVaultAndKeyReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** disk encryption set resource. */
 @JsonFlatten
@@ -26,6 +28,12 @@ public class DiskEncryptionSetInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private EncryptionSetIdentity identity;
+
+    /*
+     * The type of key used to encrypt the data of the disk.
+     */
+    @JsonProperty(value = "properties.encryptionType")
+    private DiskEncryptionSetType encryptionType;
 
     /*
      * The key vault key which is currently used by this disk encryption set.
@@ -70,6 +78,26 @@ public class DiskEncryptionSetInner extends Resource {
     }
 
     /**
+     * Get the encryptionType property: The type of key used to encrypt the data of the disk.
+     *
+     * @return the encryptionType value.
+     */
+    public DiskEncryptionSetType encryptionType() {
+        return this.encryptionType;
+    }
+
+    /**
+     * Set the encryptionType property: The type of key used to encrypt the data of the disk.
+     *
+     * @param encryptionType the encryptionType value to set.
+     * @return the DiskEncryptionSetInner object itself.
+     */
+    public DiskEncryptionSetInner withEncryptionType(DiskEncryptionSetType encryptionType) {
+        this.encryptionType = encryptionType;
+        return this;
+    }
+
+    /**
      * Get the activeKey property: The key vault key which is currently used by this disk encryption set.
      *
      * @return the activeKey value.
@@ -106,6 +134,20 @@ public class DiskEncryptionSetInner extends Resource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DiskEncryptionSetInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DiskEncryptionSetInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
     }
 
     /**

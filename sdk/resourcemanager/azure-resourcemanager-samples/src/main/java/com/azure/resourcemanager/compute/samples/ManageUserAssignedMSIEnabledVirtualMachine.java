@@ -48,7 +48,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
         final String pipName = Utils.randomResourceName(azureResourceManager, "pip1", 15);
         final String userName = "tirekicker";
         final String password = Utils.password();
-        final Region region = Region.US_WEST_CENTRAL;
+        final Region region = Region.US_WEST;
 
 
         try {

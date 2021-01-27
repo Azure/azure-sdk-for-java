@@ -1,7 +1,7 @@
 # Release History
 
 ## 1.0.0-beta.4 (Unreleased)
-
+- Added support for Azure Active Directory Authentication for both clients.
 
 ## 1.0.0-beta.3 (2020-11-16)
 ### Added

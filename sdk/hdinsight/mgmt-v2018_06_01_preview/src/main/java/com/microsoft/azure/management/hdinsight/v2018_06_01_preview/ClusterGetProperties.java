@@ -22,6 +22,12 @@ public class ClusterGetProperties {
     private String clusterVersion;
 
     /**
+     * The hdp version of the cluster.
+     */
+    @JsonProperty(value = "clusterHdpVersion")
+    private String clusterHdpVersion;
+
+    /**
      * The type of operating system. Possible values include: 'Windows',
      * 'Linux'.
      */
@@ -115,16 +121,34 @@ public class ClusterGetProperties {
     private EncryptionInTransitProperties encryptionInTransitProperties;
 
     /**
+     * The storage profile.
+     */
+    @JsonProperty(value = "storageProfile")
+    private StorageProfile storageProfile;
+
+    /**
      * The minimal supported tls version.
      */
     @JsonProperty(value = "minSupportedTlsVersion")
     private String minSupportedTlsVersion;
 
     /**
+     * The excluded services config.
+     */
+    @JsonProperty(value = "excludedServicesConfig")
+    private ExcludedServicesConfig excludedServicesConfig;
+
+    /**
      * The network properties.
      */
     @JsonProperty(value = "networkProperties")
     private NetworkProperties networkProperties;
+
+    /**
+     * The compute isolation properties.
+     */
+    @JsonProperty(value = "computeIsolationProperties")
+    private ComputeIsolationProperties computeIsolationProperties;
 
     /**
      * Get the version of the cluster.
@@ -143,6 +167,26 @@ public class ClusterGetProperties {
      */
     public ClusterGetProperties withClusterVersion(String clusterVersion) {
         this.clusterVersion = clusterVersion;
+        return this;
+    }
+
+    /**
+     * Get the hdp version of the cluster.
+     *
+     * @return the clusterHdpVersion value
+     */
+    public String clusterHdpVersion() {
+        return this.clusterHdpVersion;
+    }
+
+    /**
+     * Set the hdp version of the cluster.
+     *
+     * @param clusterHdpVersion the clusterHdpVersion value to set
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withClusterHdpVersion(String clusterHdpVersion) {
+        this.clusterHdpVersion = clusterHdpVersion;
         return this;
     }
 
@@ -447,6 +491,26 @@ public class ClusterGetProperties {
     }
 
     /**
+     * Get the storage profile.
+     *
+     * @return the storageProfile value
+     */
+    public StorageProfile storageProfile() {
+        return this.storageProfile;
+    }
+
+    /**
+     * Set the storage profile.
+     *
+     * @param storageProfile the storageProfile value to set
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withStorageProfile(StorageProfile storageProfile) {
+        this.storageProfile = storageProfile;
+        return this;
+    }
+
+    /**
      * Get the minimal supported tls version.
      *
      * @return the minSupportedTlsVersion value
@@ -467,6 +531,26 @@ public class ClusterGetProperties {
     }
 
     /**
+     * Get the excluded services config.
+     *
+     * @return the excludedServicesConfig value
+     */
+    public ExcludedServicesConfig excludedServicesConfig() {
+        return this.excludedServicesConfig;
+    }
+
+    /**
+     * Set the excluded services config.
+     *
+     * @param excludedServicesConfig the excludedServicesConfig value to set
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withExcludedServicesConfig(ExcludedServicesConfig excludedServicesConfig) {
+        this.excludedServicesConfig = excludedServicesConfig;
+        return this;
+    }
+
+    /**
      * Get the network properties.
      *
      * @return the networkProperties value
@@ -483,6 +567,26 @@ public class ClusterGetProperties {
      */
     public ClusterGetProperties withNetworkProperties(NetworkProperties networkProperties) {
         this.networkProperties = networkProperties;
+        return this;
+    }
+
+    /**
+     * Get the compute isolation properties.
+     *
+     * @return the computeIsolationProperties value
+     */
+    public ComputeIsolationProperties computeIsolationProperties() {
+        return this.computeIsolationProperties;
+    }
+
+    /**
+     * Set the compute isolation properties.
+     *
+     * @param computeIsolationProperties the computeIsolationProperties value to set
+     * @return the ClusterGetProperties object itself.
+     */
+    public ClusterGetProperties withComputeIsolationProperties(ComputeIsolationProperties computeIsolationProperties) {
+        this.computeIsolationProperties = computeIsolationProperties;
         return this;
     }
 

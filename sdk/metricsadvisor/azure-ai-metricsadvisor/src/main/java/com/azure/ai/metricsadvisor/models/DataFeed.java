@@ -256,7 +256,7 @@ public final class DataFeed {
      */
     public DataFeed setOptions(DataFeedOptions dataFeedOptions) {
         this.dataFeedOptions = dataFeedOptions;
-        return null;
+        return this;
     }
 
     void setId(String id) {

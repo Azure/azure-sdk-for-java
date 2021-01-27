@@ -3,7 +3,7 @@
 
 package com.azure.spring.autoconfigure.aad;
 
-import com.azure.spring.aad.webapp.AuthorizationServerEndpoints;
+import com.azure.spring.aad.AADAuthorizationServerEndpoints;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
@@ -46,23 +46,23 @@ import static com.azure.spring.autoconfigure.aad.Constants.ROLE_PREFIX;
 public class AzureADGraphClient {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureADGraphClient.class);
-    private static final String MICROSOFT_GRAPH_SCOPE = "https://graph.microsoft.com/user.read";
+    private static final String MICROSOFT_GRAPH_SCOPE = "User.Read";
     // We use "aadfeed5" as suffix when client library is ADAL, upgrade to "aadfeed6" for MSAL
     private static final String REQUEST_ID_SUFFIX = "aadfeed6";
 
     private final String clientId;
     private final String clientSecret;
-    private final AuthorizationServerEndpoints authorizationServerEndpoints;
+    private final AADAuthorizationServerEndpoints endpoints;
     private final AADAuthenticationProperties aadAuthenticationProperties;
 
     public AzureADGraphClient(String clientId,
                               String clientSecret,
         AADAuthenticationProperties aadAuthenticationProperties,
-                              AuthorizationServerEndpoints authorizationServerEndpoints) {
+                              AADAuthorizationServerEndpoints endpoints) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.aadAuthenticationProperties = aadAuthenticationProperties;
-        this.authorizationServerEndpoints = authorizationServerEndpoints;
+        this.endpoints = endpoints;
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
@@ -153,7 +153,7 @@ public class AzureADGraphClient {
         try {
             final ConfidentialClientApplication application = ConfidentialClientApplication
                 .builder(clientId, clientCredential)
-                .authority(authorizationServerEndpoints.getBaseUri() + tenantId + "/")
+                .authority(endpoints.getBaseUri() + tenantId + "/")
                 .correlationId(getCorrelationId())
                 .build();
             final Set<String> scopes = new HashSet<>();

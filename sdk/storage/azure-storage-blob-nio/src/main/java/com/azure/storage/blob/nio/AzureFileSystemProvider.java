@@ -400,11 +400,16 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
             }
         }
 
-        // Write and truncate must be specified
+        /*
+        Write must be specified. Either create_new or truncate must be specified. This is to ensure that no edits or
+        appends are allowed.
+         */
         if (!optionsSet.contains(StandardOpenOption.WRITE)
-            || !optionsSet.contains(StandardOpenOption.TRUNCATE_EXISTING)) {
+            || !(optionsSet.contains(StandardOpenOption.TRUNCATE_EXISTING)
+            || optionsSet.contains(StandardOpenOption.CREATE_NEW))) {
             throw LoggingUtility.logError(logger,
-                new IllegalArgumentException("Write and TruncateExisting must be specified to open an OutputStream"));
+                new IllegalArgumentException("Write and either CreateNew or TruncateExisting must be specified to open "
+                    + "an OutputStream"));
         }
 
         AzureResource resource = new AzureResource(path);

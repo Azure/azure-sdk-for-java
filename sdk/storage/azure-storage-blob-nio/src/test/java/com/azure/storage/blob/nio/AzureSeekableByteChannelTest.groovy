@@ -221,7 +221,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         expect:
         readByteChannel.size() == 10 * 1024 * 1024
 
-        and:
+        when:
         bc.upload(defaultInputStream.get(), defaultDataSize, true)
         def path = ((AzurePath) fs.getPath(getNonDefaultRootDir(fs), bc.getBlobName()))
         readByteChannel = new AzureSeekableByteChannel(new NioBlobInputStream(bc.openInputStream(), path), path)
@@ -306,7 +306,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         readByteChannel.isOpen()
         writeByteChannel.isOpen()
 
-        and:
+        when:
         readByteChannel.close()
         writeByteChannel.close()
 

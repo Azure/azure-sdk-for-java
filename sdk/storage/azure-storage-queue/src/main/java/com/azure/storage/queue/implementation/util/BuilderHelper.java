@@ -3,6 +3,7 @@
 
 package com.azure.storage.queue.implementation.util;
 
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -10,6 +11,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -24,8 +26,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
-import com.azure.storage.common.implementation.credentials.SasTokenCredential;
-import com.azure.storage.common.implementation.policy.SasTokenCredentialPolicy;
+import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RequestRetryPolicy;
@@ -135,7 +136,8 @@ public final class BuilderHelper {
      *
      * @param storageSharedKeyCredential {@link StorageSharedKeyCredential} if present.
      * @param tokenCredential {@link TokenCredential} if present.
-     * @param sasTokenCredential {@link SasTokenCredential} if present.
+     * @param azureSasCredential {@link AzureSasCredential} if present.
+     * @param sasToken The SAS token if present.
      * @param endpoint The endpoint for the client.
      * @param retryOptions Retry options to set in the retry policy.
      * @param logOptions Logging options to set in the logging policy.
@@ -147,11 +149,15 @@ public final class BuilderHelper {
      * @param logger {@link ClientLogger} used to log any exception.
      * @return A new {@link HttpPipeline} from the passed values.
      */
-    public static HttpPipeline buildPipeline(StorageSharedKeyCredential storageSharedKeyCredential,
-        TokenCredential tokenCredential, SasTokenCredential sasTokenCredential, String endpoint,
+    public static HttpPipeline buildPipeline(
+        StorageSharedKeyCredential storageSharedKeyCredential,
+        TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken, String endpoint,
         RequestRetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
         Configuration configuration, ClientLogger logger) {
+
+        CredentialValidator.validateSingleCredentialIsPresent(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken, logger);
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -180,8 +186,10 @@ public final class BuilderHelper {
         } else if (tokenCredential != null) {
             httpsValidation(tokenCredential, "bearer token", endpoint, logger);
             credentialPolicy =  new BearerTokenAuthenticationPolicy(tokenCredential, Constants.STORAGE_SCOPE);
-        } else if (sasTokenCredential != null) {
-            credentialPolicy =  new SasTokenCredentialPolicy(sasTokenCredential);
+        } else if (azureSasCredential != null) {
+            credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
+        } else if (sasToken != null) {
+            credentialPolicy = new AzureSasCredentialPolicy(new AzureSasCredential(sasToken), false);
         } else {
             credentialPolicy =  null;
         }

@@ -9,7 +9,6 @@ import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxStoreModel;
@@ -191,4 +190,27 @@ public class ReflectionUtils {
         set(client, storeModel, "storeModel");
     }
 
+    public static ReplicatedResourceClient getReplicatedResourceClient(StoreClient storeClient) {
+        return get(ReplicatedResourceClient.class, storeClient, "replicatedResourceClient");
+    }
+
+    public static ConsistencyReader getConsistencyReader(ReplicatedResourceClient replicatedResourceClient) {
+        return get(ConsistencyReader.class, replicatedResourceClient, "consistencyReader");
+    }
+
+    public static ConsistencyWriter getConsistencyWriter(ReplicatedResourceClient replicatedResourceClient) {
+        return get(ConsistencyWriter.class, replicatedResourceClient, "consistencyWriter");
+    }
+
+    public static StoreReader getStoreReader(ConsistencyReader consistencyReader) {
+        return get(StoreReader.class, consistencyReader, "storeReader");
+    }
+
+    public static void setTransportClient(StoreReader storeReader, TransportClient transportClient) {
+        set(storeReader, transportClient, "transportClient");
+    }
+
+    public static void setTransportClient(ConsistencyWriter consistencyWriter, TransportClient transportClient) {
+        set(consistencyWriter, transportClient, "transportClient");
+    }
 }
