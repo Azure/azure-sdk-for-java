@@ -153,7 +153,7 @@
 
   <!-- Identity and opentelemetry tracing are plugin packages and shouldn't be referenced -->
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]core[/\\]tracing[/\\]opentelemetry[/\\]*"/>
-  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]microsoft[/\\]opentelemetry[/\\]exporter[/\\]azuremonitor[/\\]*"/>
+  <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]opentelemetry[/\\]exporter[/\\]azuremonitor[/\\]*"/>
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
@@ -242,7 +242,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
-            files="com.microsoft.opentelemetry.exporter.azuremonitor.AzureMonitorExporter"/>
+            files="com.azure.opentelemetry.exporter.azuremonitor.AzureMonitorExporter"/>
 
   <!-- Suppress external dependency Checkstyle on serialization packages -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -448,12 +448,12 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.cosmos.ClientSideRequestStatistics"/> <!-- Need OperatingSystemMXBean from sun to obtain cpu info -->
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
-  <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf|azure-search-perf|azure-identity-perf[/\\].*\.java"/>
+  <suppress checks="Javadoc" files=".*[/\\]azure-storage-perf|azure-search-perf|azure-identity-perf|azure-template-perf[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFields"
             files=".*[/\\]azure-identity-perf|azure-search-perf[/\\].*\.java"/>
   <suppress checks="GoodLogging" files=".*[/\\]azure-storage-perf|azure-search-perf|perf-test-core[/\\].*\.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files=".*[/\\]azure-identity-perf|azure-search-perf|azure-storage-perf|perf-test-core[/\\].*\.java"/>
+            files=".*[/\\]azure-identity-perf|azure-search-perf|azure-storage-perf|perf-test-core|azure-template-perf[/\\].*\.java"/>
   <!-- Azure Search test models -->
   <suppress checks="StaticVariableName|VisibilityModifier"
             files="com.azure.search.perf.*.java|com.azure.messaging.servicebus.perf.*.java"/>

@@ -12,6 +12,9 @@ import com.microsoft.azure.arm.resources.models.implementation.GroupableResource
 import com.microsoft.azure.management.attestation.v2020_10_01.AttestationProvider;
 import rx.Observable;
 import com.microsoft.azure.management.attestation.v2020_10_01.AttestationServiceCreationParams;
+import java.util.ArrayList;
+import com.microsoft.azure.management.attestation.v2020_10_01.PrivateEndpointConnection;
+import java.util.List;
 import com.microsoft.azure.management.attestation.v2020_10_01.AttestationServiceStatus;
 import com.microsoft.azure.management.attestation.v2020_10_01.SystemData;
 import com.microsoft.azure.management.attestation.v2020_10_01.AttestationServiceCreationSpecificParams;
@@ -72,6 +75,17 @@ class AttestationProviderImpl extends GroupableResourceCoreImpl<AttestationProvi
     @Override
     public String attestUri() {
         return this.inner().attestUri();
+    }
+
+    @Override
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnection> lst = new ArrayList<PrivateEndpointConnection>();
+        if (this.inner().privateEndpointConnections() != null) {
+            for (PrivateEndpointConnectionInner inner : this.inner().privateEndpointConnections()) {
+                lst.add( new PrivateEndpointConnectionImpl(inner, manager()));
+            }
+        }
+        return lst;
     }
 
     @Override

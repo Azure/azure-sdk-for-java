@@ -1,5 +1,8 @@
 # Release History
 
+## 7.1.0-beta.1 (Unreleased)
+
+
 ## 7.0.1 (2021-01-15)
 ### New Features
 - Improve performance because by upgrading `azure-core-amqp` dependency to `2.0.1`. It Changes AMQP connections from 

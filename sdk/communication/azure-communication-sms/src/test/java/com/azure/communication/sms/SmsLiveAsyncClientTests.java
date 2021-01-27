@@ -44,6 +44,17 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void sendSmsRequestAsyncUsingManagedIdentity(HttpClient httpClient) {
+        SendSmsOptions smsOptions = new SendSmsOptions();
+        smsOptions.setEnableDeliveryReport(true);
+        SmsAsyncClient smsClient = getTestSmsClientWithManagedIdentity(httpClient, "sendSmsRequestAsyncManagedIdentity");
+        StepVerifier.create(smsClient.sendMessage(from, to, body, smsOptions))
+            .assertNext(response -> verifyResponse(response))
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsRequestAsync(HttpClient httpClient) {
         SendSmsOptions smsOptions = new SendSmsOptions();
         smsOptions.setEnableDeliveryReport(true);
@@ -78,5 +89,10 @@ public class SmsLiveAsyncClientTests extends SmsLiveTestBase {
     private SmsAsyncClient getTestSmsClientWithConnectionString(HttpClient httpClient, String testName) {
         SmsClientBuilder builder = getSmsClientBuilderWithConnectionString(httpClient);
         return addLoggingPolicy(builder, testName).buildAsyncClient();
-    }
+    }  
+
+    private SmsAsyncClient getTestSmsClientWithManagedIdentity(HttpClient httpClient, String testName) {
+        SmsClientBuilder builder = getSmsClientBuilderWithManagedIdentity(httpClient);
+        return addLoggingPolicy(builder, testName).buildAsyncClient();
+    }  
 }
