@@ -76,6 +76,7 @@ class CosmosTable(val transforms: Array[Transform],
   }
 
   override def capabilities(): util.Set[TableCapability] = Set(
+    TableCapability.ACCEPT_ANY_SCHEMA,
     TableCapability.BATCH_WRITE,
     TableCapability.BATCH_READ).asJava
 
