@@ -20,9 +20,11 @@ private object CosmosTableSchemaInferer
 
     val RAW_JSON_BODY_ATTRIBUTE_NAME = "_rawBody"
     private val TIMESTAMP_ATTRIBUTE_NAME = "_ts"
+    private val ID_ATTRIBUTE_NAME = "id"
     private val defaultSchemaForInferenceDisabled = StructType(Seq(
         StructField(RAW_JSON_BODY_ATTRIBUTE_NAME, StringType),
-        StructField(TIMESTAMP_ATTRIBUTE_NAME, StringType)
+        StructField(ID_ATTRIBUTE_NAME, StringType),
+        StructField(TIMESTAMP_ATTRIBUTE_NAME, LongType)
     ))
 
     def inferSchema(inferredItems : Seq[ObjectNode]): StructType = {
