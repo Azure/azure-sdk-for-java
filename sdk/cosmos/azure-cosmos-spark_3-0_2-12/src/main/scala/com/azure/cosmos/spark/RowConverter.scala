@@ -22,7 +22,7 @@ import org.apache.spark.unsafe.types.UTF8String
 
 // scalastyle:off multiple.string.literals
 // scalastyle:off null
-object CosmosRowConverter
+private object CosmosRowConverter
     extends CosmosLoggingTrait {
 
     // TODO: Expose configuration to handle duplicate fields
@@ -167,8 +167,10 @@ object CosmosRowConverter
 
     private def convertStructToSparkDataType(schema: StructType, objectNode: ObjectNode) : Seq[Any] =
         schema.fields.map {
+            case StructField(CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME, StringType, _, _) =>
+                objectNode.toString
             case StructField(name, dataType, _, _) =>
-            Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _)).orNull
+                Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _)).orNull
         }
 
     // scalastyle:off

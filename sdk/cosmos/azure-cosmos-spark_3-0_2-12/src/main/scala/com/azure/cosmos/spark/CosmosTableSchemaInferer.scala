@@ -18,6 +18,13 @@ import scala.collection.JavaConverters._
 private object CosmosTableSchemaInferer
     extends CosmosLoggingTrait {
 
+    val RAW_JSON_BODY_ATTRIBUTE_NAME = "_rawBody"
+    private val TIMESTAMP_ATTRIBUTE_NAME = "_ts"
+    private val defaultSchemaForInferenceDisabled = StructType(Seq(
+        StructField(RAW_JSON_BODY_ATTRIBUTE_NAME, StringType),
+        StructField(TIMESTAMP_ATTRIBUTE_NAME, StringType)
+    ))
+
     def inferSchema(inferredItems : Seq[ObjectNode]): StructType = {
         if (inferredItems.isEmpty){
             // No documents to infer from
@@ -38,28 +45,31 @@ private object CosmosTableSchemaInferer
 
     def inferSchema(client: CosmosAsyncClient,
                     userConfig: Map[String, String]): StructType = {
-        val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
-        val cosmosReadConfig = CosmosReadConfig.parseCosmosContainerConfig(userConfig)
-        val sourceContainer = client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
+        val cosmosReadConfig = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+        if (cosmosReadConfig.inferSchemaEnabled) {
+            val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
+            val sourceContainer = client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
 
-        val queryOptions = new CosmosQueryRequestOptions()
-        queryOptions.setMaxBufferedItemCount(cosmosReadConfig.inferSchemaSamplingSize)
-        val queryText = s"select TOP ${cosmosReadConfig.inferSchemaSamplingSize} * from c"
+            val queryOptions = new CosmosQueryRequestOptions()
+            queryOptions.setMaxBufferedItemCount(cosmosReadConfig.inferSchemaSamplingSize)
+            val queryText = s"select TOP ${cosmosReadConfig.inferSchemaSamplingSize} * from c"
 
-        val queryObservable =
-            sourceContainer.queryItems(queryText, queryOptions, classOf[ObjectNode])
+            val queryObservable =
+                sourceContainer.queryItems(queryText, queryOptions, classOf[ObjectNode])
 
-        val feedResponseList = queryObservable.byPage().collectList().block()
-        inferSchema(feedResponseList.asScala.flatten(feedResponse => feedResponse.getResults.asScala))
+            val feedResponseList = queryObservable.byPage.collectList.block
+            inferSchema(feedResponseList.asScala.flatten(feedResponse => feedResponse.getResults.asScala))
+        } else {
+            defaultSchemaForInferenceDisabled
+        }
     }
 
     private def inferDataTypeFromObjectNode(node: ObjectNode) : Option[Seq[(String, StructField)]] = {
         Option(node).map(n =>
-            n.fields().asScala
-                .filter(field => propertyFilter.isUserProperty(field.getKey))
+            n.fields.asScala
                 .map(field =>
                     field.getKey ->
-                    StructField(field.getKey, inferDataTypeFromJsonNode(field.getValue), true))
+                    StructField(field.getKey, inferDataTypeFromJsonNode(field.getValue)))
                 .toSeq)
     }
 
@@ -75,7 +85,7 @@ private object CosmosTableSchemaInferer
             case _: LongNode => LongType
             case _: IntNode => IntegerType
             case decimalNode: DecimalNode if decimalNode.isBigDecimal =>
-                val asBigDecimal = decimalNode.decimalValue()
+                val asBigDecimal = decimalNode.decimalValue
                 val precision = Integer.min(asBigDecimal.precision, DecimalType.MAX_PRECISION)
                 val scale = Integer.min(asBigDecimal.scale, DecimalType.MAX_SCALE)
                 DecimalType(precision, scale)
@@ -100,10 +110,5 @@ private object CosmosTableSchemaInferer
 
     private def inferDataTypeFromArrayNode(node: ArrayNode) : Option[DataType] = {
         Option(node.get(0)).map(firstElement => inferDataTypeFromJsonNode(firstElement))
-    }
-
-    private object propertyFilter {
-        private val systemProperties = List("_etag", "_rid", "_ts", "_self", "_attachments")
-        def isUserProperty(propertyName: String): Boolean = !systemProperties.contains(propertyName)
     }
 }

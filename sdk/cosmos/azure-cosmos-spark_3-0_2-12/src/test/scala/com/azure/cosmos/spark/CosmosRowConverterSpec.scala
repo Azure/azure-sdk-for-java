@@ -412,6 +412,17 @@ class CosmosRowConverterSpec extends UnitSpec {
         row.getString(1) shouldEqual colVal2
     }
 
+    "raw in ObjectNode" should "translate to Row" in {
+        val colName1 = "testCol1"
+        val colVal1 = "testVal1"
+
+        val objectNode: ObjectNode = objectMapper.createObjectNode()
+        objectNode.put(colName1, colVal1)
+        val schema = StructType(Seq(StructField(CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME, StringType)))
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        row.getString(0) shouldEqual objectNode.toString
+    }
+
   //scalastyle:on null
   //scalastyle:on multiple.string.literals
 }
