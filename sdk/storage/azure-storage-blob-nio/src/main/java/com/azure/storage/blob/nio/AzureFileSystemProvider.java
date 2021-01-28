@@ -451,6 +451,9 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         }
 
         // For parsing properties and metadata
+        if (fileAttributes == null) {
+            fileAttributes = new FileAttribute[0];
+        }
         resource.setFileAttributes(Arrays.asList(fileAttributes)); // Todo: size and null check
 
         return new NioBlobOutputStream(resource.getBlobOutputStream(pto, rq), resource.getPath());

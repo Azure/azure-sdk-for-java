@@ -666,7 +666,7 @@ class AzureFileSystemProviderTest extends APISpec {
         def fs = createFS(config)
         basicSetupForCopyTest(fs)
         def fsDest = createFS(config)
-        def destPath = fs.getPath(getDefaultDir(fsDest), generateBlobName())
+        def destPath = fsDest.getPath(getDefaultDir(fsDest), generateBlobName())
         sourceClient.upload(defaultInputStream.get(), defaultDataSize)
 
         when:
@@ -1128,12 +1128,12 @@ class AzureFileSystemProviderTest extends APISpec {
         thrown(UnsupportedOperationException)
 
         where:
-        option                               | _
-        StandardOpenOption.APPEND            | _
-        StandardOpenOption.DELETE_ON_CLOSE   | _
-        StandardOpenOption.DSYNC             | _
-        StandardOpenOption.SPARSE            | _
-        StandardOpenOption.SYNC              | _
+        option                             | _
+        StandardOpenOption.APPEND          | _
+        StandardOpenOption.DELETE_ON_CLOSE | _
+        StandardOpenOption.DSYNC           | _
+        StandardOpenOption.SPARSE          | _
+        StandardOpenOption.SYNC            | _
     }
 
     def "ByteChannel read non file fail root"() {
@@ -1200,7 +1200,7 @@ class AzureFileSystemProviderTest extends APISpec {
         // There are no default options for write as read is the default for channel. We must specify all required.
         def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
             new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
-            StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)))
+                StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)))
 
         when:
         // Create should allow us to create a new file.
@@ -1269,7 +1269,6 @@ class AzureFileSystemProviderTest extends APISpec {
                                          new TestFileAttribute<byte[]>("Content-MD5", contentMd5)]
 
         when:
-        // Succeed in creating a new file
         def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
             new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
                 StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)), attributes)
@@ -1295,6 +1294,32 @@ class AzureFileSystemProviderTest extends APISpec {
         props.getCacheControl() == "myControl"
     }
 
+    @Unroll
+    def "ByteChannel file attr null empty"() {
+        setup:
+        def fs = createFS(config)
+
+        def cc = rootNameToContainerClient(getDefaultDir(fs))
+        def bc = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+
+        def data = defaultData.duplicate()
+
+        when:
+        def nioChannel = fs.provider().newByteChannel(fs.getPath(bc.getBlobName()),
+            new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING)), attributes)
+        nioChannel.write(data)
+        nioChannel.close()
+
+        then:
+        notThrown(Exception)
+
+        where:
+        attributes             | _
+        null                   | _
+        new FileAttribute<>[0] | _
+    }
+
     def "ByteChannel write options missing required"() {
         setup:
         def fs = createFS(config)
@@ -1318,7 +1343,7 @@ class AzureFileSystemProviderTest extends APISpec {
         when: "Missing only TRUNCATE_EXISTING"
         fs.provider().newByteChannel(fs.getPath(generateBlobName()),
             new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
-            StandardOpenOption.CREATE_NEW)))
+                StandardOpenOption.CREATE_NEW)))
 
         then:
         notThrown(IllegalArgumentException)
@@ -1326,7 +1351,7 @@ class AzureFileSystemProviderTest extends APISpec {
         when: "Missing only CREATE_NEW"
         fs.provider().newByteChannel(fs.getPath(generateBlobName()),
             new HashSet<>(Arrays.asList(StandardOpenOption.WRITE,
-            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)))
+                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE)))
 
         then:
         notThrown(IllegalArgumentException)

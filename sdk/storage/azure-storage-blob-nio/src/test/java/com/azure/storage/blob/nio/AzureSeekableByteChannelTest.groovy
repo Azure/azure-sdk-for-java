@@ -127,6 +127,7 @@ class AzureSeekableByteChannelTest extends APISpec {
 
         expect:
         writeByteChannel.position() == 0
+        writeByteChannel.size() == 0
 
         for (int i = 0; i < 10; i++) {
             writeByteChannel.write(src)

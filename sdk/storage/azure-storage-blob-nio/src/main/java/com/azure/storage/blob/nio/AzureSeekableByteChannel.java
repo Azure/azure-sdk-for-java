@@ -32,23 +32,23 @@ import java.nio.file.attribute.FileAttribute;
 public class AzureSeekableByteChannel implements SeekableByteChannel {
     private final ClientLogger logger = new ClientLogger(AzureSeekableByteChannel.class);
 
-    private final NioBlobInputStream inputStream; // Always set the mark at 0 w/ max int. repositioning is a reset and then a skip. Validate length
-    private final NioBlobOutputStream outputStream;
-    private long position; // Needs to be threadsafe?
+    private final NioBlobInputStream reader;
+    private final NioBlobOutputStream write;
+    private long position;
     private boolean closed = false;
     private final Path path;
 
     AzureSeekableByteChannel(NioBlobInputStream inputStream, Path path) {
-        this.inputStream = inputStream;
+        this.reader = inputStream;
         inputStream.mark(Integer.MAX_VALUE);
-        this.outputStream = null;
+        this.write = null;
         this.position = 0;
         this.path = path;
     }
 
     AzureSeekableByteChannel(NioBlobOutputStream outputStream, Path path) {
-        this.outputStream = outputStream;
-        this.inputStream = null;
+        this.write = outputStream;
+        this.reader = null;
         this.position = 0;
         this.path = path;
     }
@@ -70,7 +70,7 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
         byte[] buf = new byte[len];
 
         while (count < len) {
-            int retCount = this.inputStream.read(buf, count, len - count);
+            int retCount = this.reader.read(buf, count, len - count);
             if (retCount == -1) {
                 break;
             }
@@ -80,7 +80,6 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
         this.position += count;
 
         return count;
-        // Would it be easier to just do the downloads directly?
     }
 
     @Override
@@ -94,7 +93,7 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
         this.position += src.remaining();
         byte[] buf = new byte[length];
         src.get(buf);
-        this.outputStream.write(buf);
+        this.write.write(buf);
 
         return length;
     }
@@ -119,9 +118,9 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
 
         /*
         The javadoc says seeking past the end for reading is legal and that it should indicate the end of the file on
-        the next read. StorageInputStream doesn't allow this, but we can get around that by just playing with the
-        position variable and skipping the actual read. We'll check in read if we've seeked past the end and short
-        circuit there as well.
+        the next read. StorageInputStream doesn't allow this, but we can get around that by modifying the
+        position variable and skipping the actual read (when read is called next); we'll check in read if we've seeked
+        past the end and short circuit there as well.
 
         Because we are in read mode this will always give us the size from properties.
          */
@@ -129,9 +128,9 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
             this.position = newPosition;
             return this;
         }
-        this.inputStream.reset();
-        this.inputStream.mark(Integer.MAX_VALUE);
-        long skipAmount = this.inputStream.skip(newPosition);
+        this.reader.reset();
+        this.reader.mark(Integer.MAX_VALUE);
+        long skipAmount = this.reader.skip(newPosition);
         if (skipAmount < newPosition) {
             throw new IOException("Could not set desired position");
         }
@@ -145,8 +144,8 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
         AzurePath.ensureFileSystemOpen(this.path);
         validateOpen();
 
-        if (inputStream != null) {
-            return inputStream.getBlobInputStream().getProperties().getBlobSize();
+        if (reader != null) {
+            return reader.getBlobInputStream().getProperties().getBlobSize();
         } else {
             return position;
         }
@@ -166,10 +165,10 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
     @Override
     public void close() throws IOException {
         AzurePath.ensureFileSystemOpen(this.path);
-        if (this.inputStream != null) {
-            this.inputStream.close();
+        if (this.reader != null) {
+            this.reader.close();
         } else {
-            this.outputStream.close();
+            this.write.close();
         }
         this.closed = true;
     }
@@ -181,13 +180,13 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
     }
 
     private void validateReadMode() {
-        if (this.inputStream == null) {
+        if (this.reader == null) {
             throw LoggingUtility.logError(logger, new NonReadableChannelException());
         }
     }
 
     private void validateWriteMode() {
-        if (this.outputStream == null) {
+        if (this.write == null) {
             throw LoggingUtility.logError(logger, new NonWritableChannelException());
         }
     }
