@@ -11,8 +11,7 @@ class CommunicationIdentifierSerializer {
      * @param identifier CommunicationIdentifierModel to be deserialized
      * @return deserialized CommunicationIdentifier
      */
-    public static CommunicationIdentifier deserialize(CommunicationIdentifierModel identifier)
-        throws IllegalArgumentException {
+    public static CommunicationIdentifier deserialize(CommunicationIdentifierModel identifier) {
 
         String id = identifier.getId();
         CommunicationIdentifierKind kind = identifier.getKind();
