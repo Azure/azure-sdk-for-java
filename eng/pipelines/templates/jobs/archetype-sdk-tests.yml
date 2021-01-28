@@ -1,5 +1,6 @@
 parameters:
-  ServiceDirectory: []
+  ServiceDirectory: ''
+  TestResourceDirectories: []
   Artifacts: []
   AdditionalModules: []
   EnvVars: {}
@@ -80,6 +81,11 @@ jobs:
         value: ${{ parameters.ArmTemplateParameters }}
       - name: Location
         value: ${{ parameters.Location }}
+      - name: TestResourceDirectories
+        ${{ if ne(parameters.TestResourceDirectories, '') }}:
+          value: ${{ parameters.TestResourceDirectories }}
+        ${{ if eq(parameters.TestResourceDirectories, '') }}:
+          value: ${{ parameters.ServiceDirectory }}
 
     strategy:
       matrix:
@@ -105,11 +111,11 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - ${{ each directory in parameters.ServiceDirectory }}:
+        - ${{ each directory in variables.TestResourceDirectories }}:
           - script: |
               echo directory
               echo $directory
-            displayName: 'log directory'
+            displayName: 'echo directory'
           - template: /eng/common/TestResources/deploy-test-resources.yml
             parameters:
               ServiceDirectory: 'directory'
@@ -180,7 +186,11 @@ jobs:
       - ${{ parameters.PostRunSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-          - ${{ each directory in parameters.ServiceDirectory }}:
+          - ${{ each directory in variables.TestResourceDirectories }}:
+            - script: |
+                echo directory
+                echo $directory
+              displayName: 'echo directory'
             - template: /eng/common/TestResources/remove-test-resources.yml
               parameters:
                 ServiceDirectory: 'directory'
