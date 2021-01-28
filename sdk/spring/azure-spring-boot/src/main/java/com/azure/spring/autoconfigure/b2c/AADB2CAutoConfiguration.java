@@ -6,7 +6,16 @@ import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
 import static com.azure.spring.telemetry.TelemetryData.TENANT_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
+import com.azure.spring.aad.AADIssuerJWSKeySelector;
+import com.azure.spring.aad.AADTrustedIssuerRepository;
+import com.azure.spring.aad.validator.AADJwtAudienceValidator;
+import com.azure.spring.aad.validator.AADJwtValidators;
 import com.azure.spring.telemetry.TelemetrySender;
+import com.nimbusds.jose.proc.SecurityContext;
+import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
+import com.nimbusds.jwt.proc.DefaultJWTProcessor;
+import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
+import com.nimbusds.jwt.proc.JWTProcessor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +35,11 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
@@ -45,7 +59,8 @@ import org.springframework.util.StringUtils;
 @ConditionalOnProperty(
     prefix = AADB2CProperties.PREFIX,
     value = {
-        "tenant",
+        "tenant-name",
+        "tenant-id",
         "client-id",
         "client-secret",
         "reply-url",
@@ -65,6 +80,48 @@ public class AADB2CAutoConfiguration {
         this.properties = properties;
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    AADTrustedIssuerRepository trustedIssuerRepository() {
+        return new AADTrustedIssuerRepository(properties.getTenantId(), properties.getTenantName(),
+            properties.getUserFlows());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJWSKeySelector(
+        AADTrustedIssuerRepository trustedIssuerRepository) {
+        return new AADIssuerJWSKeySelector(trustedIssuerRepository, properties.getConnectTimeout(),
+            properties.getReadTimeout(), properties.getSizeLimit());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    JWTProcessor<SecurityContext> jwtProcessor(JWTClaimsSetAwareJWSKeySelector<SecurityContext> keySelector) {
+        ConfigurableJWTProcessor<SecurityContext> jwtProcessor = new DefaultJWTProcessor<>();
+        jwtProcessor.setJWTClaimsSetAwareJWSKeySelector(keySelector);
+        return jwtProcessor;
+    }
+
+    @Bean
+    JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor,
+        AADTrustedIssuerRepository trustedIssuerRepository) {
+        NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
+        List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
+        List<String> validAudiences = new ArrayList<>();
+        if (!StringUtils.isEmpty(properties.getAppIdUri())) {
+            validAudiences.add(properties.getAppIdUri());
+        }
+        if (!StringUtils.isEmpty(properties.getClientId())) {
+            validAudiences.add(properties.getClientId());
+        }
+        if (!validAudiences.isEmpty()) {
+            validators.add(new AADJwtAudienceValidator(validAudiences));
+        }
+        validators.add(AADJwtValidators.createDefaultWithIssuer(trustedIssuerRepository.getTrustedIssuers()));
+        decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
+        return decoder;
+    }
 
     @Bean
     @ConditionalOnMissingBean
@@ -92,7 +149,7 @@ public class AADB2CAutoConfiguration {
             final TelemetrySender sender = new TelemetrySender();
 
             events.put(SERVICE_NAME, getClassPackageSimpleName(AADB2CAutoConfiguration.class));
-            events.put(TENANT_NAME, properties.getTenant());
+            events.put(TENANT_NAME, properties.getTenantName());
 
             sender.send(ClassUtils.getUserClass(getClass()).getSimpleName(), events);
         }
@@ -144,9 +201,9 @@ public class AADB2CAutoConfiguration {
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .redirectUriTemplate(properties.getReplyUrl())
                 .scope(properties.getClientId(), "openid")
-                .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenant()))
-                .tokenUri(AADB2CURL.getTokenUrl(properties.getTenant(), userFlow))
-                .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenant(), userFlow))
+                .authorizationUri(AADB2CURL.getAuthorizationUrl(properties.getTenantName()))
+                .tokenUri(AADB2CURL.getTokenUrl(properties.getTenantName(), userFlow))
+                .jwkSetUri(AADB2CURL.getJwkSetUrl(properties.getTenantName(), userFlow))
                 .userNameAttributeName(properties.getUserNameAttributeName())
                 .clientName(userFlow)
                 .build();

@@ -3,9 +3,7 @@
 package com.azure.spring.autoconfigure.b2c;
 
 import java.net.MalformedURLException;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -24,8 +22,8 @@ public class AADB2CProperties {
     private static final String USER_FLOWS = "user-flows";
 
     /**
-     * We do not use ${@link String#format(String, Object...)}
-     * as it's not real constant, which cannot be referenced in annotation.
+     * We do not use ${@link String#format(String, Object...)} as it's not real constant, which cannot be referenced in
+     * annotation.
      */
     public static final String USER_FLOW_PASSWORD_RESET = USER_FLOWS + ".password-reset";
 
@@ -38,31 +36,31 @@ public class AADB2CProperties {
     public static final String PREFIX = "azure.activedirectory.b2c";
 
     /**
-     * The name of the b2c tenant.
+     * The name of the b2c tenant name.
      */
     @NotBlank(message = "tenant name should not be blank")
-    private String tenant;
+    private String tenantName;
+
+    /**
+     * The name of the b2c tenant id.
+     */
+    @NotBlank(message = "tenant id should not be blank")
+    private String tenantId;
 
     /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an token.
      */
     private String AppIdUri;
 
-    private String baseUri;
+    private int connectTimeout = 500;
 
-    private Set<String> accessControlLists = new HashSet<>();
+    private int readTimeout = 500;
 
-    private Set<String> trustedIssuers = new HashSet<>();
-
-    private int connectTimeout;
-
-    private int readTimeout;
-
-    private int sizeLimit;
+    private int sizeLimit = 50 * 1024;
 
     /**
-     * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false,
-     * will use Oauth2 ${@link OAuth2AuthorizationCodeAuthenticationProvider}.
+     * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false, will use Oauth2
+     * ${@link OAuth2AuthorizationCodeAuthenticationProvider}.
      */
     private Boolean oidcEnabled = true;
 
@@ -115,7 +113,7 @@ public class AADB2CProperties {
     }
 
     @Validated
-    protected static class UserFlows {
+    public static class UserFlows {
 
         protected UserFlows() {
 
@@ -162,12 +160,12 @@ public class AADB2CProperties {
         }
     }
 
-    public String getTenant() {
-        return tenant;
+    public String getTenantName() {
+        return tenantName;
     }
 
-    public void setTenant(String tenant) {
-        this.tenant = tenant;
+    public void setTenantName(String tenantName) {
+        this.tenantName = tenantName;
     }
 
     public Boolean getOidcEnabled() {
@@ -242,36 +240,12 @@ public class AADB2CProperties {
         this.userNameAttributeName = userNameAttributeName;
     }
 
-    public void setAccessControlLists(Set<String> accessControlLists) {
-        this.accessControlLists = accessControlLists;
-    }
-
-    public Set<String> getAccessControlLists() {
-        return accessControlLists;
-    }
-
-    public String getBaseUri() {
-        return baseUri;
-    }
-
-    public void setBaseUri(String baseUri) {
-        this.baseUri = baseUri;
-    }
-
     public String getAppIdUri() {
         return AppIdUri;
     }
 
     public void setAppIdUri(String appIdUri) {
         AppIdUri = appIdUri;
-    }
-
-    public Set<String> getTrustedIssuers() {
-        return trustedIssuers;
-    }
-
-    public void setTrustedIssuers(Set<String> trustedIssuers) {
-        this.trustedIssuers = trustedIssuers;
     }
 
     public int getConnectTimeout() {
@@ -296,5 +270,13 @@ public class AADB2CProperties {
 
     public void setSizeLimit(int sizeLimit) {
         this.sizeLimit = sizeLimit;
+    }
+
+    public String getTenantId() {
+        return tenantId;
+    }
+
+    public void setTenantId(String tenantId) {
+        this.tenantId = tenantId;
     }
 }

@@ -21,7 +21,7 @@ public class AADB2CLogoutSuccessHandlerTest {
     public void setUp() {
         properties = new AADB2CProperties();
 
-        properties.setTenant(TEST_TENANT);
+        properties.setTenantName(TEST_TENANT);
         properties.setLogoutSuccessUrl(TEST_LOGOUT_SUCCESS_URL);
         properties.getUserFlows().setSignUpOrSignIn(TEST_USER_FLOW_SIGN_UP_OR_IN);
     }
@@ -29,7 +29,7 @@ public class AADB2CLogoutSuccessHandlerTest {
     @Test
     public void testDefaultTargetUrl() {
         final MyLogoutSuccessHandler handler = new MyLogoutSuccessHandler(properties);
-        final String tenant = properties.getTenant();
+        final String tenant = properties.getTenantName();
         final String url = properties.getLogoutSuccessUrl();
         final String userFlow = properties.getUserFlows().getSignUpOrSignIn();
 

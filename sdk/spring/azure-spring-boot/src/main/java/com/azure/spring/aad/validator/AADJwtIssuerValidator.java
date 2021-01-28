@@ -15,9 +15,6 @@ import org.springframework.util.Assert;
  */
 public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
 
-    private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
-    private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
-    private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
     private final AADJwtClaimValidator<String> validator;
 
     /**
@@ -25,22 +22,7 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
     public AADJwtIssuerValidator(Set<String> trustedIssuers) {
-        if (trustedIssuers.isEmpty()) {
-            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, validIssuer());
-        } else {
-            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, iss -> trustedIssuers.contains(iss));
-        }
-    }
-
-    private Predicate<String> validIssuer() {
-        return iss -> {
-            if (iss == null) {
-                return false;
-            }
-            return iss.startsWith(LOGIN_MICROSOFT_ONLINE_ISSUER)
-                || iss.startsWith(STS_WINDOWS_ISSUER)
-                || iss.startsWith(STS_CHINA_CLOUD_API_ISSUER);
-        };
+        this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, iss -> trustedIssuers.contains(iss));
     }
 
     /**

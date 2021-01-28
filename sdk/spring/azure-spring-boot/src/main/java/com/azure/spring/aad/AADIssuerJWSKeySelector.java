@@ -19,29 +19,12 @@ import java.security.Key;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.util.StringUtils;
 
 
 public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
-    /**
-     * The default HTTP connect timeout for JWK set retrieval, in milliseconds. Set to 500 milliseconds.
-     */
-    public static final int DEFAULT_HTTP_CONNECT_TIMEOUT = 500;
-
-    /**
-     * The default HTTP read timeout for JWK set retrieval, in milliseconds. Set to 500 milliseconds.
-     */
-    public static final int DEFAULT_HTTP_READ_TIMEOUT = 500;
-
-    /**
-     * The default HTTP entity size limit for JWK set retrieval, in bytes. Set to 50 KBytes.
-     */
-    public static final int DEFAULT_HTTP_SIZE_LIMIT = 50 * 1024;
-
-    private Set<String> trustedIssuers;
+    private AADTrustedIssuerRepository trustedIssuerRepository;
 
     private int connectTimeout;
 
@@ -51,44 +34,25 @@ public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<
 
     private final Map<String, JWSKeySelector<SecurityContext>> selectors = new ConcurrentHashMap<>();
 
-    public AADIssuerJWSKeySelector(Set<String> trustedIssuers) {
-        this(trustedIssuers,
-            DEFAULT_HTTP_CONNECT_TIMEOUT,
-            DEFAULT_HTTP_READ_TIMEOUT,
-            DEFAULT_HTTP_SIZE_LIMIT);
-    }
-
-    public AADIssuerJWSKeySelector(Set<String> trustedIssuers, int connectTimeout, int readTimeout, int sizeLimit) {
-        this.trustedIssuers = trustedIssuers;
+    public AADIssuerJWSKeySelector(AADTrustedIssuerRepository trustedIssuerRepository, int connectTimeout,
+        int readTimeout, int sizeLimit) {
+        this.trustedIssuerRepository = trustedIssuerRepository;
         this.connectTimeout = connectTimeout;
         this.readTimeout = readTimeout;
         this.sizeLimit = sizeLimit;
     }
 
-
     @Override
     public List<? extends Key> selectKeys(JWSHeader header, JWTClaimsSet claimsSet, SecurityContext context)
         throws KeySourceException {
         String iss = (String) claimsSet.getClaim(AADTokenClaim.ISS);
-        if (trustedIssuers.contains(iss)) {
-            String tfp = (String) claimsSet.getClaim(AADTokenClaim.TFP);
-            if (StringUtils.isEmpty(tfp)) {
-                return this.selectors.computeIfAbsent(iss, this::fromIssuer).selectJWSKeys(header, context);
-            }
-            String b2cIss = b2cUrlPrefixConversion(iss, tfp);
-            return this.selectors.computeIfAbsent(b2cIss, this::fromIssuer).selectJWSKeys(header, context);
+        if (trustedIssuerRepository.getTrustedIssuers().contains(iss)) {
+            return this.selectors.computeIfAbsent(iss, this::fromIssuer).selectJWSKeys(header, context);
         }
         throw new IllegalArgumentException(
             "The current issuer is not included in the trustedIssuers, no JWS key selector is configured.");
     }
 
-    private String b2cUrlPrefixConversion(String iss, String tfp) {
-        if (iss.contains(tfp)) return iss;
-        int len = iss.lastIndexOf("/v2.0");
-        StringBuffer operatorStr = new StringBuffer(iss);
-        String b2cUrlPrefixConversion = operatorStr.insert(len, "/" + tfp).toString();
-        return b2cUrlPrefixConversion;
-    }
 
     private JWSKeySelector<SecurityContext> fromIssuer(String metadataUrlPrefix) {
         return Optional.ofNullable(metadataUrlPrefix)

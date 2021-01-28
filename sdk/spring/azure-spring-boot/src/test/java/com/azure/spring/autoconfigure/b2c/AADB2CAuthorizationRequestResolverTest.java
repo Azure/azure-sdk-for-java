@@ -19,7 +19,8 @@ public class AADB2CAuthorizationRequestResolverTest {
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AADB2CAutoConfiguration.class))
             .withPropertyValues(
-                    String.format("%s=%s", AADB2CConstants.TENANT, AADB2CConstants.TEST_TENANT),
+                    String.format("%s=%s", AADB2CConstants.TENANT_NAME, AADB2CConstants.TEST_TENANT_NAME),
+                    String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),
                     String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
                     String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
                     String.format("%s=%s", AADB2CConstants.REPLY_URL, AADB2CConstants.TEST_REPLY_URL),

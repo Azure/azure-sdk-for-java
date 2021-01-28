@@ -20,9 +20,11 @@ public class AADB2CConstants {
 
     public static final String TEST_LOGIN_HINT = "fake-login-hint";
 
-    public static final String TEST_TENANT = "fake-tenant";
+    public static final String TEST_TENANT_NAME = "fake-tenant_name";
 
     public static final String TEST_CLIENT_ID = "fake-client-id";
+
+    public static final String TEST_TENANT_ID = "fake-tenant-id";
 
     public static final String TEST_CLIENT_SECRET = "fake-client-secret";
 
@@ -32,13 +34,15 @@ public class AADB2CConstants {
 
     public static final String TEST_LOGOUT_SUCCESS_URL = "https://fake-logout-success-url";
 
-    public static final String TENANT = String.format("%s.%s", PREFIX, "tenant");
+    public static final String TENANT_NAME = String.format("%s.%s", PREFIX, "tenant-name");
 
     public static final String TEST_ATTRIBUTE_NAME = String.format("%s.%s", PREFIX, "name");
 
     public static final String USER_NAME_ATTRIBUTE_NAME = String.format("%s.%s", PREFIX, "user-name-attribute-name");
 
     public static final String CLIENT_ID = String.format("%s.%s", PREFIX, "client-id");
+
+    public static final String TENANT_ID = String.format("%s.%s", PREFIX, "tenant-id");
 
     public static final String CLIENT_SECRET = String.format("%s.%s", PREFIX, "client-secret");
 

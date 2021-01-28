@@ -90,15 +90,11 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     private String postLogoutRedirectUri;
 
-    private Set<String> trustedIssuers = new HashSet<>();
+    private int connectTimeout = 500;
 
-    private Set<String> accessControlLists = new HashSet<>();
+    private int readTimeout = 500;
 
-    private int connectTimeout;
-
-    private int readTimeout;
-
-    private int sizeLimit;
+    private int sizeLimit = 50 * 1024;
 
     /**
      * If Telemetry events should be published to Azure AD.
@@ -324,14 +320,6 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .contains(group);
     }
 
-    public Set<String> getTrustedIssuers() {
-        return trustedIssuers;
-    }
-
-    public void setTrustedIssuers(Set<String> trustedIssuers) {
-        this.trustedIssuers = trustedIssuers;
-    }
-
     public int getConnectTimeout() {
         return connectTimeout;
     }
@@ -354,14 +342,6 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public void setSizeLimit(int sizeLimit) {
         this.sizeLimit = sizeLimit;
-    }
-
-    public Set<String> getAccessControlLists() {
-        return accessControlLists;
-    }
-
-    public void setAccessControlLists(Set<String> accessControlLists) {
-        this.accessControlLists = accessControlLists;
     }
 
     @Override

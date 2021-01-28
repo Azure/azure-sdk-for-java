@@ -3,8 +3,12 @@
 package com.azure.spring.aad.webapi;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import com.azure.spring.aad.AADTrustedIssuerRepository;
 import com.azure.spring.aad.webapi.AADResourceServerConfiguration.DefaultAzureOAuth2ResourceServerWebSecurityConfigurerAdapter;
+import java.util.HashSet;
 import java.util.List;
 import org.junit.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -20,6 +24,8 @@ public class AADResourceServerConfigurationTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
         .withPropertyValues("azure.activedirectory.user-group.allowed-groups=User");
+
+    private AADTrustedIssuerRepository aadTrustedIssuerRepository = mock(AADTrustedIssuerRepository.class);
 
     @Test
     public void testNotExistBearerTokenAuthenticationToken() {
@@ -44,12 +50,14 @@ public class AADResourceServerConfigurationTest {
 
     @Test
     public void testNotAudienceDefaultValidator() {
+        when(aadTrustedIssuerRepository.getTrustedIssuers()).thenReturn(new HashSet<>());
         this.contextRunner
             .withUserConfiguration(AADResourceServerConfiguration.class)
             .run(context -> {
                 AADResourceServerConfiguration bean = context
                     .getBean(AADResourceServerConfiguration.class);
-                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean
+                    .createDefaultValidator(aadTrustedIssuerRepository);
                 assertThat(defaultValidator).isNotNull();
                 assertThat(defaultValidator).hasSize(1);
             });
@@ -57,13 +65,15 @@ public class AADResourceServerConfigurationTest {
 
     @Test
     public void testExistAudienceDefaultValidator() {
+        when(aadTrustedIssuerRepository.getTrustedIssuers()).thenReturn(new HashSet<>());
         this.contextRunner
             .withUserConfiguration(AADResourceServerConfiguration.class)
             .withPropertyValues("azure.activedirectory.app-id-uri=fake-app-id-uri")
             .run(context -> {
                 AADResourceServerConfiguration bean = context
                     .getBean(AADResourceServerConfiguration.class);
-                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
+                List<OAuth2TokenValidator<Jwt>> defaultValidator = bean
+                    .createDefaultValidator(aadTrustedIssuerRepository);
                 assertThat(defaultValidator).isNotNull();
             });
     }

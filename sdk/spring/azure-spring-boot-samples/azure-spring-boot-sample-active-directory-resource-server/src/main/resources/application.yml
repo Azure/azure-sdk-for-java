@@ -6,3 +6,4 @@
 #  activedirectory:
 #    client-id: <client-id>
 #    app-id-uri: <app-id-uri>
+#    tenant-id: <tenant-id>
