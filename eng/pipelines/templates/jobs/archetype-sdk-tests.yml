@@ -178,9 +178,9 @@ jobs:
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
           - ${{ each directory in parameters.ServiceDirectory }}:
             - template: /eng/common/TestResources/remove-test-resources.yml
-            parameters:
-              ServiceDirectory: 'directory'
-              SubscriptionConfiguration: $(SubscriptionConfiguration)
+              parameters:
+                ServiceDirectory: 'directory'
+                SubscriptionConfiguration: $(SubscriptionConfiguration)
 
       - template: ../steps/upload-repository-on-failure.yml
 
