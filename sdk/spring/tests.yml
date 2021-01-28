@@ -78,8 +78,8 @@ jobs:
           - powershell: |
               $onDemandUsername = "user$(System.JobId)@aadittest1.onmicrosoft.com"
               echo $username
-              az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
-              az ad user create --user-principal-name $onDemandUsername --display-name "user$(System.JobId)" --password $(java-spring-aad-user-password-1) --force-change-password-next-login false
+              az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u "$(java-spring-aad-service-principal-client-id)" -p "$(java-spring-aad-service-principal-client-secret)"
+              az ad user create --user-principal-name "$onDemandUsername" --display-name "user$(System.JobId)" --password "$(java-spring-aad-user-password-1)" --force-change-password-next-login false
             displayName: 'Create On-demand test user'
 
         PostRunSteps:
@@ -133,6 +133,6 @@ jobs:
           - powershell: |
               $onDemandUsername = "user$(System.JobId)@aadittest1.onmicrosoft.com"
               echo $username
-              az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
-              az ad user delete --id $onDemandUsername
+              az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u "$(java-spring-aad-service-principal-client-id)" -p "$(java-spring-aad-service-principal-client-secret)"
+              az ad user delete --id "$onDemandUsername"
             displayName: 'Delete On-demand test user'
