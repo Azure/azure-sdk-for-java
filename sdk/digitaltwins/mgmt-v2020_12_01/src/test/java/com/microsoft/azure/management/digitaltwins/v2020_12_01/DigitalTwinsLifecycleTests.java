@@ -41,7 +41,6 @@ public class DigitalTwinsLifecycleTests extends TestBase {
 
     @Test
     public void lifecycleTest() throws InterruptedException {
-        //rgName = SdkContext.randomResourceName("rg", 20);
         rgName = defaultResourceGroupName;
 
         ResourceGroup group = resourceManager.resourceGroups()
@@ -56,13 +55,20 @@ public class DigitalTwinsLifecycleTests extends TestBase {
                 .checkNameAvailability(defaultRegion, defaultInstanceName);
 
             if (!checkNameResult.nameAvailable()) {
-                Iterator<DigitalTwinsDescription> allDigitalTwins = digitalTwinsManager.digitalTwins().listAsync().toBlocking().getIterator();
+                Iterator<DigitalTwinsDescription> allDigitalTwins = digitalTwinsManager
+                    .digitalTwins()
+                    .listAsync()
+                    .toBlocking()
+                    .getIterator();
 
                 while (allDigitalTwins.hasNext()) {
                     DigitalTwinsDescription digitalTwin = allDigitalTwins.next();
                     if (digitalTwin.name().equals(defaultInstanceName)){
                         String existingResourceGroupName = digitalTwin.resourceGroupName();
-                        digitalTwinsManager.inner().digitalTwins().delete(existingResourceGroupName, defaultInstanceName);
+                        digitalTwinsManager.inner()
+                            .digitalTwins()
+                            .delete(existingResourceGroupName, defaultInstanceName);
+
                         break;
                     }
                 }
@@ -78,7 +84,8 @@ public class DigitalTwinsLifecycleTests extends TestBase {
             DigitalTwinsDescription instance = digitalTwinsManager
                 .digitalTwins()
                 .defineDigitalTwinsInstance(defaultInstanceName)
-                .withRegion(defaultRegion).withExistingResourceGroup(rgName)
+                .withRegion(defaultRegion)
+                .withExistingResourceGroup(rgName)
                 .create();
 
             Assert.assertNotNull(instance);
@@ -102,7 +109,9 @@ public class DigitalTwinsLifecycleTests extends TestBase {
             Assert.assertTrue(updatedDt.getTags().get(key1).equals(value1));
             Assert.assertTrue(updatedDt.getTags().get(key2).equals(value2));
 
-            PagedList list =  digitalTwinsManager.inner().digitalTwins().listByResourceGroup(rgName);
+            PagedList list =  digitalTwinsManager
+                .inner()
+                .digitalTwins().listByResourceGroup(rgName);
 
             Assert.assertTrue(list.size() > 0);
 
