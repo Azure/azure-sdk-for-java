@@ -106,7 +106,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - ${{ if ne(parameters.TestResourceDirectories, '') }}:
+        - ${{ if parameters.TestResourceDirectories }}:
           - script: |
               echo "====="
             displayName: 'TestResourceDirectories'
@@ -117,7 +117,7 @@ jobs:
                 SubscriptionConfiguration: $(SubscriptionConfiguration)
                 ArmTemplateParameters: $(ArmTemplateParameters)
                 Location: $(Location)
-        - ${{ if eq(parameters.TestResourceDirectories, '') }}:
+        - ${{ if not(parameters.TestResourceDirectories) }}:
           - script: |
               echo "test"
             displayName: 'ServiceDirectory'
