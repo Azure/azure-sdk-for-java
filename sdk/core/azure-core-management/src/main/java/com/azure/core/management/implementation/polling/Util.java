@@ -18,10 +18,10 @@ class Util {
      * An exception thrown while parsing an invalid URL.
      */
     static class MalformedUrlException extends RuntimeException {
-        public MalformedUrlException(String message) {
+        MalformedUrlException(String message) {
             super(message);
         }
-        public MalformedUrlException(String message, Throwable cause) {
+        MalformedUrlException(String message, Throwable cause) {
             super(message, cause);
         }
     }

@@ -136,7 +136,16 @@ final class AzureAsyncOperationData {
                             this.finalResult = new FinalResult(this.lroOperationUri, null);
                         }
                     } else {
-                        this.updateUrls(pollResponseHeaders);
+                        try {
+                            this.updateUrls(pollResponseHeaders);
+                        } catch (Util.MalformedUrlException mue) {
+                            this.provisioningState = ProvisioningState.FAILED;
+                            this.pollError = new Error(
+                                "Long running operation contains a malformed Azure-AsyncOperation header.",
+                                pollResponseStatusCode,
+                                pollResponseHeaders.toMap(),
+                                pollResponseBody);
+                        }
                     }
                 }
             }
