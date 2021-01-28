@@ -339,7 +339,7 @@ class AzureFileSystemProviderTest extends APISpec {
         fs.provider().createDirectory(path)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     @Unroll
@@ -678,7 +678,7 @@ class AzureFileSystemProviderTest extends APISpec {
         fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES)
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
 
         where:
         sourceClosed | _
@@ -828,10 +828,12 @@ class AzureFileSystemProviderTest extends APISpec {
     def "InputStream default"() {
         setup:
         def fs = createFS(config)
+        sourcePath = (AzurePath) fs.getPath(generateBlobName())
+        sourceClient = sourcePath.toBlobClient()
         sourceClient.upload(defaultInputStream.get(), defaultDataSize)
 
         expect:
-        compareInputStreams(fs.provider().newInputStream(sourcePath), defaultInputStream.get(), 0)
+        compareInputStreams(fs.provider().newInputStream(sourcePath), defaultInputStream.get(), defaultDataSize)
     }
 
     @Unroll
@@ -1761,7 +1763,7 @@ class AzureFileSystemProviderTest extends APISpec {
         fs.provider().readAttributes(path, "basic:*")
 
         then:
-        thrown(IOException)
+        thrown(ClosedFileSystemException)
     }
 
     @Unroll
@@ -1934,10 +1936,5 @@ class AzureFileSystemProviderTest extends APISpec {
         // Generate clients to resources.
         sourceClient = sourcePath.toBlobClient()
         destinationClient = destPath.toBlobClient()
-    }
-
-    def "test"() {
-        setup:
-        Paths.get("Foo").getFileSystem().provider().newByteChannel(Paths.get("foo"), null)
     }
 }

@@ -12,11 +12,8 @@ import java.nio.channels.NonReadableChannelException;
 import java.nio.channels.NonWritableChannelException;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.attribute.FileAttribute;
-import java.util.Set;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * A byte channel that maintains a current position.

@@ -379,7 +379,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     }
 
     OutputStream newOutputStreamInternal(Path path, Set<? extends OpenOption> optionsSet,
-        FileAttribute<?>... fileAttributes) throws IOException{
+        FileAttribute<?>... fileAttributes) throws IOException {
         // If options are empty, add Create, Write, TruncateExisting as defaults per nio docs.
         if (optionsSet == null || optionsSet.size() == 0) {
             optionsSet = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE,
