@@ -33,13 +33,13 @@ The authorization flow for resource server:
 Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the groups in the access token.
 
 #### System diagram
-![Standalone Web Application](resource/aad-based-standalone-web-application.png)
+![Standalone Web Application](resource/web-application.png)
 
 1. Access restricted resources of web application, login with credentials using default scopes of `openid, profile, offline_access, https://graph.microsoft.com/User.Read`.
 2. Return secured data.
 
 #### Include the package
-To use this starter in a web application, please add following packages:
+To use the starter in this scenario, please add the following dependencies in you pom.xml
 
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
@@ -85,7 +85,7 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 ### Web application with function of visiting resource servers
 
 #### System diagram
-![Web Application Access Resources](resource/add-based-web-application-access-resources.png)
+![Web Application Access Resources](resource/web-application-with-function-of-visiting-resource-servers.png)
 
 1. Login with credentials, the scope includes default scopes and all configured scopes. 
 2. Auto-acquire the access token of other clients based on the root refresh token.
@@ -93,7 +93,7 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 4. Return secured data.
 
 #### Include the package
-To use this starter in a web application, please add following packages:
+To use the starter in this scenario, please add the following dependencies in you pom.xml
 
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
@@ -133,10 +133,8 @@ azure:
 ```
 
 #### Related Java code
-1. Resource servers should be registered as `ClientRegistration`.
-2. In Controller, `@RegisteredOAuth2AuthorizedClient` can be used to  get `OAuth2AuthorizedClient`. 
+In Controller, `@RegisteredOAuth2AuthorizedClient` can be used to  get `OAuth2AuthorizedClient`. 
    `OAuth2AuthorizedClient` contains accessToken to access related client resource.
-
 ```java
 @GetMapping("/graph")
 @ResponseBody
@@ -153,17 +151,17 @@ public String office(@RegisteredOAuth2AuthorizedClient("office") OAuth2Authorize
 
 ### Resource Server
 Based on Azure AD as a Resource Server, it uses `BearerTokenAuthenticationFilter` authorize request.
+Only as a Resource Server, no further access to other resources protected by Azure AD.
 
 #### System diagram
-Only as a Resource Server, no further access to other resources protected by Azure AD.
-![Standalone resource server usage](resource/add-based-standalone-resource-server.png)
+![Standalone resource server usage](resource/resource-server.png)
 
 1. Access restricted resources of Resource Server.
 2. Validate access token.
 3. Return secured data.
 
 #### Include the package
-To use this starter in a resource server without OBO function, please add following packages:
+To use the starter in this scenario, please add the following dependencies in you pom.xml
 
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
@@ -208,7 +206,7 @@ public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurer
 The current resource server also can access other resources, there's a similar method to the web application usage to obtain access to the client access token, the difference is the access token obtained based on the `MSAL On-Behalf-Of` process.
 
 #### System diagram
-![Resource Server Access Other Resources](resource/add-based-resource-server-access-other-resources.png)
+![Resource Server Access Other Resources](resource/resource-server-with-function-of-visiting-other-resource-servers(by-OBO-flow).png)
 
 1. Access restricted resources related to Graph and Custom resources through resource server.
 2. Auto On-Behalf-Of to request an access token for other clients.
@@ -216,7 +214,7 @@ The current resource server also can access other resources, there's a similar m
 4. Return secured data.
 
 #### Include the package
-To use this starter in a resource server with OBO function, please add following packages:
+To use the starter in this scenario, please add the following dependencies in you pom.xml
 
 [//]: # "{x-version-update-start;com.azure.spring:azure-spring-boot-starter-active-directory;current}"
 ```xml
