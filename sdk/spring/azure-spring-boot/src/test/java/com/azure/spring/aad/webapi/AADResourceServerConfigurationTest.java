@@ -51,7 +51,7 @@ public class AADResourceServerConfigurationTest {
                     .getBean(AADResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
                 assertThat(defaultValidator).isNotNull();
-                assertThat(defaultValidator).hasSize(2);
+                assertThat(defaultValidator).hasSize(1);
             });
     }
 
@@ -65,7 +65,6 @@ public class AADResourceServerConfigurationTest {
                     .getBean(AADResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator();
                 assertThat(defaultValidator).isNotNull();
-                assertThat(defaultValidator).hasSize(3);
             });
     }
 

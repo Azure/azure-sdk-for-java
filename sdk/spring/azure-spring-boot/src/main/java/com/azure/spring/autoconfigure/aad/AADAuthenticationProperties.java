@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import java.util.HashSet;
 import java.util.Set;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -89,7 +90,9 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     private String postLogoutRedirectUri;
 
-    private Set<String> trustedIssuers;
+    private Set<String> trustedIssuers = new HashSet<>();
+
+    private Set<String> accessControlLists = new HashSet<>();
 
     private int connectTimeout;
 
@@ -351,6 +354,14 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     public void setSizeLimit(int sizeLimit) {
         this.sizeLimit = sizeLimit;
+    }
+
+    public Set<String> getAccessControlLists() {
+        return accessControlLists;
+    }
+
+    public void setAccessControlLists(Set<String> accessControlLists) {
+        this.accessControlLists = accessControlLists;
     }
 
     @Override

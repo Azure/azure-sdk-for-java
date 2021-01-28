@@ -44,12 +44,6 @@ public class AADB2CProperties {
     private String tenant;
 
     /**
-     * The id of the b2c tenant.
-     */
-    @NotBlank(message = "tenant id should not be blank")
-    private String tenantId;
-
-    /**
      * App ID URI which might be used in the <code>"aud"</code> claim of an token.
      */
     private String AppIdUri;
@@ -254,14 +248,6 @@ public class AADB2CProperties {
 
     public Set<String> getAccessControlLists() {
         return accessControlLists;
-    }
-
-    public String getTenantId() {
-        return tenantId;
-    }
-
-    public void setTenantId(String tenantId) {
-        this.tenantId = tenantId;
     }
 
     public String getBaseUri() {
