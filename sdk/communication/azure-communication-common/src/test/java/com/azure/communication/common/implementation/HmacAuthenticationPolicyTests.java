@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.common;
+package com.azure.communication.common.implementation;
 
+import com.azure.core.credential.AzureKeyCredential;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -108,11 +109,11 @@ public class HmacAuthenticationPolicyTests {
         return "";
     }
 
-    private CommunicationClientCredential credential;
+    private AzureKeyCredential credential;
 
     @BeforeEach
     public void setup() throws InvalidKeyException, NoSuchAlgorithmException {
-        credential = new CommunicationClientCredential(key);
+        credential = new AzureKeyCredential(key);
     }
 
     @Test
@@ -244,7 +245,7 @@ public class HmacAuthenticationPolicyTests {
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, new URL("http://localhost?id=b93a5ef4-f622-44d8-a80b-ff983122554e"));
         StepVerifier.create(pipeline.send(request))
-            .expectError(RuntimeException.class);       
+            .expectError(RuntimeException.class);
     }
-    
+
 }

@@ -4,10 +4,10 @@ package com.azure.communication.administration;
 
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.administration.implementation.PhoneNumberAdminClientImplBuilder;
-import com.azure.communication.common.CommunicationClientCredential;
-import com.azure.communication.common.ConnectionString;
-import com.azure.communication.common.HmacAuthenticationPolicy;
+import com.azure.communication.common.implementation.CommunicationConnectionString;
+import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -46,7 +46,7 @@ public final class PhoneNumberClientBuilder {
     private HttpPipeline pipeline;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    private CommunicationClientCredential accessKeyCredential;
+    private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
     private Configuration configuration;
     private final List<HttpPipelinePolicy> additionalPolicies = new ArrayList<>();
@@ -103,15 +103,15 @@ public final class PhoneNumberClientBuilder {
     }
 
     /**
-     * Set CommunicationClientCredential for authorization
+     * Set AzureKeyCredential for authorization
      *
-     * @param accessKey access key for initalizing CommunicationClientCredential
+     * @param accessKey access key for initalizing AzureKeyCredential
      * @return The updated {@link PhoneNumberClientBuilder} object.
      * @throws NullPointerException If {@code accessKey} is {@code null}.
      */
     public PhoneNumberClientBuilder accessKey(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.accessKeyCredential = new CommunicationClientCredential(accessKey);
+        this.azureKeyCredential = new AzureKeyCredential(accessKey);
         return this;
     }
 
@@ -129,15 +129,15 @@ public final class PhoneNumberClientBuilder {
 
 
     /**
-     * Set the endpoint and CommunicationClientCredential for authorization
+     * Set the endpoint and AzureKeyCredential for authorization
      *
-     * @param connectionString connection string for setting endpoint and initalizing CommunicationClientCredential
+     * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
      * @return The updated {@link PhoneNumberClientBuilder} object.
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      */
     public PhoneNumberClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-        ConnectionString connectionStringObject = new ConnectionString(connectionString);
+        CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
         this
@@ -217,15 +217,15 @@ public final class PhoneNumberClientBuilder {
     }
 
     HttpPipelinePolicy createAuthenticationPolicy() {
-        if (this.tokenCredential != null && this.accessKeyCredential != null) {
+        if (this.tokenCredential != null && this.azureKeyCredential != null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
         }
-        if (this.tokenCredential != null) { 
+        if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(
-                this.tokenCredential, "https://communication.azure.com//.default");          
-        } else if (this.accessKeyCredential != null) {
-            return new HmacAuthenticationPolicy(this.accessKeyCredential);            
+                this.tokenCredential, "https://communication.azure.com//.default");
+        } else if (this.azureKeyCredential != null) {
+            return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
             throw logger.logExceptionAsError(
                 new NullPointerException("Missing credential information while building a client."));
