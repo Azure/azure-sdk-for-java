@@ -18,7 +18,7 @@ stages:
       - task: Maven@3
         displayName: 'Generate aggregate code coverage report'
         # The OSName variable gets set by the verify-agent-os.yml template
-        condition: and(eq(variables['OSName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'))
+        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
         inputs:
           mavenPomFile: sdk/communication/pom.xml
           options: -Pcoverage
@@ -33,7 +33,7 @@ stages:
       # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
       # Code coverage reporting is setup only for Track 2 modules.
       - task: PublishCodeCoverageResults@1
-        condition: and(eq(variables['OSName'], 'Windows'), eq(variables['JavaTestVersion'], '1.11'))
+        condition: and(eq(variables['Agent.OS'], 'Windows_NT'), eq(variables['JavaTestVersion'], '1.11'))
         inputs:
           codeCoverageTool: JaCoCo
           summaryFileLocation: sdk/communication/target/site/jacoco-aggregate/jacoco.xml
