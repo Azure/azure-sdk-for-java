@@ -33,7 +33,7 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
     private final ClientLogger logger = new ClientLogger(AzureSeekableByteChannel.class);
 
     private final NioBlobInputStream reader;
-    private final NioBlobOutputStream write;
+    private final NioBlobOutputStream writer;
     private long position;
     private boolean closed = false;
     private final Path path;
@@ -41,13 +41,13 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
     AzureSeekableByteChannel(NioBlobInputStream inputStream, Path path) {
         this.reader = inputStream;
         inputStream.mark(Integer.MAX_VALUE);
-        this.write = null;
+        this.writer = null;
         this.position = 0;
         this.path = path;
     }
 
     AzureSeekableByteChannel(NioBlobOutputStream outputStream, Path path) {
-        this.write = outputStream;
+        this.writer = outputStream;
         this.reader = null;
         this.position = 0;
         this.path = path;
@@ -93,7 +93,7 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
         this.position += src.remaining();
         byte[] buf = new byte[length];
         src.get(buf);
-        this.write.write(buf);
+        this.writer.write(buf);
 
         return length;
     }
@@ -168,7 +168,7 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
         if (this.reader != null) {
             this.reader.close();
         } else {
-            this.write.close();
+            this.writer.close();
         }
         this.closed = true;
     }
@@ -186,7 +186,7 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
     }
 
     private void validateWriteMode() {
-        if (this.write == null) {
+        if (this.writer == null) {
             throw LoggingUtility.logError(logger, new NonWritableChannelException());
         }
     }
