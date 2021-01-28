@@ -10,7 +10,7 @@ public class TestInvitationDataGenerator {
 
     private static final int RECORD_COUNT = 10000;
 
-    @Test
+    @Test(groups="unit")
     public void testGenerate() {
         final InvitationDataGenerator invitationDataGenerator = new InvitationDataGenerator();
         final Map<Key, ObjectNode> results = invitationDataGenerator.generate(RECORD_COUNT);
