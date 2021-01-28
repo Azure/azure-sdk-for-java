@@ -508,6 +508,7 @@ public final class PollingState {
                                                         String lroResponseBody) {
         assertStatusCode(202);
         final URL azAsyncOpUrl;
+        final URL locationUrl;
         try {
             azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER);
         } catch (Util.MalformedUrlException mue) {
@@ -515,7 +516,13 @@ public final class PollingState {
                 "Response with status code 202 contains a malformed Azure-AsyncOperation header",
                 202, lroResponseHeaders.toMap(), lroResponseBody));
         }
-        final URL locationUrl = Util.getLocationUrl(lroResponseHeaders, LOGGER, true);
+        try {
+            locationUrl = Util.getLocationUrl(lroResponseHeaders, LOGGER);
+        } catch (Util.MalformedUrlException mue) {
+            return this.setData(new SynchronouslyFailedLroData(
+                "Response with status code 202 contains a malformed Location header",
+                202, lroResponseHeaders.toMap(), lroResponseBody));
+        }
         if (azAsyncOpUrl != null) {
             return this.setData(new AzureAsyncOperationData(this.lroRequestMethod,
                 this.lroOperationUri,
