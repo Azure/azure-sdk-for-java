@@ -4,8 +4,8 @@ package com.azure.spring.aad.webapi;
 
 
 import com.azure.spring.aad.AADAuthorizationServerEndpoints;
-import com.azure.spring.aad.webapi.validator.AADJwtAudienceValidator;
-import com.azure.spring.aad.webapi.validator.AADJwtIssuerValidator;
+import com.azure.spring.aad.validator.AADJwtAudienceValidator;
+import com.azure.spring.aad.validator.AADJwtValidators;
 import com.azure.spring.autoconfigure.aad.AADAuthenticationProperties;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,6 @@ import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
 import org.springframework.util.StringUtils;
@@ -36,7 +35,7 @@ import org.springframework.util.StringUtils;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnResource(resources = "classpath:aad.enable.config")
-@EnableConfigurationProperties({ AADAuthenticationProperties.class })
+@EnableConfigurationProperties({AADAuthenticationProperties.class})
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
 public class AADResourceServerConfiguration {
 
@@ -72,8 +71,7 @@ public class AADResourceServerConfiguration {
         if (!validAudiences.isEmpty()) {
             validators.add(new AADJwtAudienceValidator(validAudiences));
         }
-        validators.add(new AADJwtIssuerValidator());
-        validators.add(new JwtTimestampValidator());
+        validators.add(AADJwtValidators.createDefaultWithIssuer(aadAuthenticationProperties.getTrustedIssuers()));
         return validators;
     }
 

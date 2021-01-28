@@ -1,6 +1,5 @@
-package com.azure.spring.aad.b2c.validator;
+package com.azure.spring.aad.validator;
 
-import com.azure.spring.aad.webapi.validator.AADJwtClaimValidator;
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
 import java.util.Set;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
@@ -11,24 +10,24 @@ import org.springframework.util.Assert;
 /**
  * Validates the "azp" claim in a {@link Jwt}, that is matches a configured value.
  */
-public class AADB2CJwtAppIdValidator implements OAuth2TokenValidator<Jwt> {
+public class AADJwtAuthorizedPartyValidator implements OAuth2TokenValidator<Jwt> {
 
-    private final AADJwtClaimValidator<Set<String>> validator;
+    private final AADJwtClaimValidator<String> validator;
 
     /**
-     * Constructs a {@link AADB2CJwtAppIdValidator} using the provided parameters
+     * Constructs a {@link AADJwtAuthorizedPartyValidator} using the provided parameters
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public AADB2CJwtAppIdValidator(Set<String> aclLists) {
+    public AADJwtAuthorizedPartyValidator(Set<String> aclLists) {
         if (!aclLists.isEmpty()) {
-            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.APPID, appId -> {
-                if (appId == null) {
+            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.AZP, azp -> {
+                if (azp == null) {
                     return true;
                 }
-                return aclLists.contains(appId);
+                return aclLists.contains(azp);
             });
         } else {
-            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.APPID, appId -> true);
+            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.AZP, azp -> true);
         }
     }
 

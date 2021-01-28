@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.aad.webapi.validator;
+package com.azure.spring.aad.validator;
 
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
+import java.util.Set;
 import java.util.function.Predicate;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidatorResult;
@@ -23,8 +24,12 @@ public class AADJwtIssuerValidator implements OAuth2TokenValidator<Jwt> {
      * Constructs a {@link AADJwtIssuerValidator} using the provided parameters
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public AADJwtIssuerValidator() {
-        this.validator = new AADJwtClaimValidator(AADTokenClaim.ISS, validIssuer());
+    public AADJwtIssuerValidator(Set<String> trustedIssuers) {
+        if (trustedIssuers.isEmpty()) {
+            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, validIssuer());
+        } else {
+            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.ISS, iss -> trustedIssuers.contains(iss));
+        }
     }
 
     private Predicate<String> validIssuer() {

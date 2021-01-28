@@ -5,6 +5,7 @@ package com.azure.spring.autoconfigure.aad;
 
 import com.azure.spring.aad.webapp.AuthorizationClientProperties;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
+import java.util.Set;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
@@ -87,6 +88,14 @@ public class AADAuthenticationProperties implements InitializingBean {
     private String tenantId = "common";
 
     private String postLogoutRedirectUri;
+
+    private Set<String> trustedIssuers;
+
+    private int connectTimeout;
+
+    private int readTimeout;
+
+    private int sizeLimit;
 
     /**
      * If Telemetry events should be published to Azure AD.
@@ -310,6 +319,38 @@ public class AADAuthenticationProperties implements InitializingBean {
                        .map(UserGroupProperties::getAllowedGroups)
                        .orElseGet(Collections::emptyList)
                        .contains(group);
+    }
+
+    public Set<String> getTrustedIssuers() {
+        return trustedIssuers;
+    }
+
+    public void setTrustedIssuers(Set<String> trustedIssuers) {
+        this.trustedIssuers = trustedIssuers;
+    }
+
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public void setConnectTimeout(int connectTimeout) {
+        this.connectTimeout = connectTimeout;
+    }
+
+    public int getReadTimeout() {
+        return readTimeout;
+    }
+
+    public void setReadTimeout(int readTimeout) {
+        this.readTimeout = readTimeout;
+    }
+
+    public int getSizeLimit() {
+        return sizeLimit;
+    }
+
+    public void setSizeLimit(int sizeLimit) {
+        this.sizeLimit = sizeLimit;
     }
 
     @Override

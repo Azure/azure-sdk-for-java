@@ -58,6 +58,14 @@ public class AADB2CProperties {
 
     private Set<String> accessControlLists = new HashSet<>();
 
+    private Set<String> trustedIssuers = new HashSet<>();
+
+    private int connectTimeout;
+
+    private int readTimeout;
+
+    private int sizeLimit;
+
     /**
      * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false,
      * will use Oauth2 ${@link OAuth2AuthorizationCodeAuthenticationProvider}.
@@ -270,5 +278,37 @@ public class AADB2CProperties {
 
     public void setAppIdUri(String appIdUri) {
         AppIdUri = appIdUri;
+    }
+
+    public Set<String> getTrustedIssuers() {
+        return trustedIssuers;
+    }
+
+    public void setTrustedIssuers(Set<String> trustedIssuers) {
+        this.trustedIssuers = trustedIssuers;
+    }
+
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public void setConnectTimeout(int connectTimeout) {
+        this.connectTimeout = connectTimeout;
+    }
+
+    public int getReadTimeout() {
+        return readTimeout;
+    }
+
+    public void setReadTimeout(int readTimeout) {
+        this.readTimeout = readTimeout;
+    }
+
+    public int getSizeLimit() {
+        return sizeLimit;
+    }
+
+    public void setSizeLimit(int sizeLimit) {
+        this.sizeLimit = sizeLimit;
     }
 }

@@ -6,11 +6,6 @@ import static com.azure.spring.telemetry.TelemetryData.SERVICE_NAME;
 import static com.azure.spring.telemetry.TelemetryData.TENANT_NAME;
 import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName;
 
-import com.azure.spring.aad.AADAuthorizationServerEndpoints;
-import com.azure.spring.aad.b2c.validator.AADB2CJwtAppIdValidator;
-import com.azure.spring.aad.b2c.validator.AADB2CJwtAzpValidator;
-import com.azure.spring.aad.webapi.validator.AADJwtAudienceValidator;
-import com.azure.spring.aad.webapi.validator.AADJwtIssuerValidator;
 import com.azure.spring.telemetry.TelemetrySender;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,12 +26,6 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
-import org.springframework.security.oauth2.core.OAuth2TokenValidator;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
@@ -76,33 +65,6 @@ public class AADB2CAutoConfiguration {
         this.properties = properties;
     }
 
-    @Bean
-    @ConditionalOnMissingBean(JwtDecoder.class)
-    public JwtDecoder jwtDecoder() {
-        AADAuthorizationServerEndpoints identityEndpoints = new AADAuthorizationServerEndpoints(properties.getBaseUri(),
-            properties.getTenantId());
-        NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder.withJwkSetUri(identityEndpoints.jwkSetEndpoint()).build();
-        List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator();
-        nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
-        return nimbusJwtDecoder;
-    }
-
-    public List<OAuth2TokenValidator<Jwt>> createDefaultValidator() {
-        List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
-        List<String> validAudiences = new ArrayList<>();
-        if (!StringUtils.isEmpty(properties.getAppIdUri())) {
-            validAudiences.add(properties.getAppIdUri());
-            validators.add(new AADB2CJwtAppIdValidator(properties.getAccessControlLists()));
-        }
-        if (!StringUtils.isEmpty(properties.getClientId())) {
-            validAudiences.add(properties.getClientId());
-            validators.add(new AADB2CJwtAzpValidator(properties.getAccessControlLists()));
-        }
-        validators.add(new JwtTimestampValidator());
-        validators.add(new AADJwtIssuerValidator());
-        validators.add(new AADJwtAudienceValidator(validAudiences));
-        return validators;
-    }
 
     @Bean
     @ConditionalOnMissingBean

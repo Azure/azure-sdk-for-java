@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.aad.webapi.validator;
+package com.azure.spring.aad.validator;
 
 import com.azure.spring.autoconfigure.aad.AADTokenClaim;
 import java.util.List;
@@ -25,8 +25,8 @@ public class AADJwtAudienceValidator implements OAuth2TokenValidator<Jwt> {
     public AADJwtAudienceValidator(List<String> audiences) {
         Assert.notNull(audiences, "audiences cannot be null");
         if (!audiences.isEmpty()) {
-            this.validator = new AADJwtClaimValidator(AADTokenClaim.AUD,
-                aud -> audiences.containsAll((List<String>) aud));
+            this.validator = new AADJwtClaimValidator<>(AADTokenClaim.AUD,
+                aud -> audiences.containsAll(aud));
         } else {
             this.validator = new AADJwtClaimValidator(AADTokenClaim.AUD, aud -> true);
         }
