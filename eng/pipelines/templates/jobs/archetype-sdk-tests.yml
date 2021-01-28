@@ -81,11 +81,6 @@ jobs:
         value: ${{ parameters.ArmTemplateParameters }}
       - name: Location
         value: ${{ parameters.Location }}
-      - name: TestResourceDirectories
-        ${{ if ne(parameters.TestResourceDirectories, '') }}:
-          value: ${{ parameters.TestResourceDirectories }}
-        ${{ if eq(parameters.TestResourceDirectories, '') }}:
-          value: ${{ parameters.ServiceDirectory }}
 
     strategy:
       matrix:
@@ -111,7 +106,10 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - ${{ each directory in variables.TestResourceDirectories }}:
+        - ${{ if eq(parameters.TestResourceDirectories, '') }}:
+          parameters:
+            TestResourceDirectories: ${{ parameters.ServiceDirectory }}
+        - ${{ each directory in parameters.TestResourceDirectories }}:
           - script: |
               echo directory
               echo $directory
