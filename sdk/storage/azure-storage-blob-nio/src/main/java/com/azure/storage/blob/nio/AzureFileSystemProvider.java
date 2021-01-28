@@ -452,7 +452,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
         // For parsing properties and metadata
         if (fileAttributes == null) {
-            fileAttributes = new FileAttribute[0];
+            fileAttributes = new FileAttribute<?>[0];
         }
         resource.setFileAttributes(Arrays.asList(fileAttributes)); // Todo: size and null check
 
@@ -1026,7 +1026,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
             // If "*" is specified, add all of the attributes from the specified set.
             if (attributeName.equals("*")) {
-                Set<String> attributesToAdd;
                 if (viewType.equals(AzureBasicFileAttributeView.NAME)) {
                     for (String attr : AzureBasicFileAttributes.ATTRIBUTE_STRINGS) {
                         results.put(attr, attributeSuppliers.get(attr).get());
