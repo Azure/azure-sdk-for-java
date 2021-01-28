@@ -106,6 +106,10 @@ jobs:
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - ${{ each directory in parameters.ServiceDirectory }}:
+          - script: |
+              echo directory
+              echo $directory
+            displayName: 'log directory'
           - template: /eng/common/TestResources/deploy-test-resources.yml
             parameters:
               ServiceDirectory: 'directory'
