@@ -2,7 +2,7 @@
 
 ## Key concepts
 
-This code sample demonstrates how to use the Spring Cloud Stream Binderfor Azure Event Hub.The sample app has two operating modes.
+This code sample demonstrates how to use the Spring Cloud Stream Binder for Azure Event Hub.The sample app has two operating modes.
 One way is to expose a Restful API to receive string message, another way is to automatically provide string messages.
 These messages are published to an event hub. The sample will also consume messages from the same event hub.
 
