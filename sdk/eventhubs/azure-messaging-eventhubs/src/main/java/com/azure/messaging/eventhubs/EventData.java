@@ -105,7 +105,7 @@ public class EventData {
      * @param body The {@link BinaryData} payload for this event.
      */
     public EventData(BinaryData body) {
-        this(Objects.requireNonNull(body, "'body' cannot be null."), new SystemProperties(), Context.NONE);
+        this(body, new SystemProperties(), Context.NONE);
     }
 
     /**
