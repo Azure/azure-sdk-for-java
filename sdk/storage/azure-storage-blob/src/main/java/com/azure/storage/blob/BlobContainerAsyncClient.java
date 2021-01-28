@@ -1212,11 +1212,11 @@ public final class BlobContainerAsyncClient {
         return modifiedRequestConditions.getIfMatch() == null && modifiedRequestConditions.getIfNoneMatch() == null;
     }
 
-    private boolean validateNoTime(BlobRequestConditions modifiedRequestConditions) {
-        if (modifiedRequestConditions == null) {
-            return true;
-        }
-        return modifiedRequestConditions.getIfModifiedSince() == null
-            && modifiedRequestConditions.getIfUnmodifiedSince() == null;
-    }
+//    private boolean validateNoTime(BlobRequestConditions modifiedRequestConditions) {
+//        if (modifiedRequestConditions == null) {
+//            return true;
+//        }
+//        return modifiedRequestConditions.getIfModifiedSince() == null
+//            && modifiedRequestConditions.getIfUnmodifiedSince() == null;
+//    }
 }
