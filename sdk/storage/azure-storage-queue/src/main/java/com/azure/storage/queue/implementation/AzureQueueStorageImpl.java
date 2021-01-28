@@ -114,14 +114,16 @@ public final class AzureQueueStorageImpl {
      * Initializes an instance of AzureQueueStorage client.
      *
      * @param url The URL of the service account, queue or message that is the targe of the desired operation.
+     * @param version Specifies the version of the operation to use for this request.
      */
-    AzureQueueStorageImpl(String url) {
+    AzureQueueStorageImpl(String url, String version) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                url);
+                url,
+                version);
     }
 
     /**
@@ -129,9 +131,10 @@ public final class AzureQueueStorageImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param url The URL of the service account, queue or message that is the targe of the desired operation.
+     * @param version Specifies the version of the operation to use for this request.
      */
-    AzureQueueStorageImpl(HttpPipeline httpPipeline, String url) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url);
+    AzureQueueStorageImpl(HttpPipeline httpPipeline, String url, String version) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url, version);
     }
 
     /**
@@ -140,12 +143,13 @@ public final class AzureQueueStorageImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param url The URL of the service account, queue or message that is the targe of the desired operation.
+     * @param version Specifies the version of the operation to use for this request.
      */
-    AzureQueueStorageImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url) {
+    AzureQueueStorageImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url, String version) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.url = url;
-        this.version = "2018-03-28";
+        this.version = version;
         this.services = new ServicesImpl(this);
         this.queues = new QueuesImpl(this);
         this.messages = new MessagesImpl(this);

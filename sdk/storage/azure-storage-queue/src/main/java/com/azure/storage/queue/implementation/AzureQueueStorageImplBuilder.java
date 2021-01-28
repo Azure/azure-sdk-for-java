@@ -55,6 +55,22 @@ public final class AzureQueueStorageImplBuilder {
     }
 
     /*
+     * Specifies the version of the operation to use for this request.
+     */
+    private String version;
+
+    /**
+     * Sets Specifies the version of the operation to use for this request.
+     *
+     * @param version the version value.
+     * @return the AzureQueueStorageImplBuilder.
+     */
+    public AzureQueueStorageImplBuilder version(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /*
      * The HTTP pipeline to send requests through
      */
     private HttpPipeline pipeline;
@@ -174,13 +190,16 @@ public final class AzureQueueStorageImplBuilder {
      * @return an instance of AzureQueueStorageImpl.
      */
     public AzureQueueStorageImpl buildClient() {
+        if (version == null) {
+            this.version = "2018-03-28";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AzureQueueStorageImpl client = new AzureQueueStorageImpl(pipeline, serializerAdapter, url);
+        AzureQueueStorageImpl client = new AzureQueueStorageImpl(pipeline, serializerAdapter, url, version);
         return client;
     }
 

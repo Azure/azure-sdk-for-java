@@ -125,6 +125,7 @@ public final class QueueServiceClientBuilder {
         AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageImplBuilder()
             .url(endpoint)
             .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
             .buildClient();
 
         return new QueueServiceAsyncClient(azureQueueStorage, accountName, serviceVersion);
