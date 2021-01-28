@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.common;
+package com.azure.communication.common.implementation;
 
 import java.util.Objects;
 
 /**
  * Parse and store Connection String values
  */
-public class ConnectionString {
+public class CommunicationConnectionString {
     private static final String TOKEN_VALUE_SEPARATOR = "=";
     private static final String TOKEN_VALUE_PAIR_DELIMITER = ";";
     private static final String ENDPOINT_NAME = "endpoint";
@@ -18,7 +18,7 @@ public class ConnectionString {
     /**
      * Creates a new instance by parsing the {@code connectionString} into its
      * components.
-     * 
+     *
      * @param connectionString The connection string to the Event Hub instance.
      *
      * @throws NullPointerException if {@code connectionString} is null.
@@ -26,7 +26,7 @@ public class ConnectionString {
      *                                  string or the connection string has an
      *                                  invalid format.
      */
-    public ConnectionString(String connectionString) {
+    public CommunicationConnectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         if (connectionString.isEmpty()) {
             throw new IllegalArgumentException("'connectionString' cannot be an empty string.");

@@ -1,14 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.common;
+package com.azure.communication.common.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -26,10 +19,24 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+
+import com.azure.core.util.logging.ClientLogger;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
 /**
- * Credential to support accessing communication resource with resource access key
+ * HttpPipelinePolicy to append CommunicationClient required headers
  */
-public final class CommunicationClientCredential {
+public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
     private static final String DATE_HEADER = "date";
     private static final String HOST_HEADER = "host";
     private static final String CONTENT_HASH_HEADER = "x-ms-content-sha256";
@@ -48,16 +55,23 @@ public final class CommunicationClientCredential {
     static final DateTimeFormatter HMAC_DATETIMEFORMATTER_PATTERN =
         DateTimeFormatter.ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", Locale.US);
 
-    private final ClientLogger logger = new ClientLogger(CommunicationClientCredential.class);
-    private final Mac sha256HMAC;
+    private final AzureKeyCredential credential;
+
+    private Mac sha256HMAC;
+    private final ClientLogger logger = new ClientLogger(HmacAuthenticationPolicy.class);
 
     /**
-     * Requires resource access key to create the credential
-     *
-     * @param accessKey resource access key as provided by Azure in Base64 format
+     * Created with a non-null client credential
+     * @param clientCredential client credential with valid access key
      */
-    public CommunicationClientCredential(String accessKey) {
-        Objects.requireNonNull(accessKey, "'accessKey' cannot be null");
+    public HmacAuthenticationPolicy(AzureKeyCredential clientCredential) {
+        Objects.requireNonNull(clientCredential, "'clientCredential' cannot be a null value.");
+        credential = clientCredential;
+    }
+
+    @Override
+    public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+        String accessKey = credential.getKey();
         byte[] key = Base64.getDecoder().decode(accessKey);
         Mac sha256HMAC;
         try {
@@ -67,6 +81,30 @@ public final class CommunicationClientCredential {
             throw logger.logExceptionAsError(new RuntimeException(e));
         }
         this.sha256HMAC = sha256HMAC;
+
+        final Flux<ByteBuffer> contents = context.getHttpRequest().getBody() == null
+            ? Flux.just(ByteBuffer.allocate(0))
+            : context.getHttpRequest().getBody();
+
+        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+            return Mono.error(
+                new RuntimeException("AzureKeyCredential requires a URL using the HTTPS protocol scheme"));
+        }
+
+        try {
+            return appendAuthorizationHeaders(
+                    context.getHttpRequest().getUrl(),
+                    context.getHttpRequest().getHttpMethod().toString(),
+                    contents)
+                .flatMap(headers -> {
+                    headers.entrySet().forEach(
+                        header -> context.getHttpRequest().setHeader(header.getKey(), header.getValue()));
+
+                    return next.process();
+                });
+        } catch (RuntimeException r) {
+            return Mono.error(r);
+        }
     }
 
     Mono<Map<String, String>> appendAuthorizationHeaders(URL url, String httpMethod, Flux<ByteBuffer> contents) {
@@ -80,8 +118,9 @@ public final class CommunicationClientCredential {
             .map(messageDigest -> addAuthenticationHeaders(url, httpMethod, messageDigest));
     }
 
-    private Map<String, String> addAuthenticationHeaders(final URL url, final String httpMethod,
-        final MessageDigest messageDigest) {
+    private Map<String, String> addAuthenticationHeaders(final URL url,
+                                                         final String httpMethod,
+                                                         final MessageDigest messageDigest) {
         final Map<String, String> headers = new HashMap<>();
 
         final String contentHash = Base64.getEncoder().encodeToString(messageDigest.digest());
@@ -113,4 +152,5 @@ public final class CommunicationClientCredential {
             Base64.getEncoder().encodeToString(sha256HMAC.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8)));
         httpHeaders.put(AUTHORIZATIONHEADERNAME, String.format(HMACSHA256FORMAT, signedHeaderNames, signature));
     }
+
 }

@@ -3,13 +3,13 @@
 
 package com.azure.communication.administration;
 
-import com.azure.communication.common.CommunicationClientCredential;
-import com.azure.communication.common.ConnectionString;
-import com.azure.communication.common.HmacAuthenticationPolicy;
+import com.azure.communication.common.implementation.CommunicationConnectionString;
+import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.administration.implementation.CommunicationIdentityClientImplBuilder;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -36,18 +36,18 @@ import java.util.Objects;
 public final class CommunicationIdentityClientBuilder {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private static final String COMMUNICATION_ADMINISTRATION_PROPERTIES = 
+    private static final String COMMUNICATION_ADMINISTRATION_PROPERTIES =
         "azure-communication-administration.properties";
 
     private final ClientLogger logger = new ClientLogger(CommunicationIdentityClientBuilder.class);
     private String endpoint;
-    private CommunicationClientCredential accessKeyCredential;
+    private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions = new HttpLogOptions();
     private HttpPipeline pipeline;
-    private Configuration configuration;    
-    private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_ADMINISTRATION_PROPERTIES);    
+    private Configuration configuration;
+    private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_ADMINISTRATION_PROPERTIES);
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
 
     /**
@@ -93,7 +93,7 @@ public final class CommunicationIdentityClientBuilder {
      */
     public CommunicationIdentityClientBuilder accessKey(String accessKey) {
         Objects.requireNonNull(accessKey, "'accessKey' cannot be null.");
-        this.accessKeyCredential = new CommunicationClientCredential(accessKey);
+        this.azureKeyCredential = new AzureKeyCredential(accessKey);
         return this;
     }
 
@@ -105,7 +105,7 @@ public final class CommunicationIdentityClientBuilder {
      */
     public CommunicationIdentityClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
-        ConnectionString connectionStringObject = new ConnectionString(connectionString);
+        CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
         String endpoint = connectionStringObject.getEndpoint();
         String accessKey = connectionStringObject.getAccessKey();
         this
@@ -129,7 +129,7 @@ public final class CommunicationIdentityClientBuilder {
     /**
      * Apply additional HttpPipelinePolicy
      *
-     * @param customPolicy HttpPipelinePolicy object to be applied after 
+     * @param customPolicy HttpPipelinePolicy object to be applied after
      * AzureKeyCredentialPolicy, UserAgentPolicy, RetryPolicy, and CookiePolicy
      * @return CommunicationIdentityClientBuilder
      */
@@ -203,28 +203,28 @@ public final class CommunicationIdentityClientBuilder {
 
         HttpPipeline builderPipeline = this.pipeline;
         if (this.pipeline == null) {
-            builderPipeline = createHttpPipeline(httpClient, 
-                createHttpPipelineAuthPolicy(), 
+            builderPipeline = createHttpPipeline(httpClient,
+                createHttpPipelineAuthPolicy(),
                 customPolicies);
         }
 
         CommunicationIdentityClientImplBuilder clientBuilder = new CommunicationIdentityClientImplBuilder();
         clientBuilder.endpoint(endpoint)
             .pipeline(builderPipeline);
-        
+
         return clientBuilder.buildClient();
     }
 
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
-        if (this.tokenCredential != null && this.accessKeyCredential != null) {
+        if (this.tokenCredential != null && this.azureKeyCredential != null) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Both 'credential' and 'accessKey' are set. Just one may be used."));
         }
-        if (this.tokenCredential != null) { 
+        if (this.tokenCredential != null) {
             return new BearerTokenAuthenticationPolicy(
-                this.tokenCredential, "https://communication.azure.com//.default");          
-        } else if (this.accessKeyCredential != null) {
-            return new HmacAuthenticationPolicy(this.accessKeyCredential);            
+                this.tokenCredential, "https://communication.azure.com//.default");
+        } else if (this.azureKeyCredential != null) {
+            return new HmacAuthenticationPolicy(this.azureKeyCredential);
         } else {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
@@ -257,5 +257,5 @@ public final class CommunicationIdentityClientBuilder {
         policies.add(new RetryPolicy());
         policies.add(new CookiePolicy());
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-    }  
+    }
 }

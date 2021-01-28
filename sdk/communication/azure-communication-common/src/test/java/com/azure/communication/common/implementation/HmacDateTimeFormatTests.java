@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.communication.common;
+package com.azure.communication.common.implementation;
 
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ public class HmacDateTimeFormatTests {
     @Test
     public void leapYearTest() {
         assertEquals("Thu, 29 Feb 2024 01:01:00 GMT", getDateTimeString(2024, 2, 29, 1, 1, 0));
-    }    
+    }
 
     @Test
     public void twentyFourHourClockTest() {
@@ -30,7 +30,7 @@ public class HmacDateTimeFormatTests {
     @Test
     public void twentyFourHourClockTestNonUSLocale() {
         Locale defaultLocale = Locale.getDefault();
-        
+
         try {
             Locale.setDefault(Locale.CANADA);
             assertEquals("Wed, 01 Jan 2020 23:01:00 GMT", getDateTimeString(2020, 1, 1, 23, 1, 0));
@@ -41,6 +41,6 @@ public class HmacDateTimeFormatTests {
 
     private String getDateTimeString(int year, int month, int day, int hour, int minute, int second) {
         ZonedDateTime dateTime = ZonedDateTime.of(year, month, day, hour, minute, second, 0 /* nanoOfSecond */, ZoneId.of("UTC"));
-        return dateTime.format(CommunicationClientCredential.HMAC_DATETIMEFORMATTER_PATTERN);
+        return dateTime.format(HmacAuthenticationPolicy.HMAC_DATETIMEFORMATTER_PATTERN);
     }
 }
