@@ -31,14 +31,12 @@ The authorization flow for resource server:
 
 ### Web application
 Based on Azure AD as a Web application, it uses OAuth2 authorization code flow to authentication, and authorizes resources based on the groups in the access token.
-This starter provides a convenient way to quickly access resource servers.
 
 #### System diagram
-Only as a Web application, no further access to other resources protected by Azure AD.
 ![Standalone Web Application](resource/aad-based-standalone-web-application.png)
 
-* Access restricted resources of web application, login with credentials using default scopes of `openid, profile, offline_access, https://graph.microsoft.com/User.Read`.
-* Return secured data.
+1. Access restricted resources of web application, login with credentials using default scopes of `openid, profile, offline_access, https://graph.microsoft.com/User.Read`.
+2. Return secured data.
 
 #### Include the package
 To use this starter in a web application, please add following packages:
@@ -87,13 +85,12 @@ public class AADOAuth2LoginConfigSample extends AADWebSecurityConfigurerAdapter 
 ### Web application with function of visiting resource servers
 
 #### System diagram
-Web application visits resource servers which are protected by Azure AD.
 ![Web Application Access Resources](resource/add-based-web-application-access-resources.png)
 
-* Login with credentials, the scope includes default scopes and all configured scopes. 
-* Auto-acquire the access token of other clients based on the root refresh token.
-* Use each client's access token to request restricted resource.
-* Return secured data.
+1. Login with credentials, the scope includes default scopes and all configured scopes. 
+2. Auto-acquire the access token of other clients based on the root refresh token.
+3. Use each client's access token to request restricted resource.
+4. Return secured data.
 
 #### Include the package
 To use this starter in a web application, please add following packages:
@@ -140,7 +137,6 @@ azure:
 2. In Controller, `@RegisteredOAuth2AuthorizedClient` can be used to  get `OAuth2AuthorizedClient`. 
    `OAuth2AuthorizedClient` contains accessToken to access related client resource.
 
-Support the use of `@RegisteredOAuth2AuthorizedClient` to get `OAuth2AuthorizedClient`:
 ```java
 @GetMapping("/graph")
 @ResponseBody
@@ -156,15 +152,15 @@ public String office(@RegisteredOAuth2AuthorizedClient("office") OAuth2Authorize
 ```
 
 ### Resource Server
-Based on Azure AD as a Resource Server, it uses `BearerTokenAuthenticationFilter` authorize request. The current resource server also can access other resources, there's a similar method to the web application usage to obtain access to the client access token, the difference is the access token obtained based on the `MSAL On-Behalf-Of` process.
+Based on Azure AD as a Resource Server, it uses `BearerTokenAuthenticationFilter` authorize request.
 
 #### System diagram
 Only as a Resource Server, no further access to other resources protected by Azure AD.
 ![Standalone resource server usage](resource/add-based-standalone-resource-server.png)
 
-* Access restricted resources of Resource Server.
-* Validate access token.
-* Return secured data.
+1. Access restricted resources of Resource Server.
+2. Validate access token.
+3. Return secured data.
 
 #### Include the package
 To use this starter in a resource server without OBO function, please add following packages:
@@ -208,16 +204,16 @@ public class AADOAuth2ResourceServerSecurityConfig extends WebSecurityConfigurer
 }
 ```
 
-### Resource server access other resources
+### Resource server with function of visiting other resource servers (by OBO flow)
+The current resource server also can access other resources, there's a similar method to the web application usage to obtain access to the client access token, the difference is the access token obtained based on the `MSAL On-Behalf-Of` process.
 
 #### System diagram
-Resource server accesses other resource servers which are protected by Azure AD.
 ![Resource Server Access Other Resources](resource/add-based-resource-server-access-other-resources.png)
 
-* Access restricted resources related to Graph and Custom resources through resource server.
-* Auto On-Behalf-Of to request an access token for other clients.
-* Use each client's access token to request restricted resource.
-* Return secured data.
+1. Access restricted resources related to Graph and Custom resources through resource server.
+2. Auto On-Behalf-Of to request an access token for other clients.
+3. Use each client's access token to request restricted resource.
+4. Return secured data.
 
 #### Include the package
 To use this starter in a resource server with OBO function, please add following packages:
@@ -313,17 +309,14 @@ This starter provides following properties to be customized:
 ## Examples
 Refer to different samples for different authentication ways. 
 
-### [Web APP] Authenticate in web app
+### Web application with function of visiting resource servers
 Please refer to [azure-spring-boot-sample-active-directory-webapp] for authenticate in web apps.
 
-### [Web API] Protect the resource APIs in resource server
+### Resource server
 Please refer to [azure-spring-boot-sample-active-directory-resource-server] for access resource APIs.
 
-### [Web API] OAuth 2.0 On-Behalf-Of flow
+### Resource server with function of visiting other resource servers (by OBO flow)
 Please refer to [azure-spring-boot-sample-active-directory-resource-server-obo] for access On-Behalf-Of flow.
-
-### [Web API] (Deprecated) Authenticate in web API by a filter
-Please refer to [azure-spring-boot-sample-active-directory-resource-server-by-filter] for how to integrate Spring Security and Azure AD for authentication and authorization in a Single Page Application (SPA) scenario.
 
 ## Troubleshooting
 ### Enable client logging
