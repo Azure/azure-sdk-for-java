@@ -20,7 +20,7 @@ class BlobContainerRenameOptions {
     /**
      * @param destinationContainerName The new name of the container.
      */
-    public BlobContainerRenameOptions(String destinationContainerName) {
+    BlobContainerRenameOptions(String destinationContainerName) {
         Objects.requireNonNull(destinationContainerName);
         this.destinationContainerName = destinationContainerName;
     }

@@ -20,7 +20,7 @@ class FileSystemRenameOptions {
     /**
      * @param destinationFileSystemName The new name of the file system.
      */
-    public FileSystemRenameOptions(String destinationFileSystemName) {
+    FileSystemRenameOptions(String destinationFileSystemName) {
         Objects.requireNonNull(destinationFileSystemName);
         this.destinationFileSystemName = destinationFileSystemName;
     }
