@@ -112,7 +112,8 @@ public class ReadmeSamples {
         System.out.printf("Data feed granularity value : %d%n",
             createdSqlDataFeed.getGranularity().getCustomGranularityValue());
         System.out.println("Data feed related metric Ids:");
-        createdSqlDataFeed.getMetricIds().forEach(System.out::println);
+        dataFeed.getMetricIds().forEach((metricId, metricName)
+            -> System.out.printf("Metric Id : %s, Metric Name: %s%n", metricId, metricName));
         System.out.printf("Data feed source type: %s%n", createdSqlDataFeed.getSourceType());
 
         if (SQL_SERVER_DB == createdSqlDataFeed.getSourceType()) {

@@ -6,7 +6,7 @@ package com.azure.ai.metricsadvisor.models;
 /**
  * Describes the additional parameters for the API to list values of a dimension that have anomalies.
  */
-public final class ListDimensionValuesWithAnomaliesOptions {
+public final class ListAnomalyDimensionValuesOptions {
     private Integer top;
     private Integer skip;
     private DimensionKey dimensionToFilter;
@@ -45,7 +45,7 @@ public final class ListDimensionValuesWithAnomaliesOptions {
      * @param top The top value.
      * @return The ListDimensionValuesWithAnomaliesOptions object itself.
      */
-    public ListDimensionValuesWithAnomaliesOptions setTop(int top) {
+    public ListAnomalyDimensionValuesOptions setTop(int top) {
         this.top = top;
         return this;
     }
@@ -57,7 +57,7 @@ public final class ListDimensionValuesWithAnomaliesOptions {
      * @param skip The skip value.
      * @return ListDimensionValuesWithAnomaliesOptions object itself.
      */
-    public ListDimensionValuesWithAnomaliesOptions setSkip(int skip) {
+    public ListAnomalyDimensionValuesOptions setSkip(int skip) {
         this.skip = skip;
         return this;
     }
@@ -75,7 +75,7 @@ public final class ListDimensionValuesWithAnomaliesOptions {
      *
      * @return ListDimensionValuesWithAnomaliesOptions object itself.
      */
-    public ListDimensionValuesWithAnomaliesOptions setDimensionToFilter(DimensionKey dimensionToFilter) {
+    public ListAnomalyDimensionValuesOptions setDimensionToFilter(DimensionKey dimensionToFilter) {
         this.dimensionToFilter = dimensionToFilter;
         return this;
     }

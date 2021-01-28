@@ -18,7 +18,7 @@ import java.time.Duration;
 
 import static com.azure.ai.metricsadvisor.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 
-public final class ValuesOfDimensionWithAnomaliesTest extends ValuesOfDimensionWithAnomaliesTestBase {
+public final class AnomalyDimensionValuesTest extends AnomalyDimensionValuesTestBase {
     @BeforeAll
     static void beforeAll() {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
@@ -32,22 +32,22 @@ public final class ValuesOfDimensionWithAnomaliesTest extends ValuesOfDimensionW
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Override
-    public void listValuesOfDimensionWithAnomalies(HttpClient httpClient,
-                                                   MetricsAdvisorServiceVersion serviceVersion) {
+    public void listAnomalyDimensionValues(HttpClient httpClient,
+                                           MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
 
-        PagedIterable<String> dimensionValuesIterable = client.listDimensionValuesWithAnomalies(
-            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.detectionConfigurationId,
-            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.dimensionName,
-            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.startTime,
-            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.endTime,
-            ListValuesOfDimensionWithAnomaliesInput.INSTANCE.options, Context.NONE);
+        PagedIterable<String> dimensionValuesIterable = client.listAnomalyDimensionValues(
+            ListAnomalyDimensionValuesInput.INSTANCE.detectionConfigurationId,
+            ListAnomalyDimensionValuesInput.INSTANCE.dimensionName,
+            ListAnomalyDimensionValuesInput.INSTANCE.startTime,
+            ListAnomalyDimensionValuesInput.INSTANCE.endTime,
+            ListAnomalyDimensionValuesInput.INSTANCE.options, Context.NONE);
 
         int[] cnt = new int[1];
         dimensionValuesIterable.forEach(value -> {
             cnt[0]++;
-            assertListValuesOfDimensionWithAnomaliesOutput(value);
+            assertListAnomalyDimensionValuesOutput(value);
         });
-        Assertions.assertEquals(ListValuesOfDimensionWithAnomaliesOutput.INSTANCE.expectedValues, cnt[0]);
+        Assertions.assertEquals(ListAnomalyDimensionValuesOutput.INSTANCE.expectedValues, cnt[0]);
     }
 }
