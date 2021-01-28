@@ -369,6 +369,9 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="."
             files=".*[/\\]search[/\\]documents[/\\]models[/\\]((?!(IndexBatch|ValueFacetResult|RangeFacetResult|SearchableField|SimpleField|IndexBatchException|ScoringParameter)).*)"/>
 
+  <suppress checks="."
+            files=".*[/\\]quantum[/\\]jobs[/\\]"/>
+
   <!-- Suppress external dependency check for jacksonwrapper overriding deserialize method -->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
             files="com.azure.core.implementation.serializer.jsonwrapper.jacksonwrapper.JacksonDeserializer.java"/>
