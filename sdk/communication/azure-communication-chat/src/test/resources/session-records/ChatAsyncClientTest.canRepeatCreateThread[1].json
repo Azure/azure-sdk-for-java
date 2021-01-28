@@ -8,14 +8,14 @@
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
-      "X-Processing-Time" : "21ms",
-      "MS-CV" : "WR9U579UG0CI2cJNb/ixpw.0",
+      "X-Processing-Time" : "18ms",
+      "MS-CV" : "H71yJEHMvEulkxYouya2YQ.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0s/4JYAAAAAAzwXjUC7j2QrTLw+wr1TChWVZSMzBFREdFMDQxMwA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "0AqYRYAAAAACZkeO4IV9fToTvic/qvdlpWVZSMzBFREdFMDMxOAA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-c6ec-90c1-7679-5b3a0d0002a6\"}",
-      "Date" : "Thu, 21 Jan 2021 22:22:43 GMT",
-      "x-ms-client-request-id" : "22d86645-7aae-4f53-b89c-90ad1d490479",
+      "Body" : "{\"id\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-e4d2-1e68-2e7c-5b3a0d00005e\"}",
+      "Date" : "Wed, 27 Jan 2021 17:42:25 GMT",
+      "x-ms-client-request-id" : "a51d32ef-1017-400c-ad59-e8a88612af95",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -29,19 +29,19 @@
       "Transfer-Encoding" : "chunked",
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
       "X-Processing-Time" : "18ms",
-      "MS-CV" : "4z5yt3Y0NUKjkZZx1JMlMQ.0",
+      "MS-CV" : "XFoIHG+7pEypG9yyDZ28vA.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0s/4JYAAAAADkqjFtodl4Q58dF7FSAHKUWVZSMzBFREdFMDQwNwA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "0AqYRYAAAAADfqUOSabHqRbr1wWEtBYQPWVZSMzBFREdFMDMwNwA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-c6ec-90fc-a175-5b3a0d00019d\"}",
-      "Date" : "Thu, 21 Jan 2021 22:22:42 GMT",
-      "x-ms-client-request-id" : "baa584be-a2fa-4b1b-b7ad-befdc503b401",
+      "Body" : "{\"id\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-e4d2-1e9d-bd7d-5b3a0d000077\"}",
+      "Date" : "Wed, 27 Jan 2021 17:42:26 GMT",
+      "x-ms-client-request-id" : "c8dec3d4-0868-4e24-8146-afd69609400b",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.dev.communication.azure.net/identities/8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-c6ec-90c1-7679-5b3a0d0002a6/token?api-version=2020-07-20-preview2",
+    "Uri" : "https://REDACTED.dev.communication.azure.net/identities/8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-e4d2-1e68-2e7c-5b3a0d00005e/token?api-version=2020-07-20-preview2",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-administration/1.0.0-beta.4 (11.0.9; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -49,14 +49,14 @@
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "api-supported-versions" : "2020-07-20-preview2, 2021-03-07",
-      "X-Processing-Time" : "90ms",
-      "MS-CV" : "S11g+fdHrEihWrERtu0biA.0",
+      "X-Processing-Time" : "87ms",
+      "MS-CV" : "M/MSAByuCUSoSStWsxcErw.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0s/4JYAAAAACyzoZ2XqLWRJuHXESMXG3KWVZSMzBFREdFMDQxMwA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "0AqYRYAAAAAAh1v0JdreHQ6z/1OBfsQsdWVZSMzBFREdFMDMxOAA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
       "StatusCode" : "200",
-      "Body" : "{\"id\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-c6ec-90c1-7679-5b3a0d0002a6\",\"token\":\"eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMl9pbnQiLCJ4NXQiOiJnMTROVjRoSzJKUklPYk15YUUyOUxFU1FKRk0iLCJ0eXAiOiJKV1QifQ.eyJza3lwZWlkIjoiYWNzOjFiNWNjMDZiLWYzNTItNDU3MS1iMWU2LWQ5YjI1OWI3Yzc3Nl8wMDAwMDAwNy1jNmVjLTkwYzEtNzY3OS01YjNhMGQwMDAyYTYiLCJzY3AiOjE3OTIsImNzaSI6IjE2MTEyNjc3NjMiLCJpYXQiOjE2MTEyNjc3NjMsImV4cCI6MTYxMTM1NDE2MywiYWNzU2NvcGUiOiJjaGF0IiwicmVzb3VyY2VJZCI6IjFiNWNjMDZiLWYzNTItNDU3MS1iMWU2LWQ5YjI1OWI3Yzc3NiJ9.XXrg4PcOBG7-JrITYnH5A3mX3F3664-PIPgW4v4rkxRF2EYXZhi92P6fWthV4U9hldbljYqj6ei0ADZwj7-kB_2HWo882-h3G5o2Bmkk0lXJH5nG91uYTrosnPeF9KpO5290NrUAumAWIXbcu5YBlKiZ2x4wptJaujNvd3-sEE5lDz1nEoGYv0Ike-ZithBJMF5ctvBE7kyNV0VqfESNZ-OrYtX7QEoilUmsWZBS-tBNZVwGyjJRltyGaTYaGTbtBfh4UzCCYmR_jIAHEZcIVl8ibLsil7Je6jzd48uZsQOLcWDIswZdNElwFgG76I6rd2i6fNk2ywNpj542NKlmWQ\",\"expiresOn\":\"2021-01-22T22:22:42.5886283+00:00\"}",
-      "Date" : "Thu, 21 Jan 2021 22:22:43 GMT",
-      "x-ms-client-request-id" : "3664b57f-34c3-4e59-a67d-690eb4ce710c",
+      "Body" : "{\"id\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-e4d2-1e68-2e7c-5b3a0d00005e\",\"token\":\"eyJhbGciOiJSUzI1NiIsImtpZCI6IjEwMl9pbnQiLCJ4NXQiOiJnMTROVjRoSzJKUklPYk15YUUyOUxFU1FKRk0iLCJ0eXAiOiJKV1QifQ.eyJza3lwZWlkIjoiYWNzOjFiNWNjMDZiLWYzNTItNDU3MS1iMWU2LWQ5YjI1OWI3Yzc3Nl8wMDAwMDAwNy1lNGQyLTFlNjgtMmU3Yy01YjNhMGQwMDAwNWUiLCJzY3AiOjE3OTIsImNzaSI6IjE2MTE3NjkzNDYiLCJpYXQiOjE2MTE3NjkzNDYsImV4cCI6MTYxMTg1NTc0NiwiYWNzU2NvcGUiOiJjaGF0IiwicmVzb3VyY2VJZCI6IjFiNWNjMDZiLWYzNTItNDU3MS1iMWU2LWQ5YjI1OWI3Yzc3NiJ9.dMTttDT2Et0EM0QrfhEcgJQ9WP34oRAbmTmrdZEYY_d7-8XLGlgrY6Eyqp-ED75gwCnzYCd2FeYVg0WRRfEc4CV68nRxzUvycr4M-9sqhr70zVDsiDovMkBNTC1VEdah5LQUdDG8xkDStgnpNdS5b3QKLY4RJLRkKe499w2WXy6ZvmdnmrMxC_EC4asCrAQEQ_ZhNSmAhniopCAjUQpjQGreyjQb_1-etFfanrDJcyWfny6rvfrjeCOgaVpHSjSWju6DRCvK_RnvB7tvINMt8Ceh3omgOZicv5jwl9XKom0tOlcK9-HoKV67Mvp7QiTtLRm1OjqIfNSfb5EP0Bmliw\",\"expiresOn\":\"2021-01-28T17:42:25.8452166+00:00\"}",
+      "Date" : "Wed, 27 Jan 2021 17:42:25 GMT",
+      "x-ms-client-request-id" : "0d4411e5-4a91-45aa-a507-a8c5dbe920ef",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -70,16 +70,16 @@
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=2592000",
-      "api-supported-versions" : "2020-09-21-preview2, 2020-11-01-preview3",
-      "X-Processing-Time" : "860ms",
-      "MS-CV" : "G7bWlsOutUumJ0rqBaDiMA.0",
+      "api-supported-versions" : "2020-09-21-preview2, 2020-11-01-preview3, 2021-01-27-preview4",
+      "X-Processing-Time" : "839ms",
+      "MS-CV" : "ID6vh9GfjUesEgSERJpzsA.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0s/4JYAAAAACWoXDmkjnPSbZndqzKwsv2WVZSMzBFREdFMDQwNwA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "0AqYRYAAAAACJGVwHktxjRpOfP8eSvRDdWVZSMzBFREdFMDMwNwA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
       "StatusCode" : "201",
-      "Body" : "{\"chatThread\":{\"id\":\"19:4qR9XrBl227x8MokjaaarnJNDGW_Fs9JNx7dDSgBDmk1@thread.v2\",\"topic\":\"Test\",\"createdOn\":\"2021-01-21T22:22:43Z\",\"createdBy\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-c6ec-90c1-7679-5b3a0d0002a6\"}}",
-      "Date" : "Thu, 21 Jan 2021 22:22:44 GMT",
+      "Body" : "{\"chatThread\":{\"id\":\"19:Lb8OaUawJoX5c8yUpTRxPPRoxHSDdjhZrpbj2vw_FnU1@thread.v2\",\"topic\":\"Test\",\"createdOn\":\"2021-01-27T17:42:27Z\",\"createdBy\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-e4d2-1e68-2e7c-5b3a0d00005e\"}}",
+      "Date" : "Wed, 27 Jan 2021 17:42:27 GMT",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "https://168.61.22.92/chat/threads/19%3A4qR9XrBl227x8MokjaaarnJNDGW_Fs9JNx7dDSgBDmk1@thread.v2"
+      "Location" : "https://168.61.22.92/chat/threads/19%3ALb8OaUawJoX5c8yUpTRxPPRoxHSDdjhZrpbj2vw_FnU1@thread.v2"
     },
     "Exception" : null
   }, {
@@ -92,16 +92,38 @@
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=2592000",
-      "api-supported-versions" : "2020-09-21-preview2, 2020-11-01-preview3",
-      "X-Processing-Time" : "963ms",
-      "MS-CV" : "XtcvgFyxTU2oz8oOrb6pyw.0",
+      "api-supported-versions" : "2020-09-21-preview2, 2020-11-01-preview3, 2021-01-27-preview4",
+      "X-Processing-Time" : "666ms",
+      "MS-CV" : "1yCliNVSukaILz16GQdbDQ.0",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0tP4JYAAAAAAnlOWTV3BgSI4GdKQWSC0tWVZSMzBFREdFMDQxMwA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "X-Azure-Ref" : "0A6YRYAAAAADrB85aHUyiT7xIhXwkrFKCWVZSMzBFREdFMDMxOAA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
       "StatusCode" : "201",
-      "Body" : "{\"chatThread\":{\"id\":\"19:4qR9XrBl227x8MokjaaarnJNDGW_Fs9JNx7dDSgBDmk1@thread.v2\",\"topic\":\"Test\",\"createdOn\":\"2021-01-21T22:22:43Z\",\"createdBy\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-c6ec-90c1-7679-5b3a0d0002a6\"}}",
-      "Date" : "Thu, 21 Jan 2021 22:22:45 GMT",
+      "Body" : "{\"chatThread\":{\"id\":\"19:Lb8OaUawJoX5c8yUpTRxPPRoxHSDdjhZrpbj2vw_FnU1@thread.v2\",\"topic\":\"Test\",\"createdOn\":\"2021-01-27T17:42:27Z\",\"createdBy\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-e4d2-1e68-2e7c-5b3a0d00005e\"}}",
+      "Date" : "Wed, 27 Jan 2021 17:42:28 GMT",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "https://168.61.22.92/chat/threads/19%3A4qR9XrBl227x8MokjaaarnJNDGW_Fs9JNx7dDSgBDmk1@thread.v2"
+      "Location" : "https://168.61.22.92/chat/threads/19%3ALb8OaUawJoX5c8yUpTRxPPRoxHSDdjhZrpbj2vw_FnU1@thread.v2"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.dev.communication.azure.net/chat/threads?api-version=2020-11-01-preview3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-communication-chat/1.0.0-beta.4 (11.0.9; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "api-supported-versions" : "2020-09-21-preview2, 2020-11-01-preview3, 2021-01-27-preview4",
+      "X-Processing-Time" : "902ms",
+      "MS-CV" : "OIMCEbvSkEa/ZXLo6Z/tow.0",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "0BKYRYAAAAADlJgOtRn01RLxEFavN+ZqwWVZSMzBFREdFMDMwNwA3MDU0Mzk1ZS1jZTFkLTQ1NWUtYWU1ZC0yMzNjYTgzOTA1NTQ=",
+      "StatusCode" : "201",
+      "Body" : "{\"chatThread\":{\"id\":\"19:9r22mga33tzrXainbcFbxEt59gPb-bG3c5z094YLTmc1@thread.v2\",\"topic\":\"Test\",\"createdOn\":\"2021-01-27T17:42:28Z\",\"createdBy\":\"8:acs:1b5cc06b-f352-4571-b1e6-d9b259b7c776_00000007-e4d2-1e68-2e7c-5b3a0d00005e\"}}",
+      "Date" : "Wed, 27 Jan 2021 17:42:28 GMT",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Location" : "https://168.61.22.92/chat/threads/19%3A9r22mga33tzrXainbcFbxEt59gPb-bG3c5z094YLTmc1@thread.v2"
     },
     "Exception" : null
   } ],

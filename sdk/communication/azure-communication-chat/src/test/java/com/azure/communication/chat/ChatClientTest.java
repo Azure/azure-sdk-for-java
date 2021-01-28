@@ -189,10 +189,12 @@ public class ChatClientTest extends ChatClientTestBase {
     public void canListChatThreads(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canListChatThreadsSync");
-        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
+        CreateChatThreadOptions threadRequest1 = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
-        client.createChatThread(threadRequest);
-        client.createChatThread(threadRequest);
+        CreateChatThreadOptions threadRequest2 = ChatOptionsProvider.createThreadOptions(
+            firstThreadMember.getId(), secondThreadMember.getId());
+        client.createChatThread(threadRequest1);
+        client.createChatThread(threadRequest2);
 
         Thread.sleep(500);
 
@@ -214,10 +216,12 @@ public class ChatClientTest extends ChatClientTestBase {
     public void canListChatThreadsWithMaxPageSize(HttpClient httpClient) throws InterruptedException {
         // Arrange
         setupTest(httpClient, "canListChatThreadsWithMaxPageSizeSync");
-        CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(
+        CreateChatThreadOptions threadRequest1 = ChatOptionsProvider.createThreadOptions(
             firstThreadMember.getId(), secondThreadMember.getId());
-        client.createChatThread(threadRequest);
-        client.createChatThread(threadRequest);
+        CreateChatThreadOptions threadRequest2 = ChatOptionsProvider.createThreadOptions(
+            firstThreadMember.getId(), secondThreadMember.getId());
+        client.createChatThread(threadRequest1);
+        client.createChatThread(threadRequest2);
 
         Thread.sleep(500);
 

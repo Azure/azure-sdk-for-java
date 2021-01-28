@@ -3,10 +3,6 @@
 
 package com.azure.communication.chat;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.azure.core.http.rest.Response;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -29,6 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Set the AZURE_TEST_MODE environment variable to either PLAYBACK or RECORD to determine if tests are playback or
@@ -135,6 +133,54 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
                 assertEquals(expectedThreadId, result.getChatThread().getId());
             })
             .verifyComplete();
+
+        threadRequest.setRepeatabilityRequestId(UUID.randomUUID().toString());
+        StepVerifier.create(client.createChatThreadWithResponse(threadRequest))
+            .assertNext(response3 -> {
+                CreateChatThreadResult result = response3.getValue();
+                assertNotNull(result);
+                assertNotNull(result.getChatThread());
+                assertNotNull(result.getChatThread().getId());
+                assertNotEquals(expectedThreadId, result.getChatThread().getId());
+            })
+            .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void canCreateNewThreadWithoutSettingRepeatabilityID(HttpClient httpClient) {
+        // Arrange
+        setupTest(httpClient);
+
+        CreateChatThreadOptions threadRequest1 = ChatOptionsProvider
+            .createThreadOptions(
+                firstThreadMember.getId(),
+                secondThreadMember.getId()
+            );
+
+        CreateChatThreadOptions threadRequest2 = ChatOptionsProvider
+            .createThreadOptions(
+                firstThreadMember.getId(),
+                secondThreadMember.getId()
+            );
+
+        Response<CreateChatThreadResult> response1 = client.createChatThreadWithResponse(threadRequest1).block();
+        assertNotNull(response1.getValue());
+        assertNotNull(response1.getValue().getChatThread());
+        assertNotNull(response1.getValue().getChatThread().getId());
+
+        String firstThreadId = response1.getValue().getChatThread().getId();
+
+        // Act & Assert
+        StepVerifier.create(client.createChatThreadWithResponse(threadRequest2))
+            .assertNext(response2 -> {
+                CreateChatThreadResult result = response2.getValue();
+                assertNotNull(result);
+                assertNotNull(result.getChatThread());
+                assertNotNull(result.getChatThread().getId());
+                assertNotEquals(firstThreadId, result.getChatThread().getId());
+            })
+            .verifyComplete();
     }
 
     @ParameterizedTest
@@ -153,7 +199,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     public void cannotCreateThreadWithResponseWithNullOptions(HttpClient httpClient) {
         // Arrange
         setupTest(httpClient, "cannotCreateThreadWithResponseWithNullOptions");
-        
+
         // Act & Assert
         StepVerifier.create(client.createChatThread(null))
             .verifyError(NullPointerException.class);
