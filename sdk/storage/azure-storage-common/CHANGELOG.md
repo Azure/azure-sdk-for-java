@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.11.0-beta.1 (Unreleased)
+- Added support to log retries 
 - Removed a deep copy in PayloadSizeGate
 - Fixed a bug that would throw if uploading using a stream that returned a number > 0 from available() after the stream had ended
 

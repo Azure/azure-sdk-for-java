@@ -169,5 +169,5 @@ public class OpenTelemetryHttpPolicy implements AfterRetryPolicyProvider, HttpPi
 
     // lambda that actually injects arbitrary header into the request
     private final TextMapPropagator.Setter<HttpRequest> contextSetter =
-        (request, key, value) -> request.getHeaders().put(key, value);
+        (request, key, value) -> request.getHeaders().set(key, value);
 }

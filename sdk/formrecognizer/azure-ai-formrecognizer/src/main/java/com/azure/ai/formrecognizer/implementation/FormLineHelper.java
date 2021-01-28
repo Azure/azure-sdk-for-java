@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.implementation;
 
-import com.azure.ai.formrecognizer.models.Appearance;
+import com.azure.ai.formrecognizer.models.TextAppearance;
 import com.azure.ai.formrecognizer.models.FormLine;
 
 /**
@@ -18,7 +18,7 @@ public final class FormLineHelper {
      * Type defining the methods to set the non-public properties of an {@link FormLine} instance.
      */
     public interface FormLineAccessor {
-        void setAppearance(FormLine formLine, Appearance appearance);
+        void setAppearance(FormLine formLine, TextAppearance textAppearance);
     }
 
     /**
@@ -30,7 +30,7 @@ public final class FormLineHelper {
         accessor = formLineAccessor;
     }
 
-    public static void setAppearance(FormLine formLine, Appearance appearance) {
-        accessor.setAppearance(formLine, appearance);
+    public static void setAppearance(FormLine formLine, TextAppearance textAppearance) {
+        accessor.setAppearance(formLine, textAppearance);
     }
 }
