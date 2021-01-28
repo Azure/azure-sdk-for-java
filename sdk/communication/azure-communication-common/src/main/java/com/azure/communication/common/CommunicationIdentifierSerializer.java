@@ -10,7 +10,6 @@ class CommunicationIdentifierSerializer {
      * Deserialize CommunicationIdentifierModel into CommunicationIdentifier
      * @param identifier CommunicationIdentifierModel to be deserialized
      * @return deserialized CommunicationIdentifier
-     * @throws IllegalArgumentException when identifier has unknown CommunicationIdentifierKind
      */
     public static CommunicationIdentifier deserialize(CommunicationIdentifierModel identifier)
         throws IllegalArgumentException {
