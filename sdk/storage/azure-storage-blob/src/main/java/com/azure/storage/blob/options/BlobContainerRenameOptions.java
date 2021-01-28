@@ -12,21 +12,17 @@ import java.util.Objects;
  * Extended options that may be passed when renaming a blob container.
  */
 @Fluent
-public class ContainerRenameOptions {
+class BlobContainerRenameOptions {
 
     private final String destinationContainerName;
-    private final String sourceContainerName;
     private BlobRequestConditions requestConditions;
 
     /**
      * @param destinationContainerName The new name of the container.
-     * @param sourceContainerName The current name of the container.
      */
-    public ContainerRenameOptions(String destinationContainerName, String sourceContainerName) {
+    BlobContainerRenameOptions(String destinationContainerName) {
         Objects.requireNonNull(destinationContainerName);
-        Objects.requireNonNull(sourceContainerName);
         this.destinationContainerName = destinationContainerName;
-        this.sourceContainerName = sourceContainerName;
     }
 
     /**
@@ -34,13 +30,6 @@ public class ContainerRenameOptions {
      */
     public String getDestinationContainerName() {
         return destinationContainerName;
-    }
-
-    /**
-     * @return The current name of the container.
-     */
-    public String getSourceContainerName() {
-        return sourceContainerName;
     }
 
     /**
@@ -55,7 +44,7 @@ public class ContainerRenameOptions {
      * @return The updated options.
      * @throws UnsupportedOperationException if a condition other than lease id is set.
      */
-    public ContainerRenameOptions setRequestConditions(BlobRequestConditions requestConditions) {
+    public BlobContainerRenameOptions setRequestConditions(BlobRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
         return this;
     }
