@@ -8,3 +8,9 @@ jobs:
         - name: azure-quantum-jobs
           groupId: com.azure.quantum.jobs
           safeName: azurequantumjobs
+      EnvVars:
+        AZURE_TEST_MODE: PLAYBACK
+        AZURE_SUBSCRIPTION_ID: $(quantumjobs-test-subscription-id)
+        AZURE_RESOURCE_GROUP: $(quantumjobs-test-resource-group-name)
+        QUANTUM_WORKSPACE: $(quantumjobs-test-workspace-name)
+        QUANTUM_ENDPOINT: $(quantumjobs-test-service-endpoint)

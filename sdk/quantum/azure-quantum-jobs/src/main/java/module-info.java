@@ -6,4 +6,7 @@ module com.azure.quantum.jobs {
 
     requires com.azure.core;
     requires com.azure.identity;
+
+    exports com.azure.quantum.jobs.models to com.fasterxml.jackson.databind;
+    opens com.azure.quantum.jobs.models to com.fasterxml.jackson.databind;
 }
