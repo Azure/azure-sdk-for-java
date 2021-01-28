@@ -172,7 +172,7 @@
       "Body" : "{\"id\":\"REDACTED\"}",
       "Date" : "Thu, 28 Jan 2021 01:32:32 GMT",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "https://13.64.171.212/chat/threads/19%3Abb9ff5fc88194300ae4dec3905f40e40@thread.v2/messages/1611797552067"
+      "Location" : "https://13.64.171.212/chat/threads/19%3Abb9ff5fc88194300ae4dec3905f40e40@thread.v2/messages/REDACTED"
     },
     "Exception" : null
   }, {
