@@ -131,7 +131,10 @@ public class AzureSeekableByteChannel implements SeekableByteChannel {
         }
         this.inputStream.reset();
         this.inputStream.mark(Integer.MAX_VALUE);
-        this.inputStream.skip(newPosition);
+        long skipAmount = this.inputStream.skip(newPosition);
+        if (skipAmount < newPosition) {
+            throw new IOException("Could not set desired position");
+        }
         this.position = newPosition;
 
         return this;
