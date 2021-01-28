@@ -74,6 +74,11 @@
             <!--Below version for test jar needs to be removed, this will be done as part of v1-runtime 1.6.7-->
             <version>1.6.5</version>
         </dependency>
+        <dependency>
+          <groupId>com.squareup.okhttp3</groupId>
+          <artifactId>okhttp</artifactId>
+          <version>3.12.12</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -129,6 +134,17 @@
                         </code>]]>
                     </bottom>
                 </configuration>
+            </plugin>
+            <plugin>
+              <groupId>org.eclipse.jetty</groupId>
+              <artifactId>jetty-maven-plugin</artifactId>
+              <configuration>
+                <scanIntervalSeconds>0</scanIntervalSeconds>
+                <stopPort>11079</stopPort>
+                <stopKey>STOP</stopKey>
+                <waitForChild>false</waitForChild>
+                <jettyXml>${project.basedir}/jetty.xml</jettyXml>
+              </configuration>
             </plugin>
         </plugins>
     </build>
