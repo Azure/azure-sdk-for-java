@@ -448,7 +448,7 @@ public final class PollingState {
                                                         String lroResponseBody) {
         assertStatusCode(201);
         final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER);
-        final URL locationUrl = Util.getLocationUrl(lroResponseHeaders, LOGGER);
+        final URL locationUrl = Util.getLocationUrl(lroResponseHeaders, LOGGER, true);
         if (azAsyncOpUrl != null) {
             if (this.isPostOrDeleteLro()) {
                 LOGGER.info("The LRO {}:{}, received StatusCode:201, AzureAsyncOperation:{}. {}",
@@ -494,7 +494,7 @@ public final class PollingState {
                                                         String lroResponseBody) {
         assertStatusCode(202);
         final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER);
-        final URL locationUrl = Util.getLocationUrl(lroResponseHeaders, LOGGER);
+        final URL locationUrl = Util.getLocationUrl(lroResponseHeaders, LOGGER, true);
         if (azAsyncOpUrl != null) {
             return this.setData(new AzureAsyncOperationData(this.lroRequestMethod,
                 this.lroOperationUri,

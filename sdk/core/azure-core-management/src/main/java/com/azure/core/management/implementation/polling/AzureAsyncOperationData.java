@@ -153,7 +153,7 @@ final class AzureAsyncOperationData {
         if (azAsyncOpUrl != null) {
             this.pollUrl = azAsyncOpUrl;
         }
-        final URL locationUrl = Util.getLocationUrl(pollResponseHeaders, logger);
+        final URL locationUrl = Util.getLocationUrl(pollResponseHeaders, logger, true);
         if (locationUrl != null) {
             this.locationUrl = locationUrl;
         }
