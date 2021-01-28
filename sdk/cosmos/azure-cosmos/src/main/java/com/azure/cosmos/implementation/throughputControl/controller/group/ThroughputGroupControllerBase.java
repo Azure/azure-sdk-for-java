@@ -33,6 +33,11 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * Throughput group controller. Two common tasks across all group controller implementations:
+ * 1. Create and initialize request controller based on connection mode
+ * 2. Schedule reset throughput uage every 1s.
+ */
 public abstract class ThroughputGroupControllerBase implements IThroughputController {
     private final static Logger logger = LoggerFactory.getLogger(ThroughputGroupControllerBase.class);
     private final Duration DEFAULT_THROUGHPUT_USAGE_RESET_DURATION = Duration.ofSeconds(1);
@@ -84,7 +89,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         this.scheduler = Schedulers.elastic();
     }
 
-    void calculateGroupThroughput() {
+    private void calculateGroupThroughput() {
         double allocatedThroughput = Double.MAX_VALUE;
         if (this.group.getTargetThroughputThreshold() != null) {
             allocatedThroughput = Math.min(allocatedThroughput, this.maxContainerThroughput.get() * this.group.getTargetThroughputThreshold());

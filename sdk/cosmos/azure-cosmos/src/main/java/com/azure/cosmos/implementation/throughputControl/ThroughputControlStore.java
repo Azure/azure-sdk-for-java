@@ -105,7 +105,7 @@ public class ThroughputControlStore {
         this.globalEndpointManager = globalEndpointManager;
 
         this.groupMapByContainer = new ConcurrentHashMap<>();
-        // Group throughput control group by container self link.
+        // Group throughput control by container self link.
         this.groupMapByContainer.putAll(
             groups
                 .stream()

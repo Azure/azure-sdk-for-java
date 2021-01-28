@@ -27,7 +27,6 @@ public class ThroughputRequestThrottler {
     private final AtomicReference<Double> availableThroughput;
     private final AtomicReference<Double> scheduledThroughput;
 
-
     public ThroughputRequestThrottler(double scheduledThroughput) {
         this.availableThroughput = new AtomicReference<>(scheduledThroughput);
         this.scheduledThroughput = new AtomicReference<>(scheduledThroughput);
@@ -40,12 +39,15 @@ public class ThroughputRequestThrottler {
     }
 
     private void updateAvailableThroughput() {
+        // The base rule is: If RU is overused during the current cycle, the over used part will be deducted from the next cyclle
+        // If RU is not fully utilized during the current cycle, it will be void.
+        // So the available throughput for each cycle will be less than scheduled throughput.
         this.availableThroughput.getAndAccumulate(this.scheduledThroughput.get(), (available, refill) -> Math.min(available,0) + refill);
     }
 
-    public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> nextRequestMono) {
+    public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {
         if (this.availableThroughput.get() > 0) {
-            return nextRequestMono
+            return originalRequestMono
                 .doOnSuccess(response -> {
                     this.trackRequestCharge(response);
                 })

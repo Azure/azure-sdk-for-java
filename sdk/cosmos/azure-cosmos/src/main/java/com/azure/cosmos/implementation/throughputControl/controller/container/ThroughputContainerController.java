@@ -56,15 +56,16 @@ public class ThroughputContainerController implements IThroughputContainerContro
     private static final int NO_OFFER_EXCEPTION_SUB_STATUS_CODE = HttpConstants.SubStatusCodes.UNKNOWN;
 
     private final AsyncDocumentClient client;
-    private final CancellationTokenSource cancellationTokenSource;
     private final ConnectionMode connectionMode;
     private final GlobalEndpointManager globalEndpointManager;
     private final ConcurrentHashMap<String, ThroughputGroupControllerBase> groupControllers;
     private final List<ThroughputControlGroup> groups;
     private final AtomicReference<Integer> maxContainerThroughput;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
-    private final Scheduler scheduler;
     private final CosmosAsyncContainer targetContainer;
+
+    private final CancellationTokenSource cancellationTokenSource;
+    private final Scheduler scheduler;
 
     private ThroughputGroupControllerBase defaultGroupController;
     private String targetContainerRid;
@@ -293,10 +294,11 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .flatMapIterable(controller -> this.groupControllers.values())
             .doOnNext(groupController -> groupController.onContainerMaxThroughputRefresh(this.maxContainerThroughput.get()))
             .onErrorResume(throwable -> {
-                if (this.isOfferNotConfiguredException(throwable)) {
-                    // Throughput is not configured on container nor database, a good hint the resource does not exists any more
-                    this.close();
-                }
+                //TODO: Figure out how serverless work
+//                if (this.isOfferNotConfiguredException(throwable)) {
+//                    // Throughput is not configured on container nor database, a good hint the resource does not exists any more
+//                    this.close();
+//                }
 
                 logger.warn("Refresh throughput failed with reason %s", throwable);
                 return Mono.empty();

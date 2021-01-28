@@ -222,7 +222,7 @@ public final class CosmosClient implements Closeable {
      *
      * @param groupList The throughput control group configuration list.
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public void enableThroughputControl(List<ThroughputControlGroup> groupList) {
         this.asyncClientWrapper.enableThroughputControl(groupList);
     }

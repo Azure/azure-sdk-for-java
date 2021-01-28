@@ -5,6 +5,9 @@ package com.azure.cosmos.implementation.throughputControl.controller.container;
 
 import com.azure.cosmos.implementation.throughputControl.controller.IThroughputController;
 
+/**
+ * Represents a throughput container controller.
+ */
 public interface IThroughputContainerController extends IThroughputController {
 
 }

@@ -496,7 +496,7 @@ public class CosmosAsyncContainer {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained
      * items or an error.
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText =
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText =
         Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> CosmosPagedFlux<T> queryChangeFeed(CosmosChangeFeedRequestOptions options, Class<T> classType) {
         checkNotNull(options, "Argument 'options' must not be null.");
@@ -1412,7 +1412,7 @@ public class CosmosAsyncContainer {
      * @param groupName The throughput control group name.
      * @return A {@link ThroughputControlGroup}.
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup createThroughputControlGroup(String groupName) {
         checkArgument(StringUtils.isNotEmpty(groupName), "Group name can not be null or empty");
         return new ThroughputControlGroup(groupName, this);

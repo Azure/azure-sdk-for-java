@@ -15,6 +15,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * Throughput
+ */
 public class GlobalThroughputRequestController implements IThroughputRequestController {
     private final GlobalEndpointManager globalEndpointManager;
     private final AtomicReference<Double> scheduledThroughput;
