@@ -3,6 +3,7 @@
 
 module com.azure.quantum.jobs {
     exports com.azure.quantum.jobs;
+    exports com.azure.quantum.jobs.models;
 
     requires transitive com.azure.core;
 

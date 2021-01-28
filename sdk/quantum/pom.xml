@@ -12,14 +12,14 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-quantum-jobs</module>
+        <module>azure-quantum-jobs-service</module>
       </modules>
 
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-quantum-jobs-service</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.quantum.jobs:azure-quantum-jobs;current} -->
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-quantum-jobs-service;current} -->
         </dependency>
       </dependencies>
 
