@@ -31,7 +31,6 @@ import com.azure.storage.file.datalake.models.FileSystemItem;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
-import com.azure.storage.file.datalake.options.FileSystemRenameOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -458,46 +457,48 @@ public class DataLakeServiceAsyncClient {
         }
     }
 
-    /**
-     * Renames an existing file system.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.renameFileSystem#String-String}
-     *
-     * @param destinationFileSystemName The new name of the file system.
-     * @param sourceFileSystemName The current name of the file system.
-     * @return A {@link Mono} containing a {@link DataLakeFileSystemAsyncClient} used to interact with the renamed file
-     * system.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DataLakeFileSystemAsyncClient> renameFileSystem(String destinationFileSystemName,
-        String sourceFileSystemName) {
-        return this.renameFileSystemWithResponse(new FileSystemRenameOptions(destinationFileSystemName,
-            sourceFileSystemName)).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Renames an existing file system.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.renameFileSystemWithResponse#FileSystemRenameOptions}
-     *
-     * @param options {@link FileSystemRenameOptions}
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
-     * {@link DataLakeFileSystemAsyncClient} used to interact with the renamed file system.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DataLakeFileSystemAsyncClient>> renameFileSystemWithResponse(FileSystemRenameOptions options) {
-        try {
-            return blobServiceAsyncClient.renameBlobContainerWithResponse(
-                Transforms.toBlobContainerRenameOptions(options))
-                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-                .map(response -> new SimpleResponse<>(response,
-                        this.getFileSystemAsyncClient(options.getDestinationFileSystemName())));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
+//    /**
+//     * Renames an existing file system.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.renameFileSystem#String-String}
+//     *
+//     * @param sourceFileSystemName The current name of the file system.
+//     * @param destinationFileSystemName The new name of the file system.
+//     * @return A {@link Mono} containing a {@link DataLakeFileSystemAsyncClient} used to interact with the renamed file
+//     * system.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    public Mono<DataLakeFileSystemAsyncClient> renameFileSystem(String sourceFileSystemName,
+//        String destinationFileSystemName) {
+//        return this.renameFileSystemWithResponse(sourceFileSystemName,
+//            new FileSystemRenameOptions(destinationFileSystemName)).flatMap(FluxUtil::toMono);
+//    }
+//
+//    /**
+//     * Renames an existing file system.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * {@codesnippet com.azure.storage.file.datalake.DataLakeServiceAsyncClient.renameFileSystemWithResponse#FileSystemRenameOptions}
+//     *
+//     * @param sourceFileSystemName The current name of the file system.
+//     * @param options {@link FileSystemRenameOptions}
+//     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a
+//     * {@link DataLakeFileSystemAsyncClient} used to interact with the renamed file system.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    public Mono<Response<DataLakeFileSystemAsyncClient>> renameFileSystemWithResponse(String sourceFileSystemName,
+//        FileSystemRenameOptions options) {
+//        try {
+//            return blobServiceAsyncClient.renameBlobContainerWithResponse(sourceFileSystemName,
+//                Transforms.toBlobContainerRenameOptions(options))
+//                .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
+//                .map(response -> new SimpleResponse<>(response,
+//                        this.getFileSystemAsyncClient(options.getDestinationFileSystemName())));
+//        } catch (RuntimeException ex) {
+//            return monoError(logger, ex);
+//        }
+//    }
 }

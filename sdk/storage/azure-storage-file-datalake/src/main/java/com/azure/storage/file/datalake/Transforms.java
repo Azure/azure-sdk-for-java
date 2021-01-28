@@ -30,7 +30,7 @@ import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
-import com.azure.storage.blob.options.ContainerRenameOptions;
+import com.azure.storage.blob.options.BlobContainerRenameOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.file.datalake.implementation.models.Path;
 import com.azure.storage.file.datalake.models.AccessTier;
@@ -560,11 +560,11 @@ class Transforms {
 
     }
 
-    static ContainerRenameOptions toBlobContainerRenameOptions(FileSystemRenameOptions options) {
+    static BlobContainerRenameOptions toBlobContainerRenameOptions(FileSystemRenameOptions options) {
         if (options == null) {
             return null;
         }
-        return new ContainerRenameOptions(options.getDestinationFileSystemName(), options.getSourceFileSystemName())
+        return new BlobContainerRenameOptions(options.getDestinationFileSystemName())
             .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
     }
 

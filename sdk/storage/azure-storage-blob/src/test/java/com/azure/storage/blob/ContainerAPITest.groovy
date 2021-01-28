@@ -5,32 +5,12 @@ package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.storage.blob.models.AccessTier
-import com.azure.storage.blob.models.AppendBlobItem
-import com.azure.storage.blob.models.BlobAccessPolicy
-import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobListDetails
-import com.azure.storage.blob.models.BlobProperties
-import com.azure.storage.blob.models.BlobRequestConditions
-import com.azure.storage.blob.models.BlobSignedIdentifier
-import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.models.BlobType
-import com.azure.storage.blob.models.CopyStatusType
-import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.LeaseStateType
-import com.azure.storage.blob.models.LeaseStatusType
-import com.azure.storage.blob.models.ListBlobsOptions
-import com.azure.storage.blob.models.ObjectReplicationPolicy
-import com.azure.storage.blob.models.ObjectReplicationStatus
-import com.azure.storage.blob.models.PublicAccessType
-import com.azure.storage.blob.models.RehydratePriority
+import com.azure.storage.blob.models.*
 import com.azure.storage.blob.options.BlobSetAccessTierOptions
 import com.azure.storage.blob.options.PageBlobCreateOptions
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
-import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.Utility
-import com.azure.storage.common.implementation.StorageImplUtils
 import reactor.test.StepVerifier
 import spock.lang.Requires
 import spock.lang.Unroll
@@ -1740,4 +1720,102 @@ class ContainerAPITest extends APISpec {
         notThrown(BlobStorageException)
         response.getHeaders().getValue("x-ms-version") == "2017-11-09"
     }
+
+//    def "Rename"() {
+//        setup:
+//        def newName = generateContainerName()
+//
+//        when:
+//        def renamedContainer = cc.rename(newName)
+//
+//        then:
+//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+//
+//        cleanup:
+//        renamedContainer.delete()
+//    }
+//
+//    def "Rename sas"() {
+//        setup:
+//        def newName = generateContainerName()
+//        def sas = primaryBlobServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def sasClient = getContainerClient(sas, cc.getBlobContainerUrl())
+//
+//        when:
+//        def renamedContainer = sasClient.rename(newName)
+//
+//        then:
+//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+//
+//        cleanup:
+//        renamedContainer.delete()
+//    }
+//
+//    @Unroll
+//    def "Rename AC"() {
+//        setup:
+//        leaseID = setupContainerLeaseCondition(cc, leaseID)
+//        def cac = new BlobRequestConditions()
+//            .setLeaseId(leaseID)
+//
+//        expect:
+//        cc.renameWithResponse(new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(cac),
+//            null, null).getStatusCode() == 200
+//
+//        where:
+//        leaseID         || _
+//        null            || _
+//        receivedLeaseID || _
+//    }
+//
+//    @Unroll
+//    def "Rename AC fail"() {
+//        setup:
+//        def cac = new BlobRequestConditions()
+//            .setLeaseId(leaseID)
+//
+//        when:
+//        cc.renameWithResponse(new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(cac),
+//            null, null)
+//
+//        then:
+//        thrown(BlobStorageException)
+//
+//        where:
+//        leaseID         || _
+//        garbageLeaseID  || _
+//    }
+//
+//    @Unroll
+//    def "Rename AC illegal"() {
+//        setup:
+//        def ac = new BlobRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified).setTagsConditions(tags)
+//
+//        when:
+//        cc.renameWithResponse(new BlobContainerRenameOptions(generateContainerName()).setRequestConditions(ac),
+//            null, null)
+//
+//        then:
+//        thrown(UnsupportedOperationException)
+//
+//        where:
+//        modified | unmodified | match        | noneMatch    | tags
+//        oldDate  | null       | null         | null         | null
+//        null     | newDate    | null         | null         | null
+//        null     | null       | receivedEtag | null         | null
+//        null     | null       | null         | garbageEtag  | null
+//        null     | null       | null         | null         | "tags"
+//    }
+//
+//    def "Rename error"() {
+//        setup:
+//        cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+//        def newName = generateContainerName()
+//
+//        when:
+//        cc.rename(newName)
+//
+//        then:
+//        thrown(BlobStorageException)
+//    }
 }

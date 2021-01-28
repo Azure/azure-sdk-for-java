@@ -10,22 +10,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
-import com.azure.storage.common.sas.AccountSasPermission
-import com.azure.storage.common.sas.AccountSasResourceType
-import com.azure.storage.common.sas.AccountSasService
-import com.azure.storage.common.sas.AccountSasSignatureValues
-import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils
-import com.azure.storage.file.datalake.models.DataLakeRequestConditions
-import com.azure.storage.file.datalake.models.DataLakeStorageException
-import com.azure.storage.file.datalake.models.FileSystemItem
-import com.azure.storage.file.datalake.models.FileSystemListDetails
-import com.azure.storage.file.datalake.models.ListFileSystemsOptions
-import com.azure.storage.file.datalake.models.UserDelegationKey
-import com.azure.storage.file.datalake.options.FileSystemRenameOptions
+import com.azure.storage.file.datalake.models.*
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.Unroll
 
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -387,108 +375,108 @@ class ServiceAPITest extends APISpec {
         thrown(DataLakeStorageException.class)
     }
 
-    def "Rename file system"() {
-        setup:
-        def oldName = generateFileSystemName()
-        def newName = generateFileSystemName()
-        primaryDataLakeServiceClient.createFileSystem(oldName)
-
-        when:
-        def renamedContainer = primaryDataLakeServiceClient.renameFileSystem(newName, oldName)
-
-        then:
-        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
-
-        cleanup:
-        renamedContainer.delete()
-    }
-
-    def "Rename file system sas"() {
-        setup:
-        def oldName = generateFileSystemName()
-        def newName = generateFileSystemName()
-        primaryDataLakeServiceClient.createFileSystem(oldName)
-        def sas = primaryDataLakeServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
-        def serviceClient = getServiceClient(sas, primaryDataLakeServiceClient.getAccountUrl())
-
-        when:
-        def renamedContainer = serviceClient.renameFileSystem(newName, oldName)
-
-        then:
-        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
-
-        cleanup:
-        renamedContainer.delete()
-    }
-
-    @Unroll
-    def "Rename file system AC"() {
-        setup:
-        leaseID = setupFileSystemLeaseCondition(fsc, leaseID)
-        def cac = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
-
-        expect:
-        primaryDataLakeServiceClient.renameFileSystemWithResponse(
-            new FileSystemRenameOptions(generateFileSystemName(), fsc.getFileSystemName()).setRequestConditions(cac),
-            null, null).getStatusCode() == 200
-
-        where:
-        leaseID         || _
-        null            || _
-        receivedLeaseID || _
-    }
-
-    @Unroll
-    def "Rename file system AC fail"() {
-        setup:
-        def cac = new DataLakeRequestConditions()
-            .setLeaseId(leaseID)
-
-        when:
-        primaryDataLakeServiceClient.renameFileSystemWithResponse(
-            new FileSystemRenameOptions(generateFileSystemName(), fsc.getFileSystemName()).setRequestConditions(cac),
-            null, null)
-
-        then:
-        thrown(DataLakeStorageException)
-
-        where:
-        leaseID         || _
-        garbageLeaseID  || _
-    }
-
-    @Unroll
-    def "Rename file system AC illegal"() {
-        setup:
-        def ac = new DataLakeRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
-
-        when:
-        primaryDataLakeServiceClient.renameFileSystemWithResponse(
-            new FileSystemRenameOptions(generateFileSystemName(), fsc.getFileSystemName()).setRequestConditions(ac),
-            null, null)
-
-        then:
-        thrown(UnsupportedOperationException)
-
-        where:
-        modified | unmodified | match        | noneMatch
-        oldDate  | null       | null         | null
-        null     | newDate    | null         | null
-        null     | null       | receivedEtag | null
-        null     | null       | null         | garbageEtag
-    }
-
-    def "Rename file system error"() {
-        setup:
-        def oldName = generateFileSystemName()
-        def newName = generateFileSystemName()
-
-        when:
-        primaryDataLakeServiceClient.renameFileSystem(newName, oldName)
-
-        then:
-        thrown(DataLakeStorageException)
-    }
+//    def "Rename file system"() {
+//        setup:
+//        def oldName = generateFileSystemName()
+//        def newName = generateFileSystemName()
+//        primaryDataLakeServiceClient.createFileSystem(oldName)
+//
+//        when:
+//        def renamedContainer = primaryDataLakeServiceClient.renameFileSystem(oldName, newName)
+//
+//        then:
+//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+//
+//        cleanup:
+//        renamedContainer.delete()
+//    }
+//
+//    def "Rename file system sas"() {
+//        setup:
+//        def oldName = generateFileSystemName()
+//        def newName = generateFileSystemName()
+//        primaryDataLakeServiceClient.createFileSystem(oldName)
+//        def sas = primaryDataLakeServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def serviceClient = getServiceClient(sas, primaryDataLakeServiceClient.getAccountUrl())
+//
+//        when:
+//        def renamedContainer = serviceClient.renameFileSystem(oldName, newName)
+//
+//        then:
+//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+//
+//        cleanup:
+//        renamedContainer.delete()
+//    }
+//
+//    @Unroll
+//    def "Rename file system AC"() {
+//        setup:
+//        leaseID = setupFileSystemLeaseCondition(fsc, leaseID)
+//        def cac = new DataLakeRequestConditions()
+//            .setLeaseId(leaseID)
+//
+//        expect:
+//        primaryDataLakeServiceClient.renameFileSystemWithResponse(
+//            new FileSystemRenameOptions(fsc.getFileSystemName(), generateFileSystemName()).setRequestConditions(cac),
+//            null, null).getStatusCode() == 200
+//
+//        where:
+//        leaseID         || _
+//        null            || _
+//        receivedLeaseID || _
+//    }
+//
+//    @Unroll
+//    def "Rename file system AC fail"() {
+//        setup:
+//        def cac = new DataLakeRequestConditions()
+//            .setLeaseId(leaseID)
+//
+//        when:
+//        primaryDataLakeServiceClient.renameFileSystemWithResponse(
+//            new FileSystemRenameOptions(fsc.getFileSystemName(), generateFileSystemName()).setRequestConditions(cac),
+//            null, null)
+//
+//        then:
+//        thrown(DataLakeStorageException)
+//
+//        where:
+//        leaseID         || _
+//        garbageLeaseID  || _
+//    }
+//
+//    @Unroll
+//    def "Rename file system AC illegal"() {
+//        setup:
+//        def ac = new DataLakeRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+//
+//        when:
+//        primaryDataLakeServiceClient.renameFileSystemWithResponse(
+//            new FileSystemRenameOptions(fsc.getFileSystemName(), generateFileSystemName()).setRequestConditions(ac),
+//            null, null)
+//
+//        then:
+//        thrown(UnsupportedOperationException)
+//
+//        where:
+//        modified | unmodified | match        | noneMatch
+//        oldDate  | null       | null         | null
+//        null     | newDate    | null         | null
+//        null     | null       | receivedEtag | null
+//        null     | null       | null         | garbageEtag
+//    }
+//
+//    def "Rename file system error"() {
+//        setup:
+//        def oldName = generateFileSystemName()
+//        def newName = generateFileSystemName()
+//
+//        when:
+//        primaryDataLakeServiceClient.renameFileSystem(oldName, newName)
+//
+//        then:
+//        thrown(DataLakeStorageException)
+//    }
 
 }

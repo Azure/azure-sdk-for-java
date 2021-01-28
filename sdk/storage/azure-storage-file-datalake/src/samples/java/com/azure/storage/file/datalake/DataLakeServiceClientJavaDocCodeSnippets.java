@@ -12,7 +12,6 @@ import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.FileSystemListDetails;
 import com.azure.storage.file.datalake.models.ListFileSystemsOptions;
 import com.azure.storage.file.datalake.models.PublicAccessType;
-import com.azure.storage.file.datalake.options.FileSystemRenameOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 
 import java.time.Duration;
@@ -182,28 +181,28 @@ public class DataLakeServiceClientJavaDocCodeSnippets {
         // END: com.azure.storage.file.datalake.DataLakeServiceClient.undeleteFileSystemWithResponse#FileSystemUndeleteOptions-Duration-Context
     }
 
-    /**
-     * Code snippet for {@link DataLakeServiceClient#renameFileSystem(String, String)}
-     */
-    public void renameFileSystem() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String
-        DataLakeFileSystemClient fileSystemClient = client.renameFileSystem("newFileSystemName", "oldFileSystemName");
-        // END: com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String
-    }
-
-    /**
-     * Code snippet for {@link DataLakeServiceClient#renameFileSystemWithResponse(FileSystemRenameOptions, Duration, Context)}
-     */
-    public void renameContainerWithResponse() {
-        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#FileSystemRenameOptions-Duration-Context
-        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId("lease-id");
-        Context context = new Context("Key", "Value");
-
-        DataLakeFileSystemClient fileSystemClient = client.renameFileSystemWithResponse(
-            new FileSystemRenameOptions("newFileSystemName", "oldFileSystemName")
-                .setRequestConditions(requestConditions), Duration.ofSeconds(1), context).getValue();
-        // END: com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#FileSystemRenameOptions-Duration-Context
-    }
+//    /**
+//     * Code snippet for {@link DataLakeServiceClient#renameFileSystem(String, String)}
+//     */
+//    public void renameFileSystem() {
+//        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String
+//        DataLakeFileSystemClient fileSystemClient = client.renameFileSystem("oldFileSystemName", "newFileSystemName");
+//        // END: com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String
+//    }
+//
+//    /**
+//     * Code snippet for {@link DataLakeServiceClient#renameFileSystemWithResponse(String, FileSystemRenameOptions, Duration, Context)}
+//     */
+//    public void renameFileSystemWithResponse() {
+//        // BEGIN: com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context
+//        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId("lease-id");
+//        Context context = new Context("Key", "Value");
+//
+//        DataLakeFileSystemClient fileSystemClient = client.renameFileSystemWithResponse("oldFileSystemName",
+//            new FileSystemRenameOptions("newFileSystemName")
+//                .setRequestConditions(requestConditions), Duration.ofSeconds(1), context).getValue();
+//        // END: com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context
+//    }
 
 
     /**

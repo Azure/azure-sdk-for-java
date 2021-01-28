@@ -12,16 +12,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobServiceStatistics;
-import com.azure.storage.blob.options.ContainerRenameOptions;
-import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -527,44 +526,43 @@ public final class BlobServiceClient {
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
-    /**
-     * Renames an existing blob container.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.renameBlobContainer#String-String}
-     *
-     * @param destinationContainerName The new name of the container.
-     * @param sourceContainerName The current name of the container.
-     * @return A {@link BlobContainerClient} used to interact with the renamed container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BlobContainerClient renameBlobContainer(String destinationContainerName,
-        String sourceContainerName) {
-        return renameBlobContainerWithResponse(new ContainerRenameOptions(destinationContainerName,
-            sourceContainerName), null, Context.NONE).getValue();
-    }
-
-    /**
-     * Renames an existing blob container.
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobServiceClient.renameBlobContainerWithResponse#ContainerRenameOptions-Duration-Context}
-     *
-     * @param options {@link ContainerRenameOptions}
-     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-     * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Response} whose {@link Response#getValue() value} contains a
-     * {@link BlobContainerClient} used to interact with the renamed container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BlobContainerClient> renameBlobContainerWithResponse(ContainerRenameOptions options,
-        Duration timeout, Context context) {
-        Mono<Response<BlobContainerClient>> response =
-            this.blobServiceAsyncClient.renameBlobContainerWithResponse(options, context)
-                .map(r -> new SimpleResponse<>(r, getBlobContainerClient(r.getValue().getBlobContainerName())));
-
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
-    }
+//    /**
+//     * Renames an existing blob container.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * {@codesnippet com.azure.storage.blob.BlobServiceClient.renameBlobContainer#String-String}
+//     *
+//     * @param sourceContainerName The current name of the container.
+//     * @param destinationContainerName The new name of the container.
+//     * @return A {@link BlobContainerClient} used to interact with the renamed container.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    BlobContainerClient renameBlobContainer(String sourceContainerName, String destinationContainerName) {
+//        return renameBlobContainerWithResponse(sourceContainerName, new BlobContainerRenameOptions(destinationContainerName
+//        ), null, Context.NONE).getValue();
+//    }
+//
+//    /**
+//     * Renames an existing blob container.
+//     *
+//     * <p><strong>Code Samples</strong></p>
+//     *
+//     * {@codesnippet com.azure.storage.blob.BlobServiceClient.renameBlobContainerWithResponse#String-BlobContainerRenameOptions-Duration-Context}
+//     *
+//     * @param options {@link BlobContainerRenameOptions}
+//     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+//     * @param context Additional context that is passed through the Http pipeline during the service call.
+//     * @return A {@link Response} whose {@link Response#getValue() value} contains a
+//     * {@link BlobContainerClient} used to interact with the renamed container.
+//     */
+//    @ServiceMethod(returns = ReturnType.SINGLE)
+//    Response<BlobContainerClient> renameBlobContainerWithResponse(String sourceContainerName,
+//        BlobContainerRenameOptions options, Duration timeout, Context context) {
+//        Mono<Response<BlobContainerClient>> response =
+//            this.blobServiceAsyncClient.renameBlobContainerWithResponse(sourceContainerName, options, context)
+//                .map(r -> new SimpleResponse<>(r, getBlobContainerClient(r.getValue().getBlobContainerName())));
+//
+//        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+//    }
 }
