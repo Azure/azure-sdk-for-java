@@ -473,31 +473,17 @@ public final class CosmosAsyncClient implements Closeable {
      * Enable throughput control by providing the throughput control groups.
      * Each cosmos client can only enable throughput control once.
      *
-     * @param groupList The throughput control group configuration list.
+     * @param groupSet The throughput control group configuration set.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public void enableThroughputControl(List<ThroughputControlGroup> groupList) {
-        checkNotNull(groupList, "Throughput control group list cannot be null");
+    public void enableThroughputControl(Set<ThroughputControlGroup> groupSet) {
+        checkNotNull(groupSet, "Throughput control group set cannot be null");
 
-        // Validate no duplicate group definition.
-        // Validate only at most 1 useByDefault group can be defined.
-        Set<ThroughputControlGroup> groupConfigSet = new HashSet<>();
-        boolean hasUseByDefaultGroup = false;
-
-        for (ThroughputControlGroup group : groupList) {
-            checkArgument(group != null, "Throughput control group config cannot be null");
-            if (!groupConfigSet.add(group)) {
-                throw new IllegalArgumentException(String.format("Duplicate throughput control group %s", group.getGroupName()));
-            }
-            if (group.isUseByDefault()) {
-                if (hasUseByDefaultGroup) {
-                    throw new IllegalArgumentException("Only at most one group can be set as default");
-                }
-                hasUseByDefaultGroup = true;
-            }
+        if (groupSet.stream().filter(group -> group.isUseByDefault()).count() > 1) {
+            throw new IllegalArgumentException("Only at most one group can be set as default");
         }
 
-        this.asyncDocumentClient.enableThroughputControl(groupConfigSet);
+        this.asyncDocumentClient.enableThroughputControl(groupSet);
     }
 
     private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, CosmosQueryRequestOptions options){

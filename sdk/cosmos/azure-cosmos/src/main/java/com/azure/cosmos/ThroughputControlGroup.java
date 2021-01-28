@@ -47,7 +47,7 @@ public class ThroughputControlGroup {
      * @return the {@link ThroughputControlMode}.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlMode getControlMode() {
+    ThroughputControlMode getControlMode() {
         return this.controlMode;
     }
 
@@ -96,7 +96,7 @@ public class ThroughputControlGroup {
     }
 
     /**
-     * Set the throughput control group target throughput. The value should be larger than 0.
+     * Set the throughput control group target throughput. The value should be greater than 0.
      *
      * @param targetThroughput the target throughput for the throughput control group.
      * @return the {@link ThroughputControlGroup}.

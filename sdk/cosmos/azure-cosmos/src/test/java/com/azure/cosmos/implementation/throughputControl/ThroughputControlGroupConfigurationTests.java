@@ -13,8 +13,8 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -61,7 +61,7 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
                 group.setTargetThroughputThreshold(targetThroughputThreshold);
             }
 
-            List<ThroughputControlGroup> groups = new ArrayList<>();
+            Set<ThroughputControlGroup> groups = new HashSet<>();
             groups.add(group);
 
             client.enableThroughputControl(groups);
@@ -70,22 +70,6 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
                 assertThat(exception).isInstanceOf(exceptionType);
             }
         }
-    }
-
-    @Test(groups = { "emulator" })
-    public void validateDuplicateGroups() {
-        ThroughputControlGroup group1 = container.createThroughputControlGroup("group");
-        group1.setTargetThroughput(10);
-
-        ThroughputControlGroup group2 = container.createThroughputControlGroup("group");
-        group2.setTargetThroughputThreshold(0.2);
-
-        List<ThroughputControlGroup> groups = new ArrayList<>();
-        groups.add(group1);
-        groups.add(group2);
-
-        assertThatThrownBy(() -> client.enableThroughputControl(groups))
-            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test(groups = { "emulator" })
@@ -99,7 +83,7 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
             .setTargetThroughputThreshold(0.2)
             .setUseByDefault();
 
-        List<ThroughputControlGroup> groups = new ArrayList<>();
+        Set<ThroughputControlGroup> groups = new HashSet<>();
         groups.add(group1);
         groups.add(group2);
         assertThatThrownBy(() -> client.enableThroughputControl(groups))

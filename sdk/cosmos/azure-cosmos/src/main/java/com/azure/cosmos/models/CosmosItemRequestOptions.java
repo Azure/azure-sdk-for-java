@@ -288,6 +288,7 @@ public class CosmosItemRequestOptions {
         return requestOptions;
     }
 
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }

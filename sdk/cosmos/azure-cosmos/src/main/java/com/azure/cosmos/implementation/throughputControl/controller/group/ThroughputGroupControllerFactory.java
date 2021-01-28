@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.throughputControl.controller.group;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -19,7 +20,8 @@ public class ThroughputGroupControllerFactory {
         RxPartitionKeyRangeCache partitionKeyRangeCache,
         String targetCollectionRid) {
 
-        if (group.getControlMode() == ThroughputControlMode.LOCAL) {
+        ThroughputControlMode controlMode = BridgeInternal.getThroughputControlMode(group);
+        if (controlMode == ThroughputControlMode.LOCAL) {
             return new ThroughputGroupLocalController(
                 connectionMode,
                 globalEndpointManager,
@@ -31,6 +33,6 @@ public class ThroughputGroupControllerFactory {
 
         // TODO: distributed mode support
 
-        throw new IllegalArgumentException(String.format("Throughput group control mode %s is not supported", group.getControlMode()));
+        throw new IllegalArgumentException(String.format("Throughput group control mode %s is not supported", controlMode));
     }
 }

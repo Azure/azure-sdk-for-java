@@ -18,7 +18,9 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +46,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         group2.setTargetThroughputThreshold(0.9)
             .setLocalControlMode();
 
-        List<ThroughputControlGroup> groups = new ArrayList<>();
+        Set<ThroughputControlGroup> groups = new HashSet<>();
         groups.add(group1);
         groups.add(group2);
 

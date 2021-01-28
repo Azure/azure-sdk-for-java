@@ -172,7 +172,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
                     return this.shouldUpdateRequestController(request)
                         .flatMap(shouldUpdate -> {
                             if (shouldUpdate) {
-                                requestController.close();
+                                requestController.close().subscribeOn(Schedulers.elastic()).subscribe();
                                 this.refreshRequestController();
                                 return this.resolveRequestController();
                             } else {
@@ -184,7 +184,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
             .flatMap(requestController -> {
                 if (requestController.canHandleRequest(request)) {
                     return requestController.processRequest(request, nextRequestMono)
-                        .doOnError(throwable -> this.doOnError(throwable));
+                        .doOnError(throwable -> this.handleException(throwable));
                 } else {
                     // If we reach here and still can not handle the request, it should mean the request has staled info
                     // and the request will fail by server
@@ -222,7 +222,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
             () -> this.createAndInitializeRequestController());
     }
 
-    private void doOnError(Throwable throwable) {
+    private void handleException(Throwable throwable) {
         checkNotNull(throwable, "Throwable can not be null");
 
         CosmosException cosmosException = Utils.as(throwable, CosmosException.class);

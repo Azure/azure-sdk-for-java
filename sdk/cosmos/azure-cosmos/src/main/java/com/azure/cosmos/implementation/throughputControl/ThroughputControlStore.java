@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Collections;
 import java.util.List;
@@ -172,7 +173,7 @@ public class ThroughputControlStore {
                     return this.shouldRefreshContainerController(collectionLink, request)
                         .flatMap(shouldRefresh -> {
                             if (shouldRefresh) {
-                                containerController.close();
+                                containerController.close().subscribeOn(Schedulers.elastic()).subscribe();
                                 this.containerControllerCache.refresh(collectionLink, () -> this.createAndInitContainerController(collectionLink));
                                 return this.resolveContainerController(collectionLink);
                             }
@@ -184,7 +185,7 @@ public class ThroughputControlStore {
                 .flatMap(containerController -> {
                     if (containerController.canHandleRequest(request)) {
                         return containerController.processRequest(request, originalRequestMono)
-                            .doOnError(throwable -> this.doOnError(request, containerController, throwable));
+                            .doOnError(throwable -> this.handleException(request, containerController, throwable));
                     } else {
                         // still can not handle the request
                         logger.warn(
@@ -207,7 +208,7 @@ public class ThroughputControlStore {
                 Mono.just(StringUtils.equals(documentCollection.getResourceId(), request.requestContext.resolvedCollectionRid)));
     }
 
-    private void doOnError(RxDocumentServiceRequest request, IThroughputController controller, Throwable throwable) {
+    private void handleException(RxDocumentServiceRequest request, IThroughputController controller, Throwable throwable) {
         checkNotNull(request, "Request can not be null");
         checkNotNull(controller, "Container controller can not be null");
         checkNotNull(throwable, "Exception can not be null");
@@ -217,7 +218,7 @@ public class ThroughputControlStore {
         if (cosmosException != null &&
             (Exceptions.isNameCacheStale(cosmosException) || Exceptions.isPartitionKeyMismatchException(cosmosException))) {
 
-            controller.close();
+            controller.close().subscribeOn(Schedulers.elastic()).subscribe();
             String containerLink = Utils.getCollectionName(request.getResourceAddress());
 
             this.collectionCache.refresh(null, containerLink, null);
