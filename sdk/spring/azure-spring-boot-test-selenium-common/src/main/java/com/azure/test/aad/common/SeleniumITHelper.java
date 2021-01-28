@@ -4,9 +4,7 @@
 package com.azure.test.aad.common;
 
 import com.azure.spring.test.AppRunner;
-import java.io.File;
 import java.util.Map;
-import java.util.UUID;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -18,8 +16,6 @@ public class SeleniumITHelper {
     protected AppRunner app;
     protected WebDriver driver;
     protected WebDriverWait wait;
-    private final static String tempDirPath =
-        System.getProperty("java.io.tmpdir") + File.separator + UUID.randomUUID();
 
     public SeleniumITHelper(Class<?> appClass, Map<String, String> properties) {
         createDriver();
