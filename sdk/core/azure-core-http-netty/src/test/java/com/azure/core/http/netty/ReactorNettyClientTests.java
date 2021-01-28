@@ -365,7 +365,7 @@ public class ReactorNettyClientTests {
     public void requestHeader(String headerValue, String expectedValue) {
         HttpClient client = new ReactorNettyClientProvider().createInstance();
 
-        HttpHeaders headers = new HttpHeaders().put(TEST_HEADER, headerValue);
+        HttpHeaders headers = new HttpHeaders().set(TEST_HEADER, headerValue);
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/httpHeaders"), headers, Flux.empty());
 
         StepVerifier.create(client.send(request))

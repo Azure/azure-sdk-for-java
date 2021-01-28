@@ -12,7 +12,7 @@ public class CommunicationTokenRefreshOptions {
 
     /**
      * Creates a CommunicationTokenRefreshOptions object
-     * 
+     *
      * @param tokenRefresher the token refresher to provide capacity to fetch fresh token
      * @param refreshProactively when set to true, turn on proactive fetching to call
      *                           tokenRefresher before token expiry by minutes set
@@ -27,7 +27,7 @@ public class CommunicationTokenRefreshOptions {
 
      /**
      * Creates a CommunicationTokenRefreshOptions object
-     * 
+     *
      * @param tokenRefresher the token refresher to provide capacity to fetch fresh token
      * @param refreshProactively when set to true, turn on proactive fetching to call
      *                           tokenRefresher before token expiry by minutes set

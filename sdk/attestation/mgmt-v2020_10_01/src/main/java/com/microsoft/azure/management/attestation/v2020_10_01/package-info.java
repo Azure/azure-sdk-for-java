@@ -6,6 +6,6 @@
 
 /**
  * This package contains the classes for AttestationManagementClient.
- * Various APIs for managing resources in attestation service. This primarily encompasses per-tenant instance management.
+ * Various APIs for managing resources in attestation service. This primarily encompasses per-provider management.
  */
 package com.microsoft.azure.management.attestation.v2020_10_01;

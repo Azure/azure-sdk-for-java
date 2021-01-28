@@ -393,6 +393,8 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl.java"/>
   <!-- Checkstyle suppressions for the auto generated Phone Number Administration Implementation -->
   <suppress checks="LineLength" files="com.azure.communication.administration.implementation.PhoneNumberAdministrationsImpl.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
+            files="com.azure.communication.common.implementation.HmacAuthenticationPolicy.java"/>
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.data.schemaregistry.implementation.*"/>
 
   <!-- Suppress the check on synapse code-gen classes -->

@@ -7,4 +7,11 @@ module com.azure.communication.common {
 
     // public API surface area
     exports com.azure.communication.common;
+
+    exports com.azure.communication.common.implementation to
+        com.azure.communication.administration,
+        com.azure.communication.sms,
+        com.azure.communication.chat;
+
+    opens com.azure.communication.common.implementation;
 }

@@ -36,7 +36,7 @@ public interface FeedRange {
      * @param partitionKey the logical partition key value
      * @return A feed range for a certain logical partition
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static FeedRange forLogicalPartition(PartitionKey partitionKey) {
         checkNotNull(partitionKey, "Argument 'partitionKey' must not be null.");
 
@@ -48,7 +48,7 @@ public interface FeedRange {
      * Creates a range for an entire container
      * @return A feed range for an entire container
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static FeedRange forFullRange() {
         return FeedRangeEpkImpl.forFullRange();
     }
