@@ -111,11 +111,11 @@ jobs:
             - script: |
                 echo directory
                 echo "====="
-                echo $directory
+                echo ${{ directory }}
               displayName: 'echo directory'
             - template: /eng/common/TestResources/deploy-test-resources.yml
               parameters:
-                ServiceDirectory: 'directory'
+                ServiceDirectory: '${{ directory }}'
                 SubscriptionConfiguration: $(SubscriptionConfiguration)
                 ArmTemplateParameters: $(ArmTemplateParameters)
                 Location: $(Location)
