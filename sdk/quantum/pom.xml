@@ -12,14 +12,14 @@
     <profile>
       <id>coverage</id>
       <modules>
-        <module>azure-quantum-jobs-service</module>
+        <module>azure-quantum-jobs</module>
       </modules>
 
       <dependencies>
         <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>azure-quantum-jobs-service</artifactId>
-          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-quantum-jobs-service;current} -->
+          <artifactId>azure-quantum-jobs</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-quantum-jobs;current} -->
         </dependency>
       </dependencies>
 
@@ -51,7 +51,7 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <modules>
-        <module>azure-quantum-jobs-service</module>
+        <module>azure-quantum-jobs</module>
       </modules>
     </profile>
   </profiles>
