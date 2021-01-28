@@ -107,8 +107,7 @@ jobs:
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - ${{ if eq(parameters.TestResourceDirectories, '') }}:
-          parameters:
-            TestResourceDirectories: ${{ parameters.ServiceDirectory }}
+          ${{ parameters.TestResourceDirectories }}: ${{ parameters.ServiceDirectory }}
         - ${{ each directory in parameters.TestResourceDirectories }}:
           - script: |
               echo directory
