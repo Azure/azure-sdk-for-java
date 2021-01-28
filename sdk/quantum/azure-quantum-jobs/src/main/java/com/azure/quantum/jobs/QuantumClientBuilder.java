@@ -15,7 +15,6 @@ import com.azure.core.http.policy.*;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.quantum.jobs.implementation.QuantumClientImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -270,16 +269,15 @@ public final class QuantumClientBuilder {
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
-        if (tokenCredential == null) {
-            tokenCredential = new DefaultAzureCredentialBuilder().build();
-        }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
         policies.add(
                 new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion, buildConfiguration));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
         policies.add(new CookiePolicy());
         policies.addAll(this.pipelinePolicies);

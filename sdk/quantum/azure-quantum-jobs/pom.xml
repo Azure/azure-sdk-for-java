@@ -10,9 +10,9 @@
     <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
-  <groupId>com.azure.quantum.jobs</groupId>
-  <artifactId>azure-quantum-jobs</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.quantum.jobs:azure-quantum-jobs;current} -->
+  <groupId>com.azure</groupId>
+  <artifactId>azure-quantum-jobs-service</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-quantum-jobs-service;current} -->
 
   <name>Microsoft Azure client library for Azure Quantum service</name>
   <description>This package contains the Microsoft Azure Quantum SDK.</description>
@@ -40,22 +40,13 @@
 
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-core-management</artifactId>
-      <version>1.1.0</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+      <artifactId>azure-core</artifactId>
+      <version>1.12.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
 
+
+
     <!-- Test Dependencies -->
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.30</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
@@ -66,6 +57,12 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
       <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.2.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
 

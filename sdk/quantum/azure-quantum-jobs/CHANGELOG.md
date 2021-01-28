@@ -2,5 +2,5 @@
 
 ## 1.0.0-beta.1 (Unreleased)
 
-### Added
+### New features
 - Initial preview of Azure.Quantum.Jobs

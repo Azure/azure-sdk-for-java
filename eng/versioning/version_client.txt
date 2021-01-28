@@ -103,6 +103,7 @@ com.azure:azure-storage-internal-avro;12.0.2;12.1.0-beta.1
 com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-storage-queue;12.8.0;12.9.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
+com.azure.quantum.jobs:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config-web;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-cloud-appconfiguration-config;1.2.8-beta.1;1.2.8-beta.1
 com.azure.spring:azure-spring-cloud-feature-management-web;1.2.8-beta.1;1.2.8-beta.1
@@ -194,7 +195,6 @@ com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.1;1.0.0-
 com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-healthbot;1.0.0-beta.1;1.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-confluent;1.0.0-beta.1;1.0.0-beta.2
-com.azure.quantum.jobs:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.1
 
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current

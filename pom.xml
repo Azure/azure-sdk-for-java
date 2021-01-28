@@ -68,6 +68,9 @@
         <!-- Metrics Advisor -->
         <module>sdk/metricsadvisor/azure-ai-metricsadvisor</module>
 
+        <!-- Quantum Jobs -->
+        <module>sdk/quantum/azure-quantum-jobs</module>
+
         <!-- Schema Registry -->
         <module>sdk/schemaregistry/azure-data-schemaregistry</module>
         <module>sdk/schemaregistry/azure-data-schemaregistry-avro</module>
@@ -102,9 +105,6 @@
 
         <!-- Text Analytics -->
         <module>sdk/textanalytics/azure-ai-textanalytics</module>
-
-        <!-- Quantum Jobs -->
-        <module>sdk/quantum/azure-quantum-jobs</module>
       </modules>
 
       <distributionManagement>
@@ -241,6 +241,10 @@
                     <packages>com.azure.security.keyvault*</packages>
                   </group>
                   <group>
+                    <title>Azure Quantum Jobs</title>
+                    <packages>com.azure.quantum.jobs*</packages>
+                  </group>
+                  <group>
                     <title>Azure Search Documents</title>
                     <packages>com.azure.search.documents*</packages>
                   </group>
@@ -287,10 +291,6 @@
                   <group>
                     <title>Azure Text Analytics</title>
                     <packages>com.azure.ai.textanalytics*</packages>
-                  </group>
-                  <group>
-                    <title>Azure Quantum Jobs</title>
-                    <packages>com.azure.quantum.jobs*</packages>
                   </group>
                 </groups>
                 <links>
