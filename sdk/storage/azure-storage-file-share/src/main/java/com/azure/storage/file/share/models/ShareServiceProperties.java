@@ -20,14 +20,14 @@ public final class ShareServiceProperties {
      * A summary of request statistics grouped by API in hourly aggregates for
      * files.
      */
-    @JsonProperty(value = "HourMetrics")
+    @JsonProperty(value = "Metrics")
     private ShareMetrics hourMetrics;
 
     /*
      * A summary of request statistics grouped by API in minute aggregates for
      * files.
      */
-    @JsonProperty(value = "MinuteMetrics")
+    @JsonProperty(value = "Metrics")
     private ShareMetrics minuteMetrics;
 
     private static final class CorsWrapper {

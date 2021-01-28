@@ -21,7 +21,6 @@ import com.azure.storage.common.implementation.connectionstring.StorageAuthentic
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
-import com.azure.storage.common.policy.VersionPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.sas.CommonSasQueryParameters;
@@ -128,8 +127,6 @@ public class ShareFileClientBuilder {
         Objects.requireNonNull(resourcePath, "'resourcePath' cannot be null.");
         CredentialValidator.validateSingleCredentialIsPresent(
             storageSharedKeyCredential, null, azureSasCredential, sasToken, logger);
-        // TODO (gapra) : Remove once support added by generator
-        perCallPolicies.add(0, new VersionPolicy(serviceVersion.getVersion()));
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(() -> {
             if (storageSharedKeyCredential != null) {
@@ -147,7 +144,7 @@ public class ShareFileClientBuilder {
         return new AzureFileStorageImplBuilder()
             .url(endpoint)
             .pipeline(pipeline)
-//            .version(serviceVersion.getVersion())
+            .version(serviceVersion.getVersion())
             .buildClient();
     }
 

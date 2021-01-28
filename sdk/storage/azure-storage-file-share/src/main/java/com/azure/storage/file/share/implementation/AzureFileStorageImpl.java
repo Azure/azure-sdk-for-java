@@ -113,14 +113,16 @@ public final class AzureFileStorageImpl {
     /**
      * Initializes an instance of AzureFileStorage client.
      *
+     * @param version Specifies the version of the operation to use for this request.
      * @param url The URL of the service account, share, directory or file that is the target of the desired operation.
      */
-    AzureFileStorageImpl(String url) {
+    AzureFileStorageImpl(String version, String url) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
+                version,
                 url);
     }
 
@@ -128,10 +130,11 @@ public final class AzureFileStorageImpl {
      * Initializes an instance of AzureFileStorage client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param version Specifies the version of the operation to use for this request.
      * @param url The URL of the service account, share, directory or file that is the target of the desired operation.
      */
-    AzureFileStorageImpl(HttpPipeline httpPipeline, String url) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url);
+    AzureFileStorageImpl(HttpPipeline httpPipeline, String version, String url) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), version, url);
     }
 
     /**
@@ -139,13 +142,14 @@ public final class AzureFileStorageImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param version Specifies the version of the operation to use for this request.
      * @param url The URL of the service account, share, directory or file that is the target of the desired operation.
      */
-    AzureFileStorageImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url) {
+    AzureFileStorageImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String version, String url) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
+        this.version = version;
         this.url = url;
-        this.version = "2019-07-07";
         this.services = new ServicesImpl(this);
         this.shares = new SharesImpl(this);
         this.directories = new DirectoriesImpl(this);

@@ -38,6 +38,22 @@ public final class AzureFileStorageImplBuilder {
     }
 
     /*
+     * Specifies the version of the operation to use for this request.
+     */
+    private String version;
+
+    /**
+     * Sets Specifies the version of the operation to use for this request.
+     *
+     * @param version the version value.
+     * @return the AzureFileStorageImplBuilder.
+     */
+    public AzureFileStorageImplBuilder version(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /*
      * The URL of the service account, share, directory or file that is the
      * target of the desired operation.
      */
@@ -174,13 +190,16 @@ public final class AzureFileStorageImplBuilder {
      * @return an instance of AzureFileStorageImpl.
      */
     public AzureFileStorageImpl buildClient() {
+        if (version == null) {
+            this.version = "2019-07-07";
+        }
         if (pipeline == null) {
             this.pipeline = createHttpPipeline();
         }
         if (serializerAdapter == null) {
             this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
         }
-        AzureFileStorageImpl client = new AzureFileStorageImpl(pipeline, serializerAdapter, url);
+        AzureFileStorageImpl client = new AzureFileStorageImpl(pipeline, serializerAdapter, version, url);
         return client;
     }
 
