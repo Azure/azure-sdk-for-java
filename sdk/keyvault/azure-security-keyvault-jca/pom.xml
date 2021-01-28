@@ -14,7 +14,7 @@
 
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-jca</artifactId>
-    <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+    <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
     <name>JCA Provider for Azure Key Vault</name>
     <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
     <build>
@@ -47,6 +47,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <createSourcesJar>false</createSourcesJar>
                             <relocations>
                                 <relocation>
                                     <pattern>com.fasterxml.jackson</pattern>
@@ -72,7 +73,6 @@
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                             </transformers>
-                            <createSourcesJar>true</createSourcesJar>
                         </configuration>
                     </execution>
                 </executions>

@@ -1,7 +1,10 @@
 # Release History
 
 ## 1.0.0-beta.3 (Unreleased)
-
+- Support Azure Active Directory (AAD) authentication for Metrics Advisor clients. 
+- Renamed method `listDimensionValuesWithAnomalies` and `ListDimensionValuesWithAnomaliesOptions` 
+  to `listAnomalyDimensionValues` and  `ListAnomalyDimensionValuesOptions` respectively.
+- Updated `DataFeed.metricIds` to return a `Map<metricName, metricId>`
 
 ## 1.0.0-beta.2 (2020-11-10)
 

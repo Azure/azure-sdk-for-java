@@ -8,6 +8,7 @@ trigger:
       - release/*
   paths:
     include:
+      - common/perf-test-core/
       - sdk/template/
 
 pr:
@@ -19,15 +20,17 @@ pr:
       - release/*
   paths:
     include:
+      - common/perf-test-core/
       - sdk/template/
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: template
-    TestPipeline: true
     Artifacts:
       - name: azure-sdk-template
         groupId: com.azure
         safeName: azuresdktemplate
-        
+    AdditionalModules:
+      - name: azure-template-perf
+        groupId: com.azure

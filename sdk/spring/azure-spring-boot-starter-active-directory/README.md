@@ -55,7 +55,7 @@ To use this starter in a resource server with OBO function, please add following
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory</artifactId>
-    <version>3.0.0-beta.1</version>
+    <version>3.2.0-beta.1</version>
 </dependency>
 <dependency>
     <groupId>org.springframework.boot</groupId>

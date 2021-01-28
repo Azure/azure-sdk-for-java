@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProvider;
+import com.azure.core.http.jdk.httpclient.JdkHttpClientProvider;
 
 module com.azure.core.http.jdk.httpclient {
     requires transitive com.azure.core;

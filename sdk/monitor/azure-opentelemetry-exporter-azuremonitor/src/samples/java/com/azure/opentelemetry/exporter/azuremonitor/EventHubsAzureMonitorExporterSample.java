@@ -8,12 +8,11 @@ import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.trace.TracerSdkProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
-import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.Tracer;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -50,9 +49,12 @@ public class EventHubsAzureMonitorExporterSample {
             .connectionString("{connection-string}")
             .buildExporter();
 
-        TracerSdkProvider tracerSdkProvider = OpenTelemetrySdk.getTracerProvider();
-        tracerSdkProvider.addSpanProcessor(SimpleSpanProcessor.newBuilder(exporter).build());
-        return tracerSdkProvider.get("Sample");
+        OpenTelemetrySdk openTelemetry = OpenTelemetrySdk.builder().build();
+        openTelemetry
+            .getTracerManagement()
+            .addSpanProcessor(SimpleSpanProcessor.builder(exporter).build());
+
+        return openTelemetry.getTracer("Sample");
     }
 
     /**
@@ -65,7 +67,7 @@ public class EventHubsAzureMonitorExporterSample {
             .buildAsyncProducerClient();
 
         Span span = TRACER.spanBuilder("user-parent-span").startSpan();
-        final Scope scope = TRACER.withSpan(span);
+        final Scope scope = span.makeCurrent();
         try {
             String firstPartition = producer.getPartitionIds().blockFirst(OPERATION_TIMEOUT);
 
@@ -74,8 +76,8 @@ public class EventHubsAzureMonitorExporterSample {
 
             // We will publish three events based on simple sentences.
             Flux<EventData> data = Flux.just(
-                new EventData(body).addContext(PARENT_SPAN_KEY, TRACER.getCurrentSpan()),
-                new EventData(body2).addContext(PARENT_SPAN_KEY, TRACER.getCurrentSpan()));
+                new EventData(body).addContext(PARENT_SPAN_KEY, Span.current()),
+                new EventData(body2).addContext(PARENT_SPAN_KEY, Span.current()));
 
             // Create a batch to send the events.
             final CreateBatchOptions options = new CreateBatchOptions()

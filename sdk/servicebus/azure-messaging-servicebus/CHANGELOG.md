@@ -2,6 +2,26 @@
 
 ## 7.1.0-beta.1 (Unreleased)
 
+
+## 7.0.1 (2021-01-15)
+### New Features
+- Improve performance because by upgrading `azure-core-amqp` dependency to `2.0.1`. It Changes AMQP connections from 
+  sharing the global `Schedulers.single()` to having a `Scheduler.newSingle()` per connection.
+
+### Bug Fixes
+- Fix issue [18351](https://github.com/Azure/azure-sdk-for-java/issues/18351): Getting 'NullPointerException' When calling 
+  'ServiceBusAdministrationAsyncClient#getSubscriptionRuntimeProperties()' for the topic where user has only listen 
+  (and not manage) permission.
+- Fix issue [18122](https://github.com/Azure/azure-sdk-for-java/issues/18435): A session-based Message receiver does not 
+  receive messages sent after 60s gap from the last message sent. This happens if there is only one active session in
+  Service Bus entity.
+- Fix issue [18536](https://github.com/Azure/azure-sdk-for-java/issues/18536): The 'ServiceBusAdministrationClient.deleteSubscription()'
+  is not synchronous.
+
+### Dependency Updates   
+- Upgraded `azure-core` dependency to `1.12.0`.
+- Upgraded `azure-core-amqp` dependency to `2.0.1`.
+
 ## 7.0.0 (2020-11-30)
 
 ### New Features

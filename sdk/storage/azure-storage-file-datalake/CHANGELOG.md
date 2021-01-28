@@ -1,7 +1,11 @@
 # Release History
 
-## 12.4.0-beta.2 (Unreleased)
+## 12.5.0-beta.1 (Unreleased)
 
+
+## 12.4.0 (2021-01-14)
+- GA release
+- Fixed bug where getFileClient and getSubDirectoryClient on DirectoryClient would throw IllegalArgumentException if either resource had special characters.
 
 ## 12.4.0-beta.1 (2020-12-07)
 - Added support to list paths on a directory.

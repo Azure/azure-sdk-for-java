@@ -14,7 +14,7 @@ import com.azure.ai.formrecognizer.models.RecognizeCustomFormsOptions;
 import com.azure.ai.formrecognizer.models.RecognizeInvoicesOptions;
 import com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
-import com.azure.ai.formrecognizer.models.TextStyle;
+import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.ai.formrecognizer.training.models.TrainingOptions;
@@ -497,8 +497,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             syncPoller.waitForCompletion();
             List<FormPage> formPages = syncPoller.getFinalResult();
             validateContentResultData(formPages, false);
-            // TODO (next-release) update once design added for Appearance
-            assertEquals(TextStyle.OTHER, formPages.get(0).getLines().get(0).getAppearance().getStyle().getName());
+            assertEquals(TextStyleName.OTHER,
+                formPages.get(0).getLines().get(0).getAppearance().getStyle().getName());
         }, FORM_JPG);
     }
 

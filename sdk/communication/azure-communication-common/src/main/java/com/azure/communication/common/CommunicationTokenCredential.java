@@ -36,7 +36,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
 
     /**
      * Create with serialized JWT token
-     * 
+     *
      * @param token serialized JWT token
      */
     public CommunicationTokenCredential(String token) {
@@ -50,7 +50,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      * ahead of the token expiry by the number of minutes specified by
      * CallbackOffsetMinutes defaulted to ten minutes. To modify this default, call
      * setCallbackOffsetMinutes after construction
-     * 
+     *
      * @param tokenRefreshOptions implementation to supply fresh token when reqested
      */
     public CommunicationTokenCredential(CommunicationTokenRefreshOptions tokenRefreshOptions) {
@@ -68,14 +68,14 @@ public final class CommunicationTokenCredential implements AutoCloseable {
 
     /**
      * Get Azure core access token from credential
-     * 
+     *
      * @return Asynchronous call to fetch actual token
      * @throws ExecutionException when supplier throws this exception
      * @throws InterruptedException when supplier throws this exception
      */
     public Mono<AccessToken> getToken() throws InterruptedException, ExecutionException {
         if (isClosed) {
-            return FluxUtil.monoError(logger, 
+            return FluxUtil.monoError(logger,
                 new RuntimeException("getToken called on closed CommunicationTokenCredential object"));
         }
         if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
@@ -120,7 +120,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     private Mono<String> fetchFreshToken() {
         Mono<String> tokenAsync = refresher.getTokenAsync();
         if (tokenAsync == null) {
-            return FluxUtil.monoError(logger, 
+            return FluxUtil.monoError(logger,
                 new RuntimeException("TokenRefresher returned null when getTokenAsync is called"));
         }
         return tokenAsync;
@@ -149,7 +149,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
             Date expiring = Date.from(nextFetchTime.toInstant());
             expiringTimer.schedule(new TokenExpiringTask(this), expiring);
         }
-    
+
         private synchronized void stopTimer() {
             if (expiringTimer == null) {
                 return;
@@ -171,11 +171,11 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         private class TokenExpiringTask extends TimerTask {
             private final ClientLogger logger = new ClientLogger(TokenExpiringTask.class);
             private final FetchingTask tokenCache;
-    
+
             TokenExpiringTask(FetchingTask host) {
                 tokenCache = host;
             }
-    
+
             @Override
             public void run() {
                 try {
@@ -184,8 +184,8 @@ public final class CommunicationTokenCredential implements AutoCloseable {
                 } catch (Exception exception) {
                     logger.logExceptionAsError(new RuntimeException(exception));
                 }
-                
+
             }
-        }    
+        }
     }
 }

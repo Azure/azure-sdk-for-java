@@ -121,7 +121,7 @@ A notification hook is the entry point that allows the users to subscribe to rea
 
 #### Add a data feed from a sample or data source
 This example ingests the user specified `SQLServerDataFeedSource` data feed source data to the service.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L85-L121 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L85-L122 -->
 ```java
 DataFeed dataFeed = new DataFeed()
     .setName("dataFeedName")
@@ -153,7 +153,8 @@ System.out.printf("Data feed granularity type : %s%n",
 System.out.printf("Data feed granularity value : %d%n",
     createdSqlDataFeed.getGranularity().getCustomGranularityValue());
 System.out.println("Data feed related metric Ids:");
-createdSqlDataFeed.getMetricIds().forEach(System.out::println);
+dataFeed.getMetricIds().forEach((metricId, metricName)
+    -> System.out.printf("Metric Id : %s, Metric Name: %s%n", metricId, metricName));
 System.out.printf("Data feed source type: %s%n", createdSqlDataFeed.getSourceType());
 
 if (SQL_SERVER_DB == createdSqlDataFeed.getSourceType()) {
@@ -164,7 +165,7 @@ if (SQL_SERVER_DB == createdSqlDataFeed.getSourceType()) {
 #### Check ingestion status
 This example checks the ingestion status of a previously provided data feed source.
 
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L128-L139 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L129-L140 -->
 ```java
 String dataFeedId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
@@ -183,7 +184,7 @@ metricsAdvisorAdminClient.listDataFeedIngestionStatus(
 #### Configure anomaly detection configuration
 This example demonstrates how a user can configure an anomaly detection configuration for their data.
 
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L146-L176 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L147-L177 -->
 ```java
 String metricId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
@@ -220,7 +221,7 @@ final AnomalyDetectionConfiguration anomalyDetectionConfiguration =
 
 ### Add hooks for receiving anomaly alerts
 This example creates an email hook that receives anomaly incident alerts.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L183-L195 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L184-L196 -->
 ```java
 NotificationHook emailNotificationHook = new EmailNotificationHook("email Hook")
     .setDescription("my email Hook")
@@ -240,7 +241,7 @@ System.out.printf("Email Hook emails to alert: %s%n",
 #### Configure an anomaly alert configuration
 This example demonstrates how a user can configure an alerting configuration for detected anomalies in their data.
 
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L202-L222 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L203-L223 -->
 ```java
 String detectionConfigurationId1 = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
 String detectionConfigurationId2 = "3e58er30-6e6e-4391-b78f-b00dfee1e6f5";
@@ -298,7 +299,7 @@ Metrics Advisor clients raises `HttpResponseException` [exceptions][http_respons
 to provide a non existing feedback Id an `HttpResponseException` would be raised with an error indicating the failure cause.
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L256-L260 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L257-L261 -->
 ```java
 try {
     metricsAdvisorClient.getFeedback("non_existing_feedback_id");
@@ -323,7 +324,7 @@ For more details see the [samples README][samples_readme].
 #### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `MetricsAdvisorAsyncClient`
-<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L267-L271 -->
+<!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L268-L272 -->
 ```java
 MetricsAdvisorKeyCredential credential = new MetricsAdvisorKeyCredential("subscription_key", "api_key");
 MetricsAdvisorAsyncClient metricsAdvisorAsyncClient = new MetricsAdvisorClientBuilder()

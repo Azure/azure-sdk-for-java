@@ -170,8 +170,11 @@ public class SpyClientUnderTestFactory {
         List<Pair<HttpRequest, Future<HttpHeaders>>> requestsResponsePairs =
                 Collections.synchronizedList(new ArrayList<>());
 
-        DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
-            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS), credential, contentResponseOnWriteEnabled);
+        DirectHttpsClientUnderTest(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy,
+                                   ConsistencyLevel consistencyLevel, AzureKeyCredential credential,
+                                   boolean contentResponseOnWriteEnabled) {
+            super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, createConfigsSpy(Protocol.HTTPS),
+                  credential, contentResponseOnWriteEnabled);
             assert connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT;
             init(null);
 
@@ -234,7 +237,8 @@ public class SpyClientUnderTestFactory {
                                                                   Configs configs,
                                                                   AzureKeyCredential credential,
                                                                   boolean contentResponseOnWriteEnabled) {
-        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled);
+        return new ClientWithGatewaySpy(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs,
+                                        credential, contentResponseOnWriteEnabled);
     }
 
     public static ClientUnderTest createClientUnderTest(AsyncDocumentClient.Builder builder) {
@@ -252,7 +256,8 @@ public class SpyClientUnderTestFactory {
                                                         Configs configs,
                                                         AzureKeyCredential credential,
                                                         boolean contentResponseOnWriteEnabled) {
-        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, contentResponseOnWriteEnabled) {
+        return new ClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs,
+                                   credential, contentResponseOnWriteEnabled) {
 
             @Override
             RxGatewayStoreModel createRxGatewayProxy(ISessionContainer sessionContainer,
@@ -281,7 +286,9 @@ public class SpyClientUnderTestFactory {
     }
 
     public static DirectHttpsClientUnderTest createDirectHttpsClientUnderTest(
-        URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel, AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
-        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, credential, contentResponseOnWriteEnabled);
+        URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel,
+        AzureKeyCredential credential, boolean contentResponseOnWriteEnabled) {
+        return new DirectHttpsClientUnderTest(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel,
+                                              credential, contentResponseOnWriteEnabled);
     }
 }
