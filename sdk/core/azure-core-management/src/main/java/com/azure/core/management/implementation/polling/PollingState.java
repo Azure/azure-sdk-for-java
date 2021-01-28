@@ -420,7 +420,7 @@ public final class PollingState {
         assertStatusCode(200);
         if (this.isPutOrPatchLro()) {
             String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody, this.serializerAdapter);
-            if (!ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
+            if (value != null && !ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
                 final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER);
                 if (azAsyncOpUrl == null) {
                     return this.setData(new ProvisioningStateData(this.lroOperationUri, value));
