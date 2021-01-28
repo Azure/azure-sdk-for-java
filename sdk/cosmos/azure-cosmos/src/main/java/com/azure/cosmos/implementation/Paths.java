@@ -7,7 +7,7 @@ package com.azure.cosmos.implementation;
  * Used internally. Contains string constants to work with the paths in the Azure Cosmos DB database service.
  */
 public class Paths {
-    static final String ROOT = "/";
+    public static final String ROOT = "/";
     static final char ROOT_CHAR = '/';
     static final char ESCAPE_CHAR = '\\';
 

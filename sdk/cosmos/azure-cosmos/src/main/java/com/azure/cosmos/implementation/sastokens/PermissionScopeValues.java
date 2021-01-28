@@ -1,0 +1,111 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.cosmos.implementation.sastokens;
+
+/**
+ * Represents permission scope values.
+ */
+class PermissionScopeValues {
+    /**
+     * Values which set permission scope applicable to control plane related operations.
+     */
+    static final short SCOPE_ACCOUNT_READ_VALUE = (short) 0x0001;
+    static final short SCOPE_ACCOUNT_LIST_DATABASES_VALUE = (short) 0x0002;
+    static final short SCOPE_DATABASE_READ_VALUE = (short) 0x0004;
+    static final short SCOPE_DATABASE_READ_OFFER_VALUE = (short) 0x0008;
+    static final short SCOPE_DATABASE_LIST_CONTAINERS_VALUE = (short) 0x0010;
+    static final short SCOPE_CONTAINER_READ_VALUE = (short) 0x0020;
+    static final short SCOPE_CONTAINER_READ_OFFER_VALUE = (short) 0x0040;
+
+    static final short SCOPE_ACCOUNT_CREATE_DATABASES_VALUE = (short) 0x0001;
+    static final short SCOPE_ACCOUNT_DELETE_DATABASES_VALUE = (short) 0x0002;
+    static final short SCOPE_DATABASE_DELETE_VALUE = (short) 0x0004;
+    static final short SCOPE_DATABASE_REPLACE_OFFER_VALUE = (short) 0x0008;
+    static final short SCOPE_DATABASE_CREATE_CONTAINERS_VALUE = (short) 0x0010;
+    static final short SCOPE_DATABASE_DELETE_CONTAINERS_VALUE = (short) 0x0020;
+    static final short SCOPE_CONTAINER_REPLACE_VALUE = (short) 0x0040;
+    static final short SCOPE_CONTAINER_DELETE_VALUE = (short) 0x0080;
+    static final short SCOPE_CONTAINER_REPLACE_OFFER_VALUE = (short) 0x0100;
+
+    static final short SCOPE_ACCOUNT_READ_ALL_ACCESS_VALUE = (short) 0xFFFF;
+    static final short SCOPE_DATABASE_READ_ALL_ACCESS_VALUE =
+        SCOPE_DATABASE_READ_VALUE
+            | SCOPE_DATABASE_READ_OFFER_VALUE
+            | SCOPE_DATABASE_LIST_CONTAINERS_VALUE
+            | SCOPE_CONTAINER_READ_VALUE
+            | SCOPE_CONTAINER_READ_OFFER_VALUE;
+    static final short SCOPE_CONTAINERS_READ_ALL_ACCESS_VALUE =
+        SCOPE_CONTAINER_READ_VALUE
+            | SCOPE_CONTAINER_READ_OFFER_VALUE;
+
+    static final short SCOPE_ACCOUNT_WRITE_ALL_ACCESS_VALUE = (short) 0xFFFF;
+    static final short SCOPE_DATABASE_WRITE_ALL_ACCESS_VALUE =
+        SCOPE_DATABASE_DELETE_VALUE
+            | SCOPE_DATABASE_REPLACE_OFFER_VALUE
+            | SCOPE_DATABASE_CREATE_CONTAINERS_VALUE
+            | SCOPE_DATABASE_DELETE_CONTAINERS_VALUE
+            | SCOPE_CONTAINER_REPLACE_VALUE
+            | SCOPE_CONTAINER_DELETE_VALUE
+            | SCOPE_CONTAINER_REPLACE_OFFER_VALUE;
+    static final short SCOPE_CONTAINERS_WRITE_ALL_ACCESS_VALUE =
+        SCOPE_CONTAINER_REPLACE_VALUE
+            | SCOPE_CONTAINER_DELETE_VALUE
+            | SCOPE_CONTAINER_REPLACE_OFFER_VALUE;
+
+    /**
+     * Values which set permission scope applicable to data plane related operations.
+     */
+    static final int SCOPE_CONTAINER_EXECUTE_QUERIES_VALUE = 0x00000001;
+    static final int SCOPE_CONTAINER_READ_FEEDS_VALUE = 0x00000002;
+    static final int SCOPE_CONTAINER_READ_STORED_PROCEDURES_VALUE = 0x00000004;
+    static final int SCOPE_CONTAINER_READ_USER_DEFINED_FUNCTIONS_VALUE = 0x00000008;
+    static final int SCOPE_CONTAINER_READ_TRIGGERS_VALUE = 0x00000010;
+    static final int SCOPE_CONTAINER_READ_CONFLICTS_VALUE = 0x00000020;
+    static final int SCOPE_ITEM_READ_VALUE = 0x00000040;
+    static final int SCOPE_STORED_PROCEDURE_READ_VALUE = 0x00000080;
+    static final int SCOPE_USER_DEFINED_FUNCTION_READ_VALUE = 0x00000100;
+    static final int SCOPE_TRIGGER_READ_VALUE = 0x00000200;
+
+    static final int SCOPE_CONTAINER_CREATE_ITEMS_VALUE = 0x00000001;
+    static final int SCOPE_CONTAINER_REPLACE_ITEMS_VALUE = 0x00000002;
+    static final int SCOPE_CONTAINER_UPSERT_ITEMS_VALUE = 0x00000004;
+    static final int SCOPE_CONTAINER_DELETE_ITEMS_VALUE = 0x00000008;
+    static final int SCOPE_CONTAINER_CREATE_STORED_PROCEDURES_VALUE = 0x00000010;
+    static final int SCOPE_CONTAINER_REPLACE_STORED_PROCEDURES_VALUE = 0x00000020;
+    static final int SCOPE_CONTAINER_DELETE_STORED_PROCEDURES_VALUE = 0x00000040;
+    static final int SCOPE_CONTAINER_EXECUTE_STORED_PROCEDURES_VALUE = 0x00000080;
+    static final int SCOPE_CONTAINER_CREATE_TRIGGERS_VALUE = 0x00000100;
+    static final int SCOPE_CONTAINER_REPLACE_TRIGGERS_VALUE = 0x00000200;
+    static final int SCOPE_CONTAINER_DELETE_TRIGGERS_VALUE = 0x00000400;
+    static final int SCOPE_CONTAINER_CREATE_USER_DEFINED_FUNCTIONS_VALUE = 0x00000800;
+    static final int SCOPE_CONTAINER_REPLACE_USER_DEFINED_FUNCTIONS_VALUE = 0x00001000;
+    static final int SCOPE_CONTAINER_DELETE_USER_DEFINED_FUNCTIONS_VALUE = 0x00002000;
+    static final int SCOPE_CONTAINER_DELETE_CONFLICTS_VALUE = 0x00004000;
+    static final int SCOPE_ITEM_REPLACE_VALUE = 0x00010000;
+    static final int SCOPE_ITEM_UPSERT_VALUE = 0x00020000;
+    static final int SCOPE_ITEM_DELETE_VALUE = 0x00040000;
+    static final int SCOPE_STORED_PROCEDURE_REPLACE_VALUE = 0x00100000;
+    static final int SCOPE_STORED_PROCEDURE_DELETE_VALUE = 0x00200000;
+    static final int SCOPE_STORED_PROCEDURE_EXECUTE_VALUE = 0x00400000;
+    static final int SCOPE_USER_DEFINED_FUNCTION_REPLACE_VALUE = 0x00800000;
+    static final int SCOPE_USER_DEFINED_FUNCTION_DELETE_VALUE = 0x01000000;
+    static final int SCOPE_TRIGGER_REPLACE_VALUE = 0x02000000;
+    static final int SCOPE_TRIGGER_DELETE_VALUE = 0x04000000;
+
+    static final int SCOPE_CONTAINER_READ_ALL_ACCESS_VALUE = 0xFFFFFFFF;
+    static final int SCOPE_ITEM_READ_ALL_ACCESS_VALUE =
+        SCOPE_CONTAINER_EXECUTE_QUERIES_VALUE
+            | SCOPE_ITEM_READ_VALUE;
+    static final int SCOPE_CONTAINER_WRITE_ALL_ACCESS_VALUE = 0xFFFFFFFF;
+    static final int SCOPE_ITEM_WRITE_ALL_ACCESS_VALUE =
+        SCOPE_CONTAINER_CREATE_ITEMS_VALUE
+            | SCOPE_CONTAINER_REPLACE_ITEMS_VALUE
+            | SCOPE_CONTAINER_UPSERT_ITEMS_VALUE
+            | SCOPE_CONTAINER_DELETE_ITEMS_VALUE
+            | SCOPE_ITEM_REPLACE_VALUE
+            | SCOPE_ITEM_UPSERT_VALUE
+            | SCOPE_ITEM_DELETE_VALUE;
+
+    static final int NONE_VALUE = 0;
+}
