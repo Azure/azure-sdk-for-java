@@ -325,7 +325,7 @@ public class NettyAsyncHttpClientTests {
     public void requestHeader(String headerValue, String expectedValue) {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
 
-        HttpHeaders headers = new HttpHeaders().put(TEST_HEADER, headerValue);
+        HttpHeaders headers = new HttpHeaders().set(TEST_HEADER, headerValue);
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, HTTP_HEADERS_PATH), headers, Flux.empty());
 
         StepVerifier.create(client.send(request))

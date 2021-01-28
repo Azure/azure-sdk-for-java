@@ -28,8 +28,8 @@ public class IterableStreamJavaDocCodeSnippets {
      * @throws MalformedURLException if can not create URL object.
      */
     public void streamSnippet() throws MalformedURLException {
-        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
-            .put("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
+            .set("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
@@ -57,8 +57,8 @@ public class IterableStreamJavaDocCodeSnippets {
      * @throws MalformedURLException if can not create URL object.
      */
     public void iteratorwhileSnippet() throws MalformedURLException {
-        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
-            .put("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
+            .set("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
@@ -86,8 +86,8 @@ public class IterableStreamJavaDocCodeSnippets {
      * @throws MalformedURLException if can not create URL object.
      */
     public void iteratorStreamFilterSnippet() throws MalformedURLException {
-        HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1")
-            .put("header2", "value2");
+        HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1")
+            .set("header2", "value2");
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, new URL("http://localhost"));
 
         String deserializedHeaders = "header1,value1,header2,value2";
