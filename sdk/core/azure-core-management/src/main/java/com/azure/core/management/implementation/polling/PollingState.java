@@ -574,7 +574,10 @@ public final class PollingState {
         final String value = headers.getValue("Retry-After");
         if (value != null) {
             try {
-                return Duration.ofSeconds(Long.parseLong(value));
+                long retryAfterInSeconds = Long.parseLong(value);
+                if (retryAfterInSeconds >= 0) {
+                    return Duration.ofSeconds(retryAfterInSeconds);
+                }
             } catch (NumberFormatException nfe) {
                 LOGGER.logExceptionAsWarning(
                     new IllegalArgumentException("Unable to decode '" + value + "' to Long", nfe));
