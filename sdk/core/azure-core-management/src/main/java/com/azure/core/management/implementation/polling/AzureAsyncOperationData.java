@@ -171,7 +171,7 @@ final class AzureAsyncOperationData {
         }
         try {
             return adapter.deserialize(value, AsyncOperationResource.class, SerializerEncoding.JSON);
-        } catch (IOException ignored) {
+        } catch (IOException | RuntimeException ignored) {
             return null;
         }
     }
