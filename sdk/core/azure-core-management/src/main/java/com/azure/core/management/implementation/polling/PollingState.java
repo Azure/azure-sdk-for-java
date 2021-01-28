@@ -552,7 +552,12 @@ public final class PollingState {
     private static Duration getRetryAfter(HttpHeaders headers) {
         final String value = headers.getValue("Retry-After");
         if (value != null) {
-            return Duration.ofSeconds(Long.parseLong(value));
+            try {
+                return Duration.ofSeconds(Long.parseLong(value));
+            } catch (NumberFormatException nfe) {
+                LOGGER.logExceptionAsWarning(
+                    new IllegalArgumentException("Unable to decode '" + value + "' to Long", nfe));
+            }
         }
         return null;
     }
