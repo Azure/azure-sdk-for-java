@@ -178,13 +178,32 @@ public class AmqpRetryOptionsTest {
     }
 
     @Test
+    void zeroDuration() {
+        // Arrange
+        final Duration delay = Duration.ofMillis(100);
+        final AmqpRetryOptions options = new AmqpRetryOptions()
+            .setDelay(delay);
+
+        // Act
+        options.setDelay(Duration.ZERO);
+
+        // Assert
+        Assertions.assertEquals(Duration.ZERO, options.getDelay());
+    }
+
+    @Test
     void nullDuration() {
+        final Duration delay = Duration.ofMillis(100);
         final Duration maxDelay = Duration.ofMinutes(10);
         final Duration tryTimeout = Duration.ofMinutes(2);
 
         final AmqpRetryOptions options = new AmqpRetryOptions()
             .setMaxDelay(maxDelay)
-            .setTryTimeout(tryTimeout);
+            .setTryTimeout(tryTimeout)
+            .setDelay(delay);
+
+        Assertions.assertThrows(NullPointerException.class, () -> options.setDelay(null));
+        Assertions.assertEquals(delay, options.getDelay());
 
         Assertions.assertThrows(NullPointerException.class, () -> options.setMaxDelay(null));
         Assertions.assertEquals(maxDelay, options.getMaxDelay());

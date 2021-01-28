@@ -114,10 +114,17 @@ public class RetryUtilTest {
         assertEquals(options.getMaxRetries() + 1, resubscribe.get());
     }
 
-    @Test
-    void withTransientError() {
+    static Stream<Throwable> withTransientError() {
+        return Stream.of(
+            new AmqpException(true, "Test-exception", new AmqpErrorContext("test-ns")),
+            new TimeoutException("Test-timeout")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void withTransientError(Throwable transientError) {
         // Arrange
-        final Throwable transientError = new AmqpException(true, "Test-exception", new AmqpErrorContext("test-ns"));
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofSeconds(30);
         final AmqpRetryOptions options = new AmqpRetryOptions()
@@ -150,10 +157,17 @@ public class RetryUtilTest {
             .verify();
     }
 
-    @Test
-    void withNonTransientError() {
+    static Stream<Throwable> withNonTransientError() {
+        return Stream.of(
+            new AmqpException(false, "Test-exception", new AmqpErrorContext("test-ns")),
+            new IllegalStateException("Some illegal State")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void withNonTransientError(Throwable nonTransientError) {
         // Arrange
-        final AmqpException nonTransientError = new AmqpException(false, "Test-exception", new AmqpErrorContext("test-ns"));
         final String timeoutMessage = "Operation timed out.";
         final Duration timeout = Duration.ofSeconds(30);
         final AmqpRetryOptions options = new AmqpRetryOptions()
@@ -170,7 +184,7 @@ public class RetryUtilTest {
         // Act & Assert
         StepVerifier.create(RetryUtil.withRetry(stream, options, timeoutMessage))
             .expectNext(0, 1, 2)
-            .expectErrorMatches(error -> error == nonTransientError)
+            .expectErrorMatches(error -> error.equals(nonTransientError))
             .verify();
     }
 

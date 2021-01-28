@@ -86,7 +86,8 @@ public class AmqpRetryOptions {
      * @throws IllegalArgumentException When {@code delay} is negative.
      */
     public AmqpRetryOptions setDelay(Duration delay) {
-        if (delay != null && delay.isNegative()) {
+        Objects.requireNonNull(delay, "'delay' cannot be null.");
+        if (delay.isNegative()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'delay' cannot be negative."));
         }
 
@@ -101,10 +102,10 @@ public class AmqpRetryOptions {
      * @return The updated {@link AmqpRetryOptions} object.
      *
      * @throws NullPointerException When {@code maximumDelay} is null.
-     * @throws IllegalArgumentException When {@code maximumDelay} is negative.
+     * @throws IllegalArgumentException When {@code maximumDelay} is negative or zero.
      */
     public AmqpRetryOptions setMaxDelay(Duration maximumDelay) {
-        Objects.requireNonNull(maximumDelay, "'maximumDelay' cannot be null");
+        Objects.requireNonNull(maximumDelay, "'maximumDelay' cannot be null.");
         if (maximumDelay.isNegative() || maximumDelay.isZero()) {
             throw logger.logExceptionAsError(new IllegalArgumentException("'maximumDelay' must be positive."));
         }

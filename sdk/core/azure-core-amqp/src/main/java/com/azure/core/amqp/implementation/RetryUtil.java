@@ -81,10 +81,6 @@ public class RetryUtil {
     }
 
     static Retry createRetry(AmqpRetryOptions options) {
-        if (options.getDelay() == null || options.getDelay().equals(Duration.ZERO)) {
-            return Retry.max(0L);
-        }
-
         final Duration delay = options.getDelay().plus(SERVER_BUSY_WAIT_TIME);
         final RetryBackoffSpec retrySpec;
         switch (options.getMode()) {
