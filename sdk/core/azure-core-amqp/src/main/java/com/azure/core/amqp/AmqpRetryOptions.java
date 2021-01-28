@@ -4,6 +4,7 @@
 package com.azure.core.amqp;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -13,6 +14,8 @@ import java.util.Objects;
  */
 @Fluent
 public class AmqpRetryOptions {
+    private final ClientLogger logger = new ClientLogger(AmqpRetryOptions.class);
+
     private int maxRetries;
     private Duration delay;
     private Duration maxDelay;
@@ -62,8 +65,13 @@ public class AmqpRetryOptions {
      *
      * @param numberOfRetries The maximum number of retry attempts.
      * @return The updated {@link AmqpRetryOptions} object.
+     * @throws IllegalArgumentException When {@code numberOfRetries} is negative.
      */
     public AmqpRetryOptions setMaxRetries(int numberOfRetries) {
+        if (numberOfRetries < 0) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'numberOfRetries' cannot be negative."));
+        }
+
         this.maxRetries = numberOfRetries;
         return this;
     }
@@ -74,8 +82,14 @@ public class AmqpRetryOptions {
      *
      * @param delay The delay between retry attempts.
      * @return The updated {@link AmqpRetryOptions} object.
+     * @throws NullPointerException When {@code delay} is null.
+     * @throws IllegalArgumentException When {@code delay} is negative.
      */
     public AmqpRetryOptions setDelay(Duration delay) {
+        if (delay != null && delay.isNegative()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'delay' cannot be negative."));
+        }
+
         this.delay = delay;
         return this;
     }
@@ -85,8 +99,16 @@ public class AmqpRetryOptions {
      *
      * @param maximumDelay The maximum permissible delay between retry attempts.
      * @return The updated {@link AmqpRetryOptions} object.
+     *
+     * @throws NullPointerException When {@code maximumDelay} is null.
+     * @throws IllegalArgumentException When {@code maximumDelay} is negative.
      */
     public AmqpRetryOptions setMaxDelay(Duration maximumDelay) {
+        Objects.requireNonNull(maximumDelay, "'maximumDelay' cannot be null");
+        if (maximumDelay.isNegative() || maximumDelay.isZero()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'maximumDelay' must be positive."));
+        }
+
         this.maxDelay = maximumDelay;
         return this;
     }
@@ -96,8 +118,16 @@ public class AmqpRetryOptions {
      *
      * @param tryTimeout The maximum duration to wait for completion.
      * @return The updated {@link AmqpRetryOptions} object.
+     *
+     * @throws NullPointerException When {@code maximumDelay} is null.
+     * @throws IllegalArgumentException When {@code maximumDelay} is negative.
      */
     public AmqpRetryOptions setTryTimeout(Duration tryTimeout) {
+        Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null");
+        if (tryTimeout.isNegative() || tryTimeout.isZero()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'tryTimeout' must be positive."));
+        }
+
         this.tryTimeout = tryTimeout;
         return this;
     }

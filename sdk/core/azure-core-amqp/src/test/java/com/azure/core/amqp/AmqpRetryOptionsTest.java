@@ -5,10 +5,22 @@ package com.azure.core.amqp;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.Duration;
+import java.util.stream.Stream;
 
 public class AmqpRetryOptionsTest {
+    private static Stream<Duration> invalidDurations() {
+        return Stream.of(
+            Duration.ZERO,
+            Duration.ofSeconds(-1)
+        );
+    }
+
     /**
      * Test there are defaults set when creating RetryOptions
      */
@@ -135,5 +147,59 @@ public class AmqpRetryOptionsTest {
 
         Assertions.assertEquals(first, second);
         Assertions.assertEquals(first.hashCode(), second.hashCode());
+    }
+
+    @MethodSource
+    @ParameterizedTest
+    void invalidDurations(Duration invalidDuration) {
+        final Duration maxDelay = Duration.ofMinutes(10);
+        final Duration tryTimeout = Duration.ofMinutes(2);
+
+        final AmqpRetryOptions options = new AmqpRetryOptions()
+            .setMaxDelay(maxDelay)
+            .setTryTimeout(tryTimeout);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> options.setMaxDelay(invalidDuration));
+        Assertions.assertEquals(maxDelay, options.getMaxDelay());
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> options.setTryTimeout(invalidDuration));
+        Assertions.assertEquals(tryTimeout, options.getTryTimeout());
+    }
+
+    @Test
+    void invalidDelay() {
+        final Duration invalidDuration = Duration.ofSeconds(-1);
+        final Duration delay = Duration.ofSeconds(40);
+        final AmqpRetryOptions options = new AmqpRetryOptions()
+            .setDelay(delay);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> options.setDelay(invalidDuration));
+        Assertions.assertEquals(delay, options.getDelay());
+    }
+
+    @Test
+    void nullDuration() {
+        final Duration maxDelay = Duration.ofMinutes(10);
+        final Duration tryTimeout = Duration.ofMinutes(2);
+
+        final AmqpRetryOptions options = new AmqpRetryOptions()
+            .setMaxDelay(maxDelay)
+            .setTryTimeout(tryTimeout);
+
+        Assertions.assertThrows(NullPointerException.class, () -> options.setMaxDelay(null));
+        Assertions.assertEquals(maxDelay, options.getMaxDelay());
+
+        Assertions.assertThrows(NullPointerException.class, () -> options.setTryTimeout(null));
+        Assertions.assertEquals(tryTimeout, options.getTryTimeout());
+    }
+
+    @Test
+    void invalidRetries() {
+        final int retry = 5;
+        final AmqpRetryOptions options = new AmqpRetryOptions()
+            .setMaxRetries(retry);
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> options.setMaxRetries(-1));
+        Assertions.assertEquals(retry, options.getMaxRetries());
     }
 }
