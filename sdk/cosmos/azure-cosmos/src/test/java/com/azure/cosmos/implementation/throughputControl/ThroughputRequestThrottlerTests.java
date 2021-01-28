@@ -14,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ThroughputRequestThrottlerTests {
 
     @Test
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public void processRequest() {
         double requestChargePerRequest = 2.0;
         double scheduledThroughput = 1.0;
