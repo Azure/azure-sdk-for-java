@@ -12,14 +12,14 @@
     <relativePath>../azure-spring-boot-test-parent</relativePath>
   </parent>
 
-  <artifactId>azure-spring-boot-test-cosmos</artifactId>
-  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-cosmos;current} -->
+  <artifactId>azure-spring-boot-test-keyvault-reactive</artifactId>
+  <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-keyvault-reactive;current} -->
 
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>azure-spring-boot-starter-cosmos</artifactId>
-      <version>3.2.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-cosmos;current} -->
+      <artifactId>azure-spring-boot-starter-keyvault-secrets</artifactId>
+      <version>3.1.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-starter-keyvault-secrets;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure.spring</groupId>
@@ -27,9 +27,23 @@
       <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-core;current} -->
     </dependency>
     <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure</artifactId>
+      <version>1.34.0</version> <!-- {x-version-update;spring_com.microsoft.azure:azure;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.google.code.gson</groupId>
+          <artifactId>gson</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
+      <artifactId>spring-boot-starter-webflux</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -37,11 +51,8 @@
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.projectreactor.netty</groupId>
-      <artifactId>reactor-netty</artifactId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
