@@ -7,10 +7,13 @@ package com.azure.ai.formrecognizer.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ContentType. */
-public enum ContentType {
+/** Defines values for ContentType1. */
+public enum ContentType1 {
     /** Enum value application/pdf. */
     APPLICATION_PDF("application/pdf"),
+
+    /** Enum value image/bmp. */
+    IMAGE_BMP("image/bmp"),
 
     /** Enum value image/jpeg. */
     IMAGE_JPEG("image/jpeg"),
@@ -21,23 +24,23 @@ public enum ContentType {
     /** Enum value image/tiff. */
     IMAGE_TIFF("image/tiff");
 
-    /** The actual serialized value for a ContentType instance. */
+    /** The actual serialized value for a ContentType1 instance. */
     private final String value;
 
-    ContentType(String value) {
+    ContentType1(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ContentType instance.
+     * Parses a serialized value to a ContentType1 instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed ContentType object, or null if unable to parse.
+     * @return the parsed ContentType1 object, or null if unable to parse.
      */
     @JsonCreator
-    public static ContentType fromString(String value) {
-        ContentType[] items = ContentType.values();
-        for (ContentType item : items) {
+    public static ContentType1 fromString(String value) {
+        ContentType1[] items = ContentType1.values();
+        for (ContentType1 item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }
