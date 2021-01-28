@@ -107,9 +107,6 @@ jobs:
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
         - ${{ if parameters.TestResourceDirectories }}:
-          - script: |
-              echo "====="
-            displayName: 'TestResourceDirectories'
           - ${{ each directory in parameters.TestResourceDirectories }}:
             - template: /eng/common/TestResources/deploy-test-resources.yml
               parameters:
@@ -118,9 +115,6 @@ jobs:
                 ArmTemplateParameters: $(ArmTemplateParameters)
                 Location: $(Location)
         - ${{ if not(parameters.TestResourceDirectories) }}:
-          - script: |
-              echo "test"
-            displayName: 'ServiceDirectory'
           - template: /eng/common/TestResources/deploy-test-resources.yml
             parameters:
               ServiceDirectory: '${{ parameters.ServiceDirectory }}'
