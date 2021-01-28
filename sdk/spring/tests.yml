@@ -5,7 +5,7 @@ jobs:
       parameters:
         TimeoutInMinutes: 240
         ServiceDirectory: spring
-        TestResourceDirectories: spring/azure-spring-boot-test-cosmos, spring/azure-spring-boot-test-aad
+        TestResourceDirectories: 'spring/azure-spring-boot-test-cosmos, spring/azure-spring-boot-test-aad'
         TestStepMavenInputs:
           options: '-Dmaven.wagon.http.pool=false $(DefaultOptions) -Dmaven.javadoc.skip=true -Drevapi.skip=true -DskipSpringITs=false -pl $(ProjectList)'
           goals: "verify"
