@@ -427,7 +427,7 @@ public final class PollingState {
                 } catch (Util.MalformedUrlException mue) {
                     return this.setData(new SynchronouslyFailedLroData(
                         "Response with status code 200 contains a malformed Azure-AsyncOperation header",
-                        201, lroResponseHeaders.toMap(), lroResponseBody));
+                        200, lroResponseHeaders.toMap(), lroResponseBody));
                 }
                 if (azAsyncOpUrl == null) {
                     return this.setData(new ProvisioningStateData(this.lroOperationUri, value));
