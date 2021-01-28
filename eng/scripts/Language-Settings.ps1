@@ -272,3 +272,8 @@ function GetExistingPackageVersions ($PackageName, $GroupId=$null)
     return $null
   }
 }
+
+# Turn the package name start with `azure-identity` to "identity".
+function Normalize-java-Package-name ($PackageName) {
+  return $PackageName -replace "azure-" , ""
+}
