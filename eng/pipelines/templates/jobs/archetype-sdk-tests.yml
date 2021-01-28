@@ -105,12 +105,13 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/bypass-local-dns.yml
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - template: /eng/common/TestResources/deploy-test-resources.yml
-          parameters:
-            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-            SubscriptionConfiguration: $(SubscriptionConfiguration)
-            ArmTemplateParameters: $(ArmTemplateParameters)
-            Location: $(Location)
+        - ${{ each directory in parameters.ServiceDirectory }}:
+          - template: /eng/common/TestResources/deploy-test-resources.yml
+            parameters:
+              ServiceDirectory: 'directory'
+              SubscriptionConfiguration: $(SubscriptionConfiguration)
+              ArmTemplateParameters: $(ArmTemplateParameters)
+              Location: $(Location)
 
       - ${{ parameters.PreRunSteps }}
 
@@ -175,10 +176,11 @@ jobs:
       - ${{ parameters.PostRunSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
-        - template: /eng/common/TestResources/remove-test-resources.yml
-          parameters:
-            ServiceDirectory: '${{ parameters.ServiceDirectory }}'
-            SubscriptionConfiguration: $(SubscriptionConfiguration)
+          - ${{ each directory in parameters.ServiceDirectory }}:
+            - template: /eng/common/TestResources/remove-test-resources.yml
+            parameters:
+              ServiceDirectory: 'directory'
+              SubscriptionConfiguration: $(SubscriptionConfiguration)
 
       - template: ../steps/upload-repository-on-failure.yml
 
