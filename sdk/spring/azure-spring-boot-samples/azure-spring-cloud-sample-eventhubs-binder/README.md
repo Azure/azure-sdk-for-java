@@ -2,11 +2,9 @@
 
 ## Key concepts
 
-This code sample demonstrates how to use the Spring Cloud Stream Binder
-for Azure Event Hub. The sample app has two operating modes, such as "manual" and "non-manual". 
-One way is to expose a Restful API to receive string message , another way is to automatically provide String messages.
-These Messages are added to the EventHub Stream. The sample application consumes the Messages from the stream.
-
+This code sample demonstrates how to use the Spring Cloud Stream Binderfor Azure Event Hub.The sample app has two operating modes.
+One way is to expose a Restful API to receive string message, another way is to automatically provide string messages.
+These messages are published to an event hub. The sample will also consume messages from the same event hub.
 
 ## Getting started
 
@@ -25,7 +23,7 @@ Event Hub. You can choose anyone of them.
 
 >[!Important]
 >
->  When using the Restful API to send messages, the **Active profiles** must be configured as `manual` .
+>  When using the Restful API to send messages, the **Active profiles** must contain `manual`.
 
 
 #### Method 1: Connection string based usage
@@ -68,6 +66,15 @@ Event Hub. You can choose anyone of them.
     can create your own Consumer Group or use the default "$Default" Consumer Group.
 
 1.  Create [Azure Storage][create-azure-storage] for checkpoint use.
+
+1.  Add Role Assignment for Event Hub, Storage Account and Resource group. See
+    [Service principal for Azure resources with Event Hubs][role-assignment]
+    to add role assignment for Event Hub, Storage Account, Resource group is similar.
+
+    - Resource group: assign `Contributor` role for service principal.
+    - Event Hub: assign `Contributor` role for service principal.
+    - Storage Account: assign `Storage Account Key Operator Service Role` 
+      role for service principal.
     
 1.  Update [application-sp.yaml][application-sp.yaml].
     ```yaml
@@ -90,6 +97,7 @@ Event Hub. You can choose anyone of them.
             supply-out-0:
               destination: [the-same-eventhub-name-as-above]
     ```
+    > We should specify `spring.profiles.active=sp` to run the Spring Boot application. 
         
 #### Method 3: MSI credential based usage
 

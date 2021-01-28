@@ -40,14 +40,14 @@ public class EventHubBinderApplication {
         };
     }
 
-    // Replace destination with spring.cloud.stream.bindings.input.destination
-    // Replace group with spring.cloud.stream.bindings.input.group
+    // Replace destination with spring.cloud.stream.bindings.consume-in-0.destination
+    // Replace group with spring.cloud.stream.bindings.consume-in-0.group
     @ServiceActivator(inputChannel = "{destination}.{group}.errors")
     public void consumerError(Message<?> message) {
         LOGGER.error("Handling customer ERROR: " + message);
     }
 
-    // Replace destination with spring.cloud.stream.bindings.output.destination
+    // Replace destination with spring.cloud.stream.bindings.supply-out-0.destination
     @ServiceActivator(inputChannel = "{destination}.errors")
     public void producerError(Message<?> message) {
         LOGGER.error("Handling Producer ERROR: " + message);

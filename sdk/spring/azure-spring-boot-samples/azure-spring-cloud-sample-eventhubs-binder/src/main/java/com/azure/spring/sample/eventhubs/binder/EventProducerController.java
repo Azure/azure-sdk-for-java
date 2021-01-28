@@ -19,8 +19,6 @@ import reactor.core.publisher.EmitterProcessor;
 /**
  * @author Warren Zhu
  */
-
-
 @RestController
 @Profile("manual")
 public class EventProducerController {
