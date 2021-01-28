@@ -190,6 +190,10 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
                 return this.client.readOffer(offerFeedResponse.getResults().get(0).getSelfLink()).single();
             })
+            .onErrorResume(throwable -> {
+                System.out.println(throwable.getCause());
+                return Mono.error(throwable);
+            })
             .map(ModelBridgeInternal::createThroughputRespose);
     }
 
