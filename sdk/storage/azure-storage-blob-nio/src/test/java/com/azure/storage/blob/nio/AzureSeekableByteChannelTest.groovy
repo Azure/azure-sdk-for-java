@@ -10,6 +10,7 @@ import java.nio.ByteBuffer
 import java.nio.channels.ClosedChannelException
 import java.nio.channels.NonReadableChannelException
 import java.nio.channels.NonWritableChannelException
+import java.nio.channels.SeekableByteChannel
 import java.nio.file.ClosedFileSystemException
 
 class AzureSeekableByteChannelTest extends APISpec {
@@ -24,7 +25,7 @@ class AzureSeekableByteChannelTest extends APISpec {
     AzureFileSystem fs
 
     def setup() {
-        sourceFileSize = 1 * 1024 * 1024
+        sourceFileSize = 10 * 1024 * 1024
         sourceFile = getRandomFile(sourceFileSize)
 
         cc.create()
@@ -174,7 +175,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         fileStream = new FileInputStream(sourceFile)
         fileStream.skip(seekPos1)
         streamContent = ByteBuffer.allocate(readCount1)
-        readByteChannel.read(streamContent)
+        readByteChannel(readByteChannel, streamContent)
         is = new ByteArrayInputStream(streamContent.array())
 
         then:
@@ -190,7 +191,7 @@ class AzureSeekableByteChannelTest extends APISpec {
         fileStream = new FileInputStream(sourceFile)
         fileStream.skip(seekPos2)
         streamContent = ByteBuffer.allocate(readCount2)
-        readByteChannel.read(streamContent)
+        readByteChannel(readByteChannel, streamContent)
         is = new ByteArrayInputStream(streamContent.array())
 
         then:
@@ -201,6 +202,12 @@ class AzureSeekableByteChannelTest extends APISpec {
         1024            | 1024            | (5 * 1024 * 1024) - 1024 | 5 * 1024 * 1024           | 5 * 1024 * 1024 // Only ever seek in place. Read whole blob
         1024            | 5 * 1024 * 1024 | 1024                     | 2048                      | 1024 // Seek forward then seek backward
         5 * 1024 * 1024 | 1024            | 1024                     | (10 * 1024 * 1024) - 1024 | 1024  // Seek backward then seek forward
+    }
+
+    def readByteChannel(SeekableByteChannel channel, ByteBuffer dst) {
+        while (dst.remaining() > 0) {
+            channel.read(dst)
+        }
     }
 
     def "Seek out of bounds"() {
