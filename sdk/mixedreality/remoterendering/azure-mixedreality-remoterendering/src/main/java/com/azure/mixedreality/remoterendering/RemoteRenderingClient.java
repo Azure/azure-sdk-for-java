@@ -7,11 +7,9 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
-import com.azure.mixedreality.remoterendering.implementation.models.*;
-import reactor.core.publisher.Mono;
+import com.azure.mixedreality.remoterendering.models.*;
+
+import java.util.List;
 
 @ServiceClient(builder = RemoteRenderingClientBuilder.class)
 public class RemoteRenderingClient {
@@ -29,16 +27,15 @@ public class RemoteRenderingClient {
      * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
      *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
      *     cannot contain more than 256 characters.
-     * @param body Settings of the session to be created.
-     * @param context The context to associate with this operation.
+     * @param options Options for the session to be created.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CreateSessionResponse createSession(String sessionId, CreateSessionSettings body, Context context) {
-        return client.createSession(sessionId, body, context).block();
+    public Session createSession(String sessionId, SessionCreationOptions options) {
+        return client.createSession(sessionId, options).block();
     }
 
     /**
@@ -47,15 +44,14 @@ public class RemoteRenderingClient {
      * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
      *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
      *     cannot contain more than 256 characters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a particular rendering session.
+     * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SessionProperties> getSession(String sessionId, Context context) {
-        return client.getSession(sessionId, context).block();
+    public Session getSession(String sessionId) {
+        return client.getSession(sessionId).block();
     }
 
     /**
@@ -64,16 +60,15 @@ public class RemoteRenderingClient {
      * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
      *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
      *     cannot contain more than 256 characters.
-     * @param body Settings of the session to be updated.
-     * @param context The context to associate with this operation.
+     * @param options Options for the session to be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the rendering session.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SessionProperties> updateSession(String sessionId, UpdateSessionSettings body, Context context) {
-        return client.updateSession(sessionId, body, context).block();
+    public Session updateSession(String sessionId, SessionUpdateOptions options) {
+        return client.updateSession(sessionId, options).block();
     }
 
     /**
@@ -82,48 +77,27 @@ public class RemoteRenderingClient {
      * @param sessionId An ID uniquely identifying the rendering session for the given account. The ID is case
      *     sensitive, can contain any combination of alphanumeric characters including hyphens and underscores, and
      *     cannot contain more than 256 characters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StopSessionResponse stopSession(String sessionId, Context context) {
-        return client.stopSession(sessionId, context).block();
+    public void stopSession(String sessionId) {
+        client.stopSession(sessionId).block();
     }
 
     /**
-     * Get a list of all rendering sessions. Returns a batch of sessions- if more sessions are available the @nextLink
-     * property contains the URL where the next batch of sessions can be requested.
-     * See {@link #listNextSessionsPage(String nextLink, Context context)}
+     * Get a list of all rendering sessions.
      *
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all rendering sessions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SessionProperties> listSessions(Context context) {
-        return client.listSessions(context).block();
+    public List<Session> listSessions() {
+        return client.listSessions().collectList().block();
     }
-
-    /**
-     * Get the next page of rendering sessions.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a list sessions request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SessionProperties> listNextSessionsPage(String nextLink, Context context) {
-        return client.listNextSessionsPage(nextLink, context).block();
-    }
-
 
     /**
      * Starts a conversion using an asset stored in an Azure Blob Storage account. If the remote rendering account has
@@ -138,16 +112,15 @@ public class RemoteRenderingClient {
      * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
      *     can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain
      *     more than 256 characters.
-     * @param body Request to start a conversion.
-     * @param context The context to associate with this operation.
+     * @param options The conversion options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateConversionResponse> startConversion(String conversionId, CreateConversionSettings body, Context context) {
-        return client.startConversion(conversionId, body, context);
+    public Conversion startConversion(String conversionId, ConversionOptions options) {
+        return client.startConversion(conversionId, options).block();
     }
 
     /**
@@ -156,45 +129,26 @@ public class RemoteRenderingClient {
      * @param conversionId An ID uniquely identifying the conversion for the given account. The ID is case sensitive,
      *     can contain any combination of alphanumeric characters including hyphens and underscores, and cannot contain
      *     more than 256 characters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of a previously created asset conversion.
+     * @return the conversion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GetConversionResponse> getConversion(String conversionId, Context context) {
-        return client.getConversion(conversionId, context);
+    public Conversion getConversion(String conversionId) {
+        return client.getConversion(conversionId).block();
     }
 
     /**
-     * Gets a list of all conversions. Returns a batch of conversions- if more conversions are available the @nextLink
-     * property contains the URL where the next batch of conversions can be requested.
-     * See {@link #listNextConversionsPage(String nextLink, Context context)}
+     * Gets a list of all conversions.
      *
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all conversions.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Conversion>> listConversions(Context context) {
-        return client.listConversions(context);
-    }
-
-    /**
-     * Get the next page of conversions.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<Conversion>> listNextConversionsPage(String nextLink, Context context) {
-        return client.listNextConversionsPage(nextLink, context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public List<Conversion> listConversions() {
+        return client.listConversions().collectList().block();
     }
 }
