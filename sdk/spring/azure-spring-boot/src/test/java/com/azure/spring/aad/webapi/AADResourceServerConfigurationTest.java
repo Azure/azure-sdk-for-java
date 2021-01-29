@@ -23,7 +23,7 @@ import org.springframework.security.oauth2.server.resource.BearerTokenAuthentica
 public class AADResourceServerConfigurationTest {
 
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withPropertyValues("azure.activedirectory.user-group.allowed-groups=User");
+        .withPropertyValues("azure.activedirectory.tenant-id=fake-tenant-id");
 
     private AADTrustedIssuerRepository aadTrustedIssuerRepository = mock(AADTrustedIssuerRepository.class);
 
