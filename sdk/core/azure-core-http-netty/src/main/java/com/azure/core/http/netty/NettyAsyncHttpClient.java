@@ -100,7 +100,13 @@ class NettyAsyncHttpClient implements HttpClient {
                 // is not possible in reactor-netty to do this without copying occurring within that library. This
                 // issue has been reported to the reactor-netty team at
                 // https://github.com/reactor/reactor-netty/issues/1479
-                hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
+                if (hdr.getName().equalsIgnoreCase("User-Agent")) {
+                    // The Reactor-Netty request headers include a User-Agent by default.
+                    // We need to replace this completely as multiple User-Agents is invalid.
+                    reactorNettyRequest.header(hdr.getName(), hdr.getValue());
+                } else {
+                    hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
+                }
             }
             if (restRequest.getBody() != null) {
                 Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
