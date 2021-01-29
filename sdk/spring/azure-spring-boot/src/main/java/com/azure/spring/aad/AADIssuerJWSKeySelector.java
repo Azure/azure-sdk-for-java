@@ -21,7 +21,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-
+/**
+ * Selecting key candidates for processing a signed JWT which
+ * provides access to the JWT claims set in addition to the JWS header.
+ */
 public class AADIssuerJWSKeySelector implements JWTClaimsSetAwareJWSKeySelector<SecurityContext> {
 
     private AADTrustedIssuerRepository trustedIssuerRepository;

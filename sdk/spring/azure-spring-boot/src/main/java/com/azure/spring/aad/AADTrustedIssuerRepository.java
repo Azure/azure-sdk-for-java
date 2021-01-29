@@ -9,6 +9,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.util.StringUtils;
 
+/**
+ * A tenant id is used to construct the trusted issuer repository.
+ */
 public class AADTrustedIssuerRepository {
 
     private static final String LOGIN_MICROSOFT_ONLINE_ISSUER = "https://login.microsoftonline.com/";
