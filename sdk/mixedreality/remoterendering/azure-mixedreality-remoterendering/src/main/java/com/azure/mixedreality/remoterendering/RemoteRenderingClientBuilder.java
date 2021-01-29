@@ -1,15 +1,18 @@
 package com.azure.mixedreality.remoterendering;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.mixedreality.remoterendering.implementation.MixedRealityRemoteRenderingImplBuilder;
+import com.azure.mixedreality.authentication.MixedRealityStsClientBuilder;
 
 import java.util.UUID;
 
@@ -18,6 +21,8 @@ public class RemoteRenderingClientBuilder {
 
     private MixedRealityRemoteRenderingImplBuilder builder;
     private UUID accountId;
+    private String accountDomain;
+    private AzureKeyCredential accountKeyCredential;
 
     public RemoteRenderingClientBuilder() {
         builder = new MixedRealityRemoteRenderingImplBuilder();
@@ -28,6 +33,15 @@ public class RemoteRenderingClientBuilder {
     }
 
     public RemoteRenderingAsyncClient buildAsyncClient() {
+
+        var accessToken = new MixedRealityStsClientBuilder()
+            .accountId(accountId)
+            .accountDomain(accountDomain)
+            .credential(accountKeyCredential)
+            .buildAsyncClient().getToken();
+
+        builder.addPolicy(new BearerTokenAuthenticationPolicy(r -> accessToken));
+
         return new RemoteRenderingAsyncClient(builder.buildClient(), accountId);
     }
 
@@ -39,6 +53,28 @@ public class RemoteRenderingClientBuilder {
      */
     public RemoteRenderingClientBuilder accountId(UUID accountId) {
         this.accountId = accountId;
+        return this;
+    }
+
+    /**
+     * Sets the accountDomain.
+     *
+     * @param accountDomain the accountDomain value.
+     * @return the RemoteRenderingClientBuilder.
+     */
+    public RemoteRenderingClientBuilder accountDomain(String accountDomain) {
+        this.accountDomain = accountDomain;
+        return this;
+    }
+
+    /**
+     * Sets the accountKeyCredential.
+     *
+     * @param accountKeyCredential the accountKeyCredential value.
+     * @return the RemoteRenderingClientBuilder.
+     */
+    public RemoteRenderingClientBuilder accountKeyCredential(AzureKeyCredential accountKeyCredential) {
+        this.accountKeyCredential = accountKeyCredential;
         return this;
     }
 
@@ -94,17 +130,6 @@ public class RemoteRenderingClientBuilder {
      */
     public RemoteRenderingClientBuilder configuration(Configuration configuration) {
         builder.configuration(configuration);
-        return this;
-    }
-
-    /**
-     * Sets The TokenCredential used for authentication.
-     *
-     * @param tokenCredential the tokenCredential value.
-     * @return the RemoteRenderingClientBuilder.
-     */
-    public RemoteRenderingClientBuilder credential(TokenCredential tokenCredential) {
-        builder.credential(tokenCredential);
         return this;
     }
 
