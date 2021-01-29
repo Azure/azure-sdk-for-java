@@ -59,7 +59,6 @@ public final class DirectoriesImpl {
     private interface DirectoriesService {
         @Put("/{shareName}/{directoryPath}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesCreateResponse> create(
                 @HostParam("url") String url,
@@ -79,7 +78,6 @@ public final class DirectoriesImpl {
 
         @Get("/{shareName}/{directoryPath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
@@ -94,7 +92,6 @@ public final class DirectoriesImpl {
 
         @Delete("/{shareName}/{directoryPath}")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesDeleteResponse> delete(
                 @HostParam("url") String url,
@@ -108,7 +105,6 @@ public final class DirectoriesImpl {
 
         @Put("/{shareName}/{directoryPath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
@@ -128,7 +124,6 @@ public final class DirectoriesImpl {
 
         @Put("/{shareName}/{directoryPath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesSetMetadataResponse> setMetadata(
                 @HostParam("url") String url,
@@ -144,7 +139,6 @@ public final class DirectoriesImpl {
 
         @Get("/{shareName}/{directoryPath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesListFilesAndDirectoriesSegmentResponse> listFilesAndDirectoriesSegment(
                 @HostParam("url") String url,
@@ -163,7 +157,6 @@ public final class DirectoriesImpl {
 
         @Get("/{shareName}/{directoryPath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesListHandlesResponse> listHandles(
                 @HostParam("url") String url,
@@ -181,7 +174,6 @@ public final class DirectoriesImpl {
 
         @Put("/{shareName}/{directoryPath}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<DirectoriesForceCloseHandlesResponse> forceCloseHandles(
                 @HostParam("url") String url,

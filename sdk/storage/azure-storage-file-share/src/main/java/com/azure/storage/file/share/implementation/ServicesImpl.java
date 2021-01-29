@@ -61,7 +61,6 @@ public final class ServicesImpl {
     private interface ServicesService {
         @Put("/")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<ServicesSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
@@ -75,7 +74,6 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
@@ -88,7 +86,6 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<ServicesListSharesSegmentResponse> listSharesSegment(
                 @HostParam("url") String url,
@@ -104,7 +101,6 @@ public final class ServicesImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.file.share.models.ShareStorageException.class)
         Mono<ServicesListSharesSegmentNextResponse> listSharesSegmentNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
