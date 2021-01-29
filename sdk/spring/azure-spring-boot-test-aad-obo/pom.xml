@@ -2,15 +2,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.3.7.RELEASE</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter-parent;external_dependency} -->
-    <relativePath/> <!-- lookup parent from repository -->
-  </parent>
+
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.azure.spring</groupId>
+  <parent>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-boot-test-parent</artifactId>
+    <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-parent;current} -->
+    <relativePath>../azure-spring-boot-test-parent</relativePath>
+  </parent>
+
   <artifactId>azure-spring-boot-test-aad-obo</artifactId>
   <version>1.0.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-boot-test-aad-obo;current} -->
 
@@ -49,20 +50,4 @@
     </dependency>
   </dependencies>
 
-  <properties>
-    <skipSpringITs>true</skipSpringITs>
-  </properties>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.22.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
-        <configuration>
-          <skipITs>${skipSpringITs}</skipITs>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>

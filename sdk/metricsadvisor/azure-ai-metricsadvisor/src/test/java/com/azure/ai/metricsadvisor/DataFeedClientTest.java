@@ -158,7 +158,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 // Act & Assert
                 client.listDataFeeds(new ListDataFeedOptions()
                         .setListDataFeedFilter(new ListDataFeedFilter()
-                        .setCreator(createdDataFeed.getCreator())),
+                            .setCreator(createdDataFeed.getCreator())),
                     Context.NONE)
                     .forEach(dataFeed -> assertEquals(createdDataFeed.getCreator(), dataFeed.getCreator()));
 
@@ -265,7 +265,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 client.listDataFeeds(
                     new ListDataFeedOptions()
                         .setListDataFeedFilter(new ListDataFeedFilter()
-                        .setName(filterName)), Context.NONE)
+                            .setName(filterName)), Context.NONE)
                     .stream().iterator().forEachRemaining(dataFeed ->
                     assertEquals(filterName, createdDataFeed.getName()));
             }, SQL_SERVER_DB);
@@ -594,7 +594,7 @@ public class DataFeedClientTest extends DataFeedTestBase {
 
                 validateDataFeedResult(expectedDataFeed, createdDataFeed, MYSQL_DB);
             }, MYSQL_DB);
-        }  finally {
+        } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
                 client.deleteDataFeed(dataFeedId.get());
             }
@@ -783,6 +783,35 @@ public class DataFeedClientTest extends DataFeedTestBase {
                 final DataFeed updatedDataFeed = client.updateDataFeed(createdDataFeed.setName(updatedName));
                 assertEquals(updatedName, updatedDataFeed.getName());
                 validateDataFeedResult(expectedDataFeed, updatedDataFeed, SQL_SERVER_DB);
+            }, SQL_SERVER_DB);
+        } finally {
+            if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {
+                client.deleteDataFeed(dataFeedId.get());
+            }
+        }
+    }
+
+    /**
+     * Verifies that creating data feed with same metric name throws an error.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
+    public void createDataFeedDuplicateMetricName(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+        final AtomicReference<String> dataFeedId = new AtomicReference<>();
+        try {
+            // Arrange
+            client = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            DataFeedMetric dataFeedMetric = new DataFeedMetric().setName("cost");
+            DataFeedMetric dataFeedMetric2 = new DataFeedMetric().setName("cost");
+
+            creatDataFeedRunner(expectedDataFeed -> {
+                expectedDataFeed.setSchema(new DataFeedSchema(Arrays.asList(dataFeedMetric, dataFeedMetric2)));
+                // Act & Assert
+                final ErrorCodeException errorCodeException
+                    = assertThrows(ErrorCodeException.class, () -> client.createDataFeed(expectedDataFeed));
+
+                assertEquals("The metric name 'cost' is duplicate,please remove one.",
+                    errorCodeException.getValue().getMessage());
             }, SQL_SERVER_DB);
         } finally {
             if (!CoreUtils.isNullOrEmpty(dataFeedId.get())) {

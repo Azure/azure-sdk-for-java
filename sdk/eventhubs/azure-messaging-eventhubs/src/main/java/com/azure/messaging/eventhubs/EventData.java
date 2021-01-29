@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 
 import java.nio.ByteBuffer;
@@ -53,7 +54,7 @@ public class EventData {
     static final Set<String> RESERVED_SYSTEM_PROPERTIES;
 
     private final Map<String, Object> properties;
-    private final byte[] body;
+    private final BinaryData body;
     private final SystemProperties systemProperties;
     private Context context;
 
@@ -75,10 +76,7 @@ public class EventData {
      * @throws NullPointerException if {@code body} is {@code null}.
      */
     public EventData(byte[] body) {
-        this.body = Objects.requireNonNull(body, "'body' cannot be null.");
-        this.context = Context.NONE;
-        this.properties = new HashMap<>();
-        this.systemProperties = new SystemProperties();
+        this(BinaryData.fromBytes(Objects.requireNonNull(body, "'body' cannot be null.")));
     }
 
     /**
@@ -102,6 +100,15 @@ public class EventData {
     }
 
     /**
+     * Creates an event with the provided {@link BinaryData} as payload.
+     *
+     * @param body The {@link BinaryData} payload for this event.
+     */
+    public EventData(BinaryData body) {
+        this(body, new SystemProperties(), Context.NONE);
+    }
+
+    /**
      * Creates an event with the given {@code body}, system properties and context.
      *
      * @param body The data to set for this event.
@@ -109,7 +116,7 @@ public class EventData {
      * @param context A specified key-value pair of type {@link Context}.
      * @throws NullPointerException if {@code body}, {@code systemProperties}, or {@code context} is {@code null}.
      */
-    EventData(byte[] body, SystemProperties systemProperties, Context context) {
+    EventData(BinaryData body, SystemProperties systemProperties, Context context) {
         this.body = Objects.requireNonNull(body, "'body' cannot be null.");
         this.context = Objects.requireNonNull(context, "'context' cannot be null.");
         this.systemProperties =  Objects.requireNonNull(systemProperties, "'systemProperties' cannot be null.");
@@ -155,7 +162,7 @@ public class EventData {
      * @return A byte array representing the data.
      */
     public byte[] getBody() {
-        return Arrays.copyOf(body, body.length);
+        return body.toBytes();
     }
 
     /**
@@ -164,7 +171,16 @@ public class EventData {
      * @return UTF-8 decoded string representation of the event data.
      */
     public String getBodyAsString() {
-        return new String(body, UTF_8);
+        return new String(body.toBytes(), UTF_8);
+    }
+
+    /**
+     * Returns the {@link BinaryData} payload associated with this event.
+     *
+     * @return the {@link BinaryData} payload associated with this event.
+     */
+    public BinaryData getBodyAsBinaryData() {
+        return body;
     }
 
     /**
@@ -226,7 +242,7 @@ public class EventData {
         }
 
         EventData eventData = (EventData) o;
-        return Arrays.equals(body, eventData.body);
+        return Arrays.equals(body.toBytes(), eventData.body.toBytes());
     }
 
     /**
@@ -234,7 +250,7 @@ public class EventData {
      */
     @Override
     public int hashCode() {
-        return Arrays.hashCode(body);
+        return Arrays.hashCode(body.toBytes());
     }
 
     /**
