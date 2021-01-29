@@ -10,6 +10,7 @@ import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.azure.messaging.eventgrid.samples.models.User;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,6 +36,12 @@ public class PublishEventGridEventsToTopic {
         byte[] byteSample = "FirstName: John3, LastName: James".getBytes(StandardCharsets.UTF_8);
         EventGridEvent eventBytes = new EventGridEvent("com/example/MyApp", "User.Created.Binary", byteSample, "0.1");
         // Send them to the event grid topic altogether.
-        publisherClient.sendEventGridEvents(List.of(eventJson, eventModelClass, eventBytes));
+
+        List<EventGridEvent> events = new ArrayList<>();
+        events.add(eventJson);
+        events.add(eventModelClass);
+        events.add(eventBytes);
+
+        publisherClient.sendEventGridEvents(events);
     }
 }

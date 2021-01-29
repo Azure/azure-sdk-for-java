@@ -9,6 +9,7 @@ import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.azure.messaging.eventgrid.samples.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PublishEventsToDomain {
@@ -22,6 +23,8 @@ public class PublishEventsToDomain {
         EventGridEvent eventModelClass = new EventGridEvent("A user is created", "User.Created.Object", newUser, "0.1")
             .setTopic("usertopic");  // topic must be set when sending to an Event Grid Domain.
 
-        publisherClient.sendEventGridEvents(List.of(eventModelClass));
+        List<EventGridEvent> events = new ArrayList<>();
+        events.add(eventModelClass);
+        publisherClient.sendEventGridEvents(events);
     }
 }

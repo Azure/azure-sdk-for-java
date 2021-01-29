@@ -10,6 +10,7 @@ import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.azure.messaging.eventgrid.samples.models.User;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,10 @@ public class PublishCloudEventsToTopic {
         CloudEvent cloudEventBytes = new CloudEvent("https://com.example.myapp", "User.Created.Binary", byteSample);
 
         // Send them to the event grid topic altogether.
-        publisherClient.sendCloudEvents(List.of(cloudEventJson, cloudEventModel, cloudEventBytes));
+        List<CloudEvent> events = new ArrayList<>();
+        events.add(cloudEventJson);
+        events.add(cloudEventModel);
+        events.add(cloudEventBytes);
+        publisherClient.sendCloudEvents(events);
     }
 }
