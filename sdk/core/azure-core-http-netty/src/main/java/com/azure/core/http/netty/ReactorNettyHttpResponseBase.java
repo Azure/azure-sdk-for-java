@@ -6,6 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
 import reactor.netty.http.client.HttpClientResponse;
 
 /**
@@ -13,6 +14,11 @@ import reactor.netty.http.client.HttpClientResponse;
  */
 abstract class ReactorNettyHttpResponseBase extends HttpResponse {
     private final HttpClientResponse reactorNettyResponse;
+
+    // We use a wrapper for the Netty-returned headers, so we are not forced to pay up-front the cost of converting
+    // from Netty HttpHeaders to azure-core HttpHeaders. Instead, by wrapping it, there is no cost to pay as we map
+    // the Netty HttpHeaders API into the azure-core HttpHeaders API.
+    private NettyToAzureCoreHttpHeadersWrapper headers;
 
     ReactorNettyHttpResponseBase(HttpClientResponse reactorNettyResponse, HttpRequest httpRequest) {
         super(httpRequest);
@@ -31,8 +37,9 @@ abstract class ReactorNettyHttpResponseBase extends HttpResponse {
 
     @Override
     public final HttpHeaders getHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-        reactorNettyResponse.responseHeaders().forEach(e -> headers.put(e.getKey(), e.getValue()));
+        if (headers == null) {
+            headers = new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders());
+        }
         return headers;
     }
 }

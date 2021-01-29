@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.implementation.models.ContentType1;
 import com.azure.ai.formrecognizer.implementation.models.Language;
 import com.azure.ai.formrecognizer.implementation.models.Locale;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
@@ -235,9 +236,10 @@ public final class FormRecognizerAsyncClient {
                 recognizeCustomFormsOptions.getPollInterval(),
                 streamActivationOperation(
                     contentType -> service.analyzeWithCustomModelWithResponseAsync(UUID.fromString(modelId),
-                        contentType, form, length, isFieldElementsIncluded, context).map(response ->
-                        new FormRecognizerOperationResult(
-                            parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
+                        ContentType.fromString(contentType.toString()), form, length, isFieldElementsIncluded, context)
+                        .map(response ->
+                            new FormRecognizerOperationResult(
+                                parseModelId(response.getDeserializedHeaders().getOperationLocation()))),
                     form, recognizeCustomFormsOptions.getContentType()),
                 pollingOperation(
                     resultUuid -> service.getAnalyzeFormResultWithResponseAsync(
@@ -779,13 +781,13 @@ public final class FormRecognizerAsyncClient {
      */
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
         streamActivationOperation(
-        Function<ContentType, Mono<FormRecognizerOperationResult>> activationOperation, Flux<ByteBuffer> form,
+        Function<ContentType1, Mono<FormRecognizerOperationResult>> activationOperation, Flux<ByteBuffer> form,
         FormContentType contentType) {
         return pollingContext -> {
             try {
                 Objects.requireNonNull(form, "'form' is required and cannot be null.");
                 if (contentType != null) {
-                    return activationOperation.apply(ContentType.fromString(contentType.toString()))
+                    return activationOperation.apply(ContentType1.fromString(contentType.toString()))
                         .onErrorMap(Utility::mapToHttpResponseExceptionIfExist);
                 } else {
                     return detectContentType(form)

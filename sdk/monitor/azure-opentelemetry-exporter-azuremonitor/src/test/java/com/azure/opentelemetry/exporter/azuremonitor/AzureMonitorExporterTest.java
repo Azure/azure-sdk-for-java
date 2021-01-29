@@ -3,19 +3,21 @@
 
 package com.azure.opentelemetry.exporter.azuremonitor;
 
-import io.opentelemetry.common.Attributes;
-import io.opentelemetry.common.ReadableAttributes;
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.SpanContext;
+import io.opentelemetry.api.trace.SpanId;
+import io.opentelemetry.api.trace.TraceFlags;
+import io.opentelemetry.api.trace.TraceId;
+import io.opentelemetry.api.trace.TraceState;
+import io.opentelemetry.api.trace.attributes.SemanticAttributes;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.common.InstrumentationLibraryInfo;
 import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.sdk.trace.data.EventData;
+import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.data.SpanData;
-import io.opentelemetry.trace.Span;
-import io.opentelemetry.trace.SpanId;
-import io.opentelemetry.trace.Status;
-import io.opentelemetry.trace.TraceFlags;
-import io.opentelemetry.trace.TraceId;
-import io.opentelemetry.trace.TraceState;
-import io.opentelemetry.trace.attributes.SemanticAttributes;
+import io.opentelemetry.sdk.trace.data.StatusData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -31,6 +33,10 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
  */
 public class AzureMonitorExporterTest extends MonitorExporterClientTestBase {
 
+    private static final String TRACE_ID = TraceId.fromLongs(10L, 2L);
+    private static final String SPAN_ID = SpanId.fromLong(1);
+    private static final TraceState TRACE_STATE = TraceState.builder().build();
+
     @Test
     public void testExportRequestData() {
         AzureMonitorExporter azureMonitorExporter = getClientBuilder()
@@ -43,28 +49,33 @@ public class AzureMonitorExporterTest extends MonitorExporterClientTestBase {
 
     static class RequestSpanData implements SpanData {
         @Override
-        public TraceId getTraceId() {
-            return new TraceId(10L, 2L);
+        public String getTraceId() {
+            return TRACE_ID;
         }
 
         @Override
-        public SpanId getSpanId() {
-            return new SpanId(1);
+        public String getSpanId() {
+            return SPAN_ID;
         }
 
         @Override
-        public TraceFlags getTraceFlags() {
-            return null;
+        public boolean isSampled() {
+            return false;
         }
 
         @Override
         public TraceState getTraceState() {
-            return TraceState.builder().build();
+            return TRACE_STATE;
         }
 
         @Override
-        public SpanId getParentSpanId() {
-            return new SpanId(0);
+        public SpanContext getParentSpanContext() {
+            return SpanContext.create(TRACE_ID, SPAN_ID, TraceFlags.getDefault(), TRACE_STATE);
+        }
+
+        @Override
+        public String getParentSpanId() {
+            return SpanId.fromLong(1);
         }
 
         @Override
@@ -93,28 +104,28 @@ public class AzureMonitorExporterTest extends MonitorExporterClientTestBase {
         }
 
         @Override
-        public ReadableAttributes getAttributes() {
-            return Attributes.newBuilder()
-                .setAttribute(SemanticAttributes.HTTP_STATUS_CODE.key(), 200L)
-                .setAttribute(SemanticAttributes.HTTP_URL.key(), "http://localhost")
-                .setAttribute(SemanticAttributes.HTTP_METHOD.key(), "GET")
-                .setAttribute("ai.sampling.percentage", 100.0)
+        public Attributes getAttributes() {
+            return Attributes.builder()
+                .put(SemanticAttributes.HTTP_STATUS_CODE.getKey(), 200L)
+                .put(SemanticAttributes.HTTP_URL.getKey(), "http://localhost")
+                .put(SemanticAttributes.HTTP_METHOD.getKey(), "GET")
+                .put("ai.sampling.percentage", 100.0)
                 .build();
         }
 
         @Override
-        public List<Event> getEvents() {
+        public List<EventData> getEvents() {
             return new ArrayList<>();
         }
 
         @Override
-        public List<Link> getLinks() {
+        public List<LinkData> getLinks() {
             return new ArrayList<>();
         }
 
         @Override
-        public Status getStatus() {
-            return Status.OK;
+        public StatusData getStatus() {
+            return StatusData.ok();
         }
 
         @Override
@@ -123,12 +134,7 @@ public class AzureMonitorExporterTest extends MonitorExporterClientTestBase {
         }
 
         @Override
-        public boolean getHasRemoteParent() {
-            return false;
-        }
-
-        @Override
-        public boolean getHasEnded() {
+        public boolean hasEnded() {
             return false;
         }
 
