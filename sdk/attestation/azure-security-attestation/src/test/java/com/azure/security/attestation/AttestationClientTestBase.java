@@ -46,6 +46,12 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Specialization of the TestBase class for the attestation tests.
+ *
+ * Provides convenience methods for retrieving attestation client builders, verifying attestation tokens,
+ * and accessing test environments.
+ */
 public class AttestationClientTestBase extends TestBase {
 
     private static final String DATAPLANE_SCOPE = "https://attest.azure.net/.default";
@@ -58,6 +64,11 @@ public class AttestationClientTestBase extends TestBase {
         AAD,
     }
 
+    /**
+     * Determine the Attestation instance type based on the client URI provided.
+     * @param clientUri - URI for the attestation client.
+     * @return the ClientTypes corresponding to the specified client URI.
+     */
     ClientTypes classifyClient(String clientUri) {
         assertNotNull(clientUri);
         String regionShortName = getLocationShortName();
@@ -72,16 +83,34 @@ public class AttestationClientTestBase extends TestBase {
         throw new IllegalArgumentException();
     }
 
+    /**
+     * Convert a base64 encoded string into a byte stream.
+     * @param base64 - Base64 encoded string to be decoded
+     * @return stream of bytes encoded in the base64 encoded string.
+     */
     InputStream base64ToStream(String base64) {
         byte[] decoded = Base64.getDecoder().decode(base64);
         return new ByteArrayInputStream(decoded);
     }
 
+    /**
+     * Retrieve an attestationClientBuilder for the specified HTTP client and client URI
+     * @param httpClient - HTTP client ot be used for the attestation client.
+     * @param clientUri - Client base URI to access the service.
+     * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
+     */
     AttestationClientBuilder getBuilder(HttpClient httpClient, String clientUri) {
         return new AttestationClientBuilder().pipeline(getHttpPipeline(httpClient)).instanceUrl(clientUri);
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient) {
+    /**
+     * Retrieves an HTTP pipeline configured on the specified HTTP pipeline.
+     *
+     * Used by getBuilder().
+     * @param httpClient - Client on which to configure the HTTP pipeline.
+     * @return an HttpPipeline object configured for the MAA service on the specified http client.
+     */
+    private HttpPipeline getHttpPipeline(HttpClient httpClient) {
         TokenCredential credential = null;
 
         if (!interceptorManager.isPlaybackMode()) {
@@ -103,6 +132,14 @@ public class AttestationClientTestBase extends TestBase {
             .build();
     }
 
+
+    /**
+     * Verifies an MAA attestation token and returns the set of attestation claims embedded in the token.
+     * @param httpClient - the HTTP client which was used to retrieve the token (used to retrieve the signing certificates for the attestation instance)
+     * @param clientUri - the base URI used to access the attestation instance (used to retrieve the signing certificates for the attestation instance)
+     * @param attestationToken - Json Web Token issued by the Attestation Service.
+     * @return a JWTClaimSet containing the claims associated with the attestation token.
+     */
     Mono<JWTClaimsSet> verifyAttestationToken(HttpClient httpClient, String clientUri, String attestationToken) {
         final SignedJWT token;
         try {
@@ -209,6 +246,10 @@ public class AttestationClientTestBase extends TestBase {
             });
     }
 
+    /**
+     * Retrieve the signing certificate used for the isolated attestation instance.
+     * @return Returns a base64 encoded X.509 certificate used to sign policy documents.
+     */
     String getIsolatedSigningCertificate() {
         String signingCertificate = Configuration.getGlobalConfiguration().get("isolatedSigningCertificate");
         if (signingCertificate == null) {
@@ -228,6 +269,10 @@ public class AttestationClientTestBase extends TestBase {
         return signingCertificate;
     }
 
+    /**
+     * Retrieve the signing key used for the isolated attestation instance.
+     * @return Returns a base64 encoded RSA Key used to sign policy documents.
+     */
     String getIsolatedSigningKey() {
         String signingKey = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
         if (signingKey == null) {
@@ -254,6 +299,10 @@ public class AttestationClientTestBase extends TestBase {
         return signingKey;
     }
 
+    /**
+     * Retrieves a certificate which can be used to sign attestation policies.
+     * @return Returns a base64 encoded X.509 certificate which can be used to sign attestation policies.
+     */
     String getPolicySigningCertificate0() {
         String certificate = Configuration.getGlobalConfiguration().get("policySigningCertificate0");
         if (certificate == null) {
@@ -272,6 +321,10 @@ public class AttestationClientTestBase extends TestBase {
         return certificate;
     }
 
+    /**
+     * Returns the location in which the tests are running.
+     * @return returns the location in which the tests are running.
+     */
     private static String getLocationShortName() {
         String shortName = Configuration.getGlobalConfiguration().get("locationShortName");
         if (shortName == null) {
@@ -280,6 +333,10 @@ public class AttestationClientTestBase extends TestBase {
         return shortName;
     }
 
+    /**
+     * Returns the url associated with the isolated MAA instance.
+     * @return the url associated with the isolated MAA instance.
+     */
     private static String getIsolatedUrl() {
         String url = Configuration.getGlobalConfiguration().get("ATTESTATION_ISOLATED_URL");
         if (url == null) {
@@ -288,6 +345,10 @@ public class AttestationClientTestBase extends TestBase {
         return url;
     }
 
+    /**
+     * Returns the url associated with the AAD MAA instance.
+     * @return the url associated with the AAD MAA instance.
+     */
     private static String getAadUrl() {
         String url = Configuration.getGlobalConfiguration().get("ATTESTATION_AAD_URL");
         if (url == null) {
@@ -296,6 +357,10 @@ public class AttestationClientTestBase extends TestBase {
         return url;
     }
 
+    /**
+     * Returns the set of clients to be used to test the attestation service.
+     * @return a stream of Argument objects associated with each of the regions on which to run the attestation test.
+     */
     static Stream<Arguments> getAttestationClients() {
         // when this issues is closed, the newer version of junit will have better support for
         // cartesian product of arguments - https://github.com/junit-team/junit5/issues/1427
@@ -307,6 +372,10 @@ public class AttestationClientTestBase extends TestBase {
             Arguments.of(httpClient, getAadUrl())));
     }
 
+    /**
+     * Returns the set of clients and attestation types used for attestation policy APIs.
+     * @return a stream of Argument objects associated with each of the regions on which to run the attestation test.
+     */
     static Stream<Arguments> getPolicyClients() {
         return getAttestationClients().flatMap(clientParams -> Stream.of(
             Arguments.of(clientParams.get()[0], clientParams.get()[1], AttestationType.OPEN_ENCLAVE),

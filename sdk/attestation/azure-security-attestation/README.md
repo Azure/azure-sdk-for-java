@@ -46,7 +46,7 @@ The simplest way of providing a bearer token is to use the  `DefaultAzureCredent
 The Microsoft Azure Attestation service runs in two separate modes: "Isolated" and "AAD". When the service is running in "Isolated" mode, the customer needs to 
 provide additional information beyond their authentication credentials to verify that they are authorized to modify the state of an attestation instance.
 
-There are four major components in the preview SDK: 
+There are four major client types provided in this preview SDK: 
 - [SGX and TPM enclave attestation.](#attestation)
 - [MAA Attestation Token signing certificate discovery and validation.](#attestation-token-signing-certificate-discovery-and-validation)  
 - [Attestation Policy management.](#policy-management)
