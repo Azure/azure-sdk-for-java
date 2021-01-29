@@ -67,11 +67,11 @@ public final class CloudEvent {
     }
 
     /**
-     * Parse the Cloud Event from a JSON string. This can be used to interpret the event at the event destination
-     * from raw JSON into rich event(s).
+     * Deserialize the {@link CloudEvent} from a JSON string.
      * @param cloudEventJsonString the JSON payload containing one or more events.
      *
-     * @return all of the events in the payload parsed as {@link CloudEvent}s.
+     * @return all of the events in the payload deserialized as {@link CloudEvent}s.
+     * @throws IllegalArgumentException if the input parameter isn't a JSON string for a cloud event or an array of it.
      */
     public static List<CloudEvent> fromString(String cloudEventJsonString) {
         return EventGridDeserializer.deserializeCloudEvents(cloudEventJsonString);

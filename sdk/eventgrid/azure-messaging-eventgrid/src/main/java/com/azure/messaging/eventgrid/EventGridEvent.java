@@ -50,11 +50,12 @@ public final class EventGridEvent {
     }
 
     /**
-     * Parse the EventGrid Event from a JSON string. This can be used to interpret the event at the event destination
-     * from raw JSON into rich event(s).
+     * Deserialize the {@link EventGridEvent} from a JSON string.
      * @param eventGridJsonString the JSON payload containing one or more events.
      *
-     * @return all of the events in the payload parsed as {@link EventGridEvent}s.
+     * @return all of the events in the payload deserialized as {@link EventGridEvent}s.
+     * @throws IllegalArgumentException if the input parameter isn't a JSON string for a eventgrid event
+     * or an array of it.
      */
     public static List<EventGridEvent> fromString(String eventGridJsonString) {
         return EventGridDeserializer.deserializeEventGridEvents(eventGridJsonString);
