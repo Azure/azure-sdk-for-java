@@ -82,7 +82,7 @@
         Perf framework should depend on lowest version of com.azure dependencies for maximum compatibility, allowing test
         projects to choose a higher version if desired.
       -->
-      <version>1.0.0</version>
+      <version>1.1.0</version>
     </dependency>
   </dependencies>
 </project>
