@@ -109,6 +109,7 @@ jobs:
         # Used for generating baseline file.
         # GdnBreakOutputBaselineFile: java
         # GdnBreakOutputBaseline: baseline
+      condition: succeededOrFailed()
     - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
       displayName: 'Publish Security Analysis Logs'
       continueOnError: true
