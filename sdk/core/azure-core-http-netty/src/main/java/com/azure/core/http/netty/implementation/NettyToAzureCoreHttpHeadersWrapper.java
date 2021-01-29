@@ -113,12 +113,14 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
 
     @Override
     public String getValue(String name) {
-        return nettyHeaders.get(name);
+        final HttpHeader header = get(name);
+        return (header == null) ? null : header.getValue();
     }
 
     @Override
     public String[] getValues(String name) {
-        return nettyHeaders.getAll(name).toArray(new String[] { });
+        final HttpHeader header = get(name);
+        return (header == null) ? null : header.getValues();
     }
 
     @Override
@@ -159,9 +161,8 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
                     // To alleviate some concerns with performance, we internally cache the joined string in the
                     // innerJoinMap, so multiple requests to this get method will not incur the cost of string
                     // concatenation.
-                    return innerJoinMap.computeIfAbsent((String) key, _key -> {
-                        return String.join(",", nettyHeaders.getAll(_key));
-                    });
+                    return innerJoinMap.computeIfAbsent((String) key, _key ->
+                        String.join(",", nettyHeaders.getAll(_key)));
                 }
 
                 @Override
