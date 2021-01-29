@@ -6,7 +6,7 @@ jobs:
       ServiceDirectory: quantum
       Artifacts:
         - name: azure-quantum-jobs
-          groupId: com.azure.quantum.jobs
+          groupId: com.azure
           safeName: azurequantumjobs
       EnvVars:
         AZURE_TEST_MODE: PLAYBACK
