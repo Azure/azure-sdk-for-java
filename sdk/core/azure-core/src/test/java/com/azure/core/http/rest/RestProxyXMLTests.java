@@ -45,7 +45,7 @@ public class RestProxyXMLTests {
         private HttpResponse response(HttpRequest request, String resource) throws IOException, URISyntaxException {
             URL url = getClass().getClassLoader().getResource(resource);
             byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
-            HttpHeaders headers = new HttpHeaders().put("Content-Type", "application/xml");
+            HttpHeaders headers = new HttpHeaders().set("Content-Type", "application/xml");
             HttpResponse res = new MockHttpResponse(request, 200, headers, bytes);
             return res;
         }
