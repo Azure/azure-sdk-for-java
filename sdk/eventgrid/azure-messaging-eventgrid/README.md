@@ -139,7 +139,7 @@ For information about general Event Grid concepts: [Concepts in Azure Event Grid
 
 Event Grid supports multiple schemas for encoding events. When an Event Grid Topic or Domain is created, you specify the
 schema that will be used when publishing events. While you may configure your topic to use a _custom schema_ it is
-more common to use the already defined [EventGridEvent schema](https://docs.microsoft.com/en-us/azure/event-grid/event-schema) or [CloudEvent schema](https://docs.microsoft.com/en-us/azure/event-grid/cloud-event-schema). 
+more common to use the already defined [EventGridEvent schema](https://docs.microsoft.com/azure/event-grid/event-schema) or [CloudEvent schema](https://docs.microsoft.com/azure/event-grid/cloud-event-schema). 
 CloudEvent is a Cloud Native Computing Foundation project which produces a specification for describing event data in a common way.
 Event Grid service is compatible with the [CloudEvent specification](https://cloudevents.io/)
 Regardless of what schema your topic or domain is configured to use, 
@@ -161,9 +161,9 @@ az eventgrid topic show --name <your-resource-name> --resource-group <your-resou
 ### Event Handlers and event deserialization.
 
 EventGrid doesn't store any events in the Event Grid Topic or Domain itself. You need to [create subscriptions to the
-EventGrid Topic or Domain](https://docs.microsoft.com/en-us/azure/event-grid/subscribe-through-portal). 
+EventGrid Topic or Domain](https://docs.microsoft.com/azure/event-grid/subscribe-through-portal). 
 The events sent to the topic or domain will be stored into the subscription's endpoint, also known as 
-["Event Handler"](https://docs.microsoft.com/en-us/azure/event-grid/event-handlers).
+["Event Handler"](https://docs.microsoft.com/azure/event-grid/event-handlers).
 
 You may use the event handler's SDK to receive the events in Json String and then use the `EventGridEvent.fromString()` or `CloudEvent.fromString()`
 deserialize the events. The data part of the events can be in binary, String, or JSON data. 
@@ -202,7 +202,7 @@ on the `PublisherClient`.
 
 ### Sending Events To Event Grid Domain
 
-An [Event Grid Domain](https://docs.microsoft.com/en-us/azure/event-grid/event-domains) can have thousands of topics
+An [Event Grid Domain](https://docs.microsoft.com/azure/event-grid/event-domains) can have thousands of topics
 but has a single endpoint. You can use a domain to manage a set of related topics. Sending events to the topics of
 an Event Grid Domain is the same as sending events to a regular Event Grid Topic except that you need to 
 specify the `topic` of an `EventGridEvent` if the domain accepts `EventGridEvent` schema.
@@ -262,17 +262,17 @@ byte[] dataInBytes = eventData.toBytes();
 ```  
 
 #### Deserialize system event data from `CloudEvent` or `EventGridEvent`
-An event that is sent to a [System Topic](https://docs.microsoft.com/en-us/azure/event-grid/system-topics) is called a
+An event that is sent to a [System Topic](https://docs.microsoft.com/azure/event-grid/system-topics) is called a
 System Topic Event, or System Event. 
-A system topic in Event Grid represents events published by an [Event Source](https://docs.microsoft.com/en-us/azure/event-grid/overview#event-sources) like Azure Storage, Azure Event Hubs, App Configuration and so on.
+A system topic in Event Grid represents events published by an [Event Source](https://docs.microsoft.com/azure/event-grid/overview#event-sources) like Azure Storage, Azure Event Hubs, App Configuration and so on.
 An example is when a blob is created, a system event with event type "Microsoft.Storage.BlobCreated" is sent to the configured System Topic. 
 The system event class for this event type is `StorageBlobCreatedEventData` defined in package `com.azure.messaging.eventgrid.systemevents`.
 EventGrid current has system events for:
-- [Azure App Configuration](https://docs.microsoft.com/en-us/azure/event-grid/event-schema-app-configuration)
-- [Azure App Service](https://docs.microsoft.com/en-us/azure/event-grid/event-schema-app-service)
-- [Azure Blob Storage](https://docs.microsoft.com/en-us/azure/event-grid/event-schema-blob-storage)
+- [Azure App Configuration](https://docs.microsoft.com/azure/event-grid/event-schema-app-configuration)
+- [Azure App Service](https://docs.microsoft.com/azure/event-grid/event-schema-app-service)
+- [Azure Blob Storage](https://docs.microsoft.com/azure/event-grid/event-schema-blob-storage)
 - ...
-- Refer to [Azure services that support system topics](https://docs.microsoft.com/en-us/azure/event-grid/system-topics#azure-services-that-support-system-topics) for many other services.
+- Refer to [Azure services that support system topics](https://docs.microsoft.com/azure/event-grid/system-topics#azure-services-that-support-system-topics) for many other services.
 - Refer to package `com.azure.messaging.eventgrid.systemevents` for the related system event classes
 
 You can't send a System Event to a System Topic by using this SDK.
@@ -284,7 +284,7 @@ You can use this SDK's convenience APIs to deal with System Events and their dat
 ```java
     Object systemEventData = event.asSystemEventData();
     if (systemEventData != null) {
-        // https://docs.microsoft.com/en-us/azure/event-grid/event-schema-blob-storage has the possible event types for blob sotrage.
+        // https://docs.microsoft.com/azure/event-grid/event-schema-blob-storage has the possible event types for blob sotrage.
         // Each system event's type is mapped to a class under package com.azure.messaging.eventgrid.systemevents.
         if (systemEventData instanceof StorageBlobCreatedEventData) {
             StorageBlobCreatedEventData blobCreatedData = (StorageBlobCreatedEventData) systemEventData;
