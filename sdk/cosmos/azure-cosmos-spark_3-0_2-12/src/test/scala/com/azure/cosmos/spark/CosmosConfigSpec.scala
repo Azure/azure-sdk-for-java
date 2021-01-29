@@ -54,7 +54,7 @@ class CosmosConfigSpec extends UnitSpec {
             "spark.cosmos.read.inferSchemaEnabled" -> "false"
         )
 
-        val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+        val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
 
         config.inferSchemaSamplingSize shouldEqual 50
         config.inferSchemaEnabled shouldBe false

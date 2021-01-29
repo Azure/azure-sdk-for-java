@@ -53,7 +53,7 @@ private object CosmosTableSchemaInferer
 
     def inferSchema(client: CosmosAsyncClient,
                     userConfig: Map[String, String]): StructType = {
-        val cosmosReadConfig = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+        val cosmosReadConfig = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
         if (cosmosReadConfig.inferSchemaEnabled) {
             val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
             val sourceContainer = client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container)
