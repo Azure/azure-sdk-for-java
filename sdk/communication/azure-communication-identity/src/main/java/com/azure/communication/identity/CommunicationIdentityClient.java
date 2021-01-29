@@ -62,7 +62,7 @@ public final class CommunicationIdentityClient {
             client.createWithResponseAsync(new CommunicationIdentityCreateRequest(), context).block();
         
         if (response == null || response.getValue() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Create user response and value cannot be null"));
+            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
         }
         String id = response.getValue().getIdentity().getId();
         return new SimpleResponse<CommunicationUserIdentifier>(
@@ -106,7 +106,7 @@ public final class CommunicationIdentityClient {
             new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput), context).block();
 
         if (response == null || response.getValue() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Create user with token response and value cannot be null"));
+            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
         }
         return new SimpleResponse<CommunicationUserIdentifierWithTokenResult>(
             response,
@@ -212,7 +212,7 @@ public final class CommunicationIdentityClient {
             .block();
 
         if (response == null || response.getValue() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Issue token response and value cannot be null"));
+            throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
         }
 
         return new SimpleResponse<AccessToken>(
