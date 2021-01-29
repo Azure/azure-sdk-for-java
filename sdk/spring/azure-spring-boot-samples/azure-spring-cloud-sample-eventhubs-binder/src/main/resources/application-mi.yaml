@@ -35,6 +35,6 @@ spring:
       function:
         definition: consume;supply;
       poller:
-        initial-delay: ${initial-delay-millisecond}
-        fixed-delay: ${fixed-delay-millisecond}
+        initial-delay: 0
+        fixed-delay: 1000
 
