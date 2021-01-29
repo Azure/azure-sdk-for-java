@@ -64,7 +64,7 @@ public class ChatOptionsProvider {
 
     private static ChatParticipant generateParticipant(String id, String displayName) {
         ChatParticipant chatParticipant = new ChatParticipant();
-        chatParticipant.setUser(new CommunicationUser(id));
+        chatParticipant.setUser(new CommunicationUserIdentifier(id));
         chatParticipant.setDisplayName(displayName);
 
         return chatParticipant;

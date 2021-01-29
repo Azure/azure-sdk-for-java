@@ -107,7 +107,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canRepeatCreateThread(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canRepeatCreateThread");
         UUID uuid = UUID.randomUUID();
         CreateChatThreadOptions threadRequest = ChatOptionsProvider
             .createThreadOptions(
@@ -150,7 +150,7 @@ public class ChatAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canCreateNewThreadWithoutSettingRepeatabilityID(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canCreateNewThreadWithoutSettingRepeatabilityID");
 
         CreateChatThreadOptions threadRequest1 = ChatOptionsProvider
             .createThreadOptions(

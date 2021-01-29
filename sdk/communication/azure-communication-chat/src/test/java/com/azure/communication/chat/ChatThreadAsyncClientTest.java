@@ -14,11 +14,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import com.azure.communication.administration.CommunicationIdentityClient;
-import com.azure.communication.administration.CommunicationUserToken;
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.identity.CommunicationIdentityClient;
+import com.azure.communication.identity.models.CommunicationTokenScope;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.chat.implementation.ChatOptionsProvider;
 import com.azure.communication.chat.models.*;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -50,10 +51,10 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     private ChatThreadAsyncClient chatThreadClient;
     private String threadId;
 
-    private CommunicationUser firstParticipant;
-    private CommunicationUser secondParticipant;
-    private CommunicationUser firstAddedParticipant;
-    private CommunicationUser secondAddedParticipant;
+    private CommunicationUserIdentifier firstParticipant;
+    private CommunicationUserIdentifier secondParticipant;
+    private CommunicationUserIdentifier firstAddedParticipant;
+    private CommunicationUserIdentifier secondAddedParticipant;
 
     @Override
     protected void beforeTest() {
@@ -65,15 +66,16 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         super.afterTest();
     }
 
-    private void setupTest(HttpClient httpClient) {
+    private void setupTest(HttpClient httpClient, String testName) {
         communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
         firstParticipant = communicationClient.createUser();
         secondParticipant = communicationClient.createUser();
 
         List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
-        CommunicationUserToken response = communicationClient.issueToken(firstParticipant, scopes);
+        AccessToken response = communicationClient.issueToken(firstParticipant, scopes);
 
-        client = getChatClientBuilder(response.getToken(), httpClient).buildAsyncClient();
+        ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);
+        client = addLoggingPolicyForIdentityClientBuilder(chatBuilder, testName).buildAsyncClient();
 
         CreateChatThreadOptions threadRequest = ChatOptionsProvider.createThreadOptions(firstParticipant.getId(),
                 secondParticipant.getId());
@@ -94,7 +96,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canUpdateThread(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canUpdateThread");
         String newTopic = "Update Test";
 
         // Act & Assert
@@ -113,7 +115,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canUpdateThreadWithResponse(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canUpdateThreadWithResponse");
         String newTopic = "Update Test";
 
         // Act & Assert
@@ -135,7 +137,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotUpdateThreadWithNullTopic(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotUpdateThreadWithNullTopic");
 
         // Act & Assert
         StepVerifier.create(chatThreadClient.updateTopic(null))
@@ -146,7 +148,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotUpdateThreadWithResponseWithNullTopic(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotUpdateThreadWithResponseWithNullTopic");
 
         // Act & Assert
         StepVerifier.create(chatThreadClient.updateTopicWithResponse(null))
@@ -157,7 +159,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canAddListAndRemoveMembersAsync(HttpClient httpClient) throws InterruptedException {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canAddListAndRemoveMembersAsync");
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
@@ -193,7 +195,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canAddListWithContextAndRemoveMembersAsync(HttpClient httpClient) throws InterruptedException {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canAddListWithContextAndRemoveMembersAsync");
 
         // Act & Assert
         PagedFlux<ChatParticipant> membersResponse = chatThreadClient.listParticipants(Context.NONE);
@@ -209,7 +211,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canAddListWithContextMembersAsync(HttpClient httpClient) throws InterruptedException {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canAddListWithContextMembersAsync");
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
@@ -239,7 +241,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canAddListAndRemoveMembersWithResponseAsync(HttpClient httpClient) throws InterruptedException {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canAddListAndRemoveMembersWithResponseAsync");
         firstAddedParticipant = communicationClient.createUser();
         secondAddedParticipant = communicationClient.createUser();
 
@@ -279,8 +281,8 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canAddSingleParticipantAsync(HttpClient httpClient) throws InterruptedException {
         // Arrange
-        setupTest(httpClient);
-        CommunicationUser participant = communicationClient.createUser();
+        setupTest(httpClient, "canAddSingleParticipantAsync");
+        CommunicationUserIdentifier participant = communicationClient.createUser();
 
         // Action & Assert
         StepVerifier.create(chatThreadClient.addParticipant(new ChatParticipant().setUser(participant)))
@@ -294,8 +296,8 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canAddSingleParticipantWithResponseAsync(HttpClient httpClient) throws InterruptedException {
         // Arrange
-        setupTest(httpClient);
-        CommunicationUser participant = communicationClient.createUser();
+        setupTest(httpClient, "canAddSingleParticipantWithResponseAsync");
+        CommunicationUserIdentifier participant = communicationClient.createUser();
 
         // Action & Assert
         StepVerifier.create(chatThreadClient.addParticipantWithResponse(new ChatParticipant().setUser(participant)))
@@ -309,7 +311,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendThenGetHtmlMessage(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canSendThenGetHtmlMessage");
         SendChatMessageOptions messageRequest = new SendChatMessageOptions()
             .setType(ChatMessageType.HTML)
             .setSenderDisplayName("John")
@@ -334,7 +336,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotAddParticipantsWithNullOptions(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotAddParticipantsWithNullOptions");
 
         // Act & Assert
         StepVerifier.create(chatThreadClient.addParticipants(null))
@@ -345,7 +347,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotAddParticipantsWithResponseWithNullOptions(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotAddParticipantsWithResponseWithNullOptions");
 
         // Act & Assert
         StepVerifier.create(chatThreadClient.addParticipantsWithResponse(null))
@@ -356,7 +358,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotRemoveParticipantWithNullUser(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotRemoveParticipantWithNullUser");
 
         // Act & Assert
         StepVerifier.create(chatThreadClient.removeParticipant(null))
@@ -367,7 +369,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotRemoveParticipantWithNullUserWithResponse(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotRemoveParticipantWithNullUserWithResponse");
 
         // Act & Assert
         StepVerifier.create(chatThreadClient.removeParticipantWithResponse(null))
@@ -378,7 +380,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendThenGetMessage(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canSendThenGetMessage");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         // Action & Assert
@@ -400,7 +402,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendThenGetMessageWithResponse(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canSendThenGetMessageWithResponse");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         // Action & Assert
@@ -423,7 +425,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotSendMessageWithNullOptions(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotSendMessageWithNullOptions");
 
         // Act & Assert
         StepVerifier.create(chatThreadClient.sendMessage(null))
@@ -434,7 +436,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotSendMessageWithResponseWithNullOptions(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotSendMessageWithResponseWithNullOptions");
 
         // Act & Assert
         StepVerifier.create(chatThreadClient.sendMessageWithResponse(null))
@@ -445,7 +447,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotGetMessageNullId(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotGetMessageNullId");
 
         // Act & Assert
         StepVerifier.create(chatThreadClient.getMessage(null))
@@ -456,7 +458,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotGetMessageWithReponseNullId(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotGetMessageWithReponseNullId");
 
         // Act & Assert
         StepVerifier.create(chatThreadClient.getMessageWithResponse(null))
@@ -467,7 +469,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canDeleteExistingMessage(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canDeleteExistingMessage");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         // Action & Assert
@@ -484,7 +486,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotDeleteMessageNullId(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotDeleteMessageNullId");
 
         // Act & Assert
         StepVerifier.create(chatThreadClient.deleteMessage(null))
@@ -495,7 +497,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotDeleteMessageWithRepsonseNullId(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotDeleteMessageWithRepsonseNullId");
 
         // Act & Assert
         StepVerifier.create(chatThreadClient.deleteMessageWithResponse(null))
@@ -506,7 +508,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canDeleteExistingMessageWithResponse(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canDeleteExistingMessageWithResponse");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         // Action & Assert
@@ -526,7 +528,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canUpdateExistingMessage(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canUpdateExistingMessage");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
         UpdateChatMessageOptions updateMessageRequest = ChatOptionsProvider.updateMessageOptions();
 
@@ -552,7 +554,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotUpdateMessageNullId(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotUpdateMessageNullId");
         UpdateChatMessageOptions updateMessageRequest = ChatOptionsProvider.updateMessageOptions();
 
         // Action & Assert
@@ -564,7 +566,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotUpdateMessageWithResponseNullId(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotUpdateMessageWithResponseNullId");
         UpdateChatMessageOptions updateMessageRequest = ChatOptionsProvider.updateMessageOptions();
 
         // Action & Assert
@@ -576,7 +578,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canUpdateExistingMessageWithResponse(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canUpdateExistingMessageWithResponse");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
         UpdateChatMessageOptions updateMessageRequest = ChatOptionsProvider.updateMessageOptions();
 
@@ -602,7 +604,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canListMessages(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canListMessages");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
         ListChatMessagesOptions options = new ListChatMessagesOptions();
         options.setMaxPageSize(10);
@@ -637,7 +639,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canListMessagesWithOptions(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canListMessagesWithOptions");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
         ListChatMessagesOptions options = new ListChatMessagesOptions();
         options.setMaxPageSize(10);
@@ -669,7 +671,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendTypingNotification(HttpClient httpClient) {
         // Action & Assert
-        setupTest(httpClient);
+        setupTest(httpClient, "canSendTypingNotification");
         StepVerifier.create(chatThreadClient.sendTypingNotification())
             .verifyComplete();
     }
@@ -678,7 +680,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendTypingNotificationWithResponse(HttpClient httpClient) {
         // Action & Assert
-        setupTest(httpClient);
+        setupTest(httpClient, "canSendTypingNotificationWithResponse");
         StepVerifier.create(chatThreadClient.sendTypingNotificationWithResponse())
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
@@ -693,7 +695,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         matches = "(?i)(true)")
     public void canSendThenListReadReceipts(HttpClient httpClient) throws InterruptedException {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canSendThenListReadReceipts");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
         AtomicReference<String> messageResponseRef = new AtomicReference<>();
 
@@ -726,7 +728,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
         matches = "(?i)(true)")
     public void canSendThenListReadReceiptsWithResponse(HttpClient httpClient) throws InterruptedException {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canSendThenListReadReceiptsWithResponse");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
         AtomicReference<String> messageResponseRef = new AtomicReference<>();
 
@@ -806,7 +808,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendReadReceipt(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canSendReadReceipt");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         // Action & Assert
@@ -822,7 +824,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void canSendReadReceiptWithResponse(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "canSendReadReceiptWithResponse");
         SendChatMessageOptions messageRequest = ChatOptionsProvider.sendMessageOptions();
 
         // Action & Assert
@@ -841,7 +843,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotSendReadReceiptWithNullMessageId(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotSendReadReceiptWithNullMessageId");
 
         // Action & Assert
         StepVerifier.create(chatThreadClient.sendReadReceipt(null))
@@ -852,7 +854,7 @@ public class ChatThreadAsyncClientTest extends ChatClientTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void cannotSendReadReceiptWithResponseWithNullMessageId(HttpClient httpClient) {
         // Arrange
-        setupTest(httpClient);
+        setupTest(httpClient, "cannotSendReadReceiptWithResponseWithNullMessageId");
 
         // Action & Assert
         StepVerifier.create(chatThreadClient.sendReadReceiptWithResponse(null))

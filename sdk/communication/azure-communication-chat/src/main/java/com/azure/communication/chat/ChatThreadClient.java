@@ -12,7 +12,7 @@ import com.azure.communication.chat.models.ListParticipantsOptions;
 import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -137,7 +137,7 @@ public final class ChatThreadClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeParticipantWithResponse(CommunicationUser user, Context context) {
+    public Response<Void> removeParticipantWithResponse(CommunicationUserIdentifier user, Context context) {
 
         return this.client.removeParticipant(user, context).block();
     }
@@ -148,7 +148,7 @@ public final class ChatThreadClient {
      * @param user User identity of the thread participant to remove from the thread.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void removeParticipant(CommunicationUser user) {
+    public void removeParticipant(CommunicationUserIdentifier user) {
 
         this.client.removeParticipant(user).block();
     }

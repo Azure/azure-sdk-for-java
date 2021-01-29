@@ -24,7 +24,7 @@ import com.azure.communication.chat.models.ListReadReceiptOptions;
 import com.azure.communication.chat.models.SendChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatMessageOptions;
 import com.azure.communication.chat.models.UpdateChatThreadOptions;
-import com.azure.communication.common.CommunicationUser;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -218,7 +218,7 @@ public final class ChatThreadAsyncClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> removeParticipant(CommunicationUser user) {
+    public Mono<Void> removeParticipant(CommunicationUserIdentifier user) {
         try {
             Objects.requireNonNull(user, "'user' cannot be null.");
             Objects.requireNonNull(user.getId(), "'user.getId()' cannot be null.");
@@ -239,7 +239,7 @@ public final class ChatThreadAsyncClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeParticipantWithResponse(CommunicationUser user) {
+    public Mono<Response<Void>> removeParticipantWithResponse(CommunicationUserIdentifier user) {
         try {
             Objects.requireNonNull(user, "'user' cannot be null.");
             Objects.requireNonNull(user.getId(), "'user.getId()' cannot be null.");
@@ -256,7 +256,7 @@ public final class ChatThreadAsyncClient {
      * @param context The context to associate with this operation.
      * @return the completion.
      */
-    Mono<Response<Void>> removeParticipant(CommunicationUser user, Context context) {
+    Mono<Response<Void>> removeParticipant(CommunicationUserIdentifier user, Context context) {
         context = context == null ? Context.NONE : context;
 
         return this.chatThreadClient.removeChatParticipantWithResponseAsync(chatThreadId, user.getId(), context);
