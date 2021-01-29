@@ -3,7 +3,9 @@
 
 package com.azure.storage.blob.changefeed;
 
+import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
 
 import java.time.OffsetDateTime;
@@ -36,7 +38,7 @@ public class BlobChangefeedClient {
      *
      * <p>
      * For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -44,6 +46,7 @@ public class BlobChangefeedClient {
      *
      * @return The changefeed events.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public BlobChangefeedPagedIterable getEvents() {
         return getEvents((OffsetDateTime) null, null);
     }
@@ -57,7 +60,7 @@ public class BlobChangefeedClient {
      *
      * <p>
      * For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -71,6 +74,7 @@ public class BlobChangefeedClient {
      * all events from the hour are returned, round the end time up by an hour.
      * @return The changefeed events.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public BlobChangefeedPagedIterable getEvents(OffsetDateTime startTime, OffsetDateTime endTime) {
         return getEvents(startTime, endTime, Context.NONE);
     }
@@ -84,7 +88,7 @@ public class BlobChangefeedClient {
      *
      * <p>
      * For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -99,6 +103,7 @@ public class BlobChangefeedClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The changefeed events.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public BlobChangefeedPagedIterable getEvents(OffsetDateTime startTime, OffsetDateTime endTime, Context context) {
         return new BlobChangefeedPagedIterable(client.getEvents(startTime, endTime).setSubscriberContext(context));
     }
@@ -112,7 +117,7 @@ public class BlobChangefeedClient {
      *
      * <p>
      * For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -122,6 +127,7 @@ public class BlobChangefeedClient {
      * take place after the event identified by the cursor will be returned.
      * @return The changefeed events.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public BlobChangefeedPagedIterable getEvents(String cursor) {
         return getEvents(cursor, Context.NONE);
     }
@@ -135,7 +141,7 @@ public class BlobChangefeedClient {
      *
      * <p>
      * For more information, see the
-     * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
+     * <a href="https://docs.microsoft.com/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -146,6 +152,7 @@ public class BlobChangefeedClient {
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The changefeed events.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public BlobChangefeedPagedIterable getEvents(String cursor, Context context) {
         return new BlobChangefeedPagedIterable(client.getEvents(cursor).setSubscriberContext(context));
     }
