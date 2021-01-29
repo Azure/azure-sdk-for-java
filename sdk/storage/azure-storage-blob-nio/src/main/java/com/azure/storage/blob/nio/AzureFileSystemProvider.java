@@ -162,6 +162,17 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
 
     private static final String ACCOUNT_QUERY_KEY = "account";
     private static final int COPY_TIMEOUT_SECONDS = 30;
+    private static final Set<OpenOption> OUTPUT_STREAM_DEFAULT_OPTIONS =
+        Collections.unmodifiableSet(new HashSet<>(Arrays.asList(StandardOpenOption.CREATE,
+            StandardOpenOption.WRITE,
+            StandardOpenOption.TRUNCATE_EXISTING)));
+    private static final Set<OpenOption> OUTPUT_STREAM_SUPPORTED_OPTIONS =
+        Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
+            StandardOpenOption.CREATE_NEW,
+            StandardOpenOption.CREATE,
+            StandardOpenOption.WRITE,
+            // Though we don't actually truncate, the same result is achieved by overwriting the destination.
+            StandardOpenOption.TRUNCATE_EXISTING)));
 
     private final ConcurrentMap<String, FileSystem> openFileSystems;
 
@@ -381,20 +392,12 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         FileAttribute<?>... fileAttributes) throws IOException {
         // If options are empty, add Create, Write, TruncateExisting as defaults per nio docs.
         if (optionsSet == null || optionsSet.size() == 0) {
-            optionsSet = new HashSet<>(Arrays.asList(StandardOpenOption.CREATE,
-                StandardOpenOption.WRITE,
-                StandardOpenOption.TRUNCATE_EXISTING));
+            optionsSet = OUTPUT_STREAM_DEFAULT_OPTIONS;
         }
 
         // Check for unsupported options.
-        List<OpenOption> supportedOptions = Arrays.asList(
-            StandardOpenOption.CREATE_NEW,
-            StandardOpenOption.CREATE,
-            StandardOpenOption.WRITE,
-            // Though we don't actually truncate, the same result is achieved by overwriting the destination.
-            StandardOpenOption.TRUNCATE_EXISTING);
         for (OpenOption option : optionsSet) {
-            if (!supportedOptions.contains(option)) {
+            if (!OUTPUT_STREAM_SUPPORTED_OPTIONS.contains(option)) {
                 throw LoggingUtility.logError(logger, new UnsupportedOperationException("Unsupported option: "
                     + option.toString()));
             }
@@ -453,7 +456,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         if (fileAttributes == null) {
             fileAttributes = new FileAttribute<?>[0];
         }
-        resource.setFileAttributes(Arrays.asList(fileAttributes)); // Todo: size and null check
+        resource.setFileAttributes(Arrays.asList(fileAttributes));
 
         return new NioBlobOutputStream(resource.getBlobOutputStream(pto, rq), resource.getPath());
     }
