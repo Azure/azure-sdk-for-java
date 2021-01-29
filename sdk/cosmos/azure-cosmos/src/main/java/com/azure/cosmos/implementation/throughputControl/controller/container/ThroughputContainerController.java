@@ -179,7 +179,8 @@ public class ThroughputContainerController implements IThroughputContainerContro
         // TODO: figure out how this work for serveless account
         // TODO: work item: https://github.com/Azure/azure-sdk-for-java/issues/18776
         checkArgument(StringUtils.isNotEmpty(resourceId), "ResourceId can not be null or empty");
-        return this.client.queryOffers(resourceId, new CosmosQueryRequestOptions())
+        return this.client.queryOffers(
+                    BridgeInternal.getOfferQuerySpecFromResourceId(this.targetContainer, resourceId), new CosmosQueryRequestOptions())
             .single()
             .flatMap(offerFeedResponse -> {
                 if (offerFeedResponse.getResults().isEmpty()) {

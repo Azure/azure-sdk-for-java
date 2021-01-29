@@ -46,13 +46,15 @@ public class ThroughputControlTests extends TestSuiteBase {
         group2.setTargetThroughputThreshold(0.9)
             .setLocalControlMode();
 
+        container.readThroughput().block();
+
         Set<ThroughputControlGroup> groups = new HashSet<>();
         groups.add(group1);
         groups.add(group2);
 
         this.client.enableThroughputControl(groups);
         TestItem docDefinition = getDocumentDefinition();
-     //   container.createItem(docDefinition).block(); // since not group is defined, this will fall into the default control group
+        container.createItem(docDefinition).block(); // since not group is defined, this will fall into the default control group
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
 
