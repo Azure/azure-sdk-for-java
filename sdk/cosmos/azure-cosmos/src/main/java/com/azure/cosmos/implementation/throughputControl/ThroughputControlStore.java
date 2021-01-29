@@ -7,7 +7,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThroughputControlGroup;
-import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
@@ -22,6 +21,7 @@ import com.azure.cosmos.implementation.throughputControl.controller.container.IT
 import com.azure.cosmos.implementation.throughputControl.controller.container.ThroughputContainerController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -32,6 +32,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.Exceptions.isNameCacheStale;
+import static com.azure.cosmos.implementation.Exceptions.isPartitionKeyMismatchException;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -157,7 +159,8 @@ public class ThroughputControlStore {
         checkNotNull(request, "Request can not be null");
         checkNotNull(originalRequestMono, "originalRequestMono can not be null");
 
-        // Currently throughput control will only for non-master resources.
+        // Currently, we will only target two resource types.
+        // If in the future we find other useful scenarios for throughput control, add more more resource type here.
         if (request.getResourceType() == ResourceType.Document || request.getResourceType() == ResourceType.StoredProcedure) {
             String collectionLink = Utils.getCollectionName(request.getResourceAddress());
             return this.resolveContainerController(collectionLink)
@@ -173,7 +176,7 @@ public class ThroughputControlStore {
                     return this.shouldRefreshContainerController(collectionLink, request)
                         .flatMap(shouldRefresh -> {
                             if (shouldRefresh) {
-                                containerController.close().subscribeOn(Schedulers.elastic()).subscribe();
+                                containerController.close().subscribeOn(Schedulers.parallel()).subscribe();
                                 this.containerControllerCache.refresh(collectionLink, () -> this.createAndInitContainerController(collectionLink));
                                 return this.resolveContainerController(collectionLink);
                             }
@@ -213,12 +216,12 @@ public class ThroughputControlStore {
         checkNotNull(controller, "Container controller can not be null");
         checkNotNull(throwable, "Exception can not be null");
 
-        CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+        CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
 
         if (cosmosException != null &&
-            (Exceptions.isNameCacheStale(cosmosException) || Exceptions.isPartitionKeyMismatchException(cosmosException))) {
+            (isNameCacheStale(cosmosException) || isPartitionKeyMismatchException(cosmosException))) {
 
-            controller.close().subscribeOn(Schedulers.elastic()).subscribe();
+            controller.close().subscribeOn(Schedulers.parallel()).subscribe();
             String containerLink = Utils.getCollectionName(request.getResourceAddress());
 
             this.collectionCache.refresh(null, containerLink, null);

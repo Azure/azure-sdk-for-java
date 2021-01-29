@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.throughputControl.controller.group;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.ThroughputControlGroup;
-import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
@@ -21,6 +20,7 @@ import com.azure.cosmos.implementation.throughputControl.controller.request.IThr
 import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -30,6 +30,8 @@ import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static com.azure.cosmos.implementation.Exceptions.isPartitionCompletingSplittingException;
+import static com.azure.cosmos.implementation.Exceptions.isPartitionSplit;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -52,7 +54,6 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     private final String targetContainerRid;
 
     private final CancellationTokenSource cancellationTokenSource;
-    private final Scheduler scheduler;
 
     public ThroughputGroupControllerBase(
         ConnectionMode connectionMode,
@@ -86,7 +87,6 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         this.targetContainerRid = targetContainerRid;
 
         this.cancellationTokenSource = new CancellationTokenSource();
-        this.scheduler = Schedulers.elastic();
     }
 
     private void calculateGroupThroughput() {
@@ -107,7 +107,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     public <T> Mono<T> init() {
         return this.resolveRequestController()
             .doOnSuccess(dummy -> {
-                scheduler.schedule(() -> this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken()).subscribe());
+                Schedulers.parallel().schedule(() -> this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken()).subscribe());
             })
             .thenReturn((T)this);
     }
@@ -116,11 +116,13 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
         checkNotNull(cancellationToken, "Cancellation token can not be null");
         return Mono.delay(DEFAULT_THROUGHPUT_USAGE_RESET_DURATION)
             .flatMap(t -> this.resolveRequestController())
-            .flatMap(requestController -> requestController.renewThroughputUsageCycle(this.groupThroughput.get()))
+            .doOnSuccess(requestController -> requestController.renewThroughputUsageCycle(this.groupThroughput.get()))
             .onErrorResume(throwable -> {
                 logger.warn("Reset throughput usage failed with reason %s", throwable);
                 return Mono.empty();
-            }).repeat(() -> !cancellationToken.isCancellationRequested());
+            })
+            .then()
+            .repeat(() -> !cancellationToken.isCancellationRequested());
     }
 
     private Mono<IThroughputRequestController> createAndInitializeRequestController() {
@@ -172,7 +174,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
                     return this.shouldUpdateRequestController(request)
                         .flatMap(shouldUpdate -> {
                             if (shouldUpdate) {
-                                requestController.close().subscribeOn(Schedulers.elastic()).subscribe();
+                                requestController.close().subscribeOn(Schedulers.parallel()).subscribe();
                                 this.refreshRequestController();
                                 return this.resolveRequestController();
                             } else {
@@ -225,8 +227,8 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     private void handleException(Throwable throwable) {
         checkNotNull(throwable, "Throwable can not be null");
 
-        CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
-        if (Exceptions.isPartitionSplit(cosmosException) || Exceptions.isPartitionCompletingSplittingException(cosmosException)) {
+        CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
+        if (isPartitionSplit(cosmosException) || isPartitionCompletingSplittingException(cosmosException)) {
             this.refreshRequestController();
         }
     }

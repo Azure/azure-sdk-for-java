@@ -27,6 +27,7 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -65,7 +66,6 @@ public class ThroughputContainerController implements IThroughputContainerContro
     private final CosmosAsyncContainer targetContainer;
 
     private final CancellationTokenSource cancellationTokenSource;
-    private final Scheduler scheduler;
 
     private ThroughputGroupControllerBase defaultGroupController;
     private String targetContainerRid;
@@ -95,7 +95,6 @@ public class ThroughputContainerController implements IThroughputContainerContro
         this.throughputResolveLevel = this.getThroughputResolveLevel(groups);
 
         this.cancellationTokenSource = new CancellationTokenSource();
-        this.scheduler = Schedulers.elastic();
     }
 
     private ThroughputResolveLevel getThroughputResolveLevel(List<ThroughputControlGroup> groupConfigs) {
@@ -117,7 +116,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
             .flatMap(controller -> this.createAndInitializeGroupControllers())
             .doOnSuccess(controller -> {
                 this.setDefaultGroupController();
-                scheduler.schedule(() -> this.refreshContainerMaxThroughputTask(this.cancellationTokenSource.getToken()).subscribe());
+                Schedulers.parallel().schedule(() -> this.refreshContainerMaxThroughputTask(this.cancellationTokenSource.getToken()).subscribe());
             })
             .thenReturn((T) this);
     }
@@ -190,10 +189,6 @@ public class ThroughputContainerController implements IThroughputContainerContro
 
                 return this.client.readOffer(offerFeedResponse.getResults().get(0).getSelfLink()).single();
             })
-            .onErrorResume(throwable -> {
-                System.out.println(throwable.getCause());
-                return Mono.error(throwable);
-            })
             .map(ModelBridgeInternal::createThroughputRespose);
     }
 
@@ -223,7 +218,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
     private boolean isOfferNotConfiguredException(Throwable throwable) {
         checkNotNull(throwable, "Throwable should not be null");
 
-        CosmosException cosmosException = Utils.as(throwable, CosmosException.class);
+        CosmosException cosmosException = Utils.as(Exceptions.unwrap(throwable), CosmosException.class);
         // the exception here should match what returned from method resolveThroughputByResourceId
         return cosmosException != null
             && cosmosException.getStatusCode() == NO_OFFER_EXCEPTION_STATUS_CODE

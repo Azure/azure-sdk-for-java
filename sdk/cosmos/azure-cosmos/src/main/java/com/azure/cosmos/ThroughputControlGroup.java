@@ -103,7 +103,7 @@ public class ThroughputControlGroup {
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroup setTargetThroughput(int targetThroughput) {
-        checkArgument(targetThroughput > 0, "Target throughput should be larger than 0");
+        checkArgument(targetThroughput > 0, "Target throughput should be greater than 0");
         this.targetThroughput = targetThroughput;
         return this;
     }
@@ -122,7 +122,7 @@ public class ThroughputControlGroup {
     }
 
     /**
-     * Set throughput control group target throughput threshold. The value should be larger than 0 and less than 1.
+     * Set throughput control group target throughput threshold. The value should be between (0, 1].
      *
      * @param targetThroughputThreshold the target throughput threshold for the throughput control group.
      *

@@ -15,9 +15,6 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-/**
- * Throughput
- */
 public class GlobalThroughputRequestController implements IThroughputRequestController {
     private final GlobalEndpointManager globalEndpointManager;
     private final AtomicReference<Double> scheduledThroughput;
@@ -60,11 +57,11 @@ public class GlobalThroughputRequestController implements IThroughputRequestCont
     }
 
     @Override
-    public Mono<Void> renewThroughputUsageCycle(double throughput) {
+    public void renewThroughputUsageCycle(double throughput) {
         this.scheduledThroughput.set(throughput);
-        return Flux.fromIterable(this.requestThrottlerMapByRegion.values())
-            .flatMap(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughput))
-            .then();
+        this.requestThrottlerMapByRegion.values()
+            .stream()
+            .forEach(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughput));
     }
 
     @Override

@@ -19,5 +19,5 @@ public interface IThroughputRequestController extends IThroughputController {
      * @param throughput
      * @return
      */
-    Mono<Void> renewThroughputUsageCycle(double throughput);
+    void renewThroughputUsageCycle(double throughput);
 }

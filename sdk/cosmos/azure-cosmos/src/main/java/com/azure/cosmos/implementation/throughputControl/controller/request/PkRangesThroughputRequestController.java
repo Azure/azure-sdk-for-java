@@ -55,13 +55,15 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
     }
 
     @Override
-    public Mono<Void> renewThroughputUsageCycle(double scheduledThroughput) {
+    public void renewThroughputUsageCycle(double scheduledThroughput) {
         this.scheduledThroughput = scheduledThroughput;
         double throughputPerPkRange = this.calculateThroughputPerPkRange();
-        return Flux.fromIterable(this.requestThrottlerMapByRegion.values())
-            .flatMapIterable(requestThrottlerMapByPkRange -> requestThrottlerMapByPkRange.values())
-            .flatMap(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughputPerPkRange))
-            .then();
+        this.requestThrottlerMapByRegion.values()
+            .forEach(requestThrottlerMapByRegion -> {
+                requestThrottlerMapByRegion
+                    .values()
+                    .forEach(requestThrottler -> requestThrottler.renewThroughputUsageCycle(throughputPerPkRange));
+            });
     }
 
     @Override

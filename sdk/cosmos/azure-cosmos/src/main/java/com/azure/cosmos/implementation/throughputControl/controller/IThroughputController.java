@@ -25,7 +25,6 @@ public interface IThroughputController {
     /**
      * Initialize process.
      * Will create and initialize the lower level throughput controller and schedule tasks if needed.
-     * @param <T>
      * @return
      */
     <T> Mono<T> init();
@@ -34,7 +33,6 @@ public interface IThroughputController {
      * Route the request to lower level throughput controller which can handle the request.
      * @param request
      * @param nextRequestMono
-     * @param <T>
      * @return
      */
     <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> nextRequestMono);

@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,30 +33,22 @@ public class ThroughputRequestThrottler {
         this.scheduledThroughput = new AtomicReference<>(scheduledThroughput);
     }
 
-    public Mono<Void> renewThroughputUsageCycle(double scheduledThroughput) {
+    public void renewThroughputUsageCycle(double scheduledThroughput) {
         this.scheduledThroughput.set(scheduledThroughput);
         this.updateAvailableThroughput();
-        return Mono.empty();
     }
 
     private void updateAvailableThroughput() {
         // The base rule is: If RU is overused during the current cycle, the over used part will be deducted from the next cyclle
-        // If RU is not fully utilized during the current cycle, it will be void.
-        // So the available throughput for each cycle will be less than scheduled throughput.
+        // If RU is not fully utilized during the current cycle, it will be voided.
         this.availableThroughput.getAndAccumulate(this.scheduledThroughput.get(), (available, refill) -> Math.min(available,0) + refill);
     }
 
     public <T> Mono<T> processRequest(RxDocumentServiceRequest request, Mono<T> originalRequestMono) {
         if (this.availableThroughput.get() > 0) {
             return originalRequestMono
-                .doOnSuccess(response -> {
-                    this.trackRequestCharge(response);
-                })
-                .onErrorResume(throwable -> {
-                    this.trackRequestCharge(throwable);
-
-                    return Mono.error(throwable);
-                });
+                .doOnSuccess(response -> this.trackRequestCharge(response))
+                .doOnError(throwable -> this.trackRequestCharge(throwable));
         } else {
             // there is no enough throughput left, block request
             RequestRateTooLargeException requestRateTooLargeException = new RequestRateTooLargeException();
@@ -84,7 +77,7 @@ public class ThroughputRequestThrottler {
         } else if (response instanceof RxDocumentServiceResponse) {
             requestCharge = ((RxDocumentServiceResponse)response).getRequestCharge();
         } else if (response instanceof Throwable) {
-            CosmosException cosmosException = Utils.as(response, CosmosException.class);
+            CosmosException cosmosException = Utils.as(Exceptions.unwrap((Throwable) response), CosmosException.class);
             if (cosmosException != null) {
                 requestCharge = cosmosException.getRequestCharge();
             }
