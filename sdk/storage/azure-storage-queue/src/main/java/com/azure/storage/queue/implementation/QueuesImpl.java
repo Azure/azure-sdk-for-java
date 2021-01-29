@@ -59,7 +59,6 @@ public final class QueuesImpl {
     private interface QueuesService {
         @Put("/{queueName}")
         @ExpectedResponses({201, 204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<QueuesCreateResponse> create(
                 @HostParam("url") String url,
@@ -73,7 +72,6 @@ public final class QueuesImpl {
 
         @Delete("/{queueName}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<QueuesDeleteResponse> delete(
                 @HostParam("url") String url,
@@ -86,7 +84,6 @@ public final class QueuesImpl {
 
         @Get("/{queueName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<QueuesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
@@ -100,7 +97,6 @@ public final class QueuesImpl {
 
         @Put("/{queueName}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<QueuesSetMetadataResponse> setMetadata(
                 @HostParam("url") String url,
@@ -115,7 +111,6 @@ public final class QueuesImpl {
 
         @Get("/{queueName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<QueuesGetAccessPolicyResponse> getAccessPolicy(
                 @HostParam("url") String url,
@@ -129,7 +124,6 @@ public final class QueuesImpl {
 
         @Put("/{queueName}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<QueuesSetAccessPolicyResponse> setAccessPolicy(
                 @HostParam("url") String url,

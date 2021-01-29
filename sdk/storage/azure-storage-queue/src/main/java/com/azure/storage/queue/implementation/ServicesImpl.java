@@ -61,7 +61,6 @@ public final class ServicesImpl {
     private interface ServicesService {
         @Put("/")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<ServicesSetPropertiesResponse> setProperties(
                 @HostParam("url") String url,
@@ -76,7 +75,6 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<ServicesGetPropertiesResponse> getProperties(
                 @HostParam("url") String url,
@@ -90,7 +88,6 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<ServicesGetStatisticsResponse> getStatistics(
                 @HostParam("url") String url,
@@ -104,7 +101,6 @@ public final class ServicesImpl {
 
         @Get("/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<ServicesListQueuesSegmentResponse> listQueuesSegment(
                 @HostParam("url") String url,
@@ -121,7 +117,6 @@ public final class ServicesImpl {
 
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<ServicesListQueuesSegmentNextResponse> listQueuesSegmentNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,

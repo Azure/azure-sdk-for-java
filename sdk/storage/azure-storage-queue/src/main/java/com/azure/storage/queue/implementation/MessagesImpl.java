@@ -55,7 +55,6 @@ public final class MessagesImpl {
     private interface MessagesService {
         @Get("/{queueName}/messages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<MessagesDequeueResponse> dequeue(
                 @HostParam("url") String url,
@@ -70,7 +69,6 @@ public final class MessagesImpl {
 
         @Delete("/{queueName}/messages")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<MessagesClearResponse> clear(
                 @HostParam("url") String url,
@@ -83,7 +81,6 @@ public final class MessagesImpl {
 
         @Post("/{queueName}/messages")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<MessagesEnqueueResponse> enqueue(
                 @HostParam("url") String url,
@@ -99,7 +96,6 @@ public final class MessagesImpl {
 
         @Get("/{queueName}/messages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<MessagesPeekResponse> peek(
                 @HostParam("url") String url,

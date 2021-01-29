@@ -53,7 +53,6 @@ public final class MessageIdsImpl {
     private interface MessageIdsService {
         @Put("/{queueName}/messages/{messageid}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<MessageIdsUpdateResponse> update(
                 @HostParam("url") String url,
@@ -70,7 +69,6 @@ public final class MessageIdsImpl {
 
         @Delete("/{queueName}/messages/{messageid}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(StorageErrorException.class)
         @UnexpectedResponseExceptionType(com.azure.storage.queue.models.QueueStorageException.class)
         Mono<MessageIdsDeleteResponse> delete(
                 @HostParam("url") String url,
