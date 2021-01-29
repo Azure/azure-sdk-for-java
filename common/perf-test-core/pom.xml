@@ -78,7 +78,11 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <!--
+        Perf framework should depend on lowest version of com.azure dependencies for maximum compatibility, allowing test
+        projects to choose a higher version if desired.
+      -->
+      <version>1.0.0</version>
     </dependency>
   </dependencies>
 </project>
