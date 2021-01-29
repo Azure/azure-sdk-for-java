@@ -135,4 +135,5 @@ jobs:
               echo $username
               az login --allow-no-subscriptions --tenant $(java-spring-aad-tenant-id-1) --service-principal -u $(java-spring-aad-service-principal-client-id) -p $(java-spring-aad-service-principal-client-secret)
               az ad user delete --id "$onDemandUsername"
+            condition: always()
             displayName: 'Delete On-demand test user'
