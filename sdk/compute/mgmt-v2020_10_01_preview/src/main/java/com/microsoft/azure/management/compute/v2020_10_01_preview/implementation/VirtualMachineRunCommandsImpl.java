@@ -42,43 +42,20 @@ class VirtualMachineRunCommandsImpl extends WrapperImpl<VirtualMachineRunCommand
         return  new LocationVirtualMachineRunCommandImpl(inner, manager());
     }
 
-    private Observable<VirtualMachineRunCommandInner> getVirtualMachineRunCommandInnerUsingVirtualMachineRunCommandsInnerAsync(String id) {
-        String location = IdParsingUtils.getValueFromIdByName(id, "locations");
-        String commandId = IdParsingUtils.getValueFromIdByName(id, "runCommands");
+    @Override
+    public Observable<RunCommandDocumentInner> getAsync(String location, String commandId) {
         VirtualMachineRunCommandsInner client = this.inner();
         return client.getAsync(location, commandId);
     }
 
     @Override
-    public Observable<LocationVirtualMachineRunCommand> getAsync(String location, String commandId) {
-        VirtualMachineRunCommandsInner client = this.inner();
-        return client.getAsync(location, commandId)
-        .flatMap(new Func1<VirtualMachineRunCommandInner, Observable<LocationVirtualMachineRunCommand>>() {
-            @Override
-            public Observable<LocationVirtualMachineRunCommand> call(VirtualMachineRunCommandInner inner) {
-                if (inner == null) {
-                    return Observable.empty();
-                } else {
-                    return Observable.just((LocationVirtualMachineRunCommand)wrapLocationVirtualMachineRunCommandModel(inner));
-                }
-            }
-       });
-    }
-
-    @Override
-    public Observable<LocationVirtualMachineRunCommand> listAsync(final String location) {
+    public Observable<RunCommandDocumentBaseInner> listAsync(final String location) {
         VirtualMachineRunCommandsInner client = this.inner();
         return client.listAsync(location)
         .flatMapIterable(new Func1<Page<RunCommandDocumentBaseInner>, Iterable<RunCommandDocumentBaseInner>>() {
             @Override
             public Iterable<RunCommandDocumentBaseInner> call(Page<RunCommandDocumentBaseInner> page) {
                 return page.items();
-            }
-        })
-        .map(new Func1<VirtualMachineRunCommandInner, LocationVirtualMachineRunCommand>() {
-            @Override
-            public LocationVirtualMachineRunCommand call(VirtualMachineRunCommandInner inner) {
-                return wrapLocationVirtualMachineRunCommandModel(inner);
             }
         });
     }

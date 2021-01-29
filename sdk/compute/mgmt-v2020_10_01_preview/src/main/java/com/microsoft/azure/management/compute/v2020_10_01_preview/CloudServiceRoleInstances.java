@@ -12,6 +12,8 @@ import rx.Observable;
 import com.microsoft.azure.management.compute.v2020_10_01_preview.RoleInstance;
 import rx.Completable;
 
+import java.io.InputStream;
+
 /**
  * Type representing CloudServiceRoleInstances.
  */

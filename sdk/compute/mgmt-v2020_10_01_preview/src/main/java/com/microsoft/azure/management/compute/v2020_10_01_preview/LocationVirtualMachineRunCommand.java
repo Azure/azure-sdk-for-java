@@ -106,7 +106,7 @@ public interface LocationVirtualMachineRunCommand extends HasInner<VirtualMachin
     /**
      * The entirety of the LocationVirtualMachineRunCommand definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithResourceGroup, DefinitionStages.WithLocation, DefinitionStages.WithCreate {
     }
 
     /**
@@ -116,20 +116,20 @@ public interface LocationVirtualMachineRunCommand extends HasInner<VirtualMachin
         /**
          * The first stage of a LocationVirtualMachineRunCommand definition.
          */
-        interface Blank extends WithLocation {
+        interface Blank extends WithResourceGroup {
         }
 
         /**
          * The stage of the locationvirtualmachineruncommand definition allowing to specify Location.
          */
-        interface WithLocation {
+        interface WithResourceGroup {
            /**
             * Specifies resourceGroupName, vmName.
             * @param resourceGroupName The name of the resource group
             * @param vmName The name of the virtual machine where the run command should be created or updated
             * @return the next definition stage
             */
-            WithLocation withExistingLocation(String resourceGroupName, String vmName);
+            WithLocation withExistingResourceGroup(String resourceGroupName, String vmName);
         }
 
         /**

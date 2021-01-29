@@ -18,6 +18,8 @@ import com.microsoft.azure.Page;
 import rx.Completable;
 import com.microsoft.azure.management.compute.v2020_10_01_preview.RoleInstanceInstanceView;
 
+import java.io.InputStream;
+
 class CloudServiceRoleInstancesImpl extends WrapperImpl<CloudServiceRoleInstancesInner> implements CloudServiceRoleInstances {
     private final ComputeManager manager;
 

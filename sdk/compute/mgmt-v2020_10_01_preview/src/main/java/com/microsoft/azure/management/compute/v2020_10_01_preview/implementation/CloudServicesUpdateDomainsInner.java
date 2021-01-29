@@ -147,7 +147,7 @@ public class CloudServicesUpdateDomainsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2020-10-01-preview";
-        Observable<Response<ResponseBody>> observable = service.walkUpdateDomain(resourceGroupName, cloudServiceName, updateDomain, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.walkUpdateDomain(resourceGroupName, cloudServiceName, updateDomain, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), new UpdateDomainInner(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
@@ -217,7 +217,7 @@ public class CloudServicesUpdateDomainsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2020-10-01-preview";
-        return service.beginWalkUpdateDomain(resourceGroupName, cloudServiceName, updateDomain, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), parameters, this.client.userAgent())
+        return service.beginWalkUpdateDomain(resourceGroupName, cloudServiceName, updateDomain, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), new UpdateDomainInner(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
