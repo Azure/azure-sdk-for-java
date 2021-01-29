@@ -6,7 +6,7 @@
 ###########
 
 # Catch all
-/sdk/                                               @joshfree @srnagar @hemanttanwar @anuchandy @conniey @jianghaolu @bsiegel
+/sdk/                                               @joshfree @srnagar @hemanttanwar @anuchandy @conniey @jianghaolu
 
 # BOM
 # PRLabel: %Azure.Core
@@ -81,7 +81,7 @@
 /sdk/storage/                                       @amishra-dev @rickle-msft @jaschrep-msft @gapra-msft @alzimmermsft @kasobol-msft
 
 # PRLabel: %Tables
-/sdk/tables/                                        @bsiegel @conniey
+/sdk/tables/                                        @vcolin7 @conniey
 
 # PRLabel: %EngSys
 /sdk/template/                                      @Azure/azure-sdk-eng
