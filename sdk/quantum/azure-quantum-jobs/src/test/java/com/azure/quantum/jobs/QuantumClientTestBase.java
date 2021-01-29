@@ -24,7 +24,7 @@ public class QuantumClientTestBase extends TestBase {
         }
 
         return builder
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .credential(new AzureCliCredentialBuilder().build())
             .subscriptionId(subscriptionId)
             .resourceGroupName(resourceGroup)
