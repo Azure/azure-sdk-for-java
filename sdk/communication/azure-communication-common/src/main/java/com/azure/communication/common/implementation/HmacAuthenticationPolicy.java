@@ -2,44 +2,27 @@
 // Licensed under the MIT License.
 package com.azure.communication.common.implementation;
 
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 import com.azure.core.credential.AzureKeyCredential;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
-import com.azure.communication.common.CommunicationClientCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -68,19 +51,19 @@ public final class HmacAuthenticationPolicy implements HttpPipelinePolicy {
     static final DateTimeFormatter HMAC_DATETIMEFORMATTER_PATTERN = DateTimeFormatter
             .ofPattern("E, dd MMM yyyy HH:mm:ss 'GMT'", java.util.Locale.US);
 
-    private final CommunicationClientCredential credential;
+    private final AzureKeyCredential credential;
 
     private Mac sha256HMAC;
     private final ClientLogger logger = new ClientLogger(HmacAuthenticationPolicy.class);
 
-    public HmacAuthenticationPolicy(CommunicationClientCredential clientCredential) {
+    public HmacAuthenticationPolicy(AzureKeyCredential clientCredential) {
         Objects.requireNonNull(clientCredential, "'clientCredential' cannot be a null value.");
         credential = clientCredential;
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        String accessKey = credential.getAccessKay();
+        String accessKey = credential.getKey();
         byte[] key = Base64.getDecoder().decode(accessKey);
         Mac sha256HMAC;
         try {

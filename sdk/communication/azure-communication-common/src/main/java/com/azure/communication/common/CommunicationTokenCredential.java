@@ -39,9 +39,9 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      *
      * @param token serialized JWT token
      */
-    public CommunicationTokenCredential(String initialToken) {
-        Objects.requireNonNull(initialToken, "'initialToken' cannot be null.");
-        setToken(initialToken);
+    public CommunicationTokenCredential(String token) {
+        Objects.requireNonNull(token, "'initialToken' cannot be null.");
+        setToken(token);
     }
 
     /**
@@ -70,8 +70,8 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      * Get Azure core access token from credential
      *
      * @return Asynchronous call to fetch actual token
-     * @throws ExecutionException   when supplier throws this exception
      * @throws InterruptedException when supplier throws this exception
+     * @throws ExecutionException when supplier throws this exception
      */
     public Mono<AccessToken> getToken() throws InterruptedException, ExecutionException {
         if (isClosed) {

@@ -26,15 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class SmsLiveTestBase extends TestBase {
 
     protected static final String DEFAULT_ACCESS_KEY = "VGhpcyBpcyBhIHRlc3Q="; // Base64 encoded "This is a test"
-    static final TestMode TEST_MODE = initializeTestMode();
     static final String PHONENUMBER = Configuration.getGlobalConfiguration().get("SMS_SERVICE_PHONE_NUMBER",
             "+18005555555");
-
-    static final String ACCESSKEY = Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ACCESS_KEY",
-            DEFAULT_ACCESS_KEY);
-
-    static final String ENDPOINT = Configuration.getGlobalConfiguration().get("COMMUNICATION_SERVICE_ENDPOINT",
-            "https://REDACTED.communication.azure.com");
 
     static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
             "COMMUNICATION_LIVETEST_CONNECTION_STRING",
@@ -65,7 +58,7 @@ public class SmsLiveTestBase extends TestBase {
     protected SmsClientBuilder getSmsClientBuilder(HttpClient httpClient) {
         SmsClientBuilder builder = new SmsClientBuilder();
 
-        builder.endpoint(ENDPOINT).accessKey(ACCESSKEY)
+        builder.endpoint(getTestEndPoint()).accessKey(getAccessKey())
                 .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (getTestMode() == TestMode.RECORD) {
@@ -76,7 +69,10 @@ public class SmsLiveTestBase extends TestBase {
     }
 
     protected SmsClientBuilder getSmsClientBuilderWithManagedIdentity(HttpClient httpClient) {
-        SmsClientBuilder builder = new SmsClientBuilder();
+        SmsClientBuilder builder = new SmsClientBuilder()
+            .endpoint(getTestEndPoint())
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
+
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new FakeCredentials());
         } else {

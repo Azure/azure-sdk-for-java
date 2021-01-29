@@ -23,13 +23,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import reactor.core.publisher.Mono;
 
-import com.azure.communication.common.implementation.CommunicationConnectionString;
-
 public class PhoneNumberIntegrationTestBase extends TestBase {
-    private static final String ENV_ACCESS_KEY = Configuration.getGlobalConfiguration()
-            .get("COMMUNICATION_SERVICE_ACCESS_KEY", "QWNjZXNzS2V5");
-    private static final String ENV_ENDPOINT = Configuration.getGlobalConfiguration()
-            .get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
             "COMMUNICATION_LIVETEST_CONNECTION_STRING",
             "endpoint=https://REDACTED.communication.azure.com/;accesskey=QWNjZXNzS2V5");
@@ -54,13 +48,34 @@ public class PhoneNumberIntegrationTestBase extends TestBase {
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN = Pattern.compile(
             String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()), Pattern.CASE_INSENSITIVE);
 
+    private static String endPoint;
+
+    private static String getTestEndPoint() {
+        parseConnectionString();
+        return endPoint;
+    }
+
+    private static String accessKey;
+
+    private static String getAccessKey() {
+        parseConnectionString();
+        return accessKey;
+    }
+
+    private static void parseConnectionString() {
+        if (endPoint == null) {
+            CommunicationConnectionString envConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
+            endPoint = envConnectionString.getEndpoint();
+            accessKey = envConnectionString.getAccessKey();
+        }
+    }
     protected PhoneNumberClientBuilder getClientBuilder(HttpClient httpClient) {
         if (getTestMode() == TestMode.PLAYBACK) {
             httpClient = interceptorManager.getPlaybackClient();
         }
 
         PhoneNumberClientBuilder builder = new PhoneNumberClientBuilder();
-        builder.httpClient(httpClient).endpoint(ENV_ENDPOINT).accessKey(ENV_ACCESS_KEY);
+        builder.httpClient(httpClient).endpoint(getTestEndPoint()).accessKey(getAccessKey());
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();

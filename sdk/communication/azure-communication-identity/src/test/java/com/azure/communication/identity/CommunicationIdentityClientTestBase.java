@@ -19,7 +19,6 @@ import com.azure.communication.common.implementation.CommunicationConnectionStri
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringJoiner;
@@ -29,17 +28,11 @@ import java.util.regex.Pattern;
 
 public class CommunicationIdentityClientTestBase extends TestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
-    protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ENDPOINT", "https://REDACTED.communication.azure.com");
-        
-    protected static final String ACCESSKEYRAW = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
-    protected static final String ACCESSKEYENCODED = Base64.getEncoder().encodeToString(ACCESSKEYRAW.getBytes());
-    protected static final String ACCESSKEY = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_SERVICE_ACCESS_KEY", ACCESSKEYENCODED);
 
-    protected static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("COMMUNICATION_CONNECTION_STRING", "endpoint=https://REDACTED.communication.azure.com/;accesskey=" + ACCESSKEYENCODED);
-    
+    static final String CONNECTION_STRING = Configuration.getGlobalConfiguration().get(
+        "COMMUNICATION_LIVETEST_CONNECTION_STRING",
+        "endpoint=https://REDACTED.communication.azure.com/;accesskey=VGhpcyBpcyBhIHRlc3Q=");
+
     private static final StringJoiner JSON_PROPERTIES_TO_REDACT
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("id")
@@ -48,6 +41,28 @@ public class CommunicationIdentityClientTestBase extends TestBase {
     private static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT.toString()),
         Pattern.CASE_INSENSITIVE);
+
+    private static String endPoint;
+
+    private static String getTestEndPoint() {
+        parseConnectionString();
+        return endPoint;
+    }
+
+    private static String accessKey;
+
+    private static String getAccessKey() {
+        parseConnectionString();
+        return accessKey;
+    }
+
+    private static void parseConnectionString() {
+        if (endPoint == null) {
+            CommunicationConnectionString envConnectionString = new CommunicationConnectionString(CONNECTION_STRING);
+            endPoint = envConnectionString.getEndpoint();
+            accessKey = envConnectionString.getAccessKey();
+        }
+    }
 
     protected CommunicationIdentityClientBuilder getCommunicationIdentityClient(HttpClient httpClient) {
         CommunicationIdentityClientBuilder builder = new CommunicationIdentityClientBuilder();
@@ -127,7 +142,7 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             return Mono.just(new AccessToken("someFakeToken", OffsetDateTime.MAX));
         }
     }
-    
+
     private String redact(String content, Matcher matcher, String replacement) {
         while (matcher.find()) {
             String captureGroup = matcher.group(1);
