@@ -32,5 +32,5 @@ extends:
     ServiceDirectory: quantum
     Artifacts:
       - name: azure-quantum-jobs
-        groupId: com.azure.quantum.jobs
+        groupId: com.azure
         safeName: azurequantumjobs
