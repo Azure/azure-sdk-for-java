@@ -291,8 +291,7 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
         if (set.contains(StandardOpenOption.WRITE)) {
             return new AzureSeekableByteChannel(
                 (NioBlobOutputStream) this.newOutputStreamInternal(path, set, fileAttributes), path);
-        }
-        else {
+        } else {
             return new AzureSeekableByteChannel(
                 (NioBlobInputStream) this.newInputStream(path, set.toArray(new OpenOption[0])), path);
         }
