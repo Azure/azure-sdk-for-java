@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SecuredPolicyResetToken {
+class SecuredPolicyResetToken {
     private final JWSSigner signer;
     private final Base64 signingCertificate;
 

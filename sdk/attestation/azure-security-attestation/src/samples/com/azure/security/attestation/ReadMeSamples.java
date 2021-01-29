@@ -21,7 +21,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class ReadMeSamples extends AttestationClientTestBase {
+class ReadmeSamples extends AttestationClientTestBase {
 
 
     void testAttestSgxEnclave(HttpClient httpClient, String clientUri) {
