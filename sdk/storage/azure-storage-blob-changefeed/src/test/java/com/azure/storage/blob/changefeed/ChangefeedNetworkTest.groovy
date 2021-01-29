@@ -4,9 +4,10 @@ import com.azure.core.test.TestMode
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
-import spock.lang.Ignore
+import org.junit.Ignore
 import reactor.test.StepVerifier
 import spock.lang.Requires
+
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.stream.Stream

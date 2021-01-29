@@ -43,7 +43,7 @@ public final class BlobBatchClientBuilder {
      */
     public BlobBatchClientBuilder(BlobServiceClient client) {
         this.accountUrl = client.getAccountUrl();
-        this.pipeline = addBlobUserAgentModificationPolicy(client.getHttpPipeline());
+        this.pipeline = client.getHttpPipeline();
         this.version = client.getServiceVersion();
     }
 
@@ -56,28 +56,8 @@ public final class BlobBatchClientBuilder {
      */
     public BlobBatchClientBuilder(BlobServiceAsyncClient client) {
         this.accountUrl = client.getAccountUrl();
-        this.pipeline = addBlobUserAgentModificationPolicy(client.getHttpPipeline());
+        this.pipeline = client.getHttpPipeline();
         this.version = client.getServiceVersion();
-    }
-
-    private HttpPipeline addBlobUserAgentModificationPolicy(HttpPipeline pipeline) {
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
-            HttpPipelinePolicy currPolicy = pipeline.getPolicy(i);
-            policies.add(currPolicy);
-            if (currPolicy instanceof UserAgentPolicy) {
-                String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
-                String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
-
-                policies.add(new BlobUserAgentModificationPolicy(clientName, clientVersion));
-            }
-        }
-
-        return new HttpPipelineBuilder()
-            .httpClient(pipeline.getHttpClient())
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .build();
     }
 
     /**
@@ -104,6 +84,26 @@ public final class BlobBatchClientBuilder {
      */
     public BlobBatchAsyncClient buildAsyncClient() {
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
-        return new BlobBatchAsyncClient(accountUrl, pipeline, serviceVersion);
+        return new BlobBatchAsyncClient(accountUrl, addBlobUserAgentModificationPolicy(pipeline), serviceVersion);
+    }
+
+    private HttpPipeline addBlobUserAgentModificationPolicy(HttpPipeline pipeline) {
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            HttpPipelinePolicy currPolicy = pipeline.getPolicy(i);
+            policies.add(currPolicy);
+            if (currPolicy instanceof UserAgentPolicy) {
+                String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+                String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
+                policies.add(new BlobUserAgentModificationPolicy(clientName, clientVersion));
+            }
+        }
+
+        return new HttpPipelineBuilder()
+            .httpClient(pipeline.getHttpClient())
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
     }
 }

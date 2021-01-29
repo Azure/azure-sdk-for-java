@@ -32,6 +32,7 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
@@ -53,6 +54,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.USER_AGENT_PROPERTIES;
@@ -85,6 +87,8 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 @ServiceClientBuilder(serviceClients = {EncryptedBlobAsyncClient.class, EncryptedBlobClient.class})
 public final class EncryptedBlobClientBuilder {
     private final ClientLogger logger = new ClientLogger(EncryptedBlobClientBuilder.class);
+    private static final Map<String, String> PROPERTIES =
+        CoreUtils.getProperties("azure-storage-blob-cryptography.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -163,9 +167,30 @@ public final class EncryptedBlobClientBuilder {
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        return new EncryptedBlobAsyncClient(getHttpPipeline(),
+        return new EncryptedBlobAsyncClient(addBlobUserAgentModificationPolicy(getHttpPipeline()),
             String.format("%s/%s/%s", endpoint, containerName, blobName), serviceVersion, accountName, containerName,
             blobName, snapshot, customerProvidedKey, keyWrapper, keyWrapAlgorithm, versionId);
+    }
+
+
+    private HttpPipeline addBlobUserAgentModificationPolicy(HttpPipeline pipeline) {
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            HttpPipelinePolicy currPolicy = pipeline.getPolicy(i);
+            policies.add(currPolicy);
+            if (currPolicy instanceof UserAgentPolicy) {
+                String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+                String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
+                policies.add(new BlobUserAgentModificationPolicy(clientName, clientVersion));
+            }
+        }
+
+        return new HttpPipelineBuilder()
+            .httpClient(pipeline.getHttpClient())
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
     }
 
     private HttpPipeline getHttpPipeline() {

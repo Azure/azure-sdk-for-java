@@ -5,14 +5,20 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
+import com.azure.storage.blob.implementation.util.BlobUserAgentModificationPolicy;
 import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -83,7 +89,7 @@ public final class BlobChangefeedClientBuilder {
         BlobContainerAsyncClient client = new BlobContainerClientBuilder()
             .endpoint(accountUrl)
             .containerName(CHANGEFEED_CONTAINER_NAME)
-            .pipeline(pipeline)
+            .pipeline(addBlobUserAgentModificationPolicy(pipeline))
             .serviceVersion(version)
             .buildAsyncClient();
         AvroReaderFactory avroReaderFactory = new AvroReaderFactory();
@@ -93,5 +99,25 @@ public final class BlobChangefeedClientBuilder {
         SegmentFactory segmentFactory = new SegmentFactory(shardFactory, client);
         ChangefeedFactory changefeedFactory = new ChangefeedFactory(segmentFactory, client);
         return new BlobChangefeedAsyncClient(changefeedFactory);
+    }
+
+    private HttpPipeline addBlobUserAgentModificationPolicy(HttpPipeline pipeline) {
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        for (int i = 0; i < pipeline.getPolicyCount(); i++) {
+            HttpPipelinePolicy currPolicy = pipeline.getPolicy(i);
+            policies.add(currPolicy);
+            if (currPolicy instanceof UserAgentPolicy) {
+                String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+                String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
+                policies.add(new BlobUserAgentModificationPolicy(clientName, clientVersion));
+            }
+        }
+
+        return new HttpPipelineBuilder()
+            .httpClient(pipeline.getHttpClient())
+            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .build();
     }
 }

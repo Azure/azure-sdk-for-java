@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.batch
+package com.azure.storage.blob.changefeed
 
 import com.azure.core.http.*
 import com.azure.core.test.http.MockHttpResponse
@@ -22,7 +22,7 @@ class BuilderTest extends Specification {
     static def credentials = new StorageSharedKeyCredential("accountName", "accountKey")
     static def endpoint = "https://account.blob.core.windows.net/"
     private static final Map<String, String> PROPERTIES =
-        CoreUtils.getProperties("azure-storage-blob-batch.properties");
+        CoreUtils.getProperties("azure-storage-blob-changefeed.properties");
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
@@ -42,8 +42,8 @@ class BuilderTest extends Specification {
             .buildClient()
 
         when:
-        def batchClient = new BlobBatchClientBuilder(serviceClient).buildClient()
-        def pipeline = batchClient.client.client.getHttpPipeline()
+        def changefeedClient = new BlobChangefeedClientBuilder(serviceClient).buildClient()
+        def pipeline = changefeedClient.client.changefeedFactory.client.getHttpPipeline()
         def foundPolicy = false
         for (int i = 0; i < pipeline.getPolicyCount(); i++)
             foundPolicy |= (pipeline.getPolicy(i) instanceof BlobUserAgentModificationPolicy)
