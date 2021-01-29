@@ -1,0 +1,472 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg2b9842374ecf6?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:41:51 GMT",
+      "content-length" : "190",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "37f9f9ae-5b16-4cf6-a7cc-6a91c56ad23f",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214151Z:37f9f9ae-5b16-4cf6-a7cc-6a91c56ad23f",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "37f9f9ae-5b16-4cf6-a7cc-6a91c56ad23f",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2b9842374ecf6\",\"name\":\"rg2b9842374ecf6\",\"location\":\"westcentralus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}"
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DigitalTwins/locations/westcentralus/checkNameAvailability?api-version=2020-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (AzureDigitalTwinsManagementClient, 2020-12-01, auto-generated)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:41:51 GMT",
+      "server" : "Kestrel",
+      "content-length" : "66",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "b6ac586a-0f4d-4903-bb75-5469509bed3c",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214151Z:b6ac586a-0f4d-4903-bb75-5469509bed3c",
+      "traceresponse" : "00-e7ae38150b0c2b45a1f80a541e409ba1-0c4c2df11725d44a-01",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b6ac586a-0f4d-4903-bb75-5469509bed3c",
+      "Body" : "{\"nameAvailable\":true,\"message\":\"'DigitalTwinsSdk' is available.\"}"
+    }
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2b9842374ecf6/providers/Microsoft.DigitalTwins/digitalTwinsInstances/DigitalTwinsSdk?api-version=2020-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (AzureDigitalTwinsManagementClient, 2020-12-01, auto-generated)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:41:53 GMT",
+      "content-length" : "486",
+      "server" : "Kestrel",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "3f61b768-4cea-41ba-b7c7-804a6665c7cb",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214153Z:3f61b768-4cea-41ba-b7c7-804a6665c7cb",
+      "traceresponse" : "00-1caf35a651bb6b45b7aa434e9c950fe9-2f611884351ae848-01",
+      "content-type" : "application/json; charset=utf-8",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DigitalTwins/locations/westcentralus/operationResults/eyJvcGVyYXRpb25LaW5kIjoiQ3JlYXRlIiwicmVzb3VyY2VLaW5kIjoiRGlnaXRhbFR3aW5zSW5zdGFuY2UiLCJyZXNvdXJjZUdyb3VwTmFtZSI6InJnMmI5ODQyMzc0ZWNmNiIsInJlc291cmNlTmFtZSI6IkRpZ2l0YWxUd2luc1NkayJ9?api-version=2020-12-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3f61b768-4cea-41ba-b7c7-804a6665c7cb",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2b9842374ecf6/providers/Microsoft.DigitalTwins/digitalTwinsInstances/DigitalTwinsSdk\",\"name\":\"DigitalTwinsSdk\",\"type\":\"Microsoft.DigitalTwins/digitalTwinsInstances\",\"properties\":{\"provisioningState\":\"Provisioning\",\"createdTime\":\"2021-01-28T21:41:53.2749779Z\",\"lastUpdatedTime\":\"2021-01-28T21:41:53.2749779Z\",\"hostName\":null,\"publicNetworkAccess\":\"Enabled\"},\"location\":\"westcentralus\",\"identity\":null,\"tags\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DigitalTwins/locations/westcentralus/operationResults/eyJvcGVyYXRpb25LaW5kIjoiQ3JlYXRlIiwicmVzb3VyY2VLaW5kIjoiRGlnaXRhbFR3aW5zSW5zdGFuY2UiLCJyZXNvdXJjZUdyb3VwTmFtZSI6InJnMmI5ODQyMzc0ZWNmNiIsInJlc291cmNlTmFtZSI6IkRpZ2l0YWxUd2luc1NkayJ9?api-version=2020-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (AzureDigitalTwinsManagementClient, 2020-12-01, auto-generated)"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:41:54 GMT",
+      "content-length" : "486",
+      "server" : "Kestrel",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11999",
+      "StatusCode" : "201",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "7d60c260-a3f9-415f-b8b9-92dc89f119ed",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214154Z:7d60c260-a3f9-415f-b8b9-92dc89f119ed",
+      "traceresponse" : "00-ba174886b399474ebef75e12a78cf602-9b4c306348e1bf4e-01",
+      "content-type" : "application/json; charset=utf-8",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DigitalTwins/locations/westcentralus/operationResults/eyJvcGVyYXRpb25LaW5kIjoiQ3JlYXRlIiwicmVzb3VyY2VLaW5kIjoiRGlnaXRhbFR3aW5zSW5zdGFuY2UiLCJyZXNvdXJjZUdyb3VwTmFtZSI6InJnMmI5ODQyMzc0ZWNmNiIsInJlc291cmNlTmFtZSI6IkRpZ2l0YWxUd2luc1NkayJ9?api-version=2020-12-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "7d60c260-a3f9-415f-b8b9-92dc89f119ed",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2b9842374ecf6/providers/Microsoft.DigitalTwins/digitalTwinsInstances/DigitalTwinsSdk\",\"name\":\"DigitalTwinsSdk\",\"type\":\"Microsoft.DigitalTwins/digitalTwinsInstances\",\"properties\":{\"provisioningState\":\"Provisioning\",\"createdTime\":\"2021-01-28T21:41:53.2749779Z\",\"lastUpdatedTime\":\"2021-01-28T21:41:53.2749779Z\",\"hostName\":null,\"publicNetworkAccess\":\"Enabled\"},\"location\":\"westcentralus\",\"identity\":null,\"tags\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DigitalTwins/locations/westcentralus/operationResults/eyJvcGVyYXRpb25LaW5kIjoiQ3JlYXRlIiwicmVzb3VyY2VLaW5kIjoiRGlnaXRhbFR3aW5zSW5zdGFuY2UiLCJyZXNvdXJjZUdyb3VwTmFtZSI6InJnMmI5ODQyMzc0ZWNmNiIsInJlc291cmNlTmFtZSI6IkRpZ2l0YWxUd2luc1NkayJ9?api-version=2020-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (AzureDigitalTwinsManagementClient, 2020-12-01, auto-generated)"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:42:04 GMT",
+      "server" : "Kestrel",
+      "content-length" : "528",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "f7693280-6525-4716-abdb-19e559e657a2",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214204Z:f7693280-6525-4716-abdb-19e559e657a2",
+      "traceresponse" : "00-962ddcd5633a1547b61c090461c5e071-5a07732ba97f4c47-01",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f7693280-6525-4716-abdb-19e559e657a2",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2b9842374ecf6/providers/Microsoft.DigitalTwins/digitalTwinsInstances/DigitalTwinsSdk\",\"name\":\"DigitalTwinsSdk\",\"type\":\"Microsoft.DigitalTwins/digitalTwinsInstances\",\"properties\":{\"provisioningState\":\"Succeeded\",\"createdTime\":\"2021-01-28T21:41:53.2749779Z\",\"lastUpdatedTime\":\"2021-01-28T21:42:03.0393885Z\",\"hostName\":\"DigitalTwinsSdk.api.wcus.digitaltwins.azure.net\",\"publicNetworkAccess\":\"Enabled\"},\"location\":\"westcentralus\",\"identity\":null,\"tags\":{}}"
+    }
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2b9842374ecf6/providers/Microsoft.DigitalTwins/digitalTwinsInstances/DigitalTwinsSdk?api-version=2020-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (AzureDigitalTwinsManagementClient, 2020-12-01, auto-generated)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:42:05 GMT",
+      "content-length" : "527",
+      "server" : "Kestrel",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "c06c0e82-e6a2-4286-bfd7-e63345a10116",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214205Z:c06c0e82-e6a2-4286-bfd7-e63345a10116",
+      "traceresponse" : "00-acf11d51e884244a8ce31e15b467b4a5-099f7510ed6cb64f-01",
+      "content-type" : "application/json; charset=utf-8",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DigitalTwins/locations/westcentralus/operationResults/eyJvcGVyYXRpb25LaW5kIjoiUGF0Y2giLCJyZXNvdXJjZUtpbmQiOiJEaWdpdGFsVHdpbnNJbnN0YW5jZSIsInJlc291cmNlR3JvdXBOYW1lIjoicmcyYjk4NDIzNzRlY2Y2IiwicmVzb3VyY2VOYW1lIjoiRGlnaXRhbFR3aW5zU2RrIn0=?api-version=2020-12-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "c06c0e82-e6a2-4286-bfd7-e63345a10116",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2b9842374ecf6/providers/Microsoft.DigitalTwins/digitalTwinsInstances/DigitalTwinsSdk\",\"name\":\"DigitalTwinsSdk\",\"type\":\"Microsoft.DigitalTwins/digitalTwinsInstances\",\"properties\":{\"provisioningState\":\"Updating\",\"createdTime\":\"2021-01-28T21:41:53.2749779Z\",\"lastUpdatedTime\":\"2021-01-28T21:42:04.8878829Z\",\"hostName\":\"DigitalTwinsSdk.api.wcus.digitaltwins.azure.net\",\"publicNetworkAccess\":\"Enabled\"},\"location\":\"westcentralus\",\"identity\":null,\"tags\":{}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.DigitalTwins/locations/westcentralus/operationResults/eyJvcGVyYXRpb25LaW5kIjoiUGF0Y2giLCJyZXNvdXJjZUtpbmQiOiJEaWdpdGFsVHdpbnNJbnN0YW5jZSIsInJlc291cmNlR3JvdXBOYW1lIjoicmcyYjk4NDIzNzRlY2Y2IiwicmVzb3VyY2VOYW1lIjoiRGlnaXRhbFR3aW5zU2RrIn0=?api-version=2020-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (AzureDigitalTwinsManagementClient, 2020-12-01, auto-generated)"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:42:05 GMT",
+      "server" : "Kestrel",
+      "content-length" : "559",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11997",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4e5a618c-9cc2-4873-962b-0e39eebd8800",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214205Z:4e5a618c-9cc2-4873-962b-0e39eebd8800",
+      "traceresponse" : "00-fd55bcb9bde4c140bbe19e21bc972871-f4cb5455ae497444-01",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4e5a618c-9cc2-4873-962b-0e39eebd8800",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2b9842374ecf6/providers/Microsoft.DigitalTwins/digitalTwinsInstances/DigitalTwinsSdk\",\"name\":\"DigitalTwinsSdk\",\"type\":\"Microsoft.DigitalTwins/digitalTwinsInstances\",\"properties\":{\"provisioningState\":\"Succeeded\",\"createdTime\":\"2021-01-28T21:41:53.2749779Z\",\"lastUpdatedTime\":\"2021-01-28T21:42:05.5833638Z\",\"hostName\":\"DigitalTwinsSdk.api.wcus.digitaltwins.azure.net\",\"publicNetworkAccess\":\"Enabled\"},\"location\":\"westcentralus\",\"identity\":null,\"tags\":{\"Key2\":\"Value2\",\"Key1\":\"Value1\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2b9842374ecf6/providers/Microsoft.DigitalTwins/digitalTwinsInstances?api-version=2020-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (AzureDigitalTwinsManagementClient, 2020-12-01, auto-generated)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:42:06 GMT",
+      "server" : "Kestrel",
+      "content-length" : "603",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11996",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "6a06c999-7a78-4e3b-a15f-cfea05568e2a",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214206Z:6a06c999-7a78-4e3b-a15f-cfea05568e2a",
+      "traceresponse" : "00-5a10853c5b004c48a80e74845248500e-3e2a0fb077365c47-01",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6a06c999-7a78-4e3b-a15f-cfea05568e2a",
+      "Body" : "{\"value\":[{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg2b9842374ecf6/providers/Microsoft.DigitalTwins/digitalTwinsInstances/DigitalTwinsSdk\",\"name\":\"DigitalTwinsSdk\",\"type\":\"Microsoft.DigitalTwins/digitalTwinsInstances\",\"properties\":{\"provisioningState\":\"Succeeded\",\"createdTime\":\"2021-01-28T21:41:53.2749779Z\",\"lastUpdatedTime\":\"2021-01-28T21:42:05.5833638Z\",\"hostName\":\"DigitalTwinsSdk.api.wcus.digitaltwins.azure.net\",\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\"},\"location\":\"westcentralus\",\"identity\":null,\"tags\":{\"Key2\":\"Value2\",\"Key1\":\"Value1\"}}]}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/providers/Microsoft.DigitalTwins/operations?api-version=2020-12-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (AzureDigitalTwinsManagementClient, 2020-12-01, auto-generated)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:42:06 GMT",
+      "server" : "Kestrel",
+      "content-length" : "18650",
+      "expires" : "-1",
+      "vary" : "Accept-Encoding",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "b5c0a7ab-fd64-400c-b697-ac14cbbedda5",
+      "x-ms-ratelimit-remaining-tenant-reads" : "11999",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214207Z:b5c0a7ab-fd64-400c-b697-ac14cbbedda5",
+      "traceresponse" : "00-20d6c4b1e7799349951a370b32081d58-67afcca0c7473c40-01",
+      "content-type" : "application/json; charset=utf-8",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "b5c0a7ab-fd64-400c-b697-ac14cbbedda5",
+      "Body" : "{\"value\":[{\"name\":\"Microsoft.DigitalTwins/register/action\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Digital Twins Resource Provider\",\"operation\":\"Register the Digital Twins Resource Provider\",\"description\":\"Register the Subscription for the Digital Twins resource provider and enable the creation of Digital Twins instances.\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/read\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"digitalTwinsInstances\",\"operation\":\"Read Azure Digital Twins resource\",\"description\":\"Read any Microsoft.DigitalTwins/digitalTwinsInstances resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/write\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"digitalTwinsInstances\",\"operation\":\"Create or Update Azure Digital Twins resource\",\"description\":\"Create or update any Microsoft.DigitalTwins/digitalTwinsInstances resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/delete\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"digitalTwinsInstances\",\"operation\":\"Delete Azure Digital Twins resource\",\"description\":\"Delete an Microsoft.DigitalTwins/digitalTwinsInstances resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/privateLinkResources/read\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"PrivateLinkResources\",\"operation\":\"Read PrivateLinkResources\",\"description\":\"Reads PrivateLinkResources for Digital Twins\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/privateEndpointConnectionProxies/validate/action\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"PrivateEndpointConnectionProxies\",\"operation\":\"Validate PrivateEndpointConnectionProxies\",\"description\":\"Validate PrivateEndpointConnectionProxies resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/privateEndpointConnectionProxies/read\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"PrivateEndpointConnectionProxies\",\"operation\":\"Read PrivateEndpointConnectionProxies\",\"description\":\"Read PrivateEndpointConnectionProxies resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/privateEndpointConnectionProxies/write\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"PrivateEndpointConnectionProxies\",\"operation\":\"Write PrivateEndpointConnectionProxies\",\"description\":\"Write PrivateEndpointConnectionProxies resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/privateEndpointConnectionProxies/delete\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"PrivateEndpointConnectionProxies\",\"operation\":\"Delete PrivateEndpointConnectionProxies\",\"description\":\"Delete PrivateEndpointConnectionProxies resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/privateEndpointConnectionProxies/operationResults/read\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"PrivateEndpointConnectionProxies\",\"operation\":\"Get PrivateEndpointConnectionProxies Async Operation Result\",\"description\":\"Get the result of an async operation on a private endpoint connection proxy\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/privateEndpointConnections/read\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"PrivateEndpointConnection\",\"operation\":\"Read PrivateEndpointConnection\",\"description\":\"Read PrivateEndpointConnection resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/privateEndpointConnections/write\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"PrivateEndpointConnection\",\"operation\":\"Write PrivateEndpointConnection\",\"description\":\"Write PrivateEndpointConnection resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/privateEndpointConnections/delete\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"PrivateEndpointConnection\",\"operation\":\"Delete PrivateEndpointConnection\",\"description\":\"Delete PrivateEndpointConnection resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/privateEndpointConnections/operationResults/read\",\"display\":{\"provider\":\"Microsoft.DigitalTwins\",\"resource\":\"PrivateEndpointConnection\",\"operation\":\"Get PrivateEndpointConnection Async Operation Result\",\"description\":\"Get the result of an async operation on a private endpoint connection\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitaltwins/read\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Digital Twin\",\"operation\":\"Read Digital Twin\",\"description\":\"Read any Digital Twin\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/digitaltwins/write\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Digital Twin\",\"operation\":\"Create Digital Twin\",\"description\":\"Create or Update any Digital Twin\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/digitaltwins/delete\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Digital Twin\",\"operation\":\"Delete Digital Twin\",\"description\":\"Delete any Digital Twin\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/digitaltwins/commands/action\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Digital Twin Command\",\"operation\":\"Invoke Command on Digital Twin\",\"description\":\"Invoke any Command on a Digital Twin\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/digitaltwins/relationships/read\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Digital Twin Relationship\",\"operation\":\"Read Digital Twin Relationship\",\"description\":\"Read any Digital Twin Relationship\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/digitaltwins/relationships/write\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Digital Twin Relationship\",\"operation\":\"Create Digital Twin Relationship\",\"description\":\"Create or Update any Digital Twin Relationship\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/digitaltwins/relationships/delete\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Digital Twin Relationship\",\"operation\":\"Delete Digital Twin Relationship\",\"description\":\"Delete any Digital Twin Relationship\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/eventroutes/read\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Event Route\",\"operation\":\"Read Event Route\",\"description\":\"Read any Event Route\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/eventroutes/delete\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Event Route\",\"operation\":\"Delete Event Route\",\"description\":\"Delete any Event Route\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/eventroutes/write\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Event Route\",\"operation\":\"Create Event Route\",\"description\":\"Create or Update any Event Route\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/models/read\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Model\",\"operation\":\"Read Model\",\"description\":\"Read any Model\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/models/write\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Model\",\"operation\":\"Create Model\",\"description\":\"Create or Update any Model\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/models/delete\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Model\",\"operation\":\"Delete Model\",\"description\":\"Delete any Model\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/query/action\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Digital Twins Graph\",\"operation\":\"Query Digital Twins Graph\",\"description\":\"Query any Digital Twins Graph\"},\"isDataAction\":true},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/diagnosticSettings/read\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"digitalTwinsInstances\",\"operation\":\"Get Diagnostic Settings\",\"description\":\"Gets the diagnostic settings for the resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/diagnosticSettings/write\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"digitalTwinsInstances\",\"operation\":\"Set Diagnostic Settings\",\"description\":\"Sets the diagnostic settings for the resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/metricDefinitions/read\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"digitalTwinsInstances\",\"operation\":\"Get Azure Monitor Metric Settings\",\"description\":\"Gets the metric settings for the resource's Azure Monitor\"},\"isDataAction\":false,\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"Routing\",\"displayName\":\"Messages Routed\",\"displayDescription\":\"The number of messages routed to an endpoint Azure service such as Event Hub, Service Bus or Event Grid.\",\"fillGapWithZero\":true,\"unit\":\"Count\",\"aggregationType\":\"Total\",\"supportedAggregationTypes\":[\"Total\"],\"dimensions\":[{\"name\":\"EndpointType\",\"displayName\":\"Endpoint Type\",\"internalName\":\"Operation\"},{\"name\":\"Result\",\"displayName\":\"Result\"}],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"RoutingFailureRate\",\"displayName\":\"Routing Failure Rate\",\"displayDescription\":\"The percentage of events that result in an error as they are routed from Azure Digital Twins to an endpoint Azure service such as Event Hub, Service Bus or Event Grid.\",\"fillGapWithZero\":true,\"unit\":\"Percent\",\"aggregationType\":\"Average\",\"supportedAggregationTypes\":[\"Average\"],\"dimensions\":[{\"name\":\"EndpointType\",\"displayName\":\"Endpoint Type\",\"internalName\":\"Operation\"}],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"RoutingLatency\",\"displayName\":\"Routing Latency\",\"displayDescription\":\"Time elapsed between an event getting routed from Azure Digital Twins to when it is posted to the endpoint Azure service such as Event Hub, Service Bus or Event Grid.\",\"fillGapWithZero\":true,\"unit\":\"Milliseconds\",\"aggregationType\":\"Average\",\"supportedAggregationTypes\":[\"Average\",\"Minimum\",\"Maximum\",\"Total\"],\"dimensions\":[{\"name\":\"EndpointType\",\"displayName\":\"Endpoint Type\",\"internalName\":\"Operation\"},{\"name\":\"Result\",\"displayName\":\"Result\"}],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"ApiRequests\",\"displayName\":\"API Requests\",\"displayDescription\":\"The number of API requests made for Digital Twins read, write, delete and query operations.\",\"fillGapWithZero\":true,\"unit\":\"Count\",\"aggregationType\":\"Total\",\"supportedAggregationTypes\":[\"Total\"],\"dimensions\":[{\"name\":\"Operation\",\"displayName\":\"Operation\"},{\"name\":\"Authentication\",\"displayName\":\"Authentication\"},{\"name\":\"Protocol\",\"displayName\":\"Protocol\"},{\"name\":\"StatusCode\",\"displayName\":\"Status Code\"},{\"name\":\"StatusCodeClass\",\"displayName\":\"Status Code Class\"},{\"name\":\"StatusText\",\"displayName\":\"Status Text\"}],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"ApiRequestsFailureRate\",\"displayName\":\"API Requests Failure Rate\",\"displayDescription\":\"The percentage of API requests that the service receives for your instance that return an internal error (500) response code for Digital Twins read, write, delete and query operations.\",\"fillGapWithZero\":true,\"unit\":\"Percent\",\"aggregationType\":\"Average\",\"supportedAggregationTypes\":[\"Average\"],\"dimensions\":[{\"name\":\"Operation\",\"displayName\":\"Operation\"},{\"name\":\"Authentication\",\"displayName\":\"Authentication\"},{\"name\":\"Protocol\",\"displayName\":\"Protocol\"}],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"ApiRequestsLatency\",\"displayName\":\"API Requests Latency\",\"displayDescription\":\"The response time for API requests, i.e. from when the request is received by Azure Digital Twins until the service sends a success/fail result for Digital Twins read, write, delete and query operations.\",\"fillGapWithZero\":true,\"unit\":\"Milliseconds\",\"aggregationType\":\"Average\",\"supportedAggregationTypes\":[\"Average\",\"Minimum\",\"Maximum\",\"Total\"],\"dimensions\":[{\"name\":\"Operation\",\"displayName\":\"Operation\"},{\"name\":\"Authentication\",\"displayName\":\"Authentication\"},{\"name\":\"Protocol\",\"displayName\":\"Protocol\"},{\"name\":\"StatusCode\",\"displayName\":\"Status Code\"},{\"name\":\"StatusCodeClass\",\"displayName\":\"Status Code Class\"},{\"name\":\"StatusText\",\"displayName\":\"Status Text\"}],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"BillingApiOperations\",\"displayName\":\"Billing API Operations\",\"displayDescription\":\"Billing metric for the count of all API requests made against the Azure Digital Twins service.\",\"fillGapWithZero\":true,\"unit\":\"Count\",\"aggregationType\":\"Total\",\"supportedAggregationTypes\":[\"Average\",\"Minimum\",\"Maximum\",\"Total\"],\"dimensions\":[{\"name\":\"MeterId\",\"displayName\":\"Meter Id\"}],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"BillingMessagesProcessed\",\"displayName\":\"Billing Messages Processed\",\"displayDescription\":\"Billing metric for the number of messages sent out from Azure Digital Twins to external endpoints.\",\"fillGapWithZero\":true,\"unit\":\"Count\",\"aggregationType\":\"Total\",\"supportedAggregationTypes\":[\"Average\",\"Minimum\",\"Maximum\",\"Total\"],\"dimensions\":[{\"name\":\"MeterId\",\"displayName\":\"Meter Id\"}],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"BillingQueryUnits\",\"displayName\":\"Billing Query Units\",\"displayDescription\":\"The number of Query Units, an internally computed measure of service resource usage, consumed to execute queries.\",\"fillGapWithZero\":true,\"unit\":\"Count\",\"aggregationType\":\"Total\",\"supportedAggregationTypes\":[\"Average\",\"Minimum\",\"Maximum\",\"Total\"],\"dimensions\":[{\"name\":\"MeterId\",\"displayName\":\"Meter Id\"}],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"IngressEvents\",\"displayName\":\"Ingress Events\",\"displayDescription\":\"The number of incoming telemetry events into Azure Digital Twins.\",\"fillGapWithZero\":true,\"unit\":\"Count\",\"aggregationType\":\"Total\",\"supportedAggregationTypes\":[\"Total\"],\"dimensions\":[{\"name\":\"Result\",\"displayName\":\"Result\"}],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"IngressEventsFailureRate\",\"displayName\":\"Ingress Events Failure Rate\",\"displayDescription\":\"The percentage of incoming telemetry events for which the service returns an internal error (500) response code.\",\"fillGapWithZero\":true,\"unit\":\"Percent\",\"aggregationType\":\"Average\",\"supportedAggregationTypes\":[\"Average\"],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"IngressEventsLatency\",\"displayName\":\"Ingress Events Latency\",\"displayDescription\":\"The time from when an event arrives to when it is ready to be egressed by Azure Digital Twins, at which point the service sends a success/fail result.\",\"fillGapWithZero\":true,\"unit\":\"Milliseconds\",\"aggregationType\":\"Average\",\"supportedAggregationTypes\":[\"Average\",\"Minimum\",\"Maximum\",\"Total\"],\"dimensions\":[{\"name\":\"Result\",\"displayName\":\"Result\"}],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"TwinCount\",\"displayName\":\"Twin Count\",\"displayDescription\":\"Total number of twins in the Azure Digital Twins instance. Use this metric to determine if you are approaching the service limit for max number of twins allowed per instance.\",\"fillGapWithZero\":false,\"unit\":\"Count\",\"aggregationType\":\"Total\",\"supportedAggregationTypes\":[\"Average\",\"Minimum\",\"Maximum\",\"Total\"],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]},{\"name\":\"ModelCount\",\"displayName\":\"Model Count\",\"displayDescription\":\"Total number of models in the Azure Digital Twins instance. Use this metric to determine if you are approaching the service limit for max number of models allowed per instance.\",\"fillGapWithZero\":false,\"unit\":\"Count\",\"aggregationType\":\"Total\",\"supportedAggregationTypes\":[\"Average\",\"Minimum\",\"Maximum\",\"Total\"],\"availabilities\":[{\"timeGrain\":\"PT1M\",\"blobDuration\":\"PT1H\"}]}]}}},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/logDefinitions/read\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"digitalTwinsInstances\",\"operation\":\"Get Azure Monitor Log Settings\",\"description\":\"Gets the log settings for the resource's Azure Monitor\"},\"isDataAction\":false,\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"DigitalTwinsOperation\",\"displayName\":\"DigitalTwinsOperation\",\"blobDuration\":\"PT1H\"},{\"name\":\"EventRoutesOperation\",\"displayName\":\"EventRoutesOperation\",\"blobDuration\":\"PT1H\"},{\"name\":\"ModelsOperation\",\"displayName\":\"ModelsOperation\",\"blobDuration\":\"PT1H\"},{\"name\":\"QueryOperation\",\"displayName\":\"QueryOperation\",\"blobDuration\":\"PT1H\"}]}}},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/endpoints/delete\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Endpoint\",\"operation\":\"Delete Endpoint\",\"description\":\"Delete any Endpoint of a Digital Twins resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/endpoints/read\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Endpoint\",\"operation\":\"Read Endpoint\",\"description\":\"Read any Endpoint of a Digital Twins resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/endpoints/write\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Endpoint\",\"operation\":\"Write Endpoint\",\"description\":\"Create or Update any Endpoint of a Digital Twins resource\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/digitalTwinsInstances/operationsResults/read\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Operation Result\",\"operation\":\"Read Operation Result\",\"description\":\"Read any Operation Result\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/locations/checkNameAvailability/action\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Digital Twins Resource Provider\",\"operation\":\"Check Name Availability\",\"description\":\"Check Name Availability of a resource in the Digital Twins Resource Provider\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/locations/operationsResults/read\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Operation Result\",\"operation\":\"Read Operation Result\",\"description\":\"Read any Operation Result\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/operations/read\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Operation\",\"operation\":\"Read Operations\",\"description\":\"Read all Operations\"},\"isDataAction\":false},{\"name\":\"Microsoft.DigitalTwins/unregister/action\",\"display\":{\"provider\":\"Azure Digital Twins\",\"resource\":\"Digital Twins Resource Provider\",\"operation\":\"Unregister the Digital Twins Resource Provider\",\"description\":\"Unregister the subscription for the Digital Twins Resource Provider\"},\"isDataAction\":false}],\"nextLink\":null}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg2b9842374ecf6?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:42:07 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "24b0d788-6aaa-4b27-9a57-bb6499b683e3",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214207Z:24b0d788-6aaa-4b27-9a57-bb6499b683e3",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "24b0d788-6aaa-4b27-9a57-bb6499b683e3",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg2b9842374ecf6?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (ResourceManagementClient, 2016-09-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:42:08 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14998",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "02632b17-e18c-4f86-bc83-c71530fd7129",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214208Z:02632b17-e18c-4f86-bc83-c71530fd7129",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "02632b17-e18c-4f86-bc83-c71530fd7129",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:42:08 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11995",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "eeb25979-94e8-494f-ac5b-6eb539c8dcc6",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214208Z:eeb25979-94e8-494f-ac5b-6eb539c8dcc6",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "eeb25979-94e8-494f-ac5b-6eb539c8dcc6",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:42:23 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11994",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2bc35a10-967f-4892-81a5-b0365c613664",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214223Z:2bc35a10-967f-4892-81a5-b0365c613664",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2bc35a10-967f-4892-81a5-b0365c613664",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:42:38 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11993",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "3f7d1814-09c0-4c76-9e90-99b0be52c6fb",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214238Z:3f7d1814-09c0-4c76-9e90-99b0be52c6fb",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "3f7d1814-09c0-4c76-9e90-99b0be52c6fb",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:42:53 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11992",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "2d8bb3ec-0c73-41c4-9b4a-315e050383aa",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214253Z:2d8bb3ec-0c73-41c4-9b4a-315e050383aa",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "2d8bb3ec-0c73-41c4-9b4a-315e050383aa",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:43:08 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11991",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "a2440e57-38ee-4c7f-9a30-485932aa434d",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214308Z:a2440e57-38ee-4c7f-9a30-485932aa434d",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "a2440e57-38ee-4c7f-9a30-485932aa434d",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:43:23 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11990",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "10b503fe-c5c5-4db6-8376-8a42f28a2e06",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214323Z:10b503fe-c5c5-4db6-8376-8a42f28a2e06",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "10b503fe-c5c5-4db6-8376-8a42f28a2e06",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:43:38 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11989",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "6987148d-3d71-4f96-a5e1-7756f32308a4",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214338Z:6987148d-3d71-4f96-a5e1-7756f32308a4",
+      "location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "6987148d-3d71-4f96-a5e1-7756f32308a4",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SRzJCOTg0MjM3NEVDRjYtV0VTVENFTlRSQUxVUyIsImpvYkxvY2F0aW9uIjoid2VzdGNlbnRyYWx1cyJ9?api-version=2016-09-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/1.3.0 OS:Windows 10/10.0 MacAddressHash:bf14fe788af94900600cced8dbd3f94f0854e839f2a1bc8999e5d6851fb2e06f Java:11.0.7 (ResourceManagementClient, 2016-09-01)"
+    },
+    "Response" : {
+      "date" : "Thu, 28 Jan 2021 21:43:53 GMT",
+      "content-length" : "0",
+      "expires" : "-1",
+      "retry-after" : "0",
+      "x-ms-ratelimit-remaining-subscription-reads" : "11988",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains",
+      "x-ms-correlation-request-id" : "4ed10f1a-64f0-4057-acaa-f851143acf44",
+      "x-content-type-options" : "nosniff",
+      "x-ms-routing-request-id" : "WESTUS:20210128T214353Z:4ed10f1a-64f0-4057-acaa-f851143acf44",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4ed10f1a-64f0-4057-acaa-f851143acf44",
+      "Body" : ""
+    }
+  } ],
+  "variables" : [ "1a5da5a5-bb20-40fb-a15a-c71e59609552" ]
+}
