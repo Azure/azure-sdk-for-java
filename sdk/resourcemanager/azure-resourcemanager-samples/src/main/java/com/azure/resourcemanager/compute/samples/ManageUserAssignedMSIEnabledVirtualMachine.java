@@ -9,6 +9,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
@@ -124,9 +125,15 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
             commands.add("cd compute-java-manage-vm-from-vm-with-msi-credentials");
             commands.add(String.format("mvn clean compile exec:java -Dexec.args='%s %s %s'", azureResourceManager.subscriptionId(), resourceGroup1.name(), identity.clientId()));
 
-            runCommandOnVM(azureResourceManager, virtualMachine, commands);
+            RunCommandResult commandResult = runCommandOnVM(azureResourceManager, virtualMachine, commands);
 
             System.out.println("Java application executed");
+
+            if (commandResult.value() != null) {
+                for (InstanceViewStatus status : commandResult.value()) {
+                    System.out.println("Command output:\n" + status.message() + "\n");
+                }
+            }
 
             //=============================================================
             // Retrieve the Virtual machine created from the MSI enabled Linux VM
