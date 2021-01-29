@@ -12,12 +12,6 @@ import java.time.Duration;
 import java.util.stream.Stream;
 
 public class AmqpRetryOptionsTest {
-    private static Stream<Duration> invalidDurations() {
-        return Stream.of(
-            Duration.ZERO,
-            Duration.ofSeconds(-1)
-        );
-    }
 
     /**
      * Test there are defaults set when creating RetryOptions
@@ -147,9 +141,16 @@ public class AmqpRetryOptionsTest {
         Assertions.assertEquals(first.hashCode(), second.hashCode());
     }
 
+    public static Stream<Duration> invalidDurations() {
+        return Stream.of(
+            Duration.ZERO,
+            Duration.ofSeconds(-1)
+        );
+    }
+
     @MethodSource
     @ParameterizedTest
-    void invalidDurations(Duration invalidDuration) {
+    public void invalidDurations(Duration invalidDuration) {
         final Duration maxDelay = Duration.ofMinutes(10);
         final Duration tryTimeout = Duration.ofMinutes(2);
 
@@ -165,7 +166,7 @@ public class AmqpRetryOptionsTest {
     }
 
     @Test
-    void invalidDelay() {
+    public void invalidDelay() {
         final Duration invalidDuration = Duration.ofSeconds(-1);
         final Duration delay = Duration.ofSeconds(40);
         final AmqpRetryOptions options = new AmqpRetryOptions()
@@ -176,7 +177,7 @@ public class AmqpRetryOptionsTest {
     }
 
     @Test
-    void zeroDuration() {
+    public void zeroDuration() {
         // Arrange
         final Duration delay = Duration.ofMillis(100);
         final AmqpRetryOptions options = new AmqpRetryOptions()
@@ -190,7 +191,7 @@ public class AmqpRetryOptionsTest {
     }
 
     @Test
-    void nullDuration() {
+    public void nullDuration() {
         final Duration delay = Duration.ofMillis(100);
         final Duration maxDelay = Duration.ofMinutes(10);
         final Duration tryTimeout = Duration.ofMinutes(2);
@@ -211,7 +212,7 @@ public class AmqpRetryOptionsTest {
     }
 
     @Test
-    void invalidRetries() {
+    public void invalidRetries() {
         final int retry = 5;
         final AmqpRetryOptions options = new AmqpRetryOptions()
             .setMaxRetries(retry);
