@@ -6,10 +6,13 @@ package com.azure.quantum.jobs;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.quantum.jobs.models.JobDetails;
+import com.azure.quantum.jobs.models.JobStatus;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -32,16 +35,14 @@ public class JobsClientTest extends QuantumClientTestBase {
         //check constant values on all jobs
         jobs.forEach(job -> {
             assertEquals(null, job.getCancellationTime());
-            assertEquals(null, job.getErrorData());
             assertEquals("microsoft.qio.v2", job.getInputDataFormat());
             assertEquals("microsoft.qio-results.v2", job.getOutputDataFormat());
             assertEquals("microsoft", job.getProviderId());
-            assertEquals(null, job.getStatus());
             assertEquals("Sanitized", job.getContainerUri());
             assertEquals("Sanitized", job.getOutputDataUri());
             assertEquals("Sanitized", job.getInputDataUri());
             total.getAndIncrement();
         });
-        assertEquals(170, total.intValue());
+        assertEquals(203, total.intValue());
     }
 }

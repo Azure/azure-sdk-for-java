@@ -32,7 +32,7 @@
   </scm>
 
    <properties>
-    <!-- quantum jobs temporarily skipping code coverage until tests are added -->
+    <!-- require minimal code coverage until tests are added -->
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
   </properties>
 

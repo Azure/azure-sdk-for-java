@@ -27,7 +27,7 @@ public class JobsAsyncClientTests extends QuantumClientTestBase {
 
         List<JobDetails> jobs = client.list().collectList().block();
 
-        assertEquals(170, jobs.size());
+        assertEquals(203, jobs.size());
 
         //check specifics on the first job
         JobDetails firstJob = jobs.get(0);
@@ -38,11 +38,9 @@ public class JobsAsyncClientTests extends QuantumClientTestBase {
         //check constant values on all jobs
         for (JobDetails job : jobs) {
             assertEquals(null, job.getCancellationTime());
-            assertEquals(null, job.getErrorData());
             assertEquals("microsoft.qio.v2", job.getInputDataFormat());
             assertEquals("microsoft.qio-results.v2", job.getOutputDataFormat());
             assertEquals("microsoft", job.getProviderId());
-            assertEquals(null, job.getStatus());
             assertEquals("Sanitized", job.getContainerUri());
             assertEquals("Sanitized", job.getInputDataUri());
             assertEquals("Sanitized", job.getOutputDataUri());

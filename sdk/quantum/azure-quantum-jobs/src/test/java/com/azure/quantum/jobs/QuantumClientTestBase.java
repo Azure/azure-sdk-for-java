@@ -26,9 +26,9 @@ public class QuantumClientTestBase extends TestBase {
         return builder
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .credential(new AzureCliCredentialBuilder().build())
-            .subscriptionId(subscriptionId)
-            .resourceGroupName(resourceGroup)
-            .workspaceName(workspaceName)
+            .subscriptionId(getSubscriptionId())
+            .resourceGroupName(getResourceGroup())
+            .workspaceName(getWorkspaceName())
             .host(getEndpoint());
     }
 
@@ -36,6 +36,18 @@ public class QuantumClientTestBase extends TestBase {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
             : endpoint;
+    }
+
+    String getSubscriptionId() {
+        return testResourceNamer.recordValueFromConfig(subscriptionId);
+    }
+
+    String getResourceGroup() {
+        return testResourceNamer.recordValueFromConfig(resourceGroup);
+    }
+
+    String getWorkspaceName() {
+        return testResourceNamer.recordValueFromConfig(workspaceName);
     }
 
 }
