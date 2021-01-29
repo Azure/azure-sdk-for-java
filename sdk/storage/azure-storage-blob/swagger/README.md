@@ -20,13 +20,16 @@ java: true
 output-folder: ../
 namespace: com.azure.storage.blob
 enable-xml: true
+generate-client-as-impl: true
 generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
+context-client-method-parameter: true
 models-subpackage: implementation.models
 custom-types: BlobAccessPolicy,AccessTier,AccountKind,ArchiveStatus,BlobHttpHeaders,BlobContainerItem,BlobContainerItemProperties,BlobContainerEncryptionScope,BlobServiceProperties,BlobType,Block,BlockList,BlockListType,BlockLookupList,BlobPrefix,ClearRange,CopyStatusType,BlobCorsRule,CpkInfo,CustomerProvidedKeyInfo,DeleteSnapshotsOptionType,EncryptionAlgorithmType,FilterBlobsItem,GeoReplication,GeoReplicationStatusType,KeyInfo,LeaseDurationType,LeaseStateType,LeaseStatusType,ListBlobContainersIncludeType,ListBlobsIncludeItem,BlobAnalyticsLogging,BlobMetrics,PageList,PageRange,PathRenameMode,PublicAccessType,RehydratePriority,BlobRetentionPolicy,SequenceNumberActionType,BlobSignedIdentifier,SkuName,StaticWebsite,BlobErrorCode,BlobServiceStatistics,SyncCopyStatusType,UserDelegationKey,BlobQueryHeaders
 custom-types-subpackage: models
+customization-jar-path: target/azure-storage-blob-customization-1.0.0-beta.1.jar
+customization-class: com.azure.storage.blob.customization.BlobStorageCustomization
 ```
 
 ### /{containerName}?restype=container
@@ -1051,83 +1054,6 @@ directive:
     $.get.operationId = "Service_ListBlobContainersSegment";
 ```
 
-### Change StorageErrorException to StorageException
-``` yaml
-directive:
-- from: ServicesImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: ContainersImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: BlobsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: AppendBlobsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: BlockBlobsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-- from: PageBlobsImpl.java
-  where: $
-  transform: >
-    return $.
-      replace(
-        "com.azure.storage.blob.implementation.models.StorageErrorException",
-        "com.azure.storage.blob.models.BlobStorageException"
-      ).
-      replace(
-        /\@UnexpectedResponseExceptionType\(StorageErrorException\.class\)/g,
-        "@UnexpectedResponseExceptionType(BlobStorageException.class)"
-      );
-```
-
 ### GeoReplication
 ``` yaml
 directive:
@@ -1262,17 +1188,6 @@ directive:
       delete $.BlobAccessPolicy.properties.Permission;
     }
     $.BlobSignedIdentifier.properties.AccessPolicy["$ref"] = "#/definitions/BlobAccessPolicy";
-```
-
-### BlobServiceProperties Annotation Fix
-``` yaml
-directive:
-- from: BlobServiceProperties.java
-  where: $
-  transform: >
-    return $.replace('@JsonProperty(value = "Metrics")\n    private BlobMetrics hourMetrics;', '@JsonProperty(value = "HourMetrics")\n    private BlobMetrics hourMetrics;').
-      replace('@JsonProperty(value = "Metrics")\n    private BlobMetrics minuteMetrics;', '@JsonProperty(value = "MinuteMetrics")\n    private BlobMetrics minuteMetrics;').
-      replace('@JsonProperty(value = "RetentionPolicy")\n    private BlobRetentionPolicy deleteRetentionPolicy;', '@JsonProperty(value = "DeleteRetentionPolicy")\n    private BlobRetentionPolicy deleteRetentionPolicy;');
 ```
 
 ### Rename BlobHttpHeaders to BlobHttpHeader
@@ -1458,6 +1373,34 @@ directive:
   where: $.definitions.BlobRetentionPolicy
   transform: >
     delete $.properties.AllowPermanentDelete;
+```
+
+### Service_ListContainersSegment x-ms-pageable itemName
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/?comp=list"].get
+  transform: >
+    $["x-ms-pageable"].itemName = "BlobContainerItems";
+```
+
+
+### Delete Container_ListBlobFlatSegment x-ms-pageable as autorest can't recognize the itemName for this
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&flat"].get
+  transform: >
+    delete $["x-ms-pageable"];
+```
+
+### Delete Container_ListBlobHierarchySegment x-ms-pageable as autorest can't recognize the itemName for this
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=list&hierarchy"].get
+  transform: >
+    delete $["x-ms-pageable"];
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-blob%2Fswagger%2FREADME.png)
