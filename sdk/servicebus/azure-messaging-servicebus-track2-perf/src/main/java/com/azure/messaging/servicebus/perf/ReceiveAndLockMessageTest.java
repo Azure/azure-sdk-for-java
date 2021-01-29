@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class ReceiveAndLockMessageTest extends ServiceTest<ServiceBusStressOptio
     public ReceiveAndLockMessageTest(ServiceBusStressOptions options) {
         super(options, ServiceBusReceiveMode.PEEK_LOCK);
         this.options = options;
-        this.messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
+        this.messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
     }
 
     @Override

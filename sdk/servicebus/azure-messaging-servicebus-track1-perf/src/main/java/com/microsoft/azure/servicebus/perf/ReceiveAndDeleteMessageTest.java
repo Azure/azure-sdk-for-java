@@ -4,6 +4,7 @@
 package com.microsoft.azure.servicebus.perf;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import com.microsoft.azure.servicebus.perf.core.ServiceBusStressOptions;
 import com.microsoft.azure.servicebus.perf.core.ServiceTest;
 import com.microsoft.azure.servicebus.IMessage;
@@ -32,7 +33,7 @@ public class ReceiveAndDeleteMessageTest extends ServiceTest<ServiceBusStressOpt
     public ReceiveAndDeleteMessageTest(ServiceBusStressOptions options) {
         super(options, ReceiveMode.RECEIVEANDDELETE);
         this.options = options;
-        this.messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
+        this.messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
     }
 
     @Override

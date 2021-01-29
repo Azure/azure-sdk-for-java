@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.perf;
 
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
+import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class SendMessagesTest extends ServiceTest<ServiceBusStressOptions> {
      */
     public SendMessagesTest(ServiceBusStressOptions options) {
         super(options, ServiceBusReceiveMode.PEEK_LOCK);
-        String messageContent = MessageUtil.generateMessageContent(options.getMessagesSizeBytesToSend());
+        String messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
         messages = new ArrayList<>();
         for (int i = 0; i < options.getMessagesToSend(); ++i) {
             ServiceBusMessage message =  new ServiceBusMessage(messageContent);
