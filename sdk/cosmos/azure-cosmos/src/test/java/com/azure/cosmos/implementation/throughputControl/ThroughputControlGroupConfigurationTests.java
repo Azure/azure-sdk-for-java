@@ -32,20 +32,18 @@ public class ThroughputControlGroupConfigurationTests extends TestSuiteBase {
     @DataProvider(name = "invalidThroughputControlGroup")
     public Object[][] invalidThroughputControlGroup() {
         return new Object[][]{
-            // group name, container, targetThroughput, targetThroughputThreshold, exception
-            {"group", container, -1, null, IllegalArgumentException.class},
-            {"group", container, null, -0.2, IllegalArgumentException.class},
-            {"group", null, 10, null, IllegalArgumentException.class},
-            {"", container, 10, null, IllegalArgumentException.class},
-            {"group", container, 10, null, null},
-            {"group", container, null, 0.2, null}
+            // group name, targetThroughput, targetThroughputThreshold, exception
+            {"group", -1, null, IllegalArgumentException.class},
+            {"group", null, -0.2, IllegalArgumentException.class},
+            {"", 10, null, IllegalArgumentException.class},
+            {"group", 10, null, null},
+            {"group", null, 0.2, null}
         };
     }
 
     @Test(groups = { "emulator" }, dataProvider = "invalidThroughputControlGroup")
     public void validateSingleGroupConfiguration(
         String groupName,
-        CosmosAsyncContainer container,
         Integer targetThroughput,
         Double targetThroughputThreshold,
         Class<?> exceptionType) {
