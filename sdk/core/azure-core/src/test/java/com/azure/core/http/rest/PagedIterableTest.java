@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PagedIterableTest {
     private static final int DEFAULT_PAGE_COUNT = 4;
 
-    private final HttpHeaders httpHeaders = new HttpHeaders().put("header1", "value1").put("header2", "value2");
+    private final HttpHeaders httpHeaders = new HttpHeaders().set("header1", "value1").set("header2", "value2");
     private final HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
     private final String deserializedHeaders = "header1,value1,header2,value2";
 

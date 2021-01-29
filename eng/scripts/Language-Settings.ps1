@@ -1,4 +1,5 @@
 $Language = "java"
+$LanguageDisplayName = "Java"
 $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/master/_data/releases/latest/java-packages.csv"
@@ -255,4 +256,19 @@ function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseD
   python "$EngDir/versioning/update_versions.py" --update-type library --build-type $BuildType --sr
   & "$EngCommonScriptsDir/Update-ChangeLog.ps1" -Version $Version -ServiceDirectory $ServiceDirectory -PackageName $PackageName `
   -Unreleased $False -ReplaceLatestEntryTitle $True -ReleaseDate $ReleaseDate
+}
+
+function GetExistingPackageVersions ($PackageName, $GroupId=$null)
+{
+  try {
+    $Uri = 'https://search.maven.org/solrsearch/select?q=g:"' + $GroupId + '"+AND+a:"' + $PackageName +'"&core=gav&rows=20&wt=json'
+    $existingVersion = Invoke-RestMethod -Method GET -Uri $Uri
+    $existingVersion = $existingVersion.response.docs.v
+    [Array]::Reverse($existingVersion)
+    return $existingVersion
+  }
+  catch {
+    LogError "Failed to retrieve package versions. `n$_"
+    return $null
+  }
 }

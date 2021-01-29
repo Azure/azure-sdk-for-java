@@ -54,14 +54,10 @@ abstract class OkHttpResponseBase extends HttpResponse {
     /**
      * Creates azure-core HttpHeaders from okhttp headers.
      *
-     * @param headers okhttp headers
+     * @param okHttpHeaders okhttp headers
      * @return azure-core HttpHeaders
      */
-    private static HttpHeaders fromOkHttpHeaders(Headers headers) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        for (String headerName : headers.names()) {
-            httpHeaders.put(headerName, headers.get(headerName));
-        }
-        return httpHeaders;
+    private static HttpHeaders fromOkHttpHeaders(Headers okHttpHeaders) {
+        return new HttpHeaders().setAll(okHttpHeaders.toMultimap());
     }
 }
