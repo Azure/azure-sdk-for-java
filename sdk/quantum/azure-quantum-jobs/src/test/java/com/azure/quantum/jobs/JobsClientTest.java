@@ -6,13 +6,10 @@ package com.azure.quantum.jobs;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.quantum.jobs.models.JobDetails;
-import com.azure.quantum.jobs.models.JobStatus;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
