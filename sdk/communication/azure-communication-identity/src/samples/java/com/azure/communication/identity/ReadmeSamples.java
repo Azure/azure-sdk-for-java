@@ -107,7 +107,6 @@ public class ReadmeSamples {
         return result;
     }
 
-
     /**
      * Sample code for issuing a user token
      *
@@ -150,4 +149,15 @@ public class ReadmeSamples {
         communicationIdentityClient.deleteUser(user);
     }
 
+    /**
+     * Sample code for troubleshooting
+     */
+    public void createUserTroubleshooting() {
+        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+        try {
+            CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+        } catch (RuntimeException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 }

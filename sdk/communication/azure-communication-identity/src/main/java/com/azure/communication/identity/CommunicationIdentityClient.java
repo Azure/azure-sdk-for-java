@@ -3,6 +3,7 @@
 
 package com.azure.communication.identity;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -60,13 +61,14 @@ public final class CommunicationIdentityClient {
         Response<CommunicationIdentityAccessTokenResult> response = 
             client.createWithResponseAsync(new CommunicationIdentityCreateRequest(), context).block();
         
-        if (response != null && response.getValue() != null) {
-            String id = response.getValue().getIdentity().getId();
-            return new SimpleResponse<CommunicationUserIdentifier>(
-                response,
-                new CommunicationUserIdentifier(id));
+        if (response == null || response.getValue() == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Create user response and value cannot be null"));
         }
-        return null;
+        String id = response.getValue().getIdentity().getId();
+        return new SimpleResponse<CommunicationUserIdentifier>(
+            response,
+            new CommunicationUserIdentifier(id));
+       
     }
 
     /**
@@ -77,14 +79,13 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CommunicationUserIdentifierWithTokenResult createUserWithToken(
-        List<CommunicationTokenScope> scopes) {
+        Iterable<CommunicationTokenScope> scopes) {
         Objects.requireNonNull(scopes);
+        final List<CommunicationTokenScope> scopesInput = new ArrayList<>();
+        scopes.forEach(scope -> scopesInput.add(scope));
         CommunicationIdentityAccessTokenResult result = client.create(
-            new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes));
-        CommunicationUserIdentifier user = 
-            new CommunicationUserIdentifier(result.getIdentity().getId());
-        AccessToken token = new AccessToken(result.getAccessToken().getToken(), result.getAccessToken().getExpiresOn());
-        return new CommunicationUserIdentifierWithTokenResult(user, token);
+            new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput));
+        return userWithAccessTokenResultConverter(result);
     }
 
     /**
@@ -96,24 +97,20 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CommunicationUserIdentifierWithTokenResult> createUserWithTokenWithResponse(
-        List<CommunicationTokenScope> scopes, Context context) {
+        Iterable<CommunicationTokenScope> scopes, Context context) {
         Objects.requireNonNull(scopes);
         context = context == null ? Context.NONE : context;
+        final List<CommunicationTokenScope> scopesInput = new ArrayList<>();
+        scopes.forEach(scope -> scopesInput.add(scope));
+        Response<CommunicationIdentityAccessTokenResult> response = client.createWithResponseAsync(
+            new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput), context).block();
 
-        Response<CommunicationIdentityAccessTokenResult> response = 
-            client.createWithResponseAsync(
-                new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopes), context).block();
-
-        if (response != null && response.getValue() != null) {
-            CommunicationUserIdentifier user = new CommunicationUserIdentifier(response.getValue().getIdentity().getId());
-            AccessToken token = new AccessToken(
-                response.getValue().getAccessToken().getToken(),
-                response.getValue().getAccessToken().getExpiresOn());
-            return new SimpleResponse<CommunicationUserIdentifierWithTokenResult>(
-                response,
-                new CommunicationUserIdentifierWithTokenResult(user, token));
+        if (response == null || response.getValue() == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Create user with token response and value cannot be null"));
         }
-        return null;
+        return new SimpleResponse<CommunicationUserIdentifierWithTokenResult>(
+            response,
+            userWithAccessTokenResultConverter(response.getValue()));
     }
 
     /**
@@ -180,12 +177,14 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccessToken issueToken(CommunicationUserIdentifier communicationUser,
-        List<CommunicationTokenScope> scopes) {
+        Iterable<CommunicationTokenScope> scopes) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
+        final List<CommunicationTokenScope> scopesInput = new ArrayList<>();
+        scopes.forEach(scope -> scopesInput.add(scope));
         CommunicationIdentityAccessToken rawToken = client.issueAccessToken(
             communicationUser.getId(),
-            new CommunicationIdentityAccessTokenRequest().setScopes(scopes));
+            new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput));
         return new AccessToken(rawToken.getToken(), rawToken.getExpiresOn());
     }
 
@@ -200,20 +199,35 @@ public final class CommunicationIdentityClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessToken> issueTokenWithResponse(CommunicationUserIdentifier communicationUser,
-        List<CommunicationTokenScope> scopes, Context context) {
+        Iterable<CommunicationTokenScope> scopes, Context context) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
         context = context == null ? Context.NONE : context;
+        final List<CommunicationTokenScope> scopesInput = new ArrayList<>();
+        scopes.forEach(scope -> scopesInput.add(scope));
         Response<CommunicationIdentityAccessToken> response = client.issueAccessTokenWithResponseAsync(
             communicationUser.getId(),
-            new CommunicationIdentityAccessTokenRequest().setScopes(scopes),
+            new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput),
             context)
             .block();
-        if (response != null && response.getValue() != null) {
-            return new SimpleResponse<AccessToken>(
-                response,
-                new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
+
+        if (response == null || response.getValue() == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Issue token response and value cannot be null"));
         }
-        return null;
+
+        return new SimpleResponse<AccessToken>(
+            response,
+            new AccessToken(response.getValue().getToken(), response.getValue().getExpiresOn()));
+    }
+
+    private CommunicationUserIdentifierWithTokenResult userWithAccessTokenResultConverter(
+        CommunicationIdentityAccessTokenResult identityAccessTokenResult) {
+        CommunicationUserIdentifier user = 
+            new CommunicationUserIdentifier(identityAccessTokenResult.getIdentity().getId());
+        AccessToken token = new AccessToken(
+            identityAccessTokenResult.getAccessToken().getToken(),
+            identityAccessTokenResult.getAccessToken().getExpiresOn());
+        return new CommunicationUserIdentifierWithTokenResult(user, token);
+
     }
 }

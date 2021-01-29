@@ -10,10 +10,10 @@ The identity package is used for managing users and tokens for Azure Communicati
 
 ### Prerequisites
 
-- An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
+- An Azure subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
 - [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
+- A Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
 
@@ -26,7 +26,7 @@ The identity package is used for managing users and tokens for Azure Communicati
 </dependency>
 ```
 
-## Key concepts
+## Authenticate the client
 
 There are two forms of authentication to use the Identity SDK:
 
@@ -82,6 +82,9 @@ CommunicationIdentityClient communicationIdentityClient = new CommunicationIdent
     .buildClient();
 ```
 
+## Key Concepts
+`CommunicationIdentityClient` and `CommunicationIdentityAsyncClient` provides the functionalities to manage users and user tokens.
+
 ## Examples
 
 ### Creating a new user
@@ -113,7 +116,7 @@ also takes in a list of `CommunicationIdentityTokenScope`. Scope options include
 - `chat` (Chat)
 - `voip` (Voice over IP)
 
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L120-L125 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L119-L124 -->
 ```java
 List<CommunicationTokenScope> scopes = 
     new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
@@ -126,7 +129,7 @@ System.out.println("Expires at: " + userToken.getExpiresAt());
 ### Revoking all tokens for an existing user
 Use the `revokeTokens` function to revoke all the issued tokens of a user.
 
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L139-L140 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L138-L139 -->
 ```java
 // revoke tokens issued for the specified user
 communicationIdentityClient.revokeTokens(user);
@@ -135,11 +138,27 @@ communicationIdentityClient.revokeTokens(user);
 ### Deleting a user
 Use the `deleteUser` function to delete a user.
 
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L149-L150 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L148-L149 -->
 ```java
 // delete a previously created user
 communicationIdentityClient.deleteUser(user);
 ```
+
+## Troubleshooting
+
+All user token service operations will throw an exception on failure.
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L157-L161 -->
+```java
+try {
+    CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+} catch (RuntimeException ex) {
+    System.out.println(ex.getMessage());
+}
+```
+
+## Next steps
+
+Check out other client libraries for Azure communication service
 
 ## Contributing
 
@@ -148,15 +167,6 @@ This project welcomes contributions and suggestions. Most contributions require 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
-
-
-## Troubleshooting
-
-In progress.
-
-## Next steps
-
-Check out other client libraries for Azure communication service
 
 <!-- LINKS -->
 [cla]: https://cla.microsoft.com
