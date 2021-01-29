@@ -19,6 +19,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -89,7 +90,7 @@ public final class EventGridPublisherAsyncClient {
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     eventDataSerializer.serialize(bos, event.getData());
                     byte[] data = bos.toByteArray();
-                    internalEvent.setData(data);
+                    internalEvent.setData(Base64.getEncoder().encode(bos.toByteArray()));
                 }
                 return internalEvent;
             })
@@ -121,7 +122,7 @@ public final class EventGridPublisherAsyncClient {
                 if (this.eventDataSerializer != null && internalEvent.getData() != null) {
                     ByteArrayOutputStream bos = new ByteArrayOutputStream();
                     eventDataSerializer.serialize(bos, event.getData());
-                    internalEvent.setData(bos.toByteArray());
+                    internalEvent.setData(Base64.getEncoder().encode(bos.toByteArray()));
                 }
                 return internalEvent;
             })

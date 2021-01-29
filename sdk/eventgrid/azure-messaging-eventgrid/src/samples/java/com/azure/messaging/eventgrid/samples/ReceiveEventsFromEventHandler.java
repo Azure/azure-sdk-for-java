@@ -5,7 +5,6 @@ package com.azure.messaging.eventgrid.samples;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.messaging.eventgrid.EventGridDeserializer;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.samples.models.User;
 import com.azure.storage.queue.QueueClient;
@@ -28,15 +27,15 @@ public class ReceiveEventsFromEventHandler {
 
         Iterable<QueueMessageItem> messages = storageQueueClient.receiveMessages(10);
         for (QueueMessageItem messageItem : messages) {
-            String decodedMessage = new String(Base64.getDecoder().decode(messageItem.getMessageText()));
-            deserializeAndProcessEvents(decodedMessage);
+            String eventJsonString = new String(Base64.getDecoder().decode(messageItem.getMessageText()));
+            deserializeAndProcessEvents(eventJsonString);
         }
     }
 
     private static void deserializeAndProcessEvents(String eventJsonString) {
         // assuming all messages in the queue is of event grid event schema
         System.out.println(eventJsonString);
-        List<EventGridEvent> events = EventGridDeserializer.deserializeEventGridEvents(eventJsonString);
+        List<EventGridEvent> events = EventGridEvent.fromString(eventJsonString);
 
         for (EventGridEvent event : events) {
             BinaryData eventData = event.getData();

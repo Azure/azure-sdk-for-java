@@ -81,7 +81,6 @@ az eventgrid topic key list --name <your-resource-name> --resource-group <your-r
 Once you have your access key and topic endpoint, you can create the publisher client as follows:
 
 Sync client that works for every Java developer:
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L38-L41 -->
 ```java
 EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
     .endpoint("<your event grid endpoint>")
@@ -89,7 +88,6 @@ EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
     .buildClient();
 ```
 or async client if your technology stack has reactive programming such as project reactor:
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L45-L48 -->
 ```java
 EventGridPublisherAsyncClient egAsyncClient = new EventGridPublisherClientBuilder()
     .endpoint("<your event grid endpoint>")
@@ -102,7 +100,6 @@ If you have a SAS (**Shared Access Signature**) that can be used to send events 
 limited time, you can use it to create the publisher client:
 
 Sync client:
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L52-L55 -->
 ```java
 EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
     .endpoint("<your event grid endpoint>")
@@ -110,7 +107,6 @@ EventGridPublisherClient egClient = new EventGridPublisherClientBuilder()
     .buildClient();
 ```
 Async client:
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L59-L62 -->
 ```java
 EventGridPublisherAsyncClient egClient = new EventGridPublisherClientBuilder()
     .endpoint("<your event grid endpoint>")
@@ -124,7 +120,6 @@ a SAS (**Shared Access Signature**) for them so they can create an `EventGridPub
 to create the publisher client.
 
 Here is sample code to create a shared access signature that expires after 20 minutes:
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L124-L126 -->
 ```java
 OffsetDateTime expiration = OffsetDateTime.now().plusMinutes(20);
     
@@ -170,8 +165,8 @@ EventGrid Topic or Domain](https://docs.microsoft.com/en-us/azure/event-grid/sub
 The events sent to the topic or domain will be stored into the subscription's endpoint, also known as 
 ["Event Handler"](https://docs.microsoft.com/en-us/azure/event-grid/event-handlers).
 
-You may use the event handler's SDK to receive the events and then use the `EventGridDeserializer` of this SDK to 
-deserialize the events, which are in JSON format. The data part of the events can be in binary, String, or JSON data. 
+You may use the event handler's SDK to receive the events in Json String and then use the `EventGridEvent.fromString()` or `CloudEvent.fromString()`
+deserialize the events. The data part of the events can be in binary, String, or JSON data. 
 
 ## Examples
 
@@ -183,7 +178,6 @@ the synchronous client is used for samples, however the asynchronous client has 
 
 Note: figure out what schema (cloud event, event grid event, or custom event) the event grid topic accepts before you start sending.
 #### Sending `EventGridEvent` to a topic that accepts EventGridEvent schema
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L66-L70 -->
 ```java
 // Make sure that the event grid topic or domain you're sending to accepts EventGridEvent schema.
 List<EventGridEvent> events = new ArrayList<>();
@@ -193,7 +187,6 @@ egClient.sendEventGridEvents(events);
 ```
 
 #### Sending `CloudEvent` to a topic that accepts CloudEvent schema
-<!-- embedme ./src/samples/java/com/azure/messaging/eventgrid/ReadmeSamples.java#L74-L78 -->
 ```java
 // Make sure that the event grid topic or domain you're sending to accepts CloudEvent schema.
 List<CloudEvent> events = new ArrayList<>();
@@ -236,11 +229,11 @@ The Json String can have a single event or an array of events. The returned resu
 ```java
 // Deserialize an EventGridEvent
 String eventGridEventJsonData = "your EventGridEvent json String";
-List<EventGridEvent> events = EventGridDeserializer.deserializeEventGridEvents(eventGridEventJsonData);
+List<EventGridEvent> events = EventGridEvent.fromString(eventGridEventJsonData);
 
 // Deserialize a CloudEvent
 String cloudEventJsonData = "your CloudEvent json String";
-List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(cloudEventJsonData);
+List<CloudEvent> events = CloudEvent.fromString(cloudEventJsonData);
 ```
 
 #### Deserialize data from a `CloudEvent` or `EventGridEvent`
@@ -311,7 +304,7 @@ You can use this SDK's convenience APIs to deal with System Events and their dat
 ```
 - look up the System Event data class that a System Event can be deserialized to;
 ```java
-    Class<?> eventDataClazz = SystemEventMappings.getSystemEventMappings().get(event.getEventType());
+    Class<?> eventDataClazz = SystemEventNames.getSystemEventMappings().get(event.getEventType());
 ```
 - deserialize the system event data to a class instance like any other domain classes.
 ```java

@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -53,12 +52,12 @@ public final class EventGridEvent {
     /**
      * Parse the EventGrid Event from a JSON string. This can be used to interpret the event at the event destination
      * from raw JSON into rich event(s).
-     * @param json the JSON payload containing one or more events.
+     * @param eventGridJsonString the JSON payload containing one or more events.
      *
      * @return all of the events in the payload parsed as {@link EventGridEvent}s.
      */
-    public static List<EventGridEvent> deserializeEventGridEvents(String json) {
-        return EventGridDeserializer.deserializeEventGridEvents(json);
+    public static List<EventGridEvent> fromString(String eventGridJsonString) {
+        return EventGridDeserializer.deserializeEventGridEvents(eventGridJsonString);
     }
 
 
@@ -113,17 +112,17 @@ public final class EventGridEvent {
 
     /**
      * Get whether this event is a system event.
-     * @see SystemEventMappings
+     * @see SystemEventNames
      * @return {@code true} if the even is a system event, or {@code false} otherwise.
      */
     public boolean isSystemEvent() {
         String eventType = this.getEventType();
-        return SystemEventMappings.getSystemEventMappings().containsKey(eventType);
+        return SystemEventNames.getSystemEventMappings().containsKey(eventType);
     }
 
     /**
      * Convert the event's data into the system event data if the event is a system event.
-     * @see SystemEventMappings
+     * @see SystemEventNames
      * @return The system event if the event is a system event, or {@code null} if it's not.
      */
     public Object asSystemEventData() {
@@ -131,18 +130,6 @@ public final class EventGridEvent {
             return null;
         }
         return EventGridDeserializer.getSystemEventData(this.getData(), event.getEventType());
-    }
-
-    /**
-     * Convert the event's data into the system event data if the event is a system event.
-     * @see SystemEventMappings
-     * @return The system event if the event is a system event, or Mono.empty() if it's not.
-     */
-    public Mono<Object> asSystemEventDataAsync() {
-        if (event.getData() == null) {
-            return Mono.empty();
-        }
-        return EventGridDeserializer.getSystemEventDataAsync(this.getDataAsync(), event.getEventType());
     }
 
     /**
@@ -155,18 +142,6 @@ public final class EventGridEvent {
             return EventGridDeserializer.getData(event.getData());
         }
         return null;
-    }
-
-    /**
-     * Get the data associated with this event as a {@link BinaryData}, which has API to deserialize the data into
-     * a String, an Object, or a byte[].
-     * @return A {@link BinaryData} that wraps the this event's data payload.
-     */
-    public Mono<BinaryData> getDataAsync() {
-        if (event.getData() != null) {
-            return Mono.defer(() -> Mono.just(EventGridDeserializer.getData(event.getData())));
-        }
-        return Mono.empty();
     }
 
     /**
@@ -203,14 +178,6 @@ public final class EventGridEvent {
      */
     public String getDataVersion() {
         return this.event.getDataVersion();
-    }
-
-    /**
-     * Get the metadata version of this event. Note that metadata version is a read-only property set by the service.
-     * @return the metadata version of this event.
-     */
-    public String getMetadataVersion() {
-        return this.event.getMetadataVersion();
     }
 
     EventGridEvent(com.azure.messaging.eventgrid.implementation.models.EventGridEvent impl) {

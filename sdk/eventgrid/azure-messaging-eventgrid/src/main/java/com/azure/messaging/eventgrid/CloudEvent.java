@@ -7,9 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -69,12 +69,12 @@ public final class CloudEvent {
     /**
      * Parse the Cloud Event from a JSON string. This can be used to interpret the event at the event destination
      * from raw JSON into rich event(s).
-     * @param json the JSON payload containing one or more events.
+     * @param cloudEventJsonString the JSON payload containing one or more events.
      *
      * @return all of the events in the payload parsed as {@link CloudEvent}s.
      */
-    public static List<CloudEvent> deserializeCloudEvents(String json) {
-        return EventGridDeserializer.deserializeCloudEvents(json);
+    public static List<CloudEvent> fromString(String cloudEventJsonString) {
+        return EventGridDeserializer.deserializeCloudEvents(cloudEventJsonString);
     }
 
     /**
@@ -109,17 +109,17 @@ public final class CloudEvent {
 
     /**
      * Gets whether this event is a system event.
-     * @see SystemEventMappings
+     * @see SystemEventNames
      * @return {@code true} if the even is a system event, or {@code false} otherwise.
      */
     public boolean isSystemEvent() {
         String eventType = this.getType();
-        return SystemEventMappings.getSystemEventMappings().containsKey(eventType);
+        return SystemEventNames.getSystemEventMappings().containsKey(eventType);
     }
 
     /**
      * Convert the event's data into the system event data if the event is a system event.
-     * @see SystemEventMappings
+     * @see SystemEventNames
      * @return The system event if the event is a system event, or {@code null} if it's not.
      */
     public Object asSystemEventData() {
@@ -127,18 +127,6 @@ public final class CloudEvent {
             return null;
         }
         return EventGridDeserializer.getSystemEventData(this.getData(), cloudEvent.getType());
-    }
-
-    /**
-     * Convert the event's data into the system event data if the event is a system event.
-     * @see SystemEventMappings
-     * @return The system event if the event is a system event, or Mono.empty() if it's not.
-     */
-    public Mono<Object> asSystemEventDataAsync() {
-        if ((cloudEvent.getData() == null && cloudEvent.getDataBase64() == null)) {
-            return Mono.empty();
-        }
-        return EventGridDeserializer.getSystemEventDataAsync(this.getDataAsync(), cloudEvent.getType());
     }
 
     /**
@@ -157,21 +145,6 @@ public final class CloudEvent {
     }
 
     /**
-     * Get the data associated with this event as a {@link BinaryData}, which has API to deserialize the data into
-     * a String, an Object, or a byte[].
-     * @return A {@link BinaryData} that wraps the this event's data payload.
-     */
-    public Mono<BinaryData> getDataAsync() {
-        if (cloudEvent.getDataBase64() != null) { // this means normal data is null
-            return Mono.defer(() -> Mono.just(BinaryData.fromBytes(cloudEvent.getDataBase64())));
-        }
-        if (cloudEvent.getData() != null) {
-            return BinaryData.fromObjectAsync(cloudEvent.getData());
-        }
-        return Mono.empty();
-    }
-
-    /**
      * Set the data associated with this event.
      * @param data the data to set.
      *
@@ -179,7 +152,8 @@ public final class CloudEvent {
      */
     public CloudEvent setData(Object data) {
         if (data instanceof byte[]) {
-            this.cloudEvent.setDataBase64((byte[]) data);
+            byte[] encoded = Base64.getEncoder().encode((byte[]) data);
+            this.cloudEvent.setDataBase64(encoded);
         } else {
             this.cloudEvent.setData(data);
         }
@@ -272,14 +246,6 @@ public final class CloudEvent {
     public CloudEvent setSubject(String subject) {
         this.cloudEvent.setSubject(subject);
         return this;
-    }
-
-    /**
-     * Get the spec version that this cloud event adheres to. Note that only CloudEvents spec version 1.0 is supported.
-     * @return the cloud event spec version.
-     */
-    public String getSpecVersion() {
-        return this.cloudEvent.getSpecversion();
     }
 
     /**

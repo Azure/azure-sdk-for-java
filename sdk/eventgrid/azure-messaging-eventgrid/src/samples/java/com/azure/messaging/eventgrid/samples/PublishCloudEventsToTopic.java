@@ -28,7 +28,6 @@ public class PublishCloudEventsToTopic {
         // Create a CloudEvent with String data
         String str = "FirstName: John1, LastName:James";
         CloudEvent cloudEventJson = new CloudEvent("https://com.example.myapp", "User.Created.Text", str);
-        // TODO: apache avro format using binary format data
 
         // Create a CloudEvent with Object data
         User newUser = new User("John2", "James");

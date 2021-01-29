@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * instances.
  *
  */
-public final class EventGridDeserializer {
+final class EventGridDeserializer {
     private static final ClientLogger LOGGER = new ClientLogger(EventGridDeserializer.class);
 
     private EventGridDeserializer() {
@@ -93,17 +93,17 @@ public final class EventGridDeserializer {
     }
 
     static Object getSystemEventData(BinaryData data, String eventType) {
-        if (SystemEventMappings.getSystemEventMappings().containsKey(eventType)) {
+        if (SystemEventNames.getSystemEventMappings().containsKey(eventType)) {
             return data
-                .toObject(TypeReference.createInstance(SystemEventMappings.getSystemEventMappings().get(eventType)));
+                .toObject(TypeReference.createInstance(SystemEventNames.getSystemEventMappings().get(eventType)));
         }
         return null;
     }
 
     static Mono<Object> getSystemEventDataAsync(Mono<BinaryData> data, String eventType) {
-        if (SystemEventMappings.getSystemEventMappings().containsKey(eventType)) {
+        if (SystemEventNames.getSystemEventMappings().containsKey(eventType)) {
             return data.map(binaryData -> binaryData
-                .toObject(TypeReference.createInstance(SystemEventMappings.getSystemEventMappings().get(eventType))));
+                .toObject(TypeReference.createInstance(SystemEventNames.getSystemEventMappings().get(eventType))));
         }
         return Mono.empty();
     }

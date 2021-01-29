@@ -7,8 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -45,7 +43,7 @@ public final class EventGridSasGenerator {
      * {@link AzureSasCredential}.
      */
     public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
-        return generateSas(endpoint, EventGridServiceVersion.getLatest(), keyCredential, expirationTime);
+        return generateSas(endpoint, keyCredential, expirationTime, EventGridServiceVersion.getLatest());
     }
 
     /**
@@ -59,7 +57,8 @@ public final class EventGridSasGenerator {
      * @return the shared access signature string which can be used to construct an instance of
      * {@link AzureSasCredential}.
      */
-    public static String generateSas(String endpoint, EventGridServiceVersion apiVersion, AzureKeyCredential keyCredential, OffsetDateTime expirationTime) {
+    public static String generateSas(String endpoint, AzureKeyCredential keyCredential, OffsetDateTime expirationTime,
+        EventGridServiceVersion apiVersion) {
         try {
             String resKey = "r";
             String expKey = "e";

@@ -7,7 +7,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.messaging.eventgrid.CloudEvent;
 import com.azure.messaging.eventgrid.EventGridEvent;
-import com.azure.messaging.eventgrid.EventGridDeserializer;
 import com.azure.messaging.eventgrid.samples.models.User;
 
 import java.util.Arrays;
@@ -27,7 +26,8 @@ public class DeserializeEventsFromString {
             "\"specversion\":\"1.0\"," +
             "\"datacontenttype\":\"application/json\"" +
             "}";
-        List<CloudEvent> cloudEvents = EventGridDeserializer.deserializeCloudEvents(cloudEventStringJsonData);
+        List<CloudEvent> cloudEvents = CloudEvent.fromString(cloudEventStringJsonData);
+
         CloudEvent cloudEvent = cloudEvents.get(0);
 
         BinaryData data = cloudEvent.getData();
@@ -47,7 +47,7 @@ public class DeserializeEventsFromString {
             "\"metadataVersion\":\"1\"," +
             "\"eventTime\":\"2021-01-12T22:23:38.756238Z\"," +
             "\"topic\":\"/exampleTopic\"}\n";
-        List<EventGridEvent> eventGridEvents = EventGridDeserializer.deserializeEventGridEvents(eventGridEventStringJsonData);
+        List<EventGridEvent> eventGridEvents = EventGridEvent.fromString(eventGridEventStringJsonData);
         EventGridEvent eventGridEvent = eventGridEvents.get(0);
         BinaryData data = eventGridEvent.getData();
         if (data != null) {

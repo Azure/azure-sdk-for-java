@@ -9,13 +9,12 @@ import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.messaging.eventgrid.CloudEvent;
-import com.azure.messaging.eventgrid.EventGridDeserializer;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import com.azure.messaging.eventgrid.EventGridSasGenerator;
-import com.azure.messaging.eventgrid.SystemEventMappings;
+import com.azure.messaging.eventgrid.SystemEventNames;
 import com.azure.messaging.eventgrid.samples.models.User;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageBlobDeletedEventData;
@@ -83,7 +82,7 @@ public class ReadmeSamples {
     }
 
     public void deserializeEventGridEvent() {
-        List<EventGridEvent> events = EventGridDeserializer.deserializeEventGridEvents(jsonData);
+        List<EventGridEvent> events = EventGridEvent.fromString(jsonData);
         for (EventGridEvent event : events) {
             if (event.isSystemEvent()) {
                 Object systemEventData = event.asSystemEventData();
@@ -104,7 +103,7 @@ public class ReadmeSamples {
     }
 
     public void deserializeCloudEvent() {
-        List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(jsonData);
+        List<CloudEvent> events = CloudEvent.fromString(jsonData);
         for (CloudEvent event : events) {
             if (event.isSystemEvent()) {
                 Object systemEventData = event.asSystemEventData();
@@ -141,14 +140,14 @@ public class ReadmeSamples {
 
     public void systemEventDataSampleCode() {
         String eventGridEventJsonData = "Your event grid event Json data";
-        List<CloudEvent> events = EventGridDeserializer.deserializeCloudEvents(eventGridEventJsonData);
-        CloudEvent event = events.get(0);
+        List<EventGridEvent> events = EventGridEvent.fromString(eventGridEventJsonData);
+        EventGridEvent event = events.get(0);
 
         // Tell if an event is a System Event
         boolean isSystemEvent = event.isSystemEvent();
 
         // Look up the System Event data class
-        Class<?> eventDataClazz = SystemEventMappings.getSystemEventMappings().get(event.getType());
+        Class<?> eventDataClazz = SystemEventNames.getSystemEventMappings().get(event.getEventType());
 
         // Deserialize the event data to an instance of a specific System Event data class type
         BinaryData data = event.getData();

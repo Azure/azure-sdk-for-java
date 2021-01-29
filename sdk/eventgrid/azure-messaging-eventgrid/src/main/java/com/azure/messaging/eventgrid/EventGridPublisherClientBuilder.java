@@ -294,7 +294,7 @@ public final class EventGridPublisherClientBuilder {
      * @param eventDataSerializer The data serializer.
      * @return the builder itself.
      */
-    public EventGridPublisherClientBuilder eventDataSerializer(ObjectSerializer eventDataSerializer) {
+    public EventGridPublisherClientBuilder serializer(ObjectSerializer eventDataSerializer) {
         this.eventDataSerializer = eventDataSerializer;
         return this;
     }
@@ -324,4 +324,5 @@ public final class EventGridPublisherClientBuilder {
         this.serviceVersion = serviceVersion;
         return this;
     }
+
 }
