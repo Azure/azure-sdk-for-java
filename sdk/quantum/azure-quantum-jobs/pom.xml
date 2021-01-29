@@ -33,7 +33,7 @@
 
    <properties>
     <!-- quantum jobs temporarily skipping code coverage until tests are added -->
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
   </properties>
 
   <dependencies>
