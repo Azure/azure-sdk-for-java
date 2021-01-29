@@ -82,7 +82,7 @@ CommunicationIdentityClient communicationIdentityClient = new CommunicationIdent
     .buildClient();
 ```
 
-## Key Concepts
+## Key concepts
 `CommunicationIdentityClient` and `CommunicationIdentityAsyncClient` provides the functionalities to manage users and user tokens.
 
 ## Examples
