@@ -23,6 +23,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -179,16 +180,7 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        final JavaType javaType = createJavaType(type);
-        try {
-            if (encoding == SerializerEncoding.XML) {
-                return (T) xmlMapper.readValue(value, javaType);
-            } else {
-                return (T) serializer().readValue(value, javaType);
-            }
-        } catch (JsonParseException jpe) {
-            throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
-        }
+        return deserialize(new ByteArrayInputStream(value.getBytes(StandardCharsets.UTF_8)), type, encoding);
     }
 
     @Override
