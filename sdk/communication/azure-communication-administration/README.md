@@ -1,6 +1,6 @@
 # Azure Communication Administration client library for Java
 
-The administration package previously contained capabilities for User and Token Management and for Phone Number Administration.
+The administration package previously provided capabilities for User and Token Management and for Phone Number Administration.
 
 Now, User and Token Management capabilities have been moved to `azure-communication-identity`.
 Phone Number Administration have been moved to `azure-communication-phonenumbers`.
