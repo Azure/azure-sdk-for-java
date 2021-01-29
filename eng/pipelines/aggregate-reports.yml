@@ -98,8 +98,6 @@ jobs:
       inputs:
         suppressionsFile: 'eng\CredScanSuppression.json'
       condition: succeededOrFailed()
-    - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
-      displayName: 'Publish Security Analysis Logs'
     - task: securedevelopmentteam.vss-secure-development-tools.build-task-postanalysis.PostAnalysis@2
       displayName: 'Post Analysis'
       inputs:
@@ -111,6 +109,11 @@ jobs:
         # Used for generating baseline file.
         GdnBreakOutputBaselineFile: java
         GdnBreakOutputBaseline: baseline
+      condition: succeededOrFailed()
+      continueOnError: true
+    - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
+      displayName: 'Publish Security Analysis Logs'
+      continueOnError: true
       condition: succeededOrFailed()
     # Run link verification at the end as it will run no matter the pipeline passing or failing.
     # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
