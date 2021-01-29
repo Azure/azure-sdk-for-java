@@ -52,11 +52,9 @@ azure:
         sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
         profile-edit: ${your-profile-edit-user-flow}      # optional
         password-reset: ${your-password-reset-user-flow}  # optional
+        sign-in: ${your-sign-in-user-flow} # optional  
+        sign-up: ${your-sign-up-user-flow} # optional
 ```
-
-#### Templates greeting.html and home.html
-1. Fill in the `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` from the portal `User flows`.
-Please make sure that these two placeholders should be the same as `application.yml` respectively.
 
 ### Run with Maven
 ```

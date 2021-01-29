@@ -68,6 +68,9 @@
         <!-- Metrics Advisor -->
         <module>sdk/metricsadvisor/azure-ai-metricsadvisor</module>
 
+        <!-- Quantum Jobs -->
+        <module>sdk/quantum/azure-quantum-jobs</module>
+
         <!-- Schema Registry -->
         <module>sdk/schemaregistry/azure-data-schemaregistry</module>
         <module>sdk/schemaregistry/azure-data-schemaregistry-avro</module>
@@ -238,6 +241,10 @@
                     <packages>com.azure.security.keyvault*</packages>
                   </group>
                   <group>
+                    <title>Azure Quantum Jobs</title>
+                    <packages>com.azure.quantum.jobs*</packages>
+                  </group>
+                  <group>
                     <title>Azure Search Documents</title>
                     <packages>com.azure.search.documents*</packages>
                   </group>
@@ -381,7 +388,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+            <version>3.1.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
             <configuration>
               <configLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
               <suppressionsLocation>eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
@@ -585,6 +592,7 @@
         <module>sdk/tables</module>
         <module>sdk/template</module>
         <module>sdk/textanalytics</module>
+        <module>sdk/quantum</module>
       </modules>
     </profile>
   </profiles>
