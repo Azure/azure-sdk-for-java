@@ -13,13 +13,17 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.cfg.MapperBuilder;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -39,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
 /**
@@ -68,30 +73,41 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     private static SerializerAdapter serializerAdapter;
 
+    private final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
+
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
     public JacksonAdapter() {
-        simpleMapper = initializeObjectMapper(new ObjectMapper());
+        this.simpleMapper = initializeMapperBuilder(JsonMapper.builder())
+            .build();
 
-        xmlMapper = initializeObjectMapper(new XmlMapper())
-            .setDefaultUseWrapper(false)
-            .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+        this.headerMapper = initializeMapperBuilder(JsonMapper.builder())
+            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_VALUES, true)
+            .build();
 
-        ObjectMapper flatteningMapper = initializeObjectMapper(new ObjectMapper())
-            .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-            .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+        this.xmlMapper = initializeMapperBuilder(XmlMapper.builder())
+            .defaultUseWrapper(false)
+            .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true)
+            /*
+             * In Jackson 2.12 the default value of this feature changed from true to false.
+             * https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.12#xml-module
+             */
+            .configure(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL, true)
+            .build();
 
-        mapper = initializeObjectMapper(new ObjectMapper())
+        ObjectMapper flatteningMapper = initializeMapperBuilder(JsonMapper.builder())
+            .addModule(FlatteningSerializer.getModule(simpleMapper()))
+            .addModule(FlatteningDeserializer.getModule(simpleMapper()))
+            .build();
+
+        this.mapper = initializeMapperBuilder(JsonMapper.builder())
             // Order matters: must register in reverse order of hierarchy
-            .registerModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
-            .registerModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
-            .registerModule(FlatteningSerializer.getModule(simpleMapper()))
-            .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
-
-        headerMapper = simpleMapper
-            .copy()
-            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+            .addModule(AdditionalPropertiesSerializer.getModule(flatteningMapper))
+            .addModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
+            .addModule(FlatteningSerializer.getModule(simpleMapper()))
+            .addModule(FlatteningDeserializer.getModule(simpleMapper()))
+            .build();
     }
 
     /**
@@ -174,7 +190,6 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T deserialize(String value, Type type, SerializerEncoding encoding) throws IOException {
         if (CoreUtils.isNullOrEmpty(value)) {
             return null;
@@ -184,7 +199,6 @@ public class JacksonAdapter implements SerializerAdapter {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public <T> T deserialize(InputStream inputStream, final Type type, SerializerEncoding encoding)
         throws IOException {
         if (inputStream == null) {
@@ -194,9 +208,9 @@ public class JacksonAdapter implements SerializerAdapter {
         final JavaType javaType = createJavaType(type);
         try {
             if (encoding == SerializerEncoding.XML) {
-                return (T) xmlMapper.readValue(inputStream, javaType);
+                return xmlMapper.readValue(inputStream, javaType);
             } else {
-                return (T) serializer().readValue(inputStream, javaType);
+                return serializer().readValue(inputStream, javaType);
             }
         } catch (JsonParseException jpe) {
             throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
@@ -210,8 +224,7 @@ public class JacksonAdapter implements SerializerAdapter {
         }
 
         final String headersJsonString = headerMapper.writeValueAsString(headers);
-        T deserializedHeaders =
-            headerMapper.readValue(headersJsonString, createJavaType(deserializedHeadersType));
+        T deserializedHeaders = headerMapper.readValue(headersJsonString, createJavaType(deserializedHeadersType));
 
         final Class<?> deserializedHeadersClass = TypeUtil.getRawClass(deserializedHeadersType);
         final Field[] declaredFields = deserializedHeadersClass.getDeclaredFields();
@@ -266,56 +279,53 @@ public class JacksonAdapter implements SerializerAdapter {
         return deserializedHeaders;
     }
 
-    /**
-     * Initializes an instance of JacksonMapperAdapter with default configurations applied to the object mapper.
-     *
-     * @param mapper the object mapper to use.
-     */
-    private static <T extends ObjectMapper> T initializeObjectMapper(T mapper) {
+
+    private static <M extends ObjectMapper, B extends MapperBuilder<M, B>, S extends MapperBuilder<M, B>> S
+        initializeMapperBuilder(S mapper) {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
             .configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true)
             .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
             .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
             .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            .registerModule(new JavaTimeModule())
-            .registerModule(ByteArraySerializer.getModule())
-            .registerModule(Base64UrlSerializer.getModule())
-            .registerModule(DateTimeSerializer.getModule())
-            .registerModule(DateTimeDeserializer.getModule())
-            .registerModule(DateTimeRfc1123Serializer.getModule())
-            .registerModule(DurationSerializer.getModule())
-            .registerModule(HttpHeadersSerializer.getModule())
-            .registerModule(UnixTimeSerializer.getModule());
-        mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
-            .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
-            .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
-            .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-            .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
+            .serializationInclusion(JsonInclude.Include.NON_NULL)
+            .addModule(new JavaTimeModule())
+            .addModule(ByteArraySerializer.getModule())
+            .addModule(Base64UrlSerializer.getModule())
+            .addModule(DateTimeSerializer.getModule())
+            .addModule(DateTimeDeserializer.getModule())
+            .addModule(DateTimeRfc1123Serializer.getModule())
+            .addModule(DurationSerializer.getModule())
+            .addModule(HttpHeadersSerializer.getModule())
+            .addModule(UnixTimeSerializer.getModule())
+            .visibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY)
+            .visibility(PropertyAccessor.SETTER, JsonAutoDetect.Visibility.NONE)
+            .visibility(PropertyAccessor.GETTER, JsonAutoDetect.Visibility.NONE)
+            .visibility(PropertyAccessor.IS_GETTER, JsonAutoDetect.Visibility.NONE);
+
         return mapper;
     }
 
     private JavaType createJavaType(Type type) {
-        JavaType result;
         if (type == null) {
-            result = null;
+            return null;
         } else if (type instanceof JavaType) {
-            result = (JavaType) type;
+            return (JavaType) type;
         } else if (type instanceof ParameterizedType) {
-            final ParameterizedType parameterizedType = (ParameterizedType) type;
-            final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-            JavaType[] javaTypeArguments = new JavaType[actualTypeArguments.length];
-            for (int i = 0; i != actualTypeArguments.length; i++) {
-                javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
-            }
-            result = mapper
-                .getTypeFactory().constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments);
+            return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(type, t -> {
+                final ParameterizedType parameterizedType = (ParameterizedType) type;
+                final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+                JavaType[] javaTypeArguments = new JavaType[actualTypeArguments.length];
+                for (int i = 0; i != actualTypeArguments.length; i++) {
+                    javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
+                }
+
+                return mapper.getTypeFactory().constructParametricType((Class<?>) parameterizedType.getRawType(),
+                    javaTypeArguments);
+            });
         } else {
-            result = mapper
-                .getTypeFactory().constructType(type);
+            return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(type, t -> mapper.getTypeFactory().constructType(t));
         }
-        return result;
     }
 
 }
