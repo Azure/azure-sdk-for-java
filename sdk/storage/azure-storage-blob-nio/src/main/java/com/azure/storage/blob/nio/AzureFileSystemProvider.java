@@ -277,9 +277,6 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      * <p>
      * This type is not threadsafe to prevent having to hold locks across network calls.
      * <p>
-     * Use {@link #newInputStream(Path, OpenOption...)} or {@link #newOutputStream(Path, OpenOption...)}
-     * instead. Please see the documentation on these methods for information on how to use this type. This type can
-     * only be opened in read OR write mode. Read/write mode is not supported.
      *
      * @param path the path of the file to open
      * @param set options specifying how the file should be opened

@@ -18,16 +18,12 @@ import java.nio.file.attribute.FileAttribute;
 /**
  * A byte channel that maintains a current position.
  * <p>
- * This type is primarily offered to support some jdk convenience methods such as
- * {@link Files#createFile(Path, FileAttribute[])} which requires opening a channel and closing it. A channel may only
- * be opened in read mode OR write mode. It may not be opened in read/write mode. Seeking is supported for reads, but
- * not for writes. Modifications to existing files is not permitted--only creating new files or overwriting existing
- * files.
+ * A channel may only be opened in read mode OR write mode. It may not be opened in read/write mode. Seeking is
+ * supported for reads, but not for writes. Modifications to existing files is not permitted--only creating new files or
+ * overwriting existing files.
  * <p>
  * This type is not threadsafe to prevent having to hold locks across network calls.
  * <p>
- * {@link NioBlobInputStream} and {@link NioBlobOutputStream} are the preferred types for reading and writing blob data
- * and are used internally by this type.
  */
 public final class AzureSeekableByteChannel implements SeekableByteChannel {
     private final ClientLogger logger = new ClientLogger(AzureSeekableByteChannel.class);
@@ -167,6 +163,10 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         AzurePath.ensureFileSystemOpen(this.path);
         validateOpen();
 
+        /*
+        If we are in read mode, the size is the size of the file.
+        If we are in write mode, the size is the amount of data written so far.
+         */
         if (reader != null) {
             return reader.getBlobInputStream().getProperties().getBlobSize();
         } else {
