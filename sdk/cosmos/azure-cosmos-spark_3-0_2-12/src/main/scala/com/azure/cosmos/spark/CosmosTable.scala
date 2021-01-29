@@ -32,14 +32,15 @@ import scala.collection.JavaConverters._
  */
 class CosmosTable(val transforms: Array[Transform],
                   val userConfig: util.Map[String, String],
-                  val userProvidedSchema: Option[StructType] = Option.empty)
+                  val userProvidedSchema: Option[StructType] = None)
   extends Table
     with SupportsWrite
     with SupportsRead
     with CosmosLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap))
+  val effectiveUserConfig = CosmosConfig.getEffectiveConfig(userConfig.asScala.toMap)
+  val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
   val client = new CosmosClientBuilder().endpoint(clientConfig.endpoint)
     .key(clientConfig.key)
     .buildAsyncClient()
@@ -49,7 +50,7 @@ class CosmosTable(val transforms: Array[Transform],
 
   // This can be used only when databaseName and ContainerName are specified.
   def initializeAndBroadcastCosmosClientStateForContainer() : Broadcast[CosmosClientMetadataCachesSnapshot] = {
-    val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig.asScala.toMap)
+    val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
     try {
       client.getDatabase(cosmosContainerConfig.database).getContainer(cosmosContainerConfig.container).readItem(
         UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
@@ -70,18 +71,14 @@ class CosmosTable(val transforms: Array[Transform],
   // database and table name from catalog, or the location of files for this table.
   override def name(): String = "com.azure.cosmos.spark.write"
 
-  /**
-    * Returns the schema of this table. If the table is not readable and doesn't have a schema, an
-    * empty schema can be returned here.
-    */
   override def schema(): StructType = {
-    // TODO: moderakh add support for schema inference
-    // for now schema is hard coded to make TestE2EMain to work
-    val hardCodedSchema = StructType(Seq(StructField("number", IntegerType), StructField("word", StringType)))
-    userProvidedSchema.getOrElse(hardCodedSchema)
+    userProvidedSchema.getOrElse(CosmosTableSchemaInferer.inferSchema(client, effectiveUserConfig))
   }
 
   override def capabilities(): util.Set[TableCapability] = Set(
+    // ACCEPT_ANY_SCHEMA is needed because of this bug https://github.com/apache/spark/pull/30273
+    // It was fixed in Spark 3.1.0 but Databricks currently only supports 3.0.1
+    TableCapability.ACCEPT_ANY_SCHEMA,
     TableCapability.BATCH_WRITE,
     TableCapability.BATCH_READ).asJava
 

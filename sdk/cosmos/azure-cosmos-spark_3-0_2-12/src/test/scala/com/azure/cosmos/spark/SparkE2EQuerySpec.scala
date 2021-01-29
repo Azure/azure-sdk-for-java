@@ -45,7 +45,7 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     ))
 
     val df = spark.read.schema(customSchema).format("cosmos.items").options(cfg).load()
-    val rowsArray = df.where("isAlive = 'true'").collect()
+    val rowsArray = df.where("isAlive = 'true' and type = 'cat'").collect()
     rowsArray should have size 1
 
     val row = rowsArray(0)
@@ -54,6 +54,40 @@ class SparkE2EQuerySpec extends IntegrationSpec with Spark with CosmosClient wit
     row.getAs[Integer]("age") shouldEqual 20
     row.getAs[Boolean]("isAlive") shouldEqual true
   }
+
+    "spark query" can "use schema inference" taggedAs (RequiresCosmosEndpoint) in {
+        val cosmosEndpoint = TestConfigurations.HOST
+        val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+        val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
+        for (state <- Array(true, false)) {
+            val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
+            objectNode.put("name", "Shrodigner's dog")
+            objectNode.put("type", "dog")
+            objectNode.put("age", 20)
+            objectNode.put("isAlive", state)
+            objectNode.put("id", UUID.randomUUID().toString)
+            container.createItem(objectNode).block()
+        }
+
+        val cfgWithInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+            "spark.cosmos.accountKey" -> cosmosMasterKey,
+            "spark.cosmos.database" -> cosmosDatabase,
+            "spark.cosmos.container" -> cosmosContainer,
+            "spark.cosmos.read.inferSchemaEnabled" -> "true"
+        )
+
+        // Not passing schema, letting inference work
+        val dfWithInference = spark.read.format("cosmos.items").options(cfgWithInference).load()
+        val rowsArrayWithInference = dfWithInference.where("isAlive = 'true' and type = 'dog'").collect()
+        rowsArrayWithInference should have size 1
+
+        val rowWithInference = rowsArrayWithInference(0)
+        rowWithInference.getAs[String]("name") shouldEqual "Shrodigner's dog"
+        rowWithInference.getAs[String]("type") shouldEqual "dog"
+        rowWithInference.getAs[Integer]("age") shouldEqual 20
+        rowWithInference.getAs[Boolean]("isAlive") shouldEqual true
+    }
 
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals

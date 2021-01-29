@@ -47,5 +47,17 @@ class CosmosConfigSpec extends UnitSpec {
           " Config description: Cosmos DB Account Endpoint Uri"
     }
   }
+
+    "Read Config Parser" should "parse read configuration" in {
+        val userConfig = Map(
+            "spark.cosmos.read.inferSchemaSamplingSize" -> "50",
+            "spark.cosmos.read.inferSchemaEnabled" -> "false"
+        )
+
+        val config = CosmosSchemaInferenceConfig.parseCosmosReadConfig(userConfig)
+
+        config.inferSchemaSamplingSize shouldEqual 50
+        config.inferSchemaEnabled shouldBe false
+    }
   //scalastyle:on multiple.string.literals
 }

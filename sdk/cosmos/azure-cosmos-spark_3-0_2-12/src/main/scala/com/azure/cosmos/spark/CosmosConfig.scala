@@ -92,6 +92,29 @@ object CosmosContainerConfig {
   }
 }
 
+case class CosmosSchemaInferenceConfig(inferSchemaSamplingSize: Int, inferSchemaEnabled: Boolean)
+
+object CosmosSchemaInferenceConfig {
+    private val DefaultSampleSize: Int = 1000
+
+    val inferSchemaSamplingSize = CosmosConfigEntry[Int](key = "spark.cosmos.read.inferSchemaSamplingSize",
+        mandatory = false,
+        parseFromStringFunction = size => size.toInt,
+        helpMessage = "Sampling size to use when inferring schema")
+
+    val inferSchemaEnabled = CosmosConfigEntry[Boolean](key = "spark.cosmos.read.inferSchemaEnabled",
+        mandatory = false,
+        parseFromStringFunction = enabled => enabled.toBoolean,
+        helpMessage = "Whether schema inference is enabled or should return raw json")
+
+    def parseCosmosReadConfig(cfg: Map[String, String]): CosmosSchemaInferenceConfig = {
+        val samplingSize = CosmosConfigEntry.parse(cfg, inferSchemaSamplingSize)
+        val enabled = CosmosConfigEntry.parse(cfg, inferSchemaEnabled)
+
+        CosmosSchemaInferenceConfig(samplingSize.getOrElse(DefaultSampleSize), enabled.getOrElse(false))
+    }
+}
+
 case class CosmosConfigEntry[T](key: String,
                                 mandatory: Boolean,
                                 defaultValue: Option[String] = Option.empty,

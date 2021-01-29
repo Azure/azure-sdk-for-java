@@ -194,6 +194,24 @@ class CosmosRowConverterSpec extends UnitSpec {
         nestedNode.get(structCol1Name).asText() shouldEqual structCol1Val
     }
 
+    "rawJson in spark row" should "translate to ObjectNode" in {
+        val colName1 = "testCol1"
+        val colName2 = "testCol2"
+        val colVal1 = 8
+        val colVal2 = "strVal"
+        val sourceObjectNode: ObjectNode = objectMapper.createObjectNode()
+        sourceObjectNode.put(colName1, colVal1)
+        sourceObjectNode.put(colName2, colVal2)
+
+        val row = new GenericRowWithSchema(
+            Array(sourceObjectNode.toString),
+            StructType(Seq(StructField(CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME, StringType))))
+
+        val objectNode = CosmosRowConverter.fromRowToObjectNode(row)
+        objectNode.get(colName1).asInt shouldEqual colVal1
+        objectNode.get(colName2).asText shouldEqual colVal2
+    }
+
     "basic ObjectNode" should "translate to Row" in {
         val colName1 = "testCol1"
         val colName2 = "testCol2"
@@ -278,6 +296,20 @@ class CosmosRowConverterSpec extends UnitSpec {
         val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
         row.isNullAt(0) shouldBe true
         row.getString(1) shouldEqual colVal2
+    }
+
+    "missing attribute in ObjectNode" should "translate to Row" in {
+
+        val colName1 = "testCol1"
+        val colName2 = "testCol2"
+        val colVal1 = "strVal"
+
+        val schema = StructType(Seq(StructField(colName1, NullType), StructField(colName2, StringType)))
+        val objectNode: ObjectNode = objectMapper.createObjectNode()
+        objectNode.put(colName1, colVal1)
+
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        row.isNullAt(1) shouldBe true
     }
 
     "array in ObjectNode" should "translate to Row" in {
@@ -410,6 +442,17 @@ class CosmosRowConverterSpec extends UnitSpec {
         val asStruct = row.getStruct(0)
         asStruct.getString(0) shouldEqual colVal1
         row.getString(1) shouldEqual colVal2
+    }
+
+    "raw in ObjectNode" should "translate to Row" in {
+        val colName1 = "testCol1"
+        val colVal1 = "testVal1"
+
+        val objectNode: ObjectNode = objectMapper.createObjectNode()
+        objectNode.put(colName1, colVal1)
+        val schema = StructType(Seq(StructField(CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME, StringType)))
+        val row = CosmosRowConverter.fromObjectNodeToRow(schema, objectNode)
+        row.getString(0) shouldEqual objectNode.toString
     }
 
   //scalastyle:on null

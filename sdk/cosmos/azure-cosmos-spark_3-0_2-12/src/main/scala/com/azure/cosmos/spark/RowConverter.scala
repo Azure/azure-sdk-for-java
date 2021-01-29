@@ -22,7 +22,7 @@ import org.apache.spark.unsafe.types.UTF8String
 
 // scalastyle:off multiple.string.literals
 // scalastyle:off null
-object CosmosRowConverter
+private object CosmosRowConverter
     extends CosmosLoggingTrait {
 
     // TODO: Expose configuration to handle duplicate fields
@@ -43,17 +43,25 @@ object CosmosRowConverter
     }
 
     def fromRowToObjectNode(row: Row): ObjectNode = {
-        val objectNode: ObjectNode = objectMapper.createObjectNode()
-        row.schema.fields.zipWithIndex.foreach({
-            case (field, i) =>
-                field.dataType match {
-                    case _: NullType  => objectNode.putNull(field.name)
-                    case _ if row.isNullAt(i) => objectNode.putNull(field.name)
-                    case _ => objectNode.set(field.name, convertSparkDataTypeToJsonNode(field.dataType, row.get(i)))
-                }
-        })
 
-        objectNode
+        if (row.schema.contains(StructField(CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME, StringType))){
+            // Special case when the reader read the rawJson
+            val rawJson = row.getAs[String](CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME)
+            objectMapper.readTree(rawJson).asInstanceOf[ObjectNode]
+        }
+        else {
+            val objectNode: ObjectNode = objectMapper.createObjectNode()
+            row.schema.fields.zipWithIndex.foreach({
+                case (field, i) =>
+                    field.dataType match {
+                        case _: NullType => objectNode.putNull(field.name)
+                        case _ if row.isNullAt(i) => objectNode.putNull(field.name)
+                        case _ => objectNode.set(field.name, convertSparkDataTypeToJsonNode(field.dataType, row.get(i)))
+                    }
+            })
+
+            objectNode
+        }
     }
 
     def fromInternalRowToObjectNode(row: InternalRow, schema: StructType): ObjectNode = {
@@ -167,8 +175,10 @@ object CosmosRowConverter
 
     private def convertStructToSparkDataType(schema: StructType, objectNode: ObjectNode) : Seq[Any] =
         schema.fields.map {
+            case StructField(CosmosTableSchemaInferer.RAW_JSON_BODY_ATTRIBUTE_NAME, StringType, _, _) =>
+                objectNode.toString
             case StructField(name, dataType, _, _) =>
-            Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _)).orNull
+                Option(objectNode.get(name)).map(convertToSparkDataType(dataType, _)).orNull
         }
 
     // scalastyle:off
