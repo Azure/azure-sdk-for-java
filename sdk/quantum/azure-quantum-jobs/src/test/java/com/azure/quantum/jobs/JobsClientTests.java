@@ -68,7 +68,7 @@ public class JobsClientTests extends QuantumClientTestBase {
             blobClient.uploadFromFile(FileSystems.getDefault().getPath("src/test/java/com/azure/quantum/jobs/problem.json").toString());
         }
 
-        //TEST CREATE JOB
+        //test create job
         JobDetails createJobDetails = new JobDetails()
             .setContainerUri(containerUri)
             .setInputDataFormat(inputDataFormat)
@@ -91,7 +91,7 @@ public class JobsClientTests extends QuantumClientTestBase {
         assertEquals(jobName, jobDetails.getName());
         assertEquals(inputDataUri, jobDetails.getInputDataUri());
 
-        //TEST GET JOB
+        //test get job
         JobDetails gotJob = jobsClient.get(jobId);
         assertEquals(inputDataFormat, gotJob.getInputDataFormat());
         assertEquals(outputDataFormat, gotJob.getOutputDataFormat());
@@ -103,7 +103,7 @@ public class JobsClientTests extends QuantumClientTestBase {
         assertEquals(jobId, gotJob.getId());
         assertEquals(jobName, gotJob.getName());
 
-        //TEST LIST JOBS
+        //test list job
         PagedIterable<JobDetails> jobs = jobsClient.list();
         AtomicBoolean jobFound = new AtomicBoolean(false);
         jobs.forEach(job -> {
