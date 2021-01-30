@@ -7,9 +7,7 @@ package com.azure.storage.blob.implementation.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/**
- * Exception thrown for an invalid response with DataLakeStorageError information.
- */
+/** Exception thrown for an invalid response with DataLakeStorageError information. */
 public final class DataLakeStorageErrorException extends HttpResponseException {
     /**
      * Initializes a new instance of the DataLakeStorageErrorException class.

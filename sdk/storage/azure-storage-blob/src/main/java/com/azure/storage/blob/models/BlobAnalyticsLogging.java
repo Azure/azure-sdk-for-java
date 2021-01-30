@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Azure Analytics Logging settings.
- */
+/** Azure Analytics Logging settings. */
 @JacksonXmlRootElement(localName = "Logging")
 @Fluent
 public final class BlobAnalyticsLogging {
@@ -39,7 +37,8 @@ public final class BlobAnalyticsLogging {
     private boolean write;
 
     /*
-     * The retentionPolicy property.
+     * the retention policy which determines how long the associated data
+     * should persist
      */
     @JsonProperty(value = "RetentionPolicy", required = true)
     private BlobRetentionPolicy retentionPolicy;
@@ -65,8 +64,7 @@ public final class BlobAnalyticsLogging {
     }
 
     /**
-     * Get the delete property: Indicates whether all delete requests should be
-     * logged.
+     * Get the delete property: Indicates whether all delete requests should be logged.
      *
      * @return the delete value.
      */
@@ -75,8 +73,7 @@ public final class BlobAnalyticsLogging {
     }
 
     /**
-     * Set the delete property: Indicates whether all delete requests should be
-     * logged.
+     * Set the delete property: Indicates whether all delete requests should be logged.
      *
      * @param delete the delete value to set.
      * @return the BlobAnalyticsLogging object itself.
@@ -87,8 +84,7 @@ public final class BlobAnalyticsLogging {
     }
 
     /**
-     * Get the read property: Indicates whether all read requests should be
-     * logged.
+     * Get the read property: Indicates whether all read requests should be logged.
      *
      * @return the read value.
      */
@@ -97,8 +93,7 @@ public final class BlobAnalyticsLogging {
     }
 
     /**
-     * Set the read property: Indicates whether all read requests should be
-     * logged.
+     * Set the read property: Indicates whether all read requests should be logged.
      *
      * @param read the read value to set.
      * @return the BlobAnalyticsLogging object itself.
@@ -109,8 +104,7 @@ public final class BlobAnalyticsLogging {
     }
 
     /**
-     * Get the write property: Indicates whether all write requests should be
-     * logged.
+     * Get the write property: Indicates whether all write requests should be logged.
      *
      * @return the write value.
      */
@@ -119,8 +113,7 @@ public final class BlobAnalyticsLogging {
     }
 
     /**
-     * Set the write property: Indicates whether all write requests should be
-     * logged.
+     * Set the write property: Indicates whether all write requests should be logged.
      *
      * @param write the write value to set.
      * @return the BlobAnalyticsLogging object itself.
@@ -131,7 +124,8 @@ public final class BlobAnalyticsLogging {
     }
 
     /**
-     * Get the retentionPolicy property: The retentionPolicy property.
+     * Get the retentionPolicy property: the retention policy which determines how long the associated data should
+     * persist.
      *
      * @return the retentionPolicy value.
      */
@@ -140,7 +134,8 @@ public final class BlobAnalyticsLogging {
     }
 
     /**
-     * Set the retentionPolicy property: The retentionPolicy property.
+     * Set the retentionPolicy property: the retention policy which determines how long the associated data should
+     * persist.
      *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the BlobAnalyticsLogging object itself.

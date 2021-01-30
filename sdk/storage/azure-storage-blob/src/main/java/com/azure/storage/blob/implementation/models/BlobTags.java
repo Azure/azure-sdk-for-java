@@ -12,9 +12,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Blob tags.
- */
+/** Blob tags. */
 @JacksonXmlRootElement(localName = "Tags")
 @Fluent
 public final class BlobTags {
@@ -29,13 +27,13 @@ public final class BlobTags {
     }
 
     /*
-     * The blobTagSet property.
+     * The BlobTagSet property.
      */
     @JsonProperty(value = "TagSet", required = true)
     private TagSetWrapper blobTagSet;
 
     /**
-     * Get the blobTagSet property: The blobTagSet property.
+     * Get the blobTagSet property: The BlobTagSet property.
      *
      * @return the blobTagSet value.
      */
@@ -47,7 +45,7 @@ public final class BlobTags {
     }
 
     /**
-     * Set the blobTagSet property: The blobTagSet property.
+     * Set the blobTagSet property: The BlobTagSet property.
      *
      * @param blobTagSet the blobTagSet value to set.
      * @return the BlobTags object itself.

@@ -5,10 +5,9 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.storage.blob.APISpec;
 import com.azure.storage.blob.HttpGetterInfo;
-import com.azure.storage.blob.implementation.models.BlobDownloadHeaders;
-import com.azure.storage.blob.implementation.models.BlobsDownloadResponse;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import reactor.core.publisher.Flux;
@@ -182,9 +181,8 @@ class DownloadResponseMockFlux {
         this.info = info;
         long contentUpperBound = info.getCount() == null
             ? this.scenarioData.remaining() - 1 : info.getOffset() + info.getCount() - 1;
-        BlobsDownloadResponse rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(),
-            this.getDownloadStream(), new BlobDownloadHeaders().setContentRange(String.format("%d-%d/%d",
-            info.getOffset(), contentUpperBound, this.scenarioData.remaining())));
+        StreamResponse rawResponse = new StreamResponse(null, 200, new HttpHeaders().put("Content-Range", String.format("%d-%d/%d",
+            info.getOffset(), contentUpperBound, this.scenarioData.remaining())), this.getDownloadStream());
         ReliableDownload response = new ReliableDownload(rawResponse, options, info, this::getter);
 
         switch (this.scenario) {
@@ -246,8 +244,7 @@ class DownloadResponseMockFlux {
                 // Construct a new flux each time to mimic getting a new download stream.
                 DownloadResponseMockFlux nextFlux = new DownloadResponseMockFlux(this.scenario, this.tryNumber,
                     this.scenarioData, this.info, this.options);
-                rawResponse = new BlobsDownloadResponse(null, 200, new HttpHeaders(), nextFlux.getDownloadStream(),
-                    new BlobDownloadHeaders());
+                rawResponse = new StreamResponse(null, 200, new HttpHeaders(), nextFlux.getDownloadStream());
                 response = new ReliableDownload(rawResponse, options, info, this::getter);
                 return Mono.just(response);
             default:

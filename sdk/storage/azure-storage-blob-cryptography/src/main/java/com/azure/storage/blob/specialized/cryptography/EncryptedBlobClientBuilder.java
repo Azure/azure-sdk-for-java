@@ -163,8 +163,7 @@ public final class EncryptedBlobClientBuilder {
         }
         BlobServiceVersion serviceVersion = version != null ? version : BlobServiceVersion.getLatest();
 
-        return new EncryptedBlobAsyncClient(getHttpPipeline(),
-            String.format("%s/%s/%s", endpoint, containerName, blobName), serviceVersion, accountName, containerName,
+        return new EncryptedBlobAsyncClient(getHttpPipeline(), endpoint, serviceVersion, accountName, containerName,
             blobName, snapshot, customerProvidedKey, keyWrapper, keyWrapAlgorithm, versionId);
     }
 
@@ -615,8 +614,7 @@ public final class EncryptedBlobClientBuilder {
         } else {
             this.customerProvidedKey = new CpkInfo()
                 .setEncryptionKey(customerProvidedKey.getKey())
-                .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
-                .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
+                .setEncryptionKeySha256(customerProvidedKey.getKeySha256());
         }
 
         return this;

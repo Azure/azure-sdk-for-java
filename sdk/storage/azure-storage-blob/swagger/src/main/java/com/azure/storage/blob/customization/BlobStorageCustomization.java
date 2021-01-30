@@ -101,10 +101,25 @@ public class BlobStorageCustomization extends Customization {
         modifyUnexpectedResponseExceptionType(servicesImpl.getMethod("submitBatch"));
         modifyUnexpectedResponseExceptionType(servicesImpl.getMethod("filterBlobs"));
 
+        PackageCustomization implementationModels = customization.getPackage("com.azure.storage.blob.implementation.models");
+        implementationModels.getClass("BlobHierarchyListSegment").addAnnotation("@JsonDeserialize(using = com.azure.storage.blob.implementation.util.CustomHierarchicalListingDeserializer.class)");
+
         PackageCustomization models = customization.getPackage("com.azure.storage.blob.models");
-        ClassCustomization block = models.getClass("Block");
-        block.getMethod("getSizeInt").rename("getSize");
-        block.getMethod("setSizeInt").rename("setSize");
+        models.getClass("PageList").addAnnotation("@JsonDeserialize(using = PageListDeserializer.class)");
+
+//        ClassCustomization block = models.getClass("Block");
+//
+//        MethodCustomization getSizeInt = block.getMethod("getSizeInt");
+//        getSizeInt.addAnnotation("@Deprecated");
+//        getSizeInt.getJavadoc().setDeprecated("Use {@link #getSizeLong()}");
+////        getSizeInt.setReturnType("int", "(int) this.sizeLong", true);
+//        getSizeInt.rename("getSize");
+//
+//        MethodCustomization setSizeInt = block.getMethod("setSizeInt");
+//        setSizeInt.addAnnotation("@Deprecated");
+//        setSizeInt.getJavadoc().setDeprecated("Use {@link #setSizeLong(long)}");
+////        setSizeInt.setReturnType("Block", "setSizeLong(sizeInt)", true);
+//        setSizeInt.rename("setSize");
 
         ClassCustomization blobServiceProperties = models.getClass("BlobServiceProperties");
         PropertyCustomization hourMetrics = blobServiceProperties.getProperty("hourMetrics");
@@ -113,6 +128,10 @@ public class BlobStorageCustomization extends Customization {
         PropertyCustomization minuteMetrics = blobServiceProperties.getProperty("minuteMetrics");
         minuteMetrics.removeAnnotation("@JsonProperty(value = \"Metrics\")");
         minuteMetrics.addAnnotation("@JsonProperty(value = \"MinuteMetrics\")");
+        PropertyCustomization deleteRetentionPolicy = blobServiceProperties.getProperty("deleteRetentionPolicy");
+        deleteRetentionPolicy.removeAnnotation("@JsonProperty(value = \"RetentionPolicy\")");
+        deleteRetentionPolicy.addAnnotation("@JsonProperty(value = \"DeleteRetentionPolicy\")");
+
     }
 
     private void modifyUnexpectedResponseExceptionType(MethodCustomization method) {

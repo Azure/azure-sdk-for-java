@@ -125,6 +125,15 @@ public final class BlobContainerClient {
     }
 
     /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return this.client.getAccountUrl();
+    }
+
+    /**
      * Gets the URL of the container represented by this client.
      *
      * @return the URL.

@@ -231,10 +231,10 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocks#BlockListType
         client.listBlocks(BlockListType.ALL).subscribe(block -> {
             System.out.println("Committed Blocks:");
-            block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
+            block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
 
             System.out.println("Uncommitted Blocks:");
-            block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
+            block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
         });
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocks#BlockListType
     }
@@ -247,10 +247,10 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         client.listBlocksWithResponse(BlockListType.ALL, leaseId).subscribe(response -> {
             BlockList block = response.getValue();
             System.out.println("Committed Blocks:");
-            block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
+            block.getCommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
 
             System.out.println("Uncommitted Blocks:");
-            block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSize()));
+            block.getUncommittedBlocks().forEach(b -> System.out.printf("Name: %s, Size: %d", b.getName(), b.getSizeLong()));
         });
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-String
     }

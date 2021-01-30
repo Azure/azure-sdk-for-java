@@ -111,6 +111,15 @@ public class BlobClientBase {
     }
 
     /**
+     * Get the url of the storage account.
+     *
+     * @return the URL of the storage account
+     */
+    public String getAccountUrl() {
+        return client.getAccountUrl();
+    }
+
+    /**
      * Gets the URL of the blob represented by this client.
      *
      * @return the URL.

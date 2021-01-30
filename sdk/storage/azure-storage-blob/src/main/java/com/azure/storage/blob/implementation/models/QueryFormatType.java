@@ -7,28 +7,18 @@ package com.azure.storage.blob.implementation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for QueryFormatType.
- */
+/** Defines values for QueryFormatType. */
 public enum QueryFormatType {
-    /**
-     * Enum value delimited.
-     */
+    /** Enum value delimited. */
     DELIMITED("delimited"),
 
-    /**
-     * Enum value json.
-     */
+    /** Enum value json. */
     JSON("json"),
 
-    /**
-     * Enum value arrow.
-     */
+    /** Enum value arrow. */
     ARROW("arrow");
 
-    /**
-     * The actual serialized value for a QueryFormatType instance.
-     */
+    /** The actual serialized value for a QueryFormatType instance. */
     private final String value;
 
     QueryFormatType(String value) {

@@ -7,28 +7,18 @@ package com.azure.storage.blob.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for BlockListType.
- */
+/** Defines values for BlockListType. */
 public enum BlockListType {
-    /**
-     * Enum value committed.
-     */
+    /** Enum value committed. */
     COMMITTED("committed"),
 
-    /**
-     * Enum value uncommitted.
-     */
+    /** Enum value uncommitted. */
     UNCOMMITTED("uncommitted"),
 
-    /**
-     * Enum value all.
-     */
+    /** Enum value all. */
     ALL("all");
 
-    /**
-     * The actual serialized value for a BlockListType instance.
-     */
+    /** The actual serialized value for a BlockListType instance. */
     private final String value;
 
     BlockListType(String value) {

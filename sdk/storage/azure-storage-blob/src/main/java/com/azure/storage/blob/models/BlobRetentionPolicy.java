@@ -8,10 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * the retention policy which determines how long the associated data should
- * persist.
- */
+/** the retention policy which determines how long the associated data should persist. */
 @JacksonXmlRootElement(localName = "RetentionPolicy")
 @Fluent
 public final class BlobRetentionPolicy {
@@ -29,8 +26,7 @@ public final class BlobRetentionPolicy {
     private Integer days;
 
     /**
-     * Get the enabled property: Indicates whether a retention policy is
-     * enabled for the storage service.
+     * Get the enabled property: Indicates whether a retention policy is enabled for the storage service.
      *
      * @return the enabled value.
      */
@@ -39,8 +35,7 @@ public final class BlobRetentionPolicy {
     }
 
     /**
-     * Set the enabled property: Indicates whether a retention policy is
-     * enabled for the storage service.
+     * Set the enabled property: Indicates whether a retention policy is enabled for the storage service.
      *
      * @param enabled the enabled value to set.
      * @return the BlobRetentionPolicy object itself.
@@ -51,9 +46,8 @@ public final class BlobRetentionPolicy {
     }
 
     /**
-     * Get the days property: Indicates the number of days that metrics or
-     * logging or soft-deleted data should be retained. All data older than
-     * this value will be deleted.
+     * Get the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
+     * retained. All data older than this value will be deleted.
      *
      * @return the days value.
      */
@@ -62,9 +56,8 @@ public final class BlobRetentionPolicy {
     }
 
     /**
-     * Set the days property: Indicates the number of days that metrics or
-     * logging or soft-deleted data should be retained. All data older than
-     * this value will be deleted.
+     * Set the days property: Indicates the number of days that metrics or logging or soft-deleted data should be
+     * retained. All data older than this value will be deleted.
      *
      * @param days the days value to set.
      * @return the BlobRetentionPolicy object itself.

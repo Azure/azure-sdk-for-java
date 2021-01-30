@@ -8,10 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Represents a single block in a block blob.  It describes the block's ID and
- * size.
- */
+/** Represents a single block in a block blob. It describes the block's ID and size. */
 @JacksonXmlRootElement(localName = "Block")
 @Fluent
 public final class Block {
@@ -26,6 +23,12 @@ public final class Block {
      */
     @JsonProperty(value = "Size", required = true)
     private long sizeLong;
+
+    /*
+     * The SizeInt property.
+     */
+    @JsonProperty(value = "SizeInt", required = true)
+    private int sizeInt;
 
     /**
      * Get the name property: The base64 encoded block ID.
@@ -68,24 +71,22 @@ public final class Block {
     }
 
     /**
-     * Get the size property: The size property.
+     * Get the sizeInt property: The SizeInt property.
      *
-     * @return the size value.
-     * @deprecated Use {@link #getSizeLong()}
+     * @return the sizeInt value.
      */
-    @Deprecated  public int getSize() {
-        return (int) this.sizeLong;
+    public int getSizeInt() {
+        return this.sizeInt;
     }
 
     /**
-     * Set the size property: The size property.
+     * Set the sizeInt property: The SizeInt property.
      *
-     * @param size the size value to set.
-     * @deprecated Use {@link #setSizeLong(long)}
+     * @param sizeInt the sizeInt value to set.
      * @return the Block object itself.
      */
-    @Deprecated public Block setSize(int size) {
-        this.sizeLong = size;
+    public Block setSizeInt(int sizeInt) {
+        this.sizeInt = sizeInt;
         return this;
     }
 }
