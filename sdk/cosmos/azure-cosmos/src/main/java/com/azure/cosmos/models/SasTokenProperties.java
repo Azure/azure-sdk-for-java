@@ -223,6 +223,8 @@ public interface SasTokenProperties {
      * Creates a permission configuration to be used when creating a Cosmos shared access signature token.
      *
      * @param user the user that will be associated with this shared access signature token.
+     * @param databaseName the database name that will be associated with this shared access signature token.
+     * @param containerName the container name that will be associated with this shared access signature token.
      * @return an instance of {@link SasTokenProperties} that will be used to generated the token.
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
