@@ -17,9 +17,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,20 +35,15 @@ public class ThroughputControlTests extends TestSuiteBase {
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void readItem() throws Exception {
-        ThroughputControlGroup group1 = container.createThroughputControlGroup("group-1");
-        group1.setTargetThroughput(5) //Pick a value relatively slow so for the second requests, we know it is going to be throttled
-            .setLocalControlMode()
-            .setUseByDefault();
+        ThroughputControlGroup group1 = container.createThroughputControlGroup("group-1", 5);
+        group1.setUseByDefault();
 
-        ThroughputControlGroup group2 = container.createThroughputControlGroup("group-2");
-        group2.setTargetThroughputThreshold(0.9)
-            .setLocalControlMode();
-
-        container.readThroughput().block();
+        ThroughputControlGroup group2 = container.createThroughputControlGroup("group-2", 0.9);
 
         Set<ThroughputControlGroup> groups = new HashSet<>();
         groups.add(group1);
         groups.add(group2);
+
 
         this.client.enableThroughputControl(groups);
         TestItem docDefinition = getDocumentDefinition();

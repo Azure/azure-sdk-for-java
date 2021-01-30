@@ -725,13 +725,26 @@ public class CosmosContainer {
     }
 
     /**
-     * Create a throughput control group, bind the underlying async container with the group.
      *
      * @param groupName The throughput control group name.
+     * @param targetThroughput The target throughput for the control group.
+     *
      * @return A {@link ThroughputControlGroup}.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup createThroughputControlGroup(String groupName) {
-        return this.asyncContainer.createThroughputControlGroup(groupName);
+    public ThroughputControlGroup createThroughputControlGroup(String groupName, int targetThroughput) {
+        return this.asyncContainer.createThroughputControlGroup(groupName, targetThroughput);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughputThreshold The target throughput threshold for the control group.
+     *
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroup createThroughputControlGroup(String groupName, double targetThroughputThreshold) {
+        return this.asyncContainer.createThroughputControlGroup(groupName, targetThroughputThreshold);
     }
 }

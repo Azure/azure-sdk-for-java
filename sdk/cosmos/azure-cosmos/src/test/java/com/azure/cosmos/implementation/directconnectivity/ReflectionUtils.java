@@ -18,13 +18,19 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
+import com.azure.cosmos.implementation.throughputControl.controller.request.IThroughputRequestController;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 
 /**
@@ -212,5 +218,17 @@ public class ReflectionUtils {
 
     public static void setTransportClient(ConsistencyWriter consistencyWriter, TransportClient transportClient) {
         set(consistencyWriter, transportClient, "transportClient");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static ConcurrentHashMap<URI, ThroughputRequestThrottler> getRequestThrottlerByRegion(IThroughputRequestController requestController) {
+        return get(ConcurrentHashMap.class, requestController, "requestThrottlerMapByRegion");
+    }
+
+    public static void setRequestThrottlerByRegion(
+        IThroughputRequestController requestController,
+        ConcurrentHashMap<URI, ThroughputRequestThrottler> throttlerMap) {
+
+        set(requestController, throttlerMap, "requestThrottlerMapByRegion");
     }
 }

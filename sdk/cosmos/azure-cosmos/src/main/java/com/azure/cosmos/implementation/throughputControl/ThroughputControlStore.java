@@ -27,10 +27,9 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Exceptions.isNameCacheStale;
 import static com.azure.cosmos.implementation.Exceptions.isPartitionKeyMismatchException;
@@ -86,7 +85,7 @@ public class ThroughputControlStore {
     private final ConnectionMode connectionMode;
     private final AsyncCache<String, IThroughputContainerController> containerControllerCache;
     private final GlobalEndpointManager globalEndpointManager;
-    private final ConcurrentHashMap<String, List<ThroughputControlGroup>> groupMapByContainer;
+    private final ConcurrentHashMap<String, Set<ThroughputControlGroup>> groupMapByContainer;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
 
     public ThroughputControlStore(
@@ -108,13 +107,16 @@ public class ThroughputControlStore {
         this.globalEndpointManager = globalEndpointManager;
 
         this.groupMapByContainer = new ConcurrentHashMap<>();
+
         // Group throughput control by container self link.
-        this.groupMapByContainer.putAll(
-            groups
-                .stream()
-                .collect(Collectors.groupingBy(groupConfig ->
-                    Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(groupConfig.getTargetContainer()))))
-        );
+        groups.forEach(group -> {
+            String collectionLink = Utils.trimBeginningAndEndingSlashes(BridgeInternal.extractContainerSelfLink(group.getTargetContainer()));
+
+            if (!this.groupMapByContainer.containsKey(collectionLink)) {
+                this.groupMapByContainer.put(collectionLink, new HashSet<>());
+            }
+            this.groupMapByContainer.get(collectionLink).add(group);
+        });
 
         this.partitionKeyRangeCache = partitionKeyRangeCache;
     }
@@ -161,47 +163,47 @@ public class ThroughputControlStore {
 
         // Currently, we will only target two resource types.
         // If in the future we find other useful scenarios for throughput control, add more more resource type here.
-        if (request.getResourceType() == ResourceType.Document || request.getResourceType() == ResourceType.StoredProcedure) {
-            String collectionLink = Utils.getCollectionName(request.getResourceAddress());
-            return this.resolveContainerController(collectionLink)
-                .flatMap(containerController -> {
-                    if (containerController.canHandleRequest(request)) {
-                        return Mono.just(containerController);
-                    }
-
-                    // Unable to find container controller to handle the request,
-                    // It is caused by control store out of sync or the request has staled info.
-                    // We will handle the first scenario by creating a new container controller,
-                    // while fall back to original request Mono for the second scenario.
-                    return this.shouldRefreshContainerController(collectionLink, request)
-                        .flatMap(shouldRefresh -> {
-                            if (shouldRefresh) {
-                                containerController.close().subscribeOn(Schedulers.parallel()).subscribe();
-                                this.containerControllerCache.refresh(collectionLink, () -> this.createAndInitContainerController(collectionLink));
-                                return this.resolveContainerController(collectionLink);
-                            }
-
-                            // The container container controller is up to date, the request has staled info, will let the request pass
-                            return Mono.just(containerController);
-                        });
-                })
-                .flatMap(containerController -> {
-                    if (containerController.canHandleRequest(request)) {
-                        return containerController.processRequest(request, originalRequestMono)
-                            .doOnError(throwable -> this.handleException(request, containerController, throwable));
-                    } else {
-                        // still can not handle the request
-                        logger.warn(
-                            "Can not find container controller to process request {} with collectionRid {} ",
-                            request.getActivityId(),
-                            request.requestContext.resolvedCollectionRid);
-
-                        return originalRequestMono;
-                    }
-                });
-        } else {
+        if (request.getResourceType() != ResourceType.Document && request.getResourceType() != ResourceType.StoredProcedure) {
             return originalRequestMono;
         }
+
+        String collectionLink = Utils.getCollectionName(request.getResourceAddress());
+        return this.resolveContainerController(collectionLink)
+            .flatMap(containerController -> {
+                if (containerController.canHandleRequest(request)) {
+                    return Mono.just(containerController);
+                }
+
+                // Unable to find container controller to handle the request,
+                // It is caused by control store out of sync or the request has staled info.
+                // We will handle the first scenario by creating a new container controller,
+                // while fall back to original request Mono for the second scenario.
+                return this.shouldRefreshContainerController(collectionLink, request)
+                    .flatMap(shouldRefresh -> {
+                        if (shouldRefresh) {
+                            containerController.close().subscribeOn(Schedulers.parallel()).subscribe();
+                            this.containerControllerCache.refresh(collectionLink, () -> this.createAndInitContainerController(collectionLink));
+                            return this.resolveContainerController(collectionLink);
+                        }
+
+                        // The container container controller is up to date, the request has staled info, will let the request pass
+                        return Mono.just(containerController);
+                    });
+            })
+            .flatMap(containerController -> {
+                if (containerController.canHandleRequest(request)) {
+                    return containerController.processRequest(request, originalRequestMono)
+                        .doOnError(throwable -> this.handleException(request, containerController, throwable));
+                } else {
+                    // still can not handle the request
+                    logger.warn(
+                        "Can not find container controller to process request {} with collectionRid {} ",
+                        request.getActivityId(),
+                        request.requestContext.resolvedCollectionRid);
+
+                    return originalRequestMono;
+                }
+            });
     }
 
     private Mono<Boolean> shouldRefreshContainerController(String containerLink, RxDocumentServiceRequest request) {

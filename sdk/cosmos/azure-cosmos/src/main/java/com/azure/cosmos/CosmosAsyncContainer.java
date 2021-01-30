@@ -1407,14 +1407,24 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Create a throughput control group, bind this container with the group.
      *
      * @param groupName The throughput control group name.
+     * @param targetThroughput The target throughput for the control group.
      * @return A {@link ThroughputControlGroup}.
      */
     @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public ThroughputControlGroup createThroughputControlGroup(String groupName) {
-        checkArgument(StringUtils.isNotEmpty(groupName), "Group name can not be null or empty");
-        return new ThroughputControlGroup(groupName, this);
+    public ThroughputControlGroup createThroughputControlGroup(String groupName, int targetThroughput) {
+        return new ThroughputControlGroup(groupName, this, targetThroughput);
+    }
+
+    /**
+     *
+     * @param groupName The throughput control group name.
+     * @param targetThroughputThreshold The target throughput threshold for the control group.
+     * @return A {@link ThroughputControlGroup}.
+     */
+    @Beta(value = Beta.SinceVersion.V4_12_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public ThroughputControlGroup createThroughputControlGroup(String groupName, double targetThroughputThreshold) {
+        return new ThroughputControlGroup(groupName, this, targetThroughputThreshold);
     }
 }

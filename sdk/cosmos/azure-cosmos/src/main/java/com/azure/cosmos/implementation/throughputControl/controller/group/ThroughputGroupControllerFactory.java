@@ -8,7 +8,7 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ThroughputControlGroup;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
-import com.azure.cosmos.implementation.throughputControl.ThroughputControlMode;
+import com.azure.cosmos.ThroughputControlMode;
 
 public class ThroughputGroupControllerFactory {
 

@@ -36,6 +36,7 @@ import reactor.util.retry.RetrySpec;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -60,7 +61,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
     private final ConnectionMode connectionMode;
     private final GlobalEndpointManager globalEndpointManager;
     private final ConcurrentHashMap<String, ThroughputGroupControllerBase> groupControllers;
-    private final List<ThroughputControlGroup> groups;
+    private final Set<ThroughputControlGroup> groups;
     private final AtomicReference<Integer> maxContainerThroughput;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private final CosmosAsyncContainer targetContainer;
@@ -75,7 +76,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
     public ThroughputContainerController(
         ConnectionMode connectionMode,
         GlobalEndpointManager globalEndpointManager,
-        List<ThroughputControlGroup> groups,
+        Set<ThroughputControlGroup> groups,
         RxPartitionKeyRangeCache partitionKeyRangeCache) {
 
         checkNotNull(globalEndpointManager, "GlobalEndpointManager can not be null");
@@ -89,7 +90,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
         this.maxContainerThroughput = new AtomicReference<>();
         this.partitionKeyRangeCache = partitionKeyRangeCache;
 
-        this.targetContainer = groups.get(0).getTargetContainer();
+        this.targetContainer = groups.iterator().next().getTargetContainer();
         this.client = CosmosBridgeInternal.getContextClient(this.targetContainer);
 
         this.throughputResolveLevel = this.getThroughputResolveLevel(groups);
@@ -97,7 +98,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
         this.cancellationTokenSource = new CancellationTokenSource();
     }
 
-    private ThroughputResolveLevel getThroughputResolveLevel(List<ThroughputControlGroup> groupConfigs) {
+    private ThroughputResolveLevel getThroughputResolveLevel(Set<ThroughputControlGroup> groupConfigs) {
         if (groupConfigs.stream().anyMatch(groupConfig -> groupConfig.getTargetThroughputThreshold() != null)) {
             // Throughput can be provisioned on container level or database level, will start from container
             return ThroughputResolveLevel.CONTAINER;
@@ -138,7 +139,7 @@ public class ThroughputContainerController implements IThroughputContainerContro
     }
 
     private Mono<ThroughputContainerController> resolveContainerMaxThroughput() {
-        return Mono.defer(() -> Mono.just(this.throughputResolveLevel))
+        return Mono.just(this.throughputResolveLevel) // TODO: ---> test whether it works without defer
             .flatMap(throughputResolveLevel -> {
                 if (throughputResolveLevel == ThroughputResolveLevel.CONTAINER) {
                     return this.resolveThroughputByResourceId(this.targetContainerRid)

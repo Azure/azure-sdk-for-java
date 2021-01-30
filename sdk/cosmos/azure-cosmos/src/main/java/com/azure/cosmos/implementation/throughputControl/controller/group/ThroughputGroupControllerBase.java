@@ -107,7 +107,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
     public <T> Mono<T> init() {
         return this.resolveRequestController()
             .doOnSuccess(dummy -> {
-                Schedulers.parallel().schedule(() -> this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken()).subscribe());
+                this.throughputUsageCycleRenewTask(this.cancellationTokenSource.getToken()).subscribeOn(Schedulers.parallel()).subscribe();
             })
             .thenReturn((T)this);
     }

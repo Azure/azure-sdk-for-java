@@ -3779,7 +3779,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     this.partitionKeyRangeCache);
 
             //Non-blocking
-            throughputControlStore.init().subscribeOn(Schedulers.parallel());
+            throughputControlStore.init().subscribeOn(Schedulers.parallel()).subscribe();
 
             this.storeModel.enableThroughputControl(throughputControlStore);
         } else {
