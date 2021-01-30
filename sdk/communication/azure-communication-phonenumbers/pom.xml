@@ -21,7 +21,7 @@
   <name>Microsoft Azure client phone numbers library for communication</name>
   <description>
     This package contains APIs for managing phone numbers in Microsoft Azure Communication Services.
-    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-administration/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-administration/CHANGELOG.md.
+    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-phonenumbers/README.md and https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication/azure-communication-phonenumbers/CHANGELOG.md.
     Microsoft Azure Communication Administration quickstart - https://docs.microsoft.com/azure/communication-services/quickstarts/access-tokens?pivots=programming-language-java
   </description><!-- TODO: Update documents for Phone Numbers -->
   <licenses>

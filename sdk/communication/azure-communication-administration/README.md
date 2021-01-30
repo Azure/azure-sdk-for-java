@@ -3,7 +3,7 @@
 The administration package previously provided capabilities for User and Token Management and for Phone Number Administration.
 
 Now, User and Token Management capabilities have been moved to `azure-communication-identity`.
-Phone Number Administration have been moved to `azure-communication-phonenumbers`.
+Phone Number Administration has been moved to `azure-communication-phonenumbers`.
 
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]
