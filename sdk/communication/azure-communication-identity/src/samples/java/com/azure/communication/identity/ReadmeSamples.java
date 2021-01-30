@@ -132,8 +132,7 @@ public class ReadmeSamples {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         CommunicationUserIdentifier user = createNewUser();
         // Define a list of communication token scopes
-        List<CommunicationTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         communicationIdentityClient.issueToken(user, scopes);
         // revoke tokens issued for the specified user
         communicationIdentityClient.revokeTokens(user);

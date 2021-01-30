@@ -129,7 +129,7 @@ System.out.println("Expires at: " + userToken.getExpiresAt());
 ### Revoking all tokens for an existing user
 Use the `revokeTokens` function to revoke all the issued tokens of a user.
 
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L138-L139 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L137-L138 -->
 ```java
 // revoke tokens issued for the specified user
 communicationIdentityClient.revokeTokens(user);
@@ -138,7 +138,7 @@ communicationIdentityClient.revokeTokens(user);
 ### Deleting a user
 Use the `deleteUser` function to delete a user.
 
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L148-L149 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L147-L148 -->
 ```java
 // delete a previously created user
 communicationIdentityClient.deleteUser(user);
@@ -147,7 +147,7 @@ communicationIdentityClient.deleteUser(user);
 ## Troubleshooting
 
 All user token service operations will throw an exception on failure.
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L157-L161 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L156-L160 -->
 ```java
 try {
     CommunicationUserIdentifier user = communicationIdentityClient.createUser();

@@ -20,9 +20,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import reactor.core.publisher.Mono;
 
@@ -93,8 +94,7 @@ public final class CommunicationIdentityAsyncClient {
         createUserWithToken(Iterable<CommunicationTokenScope> scopes) {
         try {
             Objects.requireNonNull(scopes);
-            final List<CommunicationTokenScope> scopesInput = new ArrayList<>();
-            scopes.forEach(scope -> scopesInput.add(scope));
+            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
             return client.createAsync(new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput))
                 .flatMap(
                     (CommunicationIdentityAccessTokenResult result) -> {
@@ -116,8 +116,7 @@ public final class CommunicationIdentityAsyncClient {
         createUserWithTokenWithResponse(Iterable<CommunicationTokenScope> scopes) {
         try {
             Objects.requireNonNull(scopes);
-            final List<CommunicationTokenScope> scopesInput = new ArrayList<>();
-            scopes.forEach(scope -> scopesInput.add(scope));
+            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
             return client.createWithResponseAsync(
                 new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput))
                 .flatMap(
@@ -209,8 +208,7 @@ public final class CommunicationIdentityAsyncClient {
         try {
             Objects.requireNonNull(communicationUser);
             Objects.requireNonNull(scopes);
-            final List<CommunicationTokenScope> scopesInput = new ArrayList<>();
-            scopes.forEach(scope -> scopesInput.add(scope));
+            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
             return client.issueAccessTokenAsync(communicationUser.getId(),
                 new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput))
                 .flatMap((CommunicationIdentityAccessToken rawToken) -> {
@@ -234,8 +232,7 @@ public final class CommunicationIdentityAsyncClient {
         try {
             Objects.requireNonNull(communicationUser);
             Objects.requireNonNull(scopes);
-            final List<CommunicationTokenScope> scopesInput = new ArrayList<>();
-            scopes.forEach(scope -> scopesInput.add(scope));
+            final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
             return client.issueAccessTokenWithResponseAsync(communicationUser.getId(),
                 new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput))
                 .flatMap((Response<CommunicationIdentityAccessToken> response) -> {

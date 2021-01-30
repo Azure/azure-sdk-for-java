@@ -3,9 +3,10 @@
 
 package com.azure.communication.identity;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityImpl;
@@ -81,8 +82,7 @@ public final class CommunicationIdentityClient {
     public CommunicationUserIdentifierWithTokenResult createUserWithToken(
         Iterable<CommunicationTokenScope> scopes) {
         Objects.requireNonNull(scopes);
-        final List<CommunicationTokenScope> scopesInput = new ArrayList<>();
-        scopes.forEach(scope -> scopesInput.add(scope));
+        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
         CommunicationIdentityAccessTokenResult result = client.create(
             new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput));
         return userWithAccessTokenResultConverter(result);
@@ -100,8 +100,7 @@ public final class CommunicationIdentityClient {
         Iterable<CommunicationTokenScope> scopes, Context context) {
         Objects.requireNonNull(scopes);
         context = context == null ? Context.NONE : context;
-        final List<CommunicationTokenScope> scopesInput = new ArrayList<>();
-        scopes.forEach(scope -> scopesInput.add(scope));
+        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
         Response<CommunicationIdentityAccessTokenResult> response = client.createWithResponseAsync(
             new CommunicationIdentityCreateRequest().setCreateTokenWithScopes(scopesInput), context).block();
 
@@ -180,8 +179,7 @@ public final class CommunicationIdentityClient {
         Iterable<CommunicationTokenScope> scopes) {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
-        final List<CommunicationTokenScope> scopesInput = new ArrayList<>();
-        scopes.forEach(scope -> scopesInput.add(scope));
+        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
         CommunicationIdentityAccessToken rawToken = client.issueAccessToken(
             communicationUser.getId(),
             new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput));
@@ -203,8 +201,7 @@ public final class CommunicationIdentityClient {
         Objects.requireNonNull(communicationUser);
         Objects.requireNonNull(scopes);
         context = context == null ? Context.NONE : context;
-        final List<CommunicationTokenScope> scopesInput = new ArrayList<>();
-        scopes.forEach(scope -> scopesInput.add(scope));
+        final List<CommunicationTokenScope> scopesInput = StreamSupport.stream(scopes.spliterator(), false).collect(Collectors.toList());
         Response<CommunicationIdentityAccessToken> response = client.issueAccessTokenWithResponseAsync(
             communicationUser.getId(),
             new CommunicationIdentityAccessTokenRequest().setScopes(scopesInput),
