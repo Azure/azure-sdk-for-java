@@ -33,6 +33,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
@@ -40,9 +43,11 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -73,7 +78,7 @@ public class JacksonAdapter implements SerializerAdapter {
      */
     private static SerializerAdapter serializerAdapter;
 
-    private final Map<Type, JavaType> TYPE_TO_JAVA_TYPE_CACHE = new ConcurrentHashMap<>();
+    private final Map<Type, JavaType> typeToJavaTypeCache = new ConcurrentHashMap<>();
 
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
@@ -83,17 +88,17 @@ public class JacksonAdapter implements SerializerAdapter {
             .build();
 
         this.headerMapper = initializeMapperBuilder(JsonMapper.builder())
-            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_VALUES, true)
+            .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_VALUES)
             .build();
 
         this.xmlMapper = initializeMapperBuilder(XmlMapper.builder())
             .defaultUseWrapper(false)
-            .configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true)
+            .enable(ToXmlGenerator.Feature.WRITE_XML_DECLARATION)
             /*
              * In Jackson 2.12 the default value of this feature changed from true to false.
              * https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.12#xml-module
              */
-            .configure(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL, true)
+            .enable(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL)
             .build();
 
         ObjectMapper flatteningMapper = initializeMapperBuilder(JsonMapper.builder())
@@ -223,11 +228,30 @@ public class JacksonAdapter implements SerializerAdapter {
             return null;
         }
 
-        final String headersJsonString = headerMapper.writeValueAsString(headers);
-        T deserializedHeaders = headerMapper.readValue(headersJsonString, createJavaType(deserializedHeadersType));
+        /*
+         * Do we need to serialize and then deserialize the headers? For now transition to using convertValue as it
+         * allows for some internal optimizations by Jackson.
+         */
+        T deserializedHeaders = headerMapper.convertValue(headers, createJavaType(deserializedHeadersType));
 
         final Class<?> deserializedHeadersClass = TypeUtil.getRawClass(deserializedHeadersType);
         final Field[] declaredFields = deserializedHeadersClass.getDeclaredFields();
+
+        /*
+         * A list containing all handlers for header collections of the header type.
+         */
+        final List<HeaderCollectionHandler> headerCollectionHandlers = new ArrayList<>();
+
+        /*
+         * This set is an optimization where we track the first character of all HeaderCollections defined on the
+         * deserialized headers type. This allows us to optimize away startWiths checks which are much more costly than
+         * getting the first character.
+         */
+        final Set<Character> headerCollectionsFirstCharacters = new HashSet<>();
+
+        /*
+         * Begin by looping over all declared fields and initializing all header collection information.
+         */
         for (final Field declaredField : declaredFields) {
             if (!declaredField.isAnnotationPresent(HeaderCollection.class)) {
                 continue;
@@ -239,55 +263,56 @@ public class JacksonAdapter implements SerializerAdapter {
             }
 
             final Type[] mapTypeArguments = TypeUtil.getTypeArguments(declaredFieldType);
-            if (mapTypeArguments.length == 2
-                && mapTypeArguments[0] == String.class
-                && mapTypeArguments[1] == String.class) {
-                final HeaderCollection headerCollectionAnnotation = declaredField.getAnnotation(HeaderCollection.class);
-                final String headerCollectionPrefix = headerCollectionAnnotation.value().toLowerCase(Locale.ROOT);
-                final int headerCollectionPrefixLength = headerCollectionPrefix.length();
-                if (headerCollectionPrefixLength > 0) {
-                    final Map<String, String> headerCollection = new HashMap<>();
-                    for (final HttpHeader header : headers) {
-                        final String headerName = header.getName();
-                        if (headerName.toLowerCase(Locale.ROOT).startsWith(headerCollectionPrefix)) {
-                            headerCollection.put(headerName.substring(headerCollectionPrefixLength),
-                                header.getValue());
-                        }
-                    }
+            if (mapTypeArguments.length != 2
+                || mapTypeArguments[0] != String.class
+                || mapTypeArguments[1] != String.class) {
+                continue;
+            }
 
-                    final boolean declaredFieldAccessibleBackup = declaredField.isAccessible();
-                    try {
-                        if (!declaredFieldAccessibleBackup) {
-                            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                                declaredField.setAccessible(true);
-                                return null;
-                            });
-                        }
-                        declaredField.set(deserializedHeaders, headerCollection);
-                    } catch (IllegalAccessException ignored) {
-                    } finally {
-                        if (!declaredFieldAccessibleBackup) {
-                            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                                declaredField.setAccessible(false);
-                                return null;
-                            });
-                        }
-                    }
+            final HeaderCollection headerCollectionAnnotation = declaredField.getAnnotation(HeaderCollection.class);
+            final String headerCollectionPrefix = headerCollectionAnnotation.value().toLowerCase(Locale.ROOT);
+            final int headerCollectionPrefixLength = headerCollectionPrefix.length();
+            if (headerCollectionPrefixLength == 0) {
+                continue;
+            }
+
+            headerCollectionHandlers.add(new HeaderCollectionHandler(headerCollectionPrefix, declaredField));
+            headerCollectionsFirstCharacters.add(headerCollectionPrefix.charAt(0));
+        }
+
+        /*
+         * Then loop over all headers and check if they begin with any of the prefixes found.
+         */
+        for (final HttpHeader header : headers) {
+            String headerNameLower = header.getName().toLowerCase(Locale.ROOT);
+
+            for (HeaderCollectionHandler headerCollectionHandler : headerCollectionHandlers) {
+                if (!headerCollectionsFirstCharacters.contains(headerNameLower.charAt(0))) {
+                    continue;
+                }
+
+                if (headerCollectionHandler.headerStartsWithPrefix(headerNameLower)) {
+                    headerCollectionHandler.addHeader(header.getName(), header.getValue());
                 }
             }
         }
+
+        /*
+         * Finally inject all found header collection values into the deserialized headers.
+         */
+        headerCollectionHandlers.forEach(h -> h.injectValuesIntoDeclaringField(deserializedHeaders, logger));
+
         return deserializedHeaders;
     }
 
 
-    private static <M extends ObjectMapper, B extends MapperBuilder<M, B>, S extends MapperBuilder<M, B>> S
-        initializeMapperBuilder(S mapper) {
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-            .configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true)
-            .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
-            .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
+    private static <S extends MapperBuilder<?, ?>> S initializeMapperBuilder(S mapper) {
+        mapper.enable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS)
+            .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
+            .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             .serializationInclusion(JsonInclude.Include.NON_NULL)
             .addModule(new JavaTimeModule())
             .addModule(ByteArraySerializer.getModule())
@@ -312,7 +337,7 @@ public class JacksonAdapter implements SerializerAdapter {
         } else if (type instanceof JavaType) {
             return (JavaType) type;
         } else if (type instanceof ParameterizedType) {
-            return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(type, t -> {
+            return typeToJavaTypeCache.computeIfAbsent(type, t -> {
                 final ParameterizedType parameterizedType = (ParameterizedType) type;
                 final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
                 JavaType[] javaTypeArguments = new JavaType[actualTypeArguments.length];
@@ -324,8 +349,92 @@ public class JacksonAdapter implements SerializerAdapter {
                     javaTypeArguments);
             });
         } else {
-            return TYPE_TO_JAVA_TYPE_CACHE.computeIfAbsent(type, t -> mapper.getTypeFactory().constructType(t));
+            return typeToJavaTypeCache.computeIfAbsent(type, t -> mapper.getTypeFactory().constructType(t));
         }
     }
 
+    /*
+     * Internal helper class that helps manage converting headers into their header collection.
+     */
+    private static final class HeaderCollectionHandler {
+        private final String prefix;
+        private final int prefixLength;
+        private final Map<String, String> values;
+        private final Field declaringField;
+
+        HeaderCollectionHandler(String prefix, Field declaringField) {
+            this.prefix = prefix;
+            this.prefixLength = prefix.length();
+            this.values = new HashMap<>();
+            this.declaringField = declaringField;
+        }
+
+        boolean headerStartsWithPrefix(String headerName) {
+            return headerName.startsWith(prefix);
+        }
+
+        void addHeader(String headerName, String headerValue) {
+            values.put(headerName.substring(prefixLength), headerValue);
+        }
+
+        void injectValuesIntoDeclaringField(Object deserializedHeaders, ClientLogger logger) {
+            /*
+             * First check if the deserialized headers type has a public setter.
+             */
+            if (usePublicSetter(deserializedHeaders, logger)) {
+                return;
+            }
+
+            logger.verbose("Failed to find or use public setter to set header collection.");
+
+            /*
+             * Otherwise fallback to setting the field directly.
+             */
+            final boolean declaredFieldAccessibleBackup = declaringField.isAccessible();
+            try {
+                if (!declaredFieldAccessibleBackup) {
+                    AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                        declaringField.setAccessible(true);
+                        return null;
+                    });
+                }
+                declaringField.set(deserializedHeaders, values);
+                logger.verbose("Set header collection by accessing the field directly.");
+            } catch (IllegalAccessException ex) {
+                logger.warning("Failed to inject header collection values into deserialized headers.", ex);
+            } finally {
+                if (!declaredFieldAccessibleBackup) {
+                    AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                        declaringField.setAccessible(false);
+                        return null;
+                    });
+                }
+            }
+        }
+
+        private boolean usePublicSetter(Object deserializedHeaders, ClientLogger logger) {
+            try {
+                String potentialSetterName = getPotentialSetterName();
+
+                // This could be cached.
+                Method setterMethod = deserializedHeaders.getClass().getDeclaredMethod(potentialSetterName, Map.class);
+                if (Modifier.isPublic(setterMethod.getModifiers())) {
+                    setterMethod.invoke(deserializedHeaders, values);
+                    logger.verbose("User setter %s on class %s to set header collection.", potentialSetterName,
+                        deserializedHeaders.getClass().getSimpleName());
+                    return true;
+                }
+
+                return false;
+            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {
+                return false;
+            }
+        }
+
+        private String getPotentialSetterName() {
+            String fieldName = declaringField.getName();
+
+            return "set" + fieldName.substring(0, 1).toUpperCase(Locale.ROOT) + fieldName.substring(1);
+        }
+    }
 }
