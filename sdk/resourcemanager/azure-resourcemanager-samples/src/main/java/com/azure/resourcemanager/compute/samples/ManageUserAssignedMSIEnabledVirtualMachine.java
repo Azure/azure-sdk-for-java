@@ -51,7 +51,6 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
         final String password = Utils.password();
         final Region region = Region.US_WEST;
 
-
         try {
 
             //============================================================================================
@@ -82,7 +81,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
 
             // The script to install Java8, Maven3 and Git on a virtual machine using Azure Custom Script Extension
             //
-            final String javaMvnGitInstallScript = "https://raw.githubusercontent.com/Azure/azure-libraries-for-java/master/azure-samples/src/main/resources/install_jva_mvn_git.sh";
+            final String javaMvnGitInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_jva_mvn_git.sh";
             final String invokeScriptCommand = "bash install_jva_mvn_git.sh";
             List<String> fileUris = new ArrayList<>();
             fileUris.add(javaMvnGitInstallScript);
@@ -123,7 +122,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
             List<String> commands = new ArrayList<>();
             commands.add("git clone https://github.com/Azure-Samples/compute-java-manage-vm-from-vm-with-msi-credentials.git");
             commands.add("cd compute-java-manage-vm-from-vm-with-msi-credentials");
-            commands.add(String.format("mvn clean compile exec:java -Dexec.args='%s %s %s'", azureResourceManager.subscriptionId(), resourceGroup1.name(), identity.clientId()));
+            commands.add(String.format("mvn clean compile exec:java -Dexec.args='%s %s %s false'", azureResourceManager.subscriptionId(), resourceGroup1.name(), identity.clientId()));
 
             RunCommandResult commandResult = runCommandOnVM(azureResourceManager, virtualMachine, commands);
 
