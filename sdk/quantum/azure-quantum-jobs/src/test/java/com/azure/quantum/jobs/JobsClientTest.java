@@ -19,7 +19,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class JobsClientTests extends QuantumClientTestBase {
+public class JobsClientTest extends QuantumClientTestBase {
 
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private JobsClient jobsClient;
