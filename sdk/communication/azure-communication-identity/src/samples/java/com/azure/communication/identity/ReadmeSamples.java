@@ -107,7 +107,6 @@ public class ReadmeSamples {
         return result;
     }
 
-
     /**
      * Sample code for issuing a user token
      *
@@ -133,8 +132,7 @@ public class ReadmeSamples {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
         CommunicationUserIdentifier user = createNewUser();
         // Define a list of communication token scopes
-        List<CommunicationTokenScope> scopes = 
-            new ArrayList<>(Arrays.asList(CommunicationTokenScope.CHAT));
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         communicationIdentityClient.issueToken(user, scopes);
         // revoke tokens issued for the specified user
         communicationIdentityClient.revokeTokens(user);
@@ -150,4 +148,15 @@ public class ReadmeSamples {
         communicationIdentityClient.deleteUser(user);
     }
 
+    /**
+     * Sample code for troubleshooting
+     */
+    public void createUserTroubleshooting() {
+        CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
+        try {
+            CommunicationUserIdentifier user = communicationIdentityClient.createUser();
+        } catch (RuntimeException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 }
