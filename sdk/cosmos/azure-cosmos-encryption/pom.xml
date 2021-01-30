@@ -153,6 +153,20 @@ Licensed under the MIT License.
       <artifactId>bcprov-jdk15on</artifactId>
       <version>1.68</version>  <!-- {x-version-update;org.bouncycastle:bcprov-jdk15on;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>com.microsoft.data.encryption</groupId>
+      <artifactId>cryptography</artifactId>
+      <version>0.1.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/encryptionLib/cryptography-0.1.0.jre8-preview.jar</systemPath>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.data.encryption</groupId>
+      <artifactId>azure-key-vault-keystoreprovider</artifactId>
+      <version>0.1.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/encryptionLib/azure-key-vault-keystoreprovider-0.1.0.jre8-preview.jar</systemPath>
+    </dependency>
 
 
   </dependencies>

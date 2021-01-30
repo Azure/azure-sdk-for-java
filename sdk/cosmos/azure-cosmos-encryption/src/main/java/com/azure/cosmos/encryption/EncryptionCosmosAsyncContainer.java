@@ -534,6 +534,10 @@ public class EncryptionCosmosAsyncContainer {
             });
     }
 
+    public CosmosAsyncContainer getContainer() {
+        return container;
+    }
+
     private <T> byte[] cosmosSerializerToStream(T item) {
         // TODO:
         return EncryptionUtils.serializeJsonToByteArray(Utils.getSimpleObjectMapper(), item);

@@ -11,4 +11,6 @@ public class Constants {
 
     public static final String DATA_ENCRYPTION_KEY_ID = "_en";
     public static final String ENCRYPTED_DATA = "_ed";
+
+    public static final int CACHED_ENCRYPTION_SETTING_DEFAULT_DEFAULT_TTL_IN_MINUTES = 60;
 }

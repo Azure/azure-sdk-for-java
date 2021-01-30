@@ -5,7 +5,6 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.User;
 
 import java.time.Instant;
 import java.util.List;
