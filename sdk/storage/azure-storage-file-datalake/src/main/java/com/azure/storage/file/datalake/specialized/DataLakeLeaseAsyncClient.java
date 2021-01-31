@@ -35,8 +35,8 @@ import java.net.URL;
  * <p>View {@link DataLakeLeaseClientBuilder this} for additional ways to construct the client.</p>
  *
  * <p>For more information about leasing see the
- * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-container">file system leasing</a> or
- * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">path leasing</a> documentation.</p>
+ * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-container">file system leasing</a> or
+ * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">path leasing</a> documentation.</p>
  *
  * @see DataLakeLeaseClientBuilder
  */

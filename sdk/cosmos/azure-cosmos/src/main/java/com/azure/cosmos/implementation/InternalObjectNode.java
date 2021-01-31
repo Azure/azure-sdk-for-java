@@ -72,6 +72,8 @@ public class InternalObjectNode extends Resource {
             return (InternalObjectNode) cosmosItem;
         } else if (cosmosItem instanceof byte[]) {
             return new InternalObjectNode((byte[]) cosmosItem);
+        } else if (cosmosItem instanceof ObjectNode) {
+            return new InternalObjectNode((ObjectNode) cosmosItem);
         } else {
             try {
                 return new InternalObjectNode(InternalObjectNode.MAPPER.writeValueAsString(cosmosItem));
@@ -87,9 +89,11 @@ public class InternalObjectNode extends Resource {
     public static Document fromObject(Object cosmosItem) {
         Document typedItem;
         if (cosmosItem instanceof InternalObjectNode) {
-            typedItem = new Document(((InternalObjectNode) cosmosItem).toJson());
+            return new Document(((InternalObjectNode) cosmosItem).toJson());
         } else if (cosmosItem instanceof byte[]) {
             return new Document((byte[]) cosmosItem);
+        } else if (cosmosItem instanceof ObjectNode) {
+            return new Document((new InternalObjectNode((ObjectNode)cosmosItem)).toJson());
         } else {
             try {
                 return new Document(InternalObjectNode.MAPPER.writeValueAsString(cosmosItem));
@@ -97,8 +101,6 @@ public class InternalObjectNode extends Resource {
                 throw new IllegalArgumentException("Can't serialize the object into the json string", e);
             }
         }
-
-        return typedItem;
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper) {
@@ -106,6 +108,8 @@ public class InternalObjectNode extends Resource {
             return ((InternalObjectNode) cosmosItem).serializeJsonToByteBuffer();
         } else if (cosmosItem instanceof Document) {
             return ModelBridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem);
+        } else if (cosmosItem instanceof ObjectNode) {
+            return (new InternalObjectNode((ObjectNode)cosmosItem).serializeJsonToByteBuffer());
         } else if (cosmosItem instanceof byte[]) {
             return ByteBuffer.wrap((byte[]) cosmosItem);
         } else {
@@ -115,7 +119,7 @@ public class InternalObjectNode extends Resource {
 
     static <T> List<T> getTypedResultsFromV2Results(List<Document> results, Class<T> klass) {
         return results.stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, klass))
-                   .collect(Collectors.toList());
+                      .collect(Collectors.toList());
     }
 
     /**
@@ -126,8 +130,13 @@ public class InternalObjectNode extends Resource {
      * @return the object
      * @throws IOException the io exception
      */
+    @SuppressWarnings("unchecked")
     public <T> T getObject(Class<T> klass) throws IOException {
-        return MAPPER.readValue(this.toJson(), klass);
-    }
 
+        if (klass == ObjectNode.class) {
+            return (T) this.getPropertyBag();
+        }
+
+        return MAPPER.treeToValue(this.getPropertyBag(), klass);
+    }
 }

@@ -68,7 +68,7 @@ public class ChatThreadClientTest extends ChatClientTestBase {
         firstAddedThreadMember = communicationClient.createUser();
         secondAddedThreadMember = communicationClient.createUser();
 
-        List<CommunicationTokenScope> scopes = new ArrayList<CommunicationTokenScope>(Arrays.asList(CommunicationTokenScope.fromString("chat")));
+        List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
         AccessToken response = communicationClient.issueToken(firstThreadMember, scopes);
 
         ChatClientBuilder chatBuilder = getChatClientBuilder(response.getToken(), httpClient);

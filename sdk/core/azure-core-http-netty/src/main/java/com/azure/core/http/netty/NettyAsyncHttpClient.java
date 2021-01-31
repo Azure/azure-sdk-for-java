@@ -24,6 +24,7 @@ import reactor.netty.http.client.HttpClientResponse;
 
 import java.nio.ByteBuffer;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 
 /**
@@ -100,7 +101,22 @@ class NettyAsyncHttpClient implements HttpClient {
                 // is not possible in reactor-netty to do this without copying occurring within that library. This
                 // issue has been reported to the reactor-netty team at
                 // https://github.com/reactor/reactor-netty/issues/1479
-                hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
+                if (reactorNettyRequest.requestHeaders().contains(hdr.getName())) {
+                    // The Reactor-Netty request headers include headers by default, to prevent a scenario where we end
+                    // adding a header twice that isn't allowed, such as User-Agent, check against the initial request
+                    // header names. If our request header already exists in the Netty request we overwrite it initially
+                    // then append our additional values if it is a multi-value header.
+                    final AtomicBoolean first = new AtomicBoolean(true);
+                    hdr.getValuesList().forEach(value -> {
+                        if (first.compareAndSet(true, false)) {
+                            reactorNettyRequest.header(hdr.getName(), value);
+                        } else {
+                            reactorNettyRequest.addHeader(hdr.getName(), value);
+                        }
+                    });
+                } else {
+                    hdr.getValuesList().forEach(value -> reactorNettyRequest.addHeader(hdr.getName(), value));
+                }
             }
             if (restRequest.getBody() != null) {
                 Flux<ByteBuf> nettyByteBufFlux = restRequest.getBody().map(Unpooled::wrappedBuffer);
