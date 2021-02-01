@@ -217,7 +217,7 @@ public class SasTokenImpl implements SasTokenProperties {
             String payload = this.generatePayload();
             byte[] payloadBytes = payload.getBytes(StandardCharsets.UTF_8);
             byte[] digest = macInstance.doFinal(payloadBytes);
-            String authorizationToken = Utils.encodeBase64String(digest);
+            String authorizationToken = Base64.getUrlEncoder().withoutPadding().encodeToString(digest);
 
             StringBuilder token = new StringBuilder(AUTH_PREFIX)
                 .append(authorizationToken)
