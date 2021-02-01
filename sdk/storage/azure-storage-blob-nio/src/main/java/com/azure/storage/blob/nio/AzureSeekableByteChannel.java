@@ -72,6 +72,8 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
 
         int len = dst.remaining();
         byte[] buf;
+
+        // If the buffer is backed by an array, we can write directly to that instead of allocating new memory.
         if (dst.hasArray()) {
             buf = dst.array();
         } else {
@@ -85,8 +87,15 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
             }
             count += retCount;
         }
+
+        /*
+        Either write to the destination if we had to buffer separately or just set the position correctly if we wrote
+        underneath the buffer
+         */
         if (!dst.hasArray()) {
             dst.put(buf, 0, count);
+        } else {
+            dst.position(dst.position() + count); //
         }
         this.position += count;
 
@@ -102,9 +111,16 @@ public final class AzureSeekableByteChannel implements SeekableByteChannel {
         int length = src.remaining();
 
         this.position += src.remaining();
+
+        /*
+        If the buffer is backed by an array, we can read directly from that instead of allocating new memory.
+
+        Set the position correctly if we read from underneath the buffer
+         */
         byte[] buf;
         if (src.hasArray()) {
             buf = src.array();
+            src.position(src.position() + length);
         } else {
             buf = new byte[length];
             src.get(buf);
