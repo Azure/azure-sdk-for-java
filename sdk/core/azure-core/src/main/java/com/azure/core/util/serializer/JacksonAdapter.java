@@ -337,17 +337,15 @@ public class JacksonAdapter implements SerializerAdapter {
         } else if (type instanceof JavaType) {
             return (JavaType) type;
         } else if (type instanceof ParameterizedType) {
-            return typeToJavaTypeCache.computeIfAbsent(type, t -> {
-                final ParameterizedType parameterizedType = (ParameterizedType) type;
-                final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-                JavaType[] javaTypeArguments = new JavaType[actualTypeArguments.length];
-                for (int i = 0; i != actualTypeArguments.length; i++) {
-                    javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
-                }
+            final ParameterizedType parameterizedType = (ParameterizedType) type;
+            final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
+            JavaType[] javaTypeArguments = new JavaType[actualTypeArguments.length];
+            for (int i = 0; i != actualTypeArguments.length; i++) {
+                javaTypeArguments[i] = createJavaType(actualTypeArguments[i]);
+            }
 
-                return mapper.getTypeFactory().constructParametricType((Class<?>) parameterizedType.getRawType(),
-                    javaTypeArguments);
-            });
+            return typeToJavaTypeCache.computeIfAbsent(type, t -> mapper.getTypeFactory()
+                .constructParametricType((Class<?>) parameterizedType.getRawType(), javaTypeArguments));
         } else {
             return typeToJavaTypeCache.computeIfAbsent(type, t -> mapper.getTypeFactory().constructType(t));
         }
