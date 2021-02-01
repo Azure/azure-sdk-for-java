@@ -2,16 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
+import java.net.MalformedURLException;
+import java.util.Map;
+import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.URL;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.lang.NonNull;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthorizationCodeAuthenticationProvider;
 import org.springframework.security.oauth2.client.oidc.authentication.OidcAuthorizationCodeAuthenticationProvider;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
-
-import javax.validation.constraints.NotBlank;
-import java.net.MalformedURLException;
-import java.util.Map;
 
 /**
  * Configuration properties for Azure Active Directory B2C.
@@ -22,9 +24,12 @@ public class AADB2CProperties {
 
     private static final String USER_FLOWS = "user-flows";
 
+    @Autowired
+    private ServerProperties serverProperties;
+
     /**
-     * We do not use ${@link String#format(String, Object...)}
-     * as it's not real constant, which cannot be referenced in annotation.
+     * We do not use ${@link String#format(String, Object...)} as it's not real constant, which cannot be referenced in
+     * annotation.
      */
     public static final String USER_FLOW_PASSWORD_RESET = USER_FLOWS + ".password-reset";
 
@@ -47,8 +52,8 @@ public class AADB2CProperties {
     private String tenant;
 
     /**
-     * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false,
-     * will use Oauth2 ${@link OAuth2AuthorizationCodeAuthenticationProvider}.
+     * Use OIDC ${@link OidcAuthorizationCodeAuthenticationProvider} by default. If set to false, will use Oauth2
+     * ${@link OAuth2AuthorizationCodeAuthenticationProvider}.
      */
     private Boolean oidcEnabled = true;
 
@@ -89,7 +94,11 @@ public class AADB2CProperties {
 
     private String getReplyURLPath(@URL String replyURL) {
         try {
-            return new java.net.URL(replyURL).getPath();
+            String contextPath = serverProperties.getServlet().getContextPath();
+            if (StringUtils.isEmpty(contextPath)) {
+                return new java.net.URL(replyURL).getPath();
+            }
+            return new java.net.URL(replyURL).getPath().replaceFirst(contextPath, "");
         } catch (MalformedURLException e) {
             throw new AADB2CConfigurationException("Failed to get path of given URL.", e);
         }
