@@ -107,8 +107,12 @@ public class BlobStorageCustomization extends Customization {
         PackageCustomization models = customization.getPackage("com.azure.storage.blob.models");
         models.getClass("PageList").addAnnotation("@JsonDeserialize(using = PageListDeserializer.class)");
 
+        ClassCustomization blobHttpHeaders = models.getClass("BlobHttpHeaders");
+        blobHttpHeaders.removeAnnotation("@JacksonXmlRootElement(localName = \"BlobHttpHeaders\")");
+        blobHttpHeaders.addAnnotation("@JacksonXmlRootElement(localName = \"blob-http-headers\")");
+
+        // Block - Generator
 //        ClassCustomization block = models.getClass("Block");
-//
 //        MethodCustomization getSizeInt = block.getMethod("getSizeInt");
 //        getSizeInt.addAnnotation("@Deprecated");
 //        getSizeInt.getJavadoc().setDeprecated("Use {@link #getSizeLong()}");
@@ -131,6 +135,15 @@ public class BlobStorageCustomization extends Customization {
         PropertyCustomization deleteRetentionPolicy = blobServiceProperties.getProperty("deleteRetentionPolicy");
         deleteRetentionPolicy.removeAnnotation("@JsonProperty(value = \"RetentionPolicy\")");
         deleteRetentionPolicy.addAnnotation("@JsonProperty(value = \"DeleteRetentionPolicy\")");
+
+        // CPKInfo - New generator removed a property and it's getter and setter methods.
+        ClassCustomization cpkInfo = models.getClass("CpkInfo");
+//        cpkInfo.addMethod("public EncryptionAlgorithmType getEncryptionAlgorithm() { return this.encryptionAlgorithm; } ");
+//        cpkInfo.addMethod("public CpkInfo setEncryptionAlgorithm(EncryptionAlgorithmType encryptionAlgorithm) {\t\n" +
+//            "        this.encryptionAlgorithm = encryptionAlgorithm;\t\n" +
+//            "        return this;\t\n" +
+//            "    }");
+
 
     }
 
