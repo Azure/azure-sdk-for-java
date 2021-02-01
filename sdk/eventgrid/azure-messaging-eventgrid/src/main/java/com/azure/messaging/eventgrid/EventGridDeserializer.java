@@ -1,12 +1,10 @@
 package com.azure.messaging.eventgrid;
 
-import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
@@ -30,10 +28,7 @@ final class EventGridDeserializer {
         // Hide the constructor
     }
 
-    static final JsonSerializer DESERIALIZER = new JacksonJsonSerializerBuilder()
-        .serializer(new JacksonAdapter().serializer() // this is a workaround to get the FlatteningDeserializer
-            .registerModule(new JavaTimeModule())) // probably also change this to DateTimeDeserializer when/if it
-        .build();                                  // becomes public in core
+    static final JsonSerializer DESERIALIZER = JsonSerializerProviders.createInstance();
 
     /**
      * Deserialize the {@link EventGridEvent} from a JSON string.
