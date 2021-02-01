@@ -308,7 +308,7 @@
             }
             },
             "dependsOn": [
-                "[variables('primaryAccountName')]"
+                "[variables('dataLakeAccountName')]"
             ]
         },
         {
