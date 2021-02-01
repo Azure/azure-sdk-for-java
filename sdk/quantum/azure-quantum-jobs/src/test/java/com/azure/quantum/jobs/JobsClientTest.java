@@ -75,7 +75,6 @@ public class JobsClientTest extends QuantumClientTestBase {
             .setProviderId(providerId)
             .setTarget(target)
             .setId(jobId)
-            .setInputDataUri(inputDataUri)
             .setName(jobName)
             .setOutputDataFormat(outputDataFormat);
         JobDetails jobDetails = jobsClient.create(jobId, createJobDetails);
