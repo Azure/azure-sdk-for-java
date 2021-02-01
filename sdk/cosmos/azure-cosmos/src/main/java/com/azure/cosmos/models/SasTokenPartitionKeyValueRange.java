@@ -44,6 +44,7 @@ public interface SasTokenPartitionKeyValueRange {
      *
      * The input string must be in "base64_of_partitionKey" format.
      *
+     * @param encoding the encoded input string.
      * @return an instance of SasTokenPartitionKeyValueRange representing the input string.
      */
     @Beta(value = Beta.SinceVersion.V4_11_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
