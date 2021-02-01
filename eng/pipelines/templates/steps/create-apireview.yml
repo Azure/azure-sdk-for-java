@@ -6,7 +6,7 @@ steps:
   - ${{ each artifact in parameters.Artifacts }}:
     - task: Powershell@2
       inputs:
-        filePath: $(Build.SourcesDirectory)/eng/scripts/Create-APIReview.ps1
+        filePath: $(Build.SourcesDirectory)/eng/common/scripts/Create-APIReview.ps1
         arguments: >
           -ArtifactPath ${{parameters.ArtifactPath}}/${{artifact.groupId}}/${{artifact.name}}
           -APIViewUri $(azuresdk-apiview-uri)
