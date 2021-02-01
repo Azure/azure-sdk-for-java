@@ -8,9 +8,10 @@ public enum AuthorizationTokenType {
     PrimaryReadonlyMasterKey,
     SecondaryMasterKey,
     SecondaryReadonlyMasterKey,
-    SystemReadOnly, 
+    SystemReadOnly,
     SystemReadWrite,
     SystemAll,
     ResourceToken,
-    AadToken
+    AadToken,
+    SasToken
 }

@@ -48,6 +48,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.implementation.sastokens.SasTokenAuthorizationHelper;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -120,6 +121,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final BaseAuthorizationTokenProvider authorizationTokenProvider;
     private final UserAgentContainer userAgentContainer;
     private final boolean hasAuthKeyResourceToken;
+    private final boolean hasAuthKeySasToken;
     private final Configs configs;
     private final boolean connectionSharingAcrossClientsEnabled;
     private AzureKeyCredential credential;
@@ -291,19 +293,30 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.authorizationTokenType = AuthorizationTokenType.Invalid;
 
             if (this.credential != null) {
-                hasAuthKeyResourceToken = false;
+                this.hasAuthKeyResourceToken = false;
+                this.hasAuthKeySasToken = false;
                 this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
             } else if (masterKeyOrResourceToken != null && ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
                 this.authorizationTokenProvider = null;
-                hasAuthKeyResourceToken = true;
+                this.hasAuthKeyResourceToken = true;
+                this.hasAuthKeySasToken = false;
                 this.authorizationTokenType = AuthorizationTokenType.ResourceToken;
-            } else if(masterKeyOrResourceToken != null && !ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
+            } else if (masterKeyOrResourceToken != null && SasTokenAuthorizationHelper.isSasToken(masterKeyOrResourceToken)) {
+                this.authorizationTokenProvider = null;
+                this.hasAuthKeyResourceToken = false;
+                this.hasAuthKeySasToken = true;
+                this.authorizationTokenType = AuthorizationTokenType.SasToken;
+            } else if(masterKeyOrResourceToken != null
+                    && !ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)
+                    && !SasTokenAuthorizationHelper.isSasToken(masterKeyOrResourceToken)) {
                 this.credential = new AzureKeyCredential(this.masterKeyOrResourceToken);
-                hasAuthKeyResourceToken = false;
+                this.hasAuthKeyResourceToken = false;
+                this.hasAuthKeySasToken = false;
                 this.authorizationTokenType = AuthorizationTokenType.PrimaryMasterKey;
                 this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
             } else {
-                hasAuthKeyResourceToken = false;
+                this.hasAuthKeyResourceToken = false;
+                this.hasAuthKeySasToken = false;
                 this.authorizationTokenProvider = null;
                 if (tokenCredential != null) {
                     this.tokenCredentialScopes = new String[] {
@@ -1500,7 +1513,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         } else if (credential != null) {
             return this.authorizationTokenProvider.generateKeyAuthorizationSignature(requestVerb, resourceName,
                     resourceType, headers);
-        } else if (masterKeyOrResourceToken != null && hasAuthKeyResourceToken && resourceTokensMap == null) {
+        } else if (masterKeyOrResourceToken != null && (hasAuthKeyResourceToken || hasAuthKeySasToken) && resourceTokensMap == null) {
             return masterKeyOrResourceToken;
         } else {
             assert resourceTokensMap != null;

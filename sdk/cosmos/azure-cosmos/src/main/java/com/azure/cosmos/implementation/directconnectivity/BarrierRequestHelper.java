@@ -102,6 +102,10 @@ public class BarrierRequestHelper {
                 authorizationToken = request.getHeaders().get(HttpConstants.HttpHeaders.AUTHORIZATION);
                 break;
 
+            case SasToken:
+                authorizationToken = request.getHeaders().get(HttpConstants.HttpHeaders.AUTHORIZATION);
+                break;
+
             case AadToken:
                 hasAadToken = true;
                 break;
