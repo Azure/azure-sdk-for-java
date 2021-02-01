@@ -112,7 +112,6 @@ jobs:
       condition: succeededOrFailed()
     - task: securedevelopmentteam.vss-secure-development-tools.build-task-publishsecurityanalysislogs.PublishSecurityAnalysisLogs@3
       displayName: 'Publish Security Analysis Logs'
-      continueOnError: true
       condition: succeededOrFailed()
     # Run link verification at the end as it will run no matter the pipeline passing or failing.
     # If this task fails with an error it shouldn't prevent aggregate reports from being generated.
