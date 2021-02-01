@@ -127,6 +127,7 @@ known_content_issues:
   - ['sdk/communication/azure-communication-chat/swagger/README.md', '#3113']
   - ['sdk/communication/azure-communication-sms/swagger/README.md', '#3113']
   - ['sdk/communication/azure-communication-administration/swagger/README.md', '#3113']
+  - ['sdk/communication/azure-communication-identity/swagger/README.md', '#3113']
   - ['sdk/cosmos/changelog/README.md', '#3113']
   - ['sdk/cosmos/faq/README.md', '#3113']
   - ['sdk/cosmos/azure-cosmos-benchmark/README.md', '#3113']

@@ -32,6 +32,10 @@ public class AADB2CProperties {
 
     public static final String USER_FLOW_SIGN_UP_OR_SIGN_IN = USER_FLOWS + ".sign-up-or-sign-in";
 
+    public static final String USER_FLOW_SIGN_UP = USER_FLOWS + ".sign-up";
+
+    public static final String USER_FLOW_SIGN_IN = USER_FLOWS + ".sign-in";
+
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 
     public static final String PREFIX = "azure.activedirectory.b2c";
@@ -96,8 +100,11 @@ public class AADB2CProperties {
         return getReplyURLPath(replyUrl);
     }
 
+    /**
+     * UserFlows
+     */
     @Validated
-    protected static class UserFlows {
+    public static class UserFlows {
 
         protected UserFlows() {
 
@@ -118,6 +125,32 @@ public class AADB2CProperties {
          * The password-reset user flow which is created under b2c tenant.
          */
         private String passwordReset;
+
+        /**
+         * The sign-up user flow which is created under b2c tenant.
+         */
+        private String signUp;
+
+        /**
+         * The sign-in user flow which is created under b2c tenant.
+         */
+        private String signIn;
+
+        public String getSignUp() {
+            return signUp;
+        }
+
+        public void setSignUp(String signUp) {
+            this.signUp = signUp;
+        }
+
+        public String getSignIn() {
+            return signIn;
+        }
+
+        public void setSignIn(String signIn) {
+            this.signIn = signIn;
+        }
 
         public String getSignUpOrSignIn() {
             return signUpOrSignIn;
