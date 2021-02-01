@@ -18,14 +18,14 @@ npm install -g autorest
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.1
+autorest README.md --java --v4 --use=@autorest/java@4.0.2
 ```
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/DominikMe/azure-rest-api-specs/3e42c16fc1fbfaaa5b236c88371bfb53dd34175d/specification/communication/data-plane/Microsoft.CommunicationServicesAdministration/preview/2020-11-01-preview3/phonenumbers.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21b4154a41d72275dbcf40e24d55b978e3a42c85/specification/communication/data-plane/Microsoft.CommunicationServicesAdministration/stable/2021-03-07/phonenumbers.json
 override-client-name: PhoneNumberAdminClient
-custom-types: AcquiredPhoneNumber,AcquiredPhoneNumberUpdate,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityValue,PhoneNumberCost,PhoneNumberSearchRequest,PhoneNumberSearchResult,PhoneNumberType
+custom-types: AcquiredPhoneNumber,PhoneNumberUpdateRequest,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilitiesRequest,PhoneNumberCapabilityValue,PhoneNumberCost,PhoneNumberSearchRequest,PhoneNumberSearchResult,PhoneNumberType
 custom-types-subpackage: models
 models-subpackage: implementation.models
 ```

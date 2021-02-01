@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the PhoneNumberAdminClient type. */
 public final class PhoneNumberAdminClientImpl {
@@ -48,6 +50,18 @@ public final class PhoneNumberAdminClientImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
     /** The PhoneNumbersImpl object to access its operations. */
     private final PhoneNumbersImpl phoneNumbers;
 
@@ -66,6 +80,7 @@ public final class PhoneNumberAdminClientImpl {
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint);
     }
 
@@ -75,9 +90,20 @@ public final class PhoneNumberAdminClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      */
     PhoneNumberAdminClientImpl(HttpPipeline httpPipeline, String endpoint) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint);
+    }
+
+    /**
+     * Initializes an instance of PhoneNumberAdminClient client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     */
+    PhoneNumberAdminClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-11-01-preview3";
+        this.apiVersion = "2021-03-07";
         this.phoneNumbers = new PhoneNumbersImpl(this);
     }
 }

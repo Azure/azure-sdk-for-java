@@ -13,39 +13,39 @@ import java.util.List;
 @Fluent
 public final class AcquiredPhoneNumbers {
     /*
-     * Represents a list of acquired phone numbers.
+     * Represents a list of phone numbers.
      */
-    @JsonProperty(value = "value", required = true)
-    private List<AcquiredPhoneNumber> value;
+    @JsonProperty(value = "phoneNumbers", required = true)
+    private List<AcquiredPhoneNumber> phoneNumbers;
 
     /*
-     * Represents the URL link to the next page
+     * Represents the URL link to the next page of phone number results.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the value property: Represents a list of acquired phone numbers.
+     * Get the phoneNumbers property: Represents a list of phone numbers.
      *
-     * @return the value value.
+     * @return the phoneNumbers value.
      */
-    public List<AcquiredPhoneNumber> getValue() {
-        return this.value;
+    public List<AcquiredPhoneNumber> getPhoneNumbers() {
+        return this.phoneNumbers;
     }
 
     /**
-     * Set the value property: Represents a list of acquired phone numbers.
+     * Set the phoneNumbers property: Represents a list of phone numbers.
      *
-     * @param value the value value to set.
+     * @param phoneNumbers the phoneNumbers value to set.
      * @return the AcquiredPhoneNumbers object itself.
      */
-    public AcquiredPhoneNumbers setValue(List<AcquiredPhoneNumber> value) {
-        this.value = value;
+    public AcquiredPhoneNumbers setPhoneNumbers(List<AcquiredPhoneNumber> phoneNumbers) {
+        this.phoneNumbers = phoneNumbers;
         return this;
     }
 
     /**
-     * Get the nextLink property: Represents the URL link to the next page.
+     * Get the nextLink property: Represents the URL link to the next page of phone number results.
      *
      * @return the nextLink value.
      */
@@ -54,7 +54,7 @@ public final class AcquiredPhoneNumbers {
     }
 
     /**
-     * Set the nextLink property: Represents the URL link to the next page.
+     * Set the nextLink property: Represents the URL link to the next page of phone number results.
      *
      * @param nextLink the nextLink value to set.
      * @return the AcquiredPhoneNumbers object itself.

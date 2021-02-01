@@ -4,13 +4,14 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
 /** Contains all response data for the searchAvailablePhoneNumbers operation. */
 public final class PhoneNumbersSearchAvailablePhoneNumbersResponse
-        extends ResponseBase<PhoneNumbersSearchAvailablePhoneNumbersHeaders, Void> {
+        extends ResponseBase<PhoneNumbersSearchAvailablePhoneNumbersHeaders, PhoneNumberSearchResult> {
     /**
      * Creates an instance of PhoneNumbersSearchAvailablePhoneNumbersResponse.
      *
@@ -24,8 +25,14 @@ public final class PhoneNumbersSearchAvailablePhoneNumbersResponse
             HttpRequest request,
             int statusCode,
             HttpHeaders rawHeaders,
-            Void value,
+            PhoneNumberSearchResult value,
             PhoneNumbersSearchAvailablePhoneNumbersHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
+    }
+
+    /** @return the deserialized response body. */
+    @Override
+    public PhoneNumberSearchResult getValue() {
+        return super.getValue();
     }
 }

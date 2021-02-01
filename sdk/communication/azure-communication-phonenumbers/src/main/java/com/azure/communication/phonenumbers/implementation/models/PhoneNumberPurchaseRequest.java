@@ -11,13 +11,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PhoneNumberPurchaseRequest {
     /*
-     * The id of the search result to purchase.
+     * The search id.
      */
     @JsonProperty(value = "searchId")
     private String searchId;
 
     /**
-     * Get the searchId property: The id of the search result to purchase.
+     * Get the searchId property: The search id.
      *
      * @return the searchId value.
      */
@@ -26,7 +26,7 @@ public final class PhoneNumberPurchaseRequest {
     }
 
     /**
-     * Set the searchId property: The id of the search result to purchase.
+     * Set the searchId property: The search id.
      *
      * @param searchId the searchId value to set.
      * @return the PhoneNumberPurchaseRequest object itself.

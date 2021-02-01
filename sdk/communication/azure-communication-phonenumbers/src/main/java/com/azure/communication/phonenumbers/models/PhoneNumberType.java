@@ -10,11 +10,11 @@ import java.util.Collection;
 
 /** Defines values for PhoneNumberType. */
 public final class PhoneNumberType extends ExpandableStringEnum<PhoneNumberType> {
-    /** Static value tollFree for PhoneNumberType. */
-    public static final PhoneNumberType TOLL_FREE = fromString("tollFree");
-
     /** Static value geographic for PhoneNumberType. */
     public static final PhoneNumberType GEOGRAPHIC = fromString("geographic");
+
+    /** Static value tollFree for PhoneNumberType. */
+    public static final PhoneNumberType TOLL_FREE = fromString("tollFree");
 
     /**
      * Creates or finds a PhoneNumberType from its string representation.

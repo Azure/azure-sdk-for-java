@@ -10,6 +10,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** A builder for creating a new instance of the PhoneNumberAdminClient type. */
 @ServiceClientBuilder(serviceClients = {PhoneNumberAdminClientImpl.class})
@@ -46,6 +48,22 @@ public final class PhoneNumberAdminClientImplBuilder {
         return this;
     }
 
+    /*
+     * The serializer to serialize an object into a string
+     */
+    private SerializerAdapter serializerAdapter;
+
+    /**
+     * Sets The serializer to serialize an object into a string.
+     *
+     * @param serializerAdapter the serializerAdapter value.
+     * @return the PhoneNumberAdminClientImplBuilder.
+     */
+    public PhoneNumberAdminClientImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+        this.serializerAdapter = serializerAdapter;
+        return this;
+    }
+
     /**
      * Builds an instance of PhoneNumberAdminClientImpl with the provided parameters.
      *
@@ -58,7 +76,10 @@ public final class PhoneNumberAdminClientImplBuilder {
                             .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                             .build();
         }
-        PhoneNumberAdminClientImpl client = new PhoneNumberAdminClientImpl(pipeline, endpoint);
+        if (serializerAdapter == null) {
+            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
+        }
+        PhoneNumberAdminClientImpl client = new PhoneNumberAdminClientImpl(pipeline, serializerAdapter, endpoint);
         return client;
     }
 }

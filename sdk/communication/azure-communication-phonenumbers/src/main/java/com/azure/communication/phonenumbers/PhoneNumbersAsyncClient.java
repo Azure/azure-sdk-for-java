@@ -5,15 +5,16 @@ package com.azure.communication.phonenumbers;
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
-import com.azure.communication.phonenumbers.models.AcquiredPhoneNumberUpdate;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberUpdateRequest;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
@@ -29,10 +30,10 @@ import static com.azure.core.util.FluxUtil.monoError;
 @ServiceClient(builder = PhoneNumbersClientBuilder.class, isAsync = true)
 public final class PhoneNumbersAsyncClient {
     private final ClientLogger logger = new ClientLogger(PhoneNumbersAsyncClient.class);
-    private final PhoneNumbersImpl phoneNumbersImpl;
+    private final PhoneNumbersImpl client;
 
     PhoneNumbersAsyncClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
-        this.phoneNumbersImpl = phoneNumberAdminClient.getPhoneNumbers();
+        this.client = phoneNumberAdminClient.getPhoneNumbers();
     }
 
     /**
@@ -43,7 +44,12 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AcquiredPhoneNumber> getPhoneNumber(String phoneNumber) {
-        return getPhoneNumberWithResponse(phoneNumber).flatMap(FluxUtil::toMono);
+        try {
+            Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
+            return client.getByNumberAsync(phoneNumber);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
@@ -55,7 +61,8 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcquiredPhoneNumber>> getPhoneNumberWithResponse(String phoneNumber) {
         try {
-            return this.phoneNumbersImpl.getPhoneNumberWithResponseAsync(phoneNumber);
+            Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
+            return client.getByNumberWithResponseAsync(phoneNumber);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -68,7 +75,11 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AcquiredPhoneNumber> listPhoneNumbers() {
-        return phoneNumbersImpl.listPhoneNumbersAsync();
+        try {
+            return client.listPhoneNumbersAsync(null, null);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
     /**
@@ -81,8 +92,14 @@ public final class PhoneNumbersAsyncClient {
      * a {@link AcquiredPhoneNumber} representing the acquired phone number
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcquiredPhoneNumber> updatePhoneNumber(String phoneNumber, AcquiredPhoneNumberUpdate update) {
-        return updatePhoneNumberWithResponse(phoneNumber, update).flatMap(FluxUtil::toMono);
+    public Mono<AcquiredPhoneNumber> updatePhoneNumber(String phoneNumber, PhoneNumberUpdateRequest update) {
+        try {
+            Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
+            Objects.requireNonNull(update, "'update' cannot be null.");
+            return client.updateAsync(phoneNumber, update);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
 
@@ -97,9 +114,11 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AcquiredPhoneNumber>> 
-        updatePhoneNumberWithResponse(String phoneNumber, AcquiredPhoneNumberUpdate update) {
+        updatePhoneNumberWithResponse(String phoneNumber, PhoneNumberUpdateRequest update) {
         try {
-            return this.phoneNumbersImpl.updatePhoneNumberWithResponseAsync(phoneNumber, update.getCallbackUri(), update.getApplicationId());
+            Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
+            Objects.requireNonNull(update, "'update' cannot be null.");
+            return client.updateWithResponseAsync(phoneNumber, update);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -113,7 +132,7 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link PollerFlux} object with the reservation result
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberSearchResult, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
+    public PollerFlux<PollResult<PhoneNumberSearchResult>, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
         String countryCode, PhoneNumberSearchRequest searchRequest) {
         return null;
     }
@@ -125,7 +144,7 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link PollerFlux} object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<Void, Void> beginPurchasePhoneNumbers(String searchId) {
+    public PollerFlux<PollResult<Void>, Void> beginPurchasePhoneNumbers(String searchId) {
         Objects.requireNonNull(searchId, "'searchId' can not be null.");
         return null;
     }
@@ -142,7 +161,7 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link PollerFlux} object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<Void, Void> beginReleasePhoneNumbers(String phoneNumber) {
+    public PollerFlux<PollResult<Void>, Void> beginReleasePhoneNumber(String phoneNumber) {
         Objects.requireNonNull(phoneNumber, "'phoneNumbers' cannot be null.");
         return null;
     }
@@ -155,7 +174,7 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link PollerFlux} object
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<AcquiredPhoneNumber, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
+    public PollerFlux<PollResult<AcquiredPhoneNumber>, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
         Objects.requireNonNull(phoneNumber, "'phoneNumbers' cannot be null.");
         return null;
     }

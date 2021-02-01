@@ -10,6 +10,9 @@ import java.util.Collection;
 
 /** Defines values for PhoneNumberCapabilityValue. */
 public final class PhoneNumberCapabilityValue extends ExpandableStringEnum<PhoneNumberCapabilityValue> {
+    /** Static value none for PhoneNumberCapabilityValue. */
+    public static final PhoneNumberCapabilityValue NONE = fromString("none");
+
     /** Static value inbound for PhoneNumberCapabilityValue. */
     public static final PhoneNumberCapabilityValue INBOUND = fromString("inbound");
 
@@ -18,9 +21,6 @@ public final class PhoneNumberCapabilityValue extends ExpandableStringEnum<Phone
 
     /** Static value inbound+outbound for PhoneNumberCapabilityValue. */
     public static final PhoneNumberCapabilityValue INBOUND_OUTBOUND = fromString("inbound+outbound");
-
-    /** Static value none for PhoneNumberCapabilityValue. */
-    public static final PhoneNumberCapabilityValue NONE = fromString("none");
 
     /**
      * Creates or finds a PhoneNumberCapabilityValue from its string representation.

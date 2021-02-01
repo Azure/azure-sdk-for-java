@@ -7,9 +7,9 @@ package com.azure.communication.phonenumbers.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PhoneNumbersPurchasePhoneNumbersHeaders model. */
+/** The PhoneNumbersUpdateCapabilitiesHeaders model. */
 @Fluent
-public final class PhoneNumbersPurchasePhoneNumbersHeaders {
+public final class PhoneNumbersUpdateCapabilitiesHeaders {
     /*
      * The Operation-Location property.
      */
@@ -35,9 +35,9 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
      * Set the operationLocation property: The Operation-Location property.
      *
      * @param operationLocation the operationLocation value to set.
-     * @return the PhoneNumbersPurchasePhoneNumbersHeaders object itself.
+     * @return the PhoneNumbersUpdateCapabilitiesHeaders object itself.
      */
-    public PhoneNumbersPurchasePhoneNumbersHeaders setOperationLocation(String operationLocation) {
+    public PhoneNumbersUpdateCapabilitiesHeaders setOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
         return this;
     }
@@ -55,9 +55,9 @@ public final class PhoneNumbersPurchasePhoneNumbersHeaders {
      * Set the location property: The Location property.
      *
      * @param location the location value to set.
-     * @return the PhoneNumbersPurchasePhoneNumbersHeaders object itself.
+     * @return the PhoneNumbersUpdateCapabilitiesHeaders object itself.
      */
-    public PhoneNumbersPurchasePhoneNumbersHeaders setLocation(String location) {
+    public PhoneNumbersUpdateCapabilitiesHeaders setLocation(String location) {
         this.location = location;
         return this;
     }

@@ -11,39 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PhoneNumberCapabilitiesRequest {
     /*
-     * Available Sms capabilities.
-     */
-    @JsonProperty(value = "sms")
-    private PhoneNumberCapabilityValue sms;
-
-    /*
-     * Available Calling capabilities.
+     * Capability value for calling.
      */
     @JsonProperty(value = "calling")
     private PhoneNumberCapabilityValue calling;
 
-    /**
-     * Get the sms property: Available Sms capabilities.
-     *
-     * @return the sms value.
+    /*
+     * Capability value for SMS.
      */
-    public PhoneNumberCapabilityValue getSms() {
-        return this.sms;
-    }
+    @JsonProperty(value = "sms")
+    private PhoneNumberCapabilityValue sms;
 
     /**
-     * Set the sms property: Available Sms capabilities.
-     *
-     * @param sms the sms value to set.
-     * @return the PhoneNumberCapabilitiesRequest object itself.
-     */
-    public PhoneNumberCapabilitiesRequest setSms(PhoneNumberCapabilityValue sms) {
-        this.sms = sms;
-        return this;
-    }
-
-    /**
-     * Get the calling property: Available Calling capabilities.
+     * Get the calling property: Capability value for calling.
      *
      * @return the calling value.
      */
@@ -52,13 +32,33 @@ public final class PhoneNumberCapabilitiesRequest {
     }
 
     /**
-     * Set the calling property: Available Calling capabilities.
+     * Set the calling property: Capability value for calling.
      *
      * @param calling the calling value to set.
      * @return the PhoneNumberCapabilitiesRequest object itself.
      */
     public PhoneNumberCapabilitiesRequest setCalling(PhoneNumberCapabilityValue calling) {
         this.calling = calling;
+        return this;
+    }
+
+    /**
+     * Get the sms property: Capability value for SMS.
+     *
+     * @return the sms value.
+     */
+    public PhoneNumberCapabilityValue getSms() {
+        return this.sms;
+    }
+
+    /**
+     * Set the sms property: Capability value for SMS.
+     *
+     * @param sms the sms value to set.
+     * @return the PhoneNumberCapabilitiesRequest object itself.
+     */
+    public PhoneNumberCapabilitiesRequest setSms(PhoneNumberCapabilityValue sms) {
+        this.sms = sms;
         return this;
     }
 }

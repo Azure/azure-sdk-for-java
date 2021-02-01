@@ -2,18 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import java.util.Objects;
+
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.models.AcquiredPhoneNumber;
-import com.azure.communication.phonenumbers.models.AcquiredPhoneNumberUpdate;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
+import com.azure.communication.phonenumbers.models.PhoneNumberUpdateRequest;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
@@ -25,10 +28,10 @@ import com.azure.core.util.polling.SyncPoller;
 public final class PhoneNumbersClient {
 
     private final ClientLogger logger = new ClientLogger(PhoneNumbersClient.class);
-    private final PhoneNumbersImpl phoneNumbersImpl;
+    private final PhoneNumbersImpl client;
 
     PhoneNumbersClient(PhoneNumberAdminClientImpl phoneNumberAdminClient) {
-        this.phoneNumbersImpl = phoneNumberAdminClient.getPhoneNumbers();
+        this.client = phoneNumberAdminClient.getPhoneNumbers();
     }
   
    /**
@@ -39,7 +42,8 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AcquiredPhoneNumber getPhoneNumber(String phoneNumber) {
-        return phoneNumbersImpl.getPhoneNumber(phoneNumber);
+        Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
+        return client.getByNumber(phoneNumber);
     }
 
     /**
@@ -51,31 +55,25 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AcquiredPhoneNumber> getPhoneNumberWithResponse(String phoneNumber, Context context) {
-        return phoneNumbersImpl.getPhoneNumberWithResponseAsync(phoneNumber, context).block();
-    }
-
-    /**
-     * Gets the list of the acquired phone numbers.
-     *
-     * @return A {@link PagedIterable} of {@link AcquiredPhoneNumber} instances representing acquired telephone numbers.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AcquiredPhoneNumber> listPhoneNumbers() {
-        return phoneNumbersImpl.listPhoneNumbers();
+        Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
+        context = context == null ? Context.NONE : context;
+        return client.getByNumberWithResponseAsync(phoneNumber, context).block();
     }
 
     /**
      * Gets the list of the acquired phone numbers with context.
      *
-     * @param context the context of the request. Can also be null or Context.NONE.
+     *
      * @return A {@link PagedIterable} of {@link AcquiredPhoneNumber} instances representing acquired telephone numbers.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AcquiredPhoneNumber> listPhoneNumbers(Context context) {
-        return phoneNumbersImpl.listPhoneNumbers(context);
+        context = context == null ? Context.NONE : context;
+        return client.listPhoneNumbers(null, null, context);
     }
 
-      /**
+
+    /**
      * Update an acquired phone number.
      *
      * @param phoneNumber The phone number id in E.164 format. The leading plus can be either + or encoded
@@ -84,8 +82,10 @@ public final class PhoneNumbersClient {
      * @return {@link AcquiredPhoneNumber} representing the updated acquired phone number
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcquiredPhoneNumber updatePhoneNumber(String phoneNumber, AcquiredPhoneNumberUpdate update) {
-        return phoneNumbersImpl.updatePhoneNumber(phoneNumber, update.getCallbackUri(), update.getApplicationId());
+    public AcquiredPhoneNumber updatePhoneNumber(String phoneNumber, PhoneNumberUpdateRequest update) {
+        Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
+        Objects.requireNonNull(update, "'update' cannot be null.");
+        return client.updateAsync(phoneNumber, update).block();
     }
 
     /**
@@ -98,8 +98,11 @@ public final class PhoneNumbersClient {
      * @return {@link AcquiredPhoneNumber} representing the updated acquired phone number
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcquiredPhoneNumber> updatePhoneNumberWithResponse(String phoneNumber, AcquiredPhoneNumberUpdate update, Context context) {
-        return phoneNumbersImpl.updatePhoneNumberWithResponseAsync(phoneNumber, update.getCallbackUri(), update.getApplicationId()).block();
+    public Response<AcquiredPhoneNumber> updatePhoneNumberWithResponse(String phoneNumber, PhoneNumberUpdateRequest update, Context context) {
+        Objects.requireNonNull(phoneNumber, "'phoneNumber' cannot be null.");
+        Objects.requireNonNull(update, "'update' cannot be null.");
+        context = context == null ? Context.NONE : context;
+        return client.updateWithResponseAsync(phoneNumber, update, context).block();
     }
 
     /**
@@ -113,7 +116,7 @@ public final class PhoneNumbersClient {
      * @return A {@link SyncPoller} object with the reservation result
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberSearchResult, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
+    public SyncPoller<PollResult<PhoneNumberSearchResult>, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbers(
         String countryCode, PhoneNumberSearchRequest searchRequest) {
         return null;
     }
@@ -128,7 +131,7 @@ public final class PhoneNumbersClient {
      * @return A {@link SyncPoller} object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<Void, Void> beginPurchasePhoneNumbers(String searchId) {
+    public SyncPoller<PollResult<Void>, Void> beginPurchasePhoneNumbers(String searchId) {
         return null;
     }
 
@@ -144,7 +147,7 @@ public final class PhoneNumbersClient {
      * @return A {@link SyncPoller} object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<Void, Void> beginReleasePhoneNumbers(String phoneNumber) {
+    public SyncPoller<PollResult<Void>, Void> beginReleasePhoneNumbers(String phoneNumber) {
         return null;
     }
 
@@ -159,7 +162,7 @@ public final class PhoneNumbersClient {
      * @return A {@link SyncPoller} object
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<AcquiredPhoneNumber, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
+    public SyncPoller<PollResult<AcquiredPhoneNumber>, AcquiredPhoneNumber> beginUpdatePhoneNumberCapabilities(String phoneNumber, PhoneNumberCapabilitiesRequest capabilitiesUpdateRequest) {
         return null;
     }
 }

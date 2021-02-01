@@ -15,19 +15,13 @@ public final class PhoneNumberOperation {
      * Status of operation.
      */
     @JsonProperty(value = "status", required = true)
-    private PhoneNumberOperationStatusCodes status;
+    private PhoneNumberOperationStatus status;
 
     /*
-     * Id of the operation.
+     * URL for retrieving the result of the operation, if any.
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
-
-    /*
-     * Kind of the operation.
-     */
-    @JsonProperty(value = "kind", required = true)
-    private OperationKind kind;
+    @JsonProperty(value = "resourceLocation")
+    private String resourceLocation;
 
     /*
      * The date that the operation was created.
@@ -36,29 +30,35 @@ public final class PhoneNumberOperation {
     private OffsetDateTime createdDateTime;
 
     /*
-     * The most recent date that the operation was changed.
-     */
-    @JsonProperty(value = "lastActionDateTime", required = true)
-    private OffsetDateTime lastActionDateTime;
-
-    /*
-     * Url for retrieving the result of the operation if any
-     */
-    @JsonProperty(value = "resourceLocation")
-    private String resourceLocation;
-
-    /*
      * The Communication Services error.
      */
     @JsonProperty(value = "error")
     private CommunicationError error;
+
+    /*
+     * Id of operation.
+     */
+    @JsonProperty(value = "id", required = true)
+    private String id;
+
+    /*
+     * The type of operation, e.g. Search
+     */
+    @JsonProperty(value = "operationType", required = true)
+    private PhoneNumberOperationType operationType;
+
+    /*
+     * The most recent date that the operation was changed.
+     */
+    @JsonProperty(value = "lastActionDateTime", access = JsonProperty.Access.WRITE_ONLY)
+    private OffsetDateTime lastActionDateTime;
 
     /**
      * Get the status property: Status of operation.
      *
      * @return the status value.
      */
-    public PhoneNumberOperationStatusCodes getStatus() {
+    public PhoneNumberOperationStatus getStatus() {
         return this.status;
     }
 
@@ -68,48 +68,28 @@ public final class PhoneNumberOperation {
      * @param status the status value to set.
      * @return the PhoneNumberOperation object itself.
      */
-    public PhoneNumberOperation setStatus(PhoneNumberOperationStatusCodes status) {
+    public PhoneNumberOperation setStatus(PhoneNumberOperationStatus status) {
         this.status = status;
         return this;
     }
 
     /**
-     * Get the id property: Id of the operation.
+     * Get the resourceLocation property: URL for retrieving the result of the operation, if any.
      *
-     * @return the id value.
+     * @return the resourceLocation value.
      */
-    public String getId() {
-        return this.id;
+    public String getResourceLocation() {
+        return this.resourceLocation;
     }
 
     /**
-     * Set the id property: Id of the operation.
+     * Set the resourceLocation property: URL for retrieving the result of the operation, if any.
      *
-     * @param id the id value to set.
+     * @param resourceLocation the resourceLocation value to set.
      * @return the PhoneNumberOperation object itself.
      */
-    public PhoneNumberOperation setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the kind property: Kind of the operation.
-     *
-     * @return the kind value.
-     */
-    public OperationKind getKind() {
-        return this.kind;
-    }
-
-    /**
-     * Set the kind property: Kind of the operation.
-     *
-     * @param kind the kind value to set.
-     * @return the PhoneNumberOperation object itself.
-     */
-    public PhoneNumberOperation setKind(OperationKind kind) {
-        this.kind = kind;
+    public PhoneNumberOperation setResourceLocation(String resourceLocation) {
+        this.resourceLocation = resourceLocation;
         return this;
     }
 
@@ -134,46 +114,6 @@ public final class PhoneNumberOperation {
     }
 
     /**
-     * Get the lastActionDateTime property: The most recent date that the operation was changed.
-     *
-     * @return the lastActionDateTime value.
-     */
-    public OffsetDateTime getLastActionDateTime() {
-        return this.lastActionDateTime;
-    }
-
-    /**
-     * Set the lastActionDateTime property: The most recent date that the operation was changed.
-     *
-     * @param lastActionDateTime the lastActionDateTime value to set.
-     * @return the PhoneNumberOperation object itself.
-     */
-    public PhoneNumberOperation setLastActionDateTime(OffsetDateTime lastActionDateTime) {
-        this.lastActionDateTime = lastActionDateTime;
-        return this;
-    }
-
-    /**
-     * Get the resourceLocation property: Url for retrieving the result of the operation if any.
-     *
-     * @return the resourceLocation value.
-     */
-    public String getResourceLocation() {
-        return this.resourceLocation;
-    }
-
-    /**
-     * Set the resourceLocation property: Url for retrieving the result of the operation if any.
-     *
-     * @param resourceLocation the resourceLocation value to set.
-     * @return the PhoneNumberOperation object itself.
-     */
-    public PhoneNumberOperation setResourceLocation(String resourceLocation) {
-        this.resourceLocation = resourceLocation;
-        return this;
-    }
-
-    /**
      * Get the error property: The Communication Services error.
      *
      * @return the error value.
@@ -191,5 +131,54 @@ public final class PhoneNumberOperation {
     public PhoneNumberOperation setError(CommunicationError error) {
         this.error = error;
         return this;
+    }
+
+    /**
+     * Get the id property: Id of operation.
+     *
+     * @return the id value.
+     */
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: Id of operation.
+     *
+     * @param id the id value to set.
+     * @return the PhoneNumberOperation object itself.
+     */
+    public PhoneNumberOperation setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the operationType property: The type of operation, e.g. Search.
+     *
+     * @return the operationType value.
+     */
+    public PhoneNumberOperationType getOperationType() {
+        return this.operationType;
+    }
+
+    /**
+     * Set the operationType property: The type of operation, e.g. Search.
+     *
+     * @param operationType the operationType value to set.
+     * @return the PhoneNumberOperation object itself.
+     */
+    public PhoneNumberOperation setOperationType(PhoneNumberOperationType operationType) {
+        this.operationType = operationType;
+        return this;
+    }
+
+    /**
+     * Get the lastActionDateTime property: The most recent date that the operation was changed.
+     *
+     * @return the lastActionDateTime value.
+     */
+    public OffsetDateTime getLastActionDateTime() {
+        return this.lastActionDateTime;
     }
 }

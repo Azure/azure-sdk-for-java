@@ -11,37 +11,38 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PhoneNumberSearchRequest {
     /*
-     * The phone number type.
+     * The type of phone numbers to search for, e.g. Geographic, or TollFree.
      */
     @JsonProperty(value = "phoneNumberType", required = true)
     private PhoneNumberType phoneNumberType;
 
     /*
-     * The phone number's assignment type.
+     * The assignment type of the phone numbers to search for. A phone number
+     * can be assigned to a person, or to an application.
      */
     @JsonProperty(value = "assignmentType", required = true)
     private PhoneNumberAssignmentType assignmentType;
 
     /*
-     * The phone number's capabilities.
+     * Capabilities of a phone number.
      */
     @JsonProperty(value = "capabilities", required = true)
-    private PhoneNumberCapabilitiesRequest capabilities;
+    private PhoneNumberCapabilities capabilities;
 
     /*
-     * The desired area code.
+     * The area code of the desired phone number, e.g. 425.
      */
     @JsonProperty(value = "areaCode")
     private String areaCode;
 
     /*
-     * The desired quantity of phone numbers.
+     * The quantity of phone numbers in the search. Should be at least 1.
      */
     @JsonProperty(value = "quantity")
     private Integer quantity;
 
     /**
-     * Get the phoneNumberType property: The phone number type.
+     * Get the phoneNumberType property: The type of phone numbers to search for, e.g. Geographic, or TollFree.
      *
      * @return the phoneNumberType value.
      */
@@ -50,7 +51,7 @@ public final class PhoneNumberSearchRequest {
     }
 
     /**
-     * Set the phoneNumberType property: The phone number type.
+     * Set the phoneNumberType property: The type of phone numbers to search for, e.g. Geographic, or TollFree.
      *
      * @param phoneNumberType the phoneNumberType value to set.
      * @return the PhoneNumberSearchRequest object itself.
@@ -61,7 +62,8 @@ public final class PhoneNumberSearchRequest {
     }
 
     /**
-     * Get the assignmentType property: The phone number's assignment type.
+     * Get the assignmentType property: The assignment type of the phone numbers to search for. A phone number can be
+     * assigned to a person, or to an application.
      *
      * @return the assignmentType value.
      */
@@ -70,7 +72,8 @@ public final class PhoneNumberSearchRequest {
     }
 
     /**
-     * Set the assignmentType property: The phone number's assignment type.
+     * Set the assignmentType property: The assignment type of the phone numbers to search for. A phone number can be
+     * assigned to a person, or to an application.
      *
      * @param assignmentType the assignmentType value to set.
      * @return the PhoneNumberSearchRequest object itself.
@@ -81,27 +84,27 @@ public final class PhoneNumberSearchRequest {
     }
 
     /**
-     * Get the capabilities property: The phone number's capabilities.
+     * Get the capabilities property: Capabilities of a phone number.
      *
      * @return the capabilities value.
      */
-    public PhoneNumberCapabilitiesRequest getCapabilities() {
+    public PhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
     }
 
     /**
-     * Set the capabilities property: The phone number's capabilities.
+     * Set the capabilities property: Capabilities of a phone number.
      *
      * @param capabilities the capabilities value to set.
      * @return the PhoneNumberSearchRequest object itself.
      */
-    public PhoneNumberSearchRequest setCapabilities(PhoneNumberCapabilitiesRequest capabilities) {
+    public PhoneNumberSearchRequest setCapabilities(PhoneNumberCapabilities capabilities) {
         this.capabilities = capabilities;
         return this;
     }
 
     /**
-     * Get the areaCode property: The desired area code.
+     * Get the areaCode property: The area code of the desired phone number, e.g. 425.
      *
      * @return the areaCode value.
      */
@@ -110,7 +113,7 @@ public final class PhoneNumberSearchRequest {
     }
 
     /**
-     * Set the areaCode property: The desired area code.
+     * Set the areaCode property: The area code of the desired phone number, e.g. 425.
      *
      * @param areaCode the areaCode value to set.
      * @return the PhoneNumberSearchRequest object itself.
@@ -121,7 +124,7 @@ public final class PhoneNumberSearchRequest {
     }
 
     /**
-     * Get the quantity property: The desired quantity of phone numbers.
+     * Get the quantity property: The quantity of phone numbers in the search. Should be at least 1.
      *
      * @return the quantity value.
      */
@@ -130,7 +133,7 @@ public final class PhoneNumberSearchRequest {
     }
 
     /**
-     * Set the quantity property: The desired quantity of phone numbers.
+     * Set the quantity property: The quantity of phone numbers in the search. Should be at least 1.
      *
      * @param quantity the quantity value to set.
      * @return the PhoneNumberSearchRequest object itself.

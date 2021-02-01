@@ -15,64 +15,65 @@ public final class PhoneNumberSearchResult {
     /*
      * The search id.
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    @JsonProperty(value = "searchId")
+    private String searchId;
 
     /*
      * The phone numbers that are available. Can be fewer than the desired
      * search quantity.
      */
-    @JsonProperty(value = "phoneNumbers", required = true)
+    @JsonProperty(value = "phoneNumbers")
     private List<String> phoneNumbers;
 
     /*
-     * The phoner number type.
+     * The phone number's type, e.g. Geographic, or TollFree.
      */
-    @JsonProperty(value = "phoneNumberType", required = true)
+    @JsonProperty(value = "phoneNumberType")
     private PhoneNumberType phoneNumberType;
 
     /*
-     * The phone number's assignment type.
+     * Phone number's assignment type.
      */
-    @JsonProperty(value = "assignmentType", required = true)
+    @JsonProperty(value = "assignmentType")
     private PhoneNumberAssignmentType assignmentType;
 
     /*
-     * The phone number's capabilities.
+     * Capabilities of a phone number.
      */
-    @JsonProperty(value = "capabilities", required = true)
+    @JsonProperty(value = "capabilities")
     private PhoneNumberCapabilities capabilities;
 
     /*
-     * The monthly cost for an individual phone number.
+     * The incurred cost for a single phone number.
      */
-    @JsonProperty(value = "cost", required = true)
+    @JsonProperty(value = "cost")
     private PhoneNumberCost cost;
 
     /*
      * The date that this search result expires and phone numbers are no longer
-     * on hold. A search result expires in less than 15min.
+     * on hold. A search result expires in less than 15min, e.g.
+     * 2020-11-19T16:31:49.048Z.
      */
-    @JsonProperty(value = "searchExpiresBy", required = true)
+    @JsonProperty(value = "searchExpiresBy")
     private OffsetDateTime searchExpiresBy;
 
     /**
-     * Get the id property: The search id.
+     * Get the searchId property: The search id.
      *
-     * @return the id value.
+     * @return the searchId value.
      */
-    public String getId() {
-        return this.id;
+    public String getSearchId() {
+        return this.searchId;
     }
 
     /**
-     * Set the id property: The search id.
+     * Set the searchId property: The search id.
      *
-     * @param id the id value to set.
+     * @param searchId the searchId value to set.
      * @return the PhoneNumberSearchResult object itself.
      */
-    public PhoneNumberSearchResult setId(String id) {
-        this.id = id;
+    public PhoneNumberSearchResult setSearchId(String searchId) {
+        this.searchId = searchId;
         return this;
     }
 
@@ -99,7 +100,7 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Get the phoneNumberType property: The phoner number type.
+     * Get the phoneNumberType property: The phone number's type, e.g. Geographic, or TollFree.
      *
      * @return the phoneNumberType value.
      */
@@ -108,7 +109,7 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Set the phoneNumberType property: The phoner number type.
+     * Set the phoneNumberType property: The phone number's type, e.g. Geographic, or TollFree.
      *
      * @param phoneNumberType the phoneNumberType value to set.
      * @return the PhoneNumberSearchResult object itself.
@@ -119,7 +120,7 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Get the assignmentType property: The phone number's assignment type.
+     * Get the assignmentType property: Phone number's assignment type.
      *
      * @return the assignmentType value.
      */
@@ -128,7 +129,7 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Set the assignmentType property: The phone number's assignment type.
+     * Set the assignmentType property: Phone number's assignment type.
      *
      * @param assignmentType the assignmentType value to set.
      * @return the PhoneNumberSearchResult object itself.
@@ -139,7 +140,7 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Get the capabilities property: The phone number's capabilities.
+     * Get the capabilities property: Capabilities of a phone number.
      *
      * @return the capabilities value.
      */
@@ -148,7 +149,7 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Set the capabilities property: The phone number's capabilities.
+     * Set the capabilities property: Capabilities of a phone number.
      *
      * @param capabilities the capabilities value to set.
      * @return the PhoneNumberSearchResult object itself.
@@ -159,7 +160,7 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Get the cost property: The monthly cost for an individual phone number.
+     * Get the cost property: The incurred cost for a single phone number.
      *
      * @return the cost value.
      */
@@ -168,7 +169,7 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Set the cost property: The monthly cost for an individual phone number.
+     * Set the cost property: The incurred cost for a single phone number.
      *
      * @param cost the cost value to set.
      * @return the PhoneNumberSearchResult object itself.
@@ -180,7 +181,7 @@ public final class PhoneNumberSearchResult {
 
     /**
      * Get the searchExpiresBy property: The date that this search result expires and phone numbers are no longer on
-     * hold. A search result expires in less than 15min.
+     * hold. A search result expires in less than 15min, e.g. 2020-11-19T16:31:49.048Z.
      *
      * @return the searchExpiresBy value.
      */
@@ -190,7 +191,7 @@ public final class PhoneNumberSearchResult {
 
     /**
      * Set the searchExpiresBy property: The date that this search result expires and phone numbers are no longer on
-     * hold. A search result expires in less than 15min.
+     * hold. A search result expires in less than 15min, e.g. 2020-11-19T16:31:49.048Z.
      *
      * @param searchExpiresBy the searchExpiresBy value to set.
      * @return the PhoneNumberSearchResult object itself.

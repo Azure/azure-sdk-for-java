@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.communication.phonenumbers.implementation.models.BillingFrequency;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,32 +14,27 @@ public final class PhoneNumberCost {
     /*
      * The cost amount.
      */
-    @JsonProperty(value = "amount", required = true)
-    private double amount;
+    @JsonProperty(value = "amount")
+    private Double amount;
 
     /*
-     * The ISO 4217 currency code for the cost amount.
+     * The ISO 4217 currency code for the cost amount, e.g. USD.
      */
-    @JsonProperty(value = "currencyCode", required = true)
+    @JsonProperty(value = "currencyCode")
     private String currencyCode;
 
     /*
      * The frequency with which the cost gets billed.
      */
-    @JsonProperty(value = "billingFrequency", required = true)
-    private String billingFrequency;
-
-    /** Creates an instance of PhoneNumberCost class. */
-    public PhoneNumberCost() {
-        billingFrequency = "monthly";
-    }
+    @JsonProperty(value = "billingFrequency")
+    private BillingFrequency billingFrequency;
 
     /**
      * Get the amount property: The cost amount.
      *
      * @return the amount value.
      */
-    public double getAmount() {
+    public Double getAmount() {
         return this.amount;
     }
 
@@ -48,13 +44,13 @@ public final class PhoneNumberCost {
      * @param amount the amount value to set.
      * @return the PhoneNumberCost object itself.
      */
-    public PhoneNumberCost setAmount(double amount) {
+    public PhoneNumberCost setAmount(Double amount) {
         this.amount = amount;
         return this;
     }
 
     /**
-     * Get the currencyCode property: The ISO 4217 currency code for the cost amount.
+     * Get the currencyCode property: The ISO 4217 currency code for the cost amount, e.g. USD.
      *
      * @return the currencyCode value.
      */
@@ -63,7 +59,7 @@ public final class PhoneNumberCost {
     }
 
     /**
-     * Set the currencyCode property: The ISO 4217 currency code for the cost amount.
+     * Set the currencyCode property: The ISO 4217 currency code for the cost amount, e.g. USD.
      *
      * @param currencyCode the currencyCode value to set.
      * @return the PhoneNumberCost object itself.
@@ -78,7 +74,7 @@ public final class PhoneNumberCost {
      *
      * @return the billingFrequency value.
      */
-    public String getBillingFrequency() {
+    public BillingFrequency getBillingFrequency() {
         return this.billingFrequency;
     }
 
@@ -88,7 +84,7 @@ public final class PhoneNumberCost {
      * @param billingFrequency the billingFrequency value to set.
      * @return the PhoneNumberCost object itself.
      */
-    public PhoneNumberCost setBillingFrequency(String billingFrequency) {
+    public PhoneNumberCost setBillingFrequency(BillingFrequency billingFrequency) {
         this.billingFrequency = billingFrequency;
         return this;
     }
