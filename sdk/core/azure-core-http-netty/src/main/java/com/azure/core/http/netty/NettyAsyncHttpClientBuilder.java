@@ -81,6 +81,7 @@ public class NettyAsyncHttpClientBuilder {
      * @return A new Netty-backed {@link com.azure.core.http.HttpClient} instance.
      * @throws IllegalStateException If the builder is configured to use an unknown proxy type.
      */
+    @SuppressWarnings("deprecation")
     public com.azure.core.http.HttpClient build() {
         HttpClient nettyHttpClient;
         if (this.baseHttpClient != null) {
