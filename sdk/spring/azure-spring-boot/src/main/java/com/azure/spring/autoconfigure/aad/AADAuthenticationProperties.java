@@ -84,7 +84,7 @@ public class AADAuthenticationProperties implements InitializingBean {
     /**
      * Azure Tenant ID.
      */
-    private String tenantId = "common";
+    private String tenantId;
 
     private String postLogoutRedirectUri;
 
@@ -336,6 +336,16 @@ public class AADAuthenticationProperties implements InitializingBean {
                 + "the prefix of azure.activedirectory.graph-membership-uri. "
                 + "azure.activedirectory.graph-base-uri = " + graphBaseUri + ", "
                 + "azure.activedirectory.graph-membership-uri = " + graphMembershipUri + ".");
+        }
+
+        if (!StringUtils.hasText(tenantId)) {
+            tenantId = "common";
+        }
+        if ("common".equals(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
+            throw new IllegalStateException("When azure.activedirectory.teannt-id=common, "
+                + "azure.activedirectory.user-group.allowed-groups should be empty. "
+                + "But actually azure.activedirectory.user-group.allowed-groups="
+                + userGroup.getAllowedGroups());
         }
     }
 
