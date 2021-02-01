@@ -83,12 +83,12 @@ public class AmqpRetryOptions {
      * @param delay The delay between retry attempts.
      * @return The updated {@link AmqpRetryOptions} object.
      * @throws NullPointerException When {@code delay} is null.
-     * @throws IllegalArgumentException When {@code delay} is negative.
+     * @throws IllegalArgumentException When {@code delay} is negative or zero.
      */
     public AmqpRetryOptions setDelay(Duration delay) {
         Objects.requireNonNull(delay, "'delay' cannot be null.");
-        if (delay.isNegative()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'delay' cannot be negative."));
+        if (delay.isNegative() || delay.isZero()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("'delay' must be positive."));
         }
 
         this.delay = delay;
@@ -120,8 +120,8 @@ public class AmqpRetryOptions {
      * @param tryTimeout The maximum duration to wait for completion.
      * @return The updated {@link AmqpRetryOptions} object.
      *
-     * @throws NullPointerException When {@code maximumDelay} is null.
-     * @throws IllegalArgumentException When {@code maximumDelay} is negative.
+     * @throws NullPointerException When {@code tryTimeout} is null.
+     * @throws IllegalArgumentException When {@code tryTimeout} is negative or zero.
      */
     public AmqpRetryOptions setTryTimeout(Duration tryTimeout) {
         Objects.requireNonNull(tryTimeout, "'tryTimeout' cannot be null");

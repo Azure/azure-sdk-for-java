@@ -153,41 +153,21 @@ public class AmqpRetryOptionsTest {
     public void invalidDurations(Duration invalidDuration) {
         final Duration maxDelay = Duration.ofMinutes(10);
         final Duration tryTimeout = Duration.ofMinutes(2);
+        final Duration delay = Duration.ofSeconds(40);
 
         final AmqpRetryOptions options = new AmqpRetryOptions()
             .setMaxDelay(maxDelay)
+            .setDelay(delay)
             .setTryTimeout(tryTimeout);
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> options.setMaxDelay(invalidDuration));
         Assertions.assertEquals(maxDelay, options.getMaxDelay());
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> options.setTryTimeout(invalidDuration));
-        Assertions.assertEquals(tryTimeout, options.getTryTimeout());
-    }
-
-    @Test
-    public void invalidDelay() {
-        final Duration invalidDuration = Duration.ofSeconds(-1);
-        final Duration delay = Duration.ofSeconds(40);
-        final AmqpRetryOptions options = new AmqpRetryOptions()
-            .setDelay(delay);
-
         Assertions.assertThrows(IllegalArgumentException.class, () -> options.setDelay(invalidDuration));
         Assertions.assertEquals(delay, options.getDelay());
-    }
 
-    @Test
-    public void zeroDuration() {
-        // Arrange
-        final Duration delay = Duration.ofMillis(100);
-        final AmqpRetryOptions options = new AmqpRetryOptions()
-            .setDelay(delay);
-
-        // Act
-        options.setDelay(Duration.ZERO);
-
-        // Assert
-        Assertions.assertEquals(Duration.ZERO, options.getDelay());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> options.setTryTimeout(invalidDuration));
+        Assertions.assertEquals(tryTimeout, options.getTryTimeout());
     }
 
     @Test
