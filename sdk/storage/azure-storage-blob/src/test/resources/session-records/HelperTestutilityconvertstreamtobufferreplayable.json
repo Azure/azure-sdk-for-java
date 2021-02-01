@@ -1,65 +1,66 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcutilityconvertstreamtobufferreplayable01036890a08515?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcutilityconvertstreamtobufferreplayable061347209530c8?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "2c9c2311-7ce0-4b63-9255-93bbcfa7bc59"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "03d866b2-4777-486c-93ea-89a946783c2e"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D8291CC2B8F21E",
-      "Last-Modified" : "Thu, 16 Jul 2020 00:11:17 GMT",
+      "ETag" : "0x8D8C677E5AFF714",
+      "Last-Modified" : "Mon, 01 Feb 2021 06:09:12 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "33a0c0c8-801e-006d-2205-5b25c9000000",
-      "Date" : "Thu, 16 Jul 2020 00:11:16 GMT",
-      "x-ms-client-request-id" : "2c9c2311-7ce0-4b63-9255-93bbcfa7bc59"
+      "x-ms-request-id" : "b3c50678-d01e-006d-6760-f8041a000000",
+      "Date" : "Mon, 01 Feb 2021 06:09:12 GMT",
+      "x-ms-client-request-id" : "03d866b2-4777-486c-93ea-89a946783c2e"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtcutilityconvertstreamtobufferreplayable&comp=list",
+    "Uri" : "https://REDACTED.blob.core.windows.net?comp=list&prefix=jtcutilityconvertstreamtobufferreplayable",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "bbe763e8-041e-411b-a38f-f53978b17803"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "0382d0b4-58a6-454d-aa4a-d5cf52b25a74"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "Vary" : "Origin",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "6213775c-301e-008c-0705-5bf98c000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://seanmccprodca.blob.core.windows.net/\"><Prefix>jtcutilityconvertstreamtobufferreplayable</Prefix><Containers><Container><Name>jtcutilityconvertstreamtobufferreplayable01036890a08515</Name><Properties><Last-Modified>Thu, 16 Jul 2020 00:11:17 GMT</Last-Modified><Etag>\"0x8D8291CC2B8F21E\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Thu, 16 Jul 2020 00:11:17 GMT",
-      "x-ms-client-request-id" : "bbe763e8-041e-411b-a38f-f53978b17803",
+      "x-ms-request-id" : "b3c507ed-d01e-006d-0d60-f8041a000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://gapraeurope.blob.core.windows.net/\"><Prefix>jtcutilityconvertstreamtobufferreplayable</Prefix><Containers><Container><Name>jtcutilityconvertstreamtobufferreplayable061347209530c8</Name><Properties><Last-Modified>Mon, 01 Feb 2021 06:09:12 GMT</Last-Modified><Etag>\"0x8D8C677E5AFF714\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Mon, 01 Feb 2021 06:09:12 GMT",
+      "x-ms-client-request-id" : "0382d0b4-58a6-454d-aa4a-d5cf52b25a74",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcutilityconvertstreamtobufferreplayable01036890a08515?restype=container",
+    "Uri" : "https://REDACTED.blob.core.windows.net/jtcutilityconvertstreamtobufferreplayable061347209530c8?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-12-12",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.8.0-beta.2 (11.0.7; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "76702701-96fc-4e6b-9d91-089a90b3545f"
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.11.0-beta.1 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "49224c92-1219-488d-9358-4af3eb17b63c"
     },
     "Response" : {
-      "x-ms-version" : "2019-12-12",
+      "x-ms-version" : "2020-06-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "685a41ea-801e-001f-3d05-5b2286000000",
-      "Date" : "Thu, 16 Jul 2020 00:11:18 GMT",
-      "x-ms-client-request-id" : "76702701-96fc-4e6b-9d91-089a90b3545f"
+      "x-ms-request-id" : "b3c508d4-d01e-006d-4c60-f8041a000000",
+      "Date" : "Mon, 01 Feb 2021 06:09:12 GMT",
+      "x-ms-client-request-id" : "49224c92-1219-488d-9358-4af3eb17b63c"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcutilityconvertstreamtobufferreplayable01036890a08515", "c3c5c66b-bac7-4af8-a4ad-62f556c2277a" ]
+  "variables" : [ "jtcutilityconvertstreamtobufferreplayable061347209530c8", "53ad426e-4bff-45db-b274-e8992ee4d898" ]
 }
