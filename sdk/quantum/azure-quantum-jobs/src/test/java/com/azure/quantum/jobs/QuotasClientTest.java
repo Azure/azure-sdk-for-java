@@ -23,7 +23,7 @@ public class QuotasClientTest extends QuantumClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void getStatusTest(HttpClient httpClient) {
+    public void listTest(HttpClient httpClient) {
         initializeClient(httpClient);
 
         PagedIterable<Quota> quotas = client.list();

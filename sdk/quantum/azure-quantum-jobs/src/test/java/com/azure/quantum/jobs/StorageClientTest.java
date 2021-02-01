@@ -23,7 +23,7 @@ public class StorageClientTest extends QuantumClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
-    public void getStatusTest(HttpClient httpClient) {
+    public void sasUriTest(HttpClient httpClient) {
         initializeClient(httpClient);
 
         String containerName = "testcontainer";

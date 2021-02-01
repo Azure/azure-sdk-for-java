@@ -65,7 +65,7 @@ public class JobsClientTest extends QuantumClientTestBase {
             BlobClient blobClient = new BlobClientBuilder()
                 .endpoint(inputDataUri)
                 .buildClient();
-            blobClient.uploadFromFile(FileSystems.getDefault().getPath("src/test/java/com/azure/quantum/jobs/problem.json").toString());
+            blobClient.uploadFromFile(FileSystems.getDefault().getPath("src/test/resources/problem.json").toString());
         }
 
         //test create job
@@ -89,7 +89,6 @@ public class JobsClientTest extends QuantumClientTestBase {
         assertNotEquals(null, jobDetails.getInputDataUri());
         assertEquals(jobId, jobDetails.getId());
         assertEquals(jobName, jobDetails.getName());
-        assertEquals(inputDataUri, jobDetails.getInputDataUri());
 
         //test get job
         JobDetails gotJob = jobsClient.get(jobId);
