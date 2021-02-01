@@ -8,33 +8,12 @@ import com.azure.core.http.HttpMethod
 import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
-import com.azure.core.http.RequestConditions
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
 import com.azure.identity.DefaultAzureCredentialBuilder
-import com.azure.storage.blob.APISpec
-import com.azure.storage.blob.BlobAsyncClient
-import com.azure.storage.blob.BlobClient
-import com.azure.storage.blob.BlobServiceClientBuilder
-import com.azure.storage.blob.BlobUrlParts
-import com.azure.storage.blob.ProgressReceiver
-import com.azure.storage.blob.models.AccessTier
-import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobHttpHeaders
-import com.azure.storage.blob.options.BlobGetTagsOptions
-import com.azure.storage.blob.options.BlobParallelUploadOptions
-import com.azure.storage.blob.models.BlobRange
-import com.azure.storage.blob.models.BlobRequestConditions
-import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.blob.options.BlobUploadFromUrlOptions
-import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions
-import com.azure.storage.blob.options.BlockBlobListBlocksOptions
-import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions
-import com.azure.storage.blob.models.BlockListType
-import com.azure.storage.blob.models.CustomerProvidedKey
-import com.azure.storage.blob.models.ParallelTransferOptions
-import com.azure.storage.blob.models.PublicAccessType
-import com.azure.storage.blob.options.BlobUploadFromFileOptions
+import com.azure.storage.blob.*
+import com.azure.storage.blob.models.*
+import com.azure.storage.blob.options.*
 import com.azure.storage.blob.sas.BlobContainerSasPermission
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
 import com.azure.storage.common.implementation.Constants
@@ -1912,7 +1891,7 @@ class BlockBlobAPITest extends APISpec {
         "blob"                 | "blob"
         "path/to]a blob"       | "path/to]a blob"
         "path%2Fto%5Da%20blob" | "path/to]a blob"
-        "斑點"                   | "斑點"
+        "斑點"                 | "斑點"
         "%E6%96%91%E9%BB%9E"   | "斑點"
     }
 

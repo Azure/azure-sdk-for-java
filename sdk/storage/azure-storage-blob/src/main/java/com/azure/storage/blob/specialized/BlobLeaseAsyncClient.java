@@ -87,7 +87,11 @@ public final class BlobLeaseAsyncClient {
      * @return URL of the lease client.
      */
     public String getResourceUrl() {
-        return this.client.getUrl();
+        if (this.isBlob) {
+            return this.client.getUrl() + "/" + containerName + "/" + blobName;
+        } else {
+            return this.client.getUrl() + "/" + containerName;
+        }
     }
 
     /**
