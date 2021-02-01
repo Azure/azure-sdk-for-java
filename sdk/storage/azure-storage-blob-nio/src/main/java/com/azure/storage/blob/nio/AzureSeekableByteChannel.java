@@ -23,7 +23,6 @@ import java.nio.file.attribute.FileAttribute;
  * overwriting existing files.
  * <p>
  * This type is not threadsafe to prevent having to hold locks across network calls.
- * <p>
  */
 public final class AzureSeekableByteChannel implements SeekableByteChannel {
     private final ClientLogger logger = new ClientLogger(AzureSeekableByteChannel.class);
