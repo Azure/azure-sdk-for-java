@@ -27,9 +27,9 @@ public abstract class AADB2CWebSecurityConfigurerAdapter extends WebSecurityConf
     @Autowired
     private OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
     @Autowired
-    protected AADB2CProperties properties;
+    private AADB2CProperties properties;
     @Autowired
-    protected OAuth2AuthorizationRequestResolver requestResolver;
+    private OAuth2AuthorizationRequestResolver requestResolver;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -53,7 +53,7 @@ public abstract class AADB2CWebSecurityConfigurerAdapter extends WebSecurityConf
             .logout()
                 .logoutSuccessHandler(b2cLogoutSuccessHandler())
                 .and();
-        // @formatter:off
+        // @formatter:on
     }
 
     @Bean

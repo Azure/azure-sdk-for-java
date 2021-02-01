@@ -25,8 +25,10 @@ public class AADB2CAuthorizationRequestResolverTest {
                 String.format("%s=%s", AADB2CConstants.CLIENT_SECRET, AADB2CConstants.TEST_CLIENT_SECRET),
                 String.format("%s=%s", AADB2CConstants.REPLY_URL, AADB2CConstants.TEST_REPLY_URL),
                 String.format("%s=%s", AADB2CConstants.LOGOUT_SUCCESS_URL, AADB2CConstants.TEST_LOGOUT_SUCCESS_URL),
-                String.format("%s=%s", AADB2CConstants.SIGN_UP_OR_SIGN_IN, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
-                String.format("%s=%s", AADB2CConstants.PROFILE_EDIT, AADB2CConstants.TEST_PROFILE_EDIT_NAME),
+                String.format("%s=%s,%s,%s", AADB2CConstants.USER_FLOWS,
+                    AADB2CConstants.TEST_SIGN_IN_NAME,
+                    AADB2CConstants.TEST_SIGN_UP_NAME, AADB2CConstants.TEST_PROFILE_EDIT_NAME),
+                String.format("%s=%s", AADB2CConstants.SIGN_IN_USER_FLOW, AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME),
                 String.format("%s=%s", AADB2CConstants.CONFIG_PROMPT, AADB2CConstants.TEST_PROMPT),
                 String.format("%s=%s", AADB2CConstants.CONFIG_LOGIN_HINT, AADB2CConstants.TEST_LOGIN_HINT),
                 String.format("%s.%s.%s=%s,%s", AADB2CConstants.CONFIG_AUTHORIZATION_CLIENTS,
@@ -62,7 +64,6 @@ public class AADB2CAuthorizationRequestResolverTest {
 
             assertThat(resolver.resolve(request, userFlowRegistrationId)).isNotNull();
             assertThat(resolver.resolve(request, nonexistentRegistrationId)).isNull();
-            assertThat(resolver.resolve(request, userFlowRegistrationId)).isNotNull();
             assertThat(resolver.resolve(request, otherRegistrationId)).isNotNull();
             assertThat(resolver.resolve(request, nonexistentRegistrationId)).isNull();
 

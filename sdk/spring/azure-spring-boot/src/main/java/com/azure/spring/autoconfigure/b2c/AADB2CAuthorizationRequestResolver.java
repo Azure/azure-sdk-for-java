@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.autoconfigure.b2c;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -26,6 +28,8 @@ import java.util.Optional;
  */
 public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AADB2CAuthorizationRequestResolver.class);
+
     private static final String REQUEST_BASE_URI =
             OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI;
 
@@ -41,8 +45,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     private final OAuth2AuthorizationRequestResolver defaultResolver;
 
-    private final String passwordResetUserFlow;
-    private final String signUpOrSignIn;
+    private final String signInUserFlow;
 
     private final AADB2CProperties properties;
     private final ClientRegistrationRepository clientRegistrationRepository;
@@ -52,8 +55,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
         this.properties = properties;
         this.clientRegistrationRepository = repository;
 
-        this.passwordResetUserFlow = this.properties.getUserFlows().getPasswordReset();
-        this.signUpOrSignIn = this.properties.getUserFlows().getSignUpOrSignIn();
+        this.signInUserFlow = this.properties.getSignInUserFlow();
 
         this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI);
     }
@@ -65,19 +67,21 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
     @Override
     public OAuth2AuthorizationRequest resolve(@NonNull HttpServletRequest request, String registrationId) {
-        if (StringUtils.hasText(passwordResetUserFlow) && isForgotPasswordAuthorizationRequest(request)) {
-            final OAuth2AuthorizationRequest authRequest = defaultResolver.resolve(request, passwordResetUserFlow);
-            return getB2CAuthorizationRequest(authRequest, passwordResetUserFlow);
-        }
-
         if (StringUtils.hasText(registrationId)) {
             if (REQUEST_MATCHER.matches(request)) {
                 return getB2CAuthorizationRequest(defaultResolver.resolve(request), registrationId);
             }
 
-            if (isOtherAuthorizationClient(registrationId)) {
-                return getB2CAuthorizationRequest(defaultResolver.resolve(request, registrationId), signUpOrSignIn);
+            if (isForgotPasswordAuthorizationRequest(request)) {
+                final OAuth2AuthorizationRequest authRequest = defaultResolver.resolve(request, registrationId);
+                return getB2CAuthorizationRequest(authRequest, registrationId);
             }
+
+            if (isOtherAuthorizationClient(registrationId)) {
+                return getB2CAuthorizationRequest(defaultResolver.resolve(request, registrationId), signInUserFlow);
+            }
+
+            LOGGER.warn("Unrecognized registration id: {}", registrationId);
         }
         // Return null may not be the good practice, but we need to align with oauth2.client.web
         // DefaultOAuth2AuthorizationRequestResolver.
@@ -134,7 +138,7 @@ public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRe
      * @return true or false
      */
     private boolean isOtherAuthorizationClient(@NonNull String registrationId) {
-        if (signUpOrSignIn.equalsIgnoreCase(registrationId)) {
+        if (signInUserFlow.equalsIgnoreCase(registrationId)) {
             return false;
         }
 

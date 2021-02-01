@@ -19,7 +19,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
@@ -46,9 +45,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
  * <p>
  * The configuration will not be activated if no {@literal azure.activedirectory.b2c.tenant-id, client-id,
  * client-secret, reply-url and sign-up-or-sign-in} property provided.
- * <p>
- * A client registration repository service {@link InMemoryClientRegistrationRepository} will be auto-configured by
- * specifying {@literal azure.activedirectory.b2c.oidc-enabled} property as true or ignore it.
+ * </p>
  */
 @Configuration
 @ConditionalOnWebApplication
@@ -60,7 +57,7 @@ import static com.azure.spring.telemetry.TelemetryData.getClassPackageSimpleName
         "client-id",
         "client-secret",
         "reply-url",
-        AADB2CProperties.USER_FLOW_SIGN_UP_OR_SIGN_IN
+        AADB2CProperties.SIGN_IN_USER_FLOW
     }
 )
 @EnableConfigurationProperties(AADB2CProperties.class)
@@ -108,15 +105,16 @@ public class AADB2CAutoConfiguration {
         final List<ClientRegistration> signUpOrSignInRegistrations = new ArrayList<>(3);
         final List<ClientRegistration> otherRegistrations = new ArrayList<>();
 
-        addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignUpOrSignIn());
-        addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignIn());
-        addB2CClientRegistration(signUpOrSignInRegistrations, properties.getUserFlows().getSignUp());
-        addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getProfileEdit());
-        addB2CClientRegistration(otherRegistrations, properties.getUserFlows().getPasswordReset());
+        addB2CClientRegistration(signUpOrSignInRegistrations, properties.getSignInUserFlow());
+        for (String userFlow : properties.getUserFlows()) {
+            if (!userFlow.equalsIgnoreCase(properties.getSignInUserFlow())) {
+                addB2CClientRegistration(otherRegistrations, userFlow);
+            }
+        }
 
         if (null != properties.getAuthorizationClients()) {
             for (String name : properties.getAuthorizationClients().keySet()) {
-                if (properties.getUserFlows().getSignUpOrSignIn().equals(name)) {
+                if (properties.getSignInUserFlow().equals(name)) {
                     continue;
                 }
                 AuthorizationClientScopesProperties authz = properties.getAuthorizationClients().get(name);
@@ -133,7 +131,7 @@ public class AADB2CAutoConfiguration {
     }
 
     private ClientRegistration createClientBuilder(String id, AuthorizationClientScopesProperties authz) {
-        String userFlow = properties.getUserFlows().getSignUpOrSignIn();
+        String userFlow = properties.getSignInUserFlow();
         ClientRegistration.Builder result = ClientRegistration.withRegistrationId(id);
         result.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE);
         result.redirectUriTemplate(properties.getReplyUrl());

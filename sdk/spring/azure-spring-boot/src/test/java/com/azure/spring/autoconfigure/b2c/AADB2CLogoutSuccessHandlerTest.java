@@ -13,7 +13,7 @@ public class AADB2CLogoutSuccessHandlerTest {
 
     private static final String TEST_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 
-    private static final String TEST_USER_FLOW_SIGN_UP_OR_IN = "my-sign-up-or-in";
+    private static final String TEST_SIGN_IN_USER_FLOW = "my-sign-in";
 
     private AADB2CProperties properties;
 
@@ -23,7 +23,7 @@ public class AADB2CLogoutSuccessHandlerTest {
 
         properties.setTenant(TEST_TENANT);
         properties.setLogoutSuccessUrl(TEST_LOGOUT_SUCCESS_URL);
-        properties.getUserFlows().setSignUpOrSignIn(TEST_USER_FLOW_SIGN_UP_OR_IN);
+        properties.setSignInUserFlow(TEST_SIGN_IN_USER_FLOW);
     }
 
     @Test
@@ -31,7 +31,7 @@ public class AADB2CLogoutSuccessHandlerTest {
         final MyLogoutSuccessHandler handler = new MyLogoutSuccessHandler(properties);
         final String tenant = properties.getTenant();
         final String url = properties.getLogoutSuccessUrl();
-        final String userFlow = properties.getUserFlows().getSignUpOrSignIn();
+        final String userFlow = properties.getSignInUserFlow();
 
         assertThat(handler.getTargetUrl()).isEqualTo(AADB2CURL.getEndSessionUrl(tenant, url, userFlow));
     }

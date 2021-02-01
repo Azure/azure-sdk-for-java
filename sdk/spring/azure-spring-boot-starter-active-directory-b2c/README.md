@@ -58,14 +58,13 @@ application to use the Spring annotations and classes to protect the web app.
 respectively. Specify your user flow **Name** and **User attributes and claims**, click **Create**.
 
 ## Key concepts
-This starter provides a way to integrate with Spring Security and authenticate with Azure Active Directory B2C, which are designed for scenario of web application.
+This starter provides a way to integrate with Spring Security and authenticate with Azure Active Directory B2C, which are designed for the scenario of web application.
 
 The authorization flow for web application includes:
 * Login with credentials by self-defined sign up or sign in client registration that will be the default client, and trigger **authorization code flow**. Application acquires access token by the fixed scopes, which are `clientId` of the sign in or sign up user flow, `openid`, and `offline_access`.
 * Each user flow instance will act as a client registration.
 * Support built-in other resources or custom resources, also act as a client registration.
 * When resources are visited, associated clients will be loaded and trigger **authorization code flow** like the default client.
-
 
 ### Configurable properties
 This starter provides following properties to be customized:
@@ -78,10 +77,9 @@ This starter provides following properties to be customized:
    | `azure.activedirectory.b2c.logout-success-url` | The target URL after a successful logout. |
    | `azure.activedirectory.b2c.reply-url` | The reply URL of a registered application. It's the same as the **Redirect URI** configured on Azure Portal.|   
    | `azure.activedirectory.b2c.tenant` | The Azure AD B2C's tenant name. |
-   | `azure.activedirectory.b2c.user-flows.sign-up-or-sign-in` | The name of the **sign up and sign in** user flow. |
-   | `azure.activedirectory.b2c.user-flows.profile-edit` | The name of the **profile editing** user flow. |
-   | `azure.activedirectory.b2c.user-flows.password-reset` | The name of the **password reset** user flow. |
    | `azure.activedirectory.b2c.user-name-attribute-name` | The the attribute name of the user name.|   
+   | `azure.activedirectory.b2c.sign-in-user-flow` | The name of the **sign up or sign in** user flow. |
+   | `azure.activedirectory.b2c.user-flows.{user-flow-name}` | The names of all user flows except `azure.activedirectory.b2c.sign-in-user-flow` user flow. |
    | `azure.activedirectory.b2c.authorization-clients`     | Resource server name that the application is going to visit. |
    | `azure.activedirectory.b2c.authorization-clients.{client-name}.scopes` | API permissions of a resource server that the application is going to acquire. |
 
@@ -125,10 +123,11 @@ This starter provides following properties to be customized:
          reply-url: ${your-reply-url-from-aad} # should be absolute url.
          logout-success-url: ${you-logout-success-url}
          user-name-attribute-name: ${your-user-name-attribute-name}
+         sign-in-user-flow: ${your-sign-up-or-in-user-flow}
          user-flows:
-           sign-up-or-sign-in: ${your-sign-up-or-in-user-flow}
-           profile-edit: ${your-profile-edit-user-flow}     # optional
-           password-reset: ${your-password-reset-user-flow} # optional
+           - ${your-sign-up-or-in-user-flow}
+           - ${your-profile-edit-user-flow}
+           - ${your-password-reset-user-flow}
          authenticate-additional-parameters: 
            prompt: [login,none,consent]   # optional
            login_hint: xxxxxxxxx          # optional
@@ -141,7 +140,7 @@ This starter provides following properties to be customized:
 9. Create a new Java file named *AADB2CWebController.java* in the *controller* folder and open it in a text editor.
 
 10. Enter the following code, then save and close the file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/b2c/AADB2CWebController.java#L18-L40 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/b2c/AADB2CWebController.java#L19-L35 -->
 ```java
 @Controller
 public class AADB2CWebController {
@@ -149,18 +148,13 @@ public class AADB2CWebController {
     private void initializeModel(Model model, OAuth2AuthenticationToken token) {
         if (token != null) {
             final OAuth2User user = token.getPrincipal();
-            model.addAttribute("grant_type", user.getAuthorities());
             model.addAllAttributes(user.getAttributes());
+            model.addAttribute("grant_type", user.getAuthorities());
+            model.addAttribute("name", user.getName());
         }
     }
 
-    @GetMapping(value = "/")
-    public String index(Model model, OAuth2AuthenticationToken token) {
-        initializeModel(model, token);
-        return "home";
-    }
-
-    @GetMapping(value = "/home")
+    @GetMapping(value = { "/", "/home"})
     public String home(Model model, OAuth2AuthenticationToken token) {
         initializeModel(model, token);
         return "home";
