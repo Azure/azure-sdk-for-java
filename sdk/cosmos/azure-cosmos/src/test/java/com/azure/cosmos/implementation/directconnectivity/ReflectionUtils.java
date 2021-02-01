@@ -19,7 +19,8 @@ import com.azure.cosmos.implementation.cpu.CpuMemoryListener;
 import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.throughputControl.ThroughputRequestThrottler;
-import com.azure.cosmos.implementation.throughputControl.controller.request.IThroughputRequestController;
+import com.azure.cosmos.implementation.throughputControl.controller.request.GlobalThroughputRequestController;
+import com.azure.cosmos.implementation.throughputControl.controller.request.PkRangesThroughputRequestController;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import java.lang.ref.WeakReference;
@@ -27,9 +28,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URI;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 
@@ -221,14 +220,14 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static ConcurrentHashMap<URI, ThroughputRequestThrottler> getRequestThrottlerByRegion(IThroughputRequestController requestController) {
+    public static ConcurrentHashMap<URI, ThroughputRequestThrottler> getRequestThrottlerMap(GlobalThroughputRequestController requestController) {
         return get(ConcurrentHashMap.class, requestController, "requestThrottlerMapByRegion");
     }
 
-    public static void setRequestThrottlerByRegion(
-        IThroughputRequestController requestController,
-        ConcurrentHashMap<URI, ThroughputRequestThrottler> throttlerMap) {
+    @SuppressWarnings("unchecked")
+    public static ConcurrentHashMap<URI, ConcurrentHashMap<String, ThroughputRequestThrottler>> getRequestThrottlerMap(
+        PkRangesThroughputRequestController requestController) {
 
-        set(requestController, throttlerMap, "requestThrottlerMapByRegion");
+        return get(ConcurrentHashMap.class, requestController, "requestThrottlerMapByRegion");
     }
 }

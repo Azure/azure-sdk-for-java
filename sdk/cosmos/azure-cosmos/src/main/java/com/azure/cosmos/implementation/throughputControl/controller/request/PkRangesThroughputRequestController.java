@@ -68,9 +68,11 @@ public class PkRangesThroughputRequestController implements IThroughputRequestCo
 
     @Override
     public boolean canHandleRequest(RxDocumentServiceRequest request) {
-        PartitionKeyRange resolvedPkRange = request.requestContext.resolvedPartitionKeyRange;
-        if (resolvedPkRange != null) {
-            return this.pkRanges.contains(resolvedPkRange);
+        if (request.requestContext != null) {
+            PartitionKeyRange resolvedPkRange = request.requestContext.resolvedPartitionKeyRange;
+            if (resolvedPkRange != null) {
+                return this.pkRanges.contains(resolvedPkRange);
+            }
         }
 
         return false;

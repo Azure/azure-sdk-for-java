@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.implementation.throughputControl;
 
 import com.azure.cosmos.implementation.NotFoundException;
@@ -13,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class ThroughputRequestThrottlerTests {
 
-    @Test
+    @Test(groups = "unit")
     @SuppressWarnings({"unchecked", "rawtypes"})
     public void processRequest() {
         double requestChargePerRequest = 2.0;
