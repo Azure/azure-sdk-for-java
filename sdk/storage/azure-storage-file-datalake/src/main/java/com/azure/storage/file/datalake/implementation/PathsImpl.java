@@ -43,6 +43,7 @@ import com.azure.storage.file.datalake.implementation.models.PathsReadResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlRecursiveResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsSetAccessControlResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsSetExpiryResponse;
+import com.azure.storage.file.datalake.implementation.models.PathsUndeleteResponse;
 import com.azure.storage.file.datalake.implementation.models.PathsUpdateResponse;
 import com.azure.storage.file.datalake.implementation.models.PathUpdateAction;
 import com.azure.storage.file.datalake.implementation.models.SourceModifiedAccessConditions;
@@ -139,6 +140,11 @@ public final class PathsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DataLakeStorageException.class)
         Mono<PathsSetExpiryResponse> setExpiry(@PathParam("filesystem") String fileSystem, @PathParam("path") String path1, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-expiry-option") PathExpiryOptions expiryOptions, @HeaderParam("x-ms-expiry-time") String expiresOn, @QueryParam("comp") String comp, Context context);
+
+        @Put("{filesystem}/{path}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(DataLakeStorageException.class)
+        Mono<PathsUndeleteResponse> undelete(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-undelete-source") String undeleteSource, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -932,5 +938,37 @@ public final class PathsImpl {
     public Mono<PathsSetExpiryResponse> setExpiryWithRestResponseAsync(PathExpiryOptions expiryOptions, Integer timeout, String requestId, String expiresOn, Context context) {
         final String comp = "expiry";
         return service.setExpiry(this.client.getFileSystem(), this.client.getPath1(), this.client.getUrl(), timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, comp, context);
+    }
+
+    /**
+     * Undelete a path that was previously soft deleted.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsUndeleteResponse> undeleteWithRestResponseAsync(Context context) {
+        final Integer timeout = null;
+        final String undeleteSource = null;
+        final String requestId = null;
+        final String comp = "undelete";
+        return service.undelete(this.client.getUrl(), timeout, undeleteSource, this.client.getVersion(), requestId, comp, context);
+    }
+
+    /**
+     * Undelete a path that was previously soft deleted.
+     *
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted blob to undelete.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathsUndeleteResponse> undeleteWithRestResponseAsync(Integer timeout, String undeleteSource, String requestId, Context context) {
+        final String comp = "undelete";
+        return service.undelete(this.client.getUrl(), timeout, undeleteSource, this.client.getVersion(), requestId, comp, context);
     }
 }

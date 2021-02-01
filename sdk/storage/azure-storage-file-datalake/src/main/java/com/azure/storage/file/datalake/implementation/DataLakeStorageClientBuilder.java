@@ -133,7 +133,7 @@ public final class DataLakeStorageClientBuilder {
         if (this.version != null) {
             client.setVersion(this.version);
         } else {
-            client.setVersion("2020-02-10");
+            client.setVersion("2020-06-12");
         }
         if (this.fileSystem != null) {
             client.setFileSystem(this.fileSystem);

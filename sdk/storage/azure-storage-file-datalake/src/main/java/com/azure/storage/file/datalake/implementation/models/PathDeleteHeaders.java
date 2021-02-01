@@ -46,6 +46,14 @@ public final class PathDeleteHeaders {
     private String continuation;
 
     /*
+     * Returned only for hierarchical namespace space enabled accounts when
+     * soft delete is enabled. A unique identifier for the entity that can be
+     * used to restore it. See the Undelete REST API for more information.
+     */
+    @JsonProperty(value = "x-ms-deletion-id")
+    private String deletionId;
+
+    /*
      * The errorCode property.
      */
     @JsonProperty(value = "x-ms-error-code")
@@ -151,6 +159,32 @@ public final class PathDeleteHeaders {
      */
     public PathDeleteHeaders setContinuation(String continuation) {
         this.continuation = continuation;
+        return this;
+    }
+
+    /**
+     * Get the deletionId property: Returned only for hierarchical namespace
+     * space enabled accounts when soft delete is enabled. A unique identifier
+     * for the entity that can be used to restore it. See the Undelete REST API
+     * for more information.
+     *
+     * @return the deletionId value.
+     */
+    public String getDeletionId() {
+        return this.deletionId;
+    }
+
+    /**
+     * Set the deletionId property: Returned only for hierarchical namespace
+     * space enabled accounts when soft delete is enabled. A unique identifier
+     * for the entity that can be used to restore it. See the Undelete REST API
+     * for more information.
+     *
+     * @param deletionId the deletionId value to set.
+     * @return the PathDeleteHeaders object itself.
+     */
+    public PathDeleteHeaders setDeletionId(String deletionId) {
+        this.deletionId = deletionId;
         return this;
     }
 
