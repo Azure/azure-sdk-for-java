@@ -107,6 +107,8 @@ jobs:
           versionSpec: '3.6'
 
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
+        parameters:
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - ${{ each artifact in parameters.Artifacts }}:
         - script: |
