@@ -12,30 +12,30 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for creating an attestation service instance.
+ * Parameters for creating an attestation provider.
  */
 public class AttestationServiceCreationParams {
     /**
-     * The supported Azure location where the attestation service instance
-     * should be created.
+     * The supported Azure location where the attestation provider should be
+     * created.
      */
     @JsonProperty(value = "location", required = true)
     private String location;
 
     /**
-     * The tags that will be assigned to the attestation service instance.
+     * The tags that will be assigned to the attestation provider.
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
-     * Properties of the attestation service instance.
+     * Properties of the attestation provider.
      */
     @JsonProperty(value = "properties", required = true)
     private AttestationServiceCreationSpecificParams properties;
 
     /**
-     * Get the supported Azure location where the attestation service instance should be created.
+     * Get the supported Azure location where the attestation provider should be created.
      *
      * @return the location value
      */
@@ -44,7 +44,7 @@ public class AttestationServiceCreationParams {
     }
 
     /**
-     * Set the supported Azure location where the attestation service instance should be created.
+     * Set the supported Azure location where the attestation provider should be created.
      *
      * @param location the location value to set
      * @return the AttestationServiceCreationParams object itself.
@@ -55,7 +55,7 @@ public class AttestationServiceCreationParams {
     }
 
     /**
-     * Get the tags that will be assigned to the attestation service instance.
+     * Get the tags that will be assigned to the attestation provider.
      *
      * @return the tags value
      */
@@ -64,7 +64,7 @@ public class AttestationServiceCreationParams {
     }
 
     /**
-     * Set the tags that will be assigned to the attestation service instance.
+     * Set the tags that will be assigned to the attestation provider.
      *
      * @param tags the tags value to set
      * @return the AttestationServiceCreationParams object itself.
@@ -75,7 +75,7 @@ public class AttestationServiceCreationParams {
     }
 
     /**
-     * Get properties of the attestation service instance.
+     * Get properties of the attestation provider.
      *
      * @return the properties value
      */
@@ -84,7 +84,7 @@ public class AttestationServiceCreationParams {
     }
 
     /**
-     * Set properties of the attestation service instance.
+     * Set properties of the attestation provider.
      *
      * @param properties the properties value to set
      * @return the AttestationServiceCreationParams object itself.

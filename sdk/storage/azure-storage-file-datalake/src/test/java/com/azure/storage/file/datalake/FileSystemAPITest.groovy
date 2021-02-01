@@ -4,7 +4,6 @@ import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
-import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.Utility
 import com.azure.storage.file.datalake.models.*
 import spock.lang.Unroll
@@ -1237,5 +1236,103 @@ class FileSystemAPITest extends APISpec {
         notThrown(DataLakeStorageException)
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
     }
+
+//    def "Rename"() {
+//        setup:
+//        def newName = generateFileSystemName()
+//
+//        when:
+//        def renamedContainer = fsc.rename(newName)
+//
+//        then:
+//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+//
+//        cleanup:
+//        renamedContainer.delete()
+//    }
+//
+//    def "Rename sas"() {
+//        setup:
+//        def newName = generateFileSystemName()
+//        def sas = primaryDataLakeServiceClient.generateAccountSas(new AccountSasSignatureValues(getUTCNow().plusHours(1), AccountSasPermission.parse("rwdxlacuptf"), AccountSasService.parse("b"), AccountSasResourceType.parse("c")))
+//        def sasClient = getFileSystemClient(sas, fsc.getFileSystemUrl())
+//
+//        when:
+//        def renamedContainer = sasClient.rename(newName)
+//
+//        then:
+//        renamedContainer.getPropertiesWithResponse(null, null, null).getStatusCode() == 200
+//
+//        cleanup:
+//        renamedContainer.delete()
+//    }
+//
+//    @Unroll
+//    def "Rename AC"() {
+//        setup:
+//        leaseID = setupFileSystemLeaseCondition(fsc, leaseID)
+//        def cac = new DataLakeRequestConditions()
+//            .setLeaseId(leaseID)
+//
+//        expect:
+//        fsc.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(cac),
+//            null, null).getStatusCode() == 200
+//
+//        where:
+//        leaseID         || _
+//        null            || _
+//        receivedLeaseID || _
+//    }
+//
+//    @Unroll
+//    def "Rename AC fail"() {
+//        setup:
+//        def cac = new DataLakeRequestConditions()
+//            .setLeaseId(leaseID)
+//
+//        when:
+//        fsc.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(cac),
+//            null, null)
+//
+//        then:
+//        thrown(BlobStorageException)
+//
+//        where:
+//        leaseID         || _
+//        garbageLeaseID  || _
+//    }
+//
+//    @Unroll
+//    def "Rename AC illegal"() {
+//        setup:
+//        def ac = new DataLakeRequestConditions().setIfMatch(match).setIfNoneMatch(noneMatch).setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified)
+//
+//        when:
+//        fsc.renameWithResponse(new FileSystemRenameOptions(generateFileSystemName()).setRequestConditions(ac),
+//            null, null)
+//
+//        then:
+//        thrown(UnsupportedOperationException)
+//
+//        where:
+//        modified | unmodified | match        | noneMatch
+//        oldDate  | null       | null         | null
+//        null     | newDate    | null         | null
+//        null     | null       | receivedEtag | null
+//        null     | null       | null         | garbageEtag
+//        null     | null       | null         | null
+//    }
+//
+//    def "Rename error"() {
+//        setup:
+//        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+//        def newName = generateFileSystemName()
+//
+//        when:
+//        fsc.rename(newName)
+//
+//        then:
+//        thrown(BlobStorageException)
+//    }
 
 }

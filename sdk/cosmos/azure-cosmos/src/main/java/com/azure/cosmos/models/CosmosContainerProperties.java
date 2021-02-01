@@ -152,7 +152,7 @@ public final class CosmosContainerProperties {
      *
      * @return ChangeFeedPolicy
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
+    @Beta(value = Beta.SinceVersion.V4_12_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ChangeFeedPolicy getChangeFeedPolicy() {
         return this.documentCollection.getChangeFeedPolicy();
@@ -164,7 +164,7 @@ public final class CosmosContainerProperties {
      * @param value ChangeFeedPolicy to be used.
      * @return the CosmosContainerProperties.
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
+    @Beta(value = Beta.SinceVersion.V4_12_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosContainerProperties setChangeFeedPolicy(ChangeFeedPolicy value) {
         this.documentCollection.setChangeFeedPolicy(value);
