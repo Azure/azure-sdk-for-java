@@ -19,7 +19,17 @@ function Get-java-PackageInfoFromRepo ($pkgPath, $serviceDirectory, $pkgName)
 
     if ($projectPkgName -eq $pkgName)
     {
-        return [PackageProps]::new($pkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
+        $pkgProp = [PackageProps]::new($pkgName, $pkgVersion.ToString(), $pkgPath, $serviceDirectory, $pkgGroup)
+        if ($projectPkgName -match "mgmt" -or $projectPkgName -match "resourcemanager")
+        {
+          $pkgProp.SdkType = "mgmt"
+        }
+        else
+        {
+          $pkgProp.SdkType = "client"
+        }
+        $pkgProp.IsNewSdk = $pkgGroup.StartsWith("com.azure")
+        return $pkgProp
     }
   }
   return $null
