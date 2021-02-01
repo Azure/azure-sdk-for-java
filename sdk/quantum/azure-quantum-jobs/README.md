@@ -29,7 +29,7 @@ Install the Azure Quantum Jobs client library for Java by adding the following t
 
 ### Authenticate the client
 
-To authenticate with the service, you will have to pass a [`TokenCredential`][token-credential] to the client builder as described in [Create The Client](#create-the-client).
+To authenticate with the service, you will have to pass a [`TokenCredential`][token-credential] to the client builder as described [below](#create-the-client).
 
 `TokenCredential` is the default Authentication mechanism used by Azure SDKs.
 
@@ -57,7 +57,7 @@ Create an instance of the client of your choice by passing the following values 
 - [Subscription][subscriptions] - looks like XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX and can be found in your list of subscriptions on azure
 - [Resource Group][resource-groups] - a container that holds related resources for an Azure solution
 - [Workspace][workspaces] - a collection of assets associated with running quantum or optimization applications
-- [Location][location] - choose the best data center by geographical region
+- [Host][location] - the host endpoint is "https://{location}.quantum.azure.com". Choose the best data center location by geographical region
 - [StorageContainerName][blob-storage] - your blob storage
 - [Credential][credentials] - used to authenticate
 
@@ -108,7 +108,7 @@ String containerUri = storageClient.sasUri(
 ### Upload Input Data
 
 Using the SAS URI, upload the json input data to the blob client. You can see an example problem file [here](src/test/resources/problem.json).
-This contains the parameters to be used with [Quantum Inspired Optimizations][https://docs.microsoft.com/azure/quantum/optimization-overview-introduction]
+This contains the parameters to be used with [Quantum Inspired Optimizations](https://docs.microsoft.com/azure/quantum/optimization-overview-introduction)
 
 <!-- embedme ./src/samples/java/com/azure/quantum/jobs/ReadmeSamples.java#L80-L92 -->
 ```java
@@ -190,7 +190,7 @@ or contact [opencode@microsoft.com][coc_contact] with any
 additional questions or comments.
 
 <!-- LINKS -->
-[source]: https://github.com/Azure/azure-sdk-for-net/tree/master/sdk/quantum/Azure.Quantum.Jobs/src
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/quantum/azure-quantum-jobs/src
 [style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization
 [token-credential]: https://docs.microsoft.com/en-us/dotnet/api/azure.core.tokencredential?view=azure-dotnet
 [resource-groups]: https://docs.microsoft.com/azure/azure-resource-manager/management/manage-resource-groups-portal
@@ -207,5 +207,8 @@ additional questions or comments.
 [azure_quantum]: https://azure.microsoft.com/en-us/services/quantum/
 [azure_quantum_workspaces]: https://docs.microsoft.com/en-gb/azure/quantum/how-to-create-quantum-workspaces-with-the-azure-portal
 [azure_storage]: https://azure.microsoft.com/en-us/free/storage/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_contact]: mailto:opencode@microsoft.com
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftemplate%2Fazure-sdk-template%2FREADME.png)
