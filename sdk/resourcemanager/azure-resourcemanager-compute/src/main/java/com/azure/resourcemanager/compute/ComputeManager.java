@@ -137,6 +137,7 @@ public final class ComputeManager extends Manager<ComputeManagementClient> {
             profile,
             new ComputeManagementClientBuilder()
                 .pipeline(httpPipeline)
+                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
         storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())

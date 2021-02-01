@@ -3,7 +3,7 @@
 
 package com.azure.ai.formrecognizer.implementation;
 
-import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.implementation.models.ContentType1;
 import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.models.FormRecognizerErrorInformation;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
@@ -44,12 +44,12 @@ public final class Utility {
      *
      * @param buffer The byte buffer input.
      *
-     * @return The {@link Mono} of {@link ContentType} content type.
+     * @return The {@link Mono} of {@link ContentType1} content type.
      */
-    public static Mono<ContentType> detectContentType(Flux<ByteBuffer> buffer) {
+    public static Mono<ContentType1> detectContentType(Flux<ByteBuffer> buffer) {
         byte[] header = new byte[4];
         int[] written = new int[]{0};
-        ContentType[] contentType = {ContentType.fromString("none")};
+        ContentType1[] contentType = {ContentType1.fromString("none")};
         return buffer.map(chunk -> {
             final int len = chunk.remaining();
             for (int i = 0; i < len; i++) {
@@ -58,15 +58,15 @@ public final class Utility {
 
                 if (written[0] == 4) {
                     if (isJpeg(header)) {
-                        contentType[0] = ContentType.IMAGE_JPEG;
+                        contentType[0] = ContentType1.IMAGE_JPEG;
                     } else if (isPdf(header)) {
-                        contentType[0] = ContentType.APPLICATION_PDF;
+                        contentType[0] = ContentType1.APPLICATION_PDF;
                     } else if (isPng(header)) {
-                        contentType[0] = ContentType.IMAGE_PNG;
+                        contentType[0] = ContentType1.IMAGE_PNG;
                     } else if (isTiff(header)) {
-                        contentType[0] = ContentType.IMAGE_TIFF;
+                        contentType[0] = ContentType1.IMAGE_TIFF;
                     } else if (isBmp(header)) {
-                        contentType[0] = ContentType.IMAGE_BMP;
+                        contentType[0] = ContentType1.IMAGE_BMP;
                     }
                     // Got a four bytes matching or not, either way no need to read more byte return false
                     // so that takeWhile can cut the subscription on data

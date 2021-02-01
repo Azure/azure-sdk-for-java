@@ -9,6 +9,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
@@ -50,7 +51,6 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
         final String password = Utils.password();
         final Region region = Region.US_WEST;
 
-
         try {
 
             //============================================================================================
@@ -81,7 +81,7 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
 
             // The script to install Java8, Maven3 and Git on a virtual machine using Azure Custom Script Extension
             //
-            final String javaMvnGitInstallScript = "https://raw.githubusercontent.com/Azure/azure-libraries-for-java/master/azure-samples/src/main/resources/install_jva_mvn_git.sh";
+            final String javaMvnGitInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/install_jva_mvn_git.sh";
             final String invokeScriptCommand = "bash install_jva_mvn_git.sh";
             List<String> fileUris = new ArrayList<>();
             fileUris.add(javaMvnGitInstallScript);
@@ -122,11 +122,17 @@ public final class ManageUserAssignedMSIEnabledVirtualMachine {
             List<String> commands = new ArrayList<>();
             commands.add("git clone https://github.com/Azure-Samples/compute-java-manage-vm-from-vm-with-msi-credentials.git");
             commands.add("cd compute-java-manage-vm-from-vm-with-msi-credentials");
-            commands.add(String.format("mvn clean compile exec:java -Dexec.args='%s %s %s'", azureResourceManager.subscriptionId(), resourceGroup1.name(), identity.clientId()));
+            commands.add(String.format("mvn clean compile exec:java -Dexec.args='%s %s %s false'", azureResourceManager.subscriptionId(), resourceGroup1.name(), identity.clientId()));
 
-            runCommandOnVM(azureResourceManager, virtualMachine, commands);
+            RunCommandResult commandResult = runCommandOnVM(azureResourceManager, virtualMachine, commands);
 
             System.out.println("Java application executed");
+
+            if (commandResult.value() != null) {
+                for (InstanceViewStatus status : commandResult.value()) {
+                    System.out.println("Command output:\n" + status.message() + "\n");
+                }
+            }
 
             //=============================================================
             // Retrieve the Virtual machine created from the MSI enabled Linux VM

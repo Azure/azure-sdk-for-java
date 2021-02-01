@@ -52,7 +52,7 @@ import java.time.Duration;
  * }
  * </pre>
  */
-@Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
+@Beta(value = Beta.SinceVersion.V4_12_0,
     warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ChangeFeedPolicy {
 
@@ -68,7 +68,7 @@ public final class ChangeFeedPolicy {
      *
      * @return ChangeFeedPolicy for full fidelity change feed.
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
+    @Beta(value = Beta.SinceVersion.V4_12_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static ChangeFeedPolicy createFullFidelityPolicy(Duration retentionDuration) {
 
@@ -95,7 +95,7 @@ public final class ChangeFeedPolicy {
      *
      * @return ChangeFeedPolicy for default/incremental change feed without full fidelity.
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
+    @Beta(value = Beta.SinceVersion.V4_12_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public static ChangeFeedPolicy createIncrementalPolicy() {
 
@@ -137,7 +137,7 @@ public final class ChangeFeedPolicy {
      *
      * @return full fidelity retention duration.
      */
-    @Beta(value = Beta.SinceVersion.WHATEVER_NEW_VERSION,
+    @Beta(value = Beta.SinceVersion.V4_12_0,
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getFullFidelityRetentionDuration() {
         return Duration.ofMinutes(this.getFullFidelityRetentionDurationInMinutes());

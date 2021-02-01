@@ -119,7 +119,7 @@ public final class RestProxyTestsWireMockServer {
 
             if (request.getHeaders() != null) {
                 responseBody.headers(request.getHeaders().all().stream()
-                    .collect(Collectors.toMap(MultiValue::key, MultiValue::firstValue)));
+                    .collect(Collectors.toMap(MultiValue::key, MultiValue::values)));
             }
 
             return new ResponseDefinitionBuilder().withStatus(200)

@@ -23,7 +23,7 @@ application to use the Spring annotations and classes to protect the web app.
 <dependency>
     <groupId>com.azure.spring</groupId>
     <artifactId>azure-spring-boot-starter-active-directory-b2c</artifactId>
-    <version>3.1.0</version>
+    <version>3.2.0-beta.1</version>
 </dependency>
 ```
 [//]: # "{x-version-update-end}"

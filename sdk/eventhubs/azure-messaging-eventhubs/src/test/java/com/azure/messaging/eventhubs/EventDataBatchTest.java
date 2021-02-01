@@ -33,7 +33,7 @@ public class EventDataBatchTest {
 
     @Test
     public void nullEventData() {
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             final EventDataBatch batch = new EventDataBatch(1024, null, PARTITION_KEY, null, null, null, null);
             batch.tryAdd(null);
         });
